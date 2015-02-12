@@ -20,7 +20,6 @@ import CoreData
 
 @objc(GKManagedEntity)
 public class GKManagedEntity : NSManagedObject, Printable {
-	
 	@NSManaged public var nodeClass: String
 	@NSManaged public var type: String
 	@NSManaged public var createdDate: NSDate

@@ -61,5 +61,4 @@ public class GKEntity: NSObject {
 	private func createWithType(type: String) -> GKManagedEntity {
 		return GKManagedEntity(type: type)
 	}
-
 }
