@@ -7,17 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		964605531A8BDC400062609D /* GraphKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 964605521A8BDC400062609D /* GraphKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		964605591A8BDC400062609D /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9646054D1A8BDC400062609D /* GraphKit.framework */; };
 		964605601A8BDC400062609D /* GraphKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9646055F1A8BDC400062609D /* GraphKitTests.swift */; };
-		9646056A1A8BDCC20062609D /* GKNodeClass.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605691A8BDCC20062609D /* GKNodeClass.swift */; };
 		9646056F1A8BDD5C0062609D /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 9646056E1A8BDD5C0062609D /* LICENSE */; };
 		964605711A8BDDA20062609D /* GKManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; };
-		964605721A8BDDA20062609D /* GKManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; };
 		964605741A8BDE010062609D /* GKGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605731A8BDE010062609D /* GKGraph.swift */; };
-		964605751A8BDE010062609D /* GKGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605731A8BDE010062609D /* GKGraph.swift */; };
 		964605791A8BDF800062609D /* GKEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605781A8BDF800062609D /* GKEntity.swift */; };
-		9646057A1A8BDF800062609D /* GKEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605781A8BDF800062609D /* GKEntity.swift */; };
+		96BE7E561A8C1F2B006DDFB4 /* GKManagedEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; };
+		96BE7E571A8C1F2B006DDFB4 /* GKEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605781A8BDF800062609D /* GKEntity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96BE7E581A8C1F2B006DDFB4 /* GKGraph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605731A8BDE010062609D /* GKGraph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,11 +31,9 @@
 /* Begin PBXFileReference section */
 		9646054D1A8BDC400062609D /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		964605511A8BDC400062609D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		964605521A8BDC400062609D /* GraphKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphKit.h; sourceTree = "<group>"; };
 		964605581A8BDC400062609D /* GraphKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GraphKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9646055E1A8BDC400062609D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9646055F1A8BDC400062609D /* GraphKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphKitTests.swift; sourceTree = "<group>"; };
-		964605691A8BDCC20062609D /* GKNodeClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKNodeClass.swift; sourceTree = "<group>"; };
 		9646056E1A8BDD5C0062609D /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		964605701A8BDDA20062609D /* GKManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKManagedEntity.swift; sourceTree = "<group>"; };
 		964605731A8BDE010062609D /* GKGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKGraph.swift; sourceTree = "<group>"; };
@@ -85,8 +81,6 @@
 			isa = PBXGroup;
 			children = (
 				964605501A8BDC400062609D /* Supporting Files */,
-				964605521A8BDC400062609D /* GraphKit.h */,
-				964605691A8BDCC20062609D /* GKNodeClass.swift */,
 				964605701A8BDDA20062609D /* GKManagedEntity.swift */,
 				964605781A8BDF800062609D /* GKEntity.swift */,
 				964605731A8BDE010062609D /* GKGraph.swift */,
@@ -127,8 +121,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				964605531A8BDC400062609D /* GraphKit.h in Headers */,
-				9646056A1A8BDCC20062609D /* GKNodeClass.swift in Headers */,
+				96BE7E571A8C1F2B006DDFB4 /* GKEntity.swift in Headers */,
+				96BE7E581A8C1F2B006DDFB4 /* GKGraph.swift in Headers */,
+				96BE7E561A8C1F2B006DDFB4 /* GKManagedEntity.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,10 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9646057A1A8BDF800062609D /* GKEntity.swift in Sources */,
 				964605601A8BDC400062609D /* GraphKitTests.swift in Sources */,
-				964605751A8BDE010062609D /* GKGraph.swift in Sources */,
-				964605721A8BDDA20062609D /* GKManagedEntity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,6 +416,7 @@
 				964605651A8BDC400062609D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		964605661A8BDC400062609D /* Build configuration list for PBXNativeTarget "GraphKitTests" */ = {
 			isa = XCConfigurationList;
@@ -432,6 +425,7 @@
 				964605681A8BDC400062609D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

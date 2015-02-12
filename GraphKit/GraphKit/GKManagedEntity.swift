@@ -20,7 +20,6 @@ import CoreData
 
 @objc(GKManagedEntity)
 public class GKManagedEntity : NSManagedObject, Printable {
-	
 	@NSManaged public var nodeClass: String
 	@NSManaged public var type: String
 	@NSManaged public var createdDate: NSDate
@@ -42,5 +41,9 @@ public class GKManagedEntity : NSManagedObject, Printable {
 	class func entityDescription() -> NSEntityDescription! {
 		var graph: GKGraph = GKGraph()
 		return NSEntityDescription.entityForName(graph.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+	}
+	
+	public func archive(graph: GKGraph!) {
+		graph.managedObjectContext.deleteObject(self)
 	}
 }

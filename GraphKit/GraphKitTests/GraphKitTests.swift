@@ -21,9 +21,13 @@ import GraphKit
 
 class GraphKitTests: XCTestCase, GKGraphDelegate {
 
-	lazy var graph: GKGraph = GKGraph()
+	let graph: GKGraph = GKGraph()
 	
-//	var entityExpectation: XCTestExpectation?
+	var userInsertExpectation: XCTestExpectation?
+	var bookInsertExpectation: XCTestExpectation?
+	
+	var userArchiveExpectation: XCTestExpectation?
+	var bookArchiveExpectation: XCTestExpectation?
 	
     override func setUp() {
         super.setUp()
@@ -35,27 +39,49 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
     
     func testEntity() {
 		graph.delegate = self
-//		graph.watch(Entity: "User")
-//		entityExpectation = expectationWithDescription("User Entity inserted. Delegate method was not called!")
-
-		var entity: GKEntity = GKEntity(type: "User")
+		graph.watch(Entity: "User")
+		graph.watch(Entity: "Book")
 		
-		let saveExpectation: XCTestExpectation = expectationWithDescription("Failed to save the graph!")
+		userInsertExpectation = expectationWithDescription("User Entity inserted. Delegate method was not called!")
+		bookInsertExpectation = expectationWithDescription("Book Entity inserted. Delegate method was not called!")
+
+		var user: GKEntity = GKEntity(type: "User")
+		var book: GKEntity = GKEntity(type: "Book")
+		
 		graph.save() {
 			XCTAssertTrue($0, "Cannot save the graph: \($1)")
-			saveExpectation.fulfill()
 		}
-//		waitForExpectationsWithTimeout(5, handler: nil)
+		waitForExpectationsWithTimeout(5, handler: nil)
+		
+		user.archive()
+		book.archive()
+		
+		userArchiveExpectation = expectationWithDescription("User Entity archived. Delegate method was not called!")
+		bookArchiveExpectation = expectationWithDescription("Book Entity archived. Delegate method was not called!")
+		
+		graph.save() {
+			XCTAssertTrue($0, "Cannot save the graph: \($1)")
+		}
+		waitForExpectationsWithTimeout(5, handler: nil)
     }
     
     func testPerformanceExample() {
         self.measureBlock() {}
     }
 	
-	// insertion delegate test
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-//		if "User" == entity.type {
-//			entityExpectation?.fulfill()
-//		}
+		if "User" == entity.type {
+			userInsertExpectation?.fulfill()
+		} else if "Book" == entity.type {
+			bookInsertExpectation?.fulfill()
+		}
+	}
+	
+	func graph(graph: GKGraph!, didArchiveEntity entity: GKEntity!) {
+		if "User" == entity.type {
+			userArchiveExpectation?.fulfill()
+		} else if "Book" == entity.type {
+			bookArchiveExpectation?.fulfill()
+		}
 	}
 }
