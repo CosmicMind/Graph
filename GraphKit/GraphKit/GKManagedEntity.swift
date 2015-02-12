@@ -43,4 +43,8 @@ public class GKManagedEntity : NSManagedObject, Printable {
 		var graph: GKGraph = GKGraph()
 		return NSEntityDescription.entityForName(graph.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
 	}
+	
+	public func archive(graph: GKGraph!) {
+		graph.managedObjectContext.deleteObject(self)
+	}
 }
