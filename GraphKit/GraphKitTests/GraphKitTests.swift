@@ -46,8 +46,8 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
 		graph.watch(Entity: "Book")
 		
 		// Some Exception testing.
-		userInsertExpectation = expectationWithDescription("Insertion Test: Watch 'User' did not pass.")
-		bookInsertExpectation = expectationWithDescription("Insertion Test: Watch 'Book' did not pass.")
+		userInsertExpectation = expectationWithDescription("Insert Test: Watch 'User' did not pass.")
+		bookInsertExpectation = expectationWithDescription("Insert Test: Watch 'Book' did not pass.")
 
 		// Create a User Entity.
 		var user: GKEntity = GKEntity(type: "User")
