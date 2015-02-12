@@ -120,7 +120,7 @@ public class GKGraph : NSObject {
 	}
 	
 	public func save(completionClosure: (succeeded: Bool, error: NSError?) -> ()) {
-		managedObjectContext.performBlockAndWait { () -> Void in
+		managedObjectContext.performBlock { () -> Void in
 			if !self.managedObjectContext.hasChanges {
 				completionClosure(succeeded: true, error: nil)
 				return
