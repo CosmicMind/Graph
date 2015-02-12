@@ -23,10 +23,10 @@ public class GKManagedEntity : NSManagedObject, Printable {
 	@NSManaged public var nodeClass: String
 	@NSManaged public var type: String
 	@NSManaged public var createdDate: NSDate
+	@NSManaged private var properties: Dictionary<String, AnyObject>
 	
 	override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext!) {
 		super.init(entity: entity, insertIntoManagedObjectContext: context)
-		createdDate = NSDate()
 	}
 	
 	convenience public init(type: String!) {
@@ -34,8 +34,10 @@ public class GKManagedEntity : NSManagedObject, Printable {
 		let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(graph.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
 		
 		self.init(entity: entitiDescription, insertIntoManagedObjectContext: graph.managedObjectContext)
-		self.type = type
 		nodeClass = "GKEntity"
+		self.type = type
+		createdDate = NSDate()
+		properties = Dictionary<String, AnyObject>()
 	}
 	
 	class func entityDescription() -> NSEntityDescription! {
@@ -45,5 +47,14 @@ public class GKManagedEntity : NSManagedObject, Printable {
 	
 	public func archive(graph: GKGraph!) {
 		graph.managedObjectContext.deleteObject(self)
+	}
+	
+	public subscript(property: String) -> AnyObject? {
+		get {
+			return properties[property]
+		}
+		set(value) {
+			properties[property] = value
+		}
 	}
 }

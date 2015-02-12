@@ -77,6 +77,14 @@ public class GKGraph : NSObject {
 			createdDate.optional = false
 			entityEntityProperties.append(createdDate)
 			
+			var properties: NSAttributeDescription = NSAttributeDescription()
+			properties.name = "properties"
+			properties.attributeType = .TransformableAttributeType
+			properties.attributeValueClassName = "Dictionary"
+			properties.optional = false
+			properties.storedInExternalRecord = true
+			entityEntityProperties.append(properties)
+			
 			entityEntityDescription.properties = entityEntityProperties
 			GKGraphManagedObjectModel.managedObjectModel.entities = [entityEntityDescription]
 		}
