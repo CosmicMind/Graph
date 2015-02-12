@@ -144,7 +144,6 @@ public class GKGraph : NSObject {
 	}
 	
 	public func managedObjectContextDidSave(notification: NSNotification) {
-		NSLog("HELLO")
 		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
 		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
 		

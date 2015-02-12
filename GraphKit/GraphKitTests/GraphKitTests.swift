@@ -70,7 +70,6 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
     }
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		NSLog("INSERTED")
 		if "User" == entity.type {
 			userInsertExpectation?.fulfill()
 		} else if "Book" == entity.type {
@@ -79,7 +78,6 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didArchiveEntity entity: GKEntity!) {
-		NSLog("ARCHIVED")
 		if "User" == entity.type {
 			userArchiveExpectation?.fulfill()
 		} else if "Book" == entity.type {
