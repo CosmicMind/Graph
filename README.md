@@ -15,15 +15,15 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
 	var userArchiveExpectation: XCTestExpectation?
 	var bookArchiveExpectation: XCTestExpectation?
 	
-    	override func setUp() {
-        	super.setUp()
-    	}
+	override func setUp() {
+		super.setUp()
+	}
     
-    	override func tearDown() {
-     		super.tearDown()
-    	}
+	override func tearDown() {
+		super.tearDown()
+	}
     
-    	func testEntity() {
+	func testEntity() {
 		// Set the test Class as the delegate.
 		graph.delegate = self
 		
@@ -60,11 +60,11 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
 			XCTAssertTrue($0, "Cannot save the Graph: \($1)")
 		}
 		waitForExpectationsWithTimeout(5, handler: nil)
-    	}
+	}
     
 	func testPerformanceExample() {
         	self.measureBlock() {}
-    	}
+	}
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
 		if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int {
