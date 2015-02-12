@@ -47,7 +47,7 @@ public class GKEntity: NSObject {
 	public init(type: String) {
 		super.init()
 		graph.managedObjectContext.performBlockAndWait({ () -> Void in
-			self.node = self.createWithType(type)
+			self.node = GKManagedEntity(type: type)
 		})
 	}
 	
@@ -57,8 +57,18 @@ public class GKEntity: NSObject {
 		})
 	}
 
-	
-	private func createWithType(type: String) -> GKManagedEntity {
-		return GKManagedEntity(type: type)
+	public subscript(property: String) -> AnyObject? {
+		get {
+			var value: AnyObject?
+			graph.managedObjectContext.performBlockAndWait({ () -> Void in
+				value = self.node[property]
+			})
+			return value
+		}
+		set(value) {
+			graph.managedObjectContext.performBlockAndWait({ () -> Void in
+				self.node[property] = value
+			})
+		}
 	}
 }

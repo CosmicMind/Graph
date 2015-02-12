@@ -38,29 +38,40 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
     }
     
     func testEntity() {
+		// Set the test Class as the delegate.
 		graph.delegate = self
+		
+		// Watch changes in the Graph.
 		graph.watch(Entity: "User")
 		graph.watch(Entity: "Book")
 		
-		userInsertExpectation = expectationWithDescription("User Entity inserted. Delegate method was not called!")
-		bookInsertExpectation = expectationWithDescription("Book Entity inserted. Delegate method was not called!")
+		// Some Exception testing.
+		userInsertExpectation = expectationWithDescription("Insertion Test: Watch 'User' did not pass.")
+		bookInsertExpectation = expectationWithDescription("Insertion Test: Watch 'Book' did not pass.")
 
+		// Create a User Entity.
 		var user: GKEntity = GKEntity(type: "User")
-		var book: GKEntity = GKEntity(type: "Book")
+		user["name"] = "Eve"
+		user["age"] = 26
 		
+		// Create a Book Entity.
+		var book: GKEntity = GKEntity(type: "Book")
+		book["title"] = "Learning GraphKit"
+		
+		//
 		graph.save() {
-			XCTAssertTrue($0, "Cannot save the graph: \($1)")
+			XCTAssertTrue($0, "Cannot save the Graph: \($1)")
 		}
 		waitForExpectationsWithTimeout(5, handler: nil)
 		
 		user.archive()
 		book.archive()
 		
-		userArchiveExpectation = expectationWithDescription("User Entity archived. Delegate method was not called!")
-		bookArchiveExpectation = expectationWithDescription("Book Entity archived. Delegate method was not called!")
+		userArchiveExpectation = expectationWithDescription("Archive Test: Watch 'User' did not pass.")
+		bookArchiveExpectation = expectationWithDescription("Archive Test: Watch 'Book' did not pass.")
 		
 		graph.save() {
-			XCTAssertTrue($0, "Cannot save the graph: \($1)")
+			XCTAssertTrue($0, "Cannot save the Graph: \($1)")
 		}
 		waitForExpectationsWithTimeout(5, handler: nil)
     }
@@ -70,17 +81,17 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
     }
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		if "User" == entity.type {
+		if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int {
 			userInsertExpectation?.fulfill()
-		} else if "Book" == entity.type {
+		} else if "Book" == entity.type && "Learning GraphKit" == entity["title"]? as String {
 			bookInsertExpectation?.fulfill()
 		}
 	}
 	
 	func graph(graph: GKGraph!, didArchiveEntity entity: GKEntity!) {
-		if "User" == entity.type {
+		if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int {
 			userArchiveExpectation?.fulfill()
-		} else if "Book" == entity.type {
+		} else if "Book" == entity.type && "Learning GraphKit" == entity["title"]? as String {
 			bookArchiveExpectation?.fulfill()
 		}
 	}
