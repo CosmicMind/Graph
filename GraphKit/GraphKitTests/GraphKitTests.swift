@@ -58,7 +58,6 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
 		var book: GKEntity = GKEntity(type: "Book")
 		book["title"] = "Learning GraphKit"
 		
-		//
 		graph.save() {
 			XCTAssertTrue($0, "Cannot save the Graph: \($1)")
 		}
