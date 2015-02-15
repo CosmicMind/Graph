@@ -15,28 +15,28 @@
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
-* GKEntity
+* GKAction
 *
-* Represents Entity Nodes, which are person, places, or things -- nouns.
+* Represents Action Nodes, which are repetitive relationships between Entity Nodes.
 */
 
 import Foundation
 
-@objc(GKEntity)
-public class GKEntity : GKNode {
+@objc(GKAction)
+public class GKAction : GKNode {
 
     /**
     * init
-    * Initializes GKEntity with a given GKManagedEntity.
-    * @param        entity: GKManagedEntity!
+    * Initializes GKAction with a given GKManagedAction.
+    * @param        action: GKManagedAction!
     */
-    init(entity: GKManagedEntity!) {
-        super.init(node: entity)
+    init(action: GKManagedAction!) {
+        super.init(node: action)
     }
 
     /**
     * init
-    * Initializes GKEntity with a given type.
+    * Initializes GKAction with a given type.
     * @param        type: String!
     */
     override public init(type: String) {
@@ -44,6 +44,6 @@ public class GKEntity : GKNode {
     }
 
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
-        return GKManagedEntity(type: type);
+        return GKManagedAction(type: type);
     }
 }

@@ -15,28 +15,28 @@
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
-* GKEntity
+* GKBond
 *
-* Represents Entity Nodes, which are person, places, or things -- nouns.
+* Represents Bond Nodes, which are unique relationships between Entity Nodes.
 */
 
 import Foundation
 
-@objc(GKEntity)
-public class GKEntity : GKNode {
+@objc(GKBond)
+public class GKBond : GKNode {
 
     /**
     * init
-    * Initializes GKEntity with a given GKManagedEntity.
-    * @param        entity: GKManagedEntity!
+    * Initializes GKBond with a given GKManagedBond.
+    * @param        action: GKManagedBond!
     */
-    init(entity: GKManagedEntity!) {
-        super.init(node: entity)
+    init(bond: GKManagedBond!) {
+        super.init(node: bond)
     }
 
     /**
     * init
-    * Initializes GKEntity with a given type.
+    * Initializes GKBond with a given type.
     * @param        type: String!
     */
     override public init(type: String) {
@@ -44,6 +44,6 @@ public class GKEntity : GKNode {
     }
 
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
-        return GKManagedEntity(type: type);
+        return GKManagedBond(type: type);
     }
 }
