@@ -19,30 +19,8 @@
 import CoreData
 
 @objc(GKManagedAction)
-public class GKManagedAction : GKManagedNode {
-    @NSManaged public var nodeClass: String
-    @NSManaged public var type: String
-    @NSManaged public var createdDate: NSDate
-    @NSManaged private var properties: Dictionary<String, AnyObject>
-
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext!) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
-    }
-
-    public func archive(graph: GKGraph!) {
-        graph.managedObjectContext.deleteObject(self)
-    }
-
-    public subscript(property: String) -> AnyObject? {
-        get {
-            return properties[property]
-        }
-        set(value) {
-            properties[property] = value
-        }
-    }
-
-    convenience public init(type: String!) {
+internal class GKManagedAction : GKManagedNode {
+    convenience internal init(type: String!) {
         let graph: GKGraph = GKGraph()
         let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityActionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
 
@@ -54,7 +32,7 @@ public class GKManagedAction : GKManagedNode {
     }
 
     class func entityDescription() -> NSEntityDescription! {
-        var graph: GKGraph = GKGraph()
+        let graph: GKGraph = GKGraph()
         return NSEntityDescription.entityForName(GKGraphUtility.entityActionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
     }
 }

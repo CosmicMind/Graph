@@ -13,6 +13,10 @@
 		964605711A8BDDA20062609D /* GKManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; };
 		964605741A8BDE010062609D /* GKGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605731A8BDE010062609D /* GKGraph.swift */; };
 		964605791A8BDF800062609D /* GKEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605781A8BDF800062609D /* GKEntity.swift */; };
+		965A7FDB1A9119A900D207B5 /* GKAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC62E43D02EA363D348C7E /* GKAction.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		965A7FDC1A9119B800D207B5 /* GKNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6AC0055F5EEB55C8491F /* GKNode.swift */; };
+		965A7FDD1A9119C300D207B5 /* GKManagedAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC672A9E319DB368104D1F /* GKManagedAction.swift */; };
+		965A7FDE1A9119C300D207B5 /* GKManagedNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC690834DE31A2F2FA1B35 /* GKManagedNode.swift */; };
 		96BE7E561A8C1F2B006DDFB4 /* GKManagedEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; };
 		96BE7E571A8C1F2B006DDFB4 /* GKEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605781A8BDF800062609D /* GKEntity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96BE7E581A8C1F2B006DDFB4 /* GKGraph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605731A8BDE010062609D /* GKGraph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -91,14 +95,14 @@
 			isa = PBXGroup;
 			children = (
 				964605501A8BDC400062609D /* Supporting Files */,
-				964605731A8BDE010062609D /* GKGraph.swift */,
 				A6BC6AC0055F5EEB55C8491F /* GKNode.swift */,
-				964605701A8BDDA20062609D /* GKManagedEntity.swift */,
+				964605731A8BDE010062609D /* GKGraph.swift */,
 				964605781A8BDF800062609D /* GKEntity.swift */,
 				A6BC62E43D02EA363D348C7E /* GKAction.swift */,
-				9646056E1A8BDD5C0062609D /* LICENSE */,
+				964605701A8BDDA20062609D /* GKManagedEntity.swift */,
 				A6BC672A9E319DB368104D1F /* GKManagedAction.swift */,
 				A6BC690834DE31A2F2FA1B35 /* GKManagedNode.swift */,
+				9646056E1A8BDD5C0062609D /* LICENSE */,
 			);
 			path = GraphKit;
 			sourceTree = "<group>";
@@ -136,8 +140,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96BE7E571A8C1F2B006DDFB4 /* GKEntity.swift in Headers */,
 				96BE7E581A8C1F2B006DDFB4 /* GKGraph.swift in Headers */,
+				96BE7E571A8C1F2B006DDFB4 /* GKEntity.swift in Headers */,
+				965A7FDB1A9119A900D207B5 /* GKAction.swift in Headers */,
+				965A7FDD1A9119C300D207B5 /* GKManagedAction.swift in Headers */,
+				965A7FDE1A9119C300D207B5 /* GKManagedNode.swift in Headers */,
+				965A7FDC1A9119B800D207B5 /* GKNode.swift in Headers */,
 				96BE7E561A8C1F2B006DDFB4 /* GKManagedEntity.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

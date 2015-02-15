@@ -190,10 +190,10 @@ public class GKGraph : NSObject {
 
 				switch(className!) {
 					case "GKManagedEntity_GKManagedEntity_":
-						delegate?.graph?(self, didInsertEntity: GKEntity(node: node as GKManagedEntity))
+						delegate?.graph?(self, didInsertEntity: GKEntity(entity: node as GKManagedEntity))
 						break
                     case "GKManagedAction_GKManagedAction_":
-                        delegate?.graph?(self, didInsertAction: GKAction(node: node as GKManagedAction))
+                        delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
                         break
 					default:
 						assert(false, "GKGraph observed object that is invalid.")
@@ -217,10 +217,10 @@ public class GKGraph : NSObject {
 
 				switch(className!) {
 					case "GKManagedEntity_GKManagedEntity_":
-						delegate?.graph?(self, didUpdateEntity: GKEntity(node: node as GKManagedEntity))
+						delegate?.graph?(self, didUpdateEntity: GKEntity(entity: node as GKManagedEntity))
 						break
                     case "GKManagedAction_GKManagedAction_":
-                        delegate?.graph?(self, didUpdateAction: GKAction(node: node as GKManagedAction))
+                        delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
                         break
                     default:
 						assert(false, "GKGraph observed object that is invalid.")
@@ -249,10 +249,10 @@ public class GKGraph : NSObject {
 
 				switch(className!) {
 					case "GKManagedEntity_GKManagedEntity_":
-						delegate?.graph?(self, didArchiveEntity: GKEntity(node: node as GKManagedEntity))
+						delegate?.graph?(self, didArchiveEntity: GKEntity(entity: node as GKManagedEntity))
 						break
                     case "GKManagedAction_GKManagedAction_":
-                        delegate?.graph?(self, didArchiveAction: GKAction(node: node as GKManagedAction))
+                        delegate?.graph?(self, didArchiveAction: GKAction(action: node as GKManagedAction))
                         break
                     default:
 						assert(false, "GKGraph observed object that is invalid.")

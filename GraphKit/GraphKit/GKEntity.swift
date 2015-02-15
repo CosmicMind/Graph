@@ -15,60 +15,30 @@
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-import CoreData
+import Foundation
 
 @objc(GKEntity)
-public class GKEntity : NSObject {
-    private let node: GKManagedEntity!
-    private lazy var graph: GKGraph = GKGraph()
+public class GKEntity : GKNode {
 
-    public var type: String {
-        var type: String!
-        graph.managedObjectContext.performBlockAndWait({ () -> Void in
-            type = self.node.type
-        })
-        return type
+    /**
+    * init
+    * Initializes GKEntity with a given GKManagedEntity.
+    * @param        entity: GKManagedEntity!
+    */
+    init(entity: GKManagedEntity!) {
+        super.init(node: entity)
     }
 
-    public var createdDate: NSDate {
-        var createdDate: NSDate!
-        graph.managedObjectContext.performBlockAndWait({ () -> Void in
-            createdDate = self.node.createdDate
-        })
-        return createdDate
+    /**
+    * init
+    * Initializes GKEntity with a given type.
+    * @param        type: String!
+    */
+    override public init(type: String) {
+        super.init(type: type)
     }
 
-    init(node: GKManagedEntity!) {
-        super.init()
-        self.node = node
-    }
-
-    public init(type: String) {
-        super.init()
-        graph.managedObjectContext.performBlockAndWait({ () -> Void in
-            self.node = GKManagedEntity(type: type)
-        })
-    }
-
-    public func archive() {
-        graph.managedObjectContext.performBlockAndWait({ () -> Void in
-            self.node.archive(self.graph)
-        })
-    }
-
-    public subscript(property: String) -> AnyObject? {
-        get {
-            var value: AnyObject?
-            graph.managedObjectContext.performBlockAndWait({ () -> Void in
-                value = self.node[property]
-            })
-            return value
-        }
-        set(value) {
-            graph.managedObjectContext.performBlockAndWait({ () -> Void in
-                self.node[property] = value
-            })
-        }
+    override internal func createImplementorWithType(type: String) -> GKManagedNode {
+        return GKManagedEntity(type: type);
     }
 }

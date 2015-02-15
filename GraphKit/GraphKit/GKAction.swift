@@ -16,59 +16,30 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import CoreData
+import Foundation
 
 @objc(GKAction)
-public class GKAction : NSObject {
-    private let node: GKManagedAction!
-    private lazy var graph: GKGraph = GKGraph()
+public class GKAction : GKNode {
 
-    public var type: String {
-        var type: String!
-        graph.managedObjectContext.performBlockAndWait({ () -> Void in
-            type = self.node.type
-        })
-        return type
+    /**
+    * init
+    * Initializes GKAction with a given GKManagedAction.
+    * @param        action: GKManagedAction!
+    */
+    init(action: GKManagedAction!) {
+        super.init(node: action)
     }
 
-    public var createdDate: NSDate {
-        var createdDate: NSDate!
-        graph.managedObjectContext.performBlockAndWait({ () -> Void in
-            createdDate = self.node.createdDate
-        })
-        return createdDate
+    /**
+    * init
+    * Initializes GKAction with a given type.
+    * @param        type: String!
+    */
+    override public init(type: String) {
+        super.init(type: type)
     }
 
-    init(node: GKManagedAction!) {
-        super.init()
-        self.node = node
-    }
-
-    public init(type: String) {
-        super.init()
-        graph.managedObjectContext.performBlockAndWait({ () -> Void in
-            self.node = GKManagedAction(type: type)
-        })
-    }
-
-    public func archive() {
-        graph.managedObjectContext.performBlockAndWait({ () -> Void in
-            self.node.archive(self.graph)
-        })
-    }
-
-    public subscript(property: String) -> AnyObject? {
-        get {
-            var value: AnyObject?
-            graph.managedObjectContext.performBlockAndWait({ () -> Void in
-                value = self.node[property]
-            })
-            return value
-        }
-        set(value) {
-            graph.managedObjectContext.performBlockAndWait({ () -> Void in
-                self.node[property] = value
-            })
-        }
+    override internal func createImplementorWithType(type: String) -> GKManagedNode {
+        return GKManagedAction(type: type);
     }
 }
