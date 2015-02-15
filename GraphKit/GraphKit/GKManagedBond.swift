@@ -15,16 +15,16 @@
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
-* GKManagedAction
+* GKManagedBond
 *
-* Represents an Action Model Object in the persistent layer.
+* Represents a Bond Model Object in the persistent layer.
 */
 
 
 import CoreData
 
-@objc(GKManagedAction)
-internal class GKManagedAction : GKManagedNode {
+@objc(GKManagedBond)
+internal class GKManagedBond : GKManagedNode {
 
     /**
     * init
@@ -33,10 +33,10 @@ internal class GKManagedAction : GKManagedNode {
     */
     convenience internal init(type: String!) {
         let graph: GKGraph = GKGraph()
-        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityActionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityBondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
         self.init(entity: entitiDescription, insertIntoManagedObjectContext: graph.managedObjectContext)
 
-        nodeClass = "GKAction"
+        nodeClass = "GKBond"
         self.type = type
         createdDate = NSDate()
         properties = Dictionary<String, AnyObject>()
@@ -49,6 +49,6 @@ internal class GKManagedAction : GKManagedNode {
     */
     class func entityDescription() -> NSEntityDescription! {
         let graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.entityActionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        return NSEntityDescription.entityForName(GKGraphUtility.entityBondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
     }
 }

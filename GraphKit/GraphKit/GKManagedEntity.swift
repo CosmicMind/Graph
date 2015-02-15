@@ -14,23 +14,38 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
+*
+* GKManagedEntity
+*
+* Represents an Entity Model Object in the persistent layer.
 */
 
 import CoreData
 
 @objc(GKManagedEntity)
 internal class GKManagedEntity : GKManagedNode {
+
+    /**
+    * init
+    * Initializes the Model Object with e a given type.
+    * @param        type: String!
+    */
     convenience internal init(type: String!) {
         let graph: GKGraph = GKGraph()
         let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
-
         self.init(entity: entitiDescription, insertIntoManagedObjectContext: graph.managedObjectContext)
+
         nodeClass = "GKEntity"
         self.type = type
         createdDate = NSDate()
         properties = Dictionary<String, AnyObject>()
     }
 
+    /**
+    * entityDescription
+    * Class method returning an NSEntityDescription Object for this Model Object.
+    * @return        NSEntityDescription!
+    */
     class func entityDescription() -> NSEntityDescription! {
         let graph: GKGraph = GKGraph()
         return NSEntityDescription.entityForName(GKGraphUtility.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)

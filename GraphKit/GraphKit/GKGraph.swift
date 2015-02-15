@@ -26,6 +26,9 @@ struct GKGraphUtility {
     static let entityActionIndexName: String = "GKManagedAction"
     static let entityActionDescriptionName: String = "GKManagedAction"
     static let managedActionObjectClassName: String = "GKManagedAction"
+    static let entityBondIndexName: String = "GKManagedBond"
+    static let entityBondDescriptionName: String = "GKManagedBond"
+    static let managedBondObjectClassName: String = "GKManagedBond"
 }
 
 @objc(GKGraph)
@@ -62,6 +65,11 @@ public class GKGraph : NSObject {
             var entityActionProperties: Array<AnyObject> = Array<AnyObject>()
             entityActionDescription.name = GKGraphUtility.entityActionDescriptionName
             entityActionDescription.managedObjectClassName = GKGraphUtility.managedActionObjectClassName
+
+            var entityBondDescription: NSEntityDescription = NSEntityDescription()
+            var entityBondProperties: Array<AnyObject> = Array<AnyObject>()
+            entityBondDescription.name = GKGraphUtility.entityBondDescriptionName
+            entityBondDescription.managedObjectClassName = GKGraphUtility.managedBondObjectClassName
 			
 			var nodeClass: NSAttributeDescription = NSAttributeDescription()
 			nodeClass.name = "nodeClass"
@@ -69,6 +77,7 @@ public class GKGraph : NSObject {
 			nodeClass.optional = false
 			entityEntityProperties.append(nodeClass)
 			entityActionProperties.append(nodeClass.copy() as NSAttributeDescription)
+			entityBondProperties.append(nodeClass.copy() as NSAttributeDescription)
 
 			var type: NSAttributeDescription = NSAttributeDescription()
 			type.name = "type"
@@ -76,6 +85,7 @@ public class GKGraph : NSObject {
 			type.optional = false
 			entityEntityProperties.append(type)
             entityActionProperties.append(type.copy() as NSAttributeDescription)
+            entityBondProperties.append(type.copy() as NSAttributeDescription)
 
 			var createdDate: NSAttributeDescription = NSAttributeDescription()
 			createdDate.name = "createdDate"
@@ -83,6 +93,7 @@ public class GKGraph : NSObject {
 			createdDate.optional = false
 			entityEntityProperties.append(createdDate)
             entityActionProperties.append(createdDate.copy() as NSAttributeDescription)
+            entityBondProperties.append(createdDate.copy() as NSAttributeDescription)
 
 			var properties: NSAttributeDescription = NSAttributeDescription()
 			properties.name = "properties"
@@ -92,12 +103,15 @@ public class GKGraph : NSObject {
 			properties.storedInExternalRecord = true
 			entityEntityProperties.append(properties)
             entityActionProperties.append(properties.copy() as NSAttributeDescription)
+            entityBondProperties.append(properties.copy() as NSAttributeDescription)
 
 			entityEntityDescription.properties = entityEntityProperties
 			entityActionDescription.properties = entityActionProperties
+			entityBondDescription.properties = entityBondProperties
 			GKGraphManagedObjectModel.managedObjectModel.entities = [
                     entityEntityDescription,
-                    entityActionDescription
+                    entityActionDescription,
+                    entityBondDescription
             ]
 		}
 
@@ -167,6 +181,10 @@ public class GKGraph : NSObject {
         addWatcher("type", value: type, index: GKGraphUtility.entityActionIndexName, entityDescriptionName: GKGraphUtility.entityActionDescriptionName, managedObjectClassName: GKGraphUtility.managedActionObjectClassName)
     }
 
+    public func watch(Bond type: String!) {
+        addWatcher("type", value: type, index: GKGraphUtility.entityBondIndexName, entityDescriptionName: GKGraphUtility.entityBondDescriptionName, managedObjectClassName: GKGraphUtility.managedBondObjectClassName)
+    }
+
 	public func managedObjectContextDidSave(notification: NSNotification) {
 		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
 		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
@@ -195,6 +213,9 @@ public class GKGraph : NSObject {
                     case "GKManagedAction_GKManagedAction_":
                         delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
                         break
+                    case "GKManagedBond_GKManagedBond_":
+                        delegate?.graph?(self, didInsertBond: GKBond(bond: node as GKManagedBond))
+                        break
 					default:
 						assert(false, "GKGraph observed object that is invalid.")
 				}
@@ -221,6 +242,9 @@ public class GKGraph : NSObject {
 						break
                     case "GKManagedAction_GKManagedAction_":
                         delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
+                        break
+                    case "GKManagedBond_GKManagedBond_":
+                        delegate?.graph?(self, didUpdateBond: GKBond(bond: node as GKManagedBond))
                         break
                     default:
 						assert(false, "GKGraph observed object that is invalid.")
@@ -253,6 +277,9 @@ public class GKGraph : NSObject {
 						break
                     case "GKManagedAction_GKManagedAction_":
                         delegate?.graph?(self, didArchiveAction: GKAction(action: node as GKManagedAction))
+                        break
+                    case "GKManagedBond_GKManagedBond_":
+                        delegate?.graph?(self, didArchiveBond: GKBond(bond: node as GKManagedBond))
                         break
                     default:
 						assert(false, "GKGraph observed object that is invalid.")
@@ -311,4 +338,7 @@ public protocol GKGraphDelegate {
     optional func graph(graph: GKGraph!, didInsertAction action: GKAction!)
     optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
     optional func graph(graph: GKGraph!, didArchiveAction action: GKAction!)
+    optional func graph(graph: GKGraph!, didInsertBond bond: GKBond!)
+    optional func graph(graph: GKGraph!, didUpdateBond bond: GKBond!)
+    optional func graph(graph: GKGraph!, didArchiveBond bond: GKBond!)
 }

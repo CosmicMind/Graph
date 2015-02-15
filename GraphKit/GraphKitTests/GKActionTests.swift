@@ -12,7 +12,7 @@
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with this program located at the root of the software package
+* along with this program located at the root of the software packnumeric
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -54,8 +54,8 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 
 		// Create a Click Action.
 		var click: GKAction = GKAction(type: "Click")
-		click["name"] = "Name"
-		click["age"] = 26
+		click["string"] = "String"
+		click["numeric"] = 26
 		
 		// Create a Read Action.
 		var read: GKAction = GKAction(type: "Read")
@@ -94,7 +94,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     }
 	
 	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
-		if "Click" == action.type && "Name" == action["name"]? as String && 26 == action["age"]? as Int {
+		if "Click" == action.type && "String" == action["string"]? as String && 26 == action["numeric"]? as Int {
 			clickInsertExpectation?.fulfill()
 		} else if "Read" == action.type && "Learning GraphKit" == action["title"]? as String {
 			readInsertExpectation?.fulfill()
@@ -110,7 +110,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     }
 	
 	func graph(graph: GKGraph!, didArchiveAction action: GKAction!) {
-		if "Click" == action.type && "Name" == action["name"]? as String && 26 == action["age"]? as Int {
+		if "Click" == action.type && "String" == action["string"]? as String && 26 == action["numeric"]? as Int {
 			clickArchiveExpectation?.fulfill()
 		} else if "Read" == action.type && "Learning GraphKit" == action["title"]? as String {
 			readArchiveExpectation?.fulfill()

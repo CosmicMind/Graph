@@ -30,13 +30,6 @@ internal class GKManagedNode : NSManagedObject, Printable {
     @NSManaged internal var properties: Dictionary<String, AnyObject>
 
     /**
-    * Should be ignored, this class is merely to
-    */
-    convenience internal init(type: String!) {
-        self.init()
-    }
-
-    /**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
     * @param        property: String! Property name.

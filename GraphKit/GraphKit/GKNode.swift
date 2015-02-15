@@ -27,19 +27,12 @@ public class GKNode : NSObject {
     internal lazy var graph: GKGraph = GKGraph()
     internal let node: GKManagedNode!
 
-    internal init(node: GKManagedNode!) {
-        super.init()
-        self.node = node
-    }
-
-    init(type: String) {
-        super.init()
-        graph.managedObjectContext.performBlockAndWait {
-            self.node = self.createImplementorWithType(type)
-        }
-    }
-
-    public var type: String {
+    /**
+    * type
+    * Retrieves the type ofModel Object that is wrapped internally.
+    * @return       String!
+    */
+    public var type: String! {
         var type: String!
         graph.managedObjectContext.performBlockAndWait {
             type = self.node.type
@@ -47,7 +40,12 @@ public class GKNode : NSObject {
         return type
     }
 
-    public var createdDate: NSDate {
+    /**
+    * createdDate
+    * Retrieves the date the Model Object was created.
+    * @return       NSDate!
+    */
+    public var createdDate: NSDate! {
         var createdDate: NSDate!
         graph.managedObjectContext.performBlockAndWait {
             createdDate = self.node.createdDate
@@ -55,10 +53,10 @@ public class GKNode : NSObject {
         return createdDate
     }
 
-   /**
-   * archive
-   * Marks the Model Object to be deleted from its persistent layer.
-   */
+    /**
+    * archive
+    * Marks the Model Object to be deleted from its persistent layer.
+    */
     public func archive() {
         graph.managedObjectContext.performBlockAndWait {
             self.node.archive(self.graph)
@@ -84,6 +82,28 @@ public class GKNode : NSObject {
             graph.managedObjectContext.performBlockAndWait {
                 self.node[property] = value
             }
+        }
+    }
+
+    /**
+    * init
+    * An internal initializer using a GKManagedNode instance.
+    * @param        node: GKManagedNode!
+    */
+    internal init(node: GKManagedNode!) {
+        super.init()
+        self.node = node
+    }
+
+    /**
+    * init
+    * An internal initializer for the wrapped Model Object with a given type.
+    * @param        type: String!
+    */
+    internal init(type: String) {
+        super.init()
+        graph.managedObjectContext.performBlockAndWait {
+            self.node = self.createImplementorWithType(type)
         }
     }
 
