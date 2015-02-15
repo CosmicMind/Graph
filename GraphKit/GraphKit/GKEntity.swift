@@ -43,6 +43,12 @@ public class GKEntity : GKNode {
         super.init(type: type)
     }
 
+    /**
+    * createImplementorWithType
+    * Initializes GKManagedEntity with a given type.
+    * @param        type: String!
+    * @return       GKManagedEntity
+    */
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
         return GKManagedEntity(type: type);
     }
