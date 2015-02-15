@@ -43,6 +43,12 @@ public class GKAction : GKNode {
         super.init(type: type)
     }
 
+    /**
+    * createImplementorWithType
+    * Initializes GKManagedAction with a given type.
+    * @param        type: String!
+    * @return       GKManagedAction
+    */
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
         return GKManagedAction(type: type);
     }

@@ -43,6 +43,12 @@ public class GKBond : GKNode {
         super.init(type: type)
     }
 
+    /**
+    * createImplementorWithType
+    * Initializes GKManagedBond with a given type.
+    * @param        type: String!
+    * @return       GKManagedBond
+    */
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
         return GKManagedBond(type: type);
     }
