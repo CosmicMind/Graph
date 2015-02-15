@@ -54,7 +54,7 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
 
 		// Create a Family Bond.
 		var family: GKBond = GKBond(type: "Family")
-		family["string"] = "Name"
+		family["string"] = "String"
 		family["integer"] = 26
 		
 		// Create a Owner Bond.
@@ -94,7 +94,7 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
     }
 	
 	func graph(graph: GKGraph!, didInsertBond action: GKBond!) {
-		if "Family" == action.type && "Name" == action["string"]? as String && 26 == action["integer"]? as Int {
+		if "Family" == action.type && "String" == action["string"]? as String && 26 == action["integer"]? as Int {
 			familyInsertExpectation?.fulfill()
 		} else if "Owner" == action.type && "Learning GraphKit" == action["title"]? as String {
 			ownerInsertExpectation?.fulfill()
@@ -110,7 +110,7 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
     }
 	
 	func graph(graph: GKGraph!, didArchiveBond action: GKBond!) {
-		if "Family" == action.type && "Name" == action["string"]? as String && 26 == action["integer"]? as Int {
+		if "Family" == action.type && "String" == action["string"]? as String && 26 == action["integer"]? as Int {
 			familyArchiveExpectation?.fulfill()
 		} else if "Owner" == action.type && "Learning GraphKit" == action["title"]? as String {
 			ownerArchiveExpectation?.fulfill()
