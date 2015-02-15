@@ -12,20 +12,23 @@
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with this program located at the root of the software package
+* along with this program located at the root of the software packnumeric
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 import XCTest
 import GraphKit
 
-class GraphKitTests: XCTestCase, GKGraphDelegate {
+class GKEntityTests : XCTestCase, GKGraphDelegate {
 
 	let graph: GKGraph = GKGraph()
 	
 	var userInsertExpectation: XCTestExpectation?
 	var bookInsertExpectation: XCTestExpectation?
-	
+
+    var userUpdateExpectation: XCTestExpectation?
+    var bookUpdateExpectation: XCTestExpectation?
+    
 	var userArchiveExpectation: XCTestExpectation?
 	var bookArchiveExpectation: XCTestExpectation?
 	
@@ -51,19 +54,29 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
 
 		// Create a User Entity.
 		var user: GKEntity = GKEntity(type: "User")
-		user["name"] = "Eve"
-		user["age"] = 26
+		user["string"] = "String"
+		user["numeric"] = 26
 		
 		// Create a Book Entity.
 		var book: GKEntity = GKEntity(type: "Book")
 		book["title"] = "Learning GraphKit"
 		
-		//
 		graph.save() {
 			XCTAssertTrue($0, "Cannot save the Graph: \($1)")
 		}
 		waitForExpectationsWithTimeout(5, handler: nil)
-		
+
+        user["update"] = "Update"
+        book["update"] = "Update"
+
+        userUpdateExpectation = expectationWithDescription("Update Test: Watch 'User' did not pass.")
+        bookUpdateExpectation = expectationWithDescription("Update Test: Watch 'Book' did not pass.")
+
+        graph.save() {
+            XCTAssertTrue($0, "Cannot save the Graph: \($1)")
+        }
+        waitForExpectationsWithTimeout(5, handler: nil)
+        
 		user.archive()
 		book.archive()
 		
@@ -81,15 +94,23 @@ class GraphKitTests: XCTestCase, GKGraphDelegate {
     }
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int {
+		if "User" == entity.type && "String" == entity["string"]? as String && 26 == entity["numeric"]? as Int {
 			userInsertExpectation?.fulfill()
 		} else if "Book" == entity.type && "Learning GraphKit" == entity["title"]? as String {
 			bookInsertExpectation?.fulfill()
 		}
 	}
-	
+
+    func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!) {
+        if "User" == entity.type && "Update" == entity["update"]? as String {
+            userUpdateExpectation?.fulfill()
+        } else if "Book" == entity.type && "Update" == entity["update"]? as String {
+            bookUpdateExpectation?.fulfill()
+        }
+    }
+    
 	func graph(graph: GKGraph!, didArchiveEntity entity: GKEntity!) {
-		if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int {
+		if "User" == entity.type && "String" == entity["string"]? as String && 26 == entity["numeric"]? as Int {
 			userArchiveExpectation?.fulfill()
 		} else if "Book" == entity.type && "Learning GraphKit" == entity["title"]? as String {
 			bookArchiveExpectation?.fulfill()
