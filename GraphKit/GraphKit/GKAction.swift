@@ -18,9 +18,9 @@
 
 import CoreData
 
-@objc(GKEntity)
-public class GKEntity : NSObject {
-    private let node: GKManagedEntity!
+@objc(GKAction)
+public class GKAction : NSObject {
+    private let node: GKManagedAction!
     private lazy var graph: GKGraph = GKGraph()
 
     public var type: String {
@@ -39,7 +39,7 @@ public class GKEntity : NSObject {
         return createdDate
     }
 
-    init(node: GKManagedEntity!) {
+    init(node: GKManagedAction!) {
         super.init()
         self.node = node
     }
@@ -47,7 +47,7 @@ public class GKEntity : NSObject {
     public init(type: String) {
         super.init()
         graph.managedObjectContext.performBlockAndWait({ () -> Void in
-            self.node = GKManagedEntity(type: type)
+            self.node = GKManagedAction(type: type)
         })
     }
 

@@ -18,8 +18,8 @@
 
 import CoreData
 
-@objc(GKManagedEntity)
-public class GKManagedEntity : GKManagedNode {
+@objc(GKManagedAction)
+public class GKManagedAction : GKManagedNode {
     @NSManaged public var nodeClass: String
     @NSManaged public var type: String
     @NSManaged public var createdDate: NSDate
@@ -44,10 +44,10 @@ public class GKManagedEntity : GKManagedNode {
 
     convenience public init(type: String!) {
         let graph: GKGraph = GKGraph()
-        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityActionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
 
         self.init(entity: entitiDescription, insertIntoManagedObjectContext: graph.managedObjectContext)
-        nodeClass = "GKEntity"
+        nodeClass = "GKAction"
         self.type = type
         createdDate = NSDate()
         properties = Dictionary<String, AnyObject>()
@@ -55,6 +55,6 @@ public class GKManagedEntity : GKManagedNode {
 
     class func entityDescription() -> NSEntityDescription! {
         var graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        return NSEntityDescription.entityForName(GKGraphUtility.entityActionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
     }
 }
