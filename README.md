@@ -5,82 +5,101 @@ Native iOS Graph Framework
 import XCTest
 import GraphKit
 
-class GraphKitTests: XCTestCase, GKGraphDelegate {
+class GKActionTests : XCTestCase, GKGraphDelegate {
 
-	let graph: GKGraph = GKGraph()
-	
-	var userInsertExpectation: XCTestExpectation?
-	var bookInsertExpectation: XCTestExpectation?
-	
-	var userArchiveExpectation: XCTestExpectation?
-	var bookArchiveExpectation: XCTestExpectation?
-	
-	override func setUp() {
-		super.setUp()
-	}
+    var u1Expectation: XCTestExpectation?
+    var b1Expectation: XCTestExpectation?
+    var b2Expectation: XCTestExpectation?
+    var a1Expectation: XCTestExpectation?
     
-	override func tearDown() {
-		super.tearDown()
-	}
+    override func setUp() {
+        super.setUp()
+    }
     
-	func testEntity() {
-		// Set the test Class as the delegate.
-		graph.delegate = self
-		
-		// Watch changes in the Graph.
-		graph.watch(Entity: "User")
-		graph.watch(Entity: "Book")
-		
-		// Some Exception testing.
-		userInsertExpectation = expectationWithDescription("Insert Test: Watch 'User' did not pass.")
-		bookInsertExpectation = expectationWithDescription("Insert Test: Watch 'Book' did not pass.")
+    override func tearDown() {
+        super.tearDown()
+    }
+    
+    func testAction() {
+        // Create a Graph instance.
+        let graph: GKGraph = GKGraph()
 
-		// Create a User Entity.
-		var user: GKEntity = GKEntity(type: "User")
-		user["name"] = "Eve"
-		user["age"] = 26
-		
-		// Create a Book Entity.
-		var book: GKEntity = GKEntity(type: "Book")
-		book["title"] = "Learning GraphKit"
-		
-		//
-		graph.save() {
-			XCTAssertTrue($0, "Cannot save the Graph: \($1)")
-		}
-		waitForExpectationsWithTimeout(5, handler: nil)
-		
-		user.archive()
-		book.archive()
-		
-		userArchiveExpectation = expectationWithDescription("Archive Test: Watch 'User' did not pass.")
-		bookArchiveExpectation = expectationWithDescription("Archive Test: Watch 'Book' did not pass.")
-		
-		graph.save() {
-			XCTAssertTrue($0, "Cannot save the Graph: \($1)")
-		}
-		waitForExpectationsWithTimeout(5, handler: nil)
-	}
+        // Set the XCTest Class as the delegate.
+        graph.delegate = self
+        
+        // Let's watch the changes in the Graph for the following Entity and Action types.
+        graph.watch(Entity: "User")
+        graph.watch(Entity: "Book")
+        graph.watch(Action: "Read")
+
+        // Create a User Entity.
+        let u1: GKEntity = GKEntity(type: "User")
+
+        // Give u1 some properties.
+        u1["name"] = "Eve"
+        u1["age"] = 26
+
+        // Add u1 to a group. This creates a subset in the Graph named 'Female'.
+        u1.addGroup("Female")
+
+        // Create some book Entity Nodes.
+        let b1: GKEntity = GKEntity(type: "Book")
+        b1["title"] = "Deep C Secrets"
+        b1.addGroup("Thriller")
+
+        let b2: GKEntity = GKEntity(type: "Book")
+        b2["title"] = "Mastering Swift"
+        b2.addGroup("Suspense")
+        b2.addGroup("Favourite")
+
+        // Create a Read Action.
+        let a1: GKAction = GKAction(type: "Read")
+
+        // Record the session the Action occurred in.
+        a1["session"] = 123
+        a1.addGroup("XCTest")
+
+        // Add u1 to the Subjects Set for the Action.
+        a1.addSubject(u1)
+
+        // Add b1 and b2 to the Objects Set for the Action.
+        a1.addObject(b1)
+        a1.addObject(b2)
+
+        // For this example, set some XCTestExpectation Objects that will be handled in the delegates.
+        u1Expectation = expectationWithDescription("U1: Watch 'User' did not pass.")
+        b1Expectation = expectationWithDescription("B1: Watch 'Book' did not pass.")
+        b2Expectation = expectationWithDescription("B2: Watch 'Book' did not pass.")
+        a1Expectation = expectationWithDescription("A1: Watch 'Read' did not pass.")
+
+        // Save the Graph, which will execute the delegate handlers.
+        graph.save() { (success: Bool, error: NSError?) in
+            XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+        }
+
+        // Wait for the delegates to be executed.
+        waitForExpectationsWithTimeout(5, handler: nil)
+    }
     
-	func testPerformanceExample() {
-        	self.measureBlock() {}
-	}
-	
-	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int {
-			userInsertExpectation?.fulfill()
-		} else if "Book" == entity.type && "Learning GraphKit" == entity["title"]? as String {
-			bookInsertExpectation?.fulfill()
-		}
-	}
-	
-	func graph(graph: GKGraph!, didArchiveEntity entity: GKEntity!) {
-		if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int {
-			userArchiveExpectation?.fulfill()
-		} else if "Book" == entity.type && "Learning GraphKit" == entity["title"]? as String {
-			bookArchiveExpectation?.fulfill()
-		}
-	}
+    func testPerformanceExample() {
+        self.measureBlock() {}
+    }
+
+    func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
+        if "Read" == action.type && 123 == action["session"]? as Int && action.hasGroup("XCTest") && 1 == action.subjects.count && 2 == action.objects.count {
+            a1Expectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+        if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int && entity.hasGroup("Female") {
+            u1Expectation?.fulfill()
+        } else if "Book" == entity.type && "Deep C Secrets" == entity["title"]? as String && entity.hasGroup("Thriller") {
+            b1Expectation?.fulfill()
+        } else if "Book" == entity.type && "Mastering Swift" == entity["title"]? as String && entity.hasGroup("Suspense") && entity.hasGroup("Favourite") {
+            b2Expectation?.fulfill()
+        }
+    }
 }
 ```
 
