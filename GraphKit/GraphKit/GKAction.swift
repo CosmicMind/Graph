@@ -106,7 +106,7 @@ public class GKAction : GKNode {
     * @param        entity: GKEntity!
     * @return       Bool of the result, true if added, false otherwise.
     */
-    internal func addObject(entity: GKEntity!) -> Bool {
+    public func addObject(entity: GKEntity!) -> Bool {
         var result: Bool = false
         graph.managedObjectContext.performBlockAndWait {
             var node: GKManagedAction = self.node as GKManagedAction
