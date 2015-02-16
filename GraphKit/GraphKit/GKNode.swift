@@ -53,14 +53,6 @@ public class GKNode : NSObject {
         return createdDate
     }
 
-    public var groups: Array<String> {
-        var groups: Array<String>!
-        graph.managedObjectContext.performBlockAndWait {
-            groups = self.node.groups
-        }
-        return groups
-    }
-
     /**
     * archive
     * Marks the Model Object to be deleted from its persistent layer.
@@ -93,8 +85,15 @@ public class GKNode : NSObject {
         }
     }
 
+    /**
+    * groups[ ]
+    * Allows for Array style coding, which maps to the internal groups Array.
+    * @param        index: Int
+    * @return       A group
+    */
     public subscript(index: Int) -> String {
         get {
+            assert(-1 < index && index < groups.count, "[GraphKit Error: Group index out of range.]")
             var value: String!
             graph.managedObjectContext.performBlockAndWait {
                 value = self.node[index]
@@ -102,12 +101,16 @@ public class GKNode : NSObject {
             return value
         }
         set(value) {
-            graph.managedObjectContext.performBlockAndWait {
-                self.node[index] = value
-            }
+            assert(false, "[GraphKit Error: Not allowed to set Group index directly.]")
         }
     }
 
+    /**
+    * addGroup
+    * Adds a Group name to the list of Groups if it does not exist.
+    * @param        name: String!
+    * @return       Bool of the result, true if added, false otherwise.
+    */
     public func addGroup(name: String!) -> Bool {
 		var result: Bool = false
 		graph.managedObjectContext.performBlockAndWait {
@@ -116,6 +119,12 @@ public class GKNode : NSObject {
 		return result
     }
 
+    /**
+    * hasGroup
+    * Checks whether the Node is a part of the Group name passed or not.
+    * @param        name: String!
+    * @return       Bool of the result, true if is a part, false otherwise.
+    */
     public func hasGroup(name: String!) -> Bool {
         var result: Bool = false
         graph.managedObjectContext.performBlockAndWait {
@@ -124,12 +133,27 @@ public class GKNode : NSObject {
         return result
     }
 
+    /**
+    * removeGroup
+    * Removes a Group name from the list of Groups if it exists.
+    * @param        name: String!
+    * @return       Bool of the result, true if exists, false otherwise.
+    */
     public func removeGroup(name: String!) -> Bool {
         var result: Bool = false
         graph.managedObjectContext.performBlockAndWait {
             result = self.node.removeGroup(name)
         }
         return result
+    }
+
+    /**
+    * groupCount
+    * Retrieves the number of Groups the Node is a part of.
+    * @return       Int of the number of groups.
+    */
+    public func groupCount() -> Int {
+        return groups.count;
     }
 
     /**
@@ -152,6 +176,14 @@ public class GKNode : NSObject {
         graph.managedObjectContext.performBlockAndWait {
             self.node = self.createImplementorWithType(type)
         }
+    }
+
+    internal var groups: Array<String> {
+        var groups: Array<String>!
+        graph.managedObjectContext.performBlockAndWait {
+            groups = self.node.groups
+        }
+        return groups
     }
 
     /**

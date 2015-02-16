@@ -38,6 +38,12 @@ internal class GKManagedEntity : GKManagedNode {
         self.type = type
     }
 
+    /**
+    * addGroup
+    * Adds a Group name to the list of Groups if it does not exist.
+    * @param        name: String!
+    * @return       Bool of the result, true if added, false otherwise.
+    */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
             groups.append(name)
@@ -49,10 +55,22 @@ internal class GKManagedEntity : GKManagedNode {
 		return false
     }
 
+    /**
+    * hasGroup
+    * Checks whether the Node is a part of the Group name passed or not.
+    * @param        name: String!
+    * @return       Bool of the result, true if is a part, false otherwise.
+    */
     override internal func hasGroup(name: String!) -> Bool {
         return contains(groups, name)
     }
 
+    /**
+    * removeGroup
+    * Removes a Group name from the list of Groups if it exists.
+    * @param        name: String!
+    * @return       Bool of the result, true if exists, false otherwise.
+    */
     override internal func removeGroup(name: String!) -> Bool {
         for i in 0..<groups.count {
             if name == groups[i] {

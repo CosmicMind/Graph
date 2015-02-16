@@ -61,25 +61,48 @@ internal class GKManagedNode : NSManagedObject, Printable {
         }
     }
 
+    /**
+    * groups[ ]
+    * Allows for Array style coding, which maps to the internal groups Array.
+    * @param        index: Int
+    * @return       A group
+    */
     internal subscript(index: Int) -> String {
         get {
-            assert(0 <= index && index < groups.count, "GKManagedNode group index out of range")
+            assert(-1 < index && index < groups.count, "[GraphKit Error: Group index out of range.]")
             return groups[index]
         }
         set(value) {
-            assert(0 <= index && index < groups.count, "GKManagedNode group index out of range")
-            groups[index] = value
+            assert(false, "[GraphKit Error: Not allowed to set Group index directly.]")
         }
     }
 
+    /**
+    * addGroup
+    * Adds a Group name to the list of Groups if it does not exist.
+    * @param        name: String!
+    * @return       Bool of the result, true if added, false otherwise.
+    */
     internal func addGroup(name: String!) -> Bool {
         return false
     }
 
+    /**
+    * hasGroup
+    * Checks whether the Node is a part of the Group name passed or not.
+    * @param        name: String!
+    * @return       Bool of the result, true if is a part, false otherwise.
+    */
     internal func hasGroup(name: String!) -> Bool {
         return false
     }
 
+    /**
+    * removeGroup
+    * Removes a Group name from the list of Groups if it exists.
+    * @param        name: String!
+    * @return       Bool of the result, true if exists, false otherwise.
+    */
     internal func removeGroup(name: String!) -> Bool {
         return false
     }
