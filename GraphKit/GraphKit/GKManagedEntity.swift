@@ -32,13 +32,10 @@ internal class GKManagedEntity : GKManagedNode {
     */
     convenience internal init(type: String!) {
         let graph: GKGraph = GKGraph()
-        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
-        self.init(entity: entitiDescription, insertIntoManagedObjectContext: graph.managedObjectContext)
-
+        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
         nodeClass = "GKEntity"
         self.type = type
-        createdDate = NSDate()
-        properties = Dictionary<String, AnyObject>()
     }
 
     /**
@@ -48,6 +45,6 @@ internal class GKManagedEntity : GKManagedNode {
     */
     class func entityDescription() -> NSEntityDescription! {
         let graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        return NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
     }
 }

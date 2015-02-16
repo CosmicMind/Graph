@@ -24,16 +24,22 @@
 import CoreData
 
 struct GKGraphUtility {
-	static let entityStoreName: String = "GraphKit.sqlite"
-	static let entityEntityIndexName: String = "GKManagedEntity"
-	static let entityEntityDescriptionName: String = "GKManagedEntity"
-	static let managedEntityObjectClassName: String = "GKManagedEntity"
-    static let entityActionIndexName: String = "GKManagedAction"
-    static let entityActionDescriptionName: String = "GKManagedAction"
-    static let managedActionObjectClassName: String = "GKManagedAction"
-    static let entityBondIndexName: String = "GKManagedBond"
-    static let entityBondDescriptionName: String = "GKManagedBond"
-    static let managedBondObjectClassName: String = "GKManagedBond"
+	static let storeName: String = "GraphKit-0-1-0.sqlite"
+    static let entityIndexName: String = "GKManagedEntity"
+	static let entityDescriptionName: String = "GKManagedEntity"
+	static let entityObjectClassName: String = "GKManagedEntity"
+    static let entityGroupObjectClassName: String = "GKEntityGroup"
+    static let entityGroupDescriptionName: String = "GKEntityGroup"
+    static let bondIndexName: String = "GKManagedBond"
+    static let bondDescriptionName: String = "GKManagedBond"
+    static let bondObjectClassName: String = "GKManagedBond"
+    static let bondGroupObjectClassName: String = "GKBondGroup"
+    static let bondGroupDescriptionName: String = "GKBondGroup"
+    static let actionIndexName: String = "GKManagedAction"
+    static let actionDescriptionName: String = "GKManagedAction"
+    static let actionObjectClassName: String = "GKManagedAction"
+    static let actionGroupObjectClassName: String = "GKActionGroup"
+    static let actionGroupDescriptionName: String = "GKActionGroup"
 }
 
 @objc(GKGraphDelegate)
@@ -41,12 +47,12 @@ public protocol GKGraphDelegate {
     optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didArchiveEntity entity: GKEntity!)
-    optional func graph(graph: GKGraph!, didInsertAction action: GKAction!)
-    optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
-    optional func graph(graph: GKGraph!, didArchiveAction action: GKAction!)
     optional func graph(graph: GKGraph!, didInsertBond bond: GKBond!)
     optional func graph(graph: GKGraph!, didUpdateBond bond: GKBond!)
     optional func graph(graph: GKGraph!, didArchiveBond bond: GKBond!)
+    optional func graph(graph: GKGraph!, didInsertAction action: GKAction!)
+    optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
+    optional func graph(graph: GKGraph!, didArchiveAction action: GKAction!)
 }
 
 @objc(GKGraph)
@@ -78,15 +84,7 @@ public class GKGraph : NSObject {
     * Attaches the Graph instance to Notification center in order to Observe changes for an Entity with the spcified type.
     */
     public func watch(Entity type: String!) {
-        addWatcher("type", value: type, index: GKGraphUtility.entityEntityIndexName, entityDescriptionName: GKGraphUtility.entityEntityDescriptionName, managedObjectClassName: GKGraphUtility.managedEntityObjectClassName)
-    }
-
-    /**
-    * watch
-    * Attaches the Graph instance to Notification center in order to Observe changes for an Action with the spcified type.
-    */
-    public func watch(Action type: String!) {
-        addWatcher("type", value: type, index: GKGraphUtility.entityActionIndexName, entityDescriptionName: GKGraphUtility.entityActionDescriptionName, managedObjectClassName: GKGraphUtility.managedActionObjectClassName)
+        addWatcher("type", value: type, index: GKGraphUtility.entityIndexName, entityDescriptionName: GKGraphUtility.entityDescriptionName, managedObjectClassName: GKGraphUtility.entityObjectClassName)
     }
 
     /**
@@ -94,29 +92,37 @@ public class GKGraph : NSObject {
     * Attaches the Graph instance to Notification center in order to Observe changes for a Bond with the spcified type.
     */
     public func watch(Bond type: String!) {
-        addWatcher("type", value: type, index: GKGraphUtility.entityBondIndexName, entityDescriptionName: GKGraphUtility.entityBondDescriptionName, managedObjectClassName: GKGraphUtility.managedBondObjectClassName)
+        addWatcher("type", value: type, index: GKGraphUtility.bondIndexName, entityDescriptionName: GKGraphUtility.bondDescriptionName, managedObjectClassName: GKGraphUtility.bondObjectClassName)
+    }
+
+    /**
+    * watch
+    * Attaches the Graph instance to Notification center in order to Observe changes for an Action with the spcified type.
+    */
+    public func watch(Action type: String!) {
+        addWatcher("type", value: type, index: GKGraphUtility.actionIndexName, entityDescriptionName: GKGraphUtility.actionDescriptionName, managedObjectClassName: GKGraphUtility.actionObjectClassName)
     }
 
     /**
     * save
     * Updates the persistent layer by processing all the changes in the Graph.
     */
-	public func save(completion: (succeeded: Bool, error: NSError?) -> ()) {
+	public func save(completion: (success: Bool, error: NSError?) -> ()) {
 		managedObjectContext.performBlock {
 			if !self.managedObjectContext.hasChanges {
-				completion(succeeded: true, error: nil)
+				completion(success: true, error: nil)
 				return
 			}
 
-			let (result, error): (Bool, NSError?) = self.validateConstraints()
-			if !result {
-				completion(succeeded: result, error: error)
+			let (success, error): (Bool, NSError?) = self.validateConstraints()
+			if !success {
+				completion(success: success, error: error)
                 println("[GraphKit Error: Constraint is not satisfied.]")
 				return
 			}
 
 			var saveError: NSError?
-			completion(succeeded: self.managedObjectContext.save(&saveError), error: error)
+			completion(success: self.managedObjectContext.save(&saveError), error: error)
 			assert(nil == error, "[GraphKit Error: Saving to private context.]")
 		}
 	}
@@ -134,8 +140,8 @@ public class GKGraph : NSObject {
 		inserted.filterUsingPredicate(masterPredicate!)
 
 		if 0 < inserted.count {
-			let nodes: Array<NSManagedObject> = inserted.allObjects as [NSManagedObject]
-			for node: NSManagedObject in nodes {
+			let nodes: Array<GKManagedNode> = inserted.allObjects as [GKManagedNode]
+			for node: GKManagedNode in nodes {
 				let className = String.fromCString(object_getClassName(node))
 				if nil == className {
 					println("[GraphKit Error: Cannot get Object Class name.]")
@@ -145,12 +151,12 @@ public class GKGraph : NSObject {
 					case "GKManagedEntity_GKManagedEntity_":
 						delegate?.graph?(self, didInsertEntity: GKEntity(entity: node as GKManagedEntity))
 						break
-                    case "GKManagedAction_GKManagedAction_":
-                        delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
-                        break
                     case "GKManagedBond_GKManagedBond_":
                         delegate?.graph?(self, didInsertBond: GKBond(bond: node as GKManagedBond))
                         break
+					case "GKManagedAction_GKManagedAction_":
+						delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
+						break
 					default:
 						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
 				}
@@ -163,8 +169,8 @@ public class GKGraph : NSObject {
 		updated.filterUsingPredicate(masterPredicate!)
 
 		if 0 < updated.count {
-			let nodes: Array<NSManagedObject> = updated.allObjects as [NSManagedObject]
-			for node: NSManagedObject in nodes {
+			let nodes: Array<GKManagedNode> = updated.allObjects as [GKManagedNode]
+			for node: GKManagedNode in nodes {
 				let className = String.fromCString(object_getClassName(node))
 				if nil == className {
                     println("[GraphKit Error: Cannot get Object Class name.]")
@@ -174,13 +180,13 @@ public class GKGraph : NSObject {
 					case "GKManagedEntity_GKManagedEntity_":
 						delegate?.graph?(self, didUpdateEntity: GKEntity(entity: node as GKManagedEntity))
 						break
-                    case "GKManagedAction_GKManagedAction_":
-                        delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
-                        break
                     case "GKManagedBond_GKManagedBond_":
                         delegate?.graph?(self, didUpdateBond: GKBond(bond: node as GKManagedBond))
                         break
-                    default:
+					case "GKManagedAction_GKManagedAction_":
+						delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
+						break
+					default:
 						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
 				}
 			}
@@ -197,8 +203,8 @@ public class GKGraph : NSObject {
 		deleted.filterUsingPredicate(masterPredicate!)
 
 		if 0 < deleted.count {
-			let nodes: Array<NSManagedObject> = deleted.allObjects as [NSManagedObject]
-			for node: NSManagedObject in nodes {
+			let nodes: Array<GKManagedNode> = deleted.allObjects as [GKManagedNode]
+			for node: GKManagedNode in nodes {
 				let className = String.fromCString(object_getClassName(node))
 				if nil == className {
                     println("[GraphKit Error: Cannot get Object Class name.]")
@@ -208,13 +214,13 @@ public class GKGraph : NSObject {
 					case "GKManagedEntity_GKManagedEntity_":
 						delegate?.graph?(self, didArchiveEntity: GKEntity(entity: node as GKManagedEntity))
 						break
-                    case "GKManagedAction_GKManagedAction_":
-                        delegate?.graph?(self, didArchiveAction: GKAction(action: node as GKManagedAction))
-                        break
                     case "GKManagedBond_GKManagedBond_":
                         delegate?.graph?(self, didArchiveBond: GKBond(bond: node as GKManagedBond))
                         break
-                    default:
+					case "GKManagedAction_GKManagedAction_":
+						delegate?.graph?(self, didArchiveAction: GKAction(action: node as GKManagedAction))
+						break
+					default:
 						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
 				}
 			}
@@ -234,7 +240,6 @@ public class GKGraph : NSObject {
         return GKGraphManagedObjectContext.managedObjectContext
     }
 
-    // Managed Object Model
     private var managedObjectModel: NSManagedObjectModel {
         struct GKGraphManagedObjectModel {
             static var onceToken: dispatch_once_t = 0
@@ -243,44 +248,59 @@ public class GKGraph : NSObject {
         dispatch_once(&GKGraphManagedObjectModel.onceToken) {
             GKGraphManagedObjectModel.managedObjectModel = NSManagedObjectModel()
 
-            var entityEntityDescription: NSEntityDescription = NSEntityDescription()
-            var entityEntityProperties: Array<AnyObject> = Array<AnyObject>()
-            entityEntityDescription.name = GKGraphUtility.entityEntityDescriptionName
-            entityEntityDescription.managedObjectClassName = GKGraphUtility.managedEntityObjectClassName
+            var entityDescription: NSEntityDescription = NSEntityDescription()
+            var entityProperties: Array<AnyObject> = Array<AnyObject>()
+            entityDescription.name = GKGraphUtility.entityDescriptionName
+            entityDescription.managedObjectClassName = GKGraphUtility.entityObjectClassName
 
-            var entityActionDescription: NSEntityDescription = NSEntityDescription()
-            var entityActionProperties: Array<AnyObject> = Array<AnyObject>()
-            entityActionDescription.name = GKGraphUtility.entityActionDescriptionName
-            entityActionDescription.managedObjectClassName = GKGraphUtility.managedActionObjectClassName
+            var bondDescription: NSEntityDescription = NSEntityDescription()
+            var bondProperties: Array<AnyObject> = Array<AnyObject>()
+            bondDescription.name = GKGraphUtility.bondDescriptionName
+            bondDescription.managedObjectClassName = GKGraphUtility.bondObjectClassName
 
-            var entityBondDescription: NSEntityDescription = NSEntityDescription()
-            var entityBondProperties: Array<AnyObject> = Array<AnyObject>()
-            entityBondDescription.name = GKGraphUtility.entityBondDescriptionName
-            entityBondDescription.managedObjectClassName = GKGraphUtility.managedBondObjectClassName
+            var actionDescription: NSEntityDescription = NSEntityDescription()
+            var actionProperties: Array<AnyObject> = Array<AnyObject>()
+            actionDescription.name = GKGraphUtility.actionDescriptionName
+            actionDescription.managedObjectClassName = GKGraphUtility.actionObjectClassName
+
+            var entityGroupDescription: NSEntityDescription = NSEntityDescription()
+            var entityGroupProperties: Array<AnyObject> = Array<AnyObject>()
+            entityGroupDescription.name = GKGraphUtility.entityGroupDescriptionName
+            entityGroupDescription.managedObjectClassName = GKGraphUtility.entityGroupObjectClassName
+
+            var bondGroupDescription: NSEntityDescription = NSEntityDescription()
+            var bondGroupProperties: Array<AnyObject> = Array<AnyObject>()
+            bondGroupDescription.name = GKGraphUtility.bondGroupDescriptionName
+            bondGroupDescription.managedObjectClassName = GKGraphUtility.bondGroupObjectClassName
+
+            var actionGroupDescription: NSEntityDescription = NSEntityDescription()
+            var actionGroupProperties: Array<AnyObject> = Array<AnyObject>()
+            actionGroupDescription.name = GKGraphUtility.actionGroupDescriptionName
+            actionGroupDescription.managedObjectClassName = GKGraphUtility.actionGroupObjectClassName
 
             var nodeClass: NSAttributeDescription = NSAttributeDescription()
             nodeClass.name = "nodeClass"
             nodeClass.attributeType = .StringAttributeType
             nodeClass.optional = false
-            entityEntityProperties.append(nodeClass)
-            entityActionProperties.append(nodeClass.copy() as NSAttributeDescription)
-            entityBondProperties.append(nodeClass.copy() as NSAttributeDescription)
+            entityProperties.append(nodeClass)
+            bondProperties.append(nodeClass.copy() as NSAttributeDescription)
+            actionProperties.append(nodeClass.copy() as NSAttributeDescription)
 
             var type: NSAttributeDescription = NSAttributeDescription()
             type.name = "type"
             type.attributeType = .StringAttributeType
             type.optional = false
-            entityEntityProperties.append(type)
-            entityActionProperties.append(type.copy() as NSAttributeDescription)
-            entityBondProperties.append(type.copy() as NSAttributeDescription)
+            entityProperties.append(type)
+            bondProperties.append(type.copy() as NSAttributeDescription)
+            actionProperties.append(type.copy() as NSAttributeDescription)
 
             var createdDate: NSAttributeDescription = NSAttributeDescription()
             createdDate.name = "createdDate"
             createdDate.attributeType = .DateAttributeType
             createdDate.optional = false
-            entityEntityProperties.append(createdDate)
-            entityActionProperties.append(createdDate.copy() as NSAttributeDescription)
-            entityBondProperties.append(createdDate.copy() as NSAttributeDescription)
+            entityProperties.append(createdDate)
+            bondProperties.append(createdDate.copy() as NSAttributeDescription)
+            actionProperties.append(createdDate.copy() as NSAttributeDescription)
 
             var properties: NSAttributeDescription = NSAttributeDescription()
             properties.name = "properties"
@@ -288,17 +308,66 @@ public class GKGraph : NSObject {
             properties.attributeValueClassName = "Dictionary"
             properties.optional = false
             properties.storedInExternalRecord = true
-            entityEntityProperties.append(properties)
-            entityActionProperties.append(properties.copy() as NSAttributeDescription)
-            entityBondProperties.append(properties.copy() as NSAttributeDescription)
+            entityProperties.append(properties)
+            bondProperties.append(properties.copy() as NSAttributeDescription)
+            actionProperties.append(properties.copy() as NSAttributeDescription)
 
-            entityEntityDescription.properties = entityEntityProperties
-            entityActionDescription.properties = entityActionProperties
-            entityBondDescription.properties = entityBondProperties
+            var groups: NSAttributeDescription = NSAttributeDescription()
+            groups.name = "groups"
+            groups.attributeType = .TransformableAttributeType
+            groups.attributeValueClassName = "Array"
+            groups.optional = false
+            groups.storedInExternalRecord = true
+            entityProperties.append(groups)
+            bondProperties.append(groups.copy() as NSAttributeDescription)
+            actionProperties.append(groups.copy() as NSAttributeDescription)
+
+            var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            groupSetRelationship.name = "groupSet"
+            groupSetRelationship.minCount = 0
+            groupSetRelationship.maxCount = 0
+            groupSetRelationship.deleteRule = .CascadeDeleteRule
+            groupSetRelationship.destinationEntity = entityGroupDescription
+            entityProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
+            groupSetRelationship.destinationEntity = bondGroupDescription
+            bondProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
+            groupSetRelationship.destinationEntity = actionGroupDescription
+            actionProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
+
+            var group: NSAttributeDescription = NSAttributeDescription()
+            group.name = "name"
+            group.attributeType = .StringAttributeType
+            group.optional = false
+            entityGroupProperties.append(group)
+            bondGroupProperties.append(group.copy() as NSAttributeDescription)
+            actionGroupProperties.append(group.copy() as NSAttributeDescription)
+
+            var groupRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            groupRelationship.name = "node"
+            groupRelationship.minCount = 1
+            groupRelationship.maxCount = 1
+            groupRelationship.deleteRule = .NoActionDeleteRule
+            groupRelationship.destinationEntity = entityDescription
+            entityGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
+            groupRelationship.destinationEntity = bondDescription
+            bondGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
+            groupRelationship.destinationEntity = actionDescription
+            actionGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
+            
+            entityDescription.properties = entityProperties
+            entityGroupDescription.properties = entityGroupProperties
+            bondDescription.properties = bondProperties
+            bondGroupDescription.properties = bondGroupProperties
+            actionDescription.properties = actionProperties
+            actionGroupDescription.properties = actionGroupProperties
+
             GKGraphManagedObjectModel.managedObjectModel.entities = [
-                    entityEntityDescription,
-                    entityActionDescription,
-                    entityBondDescription
+                entityDescription,
+                entityGroupDescription,
+                bondDescription,
+                bondGroupDescription,
+                actionDescription,
+                actionGroupDescription
             ]
         }
         return GKGraphManagedObjectModel.managedObjectModel!
@@ -310,12 +379,12 @@ public class GKGraph : NSObject {
             static var persistentStoreCoordinator: NSPersistentStoreCoordinator!
         }
         dispatch_once(&GKGraphPersistentStoreCoordinator.onceToken) {
-            let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent(GKGraphUtility.entityStoreName)
+            let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent(GKGraphUtility.storeName)
             var error: NSError?
             GKGraphPersistentStoreCoordinator.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
             var options: Dictionary = [NSReadOnlyPersistentStoreOption: false, NSSQLitePragmasOption: ["journal_mode": "DELETE"]];
             if nil == GKGraphPersistentStoreCoordinator.persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options as NSDictionary, error: &error) {
-                assert(nil == error, "Error saving in private context")
+                assert(nil == error, "[GraphKit Error: Saving to private context.]")
             }
         }
         return GKGraphPersistentStoreCoordinator.persistentStoreCoordinator!

@@ -12,7 +12,7 @@
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with this program located at the root of the software packinteger
+* along with this program located at the root of the software packnumeric
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -21,99 +21,99 @@ import GraphKit
 
 class GKBondTests : XCTestCase, GKGraphDelegate {
 
-	let graph: GKGraph = GKGraph()
-	
-	var familyInsertExpectation: XCTestExpectation?
-	var ownerInsertExpectation: XCTestExpectation?
+    let graph: GKGraph = GKGraph()
 
-    var familyUpdateExpectation: XCTestExpectation?
-    var ownerUpdateExpectation: XCTestExpectation?
+    var clickInsertExpectation: XCTestExpectation?
+    var readInsertExpectation: XCTestExpectation?
 
-	var familyArchiveExpectation: XCTestExpectation?
-	var ownerArchiveExpectation: XCTestExpectation?
-	
+    var clickUpdateExpectation: XCTestExpectation?
+    var readUpdateExpectation: XCTestExpectation?
+
+    var clickArchiveExpectation: XCTestExpectation?
+    var readArchiveExpectation: XCTestExpectation?
+
     override func setUp() {
         super.setUp()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testBond() {
-		// Set the test Class as the delegate.
-		graph.delegate = self
-		
-		// Watch changes in the Graph.
-		graph.watch(Bond: "Family")
-		graph.watch(Bond: "Owner")
-		
-		// Some Exception testing.
-		familyInsertExpectation = expectationWithDescription("Insert Test: Watch 'Family' did not pass.")
-		ownerInsertExpectation = expectationWithDescription("Insert Test: Watch 'Owner' did not pass.")
+        // Set the test Class as the delegate.
+        graph.delegate = self
 
-		// Create a Family Bond.
-		var family: GKBond = GKBond(type: "Family")
-		family["string"] = "String"
-		family["integer"] = 26
-		
-		// Create a Owner Bond.
-		var owner: GKBond = GKBond(type: "Owner")
-		owner["title"] = "Learning GraphKit"
-		
-		graph.save() {
-			XCTAssertTrue($0, "Cannot save the Graph: \($1)")
-		}
-		waitForExpectationsWithTimeout(5, handler: nil)
+        // Watch changes in the Graph.
+        graph.watch(Bond: "Click")
+        graph.watch(Bond: "Read")
 
-        family["update"] = "Update"
-        owner["update"] = "Update"
+        // Some Exception testing.
+        clickInsertExpectation = expectationWithDescription("Insert Test: Watch 'Click' did not pass.")
+        readInsertExpectation = expectationWithDescription("Insert Test: Watch 'Read' did not pass.")
 
-        familyUpdateExpectation = expectationWithDescription("Update Test: Watch 'Family' did not pass.")
-        ownerUpdateExpectation = expectationWithDescription("Update Test: Watch 'Owner' did not pass.")
+        // Create a Click Bond.
+        var click: GKBond = GKBond(type: "Click")
+        click["string"] = "String"
+        click["numeric"] = 26
+
+        // Create a Read Bond.
+        var read: GKBond = GKBond(type: "Read")
+        read["title"] = "Learning GraphKit"
 
         graph.save() {
             XCTAssertTrue($0, "Cannot save the Graph: \($1)")
         }
         waitForExpectationsWithTimeout(5, handler: nil)
-		
-		family.archive()
-		owner.archive()
-		
-		familyArchiveExpectation = expectationWithDescription("Archive Test: Watch 'Family' did not pass.")
-		ownerArchiveExpectation = expectationWithDescription("Archive Test: Watch 'Owner' did not pass.")
-		
-		graph.save() {
-			XCTAssertTrue($0, "Cannot save the Graph: \($1)")
-		}
-		waitForExpectationsWithTimeout(5, handler: nil)
+
+        click["update"] = "Update"
+        read["update"] = "Update"
+
+        clickUpdateExpectation = expectationWithDescription("Update Test: Watch 'Click' did not pass.")
+        readUpdateExpectation = expectationWithDescription("Update Test: Watch 'Read' did not pass.")
+
+        graph.save() {
+            XCTAssertTrue($0, "Cannot save the Graph: \($1)")
+        }
+        waitForExpectationsWithTimeout(5, handler: nil)
+
+        click.archive()
+        read.archive()
+
+        clickArchiveExpectation = expectationWithDescription("Archive Test: Watch 'Click' did not pass.")
+        readArchiveExpectation = expectationWithDescription("Archive Test: Watch 'Read' did not pass.")
+
+        graph.save() {
+            XCTAssertTrue($0, "Cannot save the Graph: \($1)")
+        }
+        waitForExpectationsWithTimeout(5, handler: nil)
     }
-    
+
     func testPerformanceExample() {
         self.measureBlock() {}
     }
-	
-	func graph(graph: GKGraph!, didInsertBond action: GKBond!) {
-		if "Family" == action.type && "String" == action["string"]? as String && 26 == action["integer"]? as Int {
-			familyInsertExpectation?.fulfill()
-		} else if "Owner" == action.type && "Learning GraphKit" == action["title"]? as String {
-			ownerInsertExpectation?.fulfill()
-		}
-	}
 
-    func graph(graph: GKGraph!, didUpdateBond action: GKBond!) {
-        if "Family" == action.type && "Update" == action["update"]? as String {
-            familyUpdateExpectation?.fulfill()
-        } else if "Owner" == action.type && "Update" == action["update"]? as String {
-            ownerUpdateExpectation?.fulfill()
+    func graph(graph: GKGraph!, didInsertBond bond: GKBond!) {
+        if "Click" == bond.type && "String" == bond["string"]? as String && 26 == bond["numeric"]? as Int {
+            clickInsertExpectation?.fulfill()
+        } else if "Read" == bond.type && "Learning GraphKit" == bond["title"]? as String {
+            readInsertExpectation?.fulfill()
         }
     }
-	
-	func graph(graph: GKGraph!, didArchiveBond action: GKBond!) {
-		if "Family" == action.type && "String" == action["string"]? as String && 26 == action["integer"]? as Int {
-			familyArchiveExpectation?.fulfill()
-		} else if "Owner" == action.type && "Learning GraphKit" == action["title"]? as String {
-			ownerArchiveExpectation?.fulfill()
-		}
-	}
+
+    func graph(graph: GKGraph!, didUpdateBond bond: GKBond!) {
+        if "Click" == bond.type && "Update" == bond["update"]? as String {
+            clickUpdateExpectation?.fulfill()
+        } else if "Read" == bond.type && "Update" == bond["update"]? as String {
+            readUpdateExpectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didArchiveBond bond: GKBond!) {
+        if "Click" == bond.type && "String" == bond["string"]? as String && 26 == bond["numeric"]? as Int {
+            clickArchiveExpectation?.fulfill()
+        } else if "Read" == bond.type && "Learning GraphKit" == bond["title"]? as String {
+            readArchiveExpectation?.fulfill()
+        }
+    }
 }

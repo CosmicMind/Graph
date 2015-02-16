@@ -33,13 +33,10 @@ internal class GKManagedBond : GKManagedNode {
     */
     convenience internal init(type: String!) {
         let graph: GKGraph = GKGraph()
-        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityBondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
         self.init(entity: entitiDescription, insertIntoManagedObjectContext: graph.managedObjectContext)
-
         nodeClass = "GKBond"
         self.type = type
-        createdDate = NSDate()
-        properties = Dictionary<String, AnyObject>()
     }
 
     /**
@@ -49,6 +46,6 @@ internal class GKManagedBond : GKManagedNode {
     */
     class func entityDescription() -> NSEntityDescription! {
         let graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.entityBondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        return NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
     }
 }

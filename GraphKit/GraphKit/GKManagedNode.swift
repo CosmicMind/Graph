@@ -28,6 +28,22 @@ internal class GKManagedNode : NSManagedObject, Printable {
     @NSManaged internal var type: String
     @NSManaged internal var createdDate: NSDate
     @NSManaged internal var properties: Dictionary<String, AnyObject>
+    @NSManaged internal var groups: Array<String>
+    @NSManaged internal var groupSet: NSMutableSet
+
+    /**
+    * init
+    * Internal usage for inittializing the Model Object.
+    * @param        entityDescription: NSEntityDescription!
+    * @param        managedObjectContext: NSManagedObjectContext!
+    */
+    convenience internal init(entity: NSEntityDescription, managedObjectContext: NSManagedObjectContext!) {
+        self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
+        createdDate = NSDate()
+        properties = Dictionary<String, AnyObject>()
+        groups = Array<String>()
+        groupSet = NSMutableSet()
+    }
 
     /**
     * properties[ ]
