@@ -32,13 +32,42 @@ internal class GKManagedEntity : GKManagedNode {
     */
     convenience internal init(type: String!) {
         let graph: GKGraph = GKGraph()
-        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
-        self.init(entity: entitiDescription, insertIntoManagedObjectContext: graph.managedObjectContext)
-
+        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
         nodeClass = "GKEntity"
         self.type = type
-        createdDate = NSDate()
-        properties = Dictionary<String, AnyObject>()
+    }
+
+    override internal func addGroup(name: String!) -> Bool {
+        if !hasGroup(name) {
+            groups.append(name)
+            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext)
+            group.node = self
+            groupSet.addObject(group)
+			return true
+        }
+		return false
+    }
+
+    override internal func hasGroup(name: String!) -> Bool {
+        return contains(groups, name)
+    }
+
+    override internal func removeGroup(name: String!) -> Bool {
+        for i in 0..<groups.count {
+            if name == groups[i] {
+                groups.removeAtIndex(i)
+                for item: AnyObject in groupSet {
+                    var group: GKEntityGroup = item as GKEntityGroup
+                    if name == group.name {
+                        groupSet.removeObject(item)
+                        managedObjectContext!.deleteObject(group)
+                        return true
+                    }
+                }
+            }
+        }
+        return false
     }
 
     /**
@@ -48,6 +77,6 @@ internal class GKManagedEntity : GKManagedNode {
     */
     class func entityDescription() -> NSEntityDescription! {
         let graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.entityEntityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+        return NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
     }
 }
