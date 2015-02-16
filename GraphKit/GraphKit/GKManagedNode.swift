@@ -61,6 +61,29 @@ internal class GKManagedNode : NSManagedObject, Printable {
         }
     }
 
+    internal subscript(index: Int) -> String {
+        get {
+            assert(0 <= index && index < groups.count, "GKManagedNode group index out of range")
+            return groups[index]
+        }
+        set(value) {
+            assert(0 <= index && index < groups.count, "GKManagedNode group index out of range")
+            groups[index] = value
+        }
+    }
+
+    internal func addGroup(name: String!) -> Bool {
+        return false
+    }
+
+    internal func hasGroup(name: String!) -> Bool {
+        return false
+    }
+
+    internal func removeGroup(name: String!) -> Bool {
+        return false
+    }
+
     /**
     * archive
     * Marks the Model Object to be deleted from its persistent layer.

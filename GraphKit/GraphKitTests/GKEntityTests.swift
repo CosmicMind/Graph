@@ -56,6 +56,8 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 		var user: GKEntity = GKEntity(type: "User")
 		user["string"] = "String"
 		user["numeric"] = 26
+        user.addGroup("female")
+        user.addGroup("admin")
 		
 		// Create a Book Entity.
 		var book: GKEntity = GKEntity(type: "Book")
@@ -68,6 +70,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 
         user["update"] = "Update"
         book["update"] = "Update"
+		user.removeGroup("admin")
 
         userUpdateExpectation = expectationWithDescription("Update Test: Watch 'User' did not pass.")
         bookUpdateExpectation = expectationWithDescription("Update Test: Watch 'Book' did not pass.")
@@ -94,7 +97,11 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
     }
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		if "User" == entity.type && "String" == entity["string"]? as String && 26 == entity["numeric"]? as Int {
+		if "User" == entity.type &&
+            "String" == entity["string"]? as String &&
+            26 == entity["numeric"]? as Int &&
+            entity.hasGroup("female") &&
+            entity.hasGroup("admin") {
 			userInsertExpectation?.fulfill()
 		} else if "Book" == entity.type && "Learning GraphKit" == entity["title"]? as String {
 			bookInsertExpectation?.fulfill()
@@ -102,7 +109,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 	}
 
     func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!) {
-        if "User" == entity.type && "Update" == entity["update"]? as String {
+        if "User" == entity.type && "Update" == entity["update"]? as String && !entity.hasGroup("admin") {
             userUpdateExpectation?.fulfill()
         } else if "Book" == entity.type && "Update" == entity["update"]? as String {
             bookUpdateExpectation?.fulfill()

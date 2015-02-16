@@ -38,6 +38,38 @@ internal class GKManagedEntity : GKManagedNode {
         self.type = type
     }
 
+    override internal func addGroup(name: String!) -> Bool {
+        if !hasGroup(name) {
+            groups.append(name)
+            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext)
+            group.node = self
+            groupSet.addObject(group)
+			return true
+        }
+		return false
+    }
+
+    override internal func hasGroup(name: String!) -> Bool {
+        return contains(groups, name)
+    }
+
+    override internal func removeGroup(name: String!) -> Bool {
+        for i in 0..<groups.count {
+            if name == groups[i] {
+                groups.removeAtIndex(i)
+                for item: AnyObject in groupSet {
+                    var group: GKEntityGroup = item as GKEntityGroup
+                    if name == group.name {
+                        groupSet.removeObject(item)
+                        managedObjectContext!.deleteObject(group)
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
     /**
     * entityDescription
     * Class method returning an NSEntityDescription Object for this Model Object.

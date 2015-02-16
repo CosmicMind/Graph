@@ -30,11 +30,6 @@ struct GKGraphUtility {
 	static let entityObjectClassName: String = "GKManagedEntity"
     static let entityGroupObjectClassName: String = "GKEntityGroup"
     static let entityGroupDescriptionName: String = "GKEntityGroup"
-    static let bondIndexName: String = "GKManagedBond"
-    static let bondDescriptionName: String = "GKManagedBond"
-    static let bondObjectClassName: String = "GKManagedBond"
-    static let bondGroupObjectClassName: String = "GKBondGroup"
-    static let bondGroupDescriptionName: String = "GKBondGroup"
     static let actionIndexName: String = "GKManagedAction"
     static let actionDescriptionName: String = "GKManagedAction"
     static let actionObjectClassName: String = "GKManagedAction"
@@ -47,9 +42,6 @@ public protocol GKGraphDelegate {
     optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didArchiveEntity entity: GKEntity!)
-    optional func graph(graph: GKGraph!, didInsertBond bond: GKBond!)
-    optional func graph(graph: GKGraph!, didUpdateBond bond: GKBond!)
-    optional func graph(graph: GKGraph!, didArchiveBond bond: GKBond!)
     optional func graph(graph: GKGraph!, didInsertAction action: GKAction!)
     optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
     optional func graph(graph: GKGraph!, didArchiveAction action: GKAction!)
@@ -85,14 +77,6 @@ public class GKGraph : NSObject {
     */
     public func watch(Entity type: String!) {
         addWatcher("type", value: type, index: GKGraphUtility.entityIndexName, entityDescriptionName: GKGraphUtility.entityDescriptionName, managedObjectClassName: GKGraphUtility.entityObjectClassName)
-    }
-
-    /**
-    * watch
-    * Attaches the Graph instance to Notification center in order to Observe changes for a Bond with the spcified type.
-    */
-    public func watch(Bond type: String!) {
-        addWatcher("type", value: type, index: GKGraphUtility.bondIndexName, entityDescriptionName: GKGraphUtility.bondDescriptionName, managedObjectClassName: GKGraphUtility.bondObjectClassName)
     }
 
     /**
@@ -151,10 +135,7 @@ public class GKGraph : NSObject {
 					case "GKManagedEntity_GKManagedEntity_":
 						delegate?.graph?(self, didInsertEntity: GKEntity(entity: node as GKManagedEntity))
 						break
-                    case "GKManagedBond_GKManagedBond_":
-                        delegate?.graph?(self, didInsertBond: GKBond(bond: node as GKManagedBond))
-                        break
-					case "GKManagedAction_GKManagedAction_":
+                    case "GKManagedAction_GKManagedAction_":
 						delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
 						break
 					default:
@@ -180,10 +161,7 @@ public class GKGraph : NSObject {
 					case "GKManagedEntity_GKManagedEntity_":
 						delegate?.graph?(self, didUpdateEntity: GKEntity(entity: node as GKManagedEntity))
 						break
-                    case "GKManagedBond_GKManagedBond_":
-                        delegate?.graph?(self, didUpdateBond: GKBond(bond: node as GKManagedBond))
-                        break
-					case "GKManagedAction_GKManagedAction_":
+                    case "GKManagedAction_GKManagedAction_":
 						delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
 						break
 					default:
@@ -214,10 +192,7 @@ public class GKGraph : NSObject {
 					case "GKManagedEntity_GKManagedEntity_":
 						delegate?.graph?(self, didArchiveEntity: GKEntity(entity: node as GKManagedEntity))
 						break
-                    case "GKManagedBond_GKManagedBond_":
-                        delegate?.graph?(self, didArchiveBond: GKBond(bond: node as GKManagedBond))
-                        break
-					case "GKManagedAction_GKManagedAction_":
+                    case "GKManagedAction_GKManagedAction_":
 						delegate?.graph?(self, didArchiveAction: GKAction(action: node as GKManagedAction))
 						break
 					default:
@@ -253,11 +228,6 @@ public class GKGraph : NSObject {
             entityDescription.name = GKGraphUtility.entityDescriptionName
             entityDescription.managedObjectClassName = GKGraphUtility.entityObjectClassName
 
-            var bondDescription: NSEntityDescription = NSEntityDescription()
-            var bondProperties: Array<AnyObject> = Array<AnyObject>()
-            bondDescription.name = GKGraphUtility.bondDescriptionName
-            bondDescription.managedObjectClassName = GKGraphUtility.bondObjectClassName
-
             var actionDescription: NSEntityDescription = NSEntityDescription()
             var actionProperties: Array<AnyObject> = Array<AnyObject>()
             actionDescription.name = GKGraphUtility.actionDescriptionName
@@ -267,11 +237,6 @@ public class GKGraph : NSObject {
             var entityGroupProperties: Array<AnyObject> = Array<AnyObject>()
             entityGroupDescription.name = GKGraphUtility.entityGroupDescriptionName
             entityGroupDescription.managedObjectClassName = GKGraphUtility.entityGroupObjectClassName
-
-            var bondGroupDescription: NSEntityDescription = NSEntityDescription()
-            var bondGroupProperties: Array<AnyObject> = Array<AnyObject>()
-            bondGroupDescription.name = GKGraphUtility.bondGroupDescriptionName
-            bondGroupDescription.managedObjectClassName = GKGraphUtility.bondGroupObjectClassName
 
             var actionGroupDescription: NSEntityDescription = NSEntityDescription()
             var actionGroupProperties: Array<AnyObject> = Array<AnyObject>()
@@ -283,7 +248,6 @@ public class GKGraph : NSObject {
             nodeClass.attributeType = .StringAttributeType
             nodeClass.optional = false
             entityProperties.append(nodeClass)
-            bondProperties.append(nodeClass.copy() as NSAttributeDescription)
             actionProperties.append(nodeClass.copy() as NSAttributeDescription)
 
             var type: NSAttributeDescription = NSAttributeDescription()
@@ -291,7 +255,6 @@ public class GKGraph : NSObject {
             type.attributeType = .StringAttributeType
             type.optional = false
             entityProperties.append(type)
-            bondProperties.append(type.copy() as NSAttributeDescription)
             actionProperties.append(type.copy() as NSAttributeDescription)
 
             var createdDate: NSAttributeDescription = NSAttributeDescription()
@@ -299,7 +262,6 @@ public class GKGraph : NSObject {
             createdDate.attributeType = .DateAttributeType
             createdDate.optional = false
             entityProperties.append(createdDate)
-            bondProperties.append(createdDate.copy() as NSAttributeDescription)
             actionProperties.append(createdDate.copy() as NSAttributeDescription)
 
             var properties: NSAttributeDescription = NSAttributeDescription()
@@ -309,7 +271,6 @@ public class GKGraph : NSObject {
             properties.optional = false
             properties.storedInExternalRecord = true
             entityProperties.append(properties)
-            bondProperties.append(properties.copy() as NSAttributeDescription)
             actionProperties.append(properties.copy() as NSAttributeDescription)
 
             var groups: NSAttributeDescription = NSAttributeDescription()
@@ -319,7 +280,6 @@ public class GKGraph : NSObject {
             groups.optional = false
             groups.storedInExternalRecord = true
             entityProperties.append(groups)
-            bondProperties.append(groups.copy() as NSAttributeDescription)
             actionProperties.append(groups.copy() as NSAttributeDescription)
 
             var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -329,8 +289,6 @@ public class GKGraph : NSObject {
             groupSetRelationship.deleteRule = .CascadeDeleteRule
             groupSetRelationship.destinationEntity = entityGroupDescription
             entityProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
-            groupSetRelationship.destinationEntity = bondGroupDescription
-            bondProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
             groupSetRelationship.destinationEntity = actionGroupDescription
             actionProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
 
@@ -339,7 +297,6 @@ public class GKGraph : NSObject {
             group.attributeType = .StringAttributeType
             group.optional = false
             entityGroupProperties.append(group)
-            bondGroupProperties.append(group.copy() as NSAttributeDescription)
             actionGroupProperties.append(group.copy() as NSAttributeDescription)
 
             var groupRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -349,23 +306,17 @@ public class GKGraph : NSObject {
             groupRelationship.deleteRule = .NoActionDeleteRule
             groupRelationship.destinationEntity = entityDescription
             entityGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
-            groupRelationship.destinationEntity = bondDescription
-            bondGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
             groupRelationship.destinationEntity = actionDescription
             actionGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
             
             entityDescription.properties = entityProperties
             entityGroupDescription.properties = entityGroupProperties
-            bondDescription.properties = bondProperties
-            bondGroupDescription.properties = bondGroupProperties
             actionDescription.properties = actionProperties
             actionGroupDescription.properties = actionGroupProperties
 
             GKGraphManagedObjectModel.managedObjectModel.entities = [
                 entityDescription,
                 entityGroupDescription,
-                bondDescription,
-                bondGroupDescription,
                 actionDescription,
                 actionGroupDescription
             ]

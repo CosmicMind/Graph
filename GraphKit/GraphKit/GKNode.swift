@@ -53,6 +53,14 @@ public class GKNode : NSObject {
         return createdDate
     }
 
+    public var groups: Array<String> {
+        var groups: Array<String>!
+        graph.managedObjectContext.performBlockAndWait {
+            groups = self.node.groups
+        }
+        return groups
+    }
+
     /**
     * archive
     * Marks the Model Object to be deleted from its persistent layer.
@@ -83,6 +91,45 @@ public class GKNode : NSObject {
                 self.node[property] = value
             }
         }
+    }
+
+    public subscript(index: Int) -> String {
+        get {
+            var value: String!
+            graph.managedObjectContext.performBlockAndWait {
+                value = self.node[index]
+            }
+            return value
+        }
+        set(value) {
+            graph.managedObjectContext.performBlockAndWait {
+                self.node[index] = value
+            }
+        }
+    }
+
+    public func addGroup(name: String!) -> Bool {
+		var result: Bool = false
+		graph.managedObjectContext.performBlockAndWait {
+            result = self.node.addGroup(name)
+        }
+		return result
+    }
+
+    public func hasGroup(name: String!) -> Bool {
+        var result: Bool = false
+        graph.managedObjectContext.performBlockAndWait {
+            result = self.node.hasGroup(name)
+        }
+        return result
+    }
+
+    public func removeGroup(name: String!) -> Bool {
+        var result: Bool = false
+        graph.managedObjectContext.performBlockAndWait {
+            result = self.node.removeGroup(name)
+        }
+        return result
     }
 
     /**
