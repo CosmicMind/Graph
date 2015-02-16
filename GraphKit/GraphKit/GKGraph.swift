@@ -308,7 +308,23 @@ public class GKGraph : NSObject {
             entityGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
             groupRelationship.destinationEntity = actionDescription
             actionGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
-            
+
+            var subjectsRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            subjectsRelationship.name = "subjectSet"
+            subjectsRelationship.minCount = 0
+            subjectsRelationship.maxCount = 0
+            subjectsRelationship.deleteRule = .NoActionDeleteRule
+            subjectsRelationship.destinationEntity = entityDescription
+            actionProperties.append(subjectsRelationship)
+
+            var objectsRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            objectsRelationship.name = "objectSet"
+            objectsRelationship.minCount = 0
+            objectsRelationship.maxCount = 0
+            objectsRelationship.deleteRule = .NoActionDeleteRule
+            objectsRelationship.destinationEntity = entityDescription
+            actionProperties.append(objectsRelationship)
+
             entityDescription.properties = entityProperties
             entityGroupDescription.properties = entityGroupProperties
             actionDescription.properties = actionProperties

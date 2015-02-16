@@ -25,6 +25,18 @@ import CoreData
 
 @objc(GKManagedAction)
 internal class GKManagedAction : GKManagedNode {
+    @NSManaged internal var subjectSet: NSMutableSet
+    @NSManaged internal var objectSet: NSMutableSet
+
+    /**
+    * entityDescription
+    * Class method returning an NSEntityDescription Object for this Model Object.
+    * @return        NSEntityDescription!
+    */
+    class func entityDescription() -> NSEntityDescription! {
+        let graph: GKGraph = GKGraph()
+        return NSEntityDescription.entityForName(GKGraphUtility.actionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+    }
 
     /**
     * init
@@ -37,6 +49,8 @@ internal class GKManagedAction : GKManagedNode {
         self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
         nodeClass = "GKAction"
         self.type = type
+        subjectSet = NSMutableSet()
+        objectSet = NSMutableSet()
     }
 
     /**
@@ -90,12 +104,26 @@ internal class GKManagedAction : GKManagedNode {
     }
 
     /**
-    * entityDescription
-    * Class method returning an NSEntityDescription Object for this Model Object.
-    * @return        NSEntityDescription!
+    * addSubject
+    * Adds a GKManagedEntity Model Object to the Subjects Set.
+    * @param        entity: GKManagedEntity!
+    * @return       Bool of the result, true if added, false otherwise.
     */
-    class func entityDescription() -> NSEntityDescription! {
-        let graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.actionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+    internal func addSubject(entity: GKManagedEntity!) -> Bool {
+        var count: Int = subjectSet.count
+        subjectSet.addObject(entity)
+        return count == subjectSet.count
+    }
+
+    /**
+    * addObject
+    * Adds a GKManagedEntity Model Object to the Objects Set.
+    * @param        entity: GKManagedEntity!
+    * @return       Bool of the result, true if added, false otherwise.
+    */
+    internal func addObject(entity: GKManagedEntity!) -> Bool {
+        var count: Int = objectSet.count
+        objectSet.addObject(entity)
+        return count == objectSet.count
     }
 }

@@ -56,7 +56,11 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 		var click: GKAction = GKAction(type: "Click")
 		click["string"] = "String"
 		click["numeric"] = 26
-		
+
+        var button: GKEntity = GKEntity(type: "Button")
+		button["name"] = "Home Button"
+        click.addSubject(button)
+
 		// Create a Read Action.
 		var read: GKAction = GKAction(type: "Read")
 		read["title"] = "Learning GraphKit"
@@ -95,7 +99,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 	
 	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
 		if "Click" == action.type && "String" == action["string"]? as String && 26 == action["numeric"]? as Int {
-			clickInsertExpectation?.fulfill()
+            clickInsertExpectation?.fulfill()
 		} else if "Read" == action.type && "Learning GraphKit" == action["title"]? as String {
 			readInsertExpectation?.fulfill()
 		}

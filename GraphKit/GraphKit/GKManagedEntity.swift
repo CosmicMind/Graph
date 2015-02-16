@@ -26,6 +26,16 @@ import CoreData
 internal class GKManagedEntity : GKManagedNode {
 
     /**
+    * entityDescription
+    * Class method returning an NSEntityDescription Object for this Model Object.
+    * @return        NSEntityDescription!
+    */
+    class func entityDescription() -> NSEntityDescription! {
+        let graph: GKGraph = GKGraph()
+        return NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+    }
+
+    /**
     * init
     * Initializes the Model Object with e a given type.
     * @param        type: String!
@@ -86,15 +96,5 @@ internal class GKManagedEntity : GKManagedNode {
             }
         }
         return false
-    }
-
-    /**
-    * entityDescription
-    * Class method returning an NSEntityDescription Object for this Model Object.
-    * @return        NSEntityDescription!
-    */
-    class func entityDescription() -> NSEntityDescription! {
-        let graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
     }
 }
