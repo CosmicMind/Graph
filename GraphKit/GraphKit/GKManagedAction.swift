@@ -25,6 +25,18 @@ import CoreData
 
 @objc(GKManagedAction)
 internal class GKManagedAction : GKManagedNode {
+    @NSManaged internal var subjectSet: NSMutableSet
+    @NSManaged internal var objectSet: NSMutableSet
+
+    /**
+    * entityDescription
+    * Class method returning an NSEntityDescription Object for this Model Object.
+    * @return        NSEntityDescription!
+    */
+    class func entityDescription() -> NSEntityDescription! {
+        let graph: GKGraph = GKGraph()
+        return NSEntityDescription.entityForName(GKGraphUtility.actionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+    }
 
     /**
     * init
@@ -37,8 +49,16 @@ internal class GKManagedAction : GKManagedNode {
         self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
         nodeClass = "GKAction"
         self.type = type
+        subjectSet = NSMutableSet()
+        objectSet = NSMutableSet()
     }
 
+    /**
+    * addGroup
+    * Adds a Group name to the list of Groups if it does not exist.
+    * @param        name: String!
+    * @return       Bool of the result, true if added, false otherwise.
+    */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
             groups.append(name)
@@ -50,10 +70,22 @@ internal class GKManagedAction : GKManagedNode {
 		return false
     }
 
+    /**
+    * hasGroup
+    * Checks whether the Node is a part of the Group name passed or not.
+    * @param        name: String!
+    * @return       Bool of the result, true if is a part, false otherwise.
+    */
     override internal func hasGroup(name: String!) -> Bool {
         return contains(groups, name)
     }
 
+    /**
+    * removeGroup
+    * Removes a Group name from the list of Groups if it exists.
+    * @param        name: String!
+    * @return       Bool of the result, true if exists, false otherwise.
+    */
     override internal func removeGroup(name: String!) -> Bool {
         for i in 0..<groups.count {
             if name == groups[i] {
@@ -72,12 +104,26 @@ internal class GKManagedAction : GKManagedNode {
     }
 
     /**
-    * entityDescription
-    * Class method returning an NSEntityDescription Object for this Model Object.
-    * @return        NSEntityDescription!
+    * addSubject
+    * Adds a GKManagedEntity Model Object to the Subjects Set.
+    * @param        entity: GKManagedEntity!
+    * @return       Bool of the result, true if added, false otherwise.
     */
-    class func entityDescription() -> NSEntityDescription! {
-        let graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.actionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+    internal func addSubject(entity: GKManagedEntity!) -> Bool {
+        var count: Int = subjectSet.count
+        subjectSet.addObject(entity)
+        return count == subjectSet.count
+    }
+
+    /**
+    * addObject
+    * Adds a GKManagedEntity Model Object to the Objects Set.
+    * @param        entity: GKManagedEntity!
+    * @return       Bool of the result, true if added, false otherwise.
+    */
+    internal func addObject(entity: GKManagedEntity!) -> Bool {
+        var count: Int = objectSet.count
+        objectSet.addObject(entity)
+        return count == objectSet.count
     }
 }

@@ -1,7 +1,21 @@
-# graphkit-ios
-Native iOS Graph Framework
+/**
+* Copyright (C) 2015 GraphKit, Inc. <http://graphkit.io> and other GraphKit contributors.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program located at the root of the software packnumeric
+* in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-```swift
 import XCTest
 import GraphKit
 
@@ -9,9 +23,9 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 
     var u1Expectation: XCTestExpectation?
     var b1Expectation: XCTestExpectation?
-    var b2Expectation: XCTestExpectation?
+	var b2Expectation: XCTestExpectation?
     var a1Expectation: XCTestExpectation?
-    
+	
     override func setUp() {
         super.setUp()
     }
@@ -21,14 +35,14 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     }
     
     func testAction() {
-        // Create a Graph instance.
+		// Create a Graph instance.
         let graph: GKGraph = GKGraph()
 
-        // Set the XCTest Class as the delegate.
-        graph.delegate = self
-        
-        // Let's watch the changes in the Graph for the following Entity and Action types.
-        graph.watch(Entity: "User")
+		// Set the XCTest Class as the delegate.
+		graph.delegate = self
+		
+		// Let's watch the changes in the Graph for the following Entity and Action types.
+		graph.watch(Entity: "User")
         graph.watch(Entity: "Book")
         graph.watch(Action: "Read")
 
@@ -67,10 +81,10 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         a1.addObject(b2)
 
         // For this example, set some XCTestExpectation Objects that will be handled in the delegates.
-        u1Expectation = expectationWithDescription("U1: Watch 'User' did not pass.")
-        b1Expectation = expectationWithDescription("B1: Watch 'Book' did not pass.")
-        b2Expectation = expectationWithDescription("B2: Watch 'Book' did not pass.")
-        a1Expectation = expectationWithDescription("A1: Watch 'Read' did not pass.")
+		u1Expectation = expectationWithDescription("U1: Watch 'User' did not pass.")
+		b1Expectation = expectationWithDescription("B1: Watch 'Book' did not pass.")
+		b2Expectation = expectationWithDescription("B2: Watch 'Book' did not pass.")
+		a1Expectation = expectationWithDescription("A1: Watch 'Read' did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
@@ -91,7 +105,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
         if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int && entity.hasGroup("Female") {
             u1Expectation?.fulfill()
         } else if "Book" == entity.type && "Deep C Secrets" == entity["title"]? as String && entity.hasGroup("Thriller") {
@@ -99,15 +113,5 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         } else if "Book" == entity.type && "Mastering Swift" == entity["title"]? as String && entity.hasGroup("Suspense") && entity.hasGroup("Favourite") {
             b2Expectation?.fulfill()
         }
-    }
+	}
 }
-```
-
-##License
-
-[AGPLv3](http://choosealicense.com/licenses/agpl-3.0/)
-
-##Contributors
-
-[Daniel Dahan](https://github.com/danieldahan)
-
