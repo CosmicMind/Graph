@@ -15,41 +15,26 @@
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
-* GKBond
+* GKEntityGroup
 *
-* Represents Bond Nodes, which are unique relationships between Entity Nodes.
+* Stores a reference to the GKManagedEntity Model Object.
 */
 
-import Foundation
+import CoreData
 
-@objc(GKBond)
-public class GKBond : GKNode {
-
-    /**
-    * init
-    * Initializes GKBond with a given GKManagedBond.
-    * @param        action: GKManagedBond!
-    */
-    init(bond: GKManagedBond!) {
-        super.init(node: bond)
-    }
+@objc(GKEntityGroup)
+internal class GKEntityGroup : GKNodeGroup {
+    @NSManaged internal var node: GKManagedEntity
 
     /**
     * init
-    * Initializes GKBond with a given type.
-    * @param        type: String!
+    * Initializer for the Model Object.
+    * @param        name: String!
+    * @param        managedObjectContext: NSManagedObjectContext!
     */
-    override public init(type: String) {
-        super.init(type: type)
-    }
-
-    /**
-    * createImplementorWithType
-    * Initializes GKManagedBond with a given type.
-    * @param        type: String!
-    * @return       GKManagedBond
-    */
-    override internal func createImplementorWithType(type: String) -> GKManagedNode {
-        return GKManagedBond(type: type);
+    convenience init(name: String!, managedObjectContext: NSManagedObjectContext!) {
+        var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.entityGroupDescriptionName, inManagedObjectContext: managedObjectContext)!
+        self.init(entityDescription: entityDescription, managedObjectContext: managedObjectContext)
+        self.name = name
     }
 }
