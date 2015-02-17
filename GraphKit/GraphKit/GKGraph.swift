@@ -41,10 +41,10 @@ struct GKGraphUtility {
 public protocol GKGraphDelegate {
     optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!)
-    optional func graph(graph: GKGraph!, didArchiveEntity entity: GKEntity!)
+    optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didInsertAction action: GKAction!)
     optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
-    optional func graph(graph: GKGraph!, didArchiveAction action: GKAction!)
+    optional func graph(graph: GKGraph!, didDeleteAction action: GKAction!)
 }
 
 @objc(GKGraph)
@@ -190,10 +190,10 @@ public class GKGraph : NSObject {
 				}
 				switch(className!) {
 					case "GKManagedEntity_GKManagedEntity_":
-						delegate?.graph?(self, didArchiveEntity: GKEntity(entity: node as GKManagedEntity))
+						delegate?.graph?(self, didDeleteEntity: GKEntity(entity: node as GKManagedEntity))
 						break
                     case "GKManagedAction_GKManagedAction_":
-						delegate?.graph?(self, didArchiveAction: GKAction(action: node as GKManagedAction))
+						delegate?.graph?(self, didDeleteAction: GKAction(action: node as GKManagedAction))
 						break
 					default:
 						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")

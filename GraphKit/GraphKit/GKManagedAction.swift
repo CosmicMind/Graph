@@ -105,25 +105,49 @@ internal class GKManagedAction : GKManagedNode {
 
     /**
     * addSubject
-    * Adds a GKManagedEntity Model Object to the Subjects Set.
+    * Adds a GKManagedEntity Model Object to the Subject Set.
     * @param        entity: GKManagedEntity!
     * @return       Bool of the result, true if added, false otherwise.
     */
     internal func addSubject(entity: GKManagedEntity!) -> Bool {
         var count: Int = subjectSet.count
         subjectSet.addObject(entity)
-        return count == subjectSet.count
+        return count != subjectSet.count
+    }
+
+    /**
+    * removeSubject
+    * Removes a GKManagedEntity Model Object from the Subject Set.
+    * @param        entity: GKManagedEntity!
+    * @return       Bool of the result, true if removed, false otherwise.
+    */
+    internal func removeSubject(entity: GKManagedEntity!) -> Bool {
+        var count: Int = subjectSet.count
+        subjectSet.removeObject(entity)
+        return count != subjectSet.count
     }
 
     /**
     * addObject
-    * Adds a GKManagedEntity Model Object to the Objects Set.
+    * Adds a GKManagedEntity Model Object to the Object Set.
     * @param        entity: GKManagedEntity!
     * @return       Bool of the result, true if added, false otherwise.
     */
     internal func addObject(entity: GKManagedEntity!) -> Bool {
         var count: Int = objectSet.count
         objectSet.addObject(entity)
-        return count == objectSet.count
+        return count != objectSet.count
+    }
+
+    /**
+    * removeObject
+    * Removes a GKManagedEntity Model Object from the Object Set.
+    * @param        entity: GKManagedEntity!
+    * @return       Bool of the result, true if removed, false otherwise.
+    */
+    internal func removeObject(entity: GKManagedEntity!) -> Bool {
+        var count: Int = objectSet.count
+        objectSet.removeObject(entity)
+        return count != objectSet.count
     }
 }

@@ -87,7 +87,7 @@ public class GKAction : GKNode {
 
     /**
     * addSubject
-    * Adds a GKEntity Model Object to the Subjects Set.
+    * Adds a GKEntity Model Object to the Subject Set.
     * @param        entity: GKEntity!
     * @return       Bool of the result, true if added, false otherwise.
     */
@@ -101,8 +101,23 @@ public class GKAction : GKNode {
     }
 
     /**
+    * removeSubject
+    * Removes a GKEntity Model Object from the Subject Set.
+    * @param        entity: GKEntity!
+    * @return       Bool of the result, true if removed, false otherwise.
+    */
+    public func removeSubject(entity: GKEntity!) -> Bool {
+        var result: Bool = false
+        graph.managedObjectContext.performBlockAndWait {
+            var node: GKManagedAction = self.node as GKManagedAction
+            result = node.removeSubject(entity.node as GKManagedEntity);
+        }
+        return result
+    }
+
+    /**
     * addObject
-    * Adds a GKEntity Object to the Objects Set.
+    * Adds a GKEntity Object to the Object Set.
     * @param        entity: GKEntity!
     * @return       Bool of the result, true if added, false otherwise.
     */
@@ -111,6 +126,21 @@ public class GKAction : GKNode {
         graph.managedObjectContext.performBlockAndWait {
             var node: GKManagedAction = self.node as GKManagedAction
             result = node.addObject(entity.node as GKManagedEntity);
+        }
+        return result
+    }
+
+    /**
+    * removeObject
+    * Removes a GKEntity Model Object from the Object Set.
+    * @param        entity: GKEntity!
+    * @return       Bool of the result, true if removed, false otherwise.
+    */
+    public func removeObject(entity: GKEntity!) -> Bool {
+        var result: Bool = false
+        graph.managedObjectContext.performBlockAndWait {
+            var node: GKManagedAction = self.node as GKManagedAction
+            result = node.removeObject(entity.node as GKManagedEntity);
         }
         return result
     }
