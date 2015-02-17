@@ -108,11 +108,11 @@ internal class GKManagedNode : NSManagedObject, Printable {
     }
 
     /**
-    * archive
-    * Marks the Model Object to be deleted from its persistent layer.
+    * delete
+    * Marks the Model Object to be deleted from the Graph.
     * @param        graph: GKGraph! An instance of the GKGraph.
     */
-    internal func archive(graph: GKGraph!) {
+    internal func delete(graph: GKGraph!) {
         graph.managedObjectContext.deleteObject(self)
     }
 }

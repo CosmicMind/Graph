@@ -41,10 +41,10 @@ struct GKGraphUtility {
 public protocol GKGraphDelegate {
     optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!)
-    optional func graph(graph: GKGraph!, didArchiveEntity entity: GKEntity!)
+    optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didInsertAction action: GKAction!)
     optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
-    optional func graph(graph: GKGraph!, didArchiveAction action: GKAction!)
+    optional func graph(graph: GKGraph!, didDeleteAction action: GKAction!)
 }
 
 @objc(GKGraph)
@@ -190,10 +190,10 @@ public class GKGraph : NSObject {
 				}
 				switch(className!) {
 					case "GKManagedEntity_GKManagedEntity_":
-						delegate?.graph?(self, didArchiveEntity: GKEntity(entity: node as GKManagedEntity))
+						delegate?.graph?(self, didDeleteEntity: GKEntity(entity: node as GKManagedEntity))
 						break
                     case "GKManagedAction_GKManagedAction_":
-						delegate?.graph?(self, didArchiveAction: GKAction(action: node as GKManagedAction))
+						delegate?.graph?(self, didDeleteAction: GKAction(action: node as GKManagedAction))
 						break
 					default:
 						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
@@ -309,21 +309,41 @@ public class GKGraph : NSObject {
             groupRelationship.destinationEntity = actionDescription
             actionGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
 
-            var subjectsRelationship: NSRelationshipDescription = NSRelationshipDescription()
-            subjectsRelationship.name = "subjectSet"
-            subjectsRelationship.minCount = 0
-            subjectsRelationship.maxCount = 0
-            subjectsRelationship.deleteRule = .NoActionDeleteRule
-            subjectsRelationship.destinationEntity = entityDescription
-            actionProperties.append(subjectsRelationship)
+            var subjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            subjectRelationship.name = "subjectSet"
+            subjectRelationship.minCount = 0
+            subjectRelationship.maxCount = 0
+            subjectRelationship.deleteRule = .NoActionDeleteRule
+            subjectRelationship.destinationEntity = entityDescription
+            actionProperties.append(subjectRelationship)
 
-            var objectsRelationship: NSRelationshipDescription = NSRelationshipDescription()
-            objectsRelationship.name = "objectSet"
-            objectsRelationship.minCount = 0
-            objectsRelationship.maxCount = 0
-            objectsRelationship.deleteRule = .NoActionDeleteRule
-            objectsRelationship.destinationEntity = entityDescription
-            actionProperties.append(objectsRelationship)
+            var actionSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            actionSubjectRelationship.name = "actionSubjectSet"
+            actionSubjectRelationship.minCount = 0
+            actionSubjectRelationship.maxCount = 0
+            actionSubjectRelationship.deleteRule = .NoActionDeleteRule
+            actionSubjectRelationship.destinationEntity = actionDescription
+            actionSubjectRelationship.inverseRelationship = subjectRelationship
+            subjectRelationship.inverseRelationship = actionSubjectRelationship
+            entityProperties.append(actionSubjectRelationship)
+
+            var objectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            objectRelationship.name = "objectSet"
+            objectRelationship.minCount = 0
+            objectRelationship.maxCount = 0
+            objectRelationship.deleteRule = .NoActionDeleteRule
+            objectRelationship.destinationEntity = entityDescription
+            actionProperties.append(objectRelationship)
+
+            var actionObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            actionObjectRelationship.name = "actionObjectSet"
+            actionObjectRelationship.minCount = 0
+            actionObjectRelationship.maxCount = 0
+            actionObjectRelationship.deleteRule = .NoActionDeleteRule
+            actionObjectRelationship.destinationEntity = actionDescription
+            actionObjectRelationship.inverseRelationship = objectRelationship
+            objectRelationship.inverseRelationship = actionObjectRelationship
+            entityProperties.append(actionObjectRelationship)
 
             entityDescription.properties = entityProperties
             entityGroupDescription.properties = entityGroupProperties

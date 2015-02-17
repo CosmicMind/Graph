@@ -54,12 +54,12 @@ public class GKNode : NSObject {
     }
 
     /**
-    * archive
-    * Marks the Model Object to be deleted from its persistent layer.
+    * delete
+    * Marks the Model Object to be deleted from the Graph.
     */
-    public func archive() {
+    public func delete() {
         graph.managedObjectContext.performBlockAndWait {
-            self.node.archive(self.graph)
+            self.node.delete(self.graph)
         }
     }
 
