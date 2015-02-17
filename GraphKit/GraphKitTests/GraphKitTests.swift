@@ -140,7 +140,7 @@ class GraphKitTests : XCTestCase, GKGraphDelegate {
         u1DeleteExpectation = expectationWithDescription("U1: Delete 'User' did not pass.")
         b1DeleteExpectation = expectationWithDescription("B1: Delete 'Book' did not pass.")
         b2DeleteExpectation = expectationWithDescription("B2: Delete 'Book' did not pass.")
-//        a1DeleteExpectation = expectationWithDescription("A1: Delete 'Read' did not pass.")
+        a1DeleteExpectation = expectationWithDescription("A1: Delete 'Read' did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
@@ -195,11 +195,11 @@ class GraphKitTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
-        if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int && entity.hasGroup("Female") {
+        if "User" == entity.type && "Eve" == entity["name"]? as String && 26 == entity["age"]? as Int {
             u1DeleteExpectation?.fulfill()
-        } else if "Book" == entity.type && "Deep C Secrets" == entity["title"]? as String && entity.hasGroup("Thriller") {
+        } else if "Book" == entity.type && "Deep C Secrets" == entity["title"]? as String {
             b1DeleteExpectation?.fulfill()
-        } else if "Book" == entity.type && "Mastering Swift" == entity["title"]? as String && entity.hasGroup("Suspense") && entity.hasGroup("Favourite") {
+        } else if "Book" == entity.type && "Mastering Swift" == entity["title"]? as String {
             b2DeleteExpectation?.fulfill()
         }
     }
