@@ -65,7 +65,7 @@ public class GKEntity : GKNode {
             return nodes
         }
         set(value) {
-            assert(false, "[GraphKit Error: Actions may not be set.]")
+            assert(false, "[GraphKit Error: ActionAsSubject may not be set.]")
         }
     }
 
@@ -86,7 +86,7 @@ public class GKEntity : GKNode {
             return nodes
         }
         set(value) {
-            assert(false, "[GraphKit Error: Actions may not be set.]")
+            assert(false, "[GraphKit Error: ActionAsObject may not be set.]")
         }
     }
 
