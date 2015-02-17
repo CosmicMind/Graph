@@ -27,20 +27,76 @@ public class GKEntity : GKNode {
 
     /**
     * init
-    * Initializes GKEntity with a given GKManagedEntity.
-    * @param        entity: GKManagedEntity!
-    */
-    init(entity: GKManagedEntity!) {
-        super.init(node: entity)
-    }
-
-    /**
-    * init
     * Initializes GKEntity with a given type.
     * @param        type: String!
     */
     override public init(type: String) {
         super.init(type: type)
+    }
+
+    /**
+    * actions
+    * Retrieves an Array of GKAction Objects.
+    * @return       Array<GKAction>
+    */
+    public var actions: Array<GKAction> {
+        get {
+            return actionsAsSubject + actionsAsObject
+        }
+        set(value) {
+            assert(false, "[GraphKit Error: Actions may not be set.]")
+        }
+    }
+
+    /**
+    * actionsAsSubject
+    * Retrieves an Array of GKAction Objects when the Entity is a Subject of the Action.
+    * @return       Array<GKAction>
+    */
+    public var actionsAsSubject: Array<GKAction> {
+        get {
+            var nodes: Array<GKAction> = Array<GKAction>()
+            graph.managedObjectContext.performBlockAndWait {
+                var node: GKManagedEntity = self.node as GKManagedEntity
+                for item: AnyObject in node.actionSubjectSet {
+                    nodes.append(GKAction(action: item as GKManagedAction))
+                }
+            }
+            return nodes
+        }
+        set(value) {
+            assert(false, "[GraphKit Error: Actions may not be set.]")
+        }
+    }
+
+    /**
+    * actionsAsObject
+    * Retrieves an Array of GKAction Objects when the Entity is an Object of the Action.
+    * @return       Array<GKAction>
+    */
+    public var actionsAsObject: Array<GKAction> {
+        get {
+            var nodes: Array<GKAction> = Array<GKAction>()
+            graph.managedObjectContext.performBlockAndWait {
+                var node: GKManagedEntity = self.node as GKManagedEntity
+                for item: AnyObject in node.actionObjectSet {
+                    nodes.append(GKAction(action: item as GKManagedAction))
+                }
+            }
+            return nodes
+        }
+        set(value) {
+            assert(false, "[GraphKit Error: Actions may not be set.]")
+        }
+    }
+
+    /**
+    * init
+    * Initializes GKEntity with a given GKManagedEntity.
+    * @param        entity: GKManagedEntity!
+    */
+    internal init(entity: GKManagedEntity!) {
+        super.init(node: entity)
     }
 
     /**

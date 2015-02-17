@@ -24,6 +24,8 @@ import CoreData
 
 @objc(GKManagedEntity)
 internal class GKManagedEntity : GKManagedNode {
+    @NSManaged internal var actionSubjectSet: NSMutableSet
+    @NSManaged internal var actionObjectSet: NSMutableSet
 
     /**
     * entityDescription
@@ -46,6 +48,8 @@ internal class GKManagedEntity : GKManagedNode {
         self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
         nodeClass = "GKEntity"
         self.type = type
+        actionSubjectSet = NSMutableSet()
+        actionObjectSet = NSMutableSet()
     }
 
     /**

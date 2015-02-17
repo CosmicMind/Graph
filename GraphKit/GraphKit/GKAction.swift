@@ -27,15 +27,6 @@ public class GKAction : GKNode {
 
     /**
     * init
-    * Initializes GKAction with a given GKManagedAction.
-    * @param        action: GKManagedAction!
-    */
-    init(action: GKManagedAction!) {
-        super.init(node: action)
-    }
-
-    /**
-    * init
     * Initializes GKAction with a given type.
     * @param        type: String!
     */
@@ -143,6 +134,15 @@ public class GKAction : GKNode {
             result = node.removeObject(entity.node as GKManagedEntity);
         }
         return result
+    }
+
+    /**
+    * init
+    * Initializes GKAction with a given GKManagedAction.
+    * @param        action: GKManagedAction!
+    */
+    internal init(action: GKManagedAction!) {
+        super.init(node: action)
     }
 
     /**
