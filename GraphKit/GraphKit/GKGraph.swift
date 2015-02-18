@@ -31,6 +31,7 @@ struct GKGraphUtility {
     static let entityGroupIndexName: String = "GKEntityGroup"
     static let entityGroupObjectClassName: String = "GKEntityGroup"
     static let entityGroupDescriptionName: String = "GKEntityGroup"
+    static let entityPropertyIndexName: String = "GKEntityProperty"
     static let entityPropertyObjectClassName: String = "GKEntityProperty"
     static let entityPropertyDescriptionName: String = "GKEntityProperty"
     static let actionIndexName: String = "GKManagedAction"
@@ -39,6 +40,7 @@ struct GKGraphUtility {
     static let actionGroupIndexName: String = "GKActionGroup"
     static let actionGroupObjectClassName: String = "GKActionGroup"
     static let actionGroupDescriptionName: String = "GKActionGroup"
+    static let actionPropertyIndexName: String = "GKActionProperty"
     static let actionPropertyObjectClassName: String = "GKActionProperty"
     static let actionPropertyDescriptionName: String = "GKActionProperty"
 }
@@ -52,11 +54,15 @@ public protocol GKGraphDelegate {
     optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
     optional func graph(graph: GKGraph!, didDeleteAction action: GKAction!)
     optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, group: String!)
-    optional func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, group: String!)
     optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, group: String!)
     optional func graph(graph: GKGraph!, didInsertAction action: GKAction!, group: String!)
-    optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!, group: String!)
     optional func graph(graph: GKGraph!, didDeleteAction action: GKAction!, group: String!)
+    optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, property: String!, value: AnyObject!)
+    optional func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, property: String!, value: AnyObject!)
+    optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, property: String!, value: AnyObject!)
+    optional func graph(graph: GKGraph!, didInsertAction entity: GKAction!, property: String!, value: AnyObject!)
+    optional func graph(graph: GKGraph!, didUpdateAction entity: GKAction!, property: String!, value: AnyObject!)
+    optional func graph(graph: GKGraph!, didDeleteAction entity: GKAction!, property: String!, value: AnyObject!)
 }
 
 @objc(GKGraph)
@@ -92,7 +98,11 @@ public class GKGraph : NSObject {
     }
 
     public func watch(EntityGroup name: String!) {
-        addWatcher("name", value: name, index: GKGraphUtility.entityGroupIndexName, entityDescriptionName: GKGraphUtility.entityGroupDescriptionName, managedObjectClassName: GKGraphUtility.entityObjectClassName)
+        addWatcher("name", value: name, index: GKGraphUtility.entityGroupIndexName, entityDescriptionName: GKGraphUtility.entityGroupDescriptionName, managedObjectClassName: GKGraphUtility.entityGroupObjectClassName)
+    }
+
+    public func watch(EntityProperty name: String!) {
+        addWatcher("name", value: name, index: GKGraphUtility.entityPropertyIndexName, entityDescriptionName: GKGraphUtility.entityPropertyDescriptionName, managedObjectClassName: GKGraphUtility.entityPropertyObjectClassName)
     }
 
     /**
@@ -104,7 +114,11 @@ public class GKGraph : NSObject {
     }
 
     public func watch(ActionGroup name: String!) {
-        addWatcher("name", value: name, index: GKGraphUtility.actionGroupIndexName, entityDescriptionName: GKGraphUtility.actionGroupDescriptionName, managedObjectClassName: GKGraphUtility.actionObjectClassName)
+        addWatcher("name", value: name, index: GKGraphUtility.actionGroupIndexName, entityDescriptionName: GKGraphUtility.actionGroupDescriptionName, managedObjectClassName: GKGraphUtility.actionGroupObjectClassName)
+    }
+
+    public func watch(ActionProperty name: String!) {
+        addWatcher("name", value: name, index: GKGraphUtility.actionPropertyIndexName, entityDescriptionName: GKGraphUtility.actionPropertyDescriptionName, managedObjectClassName: GKGraphUtility.actionPropertyObjectClassName)
     }
 
     /**
@@ -156,6 +170,8 @@ public class GKGraph : NSObject {
 						delegate?.graph?(self, didInsertEntity: GKEntity(entity: node as GKManagedEntity))
 						break
                     case "GKEntityProperty_GKEntityProperty_":
+                        let property: GKEntityProperty = node as GKEntityProperty
+                        delegate?.graph?(self, didInsertEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
                         break
                     case "GKEntityGroup_GKEntityGroup_":
                         let group: GKEntityGroup = node as GKEntityGroup
@@ -165,6 +181,8 @@ public class GKGraph : NSObject {
 						delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
 						break
                     case "GKActionProperty_GKActionProperty_":
+                        let property: GKActionProperty = node as GKActionProperty
+                        delegate?.graph?(self, didInsertAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
                         break
                     case "GKActionGroup_GKActionGroup_":
                         let group: GKActionGroup = node as GKActionGroup
@@ -194,23 +212,15 @@ public class GKGraph : NSObject {
 						delegate?.graph?(self, didUpdateEntity: GKEntity(entity: node as GKManagedEntity))
 						break
                     case "GKEntityProperty_GKEntityProperty_":
-//                        let property: GKEntityProperty = node as GKEntityProperty
-//                        delegate?.graph?(self, didUpdateEntity: GKEntity(entity: property.node as GKManagedEntity))
-                        break
-                    case "GKEntityGroup_GKEntityGroup_":
-                        let group: GKEntityGroup = node as GKEntityGroup
-                        delegate?.graph?(self, didUpdateEntity: GKEntity(entity: group.node as GKManagedEntity), group: group.name)
+                        let property: GKEntityProperty = node as GKEntityProperty
+                        delegate?.graph?(self, didUpdateEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
                         break
                     case "GKManagedAction_GKManagedAction_":
 						delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
 						break
                     case "GKActionProperty_GKActionProperty_":
-//                        let property: GKActionProperty = node as GKActionProperty
-//                        delegate?.graph?(self, didUpdateAction: GKAction(action: property.node as GKManagedAction))
-                        break
-                    case "GKActionGroup_GKActionGroup_":
-                        let group: GKActionGroup = node as GKActionGroup
-                        delegate?.graph?(self, didUpdateAction: GKAction(action: group.node as GKManagedAction), group: group.name)
+                        let property: GKActionProperty = node as GKActionProperty
+                        delegate?.graph?(self, didUpdateAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
                         break
                     default:
 						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
@@ -241,8 +251,8 @@ public class GKGraph : NSObject {
 						delegate?.graph?(self, didDeleteEntity: GKEntity(entity: node as GKManagedEntity))
 						break
                     case "GKEntityProperty_GKEntityProperty_":
-//                        let property: GKEntityProperty = node as GKEntityProperty
-//                        delegate?.graph?(self, didDeleteEntity: GKEntity(entity: property.node as GKManagedEntity))
+                        let property: GKEntityProperty = node as GKEntityProperty
+                        delegate?.graph?(self, didDeleteEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
                         break
                     case "GKEntityGroup_GKEntityGroup_":
                         let group: GKEntityGroup = node as GKEntityGroup
@@ -252,8 +262,8 @@ public class GKGraph : NSObject {
                         delegate?.graph?(self, didDeleteAction: GKAction(action: node as GKManagedAction))
                         break
                     case "GKActionProperty_GKActionProperty_":
-//                        let property: GKActionProperty = node as GKActionProperty
-//                        delegate?.graph?(self, didDeleteAction: GKAction(action: property.node as GKManagedAction))
+                        let property: GKActionProperty = node as GKActionProperty
+                        delegate?.graph?(self, didDeleteAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
                         break
                     case "GKActionGroup_GKActionGroup_":
                         let group: GKActionGroup = node as GKActionGroup

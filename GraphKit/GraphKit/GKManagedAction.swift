@@ -62,8 +62,8 @@ internal class GKManagedAction : GKManagedNode {
     */
     override internal subscript(name: String) -> AnyObject? {
         get {
-            for item in propertySet {
-                let property: GKActionProperty = item as GKActionProperty
+            for node in propertySet {
+                let property: GKActionProperty = node as GKActionProperty
                 if name == property.name {
                     return property.value
                 }
@@ -71,11 +71,12 @@ internal class GKManagedAction : GKManagedNode {
             return nil
         }
         set(value) {
-            for item in propertySet {
-                let property: GKActionProperty = item as GKActionProperty
+            for node in propertySet {
+                let property: GKActionProperty = node as GKActionProperty
                 if name == property.name {
                     if nil == value {
                         propertySet.removeObject(property)
+                        managedObjectContext!.deleteObject(property)
                     } else {
                         property.value = value!
                     }
@@ -113,8 +114,8 @@ internal class GKManagedAction : GKManagedNode {
     * @return       Bool of the result, true if is a part, false otherwise.
     */
     override internal func hasGroup(name: String!) -> Bool {
-        for item in groupSet {
-            let group: GKActionGroup = item as GKActionGroup
+        for node in groupSet {
+            let group: GKActionGroup = node as GKActionGroup
             if name == group.name {
                 return true
             }
@@ -129,8 +130,8 @@ internal class GKManagedAction : GKManagedNode {
     * @return       Bool of the result, true if exists, false otherwise.
     */
     override internal func removeGroup(name: String!) -> Bool {
-        for item in groupSet {
-            let group: GKActionGroup = item as GKActionGroup
+        for node in groupSet {
+            let group: GKActionGroup = node as GKActionGroup
             if name == group.name {
                 groupSet.removeObject(group)
                 managedObjectContext!.deleteObject(group)

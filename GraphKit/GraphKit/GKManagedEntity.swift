@@ -61,8 +61,8 @@ internal class GKManagedEntity : GKManagedNode {
     */
     override internal subscript(name: String) -> AnyObject? {
         get {
-            for item in propertySet {
-				let property: GKEntityProperty = item as GKEntityProperty
+            for node in propertySet {
+				let property: GKEntityProperty = node as GKEntityProperty
 				if name == property.name {
                     return property.value
                 }
@@ -70,11 +70,12 @@ internal class GKManagedEntity : GKManagedNode {
             return nil
         }
         set(value) {
-			for item in propertySet {
-				let property: GKEntityProperty = item as GKEntityProperty
+			for node in propertySet {
+				let property: GKEntityProperty = node as GKEntityProperty
                 if name == property.name {
                     if nil == value {
                         propertySet.removeObject(property)
+                        managedObjectContext!.deleteObject(property)
                     } else {
                         property.value = value!
                     }
@@ -112,8 +113,8 @@ internal class GKManagedEntity : GKManagedNode {
     * @return       Bool of the result, true if is a part, false otherwise.
     */
     override internal func hasGroup(name: String!) -> Bool {
-        for item in groupSet {
-			let group: GKEntityGroup = item as GKEntityGroup
+        for node in groupSet {
+			let group: GKEntityGroup = node as GKEntityGroup
 			if name == group.name {
                 return true
             }
@@ -128,8 +129,8 @@ internal class GKManagedEntity : GKManagedNode {
     * @return       Bool of the result, true if exists, false otherwise.
     */
     override internal func removeGroup(name: String!) -> Bool {
-        for item in groupSet {
-            let group: GKEntityGroup = item as GKEntityGroup
+        for node in groupSet {
+            let group: GKEntityGroup = node as GKEntityGroup
             if name == group.name {
                 groupSet.removeObject(group)
                 managedObjectContext!.deleteObject(group)
