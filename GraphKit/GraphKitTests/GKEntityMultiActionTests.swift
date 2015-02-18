@@ -77,24 +77,22 @@ class GKEntityMultiActionTests : XCTestCase, GKGraphDelegate {
         for entity in a1.subjects {
             entity.delete()
         }
-
         for entity in a1.objects {
             entity.delete()
         }
-
         a1.delete()
         a2.delete()
 
-		// Set an Expectation for the delete watcher.
-		u1DeleteExpectation = expectationWithDescription("U1: Delete 'User' did not pass.")
-		
+        // Set an Expectation for the delete watcher.
+        u1DeleteExpectation = expectationWithDescription("U1: Delete 'User' did not pass.")
+
         // Save the Graph.
         graph.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 		
-		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(5, handler: nil)
+        // Wait for the delegates to be executed.
+        waitForExpectationsWithTimeout(5, handler: nil)
     }
 
     func testPerformanceExample() {
