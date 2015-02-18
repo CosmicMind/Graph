@@ -56,21 +56,21 @@ public class GKNode : NSObject {
     /**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
-    * @param        property: String! Property name.
+    * @param        name: String!
     * get           Returns the property name value.
     * set           Value for the property name.
     */
-    public subscript(property: String) -> AnyObject? {
+    public subscript(name: String) -> AnyObject? {
         get {
             var value: AnyObject?
             graph.managedObjectContext.performBlockAndWait {
-                value = self.node[property]
+                value = self.node[name]
             }
             return value
         }
         set(value) {
             graph.managedObjectContext.performBlockAndWait {
-                self.node[property] = value
+                self.node[name] = value
             }
         }
     }
@@ -83,7 +83,7 @@ public class GKNode : NSObject {
     */
     public subscript(index: Int) -> String {
         get {
-            assert(-1 < index && index < groups.count, "[GraphKit Error: Group index out of range.]")
+            assert(-1 < index && index < groupCount(), "[GraphKit Error: Group index out of range.]")
             var value: String!
             graph.managedObjectContext.performBlockAndWait {
                 value = self.node[index]
@@ -143,7 +143,11 @@ public class GKNode : NSObject {
     * @return       Int of the number of groups.
     */
     public func groupCount() -> Int {
-        return groups.count;
+        var count: Int = 0
+        graph.managedObjectContext.performBlockAndWait {
+            count = self.node.groupSet.count
+        }
+        return count
     }
 
     /**
@@ -166,14 +170,6 @@ public class GKNode : NSObject {
         graph.managedObjectContext.performBlockAndWait {
             self.node = self.createImplementorWithType(type)
         }
-    }
-
-    internal var groups: Array<String> {
-        var groups: Array<String>!
-        graph.managedObjectContext.performBlockAndWait {
-            groups = self.node.groups
-        }
-        return groups
     }
 
     /**
