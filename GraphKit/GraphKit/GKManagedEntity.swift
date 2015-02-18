@@ -131,7 +131,7 @@ extension GKManagedEntity {
     * @param        value: GKManagedAction
     */
     func addActionSubjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+        let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
         nodes.addObject(value)
     }
 
@@ -141,27 +141,27 @@ extension GKManagedEntity {
     * @param        value: GKManagedAction
     */
     func removeActionSubjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
-		nodes.removeObject(value)
-	}
+        let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+        nodes.removeObject(value)
+    }
 
     /**
     * addActionObjectSetObject
     * Adds the Action to the actionObjectSet for the Entity.
     * @param        value: GKManagedAction
     */
-	func addActionObjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
-		nodes.addObject(value)
-	}
+    func addActionObjectSetObject(value: GKManagedAction) {
+        let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+        nodes.addObject(value)
+    }
 
     /**
     * removeActionObjectSetObject
     * Removes the Action to the actionObjectSet for the Entity.
     * @param        value: GKManagedAction
     */
-	func removeActionObjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
-		nodes.removeObject(value)
-	}
+    func removeActionObjectSetObject(value: GKManagedAction) {
+        let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+        nodes.removeObject(value)
+    }
 }
