@@ -165,7 +165,7 @@ class GraphKitTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
-        if "Read" == action.type && 123 == action["session"]? as Int && 0 == action.subjects.count && 1 == action.objects.count {
+        if "Read" == action.type && 123 == action["session"]? as Int && 0 == action.subjects.count && 0 == action.objects.count {
             a1DeleteExpectation?.fulfill()
         }
     }

@@ -41,7 +41,7 @@ public class GKEntity : GKNode {
     */
     public var actions: Array<GKAction> {
         get {
-            return actionsAsSubject + actionsAsObject
+            return actionsWhenSubject + actionsWhenObject
         }
         set(value) {
             assert(false, "[GraphKit Error: Actions may not be set.]")
@@ -49,11 +49,11 @@ public class GKEntity : GKNode {
     }
 
     /**
-    * actionsAsSubject
+    * actionsWhenSubject
     * Retrieves an Array of GKAction Objects when the Entity is a Subject of the Action.
     * @return       Array<GKAction>
     */
-    public var actionsAsSubject: Array<GKAction> {
+    public var actionsWhenSubject: Array<GKAction> {
         get {
             var nodes: Array<GKAction> = Array<GKAction>()
             graph.managedObjectContext.performBlockAndWait {
@@ -65,16 +65,16 @@ public class GKEntity : GKNode {
             return nodes
         }
         set(value) {
-            assert(false, "[GraphKit Error: ActionAsSubject may not be set.]")
+            assert(false, "[GraphKit Error: ActionWhenSubject may not be set.]")
         }
     }
 
     /**
-    * actionsAsObject
+    * actionsWhenObject
     * Retrieves an Array of GKAction Objects when the Entity is an Object of the Action.
     * @return       Array<GKAction>
     */
-    public var actionsAsObject: Array<GKAction> {
+    public var actionsWhenObject: Array<GKAction> {
         get {
             var nodes: Array<GKAction> = Array<GKAction>()
             graph.managedObjectContext.performBlockAndWait {
@@ -86,7 +86,18 @@ public class GKEntity : GKNode {
             return nodes
         }
         set(value) {
-            assert(false, "[GraphKit Error: ActionAsObject may not be set.]")
+            assert(false, "[GraphKit Error: ActionWhenObject may not be set.]")
+        }
+    }
+
+    /**
+    * delete
+    * Marks the Model Object to be deleted from the Graph.
+    */
+    public func delete() {
+        graph.managedObjectContext.performBlockAndWait {
+            var node: GKManagedEntity = self.node as GKManagedEntity
+            node.delete(self.graph)
         }
     }
 

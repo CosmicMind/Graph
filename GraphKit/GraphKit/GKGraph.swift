@@ -309,13 +309,13 @@ public class GKGraph : NSObject {
             groupRelationship.destinationEntity = actionDescription
             actionGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
 
+            // Inverse relationship for Subjects -- B.
             var subjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
             subjectRelationship.name = "subjectSet"
             subjectRelationship.minCount = 0
             subjectRelationship.maxCount = 0
             subjectRelationship.deleteRule = .NoActionDeleteRule
             subjectRelationship.destinationEntity = entityDescription
-            actionProperties.append(subjectRelationship)
 
             var actionSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
             actionSubjectRelationship.name = "actionSubjectSet"
@@ -323,17 +323,21 @@ public class GKGraph : NSObject {
             actionSubjectRelationship.maxCount = 0
             actionSubjectRelationship.deleteRule = .NoActionDeleteRule
             actionSubjectRelationship.destinationEntity = actionDescription
+
             actionSubjectRelationship.inverseRelationship = subjectRelationship
             subjectRelationship.inverseRelationship = actionSubjectRelationship
-            entityProperties.append(actionSubjectRelationship)
 
+            entityProperties.append(actionSubjectRelationship.copy() as NSRelationshipDescription)
+            actionProperties.append(subjectRelationship.copy() as NSRelationshipDescription)
+            // Inverse relationship for Subjects -- E.
+
+            // Inverse relationship for Objects -- B.
             var objectRelationship: NSRelationshipDescription = NSRelationshipDescription()
             objectRelationship.name = "objectSet"
             objectRelationship.minCount = 0
             objectRelationship.maxCount = 0
             objectRelationship.deleteRule = .NoActionDeleteRule
             objectRelationship.destinationEntity = entityDescription
-            actionProperties.append(objectRelationship)
 
             var actionObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
             actionObjectRelationship.name = "actionObjectSet"
@@ -343,7 +347,10 @@ public class GKGraph : NSObject {
             actionObjectRelationship.destinationEntity = actionDescription
             actionObjectRelationship.inverseRelationship = objectRelationship
             objectRelationship.inverseRelationship = actionObjectRelationship
-            entityProperties.append(actionObjectRelationship)
+
+            entityProperties.append(actionObjectRelationship.copy() as NSRelationshipDescription)
+            actionProperties.append(objectRelationship.copy() as NSRelationshipDescription)
+            // Inverse relationship for Objects -- E.
 
             entityDescription.properties = entityProperties
             entityGroupDescription.properties = entityGroupProperties

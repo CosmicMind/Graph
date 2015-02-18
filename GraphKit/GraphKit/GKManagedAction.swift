@@ -25,8 +25,8 @@ import CoreData
 
 @objc(GKManagedAction)
 internal class GKManagedAction : GKManagedNode {
-    @NSManaged internal var subjectSet: NSMutableSet
-    @NSManaged internal var objectSet: NSMutableSet
+    @NSManaged internal var subjectSet: NSSet
+    @NSManaged internal var objectSet: NSSet
 
     /**
     * entityDescription
@@ -49,8 +49,8 @@ internal class GKManagedAction : GKManagedNode {
         self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
         nodeClass = "GKAction"
         self.type = type
-        subjectSet = NSMutableSet()
-        objectSet = NSMutableSet()
+        subjectSet = NSSet()
+        objectSet = NSSet()
     }
 
     /**
@@ -110,9 +110,10 @@ internal class GKManagedAction : GKManagedNode {
     * @return       Bool of the result, true if added, false otherwise.
     */
     internal func addSubject(entity: GKManagedEntity!) -> Bool {
-        var count: Int = subjectSet.count
-        subjectSet.addObject(entity)
-        return count != subjectSet.count
+        let nodes = mutableSetValueForKey("subjectSet");
+        let count: Int = nodes.count
+        nodes.addObject(entity)
+        return count != nodes.count
     }
 
     /**
@@ -122,9 +123,10 @@ internal class GKManagedAction : GKManagedNode {
     * @return       Bool of the result, true if removed, false otherwise.
     */
     internal func removeSubject(entity: GKManagedEntity!) -> Bool {
-        var count: Int = subjectSet.count
-        subjectSet.removeObject(entity)
-        return count != subjectSet.count
+        let nodes = mutableSetValueForKey("subjectSet");
+        let count: Int = nodes.count
+        nodes.removeObject(entity)
+        return count != nodes.count
     }
 
     /**
@@ -134,9 +136,10 @@ internal class GKManagedAction : GKManagedNode {
     * @return       Bool of the result, true if added, false otherwise.
     */
     internal func addObject(entity: GKManagedEntity!) -> Bool {
-        var count: Int = objectSet.count
-        objectSet.addObject(entity)
-        return count != objectSet.count
+        let nodes = mutableSetValueForKey("objectSet");
+        let count: Int = nodes.count
+        nodes.addObject(entity)
+        return count != nodes.count
     }
 
     /**
@@ -146,8 +149,26 @@ internal class GKManagedAction : GKManagedNode {
     * @return       Bool of the result, true if removed, false otherwise.
     */
     internal func removeObject(entity: GKManagedEntity!) -> Bool {
-        var count: Int = objectSet.count
-        objectSet.removeObject(entity)
-        return count != objectSet.count
+        let nodes = mutableSetValueForKey("objectSet");
+        let count: Int = nodes.count
+        nodes.removeObject(entity)
+        return count != nodes.count
+    }
+
+    /**
+    * delete
+    * Marks the Model Object to be deleted from the Graph.
+    * @param        graph: GKGraph! An instance of the GKGraph.
+    */
+    internal func delete(graph: GKGraph!) {
+        var nodes: NSMutableSet = subjectSet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+        }
+        nodes = objectSet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+        }
+        graph.managedObjectContext.deleteObject(self)
     }
 }

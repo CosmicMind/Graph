@@ -137,6 +137,17 @@ public class GKAction : GKNode {
     }
 
     /**
+    * delete
+    * Marks the Model Object to be deleted from the Graph.
+    */
+    public func delete() {
+        graph.managedObjectContext.performBlockAndWait {
+            var node: GKManagedAction = self.node as GKManagedAction
+            node.delete(self.graph)
+        }
+    }
+
+    /**
     * init
     * Initializes GKAction with a given GKManagedAction.
     * @param        action: GKManagedAction!
