@@ -195,9 +195,8 @@ internal class GKManagedAction : GKManagedNode {
     /**
     * delete
     * Marks the Model Object to be deleted from the Graph.
-    * @param        graph: GKGraph! An instance of the GKGraph.
     */
-    internal func delete(graph: GKGraph!) {
+    internal func delete() {
         var nodes: NSMutableSet = subjectSet as NSMutableSet
         for node in nodes {
             nodes.removeObject(node)
@@ -206,6 +205,16 @@ internal class GKManagedAction : GKManagedNode {
         for node in nodes {
             nodes.removeObject(node)
         }
-        graph.managedObjectContext.deleteObject(self)
+        nodes = propertySet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+            managedObjectContext!.deleteObject(node as GKActionProperty)
+        }
+        nodes = groupSet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+            managedObjectContext!.deleteObject(node as GKActionGroup)
+        }
+        managedObjectContext!.deleteObject(self)
     }
 }

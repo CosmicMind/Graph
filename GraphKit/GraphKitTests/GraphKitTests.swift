@@ -57,20 +57,30 @@ class GraphKitTests : XCTestCase, GKGraphDelegate {
         let u1: GKEntity = GKEntity(type: "User")
         u1["name"] = "Eve"
         u1.addGroup("Female")
-
+		
         u1InsertExpectation = expectationWithDescription("U1: Insert 'User' did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
+        waitForExpectationsWithTimeout(5, handler: nil)
+
+//		u1.removeGroup("Female")
+        u1.delete()
+
+        // Save the Graph, which will execute the delegate handlers.
+        graph.save() { (success: Bool, error: NSError?) in
+            XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+        }
+
+        u1DeleteExpectation = expectationWithDescription("U1: Update 'User' did not pass.")
 
         // Wait for the delegates to be executed.
         waitForExpectationsWithTimeout(5, handler: nil)
 
 //        u1.removeGroup("Female")
 
-//        u1UpdateExpectation = expectationWithDescription("U1: Update 'User' did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
 //        graph.save() { (success: Bool, error: NSError?) in
@@ -86,26 +96,41 @@ class GraphKitTests : XCTestCase, GKGraphDelegate {
     }
 
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-        if "User" == entity.type && nil != entity["name"] {
+//        if "User" == entity.type && nil != entity["name"] {
             u1InsertExpectation?.fulfill()
-        }
+//        }
+        NSLog("INSERTED ENTITY %@", entity)
 	}
 
     func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, group: String!) {
-        if "User" == entity.type && nil != entity["name"] {
-            u1InsertExpectation?.fulfill()
-        }
+//        if "User" == entity.type && nil != entity["name"] {
+//            u1InsertExpectation?.fulfill()
+//        }
+        NSLog("INSERTED GROUP %@", entity)
+    }
+
+    func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!) {
+        NSLog("UPDATED ENTITY %@", entity)
     }
 
     func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, group: String!) {
         if "User" == entity.type {
             u1UpdateExpectation?.fulfill()
         }
+
+        NSLog("UPDATED GROUP %@", entity)
     }
 
     func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
+        NSLog("DELETED ENTITY %@", entity)
         if "User" == entity.type {
             u1DeleteExpectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, group: String!) {
+        if "User" == entity.type {
+            NSLog("DELETED GROUP NOW %@", entity)
         }
     }
 }

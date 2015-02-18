@@ -97,7 +97,7 @@ internal class GKManagedEntity : GKManagedNode {
     */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext)
+            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext!)
             group.node = self
             groupSet.addObject(group)
             return true
@@ -142,9 +142,8 @@ internal class GKManagedEntity : GKManagedNode {
     /**
     * delete
     * Marks the Model Object to be deleted from the Graph.
-    * @param        graph: GKGraph! An instance of the GKGraph.
     */
-    internal func delete(graph: GKGraph!) {
+    internal func delete() {
         var nodes: NSMutableSet = actionSubjectSet as NSMutableSet
         for node in nodes {
             nodes.removeObject(node)
@@ -153,7 +152,17 @@ internal class GKManagedEntity : GKManagedNode {
         for node in nodes {
             nodes.removeObject(node)
         }
-        graph.managedObjectContext.deleteObject(self)
+        nodes = propertySet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+            managedObjectContext!.deleteObject(node as GKEntityProperty)
+        }
+        nodes = groupSet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+            managedObjectContext!.deleteObject(node as GKEntityGroup)
+        }
+        managedObjectContext!.deleteObject(self)
     }
 }
 
