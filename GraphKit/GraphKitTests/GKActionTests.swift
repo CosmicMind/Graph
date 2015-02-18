@@ -21,6 +21,12 @@ import GraphKit
 
 class GKActionTests : XCTestCase, GKGraphDelegate {
 
+    var userInsertExpectation: XCTestExpectation?
+    var userDeleteExpectation: XCTestExpectation?
+    var bookInsertExpectation: XCTestExpectation?
+    var bookDeleteExpectation: XCTestExpectation?
+    var magazineInsertExpectation: XCTestExpectation?
+    var magazineDeleteExpectation: XCTestExpectation?
     var readInsertExpectation: XCTestExpectation?
     var readDeleteExpectation: XCTestExpectation?
     var holidayInsertExpectation: XCTestExpectation?
@@ -53,13 +59,31 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         graph.watch(ActionProperty: "name")
         graph.watch(ActionProperty: "session")
 
+        // Let's watch the changes in the Graph for the following Entity types.
+        graph.watch(Entity: "User")
+        graph.watch(Entity: "Book")
+        graph.watch(Entity: "Magazine")
+
         // Create a Read Action.
         let read: GKAction = GKAction(type: "Read")
         read["name"] = "New Years"
         read["session"] = 123
         read.addGroup("Holiday")
 
+        // Create a User Entity and a Book and Magazine Entity for the Read Action.
+        let user: GKEntity = GKEntity(type: "User")
+        let book: GKEntity = GKEntity(type: "Book")
+        let magazine: GKEntity = GKEntity(type: "Magazine")
+
+        // Create the relationship -- User Read a Book and Magazine.
+        read.addSubject(user)
+        read.addObject(book)
+        read.addObject(magazine)
+
         // Set an Expectation for the insert watcher.
+        userInsertExpectation = expectationWithDescription("User: Insert did not pass.")
+        bookInsertExpectation = expectationWithDescription("Book: Insert did not pass.")
+        magazineInsertExpectation = expectationWithDescription("Magazine: Insert did not pass.")
         readInsertExpectation = expectationWithDescription("Read: Insert did not pass.")
         holidayInsertExpectation = expectationWithDescription("Holiday: Insert did not pass.")
         nameInsertExpectation = expectationWithDescription("Name: Insert did not pass.")
@@ -89,8 +113,14 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
 
         read.delete()
+        user.delete()
+        book.delete()
+        magazine.delete()
 
         // Set an Expectation for the delete watcher.
+        userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
+        bookDeleteExpectation = expectationWithDescription("Book: Delete did not pass.")
+        magazineDeleteExpectation = expectationWithDescription("Magazine: Delete did not pass.")
         readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
         holidayDeleteExpectation = expectationWithDescription("Holiday: Delete did not pass.")
         nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
@@ -109,31 +139,51 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         self.measureBlock() {}
     }
 
-    func graph(graph: GKGraph!, didInsertAction entity: GKAction!) {
-        if "Read" == entity.type {
+    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+        if "User" == entity.type && 1 == entity.actionsWhenSubject.count {
+            userInsertExpectation?.fulfill()
+        } else if "Book" == entity.type && 1 == entity.actionsWhenObject.count {
+            bookInsertExpectation?.fulfill()
+        } else if "Magazine" == entity.type && 1 == entity.actionsWhenObject.count {
+            magazineInsertExpectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
+        if "User" == entity.type && 0 == entity.actions.count {
+            userDeleteExpectation?.fulfill()
+        } else if "Book" == entity.type && 0 == entity.actions.count {
+            bookDeleteExpectation?.fulfill()
+        } else if "Magazine" == entity.type && 0 == entity.actions.count {
+            magazineDeleteExpectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
+        if "Read" == action.type && 1 == action.subjects.count && 2 == action.objects.count {
             readInsertExpectation?.fulfill()
         }
     }
 
-    func graph(graph: GKGraph!, didDeleteAction entity: GKAction!) {
-        if "Read" == entity.type {
+    func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
+        if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
             readDeleteExpectation?.fulfill()
         }
     }
 
-    func graph(graph: GKGraph!, didInsertAction entity: GKAction!, group: String!) {
+    func graph(graph: GKGraph!, didInsertAction action: GKAction!, group: String!) {
         if "Holiday" == group {
             holidayInsertExpectation?.fulfill()
         }
     }
 
-    func graph(graph: GKGraph!, didDeleteAction entity: GKAction!, group: String!) {
+    func graph(graph: GKGraph!, didDeleteAction action: GKAction!, group: String!) {
         if "Holiday" == group {
             holidayDeleteExpectation?.fulfill()
         }
     }
 
-    func graph(graph: GKGraph!, didInsertAction entity: GKAction!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph!, didInsertAction action: GKAction!, property: String!, value: AnyObject!) {
         if "name" == property && "New Years" == value as String {
             nameInsertExpectation?.fulfill()
         } else if "session" == property && 123 == value as Int {
@@ -141,7 +191,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didUpdateAction entity: GKAction!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph!, didUpdateAction action: GKAction!, property: String!, value: AnyObject!) {
         if "name" == property && "Daniel" == value as String {
             nameUpdateExpectation?.fulfill()
         } else if "session" == property && 31 == value as Int {
@@ -149,7 +199,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didDeleteAction entity: GKAction!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph!, didDeleteAction action: GKAction!, property: String!, value: AnyObject!) {
         if "name" == property && "Daniel" == value as String {
             nameDeleteExpectation?.fulfill()
         } else if "session" == property && 31 == value as Int {
