@@ -57,9 +57,9 @@ class GKEntityMultiActionTests : XCTestCase, GKGraphDelegate {
 
         // Add a bunch of Book Entity Objects.
         for i in 0..<100 {
-//            let b1: GKEntity = GKEntity(type: "Book")
-//			a1.addObject(b1)
-//            a2.addObject(b1)
+            let b1: GKEntity = GKEntity(type: "Book")
+			a1.addObject(b1)
+            a2.addObject(b1)
         }
 		
 		// Set an Expectation for the insert watcher.
@@ -74,17 +74,16 @@ class GKEntityMultiActionTests : XCTestCase, GKGraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
 
         // Cleanup
-//        for entity in a1.subjects {
-//            entity.delete()
-//        }
-//
-//        for entity in a1.objects {
-//            entity.delete()
-//        }
+        for entity in a1.subjects {
+            entity.delete()
+        }
+
+        for entity in a1.objects {
+            entity.delete()
+        }
 
         a1.delete()
         a2.delete()
-        u1.delete()
 
 		// Set an Expectation for the delete watcher.
 		u1DeleteExpectation = expectationWithDescription("U1: Delete 'User' did not pass.")
