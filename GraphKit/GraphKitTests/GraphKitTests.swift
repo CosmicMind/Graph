@@ -105,16 +105,13 @@ class GraphKitTests : XCTestCase, GKGraphDelegate {
         // Remove b1 from the Object Set.
         XCTAssertTrue(a1.removeSubject(u1), "Did not remove U1 Subject.")
         XCTAssertTrue(a1.removeObject(b1), "Did not remove B1 Object.")
-        a1["updated"] = true
+        XCTAssertTrue(a1.removeGroup("XCTest"), "Did not remove 'XCTest' Group.")
 
         // Remove u1, b1, and b2 from Groups.
         XCTAssertTrue(u1.removeGroup("Female"), "Did not remove 'Female' Group.")
         XCTAssertTrue(b1.removeGroup("Thriller"), "Did not remove 'Thriller' Group.")
         XCTAssertTrue(b2.removeGroup("Suspense"), "Did not remove 'Suspense' Group.")
         XCTAssertTrue(b2.removeGroup("Favourite"), "Did not remove 'Favourite' Group.")
-        u1["updated"] = true
-        b1["updated"] = true
-        b2["updated"] = true
 
         // Set another Expectation for the update watcher.
         u1UpdateExpectation = expectationWithDescription("U1: Update 'User' did not pass.")
@@ -162,13 +159,13 @@ class GraphKitTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didUpdateAction action: GKAction!) {
-        if "Read" == action.type && 123 == action["session"]? as Int && action.hasGroup("XCTest") && 0 == action.subjects.count && 1 == action.objects.count {
+        if "Read" == action.type && 123 == action["session"]? as Int && 0 == action.subjects.count && 1 == action.objects.count {
             a1UpdateExpectation?.fulfill()
         }
     }
 
     func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
-        if "Read" == action.type && 123 == action["session"]? as Int && action.hasGroup("XCTest") && 0 == action.subjects.count && 1 == action.objects.count {
+        if "Read" == action.type && 123 == action["session"]? as Int && 0 == action.subjects.count && 0 == action.objects.count {
             a1DeleteExpectation?.fulfill()
         }
     }
@@ -191,7 +188,6 @@ class GraphKitTests : XCTestCase, GKGraphDelegate {
         } else if "Book" == entity.type && "Mastering Swift" == entity["title"]? as String && !entity.hasGroup("Suspense") && !entity.hasGroup("Favourite") {
             b2UpdateExpectation?.fulfill()
         }
-
     }
 
     func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {

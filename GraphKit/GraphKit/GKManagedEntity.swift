@@ -24,8 +24,8 @@ import CoreData
 
 @objc(GKManagedEntity)
 internal class GKManagedEntity : GKManagedNode {
-    @NSManaged internal var actionSubjectSet: NSMutableSet
-    @NSManaged internal var actionObjectSet: NSMutableSet
+    @NSManaged internal var actionSubjectSet: NSSet
+    @NSManaged internal var actionObjectSet: NSSet
 
     /**
     * entityDescription
@@ -48,8 +48,8 @@ internal class GKManagedEntity : GKManagedNode {
         self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
         nodeClass = "GKEntity"
         self.type = type
-        actionSubjectSet = NSMutableSet()
-        actionObjectSet = NSMutableSet()
+        actionSubjectSet = NSSet()
+        actionObjectSet = NSSet()
     }
 
     /**
@@ -64,9 +64,9 @@ internal class GKManagedEntity : GKManagedNode {
             var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext)
             group.node = self
             groupSet.addObject(group)
-			return true
+            return true
         }
-		return false
+        return false
     }
 
     /**
@@ -86,7 +86,7 @@ internal class GKManagedEntity : GKManagedNode {
     * @return       Bool of the result, true if exists, false otherwise.
     */
     override internal func removeGroup(name: String!) -> Bool {
-        for i in 0..<groups.count {
+        for i in 0 ..< groups.count {
             if name == groups[i] {
                 groups.removeAtIndex(i)
                 for item: AnyObject in groupSet {
@@ -101,4 +101,67 @@ internal class GKManagedEntity : GKManagedNode {
         }
         return false
     }
+
+    /**
+    * delete
+    * Marks the Model Object to be deleted from the Graph.
+    * @param        graph: GKGraph! An instance of the GKGraph.
+    */
+    internal func delete(graph: GKGraph!) {
+        var nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+        }
+        nodes = actionObjectSet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+        }
+        graph.managedObjectContext.deleteObject(self)
+    }
+}
+
+/**
+* An extension used to handle the many-to-many relationship with Actions.
+*/
+extension GKManagedEntity {
+
+    /**
+    * addActionSubjectSetObject
+    * Adds the Action to the actionSubjectSet for the Entity.
+    * @param        value: GKManagedAction
+    */
+    func addActionSubjectSetObject(value: GKManagedAction) {
+		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+        nodes.addObject(value)
+    }
+
+    /**
+    * removeActionSubjectSetObject
+    * Removes the Action to the actionSubjectSet for the Entity.
+    * @param        value: GKManagedAction
+    */
+    func removeActionSubjectSetObject(value: GKManagedAction) {
+		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+		nodes.removeObject(value)
+	}
+
+    /**
+    * addActionObjectSetObject
+    * Adds the Action to the actionObjectSet for the Entity.
+    * @param        value: GKManagedAction
+    */
+	func addActionObjectSetObject(value: GKManagedAction) {
+		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+		nodes.addObject(value)
+	}
+
+    /**
+    * removeActionObjectSetObject
+    * Removes the Action to the actionObjectSet for the Entity.
+    * @param        value: GKManagedAction
+    */
+	func removeActionObjectSetObject(value: GKManagedAction) {
+		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+		nodes.removeObject(value)
+	}
 }
