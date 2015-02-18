@@ -106,13 +106,4 @@ internal class GKManagedNode : NSManagedObject, Printable {
     internal func removeGroup(name: String!) -> Bool {
         return false
     }
-
-    /**
-    * delete
-    * Marks the Model Object to be deleted from the Graph.
-    * @param        graph: GKGraph! An instance of the GKGraph.
-    */
-    internal func delete(graph: GKGraph!) {
-        graph.managedObjectContext.deleteObject(self)
-    }
 }

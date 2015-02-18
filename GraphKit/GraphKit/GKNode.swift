@@ -54,16 +54,6 @@ public class GKNode : NSObject {
     }
 
     /**
-    * delete
-    * Marks the Model Object to be deleted from the Graph.
-    */
-    public func delete() {
-        graph.managedObjectContext.performBlockAndWait {
-            self.node.delete(self.graph)
-        }
-    }
-
-    /**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
     * @param        property: String! Property name.
