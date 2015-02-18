@@ -21,126 +21,139 @@ import GraphKit
 
 class GKActionTests : XCTestCase, GKGraphDelegate {
 
-    var u1InsertExpectation: XCTestExpectation?
-	var u1UpdateExpectation: XCTestExpectation?
-	var u1DeleteExpectation: XCTestExpectation?
-    var b1InsertExpectation: XCTestExpectation?
-    var b1UpdateExpectation: XCTestExpectation?
-	var b1DeleteExpectation: XCTestExpectation?
-	var b2InsertExpectation: XCTestExpectation?
-    var b2UpdateExpectation: XCTestExpectation?
-	var b2DeleteExpectation: XCTestExpectation?
-    var a1InsertExpectation: XCTestExpectation?
-    var a1UpdateExpectation: XCTestExpectation?
-    var a1DeleteExpectation: XCTestExpectation?
+    var readInsertExpectation: XCTestExpectation?
+    var readDeleteExpectation: XCTestExpectation?
+    var holidayInsertExpectation: XCTestExpectation?
+    var holidayDeleteExpectation: XCTestExpectation?
+    var nameInsertExpectation: XCTestExpectation?
+    var nameUpdateExpectation: XCTestExpectation?
+    var nameDeleteExpectation: XCTestExpectation?
+    var sessionInsertExpectation: XCTestExpectation?
+    var sessionUpdateExpectation: XCTestExpectation?
+    var sessionDeleteExpectation: XCTestExpectation?
 
     override func setUp() {
         super.setUp()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testAll() {
-		// Create a Graph instance.
+        // Create a Graph instance.
         let graph: GKGraph = GKGraph()
 
-		// Set the XCTest Class as the delegate.
-		graph.delegate = self
-		
-		// Let's watch the changes in the Graph for the following Entity and Action types.
-        graph.watch(Entity: "User")
-        graph.watch(EntityGroup: "Female")
-		graph.watch(EntityProperty: "name")
+        // Set the XCTest Class as the delegate.
+        graph.delegate = self
 
+        // Let's watch the changes in the Graph for the following Action types.
+        graph.watch(Action: "Read")
+        graph.watch(ActionGroup: "Holiday")
+        graph.watch(ActionProperty: "name")
+        graph.watch(ActionProperty: "session")
 
-        // Create a User Entity.
-        let u1: GKEntity = GKEntity(type: "User")
-        u1["name"] = "Eve"
-        u1.addGroup("Female")
+        // Create a Read Action.
+        let read: GKAction = GKAction(type: "Read")
+        read["name"] = "New Years"
+        read["session"] = 123
+        read.addGroup("Holiday")
 
-        u1InsertExpectation = expectationWithDescription("U1: Insert 'User' did not pass.")
-
-        // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
-            XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-        }
-        waitForExpectationsWithTimeout(5, handler: nil)
-
-        u1["name"] = "Daniel"
-
-//		u1.removeGroup("Female")
-//        u1.delete()
+        // Set an Expectation for the insert watcher.
+        readInsertExpectation = expectationWithDescription("Read: Insert did not pass.")
+        holidayInsertExpectation = expectationWithDescription("Holiday: Insert did not pass.")
+        nameInsertExpectation = expectationWithDescription("Name: Insert did not pass.")
+        sessionInsertExpectation = expectationWithDescription("Session: Insert did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
-        u1DeleteExpectation = expectationWithDescription("U1: Update 'User' did not pass.")
+        // Wait for the delegates to be executed.
+        waitForExpectationsWithTimeout(5, handler: nil)
+
+        read["name"] = "Daniel"
+        read["session"] = 31
+
+        // Set an Expectation for the update watcher.
+        nameUpdateExpectation = expectationWithDescription("Name: Update did not pass.")
+        sessionUpdateExpectation = expectationWithDescription("Session: Update did not pass.")
+
+        // Save the Graph, which will execute the delegate handlers.
+        graph.save() { (success: Bool, error: NSError?) in
+            XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+        }
 
         // Wait for the delegates to be executed.
         waitForExpectationsWithTimeout(5, handler: nil)
 
-//        u1.removeGroup("Female")
+        read.delete()
 
+        // Set an Expectation for the delete watcher.
+        readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
+        holidayDeleteExpectation = expectationWithDescription("Holiday: Delete did not pass.")
+        nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
+        sessionDeleteExpectation = expectationWithDescription("Session: Delete did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-//        graph.save() { (success: Bool, error: NSError?) in
-//            XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-//        }
+        graph.save() { (success: Bool, error: NSError?) in
+            XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+        }
 
         // Wait for the delegates to be executed.
-//        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectationsWithTimeout(5, handler: nil)
     }
 
     func testPerformanceExample() {
         self.measureBlock() {}
     }
 
-	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-//        if "User" == entity.type && nil != entity["name"] {
-            u1InsertExpectation?.fulfill()
-//        }
-        NSLog("INSERTED ENTITY %@", entity)
-	}
-
-    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, group: String!) {
-//        if "User" == entity.type && nil != entity["name"] {
-//            u1InsertExpectation?.fulfill()
-//        }
-        NSLog("INSERTED GROUP %@ %@", entity["name"]? as String, group)
-    }
-
-    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, property: String!, value: AnyObject!) {
-        NSLog("INSERTED PROPERTY %@ %@", property as String, value as String)
-    }
-
-    func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, property: String!, value: AnyObject!) {
-        NSLog("UPDATED PROPERTY %@ %@", property as String, value as String)
-        u1DeleteExpectation?.fulfill()
-    }
-
-    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, property: String!, value: AnyObject!) {
-        NSLog("DELETED PROPERTY %@ %@", property as String, value as String)
-//		u1DeleteExpectation?.fulfill()
-    }
-
-    func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!) {
-        NSLog("UPDATED ENTITY %@", entity)
-    }
-
-    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
-        NSLog("DELETED ENTITY %@", entity)
-        if "User" == entity.type {
-//            u1DeleteExpectation?.fulfill()
+    func graph(graph: GKGraph!, didInsertAction entity: GKAction!) {
+        if "Read" == entity.type {
+            readInsertExpectation?.fulfill()
         }
     }
 
-    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, group: String!) {
-        if "User" == entity.type {
-            NSLog("DELETED GROUP NOW %@ %@", entity, group)
+    func graph(graph: GKGraph!, didDeleteAction entity: GKAction!) {
+        if "Read" == entity.type {
+            readDeleteExpectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didInsertAction entity: GKAction!, group: String!) {
+        if "Holiday" == group {
+            holidayInsertExpectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didDeleteAction entity: GKAction!, group: String!) {
+        if "Holiday" == group {
+            holidayDeleteExpectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didInsertAction entity: GKAction!, property: String!, value: AnyObject!) {
+        if "name" == property && "New Years" == value as String {
+            nameInsertExpectation?.fulfill()
+        } else if "session" == property && 123 == value as Int {
+            sessionInsertExpectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didUpdateAction entity: GKAction!, property: String!, value: AnyObject!) {
+        if "name" == property && "Daniel" == value as String {
+            nameUpdateExpectation?.fulfill()
+        } else if "session" == property && 31 == value as Int {
+            sessionUpdateExpectation?.fulfill()
+        }
+    }
+
+    func graph(graph: GKGraph!, didDeleteAction entity: GKAction!, property: String!, value: AnyObject!) {
+        if "name" == property && "Daniel" == value as String {
+            nameDeleteExpectation?.fulfill()
+        } else if "session" == property && 31 == value as Int {
+            sessionDeleteExpectation?.fulfill()
         }
     }
 }
