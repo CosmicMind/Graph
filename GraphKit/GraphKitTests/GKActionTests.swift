@@ -100,7 +100,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         read["name"] = "Daniel"
         read["session"] = 31
 
-        // Set an Expectation for the update watcher.
+        // Set Expectations for the update watcher.
         nameUpdateExpectation = expectationWithDescription("Name: Update did not pass.")
         sessionUpdateExpectation = expectationWithDescription("Session: Update did not pass.")
 
@@ -117,7 +117,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         book.delete()
         magazine.delete()
 
-        // Set an Expectation for the delete watcher.
+        // Set Expectations for the delete watcher.
         userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
         bookDeleteExpectation = expectationWithDescription("Book: Delete did not pass.")
         magazineDeleteExpectation = expectationWithDescription("Magazine: Delete did not pass.")
