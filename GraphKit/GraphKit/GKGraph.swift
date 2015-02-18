@@ -128,8 +128,8 @@ public class GKGraph : NSObject {
 		inserted.filterUsingPredicate(masterPredicate!)
 
 		if 0 < inserted.count {
-			let nodes: Array<GKManagedNode> = inserted.allObjects as [GKManagedNode]
-			for node: GKManagedNode in nodes {
+			let nodes: Array<NSManagedObject> = inserted.allObjects as [NSManagedObject]
+			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
 				if nil == className {
 					println("[GraphKit Error: Cannot get Object Class name.]")
@@ -154,8 +154,8 @@ public class GKGraph : NSObject {
 		updated.filterUsingPredicate(masterPredicate!)
 
 		if 0 < updated.count {
-			let nodes: Array<GKManagedNode> = updated.allObjects as [GKManagedNode]
-			for node: GKManagedNode in nodes {
+			let nodes: Array<NSManagedObject> = updated.allObjects as [NSManagedObject]
+			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
 				if nil == className {
                     println("[GraphKit Error: Cannot get Object Class name.]")
@@ -165,10 +165,18 @@ public class GKGraph : NSObject {
 					case "GKManagedEntity_GKManagedEntity_":
 						delegate?.graph?(self, didUpdateEntity: GKEntity(entity: node as GKManagedEntity))
 						break
+                    case "GKEntityProperty_GKEntityProperty_":
+                        let property: GKEntityProperty = node as GKEntityProperty
+                        delegate?.graph?(self, didUpdateEntity: GKEntity(entity: property.node as GKManagedEntity))
+                        break
                     case "GKManagedAction_GKManagedAction_":
 						delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
 						break
-					default:
+                    case "GKActionProperty_GKActionProperty_":
+                        let property: GKActionProperty = node as GKActionProperty
+                        delegate?.graph?(self, didUpdateAction: GKAction(action: property.node as GKManagedAction))
+                        break
+                    default:
 						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
 				}
 			}
@@ -185,8 +193,8 @@ public class GKGraph : NSObject {
 		deleted.filterUsingPredicate(masterPredicate!)
 
 		if 0 < deleted.count {
-			let nodes: Array<GKManagedNode> = deleted.allObjects as [GKManagedNode]
-			for node: GKManagedNode in nodes {
+			let nodes: Array<NSManagedObject> = deleted.allObjects as [NSManagedObject]
+			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
 				if nil == className {
                     println("[GraphKit Error: Cannot get Object Class name.]")
@@ -196,10 +204,18 @@ public class GKGraph : NSObject {
 					case "GKManagedEntity_GKManagedEntity_":
 						delegate?.graph?(self, didDeleteEntity: GKEntity(entity: node as GKManagedEntity))
 						break
+                    case "GKEntityProperty_GKEntityProperty_":
+                        let property: GKEntityProperty = node as GKEntityProperty
+                        delegate?.graph?(self, didUpdateEntity: GKEntity(entity: property.node as GKManagedEntity))
+                        break
                     case "GKManagedAction_GKManagedAction_":
-						delegate?.graph?(self, didDeleteAction: GKAction(action: node as GKManagedAction))
-						break
-					default:
+                        delegate?.graph?(self, didDeleteAction: GKAction(action: node as GKManagedAction))
+                        break
+                    case "GKActionProperty_GKActionProperty_":
+                        let property: GKActionProperty = node as GKActionProperty
+                        delegate?.graph?(self, didUpdateAction: GKAction(action: property.node as GKManagedAction))
+                        break
+                    default:
 						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
 				}
 			}
@@ -261,38 +277,28 @@ public class GKGraph : NSObject {
             nodeClass.name = "nodeClass"
             nodeClass.attributeType = .StringAttributeType
             nodeClass.optional = false
-            entityProperties.append(nodeClass)
+            entityProperties.append(nodeClass.copy() as NSAttributeDescription)
             actionProperties.append(nodeClass.copy() as NSAttributeDescription)
 
             var type: NSAttributeDescription = NSAttributeDescription()
             type.name = "type"
             type.attributeType = .StringAttributeType
             type.optional = false
-            entityProperties.append(type)
+            entityProperties.append(type.copy() as NSAttributeDescription)
             actionProperties.append(type.copy() as NSAttributeDescription)
 
             var createdDate: NSAttributeDescription = NSAttributeDescription()
             createdDate.name = "createdDate"
             createdDate.attributeType = .DateAttributeType
             createdDate.optional = false
-            entityProperties.append(createdDate)
+            entityProperties.append(createdDate.copy() as NSAttributeDescription)
             actionProperties.append(createdDate.copy() as NSAttributeDescription)
-
-            var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
-            propertySetRelationship.name = "propertySet"
-            propertySetRelationship.minCount = 0
-            propertySetRelationship.maxCount = 0
-            propertySetRelationship.deleteRule = .CascadeDeleteRule
-            propertySetRelationship.destinationEntity = entityPropertyDescription
-            entityProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
-            propertySetRelationship.destinationEntity = actionPropertyDescription
-            actionProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
 
             var propertyName: NSAttributeDescription = NSAttributeDescription()
             propertyName.name = "name"
             propertyName.attributeType = .StringAttributeType
             propertyName.optional = false
-            entityPropertyProperties.append(propertyName)
+            entityPropertyProperties.append(propertyName.copy() as NSAttributeDescription)
             actionPropertyProperties.append(propertyName.copy() as NSAttributeDescription)
 
             var propertyValue: NSAttributeDescription = NSAttributeDescription()
@@ -301,7 +307,7 @@ public class GKGraph : NSObject {
             propertyValue.attributeValueClassName = "AnyObject"
             propertyValue.optional = false
             propertyValue.storedInExternalRecord = true
-            entityPropertyProperties.append(propertyValue)
+            entityPropertyProperties.append(propertyValue.copy() as NSAttributeDescription)
             actionPropertyProperties.append(propertyValue.copy() as NSAttributeDescription)
 
             var propertyRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -309,26 +315,30 @@ public class GKGraph : NSObject {
             propertyRelationship.minCount = 1
             propertyRelationship.maxCount = 1
             propertyRelationship.deleteRule = .NoActionDeleteRule
-            propertyRelationship.destinationEntity = entityDescription
-            entityPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
-            propertyRelationship.destinationEntity = actionDescription
-            actionPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
-            
-            var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
-            groupSetRelationship.name = "groupSet"
-            groupSetRelationship.minCount = 0
-            groupSetRelationship.maxCount = 0
-            groupSetRelationship.deleteRule = .CascadeDeleteRule
-            groupSetRelationship.destinationEntity = entityGroupDescription
-            entityProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
-            groupSetRelationship.destinationEntity = actionGroupDescription
-            actionProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
 
+            var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            propertySetRelationship.name = "propertySet"
+            propertySetRelationship.minCount = 0
+            propertySetRelationship.maxCount = 0
+            propertySetRelationship.deleteRule = .CascadeDeleteRule
+            propertyRelationship.inverseRelationship = propertySetRelationship
+            propertySetRelationship.inverseRelationship = propertyRelationship
+
+            propertyRelationship.destinationEntity = entityDescription
+            propertySetRelationship.destinationEntity = entityPropertyDescription
+            entityPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
+            entityProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
+
+            propertyRelationship.destinationEntity = actionDescription
+            propertySetRelationship.destinationEntity = actionPropertyDescription
+            actionPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
+            actionProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
+            
             var group: NSAttributeDescription = NSAttributeDescription()
             group.name = "name"
             group.attributeType = .StringAttributeType
             group.optional = false
-            entityGroupProperties.append(group)
+            entityGroupProperties.append(group.copy() as NSAttributeDescription)
             actionGroupProperties.append(group.copy() as NSAttributeDescription)
 
             var groupRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -336,10 +346,24 @@ public class GKGraph : NSObject {
             groupRelationship.minCount = 1
             groupRelationship.maxCount = 1
             groupRelationship.deleteRule = .NoActionDeleteRule
+
+            var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            groupSetRelationship.name = "groupSet"
+            groupSetRelationship.minCount = 0
+            groupSetRelationship.maxCount = 0
+            groupSetRelationship.deleteRule = .CascadeDeleteRule
+            groupRelationship.inverseRelationship = groupSetRelationship
+            groupSetRelationship.inverseRelationship = groupRelationship
+
             groupRelationship.destinationEntity = entityDescription
+            groupSetRelationship.destinationEntity = entityGroupDescription
             entityGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
+            entityProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
+
             groupRelationship.destinationEntity = actionDescription
+            groupSetRelationship.destinationEntity = actionGroupDescription
             actionGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
+            actionProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
 
             // Inverse relationship for Subjects -- B.
             var subjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
