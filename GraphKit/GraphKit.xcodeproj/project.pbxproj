@@ -22,14 +22,17 @@
 		96BE7E561A8C1F2B006DDFB4 /* GKManagedEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; };
 		96BE7E571A8C1F2B006DDFB4 /* GKEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605781A8BDF800062609D /* GKEntity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96BE7E581A8C1F2B006DDFB4 /* GKGraph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605731A8BDE010062609D /* GKGraph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		A6BC6010E6BD174644474E8B /* GKActionProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC612707A48268CC18D79D /* GKActionProperty.swift */; };
 		A6BC610DE99E46F19C53C496 /* GKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC6AC0055F5EEB55C8491F /* GKNode.swift */; };
 		A6BC61A99C224DA59EF7A641 /* GKEntityGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC6F274FD0E9843074184B /* GKEntityGroup.swift */; };
 		A6BC627FAA6AFF702F5D4930 /* GKAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC62E43D02EA363D348C7E /* GKAction.swift */; };
-		A6BC62AACC4880A17CD212EF /* GKEntityMultiActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC64961C86FEA0064186D2 /* GKEntityMultiActionTests.swift */; };
+		A6BC62AACC4880A17CD212EF /* GKEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC64961C86FEA0064186D2 /* GKEntityTests.swift */; };
 		A6BC636EC06AD1C41381F530 /* GKManagedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC690834DE31A2F2FA1B35 /* GKManagedNode.swift */; };
 		A6BC63A7FC64D18AFAF86B51 /* GKNodeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC66905F88D2E72E051F06 /* GKNodeGroup.swift */; };
 		A6BC6776B798B3DD094AACE0 /* GKManagedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC672A9E319DB368104D1F /* GKManagedAction.swift */; };
-		A6BC6CB0C69852FDD8E434D9 /* GraphKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC6D219EA6CCC3751AE3C1 /* GraphKitTests.swift */; };
+		A6BC6B32F4BA6D1F76AFAB65 /* GKNodeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC6B10617735A4A2DA8D3F /* GKNodeProperty.swift */; };
+		A6BC6C6D1B2E7F520A29BA77 /* GKEntityProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC6C31CB238F6BDCFB1CDC /* GKEntityProperty.swift */; };
+		A6BC6CB0C69852FDD8E434D9 /* GKActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC6D219EA6CCC3751AE3C1 /* GKActionTests.swift */; };
 		A6BC6E370153FD6EFEB06643 /* GKActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC62A0AE63BE03E8154767 /* GKActionGroup.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,14 +55,17 @@
 		964605701A8BDDA20062609D /* GKManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKManagedEntity.swift; sourceTree = "<group>"; };
 		964605731A8BDE010062609D /* GKGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKGraph.swift; sourceTree = "<group>"; };
 		964605781A8BDF800062609D /* GKEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKEntity.swift; sourceTree = "<group>"; };
+		A6BC612707A48268CC18D79D /* GKActionProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKActionProperty.swift; sourceTree = "<group>"; };
 		A6BC62A0AE63BE03E8154767 /* GKActionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKActionGroup.swift; sourceTree = "<group>"; };
 		A6BC62E43D02EA363D348C7E /* GKAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKAction.swift; sourceTree = "<group>"; };
-		A6BC64961C86FEA0064186D2 /* GKEntityMultiActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKEntityMultiActionTests.swift; sourceTree = "<group>"; };
+		A6BC64961C86FEA0064186D2 /* GKEntityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKEntityTests.swift; sourceTree = "<group>"; };
 		A6BC66905F88D2E72E051F06 /* GKNodeGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKNodeGroup.swift; sourceTree = "<group>"; };
 		A6BC672A9E319DB368104D1F /* GKManagedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKManagedAction.swift; sourceTree = "<group>"; };
 		A6BC690834DE31A2F2FA1B35 /* GKManagedNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKManagedNode.swift; sourceTree = "<group>"; };
 		A6BC6AC0055F5EEB55C8491F /* GKNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKNode.swift; sourceTree = "<group>"; };
-		A6BC6D219EA6CCC3751AE3C1 /* GraphKitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphKitTests.swift; sourceTree = "<group>"; };
+		A6BC6B10617735A4A2DA8D3F /* GKNodeProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKNodeProperty.swift; sourceTree = "<group>"; };
+		A6BC6C31CB238F6BDCFB1CDC /* GKEntityProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKEntityProperty.swift; sourceTree = "<group>"; };
+		A6BC6D219EA6CCC3751AE3C1 /* GKActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKActionTests.swift; sourceTree = "<group>"; };
 		A6BC6F274FD0E9843074184B /* GKEntityGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKEntityGroup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +120,9 @@
 				A6BC66905F88D2E72E051F06 /* GKNodeGroup.swift */,
 				A6BC62A0AE63BE03E8154767 /* GKActionGroup.swift */,
 				A6BC6F274FD0E9843074184B /* GKEntityGroup.swift */,
+				A6BC6B10617735A4A2DA8D3F /* GKNodeProperty.swift */,
+				A6BC6C31CB238F6BDCFB1CDC /* GKEntityProperty.swift */,
+				A6BC612707A48268CC18D79D /* GKActionProperty.swift */,
 				9646056E1A8BDD5C0062609D /* LICENSE */,
 			);
 			path = GraphKit;
@@ -131,8 +140,8 @@
 			isa = PBXGroup;
 			children = (
 				9646055D1A8BDC400062609D /* Supporting Files */,
-				A6BC6D219EA6CCC3751AE3C1 /* GraphKitTests.swift */,
-				A6BC64961C86FEA0064186D2 /* GKEntityMultiActionTests.swift */,
+				A6BC6D219EA6CCC3751AE3C1 /* GKActionTests.swift */,
+				A6BC64961C86FEA0064186D2 /* GKEntityTests.swift */,
 			);
 			path = GraphKitTests;
 			sourceTree = "<group>";
@@ -272,6 +281,9 @@
 				A6BC63A7FC64D18AFAF86B51 /* GKNodeGroup.swift in Sources */,
 				A6BC6E370153FD6EFEB06643 /* GKActionGroup.swift in Sources */,
 				A6BC61A99C224DA59EF7A641 /* GKEntityGroup.swift in Sources */,
+				A6BC6B32F4BA6D1F76AFAB65 /* GKNodeProperty.swift in Sources */,
+				A6BC6C6D1B2E7F520A29BA77 /* GKEntityProperty.swift in Sources */,
+				A6BC6010E6BD174644474E8B /* GKActionProperty.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,8 +291,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6BC6CB0C69852FDD8E434D9 /* GraphKitTests.swift in Sources */,
-				A6BC62AACC4880A17CD212EF /* GKEntityMultiActionTests.swift in Sources */,
+				A6BC6CB0C69852FDD8E434D9 /* GKActionTests.swift in Sources */,
+				A6BC62AACC4880A17CD212EF /* GKEntityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

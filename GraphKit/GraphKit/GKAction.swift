@@ -143,7 +143,7 @@ public class GKAction : GKNode {
     public func delete() {
         graph.managedObjectContext.performBlockAndWait {
             var node: GKManagedAction = self.node as GKManagedAction
-            node.delete(self.graph)
+            node.delete()
         }
     }
 

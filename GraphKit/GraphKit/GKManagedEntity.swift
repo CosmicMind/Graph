@@ -53,6 +53,44 @@ internal class GKManagedEntity : GKManagedNode {
     }
 
     /**
+    * properties[ ]
+    * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
+    * @param        name: String!
+    * get           Returns the property name value.
+    * set           Value for the property name.
+    */
+    override internal subscript(name: String) -> AnyObject? {
+        get {
+            for node in propertySet {
+				let property: GKEntityProperty = node as GKEntityProperty
+				if name == property.name {
+                    return property.value
+                }
+            }
+            return nil
+        }
+        set(value) {
+			for node in propertySet {
+				let property: GKEntityProperty = node as GKEntityProperty
+                if name == property.name {
+                    if nil == value {
+                        propertySet.removeObject(property)
+                        managedObjectContext!.deleteObject(property)
+                    } else {
+                        property.value = value!
+                    }
+                    return
+                }
+            }
+            if nil != value {
+                var property: GKEntityProperty = GKEntityProperty(name: name, value: value, managedObjectContext: managedObjectContext)
+                property.node = self
+                propertySet.addObject(property)
+            }
+        }
+    }
+
+    /**
     * addGroup
     * Adds a Group name to the list of Groups if it does not exist.
     * @param        name: String!
@@ -60,8 +98,7 @@ internal class GKManagedEntity : GKManagedNode {
     */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-            groups.append(name)
-            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext)
+            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext!)
             group.node = self
             groupSet.addObject(group)
             return true
@@ -76,7 +113,13 @@ internal class GKManagedEntity : GKManagedNode {
     * @return       Bool of the result, true if is a part, false otherwise.
     */
     override internal func hasGroup(name: String!) -> Bool {
-        return contains(groups, name)
+        for node in groupSet {
+			let group: GKEntityGroup = node as GKEntityGroup
+			if name == group.name {
+                return true
+            }
+        }
+        return false
     }
 
     /**
@@ -86,17 +129,12 @@ internal class GKManagedEntity : GKManagedNode {
     * @return       Bool of the result, true if exists, false otherwise.
     */
     override internal func removeGroup(name: String!) -> Bool {
-        for i in 0 ..< groups.count {
-            if name == groups[i] {
-                groups.removeAtIndex(i)
-                for item: AnyObject in groupSet {
-                    var group: GKEntityGroup = item as GKEntityGroup
-                    if name == group.name {
-                        groupSet.removeObject(item)
-                        managedObjectContext!.deleteObject(group)
-                        return true
-                    }
-                }
+        for node in groupSet {
+            let group: GKEntityGroup = node as GKEntityGroup
+            if name == group.name {
+                groupSet.removeObject(group)
+                managedObjectContext!.deleteObject(group)
+                return true
             }
         }
         return false
@@ -105,9 +143,8 @@ internal class GKManagedEntity : GKManagedNode {
     /**
     * delete
     * Marks the Model Object to be deleted from the Graph.
-    * @param        graph: GKGraph! An instance of the GKGraph.
     */
-    internal func delete(graph: GKGraph!) {
+    internal func delete() {
         var nodes: NSMutableSet = actionSubjectSet as NSMutableSet
         for node in nodes {
             nodes.removeObject(node)
@@ -116,7 +153,17 @@ internal class GKManagedEntity : GKManagedNode {
         for node in nodes {
             nodes.removeObject(node)
         }
-        graph.managedObjectContext.deleteObject(self)
+        nodes = propertySet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+            managedObjectContext!.deleteObject(node as GKEntityProperty)
+        }
+        nodes = groupSet as NSMutableSet
+        for node in nodes {
+            nodes.removeObject(node)
+            managedObjectContext!.deleteObject(node as GKEntityGroup)
+        }
+        managedObjectContext!.deleteObject(self)
     }
 }
 
@@ -131,7 +178,7 @@ extension GKManagedEntity {
     * @param        value: GKManagedAction
     */
     func addActionSubjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+        let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
         nodes.addObject(value)
     }
 
@@ -141,27 +188,27 @@ extension GKManagedEntity {
     * @param        value: GKManagedAction
     */
     func removeActionSubjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
-		nodes.removeObject(value)
-	}
+        let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+        nodes.removeObject(value)
+    }
 
     /**
     * addActionObjectSetObject
     * Adds the Action to the actionObjectSet for the Entity.
     * @param        value: GKManagedAction
     */
-	func addActionObjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
-		nodes.addObject(value)
-	}
+    func addActionObjectSetObject(value: GKManagedAction) {
+        let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+        nodes.addObject(value)
+    }
 
     /**
     * removeActionObjectSetObject
     * Removes the Action to the actionObjectSet for the Entity.
     * @param        value: GKManagedAction
     */
-	func removeActionObjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
-		nodes.removeObject(value)
-	}
+    func removeActionObjectSetObject(value: GKManagedAction) {
+        let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+        nodes.removeObject(value)
+    }
 }

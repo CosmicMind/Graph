@@ -97,7 +97,7 @@ public class GKEntity : GKNode {
     public func delete() {
         graph.managedObjectContext.performBlockAndWait {
             var node: GKManagedEntity = self.node as GKManagedEntity
-            node.delete(self.graph)
+            node.delete()
         }
     }
 

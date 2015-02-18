@@ -27,8 +27,7 @@ internal class GKManagedNode : NSManagedObject, Printable {
     @NSManaged internal var nodeClass: String
     @NSManaged internal var type: String
     @NSManaged internal var createdDate: NSDate
-    @NSManaged internal var properties: Dictionary<String, AnyObject>
-    @NSManaged internal var groups: Array<String>
+    @NSManaged internal var propertySet: NSMutableSet
     @NSManaged internal var groupSet: NSMutableSet
 
     /**
@@ -40,25 +39,22 @@ internal class GKManagedNode : NSManagedObject, Printable {
     convenience internal init(entity: NSEntityDescription, managedObjectContext: NSManagedObjectContext!) {
         self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
         createdDate = NSDate()
-        properties = Dictionary<String, AnyObject>()
-        groups = Array<String>()
+        propertySet = NSMutableSet()
         groupSet = NSMutableSet()
     }
 
     /**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
-    * @param        property: String! Property name.
+    * @param        name: String!
     * get           Returns the property name value.
     * set           Value for the property name.
     */
-    internal subscript(property: String) -> AnyObject? {
+    internal subscript(name: String) -> AnyObject? {
         get {
-            return properties[property]
+            return nil
         }
-        set(value) {
-            properties[property] = value
-        }
+        set(value) {}
     }
 
     /**
@@ -69,8 +65,7 @@ internal class GKManagedNode : NSManagedObject, Printable {
     */
     internal subscript(index: Int) -> String {
         get {
-            assert(-1 < index && index < groups.count, "[GraphKit Error: Group index out of range.]")
-            return groups[index]
+			return ""
         }
         set(value) {
             assert(false, "[GraphKit Error: Not allowed to set Group index directly.]")
