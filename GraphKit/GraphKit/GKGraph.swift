@@ -30,11 +30,15 @@ struct GKGraphUtility {
 	static let entityObjectClassName: String = "GKManagedEntity"
     static let entityGroupObjectClassName: String = "GKEntityGroup"
     static let entityGroupDescriptionName: String = "GKEntityGroup"
+    static let entityPropertyObjectClassName: String = "GKEntityProperty"
+    static let entityPropertyDescriptionName: String = "GKEntityProperty"
     static let actionIndexName: String = "GKManagedAction"
     static let actionDescriptionName: String = "GKManagedAction"
     static let actionObjectClassName: String = "GKManagedAction"
     static let actionGroupObjectClassName: String = "GKActionGroup"
     static let actionGroupDescriptionName: String = "GKActionGroup"
+    static let actionPropertyObjectClassName: String = "GKActionProperty"
+    static let actionPropertyDescriptionName: String = "GKActionProperty"
 }
 
 @objc(GKGraphDelegate)
@@ -233,6 +237,16 @@ public class GKGraph : NSObject {
             actionDescription.name = GKGraphUtility.actionDescriptionName
             actionDescription.managedObjectClassName = GKGraphUtility.actionObjectClassName
 
+            var entityPropertyDescription: NSEntityDescription = NSEntityDescription()
+            var entityPropertyProperties: Array<AnyObject> = Array<AnyObject>()
+            entityPropertyDescription.name = GKGraphUtility.entityPropertyDescriptionName
+            entityPropertyDescription.managedObjectClassName = GKGraphUtility.entityPropertyObjectClassName
+
+            var actionPropertyDescription: NSEntityDescription = NSEntityDescription()
+            var actionPropertyProperties: Array<AnyObject> = Array<AnyObject>()
+            actionPropertyDescription.name = GKGraphUtility.actionPropertyDescriptionName
+            actionPropertyDescription.managedObjectClassName = GKGraphUtility.actionPropertyObjectClassName
+            
             var entityGroupDescription: NSEntityDescription = NSEntityDescription()
             var entityGroupProperties: Array<AnyObject> = Array<AnyObject>()
             entityGroupDescription.name = GKGraphUtility.entityGroupDescriptionName
@@ -264,24 +278,42 @@ public class GKGraph : NSObject {
             entityProperties.append(createdDate)
             actionProperties.append(createdDate.copy() as NSAttributeDescription)
 
-            var properties: NSAttributeDescription = NSAttributeDescription()
-            properties.name = "properties"
-            properties.attributeType = .TransformableAttributeType
-            properties.attributeValueClassName = "Dictionary"
-            properties.optional = false
-            properties.storedInExternalRecord = true
-            entityProperties.append(properties)
-            actionProperties.append(properties.copy() as NSAttributeDescription)
+            var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            propertySetRelationship.name = "propertySet"
+            propertySetRelationship.minCount = 0
+            propertySetRelationship.maxCount = 0
+            propertySetRelationship.deleteRule = .CascadeDeleteRule
+            propertySetRelationship.destinationEntity = entityPropertyDescription
+            entityProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
+            propertySetRelationship.destinationEntity = actionPropertyDescription
+            actionProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
 
-            var groups: NSAttributeDescription = NSAttributeDescription()
-            groups.name = "groups"
-            groups.attributeType = .TransformableAttributeType
-            groups.attributeValueClassName = "Array"
-            groups.optional = false
-            groups.storedInExternalRecord = true
-            entityProperties.append(groups)
-            actionProperties.append(groups.copy() as NSAttributeDescription)
+            var propertyName: NSAttributeDescription = NSAttributeDescription()
+            propertyName.name = "name"
+            propertyName.attributeType = .StringAttributeType
+            propertyName.optional = false
+            entityPropertyProperties.append(propertyName)
+            actionPropertyProperties.append(propertyName.copy() as NSAttributeDescription)
 
+            var propertyValue: NSAttributeDescription = NSAttributeDescription()
+            propertyValue.name = "value"
+            propertyValue.attributeType = .TransformableAttributeType
+            propertyValue.attributeValueClassName = "AnyObject"
+            propertyValue.optional = false
+            propertyValue.storedInExternalRecord = true
+            entityPropertyProperties.append(propertyValue)
+            actionPropertyProperties.append(propertyValue.copy() as NSAttributeDescription)
+
+            var propertyRelationship: NSRelationshipDescription = NSRelationshipDescription()
+            propertyRelationship.name = "node"
+            propertyRelationship.minCount = 1
+            propertyRelationship.maxCount = 1
+            propertyRelationship.deleteRule = .NoActionDeleteRule
+            propertyRelationship.destinationEntity = entityDescription
+            entityPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
+            propertyRelationship.destinationEntity = actionDescription
+            actionPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
+            
             var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
             groupSetRelationship.name = "groupSet"
             groupSetRelationship.minCount = 0
@@ -354,14 +386,18 @@ public class GKGraph : NSObject {
 
             entityDescription.properties = entityProperties
             entityGroupDescription.properties = entityGroupProperties
+            entityPropertyDescription.properties = entityPropertyProperties
             actionDescription.properties = actionProperties
             actionGroupDescription.properties = actionGroupProperties
+            actionPropertyDescription.properties = actionPropertyProperties
 
             GKGraphManagedObjectModel.managedObjectModel.entities = [
                 entityDescription,
                 entityGroupDescription,
+                entityPropertyDescription,
                 actionDescription,
-                actionGroupDescription
+                actionGroupDescription,
+                actionPropertyDescription
             ]
         }
         return GKGraphManagedObjectModel.managedObjectModel!

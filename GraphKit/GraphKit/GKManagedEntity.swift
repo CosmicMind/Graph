@@ -53,6 +53,43 @@ internal class GKManagedEntity : GKManagedNode {
     }
 
     /**
+    * properties[ ]
+    * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
+    * @param        name: String!
+    * get           Returns the property name value.
+    * set           Value for the property name.
+    */
+    override internal subscript(name: String) -> AnyObject? {
+        get {
+            for item in propertySet {
+				let property: GKEntityProperty = item as GKEntityProperty
+				if name == property.name {
+                    return property.value
+                }
+            }
+            return nil
+        }
+        set(value) {
+			for item in propertySet {
+				let property: GKEntityProperty = item as GKEntityProperty
+                if name == property.name {
+                    if nil == value {
+                        propertySet.removeObject(property)
+                    } else {
+                        property.value = value!
+                    }
+                    return
+                }
+            }
+            if nil != value {
+                var property: GKEntityProperty = GKEntityProperty(name: name, value: value, managedObjectContext: managedObjectContext)
+                property.node = self
+                propertySet.addObject(property)
+            }
+        }
+    }
+
+    /**
     * addGroup
     * Adds a Group name to the list of Groups if it does not exist.
     * @param        name: String!
@@ -60,7 +97,6 @@ internal class GKManagedEntity : GKManagedNode {
     */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-            groups.append(name)
             var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext)
             group.node = self
             groupSet.addObject(group)
@@ -76,7 +112,13 @@ internal class GKManagedEntity : GKManagedNode {
     * @return       Bool of the result, true if is a part, false otherwise.
     */
     override internal func hasGroup(name: String!) -> Bool {
-        return contains(groups, name)
+        for item in groupSet {
+			let group: GKEntityGroup = item as GKEntityGroup
+			if name == group.name {
+                return true
+            }
+        }
+        return false
     }
 
     /**
@@ -86,17 +128,12 @@ internal class GKManagedEntity : GKManagedNode {
     * @return       Bool of the result, true if exists, false otherwise.
     */
     override internal func removeGroup(name: String!) -> Bool {
-        for i in 0 ..< groups.count {
-            if name == groups[i] {
-                groups.removeAtIndex(i)
-                for item: AnyObject in groupSet {
-                    var group: GKEntityGroup = item as GKEntityGroup
-                    if name == group.name {
-                        groupSet.removeObject(item)
-                        managedObjectContext!.deleteObject(group)
-                        return true
-                    }
-                }
+        for item in groupSet {
+            let group: GKEntityGroup = item as GKEntityGroup
+            if name == group.name {
+                groupSet.removeObject(group)
+                managedObjectContext!.deleteObject(group)
+                return true
             }
         }
         return false
