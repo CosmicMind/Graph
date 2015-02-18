@@ -48,10 +48,8 @@ struct GKGraphUtility {
 @objc(GKGraphDelegate)
 public protocol GKGraphDelegate {
     optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!)
-    optional func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!)
     optional func graph(graph: GKGraph!, didInsertAction action: GKAction!)
-    optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
     optional func graph(graph: GKGraph!, didDeleteAction action: GKAction!)
     optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, group: String!)
     optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, group: String!)
@@ -208,16 +206,10 @@ public class GKGraph : NSObject {
 					continue
 				}
 				switch(className!) {
-					case "GKManagedEntity_GKManagedEntity_":
-						delegate?.graph?(self, didUpdateEntity: GKEntity(entity: node as GKManagedEntity))
-						break
-                    case "GKEntityProperty_GKEntityProperty_":
+					case "GKEntityProperty_GKEntityProperty_":
                         let property: GKEntityProperty = node as GKEntityProperty
                         delegate?.graph?(self, didUpdateEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
                         break
-                    case "GKManagedAction_GKManagedAction_":
-						delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
-						break
                     case "GKActionProperty_GKActionProperty_":
                         let property: GKActionProperty = node as GKActionProperty
                         delegate?.graph?(self, didUpdateAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)

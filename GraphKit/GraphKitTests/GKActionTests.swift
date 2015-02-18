@@ -19,7 +19,7 @@
 import XCTest
 import GraphKit
 
-class GraphKitTests : XCTestCase, GKGraphDelegate {
+class GKActionTests : XCTestCase, GKGraphDelegate {
 
     var u1InsertExpectation: XCTestExpectation?
 	var u1UpdateExpectation: XCTestExpectation?
