@@ -167,91 +167,17 @@ public class GKGraph : NSObject {
     }
 
     /**
-    * search(Entity)
-    * Searches the Graph for Entity Objects with the following type LIKE passed.
-    * @param        type: String!
-    * @return       Array<GKEntity>!
-    */
-    public func search(Entity type: String!) -> Array<GKEntity>! {
-        var entries = search(GKGraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString));
-        var nodes: Array<GKEntity> = Array<GKEntity>()
-        for group: GKEntityGroup in entries as [GKEntityGroup] {
-            nodes.append(GKEntity(entity: group.node as GKManagedEntity))
-        }
-        return nodes
-    }
-
-    /**
     * search(EntityGroup)
-    * Searches the Graph for Entity Group Objects with the following name LIKE passed.
+    * Searches the Graph for Entity Objects with the following name LIKE passed.
     * @param        name: String!
     * @return       Array<GKEntity>!
     */
-    public func search(EntityGroup name: String!) -> Array<GKEntity>! {
+    public func search(EntityGroup name: String!) -> Array<GKEntity> {
         var entries = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString));
         var nodes: Array<GKEntity> = Array<GKEntity>()
-        for group: GKEntityGroup in entries as [GKEntityGroup] {
-            nodes.append(GKEntity(entity: group.node as GKManagedEntity))
-        }
-        return nodes
-    }
-
-    /**
-    * search(EntityProperty)
-    * Searches the Graph for Entity Property Objects with the following name LIKE passed.
-    * @param        name: String!
-    * @return       Array<GKEntity>!
-    */
-    public func search(EntityProperty name: String!) -> Array<GKEntity>! {
-        var entries = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString));
-        var nodes: Array<GKEntity> = Array<GKEntity>()
-        for group: GKEntityGroup in entries as [GKEntityGroup] {
-            nodes.append(GKEntity(entity: group.node as GKManagedEntity))
-        }
-        return nodes
-    }
-
-    /**
-    * search(Action)
-    * Searches the Graph for Action Objects with the following type LIKE passed.
-    * @param        type: String!
-    * @return       Array<GKAction>!
-    */
-    public func search(Action type: String!) -> Array<GKAction>! {
-        var entries = search(GKGraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString));
-        var nodes: Array<GKAction> = Array<GKAction>()
-        for group: GKActionGroup in entries as [GKActionGroup] {
-            nodes.append(GKAction(action: group.node as GKManagedAction))
-        }
-        return nodes
-    }
-
-    /**
-    * search(ActionGroup)
-    * Searches the Graph for Action Group Objects with the following name LIKE passed.
-    * @param        name: String!
-    * @return       Array<GKAction>!
-    */
-    public func search(ActionGroup name: String!) -> Array<GKAction>! {
-        var entries = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString));
-        var nodes: Array<GKAction> = Array<GKAction>()
-        for group: GKActionGroup in entries as [GKActionGroup] {
-            nodes.append(GKAction(action: group.node as GKManagedAction))
-        }
-        return nodes
-    }
-
-    /**
-    * search(ActionProperty)
-    * Searches the Graph for Action Property Objects with the following name LIKE passed.
-    * @param        name: String!
-    * @return       Array<GKAction>!
-    */
-    public func search(ActionProperty name: String!) -> Array<GKAction>! {
-        var entries = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString));
-        var nodes: Array<GKAction> = Array<GKAction>()
-        for group: GKActionGroup in entries as [GKActionGroup] {
-            nodes.append(GKAction(action: group.node as GKManagedAction))
+        for entry in entries {
+			var group: GKEntityGroup = entry as GKEntityGroup
+			nodes.append(GKEntity(entity: group.node as GKManagedEntity))
         }
         return nodes
     }
@@ -691,7 +617,7 @@ public class GKGraph : NSObject {
     * @param        predicate: NSPredicate!
     * @return       Array<AnyObject>!
     */
-    internal func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject>! {
+    internal func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject> {
         let request: NSFetchRequest = NSFetchRequest()
         let entity: NSEntityDescription = managedObjectModel.entitiesByName[entityDescriptorName] as NSEntityDescription
         request.entity = entity

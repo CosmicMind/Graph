@@ -28,8 +28,21 @@ public class GKNode : NSObject {
     internal let node: GKManagedNode!
 
     /**
+    * nodeClass
+    * Retrieves the nodeClass for the Model Object that is wrapped internally.
+    * @return       String!
+    */
+    public var nodeClass: String! {
+        var nodeClass: String!
+        graph.managedObjectContext.performBlockAndWait {
+            nodeClass = self.node.nodeClass
+        }
+        return nodeClass
+    }
+
+    /**
     * type
-    * Retrieves the type ofModel Object that is wrapped internally.
+    * Retrieves the type for the Model Object that is wrapped internally.
     * @return       String!
     */
     public var type: String! {
@@ -38,6 +51,20 @@ public class GKNode : NSObject {
             type = self.node.type
         }
         return type
+    }
+
+    /**
+    * id
+    * Retrieves the ID for the Model Object that is wrapped internally.
+    * @return       String! of the ID
+    */
+    public var id: String! {
+        var oID: String!
+        graph.managedObjectContext.performBlockAndWait {
+            let nodeURL: NSURL = self.node.objectID.URIRepresentation()
+            oID = nodeURL.lastPathComponent! as String
+        }
+        return nodeClass + ":" + type + ":" + oID
     }
 
     /**
