@@ -67,7 +67,8 @@ public protocol GKGraphDelegate {
 public class GKGraph : NSObject {
 	var watching: Dictionary<String, Array<String>>
 	var masterPredicate: NSPredicate?
-
+    var batchSize: Int = 20
+    
 	public weak var delegate: GKGraphDelegate?
 
     /**
@@ -130,19 +131,24 @@ public class GKGraph : NSObject {
 				return
 			}
 
-			let (success, error): (Bool, NSError?) = self.validateConstraints()
-			if !success {
-				completion(success: success, error: error)
-                println("[GraphKit Error: Constraint is not satisfied.]")
+			let (failed, error): (Bool, NSError?) = self.validateConstraints()
+			if failed {
+				completion(success: failed, error: error)
+                println("[GraphKit Error: Constraints are not satisfied.]")
 				return
 			}
 
 			var saveError: NSError?
 			completion(success: self.managedObjectContext.save(&saveError), error: error)
-			assert(nil == error, "[GraphKit Error: Saving to private context.]")
+			assert(nil == error, "[GraphKit Error: Saving to internal context.]")
 		}
 	}
 
+    /**
+    * managedObjectContextDidSave
+    * The callback that NotificationCenter uses when changes occur in the Graph.
+    * @param        notification: NSNotification
+    */
 	public func managedObjectContextDidSave(notification: NSNotification) {
 		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
 		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
@@ -281,7 +287,7 @@ public class GKGraph : NSObject {
         return GKGraphManagedObjectContext.managedObjectContext
     }
 
-    private var managedObjectModel: NSManagedObjectModel {
+    internal var managedObjectModel: NSManagedObjectModel {
         struct GKGraphManagedObjectModel {
             static var onceToken: dispatch_once_t = 0
             static var managedObjectModel: NSManagedObjectModel!
@@ -473,7 +479,7 @@ public class GKGraph : NSObject {
         return GKGraphManagedObjectModel.managedObjectModel!
     }
 
-    private var persistentStoreCoordinator: NSPersistentStoreCoordinator {
+    internal var persistentStoreCoordinator: NSPersistentStoreCoordinator {
         struct GKGraphPersistentStoreCoordinator {
             static var onceToken: dispatch_once_t = 0
             static var persistentStoreCoordinator: NSPersistentStoreCoordinator!
@@ -484,35 +490,57 @@ public class GKGraph : NSObject {
             GKGraphPersistentStoreCoordinator.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
             var options: Dictionary = [NSReadOnlyPersistentStoreOption: false, NSSQLitePragmasOption: ["journal_mode": "DELETE"]];
             if nil == GKGraphPersistentStoreCoordinator.persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options as NSDictionary, error: &error) {
-                assert(nil == error, "[GraphKit Error: Saving to private context.]")
+                assert(nil == error, "[GraphKit Error: Saving to internal context.]")
             }
         }
         return GKGraphPersistentStoreCoordinator.persistentStoreCoordinator!
     }
 
-    private var applicationDocumentsDirectory: NSURL {
+    internal var applicationDocumentsDirectory: NSURL {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
         return urls[urls.endIndex - 1] as NSURL
     }
-    
-	private func prepareForObservation() {
+
+    /**
+    * prepareForObservation
+    * Ensures NotificationCenter is watching the callback selector for this Graph.
+    */
+	internal func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
 	}
 
-	private func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
+    /**
+    * addPredicateToContextWatcher
+    * Adds the given predicate to the master predicate, which holds all watchers for the Graph.
+    * @param        entityDescription: NSEntityDescription!
+    * @param        predicate: NSPredicate!
+    */
+	internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
 		var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)!
 		var predicates: Array<NSPredicate> = [entityPredicate, predicate]
 		let finalPredicate: NSPredicate = NSCompoundPredicate.andPredicateWithSubpredicates(predicates)
 		masterPredicate = nil != masterPredicate ? NSCompoundPredicate.orPredicateWithSubpredicates([masterPredicate!, finalPredicate]) : finalPredicate
 	}
 
-	private func validateConstraints() -> (Bool, NSError?) {
-		var result: (success: Bool, error: NSError?) = (true, nil)
+    /**
+    * validateConstraints
+    * Validates any constraints are not being violated when saving.
+    * @return Bool, NSError, false if passing with no Error, true if failed with error.
+    */
+	internal func validateConstraints() -> (Bool, NSError?) {
+		var result: (failed: Bool, error: NSError?) = (false, nil)
 		return result
 	}
 
-	private func isWatching(key: String!, index: String!) -> Bool {
+    /**
+    * isWatching
+    * A sanity check if the Graph is already watching the specified index and key.
+    * @param        key: String!
+    * @param        index: String!
+    * @return       Bool, true if watching, false otherwise.
+    */
+	internal func isWatching(key: String!, index: String!) -> Bool {
 		var watch: Array<String> = nil != watching[index] ? watching[index]! as Array<String> : Array<String>()
 		for item: String in watch {
 			if item == key {
@@ -524,7 +552,15 @@ public class GKGraph : NSObject {
 		return false
 	}
 
-	private func addWatcher(key: String!, value: String!, index: String!, entityDescriptionName: String!, managedObjectClassName: String!) {
+    /**
+    * addWatcher
+    * Adds a watcher to the Graph.
+    * @param        key: String!
+    * @param        value: String!
+    * @param        index: String!
+    * @param        entityDescriptionName: Srting!
+    */
+	internal func addWatcher(key: String!, value: String!, index: String!, entityDescriptionName: String!, managedObjectClassName: String!) {
 		if true == isWatching(value, index: index) {
 			return
 		}
@@ -535,4 +571,32 @@ public class GKGraph : NSObject {
 		addPredicateToContextWatcher(entityDescription, predicate: predicate)
 		prepareForObservation()
 	}
+
+    /**
+    * search
+    * Executes a search through CoreData.
+    * @param        entityDescriptorName: NSString!
+    * @param        predicate: NSPredicate!
+    * @return       Array<AnyObject>!
+    */
+    internal func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject>! {
+        let request: NSFetchRequest = NSFetchRequest()
+        let entity: NSEntityDescription = managedObjectModel.entitiesByName[entityDescriptorName] as NSEntityDescription
+        request.entity = entity
+        request.predicate = predicate
+        request.fetchBatchSize = batchSize
+
+        var error: NSError?
+        var nodes: Array<AnyObject> = Array<AnyObject>()
+
+        managedObjectContext.performBlockAndWait {
+            if let result: Array<AnyObject> = self.managedObjectContext.executeFetchRequest(request, error: &error) {
+                assert(nil == error, "[GraphKit Error: Fecthing nodes.]")
+                for item: AnyObject in result {
+                    nodes.append(item)
+                }
+            }
+        }
+        return nodes
+    }
 }
