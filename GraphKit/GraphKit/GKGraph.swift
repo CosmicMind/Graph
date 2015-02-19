@@ -175,8 +175,8 @@ public class GKGraph : NSObject {
     public func search(Entity type: String!) -> Array<GKEntity>! {
         var entries = search(GKGraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString));
         var nodes: Array<GKEntity> = Array<GKEntity>()
-        for group: GKEntityGroup in entries as [GKEntityGroup] {
-            nodes.append(GKEntity(entity: group.node as GKManagedEntity))
+        for entity: GKManagedEntity in entries as Array<GKManagedEntity> {
+            nodes.append(GKEntity(entity: entity))
         }
         return nodes
     }
@@ -190,7 +190,7 @@ public class GKGraph : NSObject {
     public func search(EntityGroup name: String!) -> Array<GKEntity>! {
         var entries = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString));
         var nodes: Array<GKEntity> = Array<GKEntity>()
-        for group: GKEntityGroup in entries as [GKEntityGroup] {
+        for group: GKEntityGroup in entries as Array<GKEntityGroup> {
             nodes.append(GKEntity(entity: group.node as GKManagedEntity))
         }
         return nodes
@@ -205,8 +205,8 @@ public class GKGraph : NSObject {
     public func search(EntityProperty name: String!) -> Array<GKEntity>! {
         var entries = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString));
         var nodes: Array<GKEntity> = Array<GKEntity>()
-        for group: GKEntityGroup in entries as [GKEntityGroup] {
-            nodes.append(GKEntity(entity: group.node as GKManagedEntity))
+        for property: GKEntityProperty in entries as Array<GKEntityProperty> {
+            nodes.append(GKEntity(entity: property.node as GKManagedEntity))
         }
         return nodes
     }
@@ -220,8 +220,8 @@ public class GKGraph : NSObject {
     public func search(Action type: String!) -> Array<GKAction>! {
         var entries = search(GKGraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString));
         var nodes: Array<GKAction> = Array<GKAction>()
-        for group: GKActionGroup in entries as [GKActionGroup] {
-            nodes.append(GKAction(action: group.node as GKManagedAction))
+        for action: GKManagedAction in entries as Array<GKManagedAction> {
+            nodes.append(GKAction(action: action))
         }
         return nodes
     }
@@ -235,7 +235,7 @@ public class GKGraph : NSObject {
     public func search(ActionGroup name: String!) -> Array<GKAction>! {
         var entries = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString));
         var nodes: Array<GKAction> = Array<GKAction>()
-        for group: GKActionGroup in entries as [GKActionGroup] {
+        for group: GKActionGroup in entries as Array<GKActionGroup> {
             nodes.append(GKAction(action: group.node as GKManagedAction))
         }
         return nodes
@@ -250,8 +250,8 @@ public class GKGraph : NSObject {
     public func search(ActionProperty name: String!) -> Array<GKAction>! {
         var entries = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString));
         var nodes: Array<GKAction> = Array<GKAction>()
-        for group: GKActionGroup in entries as [GKActionGroup] {
-            nodes.append(GKAction(action: group.node as GKManagedAction))
+        for property: GKActionProperty in entries as Array<GKActionProperty> {
+            nodes.append(GKAction(action: property.node as GKManagedAction))
         }
         return nodes
     }
