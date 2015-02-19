@@ -168,7 +168,7 @@ public class GKGraph : NSObject {
 
     /**
     * search(Entity)
-    * Searches the Graph for Entity Objects with the following type LIKE passed.
+    * Searches the Graph for Entity Objects with the following type LIKE ?.
     * @param        type: String!
     * @return       Array<GKEntity>!
     */
@@ -183,7 +183,7 @@ public class GKGraph : NSObject {
 
     /**
     * search(EntityGroup)
-    * Searches the Graph for Entity Group Objects with the following name LIKE passed.
+    * Searches the Graph for Entity Group Objects with the following name LIKE ?.
     * @param        name: String!
     * @return       Array<GKEntity>!
     */
@@ -198,7 +198,7 @@ public class GKGraph : NSObject {
 
     /**
     * search(EntityProperty)
-    * Searches the Graph for Entity Property Objects with the following name LIKE passed.
+    * Searches the Graph for Entity Property Objects with the following name LIKE ?.
     * @param        name: String!
     * @return       Array<GKEntity>!
     */
@@ -212,8 +212,40 @@ public class GKGraph : NSObject {
     }
 
     /**
+    * search(EntityProperty)
+    * Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
+    * @param        name: String!
+    * @param        value: String!
+    * @return       Array<GKEntity>!
+    */
+    public func search(EntityProperty name: String!, value: String!) -> Array<GKEntity>! {
+        let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString));
+        var nodes: Array<GKEntity> = Array<GKEntity>()
+        for property: GKEntityProperty in entries as Array<GKEntityProperty> {
+            nodes.append(GKEntity(entity: property.node as GKManagedEntity))
+        }
+        return nodes
+    }
+
+    /**
+    * search(EntityProperty)
+    * Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
+    * @param        name: String!
+    * @param        value: String!
+    * @return       Array<GKEntity>!
+    */
+    public func search(EntityProperty name: String!, value: Int!) -> Array<GKEntity>! {
+        let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber));
+        var nodes: Array<GKEntity> = Array<GKEntity>()
+        for property: GKEntityProperty in entries as Array<GKEntityProperty> {
+            nodes.append(GKEntity(entity: property.node as GKManagedEntity))
+        }
+        return nodes
+    }
+
+    /**
     * search(Action)
-    * Searches the Graph for Action Objects with the following type LIKE passed.
+    * Searches the Graph for Action Objects with the following type LIKE ?.
     * @param        type: String!
     * @return       Array<GKAction>!
     */
@@ -228,7 +260,7 @@ public class GKGraph : NSObject {
 
     /**
     * search(ActionGroup)
-    * Searches the Graph for Action Group Objects with the following name LIKE passed.
+    * Searches the Graph for Action Group Objects with the following name LIKE ?.
     * @param        name: String!
     * @return       Array<GKAction>!
     */
@@ -243,12 +275,44 @@ public class GKGraph : NSObject {
 
     /**
     * search(ActionProperty)
-    * Searches the Graph for Action Property Objects with the following name LIKE passed.
+    * Searches the Graph for Action Property Objects with the following name LIKE ?.
     * @param        name: String!
     * @return       Array<GKAction>!
     */
     public func search(ActionProperty name: String!) -> Array<GKAction>! {
         let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString));
+        var nodes: Array<GKAction> = Array<GKAction>()
+        for property: GKActionProperty in entries as Array<GKActionProperty> {
+            nodes.append(GKAction(action: property.node as GKManagedAction))
+        }
+        return nodes
+    }
+
+    /**
+    * search(ActionProperty)
+    * Searches the Graph for Action Property Objects with the following name == ? and value == ?.
+    * @param        name: String!
+    * @param        value: String!
+    * @return       Array<GKAction>!
+    */
+    public func search(ActionProperty name: String!, value: String!) -> Array<GKAction>! {
+        let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString));
+        var nodes: Array<GKAction> = Array<GKAction>()
+        for property: GKActionProperty in entries as Array<GKActionProperty> {
+            nodes.append(GKAction(action: property.node as GKManagedAction))
+        }
+        return nodes
+    }
+
+    /**
+    * search(ActionProperty)
+    * Searches the Graph for Action Property Objects with the following name == ? and value == ?.
+    * @param        name: String!
+    * @param        value: String!
+    * @return       Array<GKAction>!
+    */
+    public func search(ActionProperty name: String!, value: Int!) -> Array<GKAction>! {
+        let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber));
         var nodes: Array<GKAction> = Array<GKAction>()
         for property: GKActionProperty in entries as Array<GKActionProperty> {
             nodes.append(GKAction(action: property.node as GKManagedAction))
