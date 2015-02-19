@@ -24,10 +24,10 @@
 import CoreData
 
 struct GKGraphUtility {
-	static let storeName: String = "GraphKit-0-1-0.sqlite"
+    static let storeName: String = "GraphKit-0-1-0.sqlite"
     static let entityIndexName: String = "GKManagedEntity"
-	static let entityDescriptionName: String = "GKManagedEntity"
-	static let entityObjectClassName: String = "GKManagedEntity"
+    static let entityDescriptionName: String = "GKManagedEntity"
+    static let entityObjectClassName: String = "GKManagedEntity"
     static let entityGroupIndexName: String = "GKEntityGroup"
     static let entityGroupObjectClassName: String = "GKEntityGroup"
     static let entityGroupDescriptionName: String = "GKEntityGroup"
@@ -65,28 +65,28 @@ public protocol GKGraphDelegate {
 
 @objc(GKGraph)
 public class GKGraph : NSObject {
-	var watching: Dictionary<String, Array<String>>
-	var masterPredicate: NSPredicate?
+    var watching: Dictionary<String, Array<String>>
+    var masterPredicate: NSPredicate?
     var batchSize: Int = 20
-    
-	public weak var delegate: GKGraphDelegate?
+
+    public weak var delegate: GKGraphDelegate?
 
     /**
     * init
     * Initializer for the Object.
     */
     override public init() {
-		watching = Dictionary<String, Array<String>>()
-		super.init()
-	}
+        watching = Dictionary<String, Array<String>>()
+        super.init()
+    }
 
     /**
     * deinit
     * Deinitializes the Object, mainly removing itself as an observer for NSNotifications.
     */
-	deinit {
-		NSNotificationCenter.defaultCenter().removeObserver(self)
-	}
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 
     /**
     * save
@@ -126,7 +126,7 @@ public class GKGraph : NSObject {
     * watch(EntityGroup)
     * Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified group name.
     * @param        name: String!
-    */ 
+    */
     public func watch(EntityGroup name: String!) {
         addWatcher("name", value: name, index: GKGraphUtility.entityGroupIndexName, entityDescriptionName: GKGraphUtility.entityGroupDescriptionName, managedObjectClassName: GKGraphUtility.entityGroupObjectClassName)
     }
@@ -261,130 +261,130 @@ public class GKGraph : NSObject {
     * The callback that NotificationCenter uses when changes occur in the Graph.
     * @param        notification: NSNotification
     */
-	public func managedObjectContextDidSave(notification: NSNotification) {
-		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
-		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
+    public func managedObjectContextDidSave(notification: NSNotification) {
+        let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
+        let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
 
-		let userInfo = notification.userInfo
+        let userInfo = notification.userInfo
 
-		// inserts
-		let insertedSet: NSSet = userInfo?[NSInsertedObjectsKey] as NSSet
-		let	inserted: NSMutableSet = insertedSet.mutableCopy() as NSMutableSet
+        // inserts
+        let insertedSet: NSSet = userInfo?[NSInsertedObjectsKey] as NSSet
+        let	inserted: NSMutableSet = insertedSet.mutableCopy() as NSMutableSet
 
-		inserted.filterUsingPredicate(masterPredicate!)
+        inserted.filterUsingPredicate(masterPredicate!)
 
-		if 0 < inserted.count {
-			let nodes: Array<NSManagedObject> = inserted.allObjects as [NSManagedObject]
-			for node: NSManagedObject in nodes {
-				let className = String.fromCString(object_getClassName(node))
-				if nil == className {
-					println("[GraphKit Error: Cannot get Object Class name.]")
-					continue
-				}
-				switch(className!) {
-					case "GKManagedEntity_GKManagedEntity_":
-						delegate?.graph?(self, didInsertEntity: GKEntity(entity: node as GKManagedEntity))
-						break
-                    case "GKEntityProperty_GKEntityProperty_":
-                        let property: GKEntityProperty = node as GKEntityProperty
-                        delegate?.graph?(self, didInsertEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
-                        break
-                    case "GKEntityGroup_GKEntityGroup_":
-                        let group: GKEntityGroup = node as GKEntityGroup
-                        delegate?.graph?(self, didInsertEntity: GKEntity(entity: group.node as GKManagedEntity), group: group.name)
-                        break
-                    case "GKManagedAction_GKManagedAction_":
-						delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
-						break
-                    case "GKActionProperty_GKActionProperty_":
-                        let property: GKActionProperty = node as GKActionProperty
-                        delegate?.graph?(self, didInsertAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
-                        break
-                    case "GKActionGroup_GKActionGroup_":
-                        let group: GKActionGroup = node as GKActionGroup
-                        delegate?.graph?(self, didInsertAction: GKAction(action: group.node as GKManagedAction), group: group.name)
-                        break
-					default:
-						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
-				}
-			}
-		}
-
-		// updates
-		let updatedSet: NSSet = userInfo?[NSUpdatedObjectsKey] as NSSet
-		let	updated: NSMutableSet = updatedSet.mutableCopy() as NSMutableSet
-		updated.filterUsingPredicate(masterPredicate!)
-
-		if 0 < updated.count {
-			let nodes: Array<NSManagedObject> = updated.allObjects as [NSManagedObject]
-			for node: NSManagedObject in nodes {
-				let className = String.fromCString(object_getClassName(node))
-				if nil == className {
+        if 0 < inserted.count {
+            let nodes: Array<NSManagedObject> = inserted.allObjects as [NSManagedObject]
+            for node: NSManagedObject in nodes {
+                let className = String.fromCString(object_getClassName(node))
+                if nil == className {
                     println("[GraphKit Error: Cannot get Object Class name.]")
-					continue
-				}
-				switch(className!) {
-					case "GKEntityProperty_GKEntityProperty_":
-                        let property: GKEntityProperty = node as GKEntityProperty
-                        delegate?.graph?(self, didUpdateEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
-                        break
-                    case "GKActionProperty_GKActionProperty_":
-                        let property: GKActionProperty = node as GKActionProperty
-                        delegate?.graph?(self, didUpdateAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
-                        break
-                    default:
-						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
-				}
-			}
-		}
+                    continue
+                }
+                switch(className!) {
+                case "GKManagedEntity_GKManagedEntity_":
+                    delegate?.graph?(self, didInsertEntity: GKEntity(entity: node as GKManagedEntity))
+                    break
+                case "GKEntityProperty_GKEntityProperty_":
+                    let property: GKEntityProperty = node as GKEntityProperty
+                    delegate?.graph?(self, didInsertEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
+                    break
+                case "GKEntityGroup_GKEntityGroup_":
+                    let group: GKEntityGroup = node as GKEntityGroup
+                    delegate?.graph?(self, didInsertEntity: GKEntity(entity: group.node as GKManagedEntity), group: group.name)
+                    break
+                case "GKManagedAction_GKManagedAction_":
+                    delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
+                    break
+                case "GKActionProperty_GKActionProperty_":
+                    let property: GKActionProperty = node as GKActionProperty
+                    delegate?.graph?(self, didInsertAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
+                    break
+                case "GKActionGroup_GKActionGroup_":
+                    let group: GKActionGroup = node as GKActionGroup
+                    delegate?.graph?(self, didInsertAction: GKAction(action: group.node as GKManagedAction), group: group.name)
+                    break
+                default:
+                    assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
+                }
+            }
+        }
 
-		// deletes
-		let deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
+        // updates
+        let updatedSet: NSSet = userInfo?[NSUpdatedObjectsKey] as NSSet
+        let	updated: NSMutableSet = updatedSet.mutableCopy() as NSMutableSet
+        updated.filterUsingPredicate(masterPredicate!)
 
-		if nil == deletedSet? {
-			return
-		}
-
-		var	deleted: NSMutableSet = deletedSet!.mutableCopy() as NSMutableSet
-		deleted.filterUsingPredicate(masterPredicate!)
-
-		if 0 < deleted.count {
-			let nodes: Array<NSManagedObject> = deleted.allObjects as [NSManagedObject]
-			for node: NSManagedObject in nodes {
-				let className = String.fromCString(object_getClassName(node))
-				if nil == className {
+        if 0 < updated.count {
+            let nodes: Array<NSManagedObject> = updated.allObjects as [NSManagedObject]
+            for node: NSManagedObject in nodes {
+                let className = String.fromCString(object_getClassName(node))
+                if nil == className {
                     println("[GraphKit Error: Cannot get Object Class name.]")
-					continue
-				}
-				switch(className!) {
-					case "GKManagedEntity_GKManagedEntity_":
-						delegate?.graph?(self, didDeleteEntity: GKEntity(entity: node as GKManagedEntity))
-						break
-                    case "GKEntityProperty_GKEntityProperty_":
-                        let property: GKEntityProperty = node as GKEntityProperty
-                        delegate?.graph?(self, didDeleteEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
-                        break
-                    case "GKEntityGroup_GKEntityGroup_":
-                        let group: GKEntityGroup = node as GKEntityGroup
-                        delegate?.graph?(self, didDeleteEntity: GKEntity(entity: group.node as GKManagedEntity), group: group.name)
-                        break
-                    case "GKManagedAction_GKManagedAction_":
-                        delegate?.graph?(self, didDeleteAction: GKAction(action: node as GKManagedAction))
-                        break
-                    case "GKActionProperty_GKActionProperty_":
-                        let property: GKActionProperty = node as GKActionProperty
-                        delegate?.graph?(self, didDeleteAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
-                        break
-                    case "GKActionGroup_GKActionGroup_":
-                        let group: GKActionGroup = node as GKActionGroup
-                        delegate?.graph?(self, didDeleteAction: GKAction(action: group.node as GKManagedAction), group: group.name)
-                        break
-                    default:
-						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
-				}
-			}
-		}
-	}
+                    continue
+                }
+                switch(className!) {
+                case "GKEntityProperty_GKEntityProperty_":
+                    let property: GKEntityProperty = node as GKEntityProperty
+                    delegate?.graph?(self, didUpdateEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
+                    break
+                case "GKActionProperty_GKActionProperty_":
+                    let property: GKActionProperty = node as GKActionProperty
+                    delegate?.graph?(self, didUpdateAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
+                    break
+                default:
+                    assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
+                }
+            }
+        }
+
+        // deletes
+        let deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
+
+        if nil == deletedSet? {
+            return
+        }
+
+        var	deleted: NSMutableSet = deletedSet!.mutableCopy() as NSMutableSet
+        deleted.filterUsingPredicate(masterPredicate!)
+
+        if 0 < deleted.count {
+            let nodes: Array<NSManagedObject> = deleted.allObjects as [NSManagedObject]
+            for node: NSManagedObject in nodes {
+                let className = String.fromCString(object_getClassName(node))
+                if nil == className {
+                    println("[GraphKit Error: Cannot get Object Class name.]")
+                    continue
+                }
+                switch(className!) {
+                case "GKManagedEntity_GKManagedEntity_":
+                    delegate?.graph?(self, didDeleteEntity: GKEntity(entity: node as GKManagedEntity))
+                    break
+                case "GKEntityProperty_GKEntityProperty_":
+                    let property: GKEntityProperty = node as GKEntityProperty
+                    delegate?.graph?(self, didDeleteEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
+                    break
+                case "GKEntityGroup_GKEntityGroup_":
+                    let group: GKEntityGroup = node as GKEntityGroup
+                    delegate?.graph?(self, didDeleteEntity: GKEntity(entity: group.node as GKManagedEntity), group: group.name)
+                    break
+                case "GKManagedAction_GKManagedAction_":
+                    delegate?.graph?(self, didDeleteAction: GKAction(action: node as GKManagedAction))
+                    break
+                case "GKActionProperty_GKActionProperty_":
+                    let property: GKActionProperty = node as GKActionProperty
+                    delegate?.graph?(self, didDeleteAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
+                    break
+                case "GKActionGroup_GKActionGroup_":
+                    let group: GKActionGroup = node as GKActionGroup
+                    delegate?.graph?(self, didDeleteAction: GKAction(action: group.node as GKManagedAction), group: group.name)
+                    break
+                default:
+                    assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
+                }
+            }
+        }
+    }
 
     // make thread safe by creating this asynchronously
     var managedObjectContext: NSManagedObjectContext {
@@ -426,7 +426,7 @@ public class GKGraph : NSObject {
             var actionPropertyProperties: Array<AnyObject> = Array<AnyObject>()
             actionPropertyDescription.name = GKGraphUtility.actionPropertyDescriptionName
             actionPropertyDescription.managedObjectClassName = GKGraphUtility.actionPropertyObjectClassName
-            
+
             var entityGroupDescription: NSEntityDescription = NSEntityDescription()
             var entityGroupProperties: Array<AnyObject> = Array<AnyObject>()
             entityGroupDescription.name = GKGraphUtility.entityGroupDescriptionName
@@ -497,7 +497,7 @@ public class GKGraph : NSObject {
             propertySetRelationship.destinationEntity = actionPropertyDescription
             actionPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
             actionProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
-            
+
             var group: NSAttributeDescription = NSAttributeDescription()
             group.name = "name"
             group.attributeType = .StringAttributeType
@@ -580,12 +580,12 @@ public class GKGraph : NSObject {
             actionPropertyDescription.properties = actionPropertyProperties
 
             GKGraphManagedObjectModel.managedObjectModel.entities = [
-                entityDescription,
-                entityGroupDescription,
-                entityPropertyDescription,
-                actionDescription,
-                actionGroupDescription,
-                actionPropertyDescription
+                    entityDescription,
+                    entityGroupDescription,
+                    entityPropertyDescription,
+                    actionDescription,
+                    actionGroupDescription,
+                    actionPropertyDescription
             ]
         }
         return GKGraphManagedObjectModel.managedObjectModel!
@@ -617,10 +617,10 @@ public class GKGraph : NSObject {
     * prepareForObservation
     * Ensures NotificationCenter is watching the callback selector for this Graph.
     */
-	internal func prepareForObservation() {
-		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
+    internal func prepareForObservation() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
-	}
+    }
 
     /**
     * addPredicateToContextWatcher
@@ -628,22 +628,22 @@ public class GKGraph : NSObject {
     * @param        entityDescription: NSEntityDescription!
     * @param        predicate: NSPredicate!
     */
-	internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
-		var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)!
-		var predicates: Array<NSPredicate> = [entityPredicate, predicate]
-		let finalPredicate: NSPredicate = NSCompoundPredicate.andPredicateWithSubpredicates(predicates)
-		masterPredicate = nil != masterPredicate ? NSCompoundPredicate.orPredicateWithSubpredicates([masterPredicate!, finalPredicate]) : finalPredicate
-	}
+    internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
+        var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)!
+        var predicates: Array<NSPredicate> = [entityPredicate, predicate]
+        let finalPredicate: NSPredicate = NSCompoundPredicate.andPredicateWithSubpredicates(predicates)
+        masterPredicate = nil != masterPredicate ? NSCompoundPredicate.orPredicateWithSubpredicates([masterPredicate!, finalPredicate]) : finalPredicate
+    }
 
     /**
     * validateConstraints
     * Validates any constraints are not being violated when saving.
     * @return Bool, NSError, false if passing with no Error, true if failed with error.
     */
-	internal func validateConstraints() -> (Bool, NSError?) {
-		var result: (failed: Bool, error: NSError?) = (false, nil)
-		return result
-	}
+    internal func validateConstraints() -> (Bool, NSError?) {
+        var result: (failed: Bool, error: NSError?) = (false, nil)
+        return result
+    }
 
     /**
     * isWatching
@@ -652,17 +652,17 @@ public class GKGraph : NSObject {
     * @param        index: String!
     * @return       Bool, true if watching, false otherwise.
     */
-	internal func isWatching(key: String!, index: String!) -> Bool {
-		var watch: Array<String> = nil != watching[index] ? watching[index]! as Array<String> : Array<String>()
-		for item: String in watch {
-			if item == key {
-				return true
-			}
-		}
-		watch.append(key)
-		watching[index] = watch
-		return false
-	}
+    internal func isWatching(key: String!, index: String!) -> Bool {
+        var watch: Array<String> = nil != watching[index] ? watching[index]! as Array<String> : Array<String>()
+        for item: String in watch {
+            if item == key {
+                return true
+            }
+        }
+        watch.append(key)
+        watching[index] = watch
+        return false
+    }
 
     /**
     * addWatcher
@@ -672,17 +672,17 @@ public class GKGraph : NSObject {
     * @param        index: String!
     * @param        entityDescriptionName: Srting!
     */
-	internal func addWatcher(key: String!, value: String!, index: String!, entityDescriptionName: String!, managedObjectClassName: String!) {
-		if true == isWatching(value, index: index) {
-			return
-		}
-		var entityDescription: NSEntityDescription = NSEntityDescription()
-		entityDescription.name = entityDescriptionName
-		entityDescription.managedObjectClassName = managedObjectClassName
-		var predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)!
-		addPredicateToContextWatcher(entityDescription, predicate: predicate)
-		prepareForObservation()
-	}
+    internal func addWatcher(key: String!, value: String!, index: String!, entityDescriptionName: String!, managedObjectClassName: String!) {
+        if true == isWatching(value, index: index) {
+            return
+        }
+        var entityDescription: NSEntityDescription = NSEntityDescription()
+        entityDescription.name = entityDescriptionName
+        entityDescription.managedObjectClassName = managedObjectClassName
+        var predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)!
+        addPredicateToContextWatcher(entityDescription, predicate: predicate)
+        prepareForObservation()
+    }
 
     /**
     * search
