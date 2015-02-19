@@ -129,7 +129,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
             femaleInsertExpectation?.fulfill()
 
             let graph: GKGraph = GKGraph()
-            var nodes: Array<GKEntity> = graph.search(EntityGroup: group);
+            let nodes: Array<GKEntity> = graph.search(EntityGroup: group);
             if 1 == nodes.count && entity.id == nodes[0].id {
                 femaleSearchExpectation?.fulfill()
             }
@@ -141,7 +141,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
             femaleDeleteExpectation?.fulfill()
 
             let graph: GKGraph = GKGraph()
-            var nodes: Array<GKEntity> = graph.search(EntityGroup: group);
+            let nodes: Array<GKEntity> = graph.search(EntityGroup: group);
             if 0 == nodes.count {
                 femaleSearchExpectation?.fulfill()
             }

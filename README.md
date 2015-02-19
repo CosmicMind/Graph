@@ -165,7 +165,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
             holidayInsertExpectation?.fulfill()
 
             let graph: GKGraph = GKGraph()
-            var nodes: Array<GKAction> = graph.search(ActionGroup: group);
+            let nodes: Array<GKAction> = graph.search(ActionGroup: group);
             if 1 == nodes.count && action.id == nodes[0].id {
                 holidaySearchExpectation?.fulfill()
             }
@@ -177,7 +177,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
             holidayDeleteExpectation?.fulfill()
 
             let graph: GKGraph = GKGraph()
-            var nodes: Array<GKAction> = graph.search(ActionGroup: group);
+            let nodes: Array<GKAction> = graph.search(ActionGroup: group);
             if 0 == nodes.count {
                 holidaySearchExpectation?.fulfill()
             }
