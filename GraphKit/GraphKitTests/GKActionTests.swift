@@ -31,6 +31,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     var readDeleteExpectation: XCTestExpectation?
     var holidayInsertExpectation: XCTestExpectation?
     var holidayDeleteExpectation: XCTestExpectation?
+    var holidaySearchExpectation: XCTestExpectation?
     var nameInsertExpectation: XCTestExpectation?
     var nameUpdateExpectation: XCTestExpectation?
     var nameDeleteExpectation: XCTestExpectation?
@@ -86,6 +87,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         magazineInsertExpectation = expectationWithDescription("Magazine: Insert did not pass.")
         readInsertExpectation = expectationWithDescription("Read: Insert did not pass.")
         holidayInsertExpectation = expectationWithDescription("Holiday: Insert did not pass.")
+        holidaySearchExpectation = expectationWithDescription("Holiday: Search did not pass.")
         nameInsertExpectation = expectationWithDescription("Name: Insert did not pass.")
         sessionInsertExpectation = expectationWithDescription("Session: Insert did not pass.")
 
@@ -123,6 +125,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         magazineDeleteExpectation = expectationWithDescription("Magazine: Delete did not pass.")
         readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
         holidayDeleteExpectation = expectationWithDescription("Holiday: Delete did not pass.")
+        holidaySearchExpectation = expectationWithDescription("Holiday: Search did not pass.")
         nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
         sessionDeleteExpectation = expectationWithDescription("Session: Delete did not pass.")
 
@@ -174,12 +177,24 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     func graph(graph: GKGraph!, didInsertAction action: GKAction!, group: String!) {
         if "Holiday" == group {
             holidayInsertExpectation?.fulfill()
+
+            let graph: GKGraph = GKGraph()
+            var nodes: Array<GKAction> = graph.search(ActionGroup: group);
+            if 1 == nodes.count && action.id == nodes[0].id {
+                holidaySearchExpectation?.fulfill()
+            }
         }
     }
 
     func graph(graph: GKGraph!, didDeleteAction action: GKAction!, group: String!) {
         if "Holiday" == group {
             holidayDeleteExpectation?.fulfill()
+
+            let graph: GKGraph = GKGraph()
+            var nodes: Array<GKAction> = graph.search(ActionGroup: group);
+            if 0 == nodes.count {
+                holidaySearchExpectation?.fulfill()
+            }
         }
     }
 
