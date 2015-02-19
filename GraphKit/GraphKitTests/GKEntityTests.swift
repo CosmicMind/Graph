@@ -29,9 +29,11 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
     var nameInsertExpectation: XCTestExpectation?
     var nameUpdateExpectation: XCTestExpectation?
     var nameDeleteExpectation: XCTestExpectation?
+    var nameSearchExpectation: XCTestExpectation?
     var ageInsertExpectation: XCTestExpectation?
     var ageUpdateExpectation: XCTestExpectation?
     var ageDeleteExpectation: XCTestExpectation?
+    var ageSearchExpectation: XCTestExpectation?
 
     override func setUp() {
         super.setUp()
@@ -65,7 +67,9 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         femaleInsertExpectation = expectationWithDescription("Female: Insert did not pass.")
         femaleSearchExpectation = expectationWithDescription("Female: Search did not pass.")
         nameInsertExpectation = expectationWithDescription("Name: Insert did not pass.")
+        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
         ageInsertExpectation = expectationWithDescription("Age: Insert did not pass.")
+        ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
@@ -80,7 +84,9 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 
         // Set an Expectation for the update watcher.
         nameUpdateExpectation = expectationWithDescription("Name: Update did not pass.")
+        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
         ageUpdateExpectation = expectationWithDescription("Age: Update did not pass.")
+        ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
@@ -97,7 +103,9 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         femaleDeleteExpectation = expectationWithDescription("Female: Delete did not pass.")
         femaleSearchExpectation = expectationWithDescription("Female: Search did not pass.")
         nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
+        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
         ageDeleteExpectation = expectationWithDescription("Age: Delete did not pass.")
+        ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
@@ -151,24 +159,103 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
     func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, property: String!, value: AnyObject!) {
         if "name" == property && "Eve" == value as String {
             nameInsertExpectation?.fulfill()
+
+            let graph: GKGraph = GKGraph()
+
+            // Test the first property search API.
+            var nodes: Array<GKEntity> = graph.search(EntityProperty: property);
+            if 1 == nodes.count && nodes[0][property] as String == value as String {
+
+                // Test the second property search API.
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as String);
+                if 1 == nodes.count && nodes[0][property] as String == value as String {
+                    nameSearchExpectation?.fulfill()
+                }
+            }
+
         } else if "age" == property && 26 == value as Int {
             ageInsertExpectation?.fulfill()
+
+            let graph: GKGraph = GKGraph()
+
+            // Test the first property search API.
+            var nodes: Array<GKEntity> = graph.search(EntityProperty: property);
+            if 1 == nodes.count && nodes[0][property] as Int == value as Int {
+
+                // Test the second property search API.
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as Int);
+                if 1 == nodes.count && nodes[0][property] as Int == value as Int {
+                    ageSearchExpectation?.fulfill()
+                }
+            }
         }
     }
 
     func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, property: String!, value: AnyObject!) {
         if "name" == property && "Daniel" == value as String {
             nameUpdateExpectation?.fulfill()
+
+            let graph: GKGraph = GKGraph()
+
+            // Test the first property search API.
+            var nodes: Array<GKEntity> = graph.search(EntityProperty: property);
+            if 1 == nodes.count && nodes[0][property] as String == value as String {
+
+                // Test the second property search API.
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as String);
+                if 1 == nodes.count && nodes[0][property] as String == value as String {
+                    nameSearchExpectation?.fulfill()
+                }
+            }
         } else if "age" == property && 31 == value as Int {
             ageUpdateExpectation?.fulfill()
+
+            let graph: GKGraph = GKGraph()
+
+            // Test the first property search API.
+            var nodes: Array<GKEntity> = graph.search(EntityProperty: property);
+            if 1 == nodes.count && nodes[0][property] as Int == value as Int {
+
+                // Test the second property search API.
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as Int);
+                if 1 == nodes.count && nodes[0][property] as Int == value as Int {
+                    ageSearchExpectation?.fulfill()
+                }
+            }
         }
     }
 
     func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, property: String!, value: AnyObject!) {
         if "name" == property && "Daniel" == value as String {
             nameDeleteExpectation?.fulfill()
+
+            let graph: GKGraph = GKGraph()
+
+            // Test the first property search API.
+            var nodes: Array<GKEntity> = graph.search(EntityProperty: property);
+            if 0 == nodes.count {
+
+                // Test the second property search API.
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as String);
+                if 0 == nodes.count {
+                    nameSearchExpectation?.fulfill()
+                }
+            }
         } else if "age" == property && 31 == value as Int {
             ageDeleteExpectation?.fulfill()
+
+            let graph: GKGraph = GKGraph()
+
+            // Test the first property search API.
+            var nodes: Array<GKEntity> = graph.search(EntityProperty: property);
+            if 0 == nodes.count {
+
+                // Test the second property search API.
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as Int);
+                if 0 == nodes.count {
+                    ageSearchExpectation?.fulfill()
+                }
+            }
         }
     }
 }
