@@ -25,7 +25,7 @@ import CoreData
 @objc(GKNodeProperty)
 internal class GKNodeProperty : NSManagedObject {
     @NSManaged internal var name: String
-    @NSManaged internal var value: AnyObject
+    @NSManaged internal var value: AnyObject?
 
     /**
     * init
