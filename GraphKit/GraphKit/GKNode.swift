@@ -170,7 +170,7 @@ public class GKNode : NSObject {
     */
     public var groups: Array<String> {
         get {
-            var groups: Array<String>!
+            var groups: Array<String> = Array<String>()
             graph.managedObjectContext.performBlockAndWait {
 				for group in self.node.groupSet {
 					groups.append(group.name)
