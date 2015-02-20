@@ -164,20 +164,22 @@ public class GKNode : NSObject {
     }
 
     /**
-    * count
-    * Retrieves the number of Groups the Node is a part of.
-    * @return       Int of the number of groups.
+    * groups
+    * Retrieves the Groups the Node is a part of.
+    * @return       Array<String>
     */
-    public var count: Int {
+    public var groups: Array<String> {
         get {
-            var count: Int = 0
+            var groups: Array<String>!
             graph.managedObjectContext.performBlockAndWait {
-                count = self.node.groupSet.count
+				for group in self.node.groupSet {
+					groups.append(group.name)
+				}
             }
-            return count
+            return groups
         }
         set(value) {
-            assert(false, "[GraphKit Error: Count not allowed to be set.]")
+            assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
         }
     }
 
