@@ -87,9 +87,9 @@ public class GKNode : NSObject {
     * get           Returns the property name value.
     * set           Value for the property name.
     */
-    public subscript(name: String) -> AnyObject! {
+    public subscript(name: String) -> AnyObject? {
         get {
-            var value: AnyObject!
+            var value: AnyObject?
             graph.managedObjectContext.performBlockAndWait {
                 value = self.node[name]
             }
