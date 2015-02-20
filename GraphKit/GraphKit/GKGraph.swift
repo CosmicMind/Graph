@@ -167,6 +167,24 @@ public class GKGraph : NSObject {
     }
 
     /**
+    * searchForEntityGroups
+    * Retrieves all the unique Group Names for Entity Nodes.
+    * @return       Array<String, int>
+    */
+    public func searchForEntityGroups() -> Dictionary<String, Array<GKEntity>> {
+        let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", "*" as NSString));
+        var nodes: Dictionary<String, Array<GKEntity>> = Dictionary<String, Array<GKEntity>>()
+        for group: GKEntityGroup in entries as Array<GKEntityGroup> {
+            if (nil == nodes[group.name]) {
+                nodes[group.name] = Array<GKEntity>(arrayLiteral: GKEntity(entity: group.node as GKManagedEntity))
+            } else {
+				nodes[group.name]!.append(GKEntity(entity: group.node as GKManagedEntity))
+            }
+        }
+        return nodes
+    }
+
+    /**
     * search(Entity)
     * Searches the Graph for Entity Objects with the following type LIKE ?.
     * @param        type: String!
