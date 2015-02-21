@@ -23,7 +23,7 @@
 import CoreData
 
 @objc(GKNodeGroup)
-internal class GKNodeGroup : NSManagedObject {
+internal class GKNodeGroup: NSManagedObject {
     @NSManaged internal var name: String
 
     /**

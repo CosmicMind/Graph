@@ -23,7 +23,7 @@
 import Foundation
 
 @objc(GKBond)
-public class GKBond : GKNode {
+public class GKBond: GKNode {
 
     /**
     * init

@@ -23,7 +23,7 @@
 import Foundation
 
 @objc(GKEntity)
-public class GKEntity : GKNode {
+public class GKEntity: GKNode {
 
     /**
     * init
@@ -87,6 +87,62 @@ public class GKEntity : GKNode {
         }
         set(value) {
             assert(false, "[GraphKit Error: ActionWhenObject may not be set.]")
+        }
+    }
+
+    /**
+    * bonds
+    * Retrieves an Array of GKBond Objects.
+    * @return       Array<GKBond>
+    */
+    public var bonds: Array<GKBond> {
+        get {
+            return bondsWhenSubject + bondsWhenObject
+        }
+        set(value) {
+            assert(false, "[GraphKit Error: Bonds may not be set.]")
+        }
+    }
+
+    /**
+    * bondsWhenSubject
+    * Retrieves an Array of GKBond Objects when the Entity is a Subject of the Bond.
+    * @return       Array<GKBond>
+    */
+    public var bondsWhenSubject: Array<GKBond> {
+        get {
+            var nodes: Array<GKBond> = Array<GKBond>()
+            graph.managedObjectContext.performBlockAndWait {
+                var node: GKManagedEntity = self.node as GKManagedEntity
+                for item: AnyObject in node.bondSubjectSet {
+                    nodes.append(GKBond(bond: item as GKManagedBond))
+                }
+            }
+            return nodes
+        }
+        set(value) {
+            assert(false, "[GraphKit Error: BondWhenSubject may not be set.]")
+        }
+    }
+
+    /**
+    * bondsWhenObject
+    * Retrieves an Array of GKBond Objects when the Entity is an Object of the Bond.
+    * @return       Array<GKBond>
+    */
+    public var bondsWhenObject: Array<GKBond> {
+        get {
+            var nodes: Array<GKBond> = Array<GKBond>()
+            graph.managedObjectContext.performBlockAndWait {
+                var node: GKManagedEntity = self.node as GKManagedEntity
+                for item: AnyObject in node.bondObjectSet {
+                    nodes.append(GKBond(bond: item as GKManagedBond))
+                }
+            }
+            return nodes
+        }
+        set(value) {
+            assert(false, "[GraphKit Error: BondWhenObject may not be set.]")
         }
     }
 

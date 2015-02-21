@@ -23,7 +23,7 @@
 import CoreData
 
 @objc(GKManagedEntity)
-internal class GKManagedEntity : GKManagedNode {
+internal class GKManagedEntity: GKManagedNode {
     @NSManaged internal var actionSubjectSet: NSSet
     @NSManaged internal var actionObjectSet: NSSet
     @NSManaged internal var bondSubjectSet: NSSet
@@ -52,6 +52,8 @@ internal class GKManagedEntity : GKManagedNode {
         self.type = type
         actionSubjectSet = NSSet()
         actionObjectSet = NSSet()
+        bondSubjectSet = NSSet()
+        bondObjectSet = NSSet()
     }
 
     /**
