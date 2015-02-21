@@ -25,8 +25,8 @@ import CoreData
 
 @objc(GKManagedBond)
 internal class GKManagedBond : GKManagedNode {
-    @NSManaged internal var subject: GKManagedEntity
-    @NSManaged internal var object: GKManagedEntity
+    @NSManaged internal var subject: GKManagedEntity?
+    @NSManaged internal var object: GKManagedEntity?
 
     /**
     * entityDescription
@@ -154,6 +154,8 @@ internal class GKManagedBond : GKManagedNode {
             nodes.removeObject(node)
             managedObjectContext!.deleteObject(node as GKBondGroup)
         }
+		subject = nil
+		object = nil
         managedObjectContext!.deleteObject(self)
     }
 }

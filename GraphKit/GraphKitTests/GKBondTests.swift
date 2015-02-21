@@ -50,17 +50,25 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         // Set the XCTest Class as the delegate.
         graph.delegate = self
 
-        // Let's watch the changes in the Graph for the following Bond types.
+        // Let's watch the changes in the Graph for the following Bond values.
         graph.watch(Bond: "Friend")
         graph.watch(BondGroup: "Close")
         graph.watch(BondProperty: "permission")
         graph.watch(BondProperty: "year")
+
+        // Let's create two User Entity Objects.
+        let u1: GKEntity = GKEntity(type: "User")
+        let u2: GKEntity = GKEntity(type: "User")
 
         // Create a Friend Bond.
         let friend: GKBond = GKBond(type: "Friend")
         friend["permission"] = "edit"
         friend["year"] = 1998
         friend.addGroup("Close")
+
+        // Set the relationship between the users.
+        friend.subject = u1
+        friend.object = u2
 
         // Set an Expectation for the insert watcher.
         friendInsertExpectation = expectationWithDescription("Friend: Insert did not pass.")
@@ -121,13 +129,13 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didInsertBond bond: GKBond!) {
-        if "Friend" == bond.type {
+        if "Friend" == bond.type && "User" == bond.subject?.type && "User" == bond.object?.type {
             friendInsertExpectation?.fulfill()
 		}
     }
 
     func graph(graph: GKGraph!, didDeleteBond bond: GKBond!) {
-        if "Friend" == bond.type {
+        if "Friend" == bond.type && nil == bond.subject && nil == bond.object {
             friendDeleteExpectation?.fulfill()
         }
     }
