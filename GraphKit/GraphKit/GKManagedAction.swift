@@ -24,7 +24,7 @@
 import CoreData
 
 @objc(GKManagedAction)
-internal class GKManagedAction : GKManagedNode {
+internal class GKManagedAction: GKManagedNode {
     @NSManaged internal var subjectSet: NSSet
     @NSManaged internal var objectSet: NSSet
 

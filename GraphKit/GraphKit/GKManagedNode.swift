@@ -23,7 +23,7 @@
 import CoreData
 
 @objc(GKManagedNode)
-internal class GKManagedNode : NSManagedObject, Printable {
+internal class GKManagedNode: NSManagedObject, Printable {
     @NSManaged internal var nodeClass: String
     @NSManaged internal var type: String
     @NSManaged internal var createdDate: NSDate
