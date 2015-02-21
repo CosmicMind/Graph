@@ -105,6 +105,8 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
 
         friend.delete()
+        u1.delete();
+        u2.delete();
 
         // Set an Expectation for the delete watcher.
         friendDeleteExpectation = expectationWithDescription("Friend: Delete did not pass.")
