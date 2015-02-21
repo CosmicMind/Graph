@@ -28,7 +28,7 @@ public class GKAction : GKNode {
     /**
     * init
     * Initializes GKAction with a given type.
-    * @param        type: String!
+    * @param        type: String
     */
     override public init(type: String) {
         super.init(type: type)
@@ -159,7 +159,7 @@ public class GKAction : GKNode {
     /**
     * createImplementorWithType
     * Initializes GKManagedAction with a given type.
-    * @param        type: String!
+    * @param        type: String
     * @return       GKManagedAction
     */
     override internal func createImplementorWithType(type: String) -> GKManagedNode {

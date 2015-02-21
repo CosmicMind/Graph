@@ -51,9 +51,7 @@ internal class GKManagedNode : NSManagedObject, Printable {
     * set           Value for the property name.
     */
     internal subscript(name: String) -> AnyObject? {
-        get {
-            return nil
-        }
+        get {return nil}
         set(value) {}
     }
 
@@ -65,7 +63,8 @@ internal class GKManagedNode : NSManagedObject, Printable {
     */
     internal subscript(index: Int) -> String {
         get {
-			return ""
+            assert(-1 < index && index < groupSet.count, "[GraphKit Error: Group index out of range.]")
+            return groupSet.allObjects[index].name
         }
         set(value) {
             assert(false, "[GraphKit Error: Not allowed to set Group index directly.]")

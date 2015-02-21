@@ -50,7 +50,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         // Set the XCTest Class as the delegate.
         graph.delegate = self
 
-        // Let's watch the changes in the Graph for the following Entity types.
+        // Let's watch the changes in the Graph for the following Entity values.
         graph.watch(Entity: "User")
         graph.watch(EntityGroup: "Female")
         graph.watch(EntityProperty: "name")

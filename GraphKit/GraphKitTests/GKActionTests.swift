@@ -56,13 +56,13 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         // Set the XCTest Class as the delegate.
         graph.delegate = self
 
-        // Let's watch the changes in the Graph for the following Action types.
+        // Let's watch the changes in the Graph for the following Action values.
         graph.watch(Action: "Read")
         graph.watch(ActionGroup: "Holiday")
         graph.watch(ActionProperty: "name")
         graph.watch(ActionProperty: "session")
 
-        // Let's watch the changes in the Graph for the following Entity types.
+        // Let's watch the changes in the Graph for the following Entity values.
         graph.watch(Entity: "User")
         graph.watch(Entity: "Book")
         graph.watch(Entity: "Magazine")
