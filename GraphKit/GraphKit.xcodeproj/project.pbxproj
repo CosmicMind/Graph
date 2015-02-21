@@ -10,6 +10,13 @@
 		961376931A926BB600EAA11B /* GKNodeGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC66905F88D2E72E051F06 /* GKNodeGroup.swift */; };
 		961376951A926BB600EAA11B /* GKActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC62A0AE63BE03E8154767 /* GKActionGroup.swift */; };
 		961376961A926BB600EAA11B /* GKEntityGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6F274FD0E9843074184B /* GKEntityGroup.swift */; };
+		961D7CD31A9823A300694485 /* GKNodeProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6B10617735A4A2DA8D3F /* GKNodeProperty.swift */; };
+		961D7CD41A9823A300694485 /* GKEntityProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6C31CB238F6BDCFB1CDC /* GKEntityProperty.swift */; };
+		961D7CD51A9823A300694485 /* GKActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC612707A48268CC18D79D /* GKActionProperty.swift */; };
+		961D7CD61A9823A300694485 /* GKBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6FB320EC768F0500E221 /* GKBond.swift */; };
+		961D7CD71A9823A300694485 /* GKManagedBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6E78C9D04464F74DAE79 /* GKManagedBond.swift */; };
+		961D7CD81A9823A300694485 /* GKBondProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC66E11E86B528FBC8D9B5 /* GKBondProperty.swift */; };
+		961D7CD91A9823A300694485 /* GKBondGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6745F69C65DE5A1B27F8 /* GKBondGroup.swift */; };
 		964605591A8BDC400062609D /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9646054D1A8BDC400062609D /* GraphKit.framework */; };
 		9646056F1A8BDD5C0062609D /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 9646056E1A8BDD5C0062609D /* LICENSE */; };
 		964605711A8BDDA20062609D /* GKManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; };
@@ -120,24 +127,24 @@
 			isa = PBXGroup;
 			children = (
 				964605501A8BDC400062609D /* Supporting Files */,
-				A6BC6AC0055F5EEB55C8491F /* GKNode.swift */,
 				964605731A8BDE010062609D /* GKGraph.swift */,
-				964605781A8BDF800062609D /* GKEntity.swift */,
-				A6BC62E43D02EA363D348C7E /* GKAction.swift */,
-				964605701A8BDDA20062609D /* GKManagedEntity.swift */,
-				A6BC672A9E319DB368104D1F /* GKManagedAction.swift */,
+				A6BC6AC0055F5EEB55C8491F /* GKNode.swift */,
 				A6BC690834DE31A2F2FA1B35 /* GKManagedNode.swift */,
-				A6BC66905F88D2E72E051F06 /* GKNodeGroup.swift */,
-				A6BC62A0AE63BE03E8154767 /* GKActionGroup.swift */,
-				A6BC6F274FD0E9843074184B /* GKEntityGroup.swift */,
 				A6BC6B10617735A4A2DA8D3F /* GKNodeProperty.swift */,
+				A6BC66905F88D2E72E051F06 /* GKNodeGroup.swift */,
+				964605781A8BDF800062609D /* GKEntity.swift */,
+				964605701A8BDDA20062609D /* GKManagedEntity.swift */,
 				A6BC6C31CB238F6BDCFB1CDC /* GKEntityProperty.swift */,
+				A6BC6F274FD0E9843074184B /* GKEntityGroup.swift */,
+				A6BC62E43D02EA363D348C7E /* GKAction.swift */,
+				A6BC672A9E319DB368104D1F /* GKManagedAction.swift */,
 				A6BC612707A48268CC18D79D /* GKActionProperty.swift */,
-				9646056E1A8BDD5C0062609D /* LICENSE */,
+				A6BC62A0AE63BE03E8154767 /* GKActionGroup.swift */,
 				A6BC6FB320EC768F0500E221 /* GKBond.swift */,
 				A6BC6E78C9D04464F74DAE79 /* GKManagedBond.swift */,
 				A6BC66E11E86B528FBC8D9B5 /* GKBondProperty.swift */,
 				A6BC6745F69C65DE5A1B27F8 /* GKBondGroup.swift */,
+				9646056E1A8BDD5C0062609D /* LICENSE */,
 			);
 			path = GraphKit;
 			sourceTree = "<group>";
@@ -154,8 +161,8 @@
 			isa = PBXGroup;
 			children = (
 				9646055D1A8BDC400062609D /* Supporting Files */,
-				A6BC6D219EA6CCC3751AE3C1 /* GKActionTests.swift */,
 				A6BC64961C86FEA0064186D2 /* GKEntityTests.swift */,
+				A6BC6D219EA6CCC3751AE3C1 /* GKActionTests.swift */,
 				A6BC6142CC8A3533EEDBB1DA /* GKBondTests.swift */,
 			);
 			path = GraphKitTests;
@@ -179,6 +186,13 @@
 				96BE7E581A8C1F2B006DDFB4 /* GKGraph.swift in Headers */,
 				96BE7E571A8C1F2B006DDFB4 /* GKEntity.swift in Headers */,
 				965A7FDB1A9119A900D207B5 /* GKAction.swift in Headers */,
+				961D7CD31A9823A300694485 /* GKNodeProperty.swift in Headers */,
+				961D7CD41A9823A300694485 /* GKEntityProperty.swift in Headers */,
+				961D7CD51A9823A300694485 /* GKActionProperty.swift in Headers */,
+				961D7CD61A9823A300694485 /* GKBond.swift in Headers */,
+				961D7CD71A9823A300694485 /* GKManagedBond.swift in Headers */,
+				961D7CD81A9823A300694485 /* GKBondProperty.swift in Headers */,
+				961D7CD91A9823A300694485 /* GKBondGroup.swift in Headers */,
 				961376931A926BB600EAA11B /* GKNodeGroup.swift in Headers */,
 				961376951A926BB600EAA11B /* GKActionGroup.swift in Headers */,
 				961376961A926BB600EAA11B /* GKEntityGroup.swift in Headers */,

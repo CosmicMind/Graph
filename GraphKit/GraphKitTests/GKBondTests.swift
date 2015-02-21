@@ -21,19 +21,19 @@ import GraphKit
 
 class GKBondTests : XCTestCase, GKGraphDelegate {
 
-    var userInsertExpectation: XCTestExpectation?
-	var userDeleteExpectation: XCTestExpectation?
-    var femaleInsertExpectation: XCTestExpectation?
-    var femaleDeleteExpectation: XCTestExpectation?
-    var femaleSearchExpectation: XCTestExpectation?
-    var nameInsertExpectation: XCTestExpectation?
-    var nameUpdateExpectation: XCTestExpectation?
-    var nameDeleteExpectation: XCTestExpectation?
-    var nameSearchExpectation: XCTestExpectation?
-    var ageInsertExpectation: XCTestExpectation?
-    var ageUpdateExpectation: XCTestExpectation?
-    var ageDeleteExpectation: XCTestExpectation?
-    var ageSearchExpectation: XCTestExpectation?
+    var friendInsertExpectation: XCTestExpectation?
+	var friendDeleteExpectation: XCTestExpectation?
+    var closeInsertExpectation: XCTestExpectation?
+    var closeDeleteExpectation: XCTestExpectation?
+    var closeSearchExpectation: XCTestExpectation?
+    var permissionInsertExpectation: XCTestExpectation?
+    var permissionUpdateExpectation: XCTestExpectation?
+    var permissionDeleteExpectation: XCTestExpectation?
+    var permissionSearchExpectation: XCTestExpectation?
+    var yearInsertExpectation: XCTestExpectation?
+    var yearUpdateExpectation: XCTestExpectation?
+    var yearDeleteExpectation: XCTestExpectation?
+    var yearSearchExpectation: XCTestExpectation?
 
     override func setUp() {
         super.setUp()
@@ -51,25 +51,25 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         graph.delegate = self
 
         // Let's watch the changes in the Graph for the following Bond types.
-        graph.watch(Bond: "User")
-        graph.watch(BondGroup: "Female")
-        graph.watch(BondProperty: "name")
-        graph.watch(BondProperty: "age")
+        graph.watch(Bond: "Friend")
+        graph.watch(BondGroup: "Close")
+        graph.watch(BondProperty: "permission")
+        graph.watch(BondProperty: "year")
 
-        // Create a User Bond.
-        let user: GKBond = GKBond(type: "User")
-        user["name"] = "Eve"
-        user["age"] = 26
-        user.addGroup("Female")
+        // Create a Friend Bond.
+        let friend: GKBond = GKBond(type: "Friend")
+        friend["permission"] = "edit"
+        friend["year"] = 1998
+        friend.addGroup("Close")
 
         // Set an Expectation for the insert watcher.
-        userInsertExpectation = expectationWithDescription("User: Insert did not pass.")
-        femaleInsertExpectation = expectationWithDescription("Female: Insert did not pass.")
-        femaleSearchExpectation = expectationWithDescription("Female: Search did not pass.")
-        nameInsertExpectation = expectationWithDescription("Name: Insert did not pass.")
-        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
-        ageInsertExpectation = expectationWithDescription("Age: Insert did not pass.")
-        ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
+        friendInsertExpectation = expectationWithDescription("Friend: Insert did not pass.")
+        closeInsertExpectation = expectationWithDescription("Close: Insert did not pass.")
+        closeSearchExpectation = expectationWithDescription("Close: Search did not pass.")
+        permissionInsertExpectation = expectationWithDescription("Permission: Insert did not pass.")
+        permissionSearchExpectation = expectationWithDescription("Permission: Search did not pass.")
+        yearInsertExpectation = expectationWithDescription("Age: Insert did not pass.")
+        yearSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
@@ -79,14 +79,14 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         // Wait for the delegates to be executed.
         waitForExpectationsWithTimeout(5, handler: nil)
 
-        user["name"] = "Daniel"
-        user["age"] = 31
+        friend["permission"] = "read"
+        friend["year"] = 2001
 
         // Set an Expectation for the update watcher.
-        nameUpdateExpectation = expectationWithDescription("Name: Update did not pass.")
-        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
-        ageUpdateExpectation = expectationWithDescription("Age: Update did not pass.")
-        ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
+        permissionUpdateExpectation = expectationWithDescription("Permission: Update did not pass.")
+        permissionSearchExpectation = expectationWithDescription("Permission: Search did not pass.")
+        yearUpdateExpectation = expectationWithDescription("Age: Update did not pass.")
+        yearSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
@@ -96,16 +96,16 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         // Wait for the delegates to be executed.
         waitForExpectationsWithTimeout(5, handler: nil)
 
-        user.delete()
+        friend.delete()
 
         // Set an Expectation for the delete watcher.
-        userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
-        femaleDeleteExpectation = expectationWithDescription("Female: Delete did not pass.")
-        femaleSearchExpectation = expectationWithDescription("Female: Search did not pass.")
-        nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
-        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
-        ageDeleteExpectation = expectationWithDescription("Age: Delete did not pass.")
-        ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
+        friendDeleteExpectation = expectationWithDescription("Friend: Delete did not pass.")
+        closeDeleteExpectation = expectationWithDescription("Close: Delete did not pass.")
+        closeSearchExpectation = expectationWithDescription("Close: Search did not pass.")
+        permissionDeleteExpectation = expectationWithDescription("Permission: Delete did not pass.")
+        permissionSearchExpectation = expectationWithDescription("Permission: Search did not pass.")
+        yearDeleteExpectation = expectationWithDescription("Age: Delete did not pass.")
+        yearSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
@@ -121,99 +121,99 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didInsertBond bond: GKBond!) {
-        if "User" == bond.type {
-            userInsertExpectation?.fulfill()
+        if "Friend" == bond.type {
+            friendInsertExpectation?.fulfill()
 		}
     }
 
     func graph(graph: GKGraph!, didDeleteBond bond: GKBond!) {
-        if "User" == bond.type {
-            userDeleteExpectation?.fulfill()
+        if "Friend" == bond.type {
+            friendDeleteExpectation?.fulfill()
         }
     }
 
     func graph(graph: GKGraph!, didInsertBond bond: GKBond!, group: String!) {
-        if "Female" == group {
-            femaleInsertExpectation?.fulfill()
+        if "Close" == group {
+            closeInsertExpectation?.fulfill()
             let nodes: Array<GKBond> = graph.search(BondGroup: group);
             if 1 == nodes.count && bond.id == nodes[0].id {
-                femaleSearchExpectation?.fulfill()
+                closeSearchExpectation?.fulfill()
             }
         }
     }
 
     func graph(graph: GKGraph!, didDeleteBond bond: GKBond!, group: String!) {
-        if "Female" == group {
-            femaleDeleteExpectation?.fulfill()
+        if "Close" == group {
+            closeDeleteExpectation?.fulfill()
             let nodes: Array<GKBond> = graph.search(BondGroup: group);
             if 0 == nodes.count {
-                femaleSearchExpectation?.fulfill()
+                closeSearchExpectation?.fulfill()
             }
         }
     }
 
     func graph(graph: GKGraph!, didInsertBond bond: GKBond!, property: String!, value: AnyObject!) {
-        if "name" == property && "Eve" == value as String {
-            nameInsertExpectation?.fulfill()
+        if "permission" == property && "edit" == value as String {
+            permissionInsertExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property);
             if 1 == nodes.count && nodes[0][property] as String == value as String {
                 var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as String);
                 if 1 == nodes.count && nodes[0][property] as String == value as String {
-                    nameSearchExpectation?.fulfill()
+                    permissionSearchExpectation?.fulfill()
                 }
             }
 
-        } else if "age" == property && 26 == value as Int {
-            ageInsertExpectation?.fulfill()
+        } else if "year" == property && 1998 == value as Int {
+            yearInsertExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property);
             if 1 == nodes.count && nodes[0][property] as Int == value as Int {
                 var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as Int);
                 if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                    ageSearchExpectation?.fulfill()
+                    yearSearchExpectation?.fulfill()
                 }
             }
         }
     }
 
     func graph(graph: GKGraph!, didUpdateBond bond: GKBond!, property: String!, value: AnyObject!) {
-        if "name" == property && "Daniel" == value as String {
-            nameUpdateExpectation?.fulfill()
+        if "permission" == property && "read" == value as String {
+            permissionUpdateExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property);
             if 1 == nodes.count && nodes[0][property] as String == value as String {
                 var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as String);
                 if 1 == nodes.count && nodes[0][property] as String == value as String {
-                    nameSearchExpectation?.fulfill()
+                    permissionSearchExpectation?.fulfill()
                 }
             }
-        } else if "age" == property && 31 == value as Int {
-            ageUpdateExpectation?.fulfill()
+        } else if "year" == property && 2001 == value as Int {
+            yearUpdateExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property);
             if 1 == nodes.count && nodes[0][property] as Int == value as Int {
                 var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as Int);
                 if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                    ageSearchExpectation?.fulfill()
+                    yearSearchExpectation?.fulfill()
                 }
             }
         }
     }
 
     func graph(graph: GKGraph!, didDeleteBond bond: GKBond!, property: String!, value: AnyObject!) {
-        if "name" == property && "Daniel" == value as String {
-            nameDeleteExpectation?.fulfill()
+        if "permission" == property && "read" == value as String {
+            permissionDeleteExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property);
             if 0 == nodes.count {
                 var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as String);
                 if 0 == nodes.count {
-                    nameSearchExpectation?.fulfill()
+                    permissionSearchExpectation?.fulfill()
                 }
             }
-        } else if "age" == property && 31 == value as Int {
-            ageDeleteExpectation?.fulfill()
+        } else if "year" == property && 2001 == value as Int {
+            yearDeleteExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property);
             if 0 == nodes.count {
                 var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as Int);
                 if 0 == nodes.count {
-                    ageSearchExpectation?.fulfill()
+                    yearSearchExpectation?.fulfill()
                 }
             }
         }

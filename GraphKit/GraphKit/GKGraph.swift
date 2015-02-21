@@ -491,24 +491,35 @@ public class GKGraph : NSObject {
                 case "GKManagedEntity_GKManagedEntity_":
                     delegate?.graph?(self, didInsertEntity: GKEntity(entity: node as GKManagedEntity))
                     break
-                case "GKEntityProperty_GKEntityProperty_":
+				case "GKEntityGroup_GKEntityGroup_":
+					let group: GKEntityGroup = node as GKEntityGroup
+					delegate?.graph?(self, didInsertEntity: GKEntity(entity: group.node as GKManagedEntity), group: group.name)
+					break
+				case "GKEntityProperty_GKEntityProperty_":
                     let property: GKEntityProperty = node as GKEntityProperty
                     delegate?.graph?(self, didInsertEntity: GKEntity(entity: property.node as GKManagedEntity), property: property.name, value: property.value)
-                    break
-                case "GKEntityGroup_GKEntityGroup_":
-                    let group: GKEntityGroup = node as GKEntityGroup
-                    delegate?.graph?(self, didInsertEntity: GKEntity(entity: group.node as GKManagedEntity), group: group.name)
                     break
                 case "GKManagedAction_GKManagedAction_":
                     delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
                     break
-                case "GKActionProperty_GKActionProperty_":
+				case "GKActionGroup_GKActionGroup_":
+					let group: GKActionGroup = node as GKActionGroup
+					delegate?.graph?(self, didInsertAction: GKAction(action: group.node as GKManagedAction), group: group.name)
+					break
+				case "GKActionProperty_GKActionProperty_":
                     let property: GKActionProperty = node as GKActionProperty
                     delegate?.graph?(self, didInsertAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
                     break
-                case "GKActionGroup_GKActionGroup_":
-                    let group: GKActionGroup = node as GKActionGroup
-                    delegate?.graph?(self, didInsertAction: GKAction(action: group.node as GKManagedAction), group: group.name)
+                case "GKManagedBond_GKManagedBond_":
+                    delegate?.graph?(self, didInsertBond: GKBond(bond: node as GKManagedBond))
+                    break
+				case "GKBondGroup_GKBondGroup_":
+					let group: GKBondGroup = node as GKBondGroup
+					delegate?.graph?(self, didInsertBond: GKBond(bond: group.node as GKManagedBond), group: group.name)
+					break
+				case "GKBondProperty_GKBondProperty_":
+                    let property: GKBondProperty = node as GKBondProperty
+                    delegate?.graph?(self, didInsertBond: GKBond(bond: property.node as GKManagedBond), property: property.name, value: property.value)
                     break
                 default:
                     assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
@@ -537,6 +548,10 @@ public class GKGraph : NSObject {
                 case "GKActionProperty_GKActionProperty_":
                     let property: GKActionProperty = node as GKActionProperty
                     delegate?.graph?(self, didUpdateAction: GKAction(action: property.node as GKManagedAction), property: property.name, value: property.value)
+                    break
+                case "GKBondProperty_GKBondProperty_":
+                    let property: GKBondProperty = node as GKBondProperty
+                    delegate?.graph?(self, didUpdateBond: GKBond(bond: property.node as GKManagedBond), property: property.name, value: property.value)
                     break
                 default:
                     assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
@@ -584,6 +599,17 @@ public class GKGraph : NSObject {
                 case "GKActionGroup_GKActionGroup_":
                     let group: GKActionGroup = node as GKActionGroup
                     delegate?.graph?(self, didDeleteAction: GKAction(action: group.node as GKManagedAction), group: group.name)
+                    break
+                case "GKManagedBond_GKManagedBond_":
+                    delegate?.graph?(self, didDeleteBond: GKBond(bond: node as GKManagedBond))
+                    break
+                case "GKBondProperty_GKBondProperty_":
+                    let property: GKBondProperty = node as GKBondProperty
+                    delegate?.graph?(self, didDeleteBond: GKBond(bond: property.node as GKManagedBond), property: property.name, value: property.value)
+                    break
+                case "GKBondGroup_GKBondGroup_":
+                    let group: GKBondGroup = node as GKBondGroup
+                    delegate?.graph?(self, didDeleteBond: GKBond(bond: group.node as GKManagedBond), group: group.name)
                     break
                 default:
                     assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
@@ -734,7 +760,8 @@ public class GKGraph : NSObject {
             group.attributeType = .StringAttributeType
             group.optional = false
             entityGroupProperties.append(group.copy() as NSAttributeDescription)
-            actionGroupProperties.append(group.copy() as NSAttributeDescription)
+			actionGroupProperties.append(group.copy() as NSAttributeDescription)
+			bondGroupProperties.append(group.copy() as NSAttributeDescription)
 
             var groupRelationship: NSRelationshipDescription = NSRelationshipDescription()
             groupRelationship.name = "node"
@@ -817,9 +844,9 @@ public class GKGraph : NSObject {
             subjectRelationship.destinationEntity = entityDescription
 
             var bondSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
-            bondSubjectRelationship.name = "bondSubject"
-            bondSubjectRelationship.minCount = 1
-            bondSubjectRelationship.maxCount = 1
+            bondSubjectRelationship.name = "bondSubjectSet"
+            bondSubjectRelationship.minCount = 0
+            bondSubjectRelationship.maxCount = 0
             bondSubjectRelationship.deleteRule = .NoActionDeleteRule
             bondSubjectRelationship.destinationEntity = bondDescription
 
@@ -839,7 +866,7 @@ public class GKGraph : NSObject {
             objectRelationship.destinationEntity = entityDescription
 
             var bondObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
-            bondObjectRelationship.name = "bondObject"
+            bondObjectRelationship.name = "bondObjectSet"
             bondObjectRelationship.minCount = 0
             bondObjectRelationship.maxCount = 0
             bondObjectRelationship.deleteRule = .NoActionDeleteRule

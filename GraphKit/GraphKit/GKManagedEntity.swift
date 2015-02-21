@@ -26,6 +26,8 @@ import CoreData
 internal class GKManagedEntity : GKManagedNode {
     @NSManaged internal var actionSubjectSet: NSSet
     @NSManaged internal var actionObjectSet: NSSet
+    @NSManaged internal var bondSubjectSet: NSSet
+    @NSManaged internal var bondObjectSet: NSSet
 
     /**
     * entityDescription
@@ -209,6 +211,52 @@ extension GKManagedEntity {
     */
     func removeActionObjectSetObject(value: GKManagedAction) {
         let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+        nodes.removeObject(value)
+    }
+}
+
+/**
+* An extension used to handle the many-to-many relationship with Bonds.
+*/
+extension GKManagedEntity {
+
+    /**
+    * addBondSubjectSetObject
+    * Adds the Bond to the bondSubjectSet for the Entity.
+    * @param        value: GKManagedBond
+    */
+    func addBondSubjectSetObject(value: GKManagedBond) {
+        let nodes: NSMutableSet = bondSubjectSet as NSMutableSet
+        nodes.addObject(value)
+    }
+
+    /**
+    * removeBondSubjectSetObject
+    * Removes the Bond to the bondSubjectSet for the Entity.
+    * @param        value: GKManagedBond
+    */
+    func removeBondSubjectSetObject(value: GKManagedBond) {
+        let nodes: NSMutableSet = bondSubjectSet as NSMutableSet
+        nodes.removeObject(value)
+    }
+
+    /**
+    * addBondObjectSetObject
+    * Adds the Bond to the bondObjectSet for the Entity.
+    * @param        value: GKManagedBond
+    */
+    func addBondObjectSetObject(value: GKManagedBond) {
+        let nodes: NSMutableSet = bondObjectSet as NSMutableSet
+        nodes.addObject(value)
+    }
+
+    /**
+    * removeBondObjectSetObject
+    * Removes the Bond to the bondObjectSet for the Entity.
+    * @param        value: GKManagedBond
+    */
+    func removeBondObjectSetObject(value: GKManagedBond) {
+        let nodes: NSMutableSet = bondObjectSet as NSMutableSet
         nodes.removeObject(value)
     }
 }
