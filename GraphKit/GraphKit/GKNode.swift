@@ -110,7 +110,6 @@ public class GKNode : NSObject {
     */
     public subscript(index: Int) -> String {
         get {
-            assert(-1 < index && index < groupCount(), "[GraphKit Error: Group index out of range.]")
             var value: String!
             graph.managedObjectContext.performBlockAndWait {
                 value = self.node[index]
@@ -129,7 +128,7 @@ public class GKNode : NSObject {
     * @return       Bool of the result, true if added, false otherwise.
     */
     public func addGroup(name: String!) -> Bool {
-		var result: Bool = false
+		var result: Bool!
 		graph.managedObjectContext.performBlockAndWait {
             result = self.node.addGroup(name)
         }
@@ -165,16 +164,23 @@ public class GKNode : NSObject {
     }
 
     /**
-    * groupCount
-    * Retrieves the number of Groups the Node is a part of.
-    * @return       Int of the number of groups.
+    * groups
+    * Retrieves the Groups the Node is a part of.
+    * @return       Array<String>
     */
-    public func groupCount() -> Int {
-        var count: Int = 0
-        graph.managedObjectContext.performBlockAndWait {
-            count = self.node.groupSet.count
+    public var groups: Array<String> {
+        get {
+            var groups: Array<String> = Array<String>()
+            graph.managedObjectContext.performBlockAndWait {
+				for group in self.node.groupSet {
+					groups.append(group.name)
+				}
+            }
+            return groups
         }
-        return count
+        set(value) {
+            assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
+        }
     }
 
     /**

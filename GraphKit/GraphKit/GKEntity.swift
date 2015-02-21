@@ -28,7 +28,7 @@ public class GKEntity : GKNode {
     /**
     * init
     * Initializes GKEntity with a given type.
-    * @param        type: String!
+    * @param        type: String
     */
     override public init(type: String) {
         super.init(type: type)
@@ -113,7 +113,7 @@ public class GKEntity : GKNode {
     /**
     * createImplementorWithType
     * Initializes GKManagedEntity with a given type.
-    * @param        type: String!
+    * @param        type: String
     * @return       GKManagedEntity
     */
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
