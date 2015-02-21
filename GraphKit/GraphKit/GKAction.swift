@@ -23,7 +23,7 @@
 import Foundation
 
 @objc(GKAction)
-public class GKAction : GKNode {
+public class GKAction: GKNode {
 
     /**
     * init

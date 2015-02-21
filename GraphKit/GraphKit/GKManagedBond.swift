@@ -24,7 +24,7 @@
 import CoreData
 
 @objc(GKManagedBond)
-internal class GKManagedBond : GKManagedNode {
+internal class GKManagedBond: GKManagedNode {
     @NSManaged internal var subject: GKManagedEntity?
     @NSManaged internal var object: GKManagedEntity?
 

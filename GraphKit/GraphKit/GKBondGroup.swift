@@ -23,7 +23,7 @@
 import CoreData
 
 @objc(GKBondGroup)
-internal class GKBondGroup : GKNodeGroup {
+internal class GKBondGroup: GKNodeGroup {
     @NSManaged internal var node: GKManagedBond
 
     /**

@@ -85,7 +85,7 @@ public protocol GKGraphDelegate {
 }
 
 @objc(GKGraph)
-public class GKGraph : NSObject {
+public class GKGraph: NSObject {
     var watching: Dictionary<String, Array<String>>
     var masterPredicate: NSPredicate?
     var batchSize: Int = 20

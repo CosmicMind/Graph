@@ -23,7 +23,7 @@
 import CoreData
 
 @objc(GKActionProperty)
-internal class GKActionProperty : GKNodeProperty {
+internal class GKActionProperty: GKNodeProperty {
     @NSManaged internal var node: GKManagedAction
 
     /**
