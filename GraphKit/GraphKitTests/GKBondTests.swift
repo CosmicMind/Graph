@@ -21,6 +21,8 @@ import GraphKit
 
 class GKBondTests : XCTestCase, GKGraphDelegate {
 
+    var u1InsertExpectation: XCTestExpectation?
+    var u2InsertExpectation: XCTestExpectation?
     var friendInsertExpectation: XCTestExpectation?
 	var friendDeleteExpectation: XCTestExpectation?
     var closeInsertExpectation: XCTestExpectation?
@@ -56,9 +58,15 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         graph.watch(BondProperty: "permission")
         graph.watch(BondProperty: "year")
 
+        // Let's watch the User Entity values to test reverse Bond indices.
+        graph.watch(Entity: "User")
+
         // Let's create two User Entity Objects.
         let u1: GKEntity = GKEntity(type: "User")
+        u1["name"] = "Eve"
+
         let u2: GKEntity = GKEntity(type: "User")
+        u2["name"] = "Daniel"
 
         // Create a Friend Bond.
         let friend: GKBond = GKBond(type: "Friend")
@@ -71,6 +79,8 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         friend.object = u2
 
         // Set an Expectation for the insert watcher.
+        u1InsertExpectation = expectationWithDescription("User 1: Insert did not pass.")
+        u2InsertExpectation = expectationWithDescription("User 2: Insert did not pass.")
         friendInsertExpectation = expectationWithDescription("Friend: Insert did not pass.")
         closeInsertExpectation = expectationWithDescription("Close: Insert did not pass.")
         closeSearchExpectation = expectationWithDescription("Close: Search did not pass.")
@@ -128,6 +138,14 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
 
     func testPerformanceExample() {
         self.measureBlock() {}
+    }
+
+    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+        if "Eve" == entity["name"]? as String && 1 == entity.bondsWhenSubject.count {
+            u1InsertExpectation?.fulfill()
+        } else if "Daniel" == entity["name"]? as String && 1 == entity.bondsWhenObject.count {
+            u2InsertExpectation?.fulfill()
+        }
     }
 
     func graph(graph: GKGraph!, didInsertBond bond: GKBond!) {

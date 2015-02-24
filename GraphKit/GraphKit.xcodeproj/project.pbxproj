@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		961376931A926BB600EAA11B /* GKNodeGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC66905F88D2E72E051F06 /* GKNodeGroup.swift */; };
-		961376951A926BB600EAA11B /* GKActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC62A0AE63BE03E8154767 /* GKActionGroup.swift */; };
-		961376961A926BB600EAA11B /* GKEntityGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6F274FD0E9843074184B /* GKEntityGroup.swift */; };
-		961D7CD31A9823A300694485 /* GKNodeProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6B10617735A4A2DA8D3F /* GKNodeProperty.swift */; };
-		961D7CD41A9823A300694485 /* GKEntityProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6C31CB238F6BDCFB1CDC /* GKEntityProperty.swift */; };
-		961D7CD51A9823A300694485 /* GKActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC612707A48268CC18D79D /* GKActionProperty.swift */; };
-		961D7CD61A9823A300694485 /* GKBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6FB320EC768F0500E221 /* GKBond.swift */; };
-		961D7CD71A9823A300694485 /* GKManagedBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6E78C9D04464F74DAE79 /* GKManagedBond.swift */; };
-		961D7CD81A9823A300694485 /* GKBondProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC66E11E86B528FBC8D9B5 /* GKBondProperty.swift */; };
-		961D7CD91A9823A300694485 /* GKBondGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6745F69C65DE5A1B27F8 /* GKBondGroup.swift */; };
+		961376931A926BB600EAA11B /* GKNodeGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC66905F88D2E72E051F06 /* GKNodeGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961376951A926BB600EAA11B /* GKActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC62A0AE63BE03E8154767 /* GKActionGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961376961A926BB600EAA11B /* GKEntityGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6F274FD0E9843074184B /* GKEntityGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961D7CD31A9823A300694485 /* GKNodeProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6B10617735A4A2DA8D3F /* GKNodeProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961D7CD41A9823A300694485 /* GKEntityProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6C31CB238F6BDCFB1CDC /* GKEntityProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961D7CD51A9823A300694485 /* GKActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC612707A48268CC18D79D /* GKActionProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961D7CD61A9823A300694485 /* GKBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6FB320EC768F0500E221 /* GKBond.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		961D7CD71A9823A300694485 /* GKManagedBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6E78C9D04464F74DAE79 /* GKManagedBond.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961D7CD81A9823A300694485 /* GKBondProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC66E11E86B528FBC8D9B5 /* GKBondProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961D7CD91A9823A300694485 /* GKBondGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6745F69C65DE5A1B27F8 /* GKBondGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		964605591A8BDC400062609D /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9646054D1A8BDC400062609D /* GraphKit.framework */; };
 		9646056F1A8BDD5C0062609D /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 9646056E1A8BDD5C0062609D /* LICENSE */; };
 		964605711A8BDDA20062609D /* GKManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; };
 		964605741A8BDE010062609D /* GKGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605731A8BDE010062609D /* GKGraph.swift */; };
 		964605791A8BDF800062609D /* GKEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964605781A8BDF800062609D /* GKEntity.swift */; };
 		965A7FDB1A9119A900D207B5 /* GKAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC62E43D02EA363D348C7E /* GKAction.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		965A7FDC1A9119B800D207B5 /* GKNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6AC0055F5EEB55C8491F /* GKNode.swift */; };
-		965A7FDD1A9119C300D207B5 /* GKManagedAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC672A9E319DB368104D1F /* GKManagedAction.swift */; };
-		965A7FDE1A9119C300D207B5 /* GKManagedNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC690834DE31A2F2FA1B35 /* GKManagedNode.swift */; };
-		96BE7E561A8C1F2B006DDFB4 /* GKManagedEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; };
+		965A7FDC1A9119B800D207B5 /* GKNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC6AC0055F5EEB55C8491F /* GKNode.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		965A7FDD1A9119C300D207B5 /* GKManagedAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC672A9E319DB368104D1F /* GKManagedAction.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		965A7FDE1A9119C300D207B5 /* GKManagedNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = A6BC690834DE31A2F2FA1B35 /* GKManagedNode.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96BE7E561A8C1F2B006DDFB4 /* GKManagedEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605701A8BDDA20062609D /* GKManagedEntity.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		96BE7E571A8C1F2B006DDFB4 /* GKEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605781A8BDF800062609D /* GKEntity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96BE7E581A8C1F2B006DDFB4 /* GKGraph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 964605731A8BDE010062609D /* GKGraph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6BC6010E6BD174644474E8B /* GKActionProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC612707A48268CC18D79D /* GKActionProperty.swift */; };
@@ -186,10 +186,10 @@
 				96BE7E581A8C1F2B006DDFB4 /* GKGraph.swift in Headers */,
 				96BE7E571A8C1F2B006DDFB4 /* GKEntity.swift in Headers */,
 				965A7FDB1A9119A900D207B5 /* GKAction.swift in Headers */,
+				961D7CD61A9823A300694485 /* GKBond.swift in Headers */,
 				961D7CD31A9823A300694485 /* GKNodeProperty.swift in Headers */,
 				961D7CD41A9823A300694485 /* GKEntityProperty.swift in Headers */,
 				961D7CD51A9823A300694485 /* GKActionProperty.swift in Headers */,
-				961D7CD61A9823A300694485 /* GKBond.swift in Headers */,
 				961D7CD71A9823A300694485 /* GKManagedBond.swift in Headers */,
 				961D7CD81A9823A300694485 /* GKBondProperty.swift in Headers */,
 				961D7CD91A9823A300694485 /* GKBondGroup.swift in Headers */,
