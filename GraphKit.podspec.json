@@ -1,5 +1,5 @@
 {
-  "name": "GKGraphKit",
+  "name": "GraphKit",
   "version": "0.1.0",
   "summary": "next generation graph framework for ios",
   "homepage": "https://github.com/GraphKit",
@@ -14,5 +14,6 @@
   "platforms": {
     "ios": "8.1"
   },
-  "source_files": "GRaphKit/*.swift"
+  "source_files": "GRaphKit/*.swift",
+  "requires_arc": true
 }
