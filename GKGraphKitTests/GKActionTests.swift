@@ -17,7 +17,7 @@
 */
 
 import XCTest
-import GraphKit
+import GKGraphKit
 
 class GKActionTests : XCTestCase, GKGraphDelegate {
 

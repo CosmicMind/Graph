@@ -1,6 +1,6 @@
 {
   "name": "GKGraphKit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "summary": "next generation graph framework for ios",
   "homepage": "https://github.com/GraphKit",
   "license": "AGPLv3",
@@ -8,8 +8,8 @@
     "Daniel Dahan": "daniel@graphkit.io"
   },
   "source": {
-    "git": "https://github.com/GraphKit/graphkit-ios.git",
-    "tag": "0.1.1"
+    "git": "https://github.com/GraphKit/GKGraphKit.git",
+    "tag": "0.1.2"
   },
   "platforms": {
     "ios": "8.0"

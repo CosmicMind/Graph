@@ -1,9 +1,9 @@
-# graphkit-ios
-Native iOS Event Driven Graph Framework
+# GKGraphKit
+next generation graph framework for ios
 
 ```swift
 import XCTest
-import GraphKit
+import GKGraphKit
 
 class GKActionTests : XCTestCase, GKGraphDelegate {
 
