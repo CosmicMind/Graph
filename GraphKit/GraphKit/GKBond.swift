@@ -54,7 +54,7 @@ public class GKBond: GKNode {
         set(entity) {
             graph.managedObjectContext.performBlockAndWait {
                 if let node: GKManagedBond = self.node as? GKManagedBond {
-                    node.subject = nil == entity ? nil : entity?.node as? GKManagedEntity
+                    node.subject = entity?.node as? GKManagedEntity
                 }
             }
         }
@@ -81,7 +81,7 @@ public class GKBond: GKNode {
         set(entity) {
             graph.managedObjectContext.performBlockAndWait {
 				if let node: GKManagedBond = self.node as? GKManagedBond {
-					node.object = nil == entity ? nil : entity?.node as? GKManagedEntity
+					node.object = entity?.node as? GKManagedEntity
                 }
             }
         }
