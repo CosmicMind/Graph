@@ -115,7 +115,7 @@ public class GKGraph: NSObject {
     * @param        completion: (success: Bool, error: NSError?) -> ())
     */
     public func save(completion: (success: Bool, error: NSError?) -> ()) {
-        managedObjectContext.performBlock {
+        managedObjectContext.performBlockAndWait {
             if !self.managedObjectContext.hasChanges {
                 completion(success: true, error: nil)
                 return
