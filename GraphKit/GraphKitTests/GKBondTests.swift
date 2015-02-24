@@ -114,7 +114,6 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         // Wait for the delegates to be executed.
         waitForExpectationsWithTimeout(5, handler: nil)
 
-        friend.delete()
         u1.delete();
         u2.delete();
 
