@@ -163,7 +163,7 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         if "Close" == group {
             closeInsertExpectation?.fulfill()
             let nodes: Array<GKBond> = graph.search(BondGroup: group);
-            if 1 == nodes.count && bond.id == nodes[0].id {
+            if 1 == nodes.count && bond.objectID == nodes[0].objectID {
                 closeSearchExpectation?.fulfill()
             }
         }

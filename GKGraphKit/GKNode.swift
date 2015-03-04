@@ -54,17 +54,17 @@ public class GKNode: NSObject {
     }
 
     /**
-    * id
+    * objectID
     * Retrieves the ID for the Model Object that is wrapped internally.
     * @return       String! of the ID
     */
-    public var id: String! {
+    public var objectID: String! {
         var oID: String!
         graph.managedObjectContext.performBlockAndWait {
             let nodeURL: NSURL = self.node.objectID.URIRepresentation()
             oID = nodeURL.lastPathComponent! as String
         }
-        return nodeClass + ":" + type + ":" + oID
+        return nodeClass + type + oID
     }
 
     /**

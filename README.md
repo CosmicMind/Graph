@@ -172,7 +172,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         if "Holiday" == group {
             holidayInsertExpectation?.fulfill()
             let nodes: Array<GKAction> = graph.search(ActionGroup: group);
-            if 1 == nodes.count && action.id == nodes[0].id {
+            if 1 == nodes.count && action.objectID == nodes[0].objectID {
                 holidaySearchExpectation?.fulfill()
             }
         }
