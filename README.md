@@ -1,5 +1,5 @@
 # GKGraphKit
-next generation graph framework for ios
+next generation graph data store for ios
 
 ```swift
 import XCTest

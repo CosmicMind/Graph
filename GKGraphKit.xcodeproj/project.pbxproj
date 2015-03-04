@@ -30,22 +30,22 @@
 		96DBB4F41A9D13FB0087569F /* GKBondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4F11A9D13FB0087569F /* GKBondTests.swift */; };
 		96DBB4F51A9D13FB0087569F /* GKEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4F21A9D13FB0087569F /* GKEntityTests.swift */; };
 		96DBB4F61A9D144B0087569F /* GKAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4CC1A9D13CC0087569F /* GKAction.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		96DBB4F71A9D144B0087569F /* GKActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4CD1A9D13CC0087569F /* GKActionGroup.swift */; };
-		96DBB4F81A9D144B0087569F /* GKActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4CE1A9D13CC0087569F /* GKActionProperty.swift */; };
+		96DBB4F71A9D144B0087569F /* GKActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4CD1A9D13CC0087569F /* GKActionGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96DBB4F81A9D144B0087569F /* GKActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4CE1A9D13CC0087569F /* GKActionProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		96DBB4F91A9D144B0087569F /* GKBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4CF1A9D13CC0087569F /* GKBond.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		96DBB4FA1A9D144B0087569F /* GKBondGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D01A9D13CC0087569F /* GKBondGroup.swift */; };
-		96DBB4FB1A9D144B0087569F /* GKBondProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D11A9D13CC0087569F /* GKBondProperty.swift */; };
+		96DBB4FA1A9D144B0087569F /* GKBondGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D01A9D13CC0087569F /* GKBondGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96DBB4FB1A9D144B0087569F /* GKBondProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D11A9D13CC0087569F /* GKBondProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		96DBB4FC1A9D144B0087569F /* GKEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D21A9D13CC0087569F /* GKEntity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		96DBB4FD1A9D144B0087569F /* GKEntityGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D31A9D13CD0087569F /* GKEntityGroup.swift */; };
-		96DBB4FE1A9D144B0087569F /* GKEntityProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D41A9D13CD0087569F /* GKEntityProperty.swift */; };
+		96DBB4FD1A9D144B0087569F /* GKEntityGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D31A9D13CD0087569F /* GKEntityGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96DBB4FE1A9D144B0087569F /* GKEntityProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D41A9D13CD0087569F /* GKEntityProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		96DBB4FF1A9D144B0087569F /* GKGraph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D51A9D13CD0087569F /* GKGraph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		96DBB5001A9D144B0087569F /* GKManagedAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D61A9D13CD0087569F /* GKManagedAction.swift */; };
-		96DBB5011A9D144B0087569F /* GKManagedBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D71A9D13CD0087569F /* GKManagedBond.swift */; };
-		96DBB5021A9D144B0087569F /* GKManagedEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D81A9D13CD0087569F /* GKManagedEntity.swift */; };
-		96DBB5031A9D144B0087569F /* GKManagedNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D91A9D13CD0087569F /* GKManagedNode.swift */; };
-		96DBB5041A9D144B0087569F /* GKNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4DA1A9D13CD0087569F /* GKNode.swift */; };
-		96DBB5051A9D144B0087569F /* GKNodeGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4DB1A9D13CD0087569F /* GKNodeGroup.swift */; };
-		96DBB5061A9D144B0087569F /* GKNodeProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4DC1A9D13CD0087569F /* GKNodeProperty.swift */; };
+		96DBB5001A9D144B0087569F /* GKManagedAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D61A9D13CD0087569F /* GKManagedAction.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96DBB5011A9D144B0087569F /* GKManagedBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D71A9D13CD0087569F /* GKManagedBond.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96DBB5021A9D144B0087569F /* GKManagedEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D81A9D13CD0087569F /* GKManagedEntity.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96DBB5031A9D144B0087569F /* GKManagedNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4D91A9D13CD0087569F /* GKManagedNode.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96DBB5041A9D144B0087569F /* GKNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4DA1A9D13CD0087569F /* GKNode.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96DBB5051A9D144B0087569F /* GKNodeGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4DB1A9D13CD0087569F /* GKNodeGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		96DBB5061A9D144B0087569F /* GKNodeProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4DC1A9D13CD0087569F /* GKNodeProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
