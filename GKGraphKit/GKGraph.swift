@@ -24,7 +24,7 @@
 import CoreData
 
 struct GKGraphUtility {
-    static let storeName: String = "GraphKit-0-1-3.sqlite"
+    static let storeName: String = "GraphKit.sqlite"
 
     static let entityIndexName: String = "GKManagedEntity"
     static let entityDescriptionName: String = "GKManagedEntity"
