@@ -116,8 +116,8 @@ That's it. Now we are watching an Action that is of type AddTask, and we have se
 ```swift
 		...
 
-		// watch the AddTask Action
-		graph.watch(Action: "AddTask")
+		// watch the Clicked Action
+		graph.watch(Action: "Clicked")
 
 		// lets create a User Entity that will be used throughout the app. 
 		var user: GKEntity? = graph.search(Entity: "User").last
