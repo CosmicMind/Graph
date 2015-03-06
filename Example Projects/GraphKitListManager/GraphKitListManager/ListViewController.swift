@@ -9,7 +9,7 @@
 import UIKit
 import GKGraphKit
 
-class ListViewController: UIViewController, GKGraphDelegate {
+class ListViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, GKGraphDelegate {
 	
 	let statusBarHeight: CGFloat = UIApplication.sharedApplication().statusBarFrame.size.height
 	var collectionView: UICollectionView?
@@ -100,7 +100,7 @@ class ListViewController: UIViewController, GKGraphDelegate {
 			keys!.append(key)
 		}
 		NSLog("%@", keys!)
-		collectionView!.reloadData()
+//		collectionView!.reloadData()
 	}
 	
 	// #pragma mark GKGraphDelegate

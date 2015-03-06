@@ -76,10 +76,10 @@
 			isa = PBXGroup;
 			children = (
 				963B63501AAA2EFF00F2D048 /* AppDelegate.swift */,
+				963B63B71AAA34AD00F2D048 /* ListViewController.swift */,
 				963B635C1AAA2EFF00F2D048 /* Images.xcassets */,
 				963B635E1AAA2EFF00F2D048 /* LaunchScreen.xib */,
 				963B634E1AAA2EFF00F2D048 /* Supporting Files */,
-				963B63B71AAA34AD00F2D048 /* ListViewController.swift */,
 			);
 			path = GraphKitListManager;
 			sourceTree = "<group>";
