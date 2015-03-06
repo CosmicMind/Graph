@@ -24,19 +24,19 @@ class ListToolbar: UIToolbar {
 	// #pragma mark Selectors
 	func addItem() {
 		// create the Action instance
-		var action: GKAction = GKAction(type: "AddItem")
+		var action: GKAction = GKAction(type: "Clicked")
 		
-		// get our User Entity created in the ListViewController.swift file
+		// get our User Entity created in the ListViewController file
 		let user: GKEntity? = graph.search(Entity: "User").last;
 		
 		// add the user as a Subject for the Action
 		action.addSubject(user)
 		
 		// lets create a User Entity that will be used throughout the app.
-		var button: GKEntity? = graph.search(Entity: "ToolbarButton").last
+		var button: GKEntity? = graph.search(Entity: "AddItem").last
 		if nil == button {
-			button = GKEntity(type: "ToolbarButton")
-			button!.addGroup("UIComponent")
+			button = GKEntity(type: "AddItem")
+			button!.addGroup("UIButton")
 		}
 		
 		// add the button as an Object for the Action

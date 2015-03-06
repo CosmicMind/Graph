@@ -57,8 +57,8 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		// set the graph as a delegate
 		graph.delegate = self
 		
-		// watch the AddTask Action
-		graph.watch(Action: "AddItem")
+		// watch the Clicked Action
+		graph.watch(Action: "Clicked")
 		
 		// lets create a User Entity that will be used throughout the app.
 		var user: GKEntity? = graph.search(Entity: "User").last
@@ -79,10 +79,10 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		
 	}
 	
-	// Add the watch task delegate callback when this event
+	// Add the watch item delegate callback when this event
 	// is saved to the Graph instance.
 	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
-		if "AddItem" == action.type {
+		if "Clicked" == action.type && "AddItem" == action.objects.last?.type {
 			var taskViewController: ItemViewController = ItemViewController(item: GKEntity(type: "Item"))
 			navigationController!.pushViewController(taskViewController, animated: true)
 		}
@@ -90,7 +90,8 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	
 	// #pragma mark CollectionViewDelegate
 	func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-	
+		// do something
+		// possibly setup another Action
 		return true
 	}
 	

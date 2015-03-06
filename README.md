@@ -93,8 +93,8 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		// set the graph as a delegate
 		graph.delegate = self
 		
-		// watch the AddTask Action
-		graph.watch(Action: "AddTask")
+		// watch the Clicked Action
+		graph.watch(Action: "Clicked")
 	
 		...
 	
@@ -147,7 +147,7 @@ class ListToolbar: UIToolbar {
 	
 	func addTask() {
 		// create the Action instance
-		var action: GKAction = GKAction(type: "AddTask")
+		var action: GKAction = GKAction(type: "Clicked")
 		
 		// get our User Entity created in the ListViewController.swift file
 		let user: GKEntity? = graph.search(Entity: "User").last;
@@ -156,9 +156,10 @@ class ListToolbar: UIToolbar {
 		action.addSubject(user)
 		
 		// lets create a User Entity that will be used throughout the app.
-		var button: GKEntity? = graph.search(Entity: "ToolbarButton").last
+		var button: GKEntity? = graph.search(Entity: "AddItem").last
 		if nil == button {
-			button = GKEntity(type: "ToolbarButton")
+			button = GKEntity(type: "AddItem")
+			button!.addGroup("UIButton")
 		}
 		
 		// add the button as an Object for the Action
@@ -171,7 +172,36 @@ class ListToolbar: UIToolbar {
 
 
 ```
-Like before we setup a Graph instance that is localized to that Views scope, no Singletons. When the Add Button is clicked, we construct an Action instance. 
+Like before we setup a Graph instance that is localized to that View's scope, no Singletons. When the Add Button is clicked, we construct an Action instance. The Action is a special Object in that it creates a Relationship between two Sets of Objects. One Set called the Subject Set and another called the Object Set. The Subject Set is the collection of Entity Objects that initiate or the subject of the Action. The Object Set, are the Entity Objects that are afected by the subjects in the Subject Set. So the best way to read this Action is, the User Clicked the AddItem Button. 
+
+Now we need to handle the Graph watcher for the Clicked Action. So back in the ListViewController file, we add this code to the delegate method we added earlier. 
+
+```swift
+	...
+	
+	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
+		if "Clicked" == action.type && "AddItem" == action.objects.last?.type {
+			// do something
+		}
+	}
+	
+	...
+```
+To fully react to the Clicked Action, we will add an ItemViewController to the UI. This will be out next view in our example project. The following code pushes a new ViewController on to the UI stack and passes an empty Item Entity Object that will be used in that view. 
+
+```swift
+	...
+	
+	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
+		if "Clicked" == action.type && "AddItem" == action.objects.last?.type {
+			var taskViewController: ItemViewController = ItemViewController(item: GKEntity(type: "Item"))
+			navigationController!.pushViewController(taskViewController, animated: true)
+		}
+	}
+	
+	...
+```
+
 
 
 #License 
