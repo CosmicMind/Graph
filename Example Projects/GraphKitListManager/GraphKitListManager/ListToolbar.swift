@@ -15,14 +15,14 @@ class ListToolbar: UIToolbar {
 	lazy var graph: GKGraph = GKGraph()
 	
 	lazy var flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-	lazy var focusButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+	lazy var focusButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addTask")
 	
 	func displayAddView() {
 		setItems([flexibleSpace, focusButton, flexibleSpace], animated: true)
 	}
 	
 	// #pragma mark Selectors
-	func add() {
+	func addTask() {
 		// create the Action instance
 		var action: GKAction = GKAction(type: "AddTask")
 		
@@ -36,13 +36,12 @@ class ListToolbar: UIToolbar {
 		var button: GKEntity? = graph.search(Entity: "ToolbarButton").last
 		if nil == button {
 			button = GKEntity(type: "ToolbarButton")
-			
-			// this saves the user to the Graph
-			graph.save() { (success: Bool, error: NSError?) in }
 		}
 		
-		
+		// add the button as the Object in the Action structure
 		action.addObject(button)
+		
+		// save everything to the Graph
 		graph.save() { (success: Bool, error: NSError? ) in }
 	}
 }

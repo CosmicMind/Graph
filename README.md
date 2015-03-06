@@ -137,14 +137,14 @@ import GKGraphKit
 
 class ListToolbar: UIToolbar {
 	
-	...
-	
 	// localized graph instance to connect
 	lazy var graph: GKGraph = GKGraph()
 	
+	lazy var flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+	lazy var focusButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addTask")
+	
 	...
 	
-	// #pragma mark Selectors
 	func addTask() {
 		// create the Action instance
 		var action: GKAction = GKAction(type: "AddTask")
@@ -155,23 +155,24 @@ class ListToolbar: UIToolbar {
 		// add the user as the Subject of the Action
 		action.addSubject(user)
 		
-		// lets create a User Entity that will be used throughout the app. 
-		var button: GKEntity? = graph.search(Entity: "Button", ).last
-		if nil == user {
+		// lets create a User Entity that will be used throughout the app.
+		var button: GKEntity? = graph.search(Entity: "ToolbarButton").last
+		if nil == button {
 			button = GKEntity(type: "ToolbarButton")
-			
-			// this saves the user to the Graph
-			graph.save() { (success: Bool, error: NSError?) in }
 		}
 		
+		// add the button as the Object in the Action structure
+		action.addObject(button)
 		
-		action.addObject()
+		// save everything to the Graph
 		graph.save() { (success: Bool, error: NSError? ) in }
 	}
 }
 
+
 ```
 Like before we setup a Graph instance that is localized to that Views scope, no Singletons. When the Add Button is clicked, we construct an Action instance. 
+
 
 #License 
 [AGPLv3](http://choosealicense.com/licenses/agpl-3.0/) 

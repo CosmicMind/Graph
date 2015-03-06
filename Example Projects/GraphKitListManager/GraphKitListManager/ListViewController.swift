@@ -54,6 +54,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	}
 	
 	override func viewWillAppear(animated: Bool) {
+		
 	}
 	
 	override func viewWillDisappear(animated: Bool) {
@@ -63,7 +64,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	// Add the watch task delegate callback when this event
 	// is saved to the Graph instance.
 	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
-		// do something
+		
 	}
 	
 	// #pragma mark ScrollViewDelegate
