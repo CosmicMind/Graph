@@ -13,43 +13,57 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	
 	let statusBarHeight: CGFloat = UIApplication.sharedApplication().statusBarFrame.size.height
 	var collectionView: UICollectionView?
-	var groups: Dictionary<String, Array<GKEntity>>?
-	var keys: Array<String>?
+	lazy var toolbar: ListToolbar = ListToolbar()
+	
+	// ViewController property value.
+	// May also be setup as a local variable in any function
+	// and maintain synchronization.
 	lazy var graph: GKGraph = GKGraph()
+	
 	
 	// #pragma mark View Handling
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		graph.delegate = self
-		graph.watch(Action: "AddTask")
-		graph.watch(Action: "OpenGroup")
-		
 		// background color
 		view.backgroundColor = .whiteColor()
 		
-		groupsReload()
+		// toolbar
+		toolbar.hideBottomHairline()
+		toolbar.barTintColor = .whiteColor()
+		toolbar.clipsToBounds = true
+		toolbar.sizeToFit()
+		toolbar.frame.origin.y = view.frame.size.height - 44.0
+		toolbar.displayAddView()
+		view.addSubview(toolbar)
+
+		// set the graph as a delegate
+		graph.delegate = self
+		
+		// watch the AddTask Action
+		graph.watch(Action: "AddTask")
+		
+		// lets create a User Entity that will be used throughout the app.
+		var user: GKEntity? = graph.search(Entity: "User").last
+		if nil == user {
+			user = GKEntity(type: "User")
+			// this saves the user to the Graph
+			graph.save() { (success: Bool, error: NSError?) in }
+		}
+		
 	}
 	
 	override func viewWillAppear(animated: Bool) {
-		if nil != groups {
-			groupsReload()
-		}
 	}
 	
 	override func viewWillDisappear(animated: Bool) {
-		// handle search bar
-		for subView: AnyObject in navigationController!.navigationBar.subviews {
-			if subView is UISearchBar {
-				subView.removeFromSuperview()
-				break
-			}
-		}
+		
 	}
 	
-	// #pragma mark Selectors
+	// Add the watch task delegate callback when this event
+	// is saved to the Graph instance.
 	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
-	
+		// do something
 	}
 	
 	// #pragma mark ScrollViewDelegate
@@ -77,7 +91,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		
 		var label: UILabel = UILabel(frame: CGRectMake(10.0, 0, collectionView.frame.size.width - 20.0, 30.0))
 		label.font = UIFont(name: "Roboto", size: 20.0)
-		label.text = keys![indexPath.row]
+//		label.text = keys![indexPath.row]
 		label.textColor = UIColor(red: 0/255.0, green: 145/255.0, blue: 254/255.0, alpha: 1.0)
 		
 		cell.addSubview(label)
@@ -90,25 +104,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	}
 	
 	func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return keys!.count
-	}
-	
-	func groupsReload() {
-		groups = graph.searchForEntityGroups()
-		keys = Array<String>()
-		for key in groups!.keys {
-			keys!.append(key)
-		}
-		NSLog("%@", keys!)
-//		collectionView!.reloadData()
-	}
-	
-	// #pragma mark GKGraphDelegate
-	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		groupsReload()
-	}
-	
-	func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, property: String!, value: AnyObject!) {
-		groupsReload()
+//		return keys!.count
+		return 0;
 	}
 }
