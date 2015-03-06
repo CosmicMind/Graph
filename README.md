@@ -131,6 +131,8 @@ That's it. Now we are watching an Action that is of type AddTask, and we have se
 ```
 Now that we have a User, we can track when the User Clicks on the AddTask Action and then react by opening a TaskViewController, which will be completely data driven. Go to the ListToolbar.swift file and view the following code. 
 
+###ListToolbar.swift
+
 ```swift
 import UIKit
 import GKGraphKit
@@ -187,7 +189,7 @@ Now we need to handle the Graph watcher for the Clicked Action. So back in the L
 	
 	...
 ```
-To fully react to the Clicked Action, we will add an ItemViewController to the UI. This will be out next view in our example project. The following code pushes a new ViewController on to the UI stack and passes an empty Item Entity Object that will be used in that view. 
+To fully react to the Clicked Action, we will add an ItemViewController to the UI. This will be out next view in our example project. The following code pushes a new ViewController on to the UI stack and passes a new Item Entity Object that will be used in that view. 
 
 ```swift
 	...
@@ -201,7 +203,7 @@ To fully react to the Clicked Action, we will add an ItemViewController to the U
 	
 	...
 ```
-
+###ItemViewController.swift
 
 
 #License 
