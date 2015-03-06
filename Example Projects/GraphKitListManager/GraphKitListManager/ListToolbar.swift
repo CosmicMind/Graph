@@ -15,30 +15,31 @@ class ListToolbar: UIToolbar {
 	lazy var graph: GKGraph = GKGraph()
 	
 	lazy var flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-	lazy var focusButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addTask")
+	lazy var focusButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addItem")
 	
 	func displayAddView() {
 		setItems([flexibleSpace, focusButton, flexibleSpace], animated: true)
 	}
 	
 	// #pragma mark Selectors
-	func addTask() {
+	func addItem() {
 		// create the Action instance
-		var action: GKAction = GKAction(type: "AddTask")
+		var action: GKAction = GKAction(type: "AddItem")
 		
 		// get our User Entity created in the ListViewController.swift file
 		let user: GKEntity? = graph.search(Entity: "User").last;
 		
-		// add the user as the Subject of the Action
+		// add the user as a Subject for the Action
 		action.addSubject(user)
 		
 		// lets create a User Entity that will be used throughout the app.
 		var button: GKEntity? = graph.search(Entity: "ToolbarButton").last
 		if nil == button {
 			button = GKEntity(type: "ToolbarButton")
+			button!.addGroup("UIComponent")
 		}
 		
-		// add the button as the Object in the Action structure
+		// add the button as an Object for the Action
 		action.addObject(button)
 		
 		// save everything to the Graph

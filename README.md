@@ -152,7 +152,7 @@ class ListToolbar: UIToolbar {
 		// get our User Entity created in the ListViewController.swift file
 		let user: GKEntity? = graph.search(Entity: "User").last;
 		
-		// add the user as the Subject of the Action
+		// add the user as a Subject for the Action
 		action.addSubject(user)
 		
 		// lets create a User Entity that will be used throughout the app.
@@ -161,7 +161,7 @@ class ListToolbar: UIToolbar {
 			button = GKEntity(type: "ToolbarButton")
 		}
 		
-		// add the button as the Object in the Action structure
+		// add the button as an Object for the Action
 		action.addObject(button)
 		
 		// save everything to the Graph

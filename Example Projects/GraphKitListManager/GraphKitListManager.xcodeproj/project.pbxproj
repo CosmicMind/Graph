@@ -14,6 +14,7 @@
 		963B63B81AAA34AD00F2D048 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B63B71AAA34AD00F2D048 /* ListViewController.swift */; };
 		963B63BA1AAA438400F2D048 /* ListToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B63B91AAA438400F2D048 /* ListToolbar.swift */; };
 		963B63BC1AAA480900F2D048 /* ListUIToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B63BB1AAA480900F2D048 /* ListUIToolbar.swift */; };
+		963B63BE1AAA653F00F2D048 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B63BD1AAA653F00F2D048 /* ItemViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		963B63B71AAA34AD00F2D048 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		963B63B91AAA438400F2D048 /* ListToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListToolbar.swift; sourceTree = "<group>"; };
 		963B63BB1AAA480900F2D048 /* ListUIToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListUIToolbar.swift; sourceTree = "<group>"; };
+		963B63BD1AAA653F00F2D048 /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				963B635E1AAA2EFF00F2D048 /* LaunchScreen.xib */,
 				963B63B91AAA438400F2D048 /* ListToolbar.swift */,
 				963B63BB1AAA480900F2D048 /* ListUIToolbar.swift */,
+				963B63BD1AAA653F00F2D048 /* ItemViewController.swift */,
 			);
 			path = GraphKitListManager;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 			files = (
 				963B63B81AAA34AD00F2D048 /* ListViewController.swift in Sources */,
 				963B63BA1AAA438400F2D048 /* ListToolbar.swift in Sources */,
+				963B63BE1AAA653F00F2D048 /* ItemViewController.swift in Sources */,
 				963B63511AAA2EFF00F2D048 /* AppDelegate.swift in Sources */,
 				963B63BC1AAA480900F2D048 /* ListUIToolbar.swift in Sources */,
 			);

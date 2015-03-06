@@ -19,7 +19,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	// May also be setup as a local variable in any function
 	// and maintain synchronization.
 	lazy var graph: GKGraph = GKGraph()
-	
+	var items: Array<GKEntity>?
 	
 	// #pragma mark View Handling
 	override func viewDidLoad() {
@@ -27,6 +27,23 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		
 		// background color
 		view.backgroundColor = .whiteColor()
+		
+		var layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+		layout.itemSize = CGSizeMake(view.frame.size.width, 30.0)
+		layout.headerReferenceSize = CGSizeMake(view.frame.size.width, 0.0)
+		layout.minimumInteritemSpacing = 0
+		layout.minimumLineSpacing = 0
+		layout.scrollDirection = .Vertical
+		layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+		
+		// collection view
+		collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 44.0), collectionViewLayout: layout)
+		collectionView!.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+		collectionView!.delegate = self
+		collectionView!.dataSource = self
+		collectionView!.backgroundColor = .clearColor()
+		collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
+		view.addSubview(collectionView!)
 		
 		// toolbar
 		toolbar.hideBottomHairline()
@@ -41,7 +58,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		graph.delegate = self
 		
 		// watch the AddTask Action
-		graph.watch(Action: "AddTask")
+		graph.watch(Action: "AddItem")
 		
 		// lets create a User Entity that will be used throughout the app.
 		var user: GKEntity? = graph.search(Entity: "User").last
@@ -50,11 +67,12 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 			// this saves the user to the Graph
 			graph.save() { (success: Bool, error: NSError?) in }
 		}
-		
 	}
 	
 	override func viewWillAppear(animated: Bool) {
-		
+		// fetch all the items in the list
+		items = graph.search(Entity: "Item")
+		collectionView?.reloadData()
 	}
 	
 	override func viewWillDisappear(animated: Bool) {
@@ -64,16 +82,10 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	// Add the watch task delegate callback when this event
 	// is saved to the Graph instance.
 	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
-		
-	}
-	
-	// #pragma mark ScrollViewDelegate
-	func scrollViewWillBeginDragging(scrollView: UIScrollView!) {
-	
-	}
-	
-	func scrollViewDidEndDragging(scrollView: UIScrollView!, willDecelerate decelerate: Bool) {
-	
+		if "AddItem" == action.type {
+			var taskViewController: ItemViewController = ItemViewController(item: GKEntity(type: "Item"))
+			navigationController!.pushViewController(taskViewController, animated: true)
+		}
 	}
 	
 	// #pragma mark CollectionViewDelegate
@@ -92,7 +104,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		
 		var label: UILabel = UILabel(frame: CGRectMake(10.0, 0, collectionView.frame.size.width - 20.0, 30.0))
 		label.font = UIFont(name: "Roboto", size: 20.0)
-//		label.text = keys![indexPath.row]
+		label.text = items![indexPath.row]["note"] as? String
 		label.textColor = UIColor(red: 0/255.0, green: 145/255.0, blue: 254/255.0, alpha: 1.0)
 		
 		cell.addSubview(label)
@@ -105,7 +117,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	}
 	
 	func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//		return keys!.count
-		return 0;
+		return items!.count
 	}
 }
