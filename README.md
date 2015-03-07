@@ -13,6 +13,11 @@ Probably the most exciting features that GraphKit offers, are:
 2. Follow the examples below. 
 3. Have fun!
 
+#Documentation
+
+1. Class [documentation](http://cocoadocs.org/docsets/GKGraphKit/0.1.6/)
+2. GraphKit.io [site](http://www.graphkit.io/ios)
+
 #Installation with CocoaPods
 
 [CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C and now in beta testing for Swift. We recommend using this tool in general. To learn more, visit their website [http://cocoapods.org](http://cocoapods.org/). Setting up GraphKit is simple after learning how to use CocoaPods. 
