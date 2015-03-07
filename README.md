@@ -15,7 +15,7 @@ Probably the most exciting features that GraphKit offers, are:
 
 #Documentation
 
-1. Class [documentation](http://cocoadocs.org/docsets/GKGraphKit/0.1.6/)
+1. Class [documentation](http://cocoadocs.org/docsets/GKGraphKit/0.1.7/)
 2. GraphKit.io [site](http://www.graphkit.io/ios)
 
 #Installation with CocoaPods
