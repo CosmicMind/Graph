@@ -54,6 +54,10 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 	
 	override func viewWillDisappear(animated: Bool) {
 		navigationController!.navigationBar.topItem!.rightBarButtonItem = nil
+		
+		if 0 == countElements(textView.text) {
+			item?.delete()
+		}
 	}
 	
 	// MARK: - Selectors
@@ -61,10 +65,8 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 	func SaveTask() {
 		if 0 < countElements(textView.text) {
 			item!["note"] = textView.text
-		} else {
-			item!.delete()
+			graph.save() { (success: Bool, error: NSError?) in }
 		}
-		graph.save() { (success: Bool, error: NSError?) in }
 		navigationController!.popViewControllerAnimated(true)
 	}
 }
