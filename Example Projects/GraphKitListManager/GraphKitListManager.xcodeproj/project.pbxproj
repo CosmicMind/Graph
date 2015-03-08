@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		960770CA1AAC293C008B6908 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960770C91AAC293C008B6908 /* ItemCollectionViewCell.swift */; };
 		963B63511AAA2EFF00F2D048 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B63501AAA2EFF00F2D048 /* AppDelegate.swift */; };
 		963B635D1AAA2EFF00F2D048 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 963B635C1AAA2EFF00F2D048 /* Images.xcassets */; };
 		963B63601AAA2EFF00F2D048 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 963B635E1AAA2EFF00F2D048 /* LaunchScreen.xib */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		960770C91AAC293C008B6908 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		963B634B1AAA2EFF00F2D048 /* GraphKitListManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GraphKitListManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		963B634F1AAA2EFF00F2D048 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		963B63501AAA2EFF00F2D048 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				963B63B91AAA438400F2D048 /* ListToolbar.swift */,
 				963B63BB1AAA480900F2D048 /* ListUIToolbar.swift */,
 				963B63BD1AAA653F00F2D048 /* ItemViewController.swift */,
+				960770C91AAC293C008B6908 /* ItemCollectionViewCell.swift */,
 			);
 			path = GraphKitListManager;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				963B63B81AAA34AD00F2D048 /* ListViewController.swift in Sources */,
 				963B63BA1AAA438400F2D048 /* ListToolbar.swift in Sources */,
 				963B63BE1AAA653F00F2D048 /* ItemViewController.swift in Sources */,
+				960770CA1AAC293C008B6908 /* ItemCollectionViewCell.swift in Sources */,
 				963B63511AAA2EFF00F2D048 /* AppDelegate.swift in Sources */,
 				963B63BC1AAA480900F2D048 /* ListUIToolbar.swift in Sources */,
 			);

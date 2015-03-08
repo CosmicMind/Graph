@@ -18,7 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
 		window = UIWindow(frame: UIScreen.mainScreen().bounds)
-		var navigationController = UINavigationController(rootViewController: ListViewController())
+		let graph: GKGraph = GKGraph()
+		var list: GKEntity? = graph.search(Entity: "List").last
+		if nil == list {
+			list = GKEntity(type: "List")
+		}
+		var navigationController = UINavigationController(rootViewController: ListViewController(list: list))
 		navigationController.navigationBar.barTintColor = UIColor(red: 96/255.0, green: 125/255.0, blue: 139/255.0, alpha: 1)
 		window!.rootViewController = navigationController
 		window!.backgroundColor = UIColor(red: 213/255.0, green: 222/255.0, blue: 226/255.0, alpha: 1)

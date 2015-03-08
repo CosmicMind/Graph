@@ -21,7 +21,7 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 	}
 	
 	init(item: GKEntity!) {
-		self.item = item;
+		self.item = item
 		super.init(nibName: nil, bundle: nil)
 	}
 	
