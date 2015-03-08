@@ -82,16 +82,33 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	// Add the watch item delegate callback when this event
 	// is saved to the Graph instance.
 	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
-		if "Clicked" == action.type && "AddItem" == action.objects.last?.type {
-			var taskViewController: ItemViewController = ItemViewController(item: GKEntity(type: "Item"))
-			navigationController!.pushViewController(taskViewController, animated: true)
+		
+		// prepare the Item that will be used to launch the new
+		// ViewController
+		var item: GKEntity?
+		
+		if "AddItemButton" == action.objects.last?.type {
+			
+			// passing a newly created Item
+			item = GKEntity(type: "Item")
+		
+		} else if "Item" == action.objects.last?.type {
+			
+			// clicking a collection cell and passing the Item
+			item = action.objects.last!
 		}
+		
+		var itemViewController: ItemViewController = ItemViewController(item: item)
+		navigationController!.pushViewController(itemViewController, animated: true)
 	}
 	
 	// #pragma mark CollectionViewDelegate
 	func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-		// do something
-		// possibly setup another Action
+		let action: GKAction = GKAction(type: "Clicked")
+		let user: GKEntity = graph.search(Entity: "User").last!
+		action.addSubject(user)
+		action.addObject(items![indexPath.row])
+		graph.save() { (success: Bool, error: NSError?) in }
 		return true
 	}
 	

@@ -59,10 +59,12 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 	// MARK: - Selectors
 	
 	func SaveTask() {
-		if "" != textView.text {
+		if 0 < countElements(textView.text) {
 			item!["note"] = textView.text
-			graph.save() { (success: Bool, error: NSError?) in }
+		} else {
+			item!.delete()
 		}
+		graph.save() { (success: Bool, error: NSError?) in }
 		navigationController!.popViewControllerAnimated(true)
 	}
 }

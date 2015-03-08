@@ -33,9 +33,9 @@ class ListToolbar: UIToolbar {
 		action.addSubject(user)
 		
 		// lets create a User Entity that will be used throughout the app.
-		var button: GKEntity? = graph.search(Entity: "AddItem").last
+		var button: GKEntity? = graph.search(Entity: "AddItemButton").last
 		if nil == button {
-			button = GKEntity(type: "AddItem")
+			button = GKEntity(type: "AddItemButton")
 			button!.addGroup("UIButton")
 		}
 		
