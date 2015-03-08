@@ -15,6 +15,7 @@
 		963B63BA1AAA438400F2D048 /* ListToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B63B91AAA438400F2D048 /* ListToolbar.swift */; };
 		963B63BC1AAA480900F2D048 /* ListUIToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B63BB1AAA480900F2D048 /* ListUIToolbar.swift */; };
 		963B63BE1AAA653F00F2D048 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B63BD1AAA653F00F2D048 /* ItemViewController.swift */; };
+		965F59671AAB4A760028C599 /* GKGraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 965F59661AAB4A760028C599 /* GKGraphKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		963B63B91AAA438400F2D048 /* ListToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListToolbar.swift; sourceTree = "<group>"; };
 		963B63BB1AAA480900F2D048 /* ListUIToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListUIToolbar.swift; sourceTree = "<group>"; };
 		963B63BD1AAA653F00F2D048 /* ItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
+		965F59661AAB4A760028C599 /* GKGraphKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GKGraphKit.framework; path = "../../build/Debug-iphoneos/GKGraphKit.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				965F59671AAB4A760028C599 /* GKGraphKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +66,7 @@
 		963B63421AAA2EFF00F2D048 = {
 			isa = PBXGroup;
 			children = (
+				965F59661AAB4A760028C599 /* GKGraphKit.framework */,
 				963B634D1AAA2EFF00F2D048 /* GraphKitListManager */,
 				963B63681AAA2EFF00F2D048 /* GraphKitListManagerTests */,
 				963B634C1AAA2EFF00F2D048 /* Products */,
@@ -338,6 +342,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/danieldahan/Dropbox/GraphKit/Technology/Repositories/gkgraphkit/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = GraphKitListManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -349,6 +357,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/danieldahan/Dropbox/GraphKit/Technology/Repositories/gkgraphkit/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = GraphKitListManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
