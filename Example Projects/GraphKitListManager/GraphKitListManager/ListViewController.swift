@@ -50,13 +50,12 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		// background color
 		view.backgroundColor = .clearColor()
 		
-		layout.itemSize = CGSizeMake(view.frame.size.width - 20, 30.0)
+		layout.itemSize = CGSizeMake(view.frame.size.width - 20, 100.0)
 		layout.headerReferenceSize = CGSizeMake(view.frame.size.width, 0.0)
 		layout.minimumInteritemSpacing = 0
 		layout.minimumLineSpacing = 10
 		layout.scrollDirection = .Vertical
 		layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
-		layout.itemSize.width = view.frame.size.width - 20
 		
 		// collection view
 		collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 44.0), collectionViewLayout: layout)
@@ -82,6 +81,9 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		// watch the Clicked Action
 		graph.watch(Action: "Clicked")
 		
+		// watch for changes in Items
+		graph.watch(Entity: "Item")
+		
 		// lets create a User Entity that will be used throughout the app.
 		var user: GKEntity? = graph.search(Entity: "User").last
 		if nil == user {
@@ -99,6 +101,18 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	
 	override func viewWillDisappear(animated: Bool) {
 		
+	}
+	
+	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+		let bond: GKBond = GKBond(type: "ItemOf")
+		bond.subject = list
+		bond.object = entity
+		println("\(bond)")
+		println("\(entity.bonds.count)")
+	}
+	
+	func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
+		println("\(entity.bonds.count)")
 	}
 	
 	// Add the watch item delegate callback when this event
