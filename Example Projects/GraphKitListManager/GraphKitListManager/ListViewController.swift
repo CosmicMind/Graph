@@ -26,15 +26,15 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		super.viewDidLoad()
 		
 		// background color
-		view.backgroundColor = .whiteColor()
+		view.backgroundColor = .clearColor()
 		
 		var layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-		layout.itemSize = CGSizeMake(view.frame.size.width, 30.0)
+//		layout.itemSize = CGSizeMake(view.frame.size.width - 20, 30.0)
 		layout.headerReferenceSize = CGSizeMake(view.frame.size.width, 0.0)
 		layout.minimumInteritemSpacing = 0
-		layout.minimumLineSpacing = 0
+		layout.minimumLineSpacing = 10
 		layout.scrollDirection = .Vertical
-		layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+		layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
 		
 		// collection view
 		collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 44.0), collectionViewLayout: layout)
@@ -125,6 +125,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		label.text = items![indexPath.row]["note"] as? String
 		label.textColor = UIColor(red: 0/255.0, green: 145/255.0, blue: 254/255.0, alpha: 1.0)
 		
+		cell.backgroundColor = .whiteColor()
 		cell.addSubview(label)
 		
 		return cell

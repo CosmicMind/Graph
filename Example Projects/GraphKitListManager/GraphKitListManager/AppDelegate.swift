@@ -19,9 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Override point for customization after application launch.
 		window = UIWindow(frame: UIScreen.mainScreen().bounds)
 		var navigationController = UINavigationController(rootViewController: ListViewController())
-		navigationController.navigationBar.barTintColor = .whiteColor()
+		navigationController.navigationBar.barTintColor = UIColor(red: 96/255.0, green: 125/255.0, blue: 139/255.0, alpha: 1)
 		window!.rootViewController = navigationController
-		window!.backgroundColor = .whiteColor()
+		window!.backgroundColor = UIColor(red: 213/255.0, green: 222/255.0, blue: 226/255.0, alpha: 1)
 		window!.makeKeyAndVisible()
 		return true
 	}
