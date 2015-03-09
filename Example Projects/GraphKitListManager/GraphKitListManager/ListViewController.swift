@@ -6,17 +6,6 @@
 //  Copyright (c) 2015 GraphKit, Inc. All rights reserved.
 //
 
-//extension UICollectionViewCell {
-// 
-//	override var bounds : CGRect {
-//		didSet {
-//			// Fix autolayout constraints broken in Xcode 6 GM + iOS 7.1
-//			self.contentView.frame = bounds
-//		}
-//	}
-// 
-//}
-
 import UIKit
 import GKGraphKit
 
