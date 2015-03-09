@@ -20,13 +20,13 @@
 import UIKit
 import GKGraphKit
 
-class ListViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, GKGraphDelegate {
+class ListViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GKGraphDelegate {
 
 	private let statusBarHeight: CGFloat = UIApplication.sharedApplication().statusBarFrame.size.height
-	private var collectionView: UICollectionView?
+	private var collectionView: UICollectionView!
 	private lazy var toolbar: ListToolbar = ListToolbar()
 	private lazy var layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-	private var list: GKEntity?
+	private let list: GKEntity!
 	
 	// ViewController property value.
 	// May also be setup as a local variable in any function
@@ -34,24 +34,45 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	private lazy var graph: GKGraph = GKGraph()
 	private var items: Array<GKEntity>?
 	
+	// rotation handling
+	private var rotationRecognizer: UIRotationGestureRecognizer!
+	private var rotationAngleInRadians = 0.0 as CGFloat
+	
 	required init(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 	}
 	
 	init(list: GKEntity!) {
-		self.list = list
 		super.init(nibName: nil, bundle: nil)
+		self.list = list
+		rotationRecognizer = UIRotationGestureRecognizer(target: self, action: "handleRotations:")
 	}
 	
-	class func requiresConstraintBasedLayout() -> Bool {
-		return true
+	func handleRotations(sender: UIRotationGestureRecognizer) {
+		collectionView.reloadData()
+		
+		/* At the end of the rotation, keep the angle for later use */
+		if sender.state == .Ended{
+			rotationAngleInRadians += sender.rotation;
+		}
+		println("HELLO")
 	}
 	
 	// #pragma mark View Handling
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-//		layout.itemSize = CGSizeMake(view.frame.size.width - 20, 100)
+		// set the graph as a delegate
+		graph.delegate = self
+		
+		// watch the Clicked Action
+		graph.watch(Action: "Clicked")
+		
+		// watch for changes in Items
+		graph.watch(Entity: "Item")
+		
+		// flow layout for collection view
+		layout.itemSize = CGSizeMake(view.bounds.width - 20, 100)
 		layout.headerReferenceSize = CGSizeMake(0, 0)
 		layout.minimumInteritemSpacing = 0
 		layout.minimumLineSpacing = 10
@@ -59,14 +80,14 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
 		
 		// collection view
-		collectionView = UICollectionView(frame: view.bounds.rectByInsetting(dx: 0, dy: 0), collectionViewLayout: layout)
-		collectionView!.contentInset = UIEdgeInsetsMake(0, 0, 44, 0)
-		collectionView!.delegate = self
-		collectionView!.dataSource = self
-		collectionView!.backgroundColor = .clearColor()
-		collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
-		collectionView!.setTranslatesAutoresizingMaskIntoConstraints(false)
-		view.addSubview(collectionView!)
+		collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+		collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+		collectionView.delegate = self
+		collectionView.dataSource = self
+		collectionView.backgroundColor = .clearColor()
+		collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
+		collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
+		view.addSubview(collectionView)
 		
 		// toolbar
 		toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -98,15 +119,28 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 			multiplier: 1,
 			constant: 0
 		))
+		
+		view.addConstraint(NSLayoutConstraint(
+			item: collectionView,
+			attribute: .Height,
+			relatedBy: .Equal,
+			toItem: view,
+			attribute: .Height,
+			multiplier: 1,
+			constant: -toolbar.bounds.height
+		))
+		
+		view.addConstraint(NSLayoutConstraint(
+			item: collectionView,
+			attribute: .Width,
+			relatedBy: .Equal,
+			toItem: view,
+			attribute: .Width,
+			multiplier: 1,
+			constant: 0
+		))
 
-		// set the graph as a delegate
-		graph.delegate = self
-		
-		// watch the Clicked Action
-		graph.watch(Action: "Clicked")
-		
-		// watch for changes in Items
-		graph.watch(Entity: "Item")
+		view.addGestureRecognizer(rotationRecognizer)
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -174,23 +208,21 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		
 		cell.backgroundColor = .whiteColor()
 		
-		var label: UILabel = UILabel()
+		var label: UILabel = UILabel(frame: cell.bounds)
 		label.font = UIFont(name: "Roboto", size: 20.0)
 		label.text = items![indexPath.row]["note"] as? String
 		label.textColor = UIColor(red: 0/255.0, green: 145/255.0, blue: 254/255.0, alpha: 1.0)
 		cell.addSubview(label)
 		
-//		label.addConstraint(NSLayoutConstraint(
-//			item: cell,
-//			attribute: .Width,
-//			relatedBy: .Equal,
-//			toItem: label,
-//			attribute: .Width,
-//			multiplier: 1,
-//			constant: 0
-//		))
-		
 		return cell
+	}
+	
+	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+		return CGSizeMake(collectionView.bounds.width - 20, 100)
+	}
+	
+	func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+		// tool bar constraints
 	}
 	
 	func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
