@@ -13,16 +13,26 @@ import GKGraphKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	var window: UIWindow?
-	
+	private lazy var graph: GKGraph = GKGraph()
 	
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
 		window = UIWindow(frame: UIScreen.mainScreen().bounds)
-		let graph: GKGraph = GKGraph()
+		
+		// lets create a User Entity that will be used throughout the app.
+		var user: GKEntity? = graph.search(Entity: "User").last
+		if nil == user {
+			user = GKEntity(type: "User")
+			// this saves the user to the Graph
+			graph.save() { (success: Bool, error: NSError?) in }
+		}
+		
+		// create an instance of a List to pass to the ListViewController
 		var list: GKEntity? = graph.search(Entity: "List").last
 		if nil == list {
 			list = GKEntity(type: "List")
 		}
+		
 		var navigationController = UINavigationController(rootViewController: ListViewController(list: list))
 		navigationController.navigationBar.barTintColor = UIColor(red: 96/255.0, green: 125/255.0, blue: 139/255.0, alpha: 1)
 		window!.rootViewController = navigationController
@@ -39,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationDidEnterBackground(application: UIApplication) {
 		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
 		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+		graph.save() {(success: Bool, error: NSError?) in }
 	}
 	
 	func applicationWillEnterForeground(application: UIApplication) {
@@ -51,10 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func applicationWillTerminate(application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-		let graph: GKGraph = GKGraph();
 		graph.save() {(success: Bool, error: NSError?) in }
 	}
-	
-	
 }
 

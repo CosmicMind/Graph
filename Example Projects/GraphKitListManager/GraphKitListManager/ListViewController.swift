@@ -26,7 +26,13 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	private var collectionView: UICollectionView?
 	private lazy var toolbar: ListToolbar = ListToolbar()
 	private lazy var layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-	var list: GKEntity?
+	private var list: GKEntity?
+	
+	// ViewController property value.
+	// May also be setup as a local variable in any function
+	// and maintain synchronization.
+	private lazy var graph: GKGraph = GKGraph()
+	private var items: Array<GKEntity>?
 	
 	required init(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
@@ -37,43 +43,61 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		super.init(nibName: nil, bundle: nil)
 	}
 	
-	// ViewController property value.
-	// May also be setup as a local variable in any function
-	// and maintain synchronization.
-	lazy var graph: GKGraph = GKGraph()
-	var items: Array<GKEntity>?
+	class func requiresConstraintBasedLayout() -> Bool {
+		return true
+	}
 	
 	// #pragma mark View Handling
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		// background color
-		view.backgroundColor = .clearColor()
-		
-		layout.itemSize = CGSizeMake(view.frame.size.width - 20, 100.0)
-		layout.headerReferenceSize = CGSizeMake(view.frame.size.width, 0.0)
+//		layout.itemSize = CGSizeMake(view.frame.size.width - 20, 100)
+		layout.headerReferenceSize = CGSizeMake(0, 0)
 		layout.minimumInteritemSpacing = 0
 		layout.minimumLineSpacing = 10
 		layout.scrollDirection = .Vertical
 		layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
 		
 		// collection view
-		collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height - 44.0), collectionViewLayout: layout)
-		collectionView!.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+		collectionView = UICollectionView(frame: view.bounds.rectByInsetting(dx: 0, dy: 0), collectionViewLayout: layout)
+		collectionView!.contentInset = UIEdgeInsetsMake(0, 0, 44, 0)
 		collectionView!.delegate = self
 		collectionView!.dataSource = self
 		collectionView!.backgroundColor = .clearColor()
 		collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
+		collectionView!.setTranslatesAutoresizingMaskIntoConstraints(false)
 		view.addSubview(collectionView!)
 		
 		// toolbar
+		toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
 		toolbar.hideBottomHairline()
 		toolbar.barTintColor = .whiteColor()
 		toolbar.clipsToBounds = true
 		toolbar.sizeToFit()
-		toolbar.frame.origin.y = view.frame.size.height - 44.0
+		toolbar.frame.origin.y = view.bounds.height - 44
 		toolbar.displayAddView()
 		view.addSubview(toolbar)
+		
+		// tool bar constraints
+		view.addConstraint(NSLayoutConstraint(
+			item: toolbar,
+			attribute: .Bottom,
+			relatedBy: .Equal,
+			toItem: view,
+			attribute: .Bottom,
+			multiplier: 1,
+			constant: 0
+		))
+		
+		view.addConstraint(NSLayoutConstraint(
+			item: toolbar,
+			attribute: .Width,
+			relatedBy: .Equal,
+			toItem: view,
+			attribute: .Width,
+			multiplier: 1,
+			constant: 0
+		))
 
 		// set the graph as a delegate
 		graph.delegate = self
@@ -83,14 +107,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		
 		// watch for changes in Items
 		graph.watch(Entity: "Item")
-		
-		// lets create a User Entity that will be used throughout the app.
-		var user: GKEntity? = graph.search(Entity: "User").last
-		if nil == user {
-			user = GKEntity(type: "User")
-			// this saves the user to the Graph
-			graph.save() { (success: Bool, error: NSError?) in }
-		}
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -138,23 +154,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		navigationController!.pushViewController(itemViewController, animated: true)
 	}
 	
-//	override func viewWillLayoutSubviews() {
-//		super.viewWillLayoutSubviews()
-//		if layout.respondsToSelector("estimatedItemSize") {//not available on iOS 7
-//			layout.estimatedItemSize = calculateStandaloneCellSize(collectionView!)
-//		}
-//	}
-//	
-//	func calculateStandaloneCellSize(collectionView: UICollectionView) -> CGSize {
-//		var cell: UICollectionViewCell = UICollectionViewCell()
-////		configureCell(cell)
-//		cell.frame = CGRectMake(0, 0, CGRectGetWidth(collectionView.bounds), CGRectGetHeight(cell.frame))
-//		cell.setNeedsLayout()
-//		cell.layoutIfNeeded()
-//		let desiredHeight: CGFloat = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
-//		return CGSizeMake(CGRectGetWidth(collectionView.bounds), 20)
-//	}
-	
 	// #pragma mark CollectionViewDelegate
 	func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
 		let action: GKAction = GKAction(type: "Clicked")
@@ -173,24 +172,23 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 			subView.removeFromSuperview()
 		}
 		
-//		cell.setTranslatesAutoresizingMaskIntoConstraints(false)
+		cell.backgroundColor = .whiteColor()
 		
-//		let viewsDictionary = ["cell": cell]
-//		let view1_constraint_H:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:[cell(150)]", options: NSLayoutFormatOptions(0), metrics: nil, views: viewsDictionary)
-//		let view1_constraint_V:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:[view1(50)]", options: NSLayoutFormatOptions(0), metrics: nil, views: viewsDictionary)
-		
-//		cell.addConstraints(view1_constraint_H)
-//		cell.addConstraints(view1_constraint_V)
-		
-		
-		var label: UILabel = UILabel(frame: CGRectMake(10.0, 0, collectionView.frame.size.width - 20.0, 30.0))
+		var label: UILabel = UILabel()
 		label.font = UIFont(name: "Roboto", size: 20.0)
 		label.text = items![indexPath.row]["note"] as? String
 		label.textColor = UIColor(red: 0/255.0, green: 145/255.0, blue: 254/255.0, alpha: 1.0)
-		label.sizeThatFits(collectionView.frame.size)
-		
-		cell.backgroundColor = .whiteColor()
 		cell.addSubview(label)
+		
+//		label.addConstraint(NSLayoutConstraint(
+//			item: cell,
+//			attribute: .Width,
+//			relatedBy: .Equal,
+//			toItem: label,
+//			attribute: .Width,
+//			multiplier: 1,
+//			constant: 0
+//		))
 		
 		return cell
 	}
