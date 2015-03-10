@@ -139,6 +139,8 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	
 	// orientation changes
 	func orientationDidChange(sender: UIRotationGestureRecognizer) {
+		// calling reload on orientation change
+		// updates the cell sizes
 		collectionView.reloadData()
 	}
 	
@@ -172,7 +174,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	}
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-		return CGSizeMake((collectionView.bounds.width / 2) - 20, 100)
+		return CGSizeMake(collectionView.bounds.width - 20, 0 == indexPath.row % 2 ? 100 : 150)
 	}
 	
 	func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
