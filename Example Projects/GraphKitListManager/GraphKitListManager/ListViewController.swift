@@ -23,10 +23,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	private lazy var graph: GKGraph = GKGraph()
 	private var items: Array<GKEntity>?
 	
-	// rotation handling
-	private var rotationRecognizer: UIRotationGestureRecognizer!
-	private var rotationAngleInRadians = 0.0 as CGFloat
-	
 	required init(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 	}
@@ -34,17 +30,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	init(list: GKEntity!) {
 		super.init(nibName: nil, bundle: nil)
 		self.list = list
-		rotationRecognizer = UIRotationGestureRecognizer(target: self, action: "handleRotations:")
-	}
-	
-	func handleRotations(sender: UIRotationGestureRecognizer) {
-		collectionView.reloadData()
-		
-		/* At the end of the rotation, keep the angle for later use */
-		if sender.state == .Ended {
-			rotationAngleInRadians += sender.rotation;
-		}
-		println("HELLO")
 	}
 	
 	// #pragma mark View Handling
@@ -61,7 +46,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		graph.watch(Entity: "Item")
 		
 		// flow layout for collection view
-		layout.itemSize = CGSizeMake(view.bounds.width - 20, 100)
 		layout.headerReferenceSize = CGSizeMake(0, 0)
 		layout.minimumInteritemSpacing = 0
 		layout.minimumLineSpacing = 10
@@ -103,7 +87,9 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: nil, metrics: nil, views: ["collectionView": collectionView]))
 		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView][toolbar]|", options: nil, metrics: nil, views: ["collectionView": collectionView, "toolbar": toolbar]))
 		
-		view.addGestureRecognizer(rotationRecognizer)
+		// orientation change
+		NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "orientationDidChange:", name: UIDeviceOrientationDidChangeNotification, object: nil)
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -151,6 +137,11 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		navigationController!.pushViewController(itemViewController, animated: true)
 	}
 	
+	// orientation changes
+	func orientationDidChange(sender: UIRotationGestureRecognizer) {
+		collectionView.reloadData()
+	}
+	
 	// #pragma mark CollectionViewDelegate
 	func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
 		let action: GKAction = GKAction(type: "Clicked")
@@ -171,21 +162,17 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		
 		cell.backgroundColor = .whiteColor()
 		
-		var label: UILabel = UILabel(frame: cell.bounds)
-		label.font = UIFont(name: "Roboto", size: 20.0)
-		label.text = items![indexPath.row]["note"] as? String
-		label.textColor = UIColor(red: 0/255.0, green: 145/255.0, blue: 254/255.0, alpha: 1.0)
-		cell.addSubview(label)
+//		var label: UILabel = UILabel(frame: cell.bounds)
+//		label.font = UIFont(name: "Roboto", size: 20.0)
+//		label.text = items![indexPath.row]["note"] as? String
+//		label.textColor = UIColor(red: 0/255.0, green: 145/255.0, blue: 254/255.0, alpha: 1.0)
+//		cell.addSubview(label)
 		
 		return cell
 	}
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-		return CGSizeMake(collectionView.bounds.width - 20, 100)
-	}
-	
-	func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-		// tool bar constraints
+		return CGSizeMake((collectionView.bounds.width / 2) - 20, 100)
 	}
 	
 	func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
