@@ -41,7 +41,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		collectionView.reloadData()
 		
 		/* At the end of the rotation, keep the angle for later use */
-		if sender.state == .Ended{
+		if sender.state == .Ended {
 			rotationAngleInRadians += sender.rotation;
 		}
 		println("HELLO")
@@ -70,12 +70,12 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		
 		// collection view
 		collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+		collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
 		collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
 		collectionView.delegate = self
 		collectionView.dataSource = self
 		collectionView.backgroundColor = .clearColor()
 		collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "UICollectionViewCell")
-		collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
 		view.addSubview(collectionView)
 		
 		// toolbar
@@ -84,7 +84,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		toolbar.barTintColor = .whiteColor()
 		toolbar.clipsToBounds = true
 		toolbar.sizeToFit()
-		toolbar.frame.origin.y = view.bounds.height - 44
 		toolbar.displayAddView()
 		view.addSubview(toolbar)
 		
@@ -99,36 +98,11 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 			constant: 0
 		))
 		
-		view.addConstraint(NSLayoutConstraint(
-			item: toolbar,
-			attribute: .Width,
-			relatedBy: .Equal,
-			toItem: view,
-			attribute: .Width,
-			multiplier: 1,
-			constant: 0
-		))
+		// autolayout commands
+		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[toolbar]|", options: nil, metrics: nil, views: ["toolbar": toolbar]))
+		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: nil, metrics: nil, views: ["collectionView": collectionView]))
+		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView][toolbar]|", options: nil, metrics: nil, views: ["collectionView": collectionView, "toolbar": toolbar]))
 		
-		view.addConstraint(NSLayoutConstraint(
-			item: collectionView,
-			attribute: .Height,
-			relatedBy: .Equal,
-			toItem: view,
-			attribute: .Height,
-			multiplier: 1,
-			constant: -toolbar.bounds.height
-		))
-		
-		view.addConstraint(NSLayoutConstraint(
-			item: collectionView,
-			attribute: .Width,
-			relatedBy: .Equal,
-			toItem: view,
-			attribute: .Width,
-			multiplier: 1,
-			constant: 0
-		))
-
 		view.addGestureRecognizer(rotationRecognizer)
 	}
 	
