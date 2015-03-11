@@ -83,9 +83,9 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		))
 		
 		// autolayout commands
-		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[toolbar]|", options: nil, metrics: nil, views: ["toolbar": toolbar]))
-		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: nil, metrics: nil, views: ["collectionView": collectionView]))
-		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView][toolbar]|", options: nil, metrics: nil, views: ["collectionView": collectionView, "toolbar": toolbar]))
+		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[toolbar]|", options: .AlignAllLeading, metrics: nil, views: ["toolbar": toolbar]))
+		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: .AlignAllLeading, metrics: nil, views: ["collectionView": collectionView]))
+		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView]-[toolbar]|", options: .AlignAllLeading, metrics: nil, views: ["collectionView": collectionView, "toolbar": toolbar]))
 		
 		// orientation change
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
@@ -164,11 +164,11 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		
 		cell.backgroundColor = .whiteColor()
 		
-//		var label: UILabel = UILabel(frame: cell.bounds)
-//		label.font = UIFont(name: "Roboto", size: 20.0)
-//		label.text = items![indexPath.row]["note"] as? String
-//		label.textColor = UIColor(red: 0/255.0, green: 145/255.0, blue: 254/255.0, alpha: 1.0)
-//		cell.addSubview(label)
+		var label: UILabel = UILabel(frame: cell.bounds)
+		label.font = UIFont(name: "Roboto", size: 20.0)
+		label.text = items![indexPath.row]["note"] as? String
+		label.textColor = UIColor(red: 0/255.0, green: 145/255.0, blue: 254/255.0, alpha: 1.0)
+		cell.addSubview(label)
 		
 		return cell
 	}
