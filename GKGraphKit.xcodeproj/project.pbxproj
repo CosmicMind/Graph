@@ -105,6 +105,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		96B24D1C1AB20826008A933D /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				96DBB4CC1A9D13CC0087569F /* GKAction.swift */,
+				96DBB4CD1A9D13CC0087569F /* GKActionGroup.swift */,
+				96DBB4CE1A9D13CC0087569F /* GKActionProperty.swift */,
+				96DBB4D01A9D13CC0087569F /* GKBondGroup.swift */,
+				96DBB4D11A9D13CC0087569F /* GKBondProperty.swift */,
+				96DBB4D31A9D13CD0087569F /* GKEntityGroup.swift */,
+				96DBB4D41A9D13CD0087569F /* GKEntityProperty.swift */,
+				96DBB4D61A9D13CD0087569F /* GKManagedAction.swift */,
+				96DBB4D71A9D13CD0087569F /* GKManagedBond.swift */,
+				96DBB4D81A9D13CD0087569F /* GKManagedEntity.swift */,
+				96DBB4D91A9D13CD0087569F /* GKManagedNode.swift */,
+				96DBB4DA1A9D13CD0087569F /* GKNode.swift */,
+				96DBB4DB1A9D13CD0087569F /* GKNodeGroup.swift */,
+				96DBB4DC1A9D13CD0087569F /* GKNodeProperty.swift */,
+			);
+			name = lib;
+			sourceTree = "<group>";
+		};
 		96DBB4A61A9D131D0087569F = {
 			isa = PBXGroup;
 			children = (
@@ -126,25 +147,12 @@
 		96DBB4B21A9D131D0087569F /* GKGraphKit */ = {
 			isa = PBXGroup;
 			children = (
-				96DBB4CC1A9D13CC0087569F /* GKAction.swift */,
-				96DBB4CD1A9D13CC0087569F /* GKActionGroup.swift */,
-				96DBB4CE1A9D13CC0087569F /* GKActionProperty.swift */,
-				96DBB4CF1A9D13CC0087569F /* GKBond.swift */,
-				96DBB4D01A9D13CC0087569F /* GKBondGroup.swift */,
-				96DBB4D11A9D13CC0087569F /* GKBondProperty.swift */,
-				96DBB4D21A9D13CC0087569F /* GKEntity.swift */,
-				96DBB4D31A9D13CD0087569F /* GKEntityGroup.swift */,
-				96DBB4D41A9D13CD0087569F /* GKEntityProperty.swift */,
-				96DBB4D51A9D13CD0087569F /* GKGraph.swift */,
-				96DBB4D61A9D13CD0087569F /* GKManagedAction.swift */,
-				96DBB4D71A9D13CD0087569F /* GKManagedBond.swift */,
-				96DBB4D81A9D13CD0087569F /* GKManagedEntity.swift */,
-				96DBB4D91A9D13CD0087569F /* GKManagedNode.swift */,
-				96DBB4DA1A9D13CD0087569F /* GKNode.swift */,
-				96DBB4DB1A9D13CD0087569F /* GKNodeGroup.swift */,
-				96DBB4DC1A9D13CD0087569F /* GKNodeProperty.swift */,
 				96DBB4DD1A9D13CD0087569F /* LICENSE */,
 				96DBB4B31A9D131D0087569F /* Supporting Files */,
+				96B24D1C1AB20826008A933D /* lib */,
+				96DBB4CF1A9D13CC0087569F /* GKBond.swift */,
+				96DBB4D21A9D13CC0087569F /* GKEntity.swift */,
+				96DBB4D51A9D13CD0087569F /* GKGraph.swift */,
 			);
 			path = GKGraphKit;
 			sourceTree = "<group>";
