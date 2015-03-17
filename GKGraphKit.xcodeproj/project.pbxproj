@@ -108,7 +108,6 @@
 		96B24D1C1AB20826008A933D /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				96DBB4CC1A9D13CC0087569F /* GKAction.swift */,
 				96DBB4CD1A9D13CC0087569F /* GKActionGroup.swift */,
 				96DBB4CE1A9D13CC0087569F /* GKActionProperty.swift */,
 				96DBB4D01A9D13CC0087569F /* GKBondGroup.swift */,
@@ -150,6 +149,7 @@
 				96DBB4DD1A9D13CD0087569F /* LICENSE */,
 				96DBB4B31A9D131D0087569F /* Supporting Files */,
 				96B24D1C1AB20826008A933D /* lib */,
+				96DBB4CC1A9D13CC0087569F /* GKAction.swift */,
 				96DBB4CF1A9D13CC0087569F /* GKBond.swift */,
 				96DBB4D21A9D13CC0087569F /* GKEntity.swift */,
 				96DBB4D51A9D13CD0087569F /* GKGraph.swift */,

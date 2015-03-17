@@ -20,7 +20,6 @@
 		96B24D581AB20A9F008A933D /* List+UIToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B24D511AB20A9F008A933D /* List+UIToolbar.swift */; };
 		96B24D591AB20A9F008A933D /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B24D521AB20A9F008A933D /* ListViewController.swift */; };
 		96B24D5B1AB20AE6008A933D /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 96B24D5A1AB20AE6008A933D /* LICENSE */; };
-		96B24D5C1AB20E8C008A933D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96B24D341AB20A73008A933D /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +52,6 @@
 		96B24D261AB20A73008A933D /* ListManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ListManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96B24D2A1AB20A73008A933D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96B24D321AB20A73008A933D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		96B24D351AB20A73008A933D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		96B24D3B1AB20A73008A933D /* ListManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ListManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96B24D401AB20A73008A933D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96B24D411AB20A73008A933D /* ListManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManagerTests.swift; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 				96B24D4F1AB20A9F008A933D /* ListToolbar.swift */,
 				96B24D521AB20A9F008A933D /* ListViewController.swift */,
 				96B24D321AB20A73008A933D /* Images.xcassets */,
-				96B24D341AB20A73008A933D /* LaunchScreen.xib */,
 				96B24D291AB20A73008A933D /* Supporting Files */,
 				96B24D5A1AB20AE6008A933D /* LICENSE */,
 				969D41C01AB7772C005C6373 /* GraphKitLogo.png */,
@@ -230,7 +227,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96B24D5C1AB20E8C008A933D /* LaunchScreen.xib in Resources */,
 				96B24D5B1AB20AE6008A933D /* LICENSE in Resources */,
 				969D41C11AB7772C005C6373 /* GraphKitLogo.png in Resources */,
 				96B24D331AB20A73008A933D /* Images.xcassets in Resources */,
@@ -278,17 +274,6 @@
 			targetProxy = 96B24D3C1AB20A73008A933D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		96B24D341AB20A73008A933D /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				96B24D351AB20A73008A933D /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		96B24D431AB20A73008A933D /* Debug */ = {

@@ -74,7 +74,8 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 	func SaveTask() {
 		if 0 < countElements(textView.text) {
 			item["note"] = textView.text
-			item["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("GraphKitLogo", ofType: "png")!)
+			let photo: String = NSBundle.mainBundle().pathForResource("GraphKitLogo", ofType: "png")!
+			item["photo"] = UIImage(contentsOfFile: photo)
 			graph.save() { (success: Bool, error: NSError?) in }
 		}
 		navigationController!.popViewControllerAnimated(true)

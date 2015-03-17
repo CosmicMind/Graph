@@ -90,10 +90,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[toolbar]|", options: nil, metrics: nil, views: ["toolbar": toolbar]))
 		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: nil, metrics: nil, views: ["collectionView": collectionView]))
 		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView][toolbar][blg]", options: nil, metrics: nil, views: ["collectionView": collectionView, "toolbar": toolbar, "blg": bottomLayoutGuide]))
-		
-		// orientation change
-		NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "orientationDidChange:", name: UIDeviceOrientationDidChangeNotification, object: nil)
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -104,6 +100,16 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	
 	override func viewWillDisappear(animated: Bool) {
 		
+	}
+	
+	override func viewDidAppear(animated: Bool) {
+		// orientation change
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "orientationDidChange:", name: UIDeviceOrientationDidChangeNotification, object: nil)
+	}
+	
+	override func viewDidDisappear(animated: Bool) {
+		// orientation change
+		NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
 	}
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
