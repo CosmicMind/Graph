@@ -48,7 +48,7 @@ internal class GKManagedEntity: GKManagedNode {
         let graph: GKGraph = GKGraph()
         let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
         self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
-        nodeClass = "GKEntity"
+        nodeClass = "1"
         self.type = type
         actionSubjectSet = NSSet()
         actionObjectSet = NSSet()

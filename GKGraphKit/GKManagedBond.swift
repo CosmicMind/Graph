@@ -47,7 +47,7 @@ internal class GKManagedBond: GKManagedNode {
         let graph: GKGraph = GKGraph()
         let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
         self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
-        nodeClass = "GKBond"
+        nodeClass = "3"
         self.type = type
     }
 
