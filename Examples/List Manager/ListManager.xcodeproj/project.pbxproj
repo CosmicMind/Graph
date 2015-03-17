@@ -10,6 +10,7 @@
 		969D41BB1AB718B3005C6373 /* GKGraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969D41BA1AB718B3005C6373 /* GKGraphKit.framework */; };
 		969D41BC1AB718B3005C6373 /* GKGraphKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 969D41BA1AB718B3005C6373 /* GKGraphKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		969D41C11AB7772C005C6373 /* GraphKitLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 969D41C01AB7772C005C6373 /* GraphKitLogo.png */; };
+		969D41C31AB85A4E005C6373 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 969D41C21AB85A4E005C6373 /* Default-568h@2x.png */; };
 		96B24D331AB20A73008A933D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96B24D321AB20A73008A933D /* Images.xcassets */; };
 		96B24D421AB20A73008A933D /* ListManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B24D411AB20A73008A933D /* ListManagerTests.swift */; };
 		96B24D531AB20A9F008A933D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B24D4C1AB20A9F008A933D /* AppDelegate.swift */; };
@@ -48,6 +49,7 @@
 /* Begin PBXFileReference section */
 		969D41BA1AB718B3005C6373 /* GKGraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = GKGraphKit.framework; path = "/Users/danieldahan/Library/Developer/Xcode/DerivedData/GKTutorials-gyakpbcbwtsiltcuhrjpxfxpgqfi/Build/Products/Debug-iphoneos/GKGraphKit.framework"; sourceTree = "<absolute>"; };
 		969D41C01AB7772C005C6373 /* GraphKitLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GraphKitLogo.png; sourceTree = "<group>"; };
+		969D41C21AB85A4E005C6373 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		96B24D261AB20A73008A933D /* ListManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ListManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96B24D2A1AB20A73008A933D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96B24D321AB20A73008A933D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		96B24D1D1AB20A73008A933D = {
 			isa = PBXGroup;
 			children = (
+				969D41C21AB85A4E005C6373 /* Default-568h@2x.png */,
 				969D41BA1AB718B3005C6373 /* GKGraphKit.framework */,
 				96B24D281AB20A73008A933D /* ListManager */,
 				96B24D3E1AB20A73008A933D /* ListManagerTests */,
@@ -225,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96B24D5B1AB20AE6008A933D /* LICENSE in Resources */,
+				969D41C31AB85A4E005C6373 /* Default-568h@2x.png in Resources */,
 				969D41C11AB7772C005C6373 /* GraphKitLogo.png in Resources */,
 				96B24D331AB20A73008A933D /* Images.xcassets in Resources */,
 			);
