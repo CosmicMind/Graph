@@ -1,6 +1,6 @@
 {
   "name": "GKGraphKit",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "summary": "An Elegant CoreData Framework for iOS.",
   "homepage": "https://github.com/GraphKit",
   "license": "AGPLv3",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/GraphKit/GKGraphKit.git",
-    "tag": "0.1.8"
+    "tag": "0.1.9"
   },
   "platforms": {
     "ios": "8.0"
