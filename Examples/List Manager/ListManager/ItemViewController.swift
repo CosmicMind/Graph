@@ -54,9 +54,9 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 		var rightButton: UIBarButtonItem
 		if nil == item["note"] {
 			textView.becomeFirstResponder()
-			rightButton = UIBarButtonItem(title: "Save", style: .Done, target: self, action: "SaveTask")
+			rightButton = UIBarButtonItem(title: "Save", style: .Done, target: self, action: "saveTask")
 		} else {
-			rightButton = UIBarButtonItem(title: "Done", style: .Done, target: self, action: "SaveTask")
+			rightButton = UIBarButtonItem(title: "Done", style: .Done, target: self, action: "saveTask")
 		}
 		navigationController!.navigationBar.topItem!.rightBarButtonItem = rightButton
 	}
@@ -71,7 +71,7 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 	
 	// MARK: - Selectors
 	
-	func SaveTask() {
+	func saveTask() {
 		if 0 < countElements(textView.text) {
 			item["note"] = textView.text
 			let photo: String = NSBundle.mainBundle().pathForResource("GraphKitLogo", ofType: "png")!

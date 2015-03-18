@@ -61,7 +61,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         user["name"] = "Eve"
         user["age"] = 26
         user.addGroup("Female")
-
+		
         // Set an Expectation for the insert watcher.
         userInsertExpectation = expectationWithDescription("User: Insert did not pass.")
         femaleInsertExpectation = expectationWithDescription("Female: Insert did not pass.")

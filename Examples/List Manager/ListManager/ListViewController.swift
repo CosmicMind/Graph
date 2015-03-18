@@ -70,7 +70,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
 		collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
 		collectionView.contentInset = UIEdgeInsetsMake(16, 16, 16, 16)
-//		collectionView.contentMode = .ScaleAspectFit
 		collectionView.delegate = self
 		collectionView.dataSource = self
 		collectionView.backgroundColor = .clearColor()
@@ -153,7 +152,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		let action: GKAction = GKAction(type: "Clicked")
 		let user: GKEntity = graph.search(Entity: "User").last!
 		action.addSubject(user)
-		action.addObject(items![indexPath.row])
+		action.addObject(items![indexPath.item])
 		graph.save() { (success: Bool, error: NSError?) in }
 		return true
 	}
