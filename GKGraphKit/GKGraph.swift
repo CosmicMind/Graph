@@ -86,9 +86,11 @@ public protocol GKGraphDelegate {
 
 @objc(GKGraph)
 public class GKGraph: NSObject {
-    var watching: Dictionary<String, Array<String>>
-    var masterPredicate: NSPredicate?
-    var batchSize: Int = 20
+	public var batchSize: Int = 20
+	public var batchOffset: Int = 0
+	
+    internal var watching: Dictionary<String, Array<String>>
+    internal var masterPredicate: NSPredicate?
 
     public weak var delegate: GKGraphDelegate?
 
@@ -220,7 +222,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKEntity>!
     */
     public func search(Entity type: String!) -> Array<GKEntity>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
         var nodes: Array<GKEntity> = Array<GKEntity>()
         for entity: GKManagedEntity in entries as Array<GKManagedEntity> {
             nodes.append(GKEntity(entity: entity))
@@ -235,7 +237,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKEntity>!
     */
     public func search(EntityGroup name: String!) -> Array<GKEntity>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
         var nodes: Array<GKEntity> = Array<GKEntity>()
         for group: GKEntityGroup in entries as Array<GKEntityGroup> {
             nodes.append(GKEntity(entity: group.node as GKManagedEntity))
@@ -246,9 +248,9 @@ public class GKGraph: NSObject {
 	/**
 	* search(EntityGroupMap)
 	* Retrieves all the unique Group Names for Entity Nodes with their GKEntity Objects.
-	* @return       Dictionary<String, Array<GKEntity>>
+	* @return       Dictionary<String, Array<GKEntity>>!
 	*/
-	public func search(EntityGroupMap name: String!) -> Dictionary<String, Array<GKEntity>> {
+	public func search(EntityGroupMap name: String!) -> Dictionary<String, Array<GKEntity>>! {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Dictionary<String, Array<GKEntity>> = Dictionary<String, Array<GKEntity>>()
 		for group: GKEntityGroup in entries as Array<GKEntityGroup> {
@@ -315,7 +317,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKAction>!
     */
     public func search(Action type: String!) -> Array<GKAction>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
         var nodes: Array<GKAction> = Array<GKAction>()
         for action: GKManagedAction in entries as Array<GKManagedAction> {
             nodes.append(GKAction(action: action))
@@ -341,9 +343,9 @@ public class GKGraph: NSObject {
 	/**
 	* search(ActionGroupMap)
 	* Retrieves all the unique Group Names for Action Nodes with their GKAction Objects.
-	* @return       Dictionary<String, Array<GKAction>>
+	* @return       Dictionary<String, Array<GKAction>>!
 	*/
-	public func search(ActionGroupMap name: String!) -> Dictionary<String, Array<GKAction>> {
+	public func search(ActionGroupMap name: String!) -> Dictionary<String, Array<GKAction>>! {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Dictionary<String, Array<GKAction>> = Dictionary<String, Array<GKAction>>()
 		for group: GKActionGroup in entries as Array<GKActionGroup> {
@@ -410,7 +412,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKBond>!
     */
     public func search(Bond type: String!) -> Array<GKBond>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
         var nodes: Array<GKBond> = Array<GKBond>()
         for bond: GKManagedBond in entries as Array<GKManagedBond> {
             nodes.append(GKBond(bond: bond))
@@ -436,9 +438,9 @@ public class GKGraph: NSObject {
 	/**
 	* search(BondGroupMap)
 	* Retrieves all the unique Group Names for Bond Nodes with their GKBond Objects.
-	* @return       Dictionary<String, Array<GKBond>>
+	* @return       Dictionary<String, Array<GKBond>>!
 	*/
-	public func search(BondGroupMap name: String!) -> Dictionary<String, Array<GKBond>> {
+	public func search(BondGroupMap name: String!) -> Dictionary<String, Array<GKBond>>! {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Dictionary<String, Array<GKBond>> = Dictionary<String, Array<GKBond>>()
 		for group: GKBondGroup in entries as Array<GKBondGroup> {
@@ -1036,19 +1038,33 @@ public class GKGraph: NSObject {
         prepareForObservation()
     }
 
+	/**
+	* search
+	* Executes a search through CoreData.
+	* @param        entityDescriptorName: NSString!
+	* @param        predicate: NSPredicate!
+	* @return       Array<AnyObject>!
+	*/
+	internal func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject>! {
+		return search(entityDescriptorName, predicate: predicate, sort: nil)
+	}
+	
     /**
     * search
     * Executes a search through CoreData.
     * @param        entityDescriptorName: NSString!
     * @param        predicate: NSPredicate!
+	* @param		sort: Array<NSSortDescriptor>
     * @return       Array<AnyObject>!
     */
-    internal func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject>! {
+	internal func search(entityDescriptorName: NSString!, predicate: NSPredicate!, sort: Array<NSSortDescriptor>?) -> Array<AnyObject>! {
         let request: NSFetchRequest = NSFetchRequest()
         let entity: NSEntityDescription = managedObjectModel.entitiesByName[entityDescriptorName] as NSEntityDescription
-        request.entity = entity
+		request.entity = entity
         request.predicate = predicate
         request.fetchBatchSize = batchSize
+		request.fetchOffset = batchOffset
+		request.sortDescriptors = sort
 
         var error: NSError?
         var nodes: Array<AnyObject> = Array<AnyObject>()
