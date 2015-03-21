@@ -237,7 +237,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKEntity>!
     */
     public func search(EntityGroup name: String!) -> Array<GKEntity>! {
-		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString), sort: [NSSortDescriptor(key: "name", ascending: true)])
         var nodes: Array<GKEntity> = Array<GKEntity>()
         for group: GKEntityGroup in entries as Array<GKEntityGroup> {
             nodes.append(GKEntity(entity: group.node as GKManagedEntity))
@@ -251,7 +251,7 @@ public class GKGraph: NSObject {
 	* @return       Dictionary<String, Array<GKEntity>>!
 	*/
 	public func search(EntityGroupMap name: String!) -> Dictionary<String, Array<GKEntity>>! {
-		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString), sort: [NSSortDescriptor(key: "name", ascending: true)])
 		var nodes: Dictionary<String, Array<GKEntity>> = Dictionary<String, Array<GKEntity>>()
 		for group: GKEntityGroup in entries as Array<GKEntityGroup> {
 			if (nil == nodes[group.name]) {
@@ -270,7 +270,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKEntity>!
     */
     public func search(EntityProperty name: String!) -> Array<GKEntity>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString), sort: [NSSortDescriptor(key: "name", ascending: true)])
         var nodes: Array<GKEntity> = Array<GKEntity>()
         for property: GKEntityProperty in entries as Array<GKEntityProperty> {
             nodes.append(GKEntity(entity: property.node as GKManagedEntity))
@@ -286,7 +286,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKEntity>!
     */
     public func search(EntityProperty name: String!, value: String!) -> Array<GKEntity>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString), sort: [NSSortDescriptor(key: "name", ascending: true), NSSortDescriptor(key: "value", ascending: true)])
         var nodes: Array<GKEntity> = Array<GKEntity>()
         for property: GKEntityProperty in entries as Array<GKEntityProperty> {
             nodes.append(GKEntity(entity: property.node as GKManagedEntity))
@@ -302,7 +302,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKEntity>!
     */
     public func search(EntityProperty name: String!, value: Int!) -> Array<GKEntity>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
+        let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber), sort: [NSSortDescriptor(key: "name", ascending: true), NSSortDescriptor(key: "value", ascending: true)])
         var nodes: Array<GKEntity> = Array<GKEntity>()
         for property: GKEntityProperty in entries as Array<GKEntityProperty> {
             nodes.append(GKEntity(entity: property.node as GKManagedEntity))
@@ -332,7 +332,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKAction>!
     */
     public func search(ActionGroup name: String!) -> Array<GKAction>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString), sort: [NSSortDescriptor(key: "name", ascending: true)])
         var nodes: Array<GKAction> = Array<GKAction>()
         for group: GKActionGroup in entries as Array<GKActionGroup> {
             nodes.append(GKAction(action: group.node as GKManagedAction))
@@ -346,7 +346,7 @@ public class GKGraph: NSObject {
 	* @return       Dictionary<String, Array<GKAction>>!
 	*/
 	public func search(ActionGroupMap name: String!) -> Dictionary<String, Array<GKAction>>! {
-		let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+		let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString), sort: [NSSortDescriptor(key: "name", ascending: true)])
 		var nodes: Dictionary<String, Array<GKAction>> = Dictionary<String, Array<GKAction>>()
 		for group: GKActionGroup in entries as Array<GKActionGroup> {
 			if (nil == nodes[group.name]) {
@@ -365,7 +365,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKAction>!
     */
     public func search(ActionProperty name: String!) -> Array<GKAction>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString), sort: [NSSortDescriptor(key: "name", ascending: true)])
         var nodes: Array<GKAction> = Array<GKAction>()
         for property: GKActionProperty in entries as Array<GKActionProperty> {
             nodes.append(GKAction(action: property.node as GKManagedAction))
@@ -381,7 +381,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKAction>!
     */
     public func search(ActionProperty name: String!, value: String!) -> Array<GKAction>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString), sort: [NSSortDescriptor(key: "name", ascending: true), NSSortDescriptor(key: "value", ascending: true)])
         var nodes: Array<GKAction> = Array<GKAction>()
         for property: GKActionProperty in entries as Array<GKActionProperty> {
             nodes.append(GKAction(action: property.node as GKManagedAction))
@@ -397,7 +397,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKAction>!
     */
     public func search(ActionProperty name: String!, value: Int!) -> Array<GKAction>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
+        let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber), sort: [NSSortDescriptor(key: "name", ascending: true), NSSortDescriptor(key: "value", ascending: true)])
         var nodes: Array<GKAction> = Array<GKAction>()
         for property: GKActionProperty in entries as Array<GKActionProperty> {
             nodes.append(GKAction(action: property.node as GKManagedAction))
@@ -427,7 +427,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKBond>!
     */
     public func search(BondGroup name: String!) -> Array<GKBond>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString), sort: [NSSortDescriptor(key: "name", ascending: true)])
         var nodes: Array<GKBond> = Array<GKBond>()
         for group: GKBondGroup in entries as Array<GKBondGroup> {
             nodes.append(GKBond(bond: group.node as GKManagedBond))
@@ -441,7 +441,7 @@ public class GKGraph: NSObject {
 	* @return       Dictionary<String, Array<GKBond>>!
 	*/
 	public func search(BondGroupMap name: String!) -> Dictionary<String, Array<GKBond>>! {
-		let entries: Array<AnyObject> = search(GKGraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+		let entries: Array<AnyObject> = search(GKGraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString), sort: [NSSortDescriptor(key: "name", ascending: true)])
 		var nodes: Dictionary<String, Array<GKBond>> = Dictionary<String, Array<GKBond>>()
 		for group: GKBondGroup in entries as Array<GKBondGroup> {
 			if (nil == nodes[group.name]) {
@@ -460,7 +460,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKBond>!
     */
     public func search(BondProperty name: String!) -> Array<GKBond>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString), sort: [NSSortDescriptor(key: "name", ascending: true)])
         var nodes: Array<GKBond> = Array<GKBond>()
         for property: GKBondProperty in entries as Array<GKBondProperty> {
             nodes.append(GKBond(bond: property.node as GKManagedBond))
@@ -476,7 +476,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKBond>!
     */
     public func search(BondProperty name: String!, value: String!) -> Array<GKBond>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
+        let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString), sort: [NSSortDescriptor(key: "name", ascending: true), NSSortDescriptor(key: "value", ascending: true)])
         var nodes: Array<GKBond> = Array<GKBond>()
         for property: GKBondProperty in entries as Array<GKBondProperty> {
             nodes.append(GKBond(bond: property.node as GKManagedBond))
@@ -492,7 +492,7 @@ public class GKGraph: NSObject {
     * @return       Array<GKBond>!
     */
     public func search(BondProperty name: String!, value: Int!) -> Array<GKBond>! {
-        let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
+        let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber), sort: [NSSortDescriptor(key: "name", ascending: true), NSSortDescriptor(key: "value", ascending: true)])
         var nodes: Array<GKBond> = Array<GKBond>()
         for property: GKBondProperty in entries as Array<GKBondProperty> {
             nodes.append(GKBond(bond: property.node as GKManagedBond))
