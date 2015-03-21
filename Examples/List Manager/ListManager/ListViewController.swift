@@ -89,9 +89,27 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[toolbar]|", options: nil, metrics: nil, views: ["toolbar": toolbar]))
 		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: nil, metrics: nil, views: ["collectionView": collectionView]))
 		view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView][toolbar][blg]", options: nil, metrics: nil, views: ["collectionView": collectionView, "toolbar": toolbar, "blg": bottomLayoutGuide]))
+		
+		let e1: GKEntity = GKEntity(type: "Test")
+		e1.addGroup("#d")
+		e1.addGroup("#c")
+		e1.addGroup("#e")
+		e1.addGroup("#a")
+		e1.addGroup("#f")
+		e1.addGroup("#a")
+		graph.save { (success, error) -> () in }
+		let e: Array<GKEntity> = graph.search(Entity: "Test")
+		println("E \(e[0].groups)")
+//		for a in e {
+//			println("A \(a.type)")
+//			for b in a.groups {
+//				println(b)
+//			}
+//		}
 	}
 	
 	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
 		// fetch all the items in the list
 		items = graph.search(Entity: "Item")
 		collectionView?.reloadData()
@@ -102,11 +120,13 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	}
 	
 	override func viewDidAppear(animated: Bool) {
+		super.viewDidAppear(animated)
 		// orientation change
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "orientationDidChange:", name: UIDeviceOrientationDidChangeNotification, object: nil)
 	}
 	
 	override func viewDidDisappear(animated: Bool) {
+		super.viewDidDisappear(animated)
 		// orientation change
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
 	}

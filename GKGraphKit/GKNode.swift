@@ -170,13 +170,13 @@ public class GKNode: NSObject {
     */
     public var groups: Array<String> {
         get {
-            var groups: Array<String> = Array<String>()
+			var groups: Array<String> = Array<String>()
             graph.managedObjectContext.performBlockAndWait {
 				for group in self.node.groupSet {
 					groups.append(group.name)
 				}
             }
-            return groups
+            return groups.sorted(<)
         }
         set(value) {
             assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
