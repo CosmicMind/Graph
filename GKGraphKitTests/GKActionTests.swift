@@ -29,9 +29,9 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     var magazineDeleteExpectation: XCTestExpectation?
     var readInsertExpectation: XCTestExpectation?
     var readDeleteExpectation: XCTestExpectation?
-    var holidayInsertExpectation: XCTestExpectation?
-    var holidayDeleteExpectation: XCTestExpectation?
-    var holidaySearchExpectation: XCTestExpectation?
+    var groupInsertExpectation: XCTestExpectation?
+    var groupDeleteExpectation: XCTestExpectation?
+    var groupSearchExpectation: XCTestExpectation?
     var nameInsertExpectation: XCTestExpectation?
     var nameUpdateExpectation: XCTestExpectation?
     var nameDeleteExpectation: XCTestExpectation?
@@ -88,8 +88,8 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         bookInsertExpectation = expectationWithDescription("Book: Insert did not pass.")
         magazineInsertExpectation = expectationWithDescription("Magazine: Insert did not pass.")
         readInsertExpectation = expectationWithDescription("Read: Insert did not pass.")
-        holidayInsertExpectation = expectationWithDescription("Holiday: Insert did not pass.")
-        holidaySearchExpectation = expectationWithDescription("Holiday: Search did not pass.")
+        groupInsertExpectation = expectationWithDescription("Group: Insert did not pass.")
+        groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
         nameInsertExpectation = expectationWithDescription("Name: Insert did not pass.")
         nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
         sessionInsertExpectation = expectationWithDescription("Session: Insert did not pass.")
@@ -130,8 +130,8 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         bookDeleteExpectation = expectationWithDescription("Book: Delete did not pass.")
         magazineDeleteExpectation = expectationWithDescription("Magazine: Delete did not pass.")
         readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
-        holidayDeleteExpectation = expectationWithDescription("Holiday: Delete did not pass.")
-        holidaySearchExpectation = expectationWithDescription("Holiday: Search did not pass.")
+        groupDeleteExpectation = expectationWithDescription("Group: Delete did not pass.")
+        groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
         nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
         nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
         sessionDeleteExpectation = expectationWithDescription("Session: Delete did not pass.")
@@ -184,20 +184,20 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 
     func graph(graph: GKGraph!, didInsertAction action: GKAction!, group: String!) {
         if "Holiday" == group {
-            holidayInsertExpectation?.fulfill()
+            groupInsertExpectation?.fulfill()
             let nodes: Array<GKAction> = graph.search(ActionGroup: group);
             if 1 == nodes.count && action.objectID == nodes[0].objectID {
-                holidaySearchExpectation?.fulfill()
+                groupSearchExpectation?.fulfill()
             }
         }
     }
 
     func graph(graph: GKGraph!, didDeleteAction action: GKAction!, group: String!) {
         if "Holiday" == group {
-            holidayDeleteExpectation?.fulfill()
+            groupDeleteExpectation?.fulfill()
             let nodes: Array<GKAction> = graph.search(ActionGroup: group);
             if 0 == nodes.count {
-                holidaySearchExpectation?.fulfill()
+                groupSearchExpectation?.fulfill()
             }
         }
     }

@@ -25,9 +25,9 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
     var u2InsertExpectation: XCTestExpectation?
     var friendInsertExpectation: XCTestExpectation?
 	var friendDeleteExpectation: XCTestExpectation?
-    var closeInsertExpectation: XCTestExpectation?
-    var closeDeleteExpectation: XCTestExpectation?
-    var closeSearchExpectation: XCTestExpectation?
+    var groupInsertExpectation: XCTestExpectation?
+    var groupDeleteExpectation: XCTestExpectation?
+    var groupSearchExpectation: XCTestExpectation?
     var permissionInsertExpectation: XCTestExpectation?
     var permissionUpdateExpectation: XCTestExpectation?
     var permissionDeleteExpectation: XCTestExpectation?
@@ -82,8 +82,8 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         u1InsertExpectation = expectationWithDescription("User 1: Insert did not pass.")
         u2InsertExpectation = expectationWithDescription("User 2: Insert did not pass.")
         friendInsertExpectation = expectationWithDescription("Friend: Insert did not pass.")
-        closeInsertExpectation = expectationWithDescription("Close: Insert did not pass.")
-        closeSearchExpectation = expectationWithDescription("Close: Search did not pass.")
+        groupInsertExpectation = expectationWithDescription("Group: Insert did not pass.")
+        groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
         permissionInsertExpectation = expectationWithDescription("Permission: Insert did not pass.")
         permissionSearchExpectation = expectationWithDescription("Permission: Search did not pass.")
         yearInsertExpectation = expectationWithDescription("Age: Insert did not pass.")
@@ -119,8 +119,8 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
 
         // Set an Expectation for the delete watcher.
         friendDeleteExpectation = expectationWithDescription("Friend: Delete did not pass.")
-        closeDeleteExpectation = expectationWithDescription("Close: Delete did not pass.")
-        closeSearchExpectation = expectationWithDescription("Close: Search did not pass.")
+        groupDeleteExpectation = expectationWithDescription("Group: Delete did not pass.")
+        groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
         permissionDeleteExpectation = expectationWithDescription("Permission: Delete did not pass.")
         permissionSearchExpectation = expectationWithDescription("Permission: Search did not pass.")
         yearDeleteExpectation = expectationWithDescription("Age: Delete did not pass.")
@@ -161,20 +161,20 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
 
     func graph(graph: GKGraph!, didInsertBond bond: GKBond!, group: String!) {
         if "Close" == group {
-            closeInsertExpectation?.fulfill()
+            groupInsertExpectation?.fulfill()
             let nodes: Array<GKBond> = graph.search(BondGroup: group);
             if 1 == nodes.count && bond.objectID == nodes[0].objectID {
-                closeSearchExpectation?.fulfill()
+                groupSearchExpectation?.fulfill()
             }
         }
     }
 
     func graph(graph: GKGraph!, didDeleteBond bond: GKBond!, group: String!) {
         if "Close" == group {
-            closeDeleteExpectation?.fulfill()
+            groupDeleteExpectation?.fulfill()
             let nodes: Array<GKBond> = graph.search(BondGroup: group);
             if 0 == nodes.count {
-                closeSearchExpectation?.fulfill()
+                groupSearchExpectation?.fulfill()
             }
         }
     }

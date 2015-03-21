@@ -23,9 +23,9 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 
     var userInsertExpectation: XCTestExpectation?
 	var userDeleteExpectation: XCTestExpectation?
-    var femaleInsertExpectation: XCTestExpectation?
-    var femaleDeleteExpectation: XCTestExpectation?
-    var femaleSearchExpectation: XCTestExpectation?
+    var groupInsertExpectation: XCTestExpectation?
+    var groupDeleteExpectation: XCTestExpectation?
+    var groupSearchExpectation: XCTestExpectation?
     var nameInsertExpectation: XCTestExpectation?
     var nameUpdateExpectation: XCTestExpectation?
     var nameDeleteExpectation: XCTestExpectation?
@@ -64,8 +64,8 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 		
         // Set an Expectation for the insert watcher.
         userInsertExpectation = expectationWithDescription("User: Insert did not pass.")
-        femaleInsertExpectation = expectationWithDescription("Female: Insert did not pass.")
-        femaleSearchExpectation = expectationWithDescription("Female: Search did not pass.")
+        groupInsertExpectation = expectationWithDescription("Group: Insert did not pass.")
+        groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
         nameInsertExpectation = expectationWithDescription("Name: Insert did not pass.")
         nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
         ageInsertExpectation = expectationWithDescription("Age: Insert did not pass.")
@@ -100,8 +100,8 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 
         // Set an Expectation for the delete watcher.
         userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
-        femaleDeleteExpectation = expectationWithDescription("Female: Delete did not pass.")
-        femaleSearchExpectation = expectationWithDescription("Female: Search did not pass.")
+        groupDeleteExpectation = expectationWithDescription("Group: Delete did not pass.")
+        groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
         nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
         nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
         ageDeleteExpectation = expectationWithDescription("Age: Delete did not pass.")
@@ -134,20 +134,20 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 
     func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, group: String!) {
         if "Female" == group {
-            femaleInsertExpectation?.fulfill()
+            groupInsertExpectation?.fulfill()
             let nodes: Array<GKEntity> = graph.search(EntityGroup: group);
             if 1 == nodes.count && entity.objectID == nodes[0].objectID {
-                femaleSearchExpectation?.fulfill()
+                groupSearchExpectation?.fulfill()
             }
         }
     }
 
     func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, group: String!) {
         if "Female" == group {
-            femaleDeleteExpectation?.fulfill()
+            groupDeleteExpectation?.fulfill()
             let nodes: Array<GKEntity> = graph.search(EntityGroup: group);
             if 0 == nodes.count {
-                femaleSearchExpectation?.fulfill()
+                groupSearchExpectation?.fulfill()
             }
         }
     }
