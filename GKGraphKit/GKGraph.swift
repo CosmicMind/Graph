@@ -117,7 +117,7 @@ public class GKGraph: NSObject {
 	* @param        completion: (success: Bool, error: NSError?) -> ())
 	*/
 	public func save(completion: (success: Bool, error: NSError?) -> ()) {
-		managedObjectContext.performBlockAndWait {[weak self] in
+		managedObjectContext.performBlockAndWait { [weak self] in
 			if !self!.managedObjectContext.hasChanges {
 				completion(success: true, error: nil)
 				return
@@ -662,7 +662,7 @@ public class GKGraph: NSObject {
 			static var onceToken: dispatch_once_t = 0
 			static var managedObjectContext: NSManagedObjectContext!
 		}
-		dispatch_once(&GKGraphManagedObjectContext.onceToken) {[weak self] in
+		dispatch_once(&GKGraphManagedObjectContext.onceToken) { [weak self] in
 			GKGraphManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
 			GKGraphManagedObjectContext.managedObjectContext.persistentStoreCoordinator = self!.persistentStoreCoordinator
 		}
@@ -950,7 +950,7 @@ public class GKGraph: NSObject {
 			static var onceToken: dispatch_once_t = 0
 			static var persistentStoreCoordinator: NSPersistentStoreCoordinator!
 		}
-		dispatch_once(&GKGraphPersistentStoreCoordinator.onceToken) {[weak self] in
+		dispatch_once(&GKGraphPersistentStoreCoordinator.onceToken) { [weak self] in
 			let storeURL = self!.applicationDocumentsDirectory.URLByAppendingPathComponent(GKGraphUtility.storeName)
 			var error: NSError?
 			GKGraphPersistentStoreCoordinator.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self!.managedObjectModel)
@@ -1069,7 +1069,7 @@ public class GKGraph: NSObject {
 		var error: NSError?
 		var nodes: Array<AnyObject> = Array<AnyObject>()
 		
-		managedObjectContext.performBlockAndWait {[weak self] in
+		managedObjectContext.performBlockAndWait { [weak self] in
 			if let result: Array<AnyObject> = self!.managedObjectContext.executeFetchRequest(request, error: &error) {
 				assert(nil == error, "[GraphKit Error: Fecthing nodes.]")
 				for item: AnyObject in result {
