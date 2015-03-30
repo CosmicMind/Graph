@@ -244,7 +244,7 @@ public class GKGraph: NSObject {
 		}
 		return nodes
 	}
-	
+		
 	/**
 	* search(EntityGroupMap)
 	* Retrieves all the unique Group Names for Entity Nodes with their GKEntity Objects.
@@ -835,7 +835,7 @@ public class GKGraph: NSObject {
 			subjectRelationship.name = "subjectSet"
 			subjectRelationship.minCount = 0
 			subjectRelationship.maxCount = 0
-			subjectRelationship.deleteRule = .NoActionDeleteRule
+			subjectRelationship.deleteRule = .NullifyDeleteRule
 			subjectRelationship.destinationEntity = entityDescription
 			
 			var actionSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -857,7 +857,7 @@ public class GKGraph: NSObject {
 			objectRelationship.name = "objectSet"
 			objectRelationship.minCount = 0
 			objectRelationship.maxCount = 0
-			objectRelationship.deleteRule = .NoActionDeleteRule
+			objectRelationship.deleteRule = .NullifyDeleteRule
 			objectRelationship.destinationEntity = entityDescription
 			
 			var actionObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()

@@ -198,15 +198,7 @@ internal class GKManagedAction: GKManagedNode {
     * Marks the Model Object to be deleted from the Graph.
     */
     internal func delete() {
-        var nodes: NSMutableSet = subjectSet as NSMutableSet
-        for node in nodes {
-            nodes.removeObject(node)
-        }
-        nodes = objectSet as NSMutableSet
-        for node in nodes {
-            nodes.removeObject(node)
-        }
-        nodes = propertySet as NSMutableSet
+        var nodes: NSMutableSet = propertySet as NSMutableSet
         for node in nodes {
             nodes.removeObject(node)
             managedObjectContext!.deleteObject(node as GKActionProperty)

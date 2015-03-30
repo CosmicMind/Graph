@@ -24,8 +24,8 @@ import Foundation
 
 @objc(GKEntity)
 public class GKEntity: GKNode {
-
-    /**
+	
+	/**
     * init
     * Initializes GKEntity with a given type.
     * @param        type: String
@@ -33,8 +33,8 @@ public class GKEntity: GKNode {
     override public init(type: String) {
         super.init(type: type)
     }
-
-    /**
+	
+	/**
     * actions
     * Retrieves an Array of GKAction Objects.
     * @return       Array<GKAction>
