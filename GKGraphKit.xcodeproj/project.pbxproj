@@ -7,27 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		969F1B6D1AC4F8E800A618C4 /* GKGraphKitX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969F1B621AC4F8E800A618C4 /* GKGraphKitX.framework */; };
-		969F1B7B1AC4F90500A618C4 /* GKActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4CD1A9D13CC0087569F /* GKActionGroup.swift */; };
-		969F1B7C1AC4F90500A618C4 /* GKActionProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4CE1A9D13CC0087569F /* GKActionProperty.swift */; };
-		969F1B7D1AC4F90500A618C4 /* GKBondGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D01A9D13CC0087569F /* GKBondGroup.swift */; };
-		969F1B7E1AC4F90500A618C4 /* GKBondProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D11A9D13CC0087569F /* GKBondProperty.swift */; };
-		969F1B7F1AC4F90500A618C4 /* GKEntityGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D31A9D13CD0087569F /* GKEntityGroup.swift */; };
-		969F1B801AC4F90500A618C4 /* GKEntityProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D41A9D13CD0087569F /* GKEntityProperty.swift */; };
-		969F1B811AC4F90500A618C4 /* GKManagedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D61A9D13CD0087569F /* GKManagedAction.swift */; };
-		969F1B821AC4F90500A618C4 /* GKManagedBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D71A9D13CD0087569F /* GKManagedBond.swift */; };
-		969F1B831AC4F90500A618C4 /* GKManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D81A9D13CD0087569F /* GKManagedEntity.swift */; };
-		969F1B841AC4F90500A618C4 /* GKManagedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D91A9D13CD0087569F /* GKManagedNode.swift */; };
-		969F1B851AC4F90500A618C4 /* GKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4DA1A9D13CD0087569F /* GKNode.swift */; };
-		969F1B861AC4F90500A618C4 /* GKNodeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4DB1A9D13CD0087569F /* GKNodeGroup.swift */; };
-		969F1B871AC4F90500A618C4 /* GKNodeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4DC1A9D13CD0087569F /* GKNodeProperty.swift */; };
-		969F1B881AC4F90500A618C4 /* GKAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4CC1A9D13CC0087569F /* GKAction.swift */; };
-		969F1B891AC4F90500A618C4 /* GKBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4CF1A9D13CC0087569F /* GKBond.swift */; };
-		969F1B8A1AC4F90500A618C4 /* GKEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D21A9D13CC0087569F /* GKEntity.swift */; };
-		969F1B8B1AC4F90500A618C4 /* GKGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4D51A9D13CD0087569F /* GKGraph.swift */; };
-		969F1B931AC4F9E900A618C4 /* GKActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4F01A9D13FB0087569F /* GKActionTests.swift */; };
-		969F1B941AC4F9E900A618C4 /* GKBondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4F11A9D13FB0087569F /* GKBondTests.swift */; };
-		969F1B951AC4F9E900A618C4 /* GKEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4F21A9D13FB0087569F /* GKEntityTests.swift */; };
 		96DBB4BC1A9D131D0087569F /* GKGraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96DBB4B01A9D131D0087569F /* GKGraphKit.framework */; };
 		96DBB4DE1A9D13CD0087569F /* GKAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4CC1A9D13CC0087569F /* GKAction.swift */; };
 		96DBB4DF1A9D13CD0087569F /* GKActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DBB4CD1A9D13CC0087569F /* GKActionGroup.swift */; };
@@ -70,13 +49,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		969F1B6E1AC4F8E800A618C4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 96DBB4A71A9D131D0087569F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 969F1B611AC4F8E800A618C4;
-			remoteInfo = GKGraphKitX;
-		};
 		96DBB4BD1A9D131D0087569F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 96DBB4A71A9D131D0087569F /* Project object */;
@@ -87,8 +59,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		969F1B621AC4F8E800A618C4 /* GKGraphKitX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GKGraphKitX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		969F1B6C1AC4F8E800A618C4 /* GKGraphKitXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GKGraphKitXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DBB4B01A9D131D0087569F /* GKGraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GKGraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DBB4B41A9D131D0087569F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96DBB4BB1A9D131D0087569F /* GKGraphKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GKGraphKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,21 +87,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		969F1B5E1AC4F8E800A618C4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		969F1B691AC4F8E800A618C4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				969F1B6D1AC4F8E800A618C4 /* GKGraphKitX.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		96DBB4AC1A9D131D0087569F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,8 +139,6 @@
 			children = (
 				96DBB4B01A9D131D0087569F /* GKGraphKit.framework */,
 				96DBB4BB1A9D131D0087569F /* GKGraphKitTests.xctest */,
-				969F1B621AC4F8E800A618C4 /* GKGraphKitX.framework */,
-				969F1B6C1AC4F8E800A618C4 /* GKGraphKitXTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -234,13 +187,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		969F1B5F1AC4F8E800A618C4 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		96DBB4AD1A9D131D0087569F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -268,42 +214,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		969F1B611AC4F8E800A618C4 /* GKGraphKitX */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 969F1B791AC4F8E800A618C4 /* Build configuration list for PBXNativeTarget "GKGraphKitX" */;
-			buildPhases = (
-				969F1B5D1AC4F8E800A618C4 /* Sources */,
-				969F1B5E1AC4F8E800A618C4 /* Frameworks */,
-				969F1B5F1AC4F8E800A618C4 /* Headers */,
-				969F1B601AC4F8E800A618C4 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = GKGraphKitX;
-			productName = GKGraphKitX;
-			productReference = 969F1B621AC4F8E800A618C4 /* GKGraphKitX.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		969F1B6B1AC4F8E800A618C4 /* GKGraphKitXTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 969F1B7A1AC4F8E800A618C4 /* Build configuration list for PBXNativeTarget "GKGraphKitXTests" */;
-			buildPhases = (
-				969F1B681AC4F8E800A618C4 /* Sources */,
-				969F1B691AC4F8E800A618C4 /* Frameworks */,
-				969F1B6A1AC4F8E800A618C4 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				969F1B6F1AC4F8E800A618C4 /* PBXTargetDependency */,
-			);
-			name = GKGraphKitXTests;
-			productName = GKGraphKitXTests;
-			productReference = 969F1B6C1AC4F8E800A618C4 /* GKGraphKitXTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		96DBB4AF1A9D131D0087569F /* GKGraphKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 96DBB4C61A9D131D0087569F /* Build configuration list for PBXNativeTarget "GKGraphKit" */;
@@ -349,12 +259,6 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "GraphKit, Inc.";
 				TargetAttributes = {
-					969F1B611AC4F8E800A618C4 = {
-						CreatedOnToolsVersion = 6.2;
-					};
-					969F1B6B1AC4F8E800A618C4 = {
-						CreatedOnToolsVersion = 6.2;
-					};
 					96DBB4AF1A9D131D0087569F = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 6R427Q9MFC;
@@ -378,27 +282,11 @@
 			targets = (
 				96DBB4AF1A9D131D0087569F /* GKGraphKit */,
 				96DBB4BA1A9D131D0087569F /* GKGraphKitTests */,
-				969F1B611AC4F8E800A618C4 /* GKGraphKitX */,
-				969F1B6B1AC4F8E800A618C4 /* GKGraphKitXTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		969F1B601AC4F8E800A618C4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		969F1B6A1AC4F8E800A618C4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		96DBB4AE1A9D131D0087569F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -417,40 +305,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		969F1B5D1AC4F8E800A618C4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				969F1B821AC4F90500A618C4 /* GKManagedBond.swift in Sources */,
-				969F1B881AC4F90500A618C4 /* GKAction.swift in Sources */,
-				969F1B871AC4F90500A618C4 /* GKNodeProperty.swift in Sources */,
-				969F1B841AC4F90500A618C4 /* GKManagedNode.swift in Sources */,
-				969F1B811AC4F90500A618C4 /* GKManagedAction.swift in Sources */,
-				969F1B7C1AC4F90500A618C4 /* GKActionProperty.swift in Sources */,
-				969F1B7F1AC4F90500A618C4 /* GKEntityGroup.swift in Sources */,
-				969F1B7E1AC4F90500A618C4 /* GKBondProperty.swift in Sources */,
-				969F1B8A1AC4F90500A618C4 /* GKEntity.swift in Sources */,
-				969F1B801AC4F90500A618C4 /* GKEntityProperty.swift in Sources */,
-				969F1B851AC4F90500A618C4 /* GKNode.swift in Sources */,
-				969F1B891AC4F90500A618C4 /* GKBond.swift in Sources */,
-				969F1B7B1AC4F90500A618C4 /* GKActionGroup.swift in Sources */,
-				969F1B8B1AC4F90500A618C4 /* GKGraph.swift in Sources */,
-				969F1B861AC4F90500A618C4 /* GKNodeGroup.swift in Sources */,
-				969F1B7D1AC4F90500A618C4 /* GKBondGroup.swift in Sources */,
-				969F1B831AC4F90500A618C4 /* GKManagedEntity.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		969F1B681AC4F8E800A618C4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				969F1B941AC4F9E900A618C4 /* GKBondTests.swift in Sources */,
-				969F1B951AC4F9E900A618C4 /* GKEntityTests.swift in Sources */,
-				969F1B931AC4F9E900A618C4 /* GKActionTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		96DBB4AB1A9D131D0087569F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -488,11 +342,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		969F1B6F1AC4F8E800A618C4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 969F1B611AC4F8E800A618C4 /* GKGraphKitX */;
-			targetProxy = 969F1B6E1AC4F8E800A618C4 /* PBXContainerItemProxy */;
-		};
 		96DBB4BE1A9D131D0087569F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 96DBB4AF1A9D131D0087569F /* GKGraphKit */;
@@ -501,88 +350,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		969F1B751AC4F8E800A618C4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = GKGraphKitX/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		969F1B761AC4F8E800A618C4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = GKGraphKitX/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		969F1B771AC4F8E800A618C4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = GKGraphKitXTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Debug;
-		};
-		969F1B781AC4F8E800A618C4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = GKGraphKitXTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
 		96DBB4C41A9D131D0087569F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -736,24 +503,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		969F1B791AC4F8E800A618C4 /* Build configuration list for PBXNativeTarget "GKGraphKitX" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				969F1B751AC4F8E800A618C4 /* Debug */,
-				969F1B761AC4F8E800A618C4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		969F1B7A1AC4F8E800A618C4 /* Build configuration list for PBXNativeTarget "GKGraphKitXTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				969F1B771AC4F8E800A618C4 /* Debug */,
-				969F1B781AC4F8E800A618C4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		96DBB4AA1A9D131D0087569F /* Build configuration list for PBXProject "GKGraphKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
