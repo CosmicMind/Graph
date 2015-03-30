@@ -154,8 +154,6 @@ internal class GKManagedBond: GKManagedNode {
             nodes.removeObject(node)
             managedObjectContext!.deleteObject(node as GKBondGroup)
         }
-		subject = nil
-		object = nil
         managedObjectContext!.deleteObject(self)
     }
 }
