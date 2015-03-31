@@ -185,7 +185,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     func graph(graph: GKGraph!, didInsertAction action: GKAction!, group: String!) {
         if "Holiday" == group {
             groupInsertExpectation?.fulfill()
-            let nodes: Array<GKAction> = graph.search(ActionGroup: group);
+            let nodes: Array<GKAction> = graph.search(ActionGroup: group)
             if 1 == nodes.count && action.objectID == nodes[0].objectID {
                 groupSearchExpectation?.fulfill()
             }
@@ -195,7 +195,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     func graph(graph: GKGraph!, didDeleteAction action: GKAction!, group: String!) {
         if "Holiday" == group {
             groupDeleteExpectation?.fulfill()
-            let nodes: Array<GKAction> = graph.search(ActionGroup: group);
+            let nodes: Array<GKAction> = graph.search(ActionGroup: group)
             if 0 == nodes.count {
                 groupSearchExpectation?.fulfill()
             }
@@ -205,18 +205,18 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     func graph(graph: GKGraph!, didInsertAction action: GKAction!, property: String!, value: AnyObject!) {
         if "name" == property && "New Years" == value as String {
             nameInsertExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property);
+            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
             if 1 == nodes.count && nodes[0][property] as String == value as String {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as String);
+                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as String)
                 if 1 == nodes.count && nodes[0][property] as String == value as String {
                     nameSearchExpectation?.fulfill()
                 }
             }
         } else if "session" == property && 123 == value as Int {
             sessionInsertExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property);
+            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
             if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as Int);
+                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as Int)
                 if 1 == nodes.count && nodes[0][property] as Int == value as Int {
                     sessionSearchExpectation?.fulfill()
                 }
@@ -227,18 +227,18 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     func graph(graph: GKGraph!, didUpdateAction action: GKAction!, property: String!, value: AnyObject!) {
         if "name" == property && "X-MASS" == value as String {
             nameUpdateExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property);
+            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
             if 1 == nodes.count && nodes[0][property] as String == value as String {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as String);
+                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as String)
                 if 1 == nodes.count && nodes[0][property] as String == value as String {
                     nameSearchExpectation?.fulfill()
                 }
             }
         } else if "session" == property && 456 == value as Int {
             sessionUpdateExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property);
+            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
             if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as Int);
+                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as Int)
                 if 1 == nodes.count && nodes[0][property] as Int == value as Int {
                     sessionSearchExpectation?.fulfill()
                 }
@@ -249,18 +249,18 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     func graph(graph: GKGraph!, didDeleteAction action: GKAction!, property: String!, value: AnyObject!) {
         if "name" == property && "X-MASS" == value as String {
             nameDeleteExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property);
+            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
             if 0 == nodes.count {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as String);
+                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as String)
                 if 0 == nodes.count {
                     nameSearchExpectation?.fulfill()
                 }
             }
         } else if "session" == property && 456 == value as Int {
             sessionDeleteExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property);
+            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
             if 0 == nodes.count {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as Int);
+                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as Int)
                 if 0 == nodes.count {
                     sessionSearchExpectation?.fulfill()
                 }

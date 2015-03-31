@@ -114,6 +114,6 @@ public class GKBond: GKNode {
     * @return       GKManagedBond
     */
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
-        return GKManagedBond(type: type);
+        return GKManagedBond(type: type)
     }
 }

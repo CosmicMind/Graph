@@ -173,6 +173,6 @@ public class GKEntity: GKNode {
     * @return       GKManagedEntity
     */
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
-        return GKManagedEntity(type: type);
+        return GKManagedEntity(type: type)
     }
 }

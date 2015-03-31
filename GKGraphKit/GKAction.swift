@@ -86,7 +86,7 @@ public class GKAction: GKNode {
         var result: Bool = false
         graph.managedObjectContext.performBlockAndWait {
 			var node: GKManagedAction = self.node as GKManagedAction
-			result = node.addSubject(entity.node as GKManagedEntity);
+			result = node.addSubject(entity.node as GKManagedEntity)
         }
         return result
     }
@@ -101,7 +101,7 @@ public class GKAction: GKNode {
         var result: Bool = false
         graph.managedObjectContext.performBlockAndWait {
             var node: GKManagedAction = self.node as GKManagedAction
-            result = node.removeSubject(entity.node as GKManagedEntity);
+            result = node.removeSubject(entity.node as GKManagedEntity)
         }
         return result
     }
@@ -116,7 +116,7 @@ public class GKAction: GKNode {
         var result: Bool = false
         graph.managedObjectContext.performBlockAndWait {
             var node: GKManagedAction = self.node as GKManagedAction
-            result = node.addObject(entity.node as GKManagedEntity);
+            result = node.addObject(entity.node as GKManagedEntity)
         }
         return result
     }
@@ -131,7 +131,7 @@ public class GKAction: GKNode {
         var result: Bool = false
         graph.managedObjectContext.performBlockAndWait {
             var node: GKManagedAction = self.node as GKManagedAction
-            result = node.removeObject(entity.node as GKManagedEntity);
+            result = node.removeObject(entity.node as GKManagedEntity)
         }
         return result
     }
@@ -163,6 +163,6 @@ public class GKAction: GKNode {
     * @return       GKManagedAction
     */
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
-        return GKManagedAction(type: type);
+        return GKManagedAction(type: type)
     }
 }

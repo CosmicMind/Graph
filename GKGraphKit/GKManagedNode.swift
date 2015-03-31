@@ -23,13 +23,17 @@
 import CoreData
 
 @objc(GKManagedNode)
-internal class GKManagedNode: NSManagedObject, Printable {
+internal class GKManagedNode: NSManagedObject {
     @NSManaged internal var nodeClass: String
     @NSManaged internal var type: String
     @NSManaged internal var createdDate: NSDate
     @NSManaged internal var propertySet: NSSet
     @NSManaged internal var groupSet: NSSet
 
+	// this is used to ensure the managedObjectContext
+	// is the same throughout
+	internal lazy var graph: GKGraph = GKGraph()
+	
     /**
     * init
     * Internal usage for inittializing the Model Object.
@@ -106,6 +110,6 @@ internal class GKManagedNode: NSManagedObject, Printable {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
-		managedObjectContext!.deleteObject(self)
+		graph.managedObjectContext.deleteObject(self)
 	}
 }

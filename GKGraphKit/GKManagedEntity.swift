@@ -28,7 +28,7 @@ internal class GKManagedEntity: GKManagedNode {
     @NSManaged internal var actionObjectSet: NSSet
     @NSManaged internal var bondSubjectSet: NSSet
     @NSManaged internal var bondObjectSet: NSSet
-
+	
     /**
     * entityDescription
     * Class method returning an NSEntityDescription Object for this Model Object.
@@ -78,16 +78,18 @@ internal class GKManagedEntity: GKManagedNode {
 				let property: GKEntityProperty = node as GKEntityProperty
                 if name == property.name {
                     if nil == value {
-						managedObjectContext!.deleteObject(property)
-                    } else {
+						graph.managedObjectContext.deleteObject(property)
+						mutableSetValueForKey("propertySet").removeObject(property)
+					} else {
                         property.value = value!
                     }
                     return
                 }
             }
             if nil != value {
-                var property: GKEntityProperty = GKEntityProperty(name: name, value: value, managedObjectContext: managedObjectContext)
+                var property: GKEntityProperty = GKEntityProperty(name: name, value: value, managedObjectContext: graph.managedObjectContext)
                 property.node = self
+				mutableSetValueForKey("propertySet").addObject(property)
             }
         }
     }
@@ -100,7 +102,7 @@ internal class GKManagedEntity: GKManagedNode {
     */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext!)
+            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: graph.managedObjectContext)
             group.node = self
 			mutableSetValueForKey("groupSet").addObject(group)
 			return true
@@ -134,7 +136,7 @@ internal class GKManagedEntity: GKManagedNode {
         for node in groupSet {
             let group: GKEntityGroup = node as GKEntityGroup
             if name == group.name {
-				managedObjectContext!.deleteObject(group)
+				graph.managedObjectContext.deleteObject(group)
 				mutableSetValueForKey("groupSet").removeObject(group)
 				return true
             }

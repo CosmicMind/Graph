@@ -24,7 +24,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func testAll() {
-		
+
 		// Set the XCTest Class as the delegate.
 		graph.delegate = self
 		

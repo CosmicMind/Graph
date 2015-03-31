@@ -75,7 +75,8 @@ internal class GKManagedAction: GKManagedNode {
                 let property: GKActionProperty = node as GKActionProperty
                 if name == property.name {
                     if nil == value {
-                        managedObjectContext!.deleteObject(property)
+                        graph.managedObjectContext.deleteObject(property)
+						mutableSetValueForKey("propertySet").removeObject(property)
                     } else {
                         property.value = value!
                     }
@@ -83,8 +84,9 @@ internal class GKManagedAction: GKManagedNode {
                 }
             }
             if nil != value {
-                var property: GKActionProperty = GKActionProperty(name: name, value: value, managedObjectContext: managedObjectContext)
+                var property: GKActionProperty = GKActionProperty(name: name, value: value, managedObjectContext: graph.managedObjectContext)
                 property.node = self
+				mutableSetValueForKey("propertySet").addObject(property)
             }
         }
     }
@@ -97,7 +99,7 @@ internal class GKManagedAction: GKManagedNode {
     */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-            var group: GKActionGroup = GKActionGroup(name: name, managedObjectContext: managedObjectContext)
+            var group: GKActionGroup = GKActionGroup(name: name, managedObjectContext: graph.managedObjectContext)
             group.node = self
 			mutableSetValueForKey("groupSet").addObject(group)
             return true
@@ -131,9 +133,9 @@ internal class GKManagedAction: GKManagedNode {
         for node in groupSet {
             let group: GKActionGroup = node as GKActionGroup
             if name == group.name {
+				graph.managedObjectContext.deleteObject(group)
 				mutableSetValueForKey("groupSet").removeObject(group)
-                managedObjectContext!.deleteObject(group)
-                return true
+				return true
             }
         }
         return false
@@ -146,7 +148,7 @@ internal class GKManagedAction: GKManagedNode {
     * @return       Bool of the result, true if added, false otherwise.
     */
     internal func addSubject(entity: GKManagedEntity!) -> Bool {
-        let nodes = mutableSetValueForKey("subjectSet");
+        let nodes = mutableSetValueForKey("subjectSet")
         let count: Int = nodes.count
         nodes.addObject(entity)
         return count != nodes.count
@@ -159,7 +161,7 @@ internal class GKManagedAction: GKManagedNode {
     * @return       Bool of the result, true if removed, false otherwise.
     */
     internal func removeSubject(entity: GKManagedEntity!) -> Bool {
-        let nodes = mutableSetValueForKey("subjectSet");
+        let nodes = mutableSetValueForKey("subjectSet")
         let count: Int = nodes.count
         nodes.removeObject(entity)
         return count != nodes.count
@@ -172,7 +174,7 @@ internal class GKManagedAction: GKManagedNode {
     * @return       Bool of the result, true if added, false otherwise.
     */
     internal func addObject(entity: GKManagedEntity!) -> Bool {
-        let nodes = mutableSetValueForKey("objectSet");
+        let nodes = mutableSetValueForKey("objectSet")
         let count: Int = nodes.count
         nodes.addObject(entity)
         return count != nodes.count
@@ -185,7 +187,7 @@ internal class GKManagedAction: GKManagedNode {
     * @return       Bool of the result, true if removed, false otherwise.
     */
     internal func removeObject(entity: GKManagedEntity!) -> Bool {
-        let nodes = mutableSetValueForKey("objectSet");
+        let nodes = mutableSetValueForKey("objectSet")
         let count: Int = nodes.count
         nodes.removeObject(entity)
         return count != nodes.count
