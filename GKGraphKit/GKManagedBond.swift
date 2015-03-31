@@ -97,6 +97,7 @@ internal class GKManagedBond: GKManagedNode {
         if !hasGroup(name) {
             var group: GKBondGroup = GKBondGroup(name: name, managedObjectContext: managedObjectContext)
             group.node = self
+			mutableSetValueForKey("groupSet").addObject(group)
             return true
         }
         return false
@@ -128,6 +129,7 @@ internal class GKManagedBond: GKManagedNode {
         for node in groupSet {
             let group: GKBondGroup = node as GKBondGroup
             if name == group.name {
+				mutableSetValueForKey("groupSet").removeObject(group)
                 managedObjectContext!.deleteObject(group)
                 return true
             }

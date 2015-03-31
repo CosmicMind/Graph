@@ -78,7 +78,7 @@ internal class GKManagedEntity: GKManagedNode {
 				let property: GKEntityProperty = node as GKEntityProperty
                 if name == property.name {
                     if nil == value {
-                        managedObjectContext!.deleteObject(property)
+						managedObjectContext!.deleteObject(property)
                     } else {
                         property.value = value!
                     }
@@ -102,7 +102,8 @@ internal class GKManagedEntity: GKManagedNode {
         if !hasGroup(name) {
             var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: managedObjectContext!)
             group.node = self
-            return true
+			mutableSetValueForKey("groupSet").addObject(group)
+			return true
         }
         return false
     }
@@ -133,6 +134,7 @@ internal class GKManagedEntity: GKManagedNode {
         for node in groupSet {
             let group: GKEntityGroup = node as GKEntityGroup
             if name == group.name {
+				mutableSetValueForKey("groupSet").removeObject(group)
                 managedObjectContext!.deleteObject(group)
                 return true
             }

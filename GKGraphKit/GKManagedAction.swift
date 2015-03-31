@@ -99,6 +99,7 @@ internal class GKManagedAction: GKManagedNode {
         if !hasGroup(name) {
             var group: GKActionGroup = GKActionGroup(name: name, managedObjectContext: managedObjectContext)
             group.node = self
+			mutableSetValueForKey("groupSet").addObject(group)
             return true
         }
         return false
@@ -130,6 +131,7 @@ internal class GKManagedAction: GKManagedNode {
         for node in groupSet {
             let group: GKActionGroup = node as GKActionGroup
             if name == group.name {
+				mutableSetValueForKey("groupSet").removeObject(group)
                 managedObjectContext!.deleteObject(group)
                 return true
             }

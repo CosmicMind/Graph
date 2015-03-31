@@ -176,7 +176,7 @@ public class GKNode: NSObject {
 					groups.append(group.name)
 				}
             }
-            return groups.sorted(<)
+            return groups
         }
         set(value) {
             assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
