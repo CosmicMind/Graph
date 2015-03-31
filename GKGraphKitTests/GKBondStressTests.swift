@@ -67,13 +67,13 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didInsertBond bond: GKBond!) {
-		if 500 == bond.groups.count {
+		if 500 == bond.groups.count && 500 == bond.properties.count {
 			expectation?.fulfill()
 		}
 	}
 	
 	func graph(graph: GKGraph!, didDeleteBond bond: GKBond!) {
-		if 0 == bond.groups.count {
+		if 0 == bond.groups.count && 0 == bond.properties.count {
 			expectation?.fulfill()
 		}
 	}

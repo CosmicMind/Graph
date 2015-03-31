@@ -182,6 +182,26 @@ public class GKNode: NSObject {
             assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
         }
     }
+	
+	/**
+	* properties
+	* Retrieves the Properties the Node is a part of.
+	* @return       Dictionary<String, AnyObject?>
+	*/
+	public var properties: Dictionary<String, AnyObject?> {
+		get {
+			var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
+			graph.managedObjectContext.performBlockAndWait {
+				for property in self.node.propertySet {
+					properties[property.name] = property.value
+				}
+			}
+			return properties
+		}
+		set(value) {
+			assert(false, "[GraphKit Error: Properties is not allowed to be set.]")
+		}
+	}
 
     /**
     * init

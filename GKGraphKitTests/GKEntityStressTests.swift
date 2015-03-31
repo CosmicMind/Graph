@@ -67,13 +67,13 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		if 500 == entity.groups.count {
+		if 500 == entity.groups.count && 500 == entity.properties.count {
 			expectation?.fulfill()
 		}
 	}
 	
 	func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
-		if 0 == entity.groups.count {
+		if 0 == entity.groups.count && 0 == entity.properties.count {
 			expectation?.fulfill()
 		}
 	}
