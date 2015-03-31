@@ -47,6 +47,8 @@
 		96DBB5051A9D144B0087569F /* GKNodeGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4DB1A9D13CD0087569F /* GKNodeGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		96DBB5061A9D144B0087569F /* GKNodeProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96DBB4DC1A9D13CD0087569F /* GKNodeProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		96F15E5D1ACA8D1E00734FB1 /* GKEntityStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F15E5C1ACA8D1E00734FB1 /* GKEntityStressTests.swift */; };
+		96F15E5F1ACA945C00734FB1 /* GKActionStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F15E5E1ACA945C00734FB1 /* GKActionStressTests.swift */; };
+		96F15E611ACA949400734FB1 /* GKBondStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F15E601ACA949400734FB1 /* GKBondStressTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +88,8 @@
 		96DBB4F11A9D13FB0087569F /* GKBondTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKBondTests.swift; sourceTree = "<group>"; };
 		96DBB4F21A9D13FB0087569F /* GKEntityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKEntityTests.swift; sourceTree = "<group>"; };
 		96F15E5C1ACA8D1E00734FB1 /* GKEntityStressTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKEntityStressTests.swift; sourceTree = "<group>"; };
+		96F15E5E1ACA945C00734FB1 /* GKActionStressTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKActionStressTests.swift; sourceTree = "<group>"; };
+		96F15E601ACA949400734FB1 /* GKBondStressTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKBondStressTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +178,8 @@
 				96DBB4F11A9D13FB0087569F /* GKBondTests.swift */,
 				96DBB4F21A9D13FB0087569F /* GKEntityTests.swift */,
 				96F15E5C1ACA8D1E00734FB1 /* GKEntityStressTests.swift */,
+				96F15E5E1ACA945C00734FB1 /* GKActionStressTests.swift */,
+				96F15E601ACA949400734FB1 /* GKBondStressTests.swift */,
 				96DBB4C01A9D131D0087569F /* Supporting Files */,
 			);
 			path = GKGraphKitTests;
@@ -338,6 +344,8 @@
 			files = (
 				96DBB4F51A9D13FB0087569F /* GKEntityTests.swift in Sources */,
 				96DBB4F41A9D13FB0087569F /* GKBondTests.swift in Sources */,
+				96F15E611ACA949400734FB1 /* GKBondStressTests.swift in Sources */,
+				96F15E5F1ACA945C00734FB1 /* GKActionStressTests.swift in Sources */,
 				96DBB4F31A9D13FB0087569F /* GKActionTests.swift in Sources */,
 				96F15E5D1ACA8D1E00734FB1 /* GKEntityStressTests.swift in Sources */,
 			);

@@ -138,6 +138,26 @@ internal class GKManagedBond: GKManagedNode {
 
 extension GKManagedBond {
 	/**
+	* addPropertySetObject
+	* Adds the Property to the propertySet for the Bond.
+	* @param        value: GKBondProperty
+	*/
+	func addPropertySetObject(value: GKBondProperty) {
+		let nodes: NSMutableSet = propertySet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removePropertySetObject
+	* Removes the Property to the propertySet for the Bond.
+	* @param        value: GKBondProperty
+	*/
+	func removePropertySetObject(value: GKBondProperty) {
+		let nodes: NSMutableSet = propertySet as NSMutableSet
+		nodes.removeObject(value)
+	}
+	
+	/**
 	* addGroupSetObject
 	* Adds the Group to the groupSet for the Bond.
 	* @param        value: GKBondGroup

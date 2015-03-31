@@ -192,6 +192,26 @@ internal class GKManagedAction: GKManagedNode {
 
 extension GKManagedAction {
 	/**
+	* addPropertySetObject
+	* Adds the Property to the propertySet for the Action.
+	* @param        value: GKActionProperty
+	*/
+	func addPropertySetObject(value: GKActionProperty) {
+		let nodes: NSMutableSet = propertySet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removePropertySetObject
+	* Removes the Property to the propertySet for the Action.
+	* @param        value: GKActionProperty
+	*/
+	func removePropertySetObject(value: GKActionProperty) {
+		let nodes: NSMutableSet = propertySet as NSMutableSet
+		nodes.removeObject(value)
+	}
+	
+	/**
 	* addGroupSetObject
 	* Adds the Group to the groupSet for the Action.
 	* @param        value: GKActionGroup
