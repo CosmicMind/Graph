@@ -768,7 +768,7 @@ public class GKGraph: NSObject {
 			propertyRelationship.name = "node"
 			propertyRelationship.minCount = 1
 			propertyRelationship.maxCount = 1
-			propertyRelationship.deleteRule = .NoActionDeleteRule
+			propertyRelationship.deleteRule = .NullifyDeleteRule
 			
 			var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertySetRelationship.name = "propertySet"
@@ -805,7 +805,7 @@ public class GKGraph: NSObject {
 			groupRelationship.name = "node"
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
-			groupRelationship.deleteRule = .NoActionDeleteRule
+			groupRelationship.deleteRule = .NullifyDeleteRule
 			
 			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"
@@ -842,7 +842,7 @@ public class GKGraph: NSObject {
 			actionSubjectRelationship.name = "actionSubjectSet"
 			actionSubjectRelationship.minCount = 0
 			actionSubjectRelationship.maxCount = 0
-			actionSubjectRelationship.deleteRule = .NoActionDeleteRule
+			actionSubjectRelationship.deleteRule = .NullifyDeleteRule
 			actionSubjectRelationship.destinationEntity = actionDescription
 			
 			actionSubjectRelationship.inverseRelationship = subjectRelationship
@@ -864,7 +864,7 @@ public class GKGraph: NSObject {
 			actionObjectRelationship.name = "actionObjectSet"
 			actionObjectRelationship.minCount = 0
 			actionObjectRelationship.maxCount = 0
-			actionObjectRelationship.deleteRule = .NoActionDeleteRule
+			actionObjectRelationship.deleteRule = .NullifyDeleteRule
 			actionObjectRelationship.destinationEntity = actionDescription
 			actionObjectRelationship.inverseRelationship = objectRelationship
 			objectRelationship.inverseRelationship = actionObjectRelationship
