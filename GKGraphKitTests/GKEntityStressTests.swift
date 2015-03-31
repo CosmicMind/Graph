@@ -15,6 +15,15 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 	
 	var expectation: XCTestExpectation?
 	
+	// queue for drawing images
+	private var queue1: dispatch_queue_t = {
+		return dispatch_queue_create(("io.graphkit.EntityStressTests.1" as NSString).UTF8String, nil)
+	}()
+	
+	private var queue2: dispatch_queue_t = {
+		return dispatch_queue_create(("io.graphkit.EntityStressTests.2" as NSString).UTF8String, nil)
+	}()
+	
 	override func setUp() {
 		super.setUp()
 	}
@@ -31,35 +40,39 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		// Let's watch the changes in the Graph for the following Entity values.
 		graph.watch(Entity: "E")
 		
-		let e1: GKEntity = GKEntity(type: "E")
+		var e1: GKEntity?
 		
-		for i in 1...1000 {
-			let prop: String = String(i)
-			e1.addGroup(prop)
-			e1[prop] = i
-		}
-		
-		for i in 1...500 {
-			let prop: String = String(i)
-			e1.removeGroup(prop)
-			e1[prop] = nil
+		dispatch_async(queue1) {
+			e1 = GKEntity(type: "E")
+			for i in 1...1000 {
+				let prop: String = String(i)
+				e1!.addGroup(prop)
+				e1![prop] = i
+			}
+			
+			dispatch_async(self.queue2) {
+				for i in 1...500 {
+					let prop: String = String(i)
+					e1!.removeGroup(prop)
+					e1![prop] = nil
+				}
+				self.graph.save { (_, _) in }
+			}
 		}
 		
 		expectation = expectationWithDescription("Entity: Insert did not pass.")
 		
-		graph.save { (_, _) in }
-		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(5, handler: nil)
+		waitForExpectationsWithTimeout(10, handler: nil)
 		
-		e1.delete()
+		e1!.delete()
 		
 		expectation = expectationWithDescription("Entity: Delete did not pass.")
 		
 		graph.save { (_, _) in }
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(5, handler: nil)
+		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
 	func testPerformanceExample() {

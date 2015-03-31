@@ -23,6 +23,21 @@
 
 import CoreData
 
+struct GKGraphPersistentStoreCoordinator {
+	static var onceToken: dispatch_once_t = 0
+	static var persistentStoreCoordinator: NSPersistentStoreCoordinator!
+}
+
+struct GKGraphManagedObjectContext {
+	static var onceToken: dispatch_once_t = 0
+	static var managedObjectContext: NSManagedObjectContext!
+}
+
+struct GKGraphManagedObjectModel {
+	static var onceToken: dispatch_once_t = 0
+	static var managedObjectModel: NSManagedObjectModel!
+}
+
 struct GKGraphUtility {
 	static let storeName: String = "GraphKit.sqlite"
 	
@@ -658,10 +673,6 @@ public class GKGraph: NSObject {
 	
 	// make thread safe by creating this asynchronously
 	var managedObjectContext: NSManagedObjectContext {
-		struct GKGraphManagedObjectContext {
-			static var onceToken: dispatch_once_t = 0
-			static var managedObjectContext: NSManagedObjectContext!
-		}
 		dispatch_once(&GKGraphManagedObjectContext.onceToken) {
 			GKGraphManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
 			GKGraphManagedObjectContext.managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
@@ -670,10 +681,6 @@ public class GKGraph: NSObject {
 	}
 	
 	internal var managedObjectModel: NSManagedObjectModel {
-		struct GKGraphManagedObjectModel {
-			static var onceToken: dispatch_once_t = 0
-			static var managedObjectModel: NSManagedObjectModel!
-		}
 		dispatch_once(&GKGraphManagedObjectModel.onceToken) {
 			GKGraphManagedObjectModel.managedObjectModel = NSManagedObjectModel()
 			
@@ -946,10 +953,6 @@ public class GKGraph: NSObject {
 	}
 	
 	internal var persistentStoreCoordinator: NSPersistentStoreCoordinator {
-		struct GKGraphPersistentStoreCoordinator {
-			static var onceToken: dispatch_once_t = 0
-			static var persistentStoreCoordinator: NSPersistentStoreCoordinator!
-		}
 		dispatch_once(&GKGraphPersistentStoreCoordinator.onceToken) {
 			let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent(GKGraphUtility.storeName)
 			var error: NSError?
