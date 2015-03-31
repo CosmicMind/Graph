@@ -134,9 +134,9 @@ internal class GKManagedEntity: GKManagedNode {
         for node in groupSet {
             let group: GKEntityGroup = node as GKEntityGroup
             if name == group.name {
+				managedObjectContext!.deleteObject(group)
 				mutableSetValueForKey("groupSet").removeObject(group)
-                managedObjectContext!.deleteObject(group)
-                return true
+				return true
             }
         }
         return false

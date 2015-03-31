@@ -29,9 +29,9 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 		graph.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Action values.
-		graph.watch(Action: "E")
+		graph.watch(Action: "A")
 		
-		let a1: GKAction = GKAction(type: "E")
+		let a1: GKAction = GKAction(type: "A")
 		
 		for i in 1...1000 {
 			let prop: String = String(i)

@@ -128,7 +128,7 @@ public class GKNode: NSObject {
     * @return       Bool of the result, true if added, false otherwise.
     */
     public func addGroup(name: String!) -> Bool {
-		var result: Bool!
+		var result: Bool = false
 		graph.managedObjectContext.performBlockAndWait {
             result = self.node.addGroup(name)
         }

@@ -29,9 +29,9 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 		graph.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Bond values.
-		graph.watch(Bond: "E")
+		graph.watch(Bond: "B")
 		
-		let b1: GKBond = GKBond(type: "E")
+		let b1: GKBond = GKBond(type: "B")
 		
 		for i in 1...1000 {
 			let prop: String = String(i)
