@@ -141,9 +141,6 @@ internal class GKManagedEntity: GKManagedNode {
     }
 }
 
-/**
-* An extension used to handle the many-to-many relationship with Actions.
-*/
 extension GKManagedEntity {
 
     /**
@@ -227,9 +224,9 @@ extension GKManagedEntity {
     }
 	
 	/**
-	* addBondObjectSetObject
-	* Adds the Bond to the bondObjectSet for the Entity.
-	* @param        value: GKManagedBond
+	* addGroupSetObject
+	* Adds the Group to the groupSet for the Entity.
+	* @param        value: GKEntityGroup
 	*/
 	func addGroupSetObject(value: GKEntityGroup) {
 		let nodes: NSMutableSet = groupSet as NSMutableSet
@@ -237,9 +234,9 @@ extension GKManagedEntity {
 	}
 	
 	/**
-	* removeBondObjectSetObject
-	* Removes the Bond to the bondObjectSet for the Entity.
-	* @param        value: GKManagedBond
+	* removeGroupSetObject
+	* Removes the Group to the groupSet for the Entity.
+	* @param        value: GKEntityGroup
 	*/
 	func removeGroupSetObject(value: GKEntityGroup) {
 		let nodes: NSMutableSet = groupSet as NSMutableSet

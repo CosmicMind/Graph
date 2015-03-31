@@ -135,3 +135,25 @@ internal class GKManagedBond: GKManagedNode {
         return false
     }
 }
+
+extension GKManagedBond {
+	/**
+	* addGroupSetObject
+	* Adds the Group to the groupSet for the Bond.
+	* @param        value: GKBondGroup
+	*/
+	func addGroupSetObject(value: GKBondGroup) {
+		let nodes: NSMutableSet = groupSet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removeGroupSetObject
+	* Removes the Group to the groupSet for the Bond.
+	* @param        value: GKBondGroup
+	*/
+	func removeGroupSetObject(value: GKBondGroup) {
+		let nodes: NSMutableSet = groupSet as NSMutableSet
+		nodes.removeObject(value)
+	}
+}

@@ -189,3 +189,25 @@ internal class GKManagedAction: GKManagedNode {
         return count != nodes.count
     }
 }
+
+extension GKManagedAction {
+	/**
+	* addGroupSetObject
+	* Adds the Group to the groupSet for the Action.
+	* @param        value: GKActionGroup
+	*/
+	func addGroupSetObject(value: GKActionGroup) {
+		let nodes: NSMutableSet = groupSet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removeGroupSetObject
+	* Removes the Group to the groupSet for the Action.
+	* @param        value: GKActionGroup
+	*/
+	func removeGroupSetObject(value: GKActionGroup) {
+		let nodes: NSMutableSet = groupSet as NSMutableSet
+		nodes.removeObject(value)
+	}
+}
