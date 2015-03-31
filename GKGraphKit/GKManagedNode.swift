@@ -30,24 +30,7 @@ internal class GKManagedNode: NSManagedObject {
     @NSManaged internal var propertySet: NSSet
     @NSManaged internal var groupSet: NSSet
 
-	// this is used to ensure the managedObjectContext
-	// is the same throughout
-	internal lazy var graph: GKGraph = GKGraph()
-	
-    /**
-    * init
-    * Internal usage for inittializing the Model Object.
-    * @param        entityDescription: NSEntityDescription!
-    * @param        managedObjectContext: NSManagedObjectContext!
-    */
-    convenience internal init(entity: NSEntityDescription, managedObjectContext: NSManagedObjectContext!) {
-        self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
-        createdDate = NSDate()
-        propertySet = NSSet()
-        groupSet = NSSet()
-    }
-
-    /**
+	/**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
     * @param        name: String!
@@ -110,6 +93,6 @@ internal class GKManagedNode: NSManagedObject {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
-		graph.managedObjectContext.deleteObject(self)
+		GKGraphManagedObjectContext.managedObjectContext.deleteObject(self)
 	}
 }

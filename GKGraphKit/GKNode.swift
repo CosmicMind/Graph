@@ -25,7 +25,7 @@ import Foundation
 @objc(GKNode)
 public class GKNode: NSObject {
     internal lazy var graph: GKGraph = GKGraph()
-    internal let node: GKManagedNode!
+    internal var node: GKManagedNode?
 
     /**
     * nodeClass
@@ -35,7 +35,7 @@ public class GKNode: NSObject {
     public var nodeClass: String! {
         var nodeClass: String!
         graph.managedObjectContext.performBlockAndWait {
-            nodeClass = self.node.nodeClass
+            nodeClass = self.node!.nodeClass
         }
         return nodeClass
     }
@@ -48,7 +48,7 @@ public class GKNode: NSObject {
     public var type: String! {
         var type: String!
         graph.managedObjectContext.performBlockAndWait {
-            type = self.node.type
+            type = self.node!.type
         }
         return type
     }
@@ -61,7 +61,7 @@ public class GKNode: NSObject {
     public var objectID: String! {
         var oID: String!
         graph.managedObjectContext.performBlockAndWait {
-            let nodeURL: NSURL = self.node.objectID.URIRepresentation()
+            let nodeURL: NSURL = self.node!.objectID.URIRepresentation()
             oID = nodeURL.lastPathComponent! as String
         }
         return nodeClass + type + oID
@@ -75,7 +75,7 @@ public class GKNode: NSObject {
     public var createdDate: NSDate! {
         var createdDate: NSDate!
         graph.managedObjectContext.performBlockAndWait {
-            createdDate = self.node.createdDate
+            createdDate = self.node!.createdDate
         }
         return createdDate
     }
@@ -91,13 +91,13 @@ public class GKNode: NSObject {
         get {
             var value: AnyObject?
             graph.managedObjectContext.performBlockAndWait {
-                value = self.node[name]
+                value = self.node![name]
             }
             return value
         }
         set(value) {
             graph.managedObjectContext.performBlockAndWait {
-                self.node[name] = value
+                self.node![name] = value
             }
         }
     }
@@ -112,7 +112,7 @@ public class GKNode: NSObject {
         get {
             var value: String!
             graph.managedObjectContext.performBlockAndWait {
-                value = self.node[index]
+                value = self.node![index]
             }
             return value
         }
@@ -130,7 +130,7 @@ public class GKNode: NSObject {
     public func addGroup(name: String!) -> Bool {
 		var result: Bool = false
 		graph.managedObjectContext.performBlockAndWait {
-            result = self.node.addGroup(name)
+            result = self.node!.addGroup(name)
         }
 		return result
     }
@@ -144,7 +144,7 @@ public class GKNode: NSObject {
     public func hasGroup(name: String!) -> Bool {
         var result: Bool = false
         graph.managedObjectContext.performBlockAndWait {
-            result = self.node.hasGroup(name)
+            result = self.node!.hasGroup(name)
         }
         return result
     }
@@ -158,7 +158,7 @@ public class GKNode: NSObject {
     public func removeGroup(name: String!) -> Bool {
         var result: Bool = false
         graph.managedObjectContext.performBlockAndWait {
-            result = self.node.removeGroup(name)
+            result = self.node!.removeGroup(name)
         }
         return result
     }
@@ -172,7 +172,7 @@ public class GKNode: NSObject {
         get {
 			var groups: Array<String> = Array<String>()
             graph.managedObjectContext.performBlockAndWait {
-				for group in self.node.groupSet {
+				for group in self.node!.groupSet {
 					groups.append(group.name)
 				}
             }
@@ -192,7 +192,7 @@ public class GKNode: NSObject {
 		get {
 			var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
 			graph.managedObjectContext.performBlockAndWait {
-				for property in self.node.propertySet {
+				for property in self.node!.propertySet {
 					properties[property.name] = property.value
 				}
 			}

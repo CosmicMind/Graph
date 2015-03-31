@@ -34,8 +34,8 @@ internal class GKManagedBond: GKManagedNode {
     * @return        NSEntityDescription!
     */
     class func entityDescription() -> NSEntityDescription! {
-        let graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+		let graph: GKGraph = GKGraph()
+		return NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
     }
 
     /**
@@ -44,11 +44,14 @@ internal class GKManagedBond: GKManagedNode {
     * @param        type: String!
     */
     convenience internal init(type: String!) {
-        let graph: GKGraph = GKGraph()
-        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
-        self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
-        nodeClass = "3"
+		self.init(entity: GKManagedBond.entityDescription(), insertIntoManagedObjectContext: GKGraphManagedObjectContext.managedObjectContext)
+		nodeClass = "3"
         self.type = type
+		createdDate = NSDate()
+		propertySet = NSSet()
+		groupSet = NSSet()
+		subject = nil
+		object = nil
     }
 
     /**
@@ -73,7 +76,7 @@ internal class GKManagedBond: GKManagedNode {
                 let property: GKBondProperty = node as GKBondProperty
                 if name == property.name {
                     if nil == value {
-                        graph.managedObjectContext.deleteObject(property)
+                        GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
 						mutableSetValueForKey("propertySet").removeObject(property)
                     } else {
                         property.value = value!
@@ -82,7 +85,7 @@ internal class GKManagedBond: GKManagedNode {
                 }
             }
             if nil != value {
-                var property: GKBondProperty = GKBondProperty(name: name, value: value, managedObjectContext: graph.managedObjectContext)
+                var property: GKBondProperty = GKBondProperty(name: name, value: value)
                 property.node = self
 				mutableSetValueForKey("propertySet").addObject(property)
             }
@@ -97,7 +100,7 @@ internal class GKManagedBond: GKManagedNode {
     */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-            var group: GKBondGroup = GKBondGroup(name: name, managedObjectContext: graph.managedObjectContext)
+            var group: GKBondGroup = GKBondGroup(name: name)
             group.node = self
 			mutableSetValueForKey("groupSet").addObject(group)
             return true
@@ -131,7 +134,7 @@ internal class GKManagedBond: GKManagedNode {
         for node in groupSet {
             let group: GKBondGroup = node as GKBondGroup
             if name == group.name {
-				graph.managedObjectContext.deleteObject(group)
+				GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
 				mutableSetValueForKey("groupSet").removeObject(group)
 				return true
             }

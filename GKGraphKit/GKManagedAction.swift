@@ -34,8 +34,8 @@ internal class GKManagedAction: GKManagedNode {
     * @return        NSEntityDescription!
     */
     class func entityDescription() -> NSEntityDescription! {
-        let graph: GKGraph = GKGraph()
-        return NSEntityDescription.entityForName(GKGraphUtility.actionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+		let graph: GKGraph = GKGraph()
+		return NSEntityDescription.entityForName(GKGraphUtility.actionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
     }
 
     /**
@@ -44,11 +44,12 @@ internal class GKManagedAction: GKManagedNode {
     * @param        type: String!
     */
     convenience internal init(type: String!) {
-        let graph: GKGraph = GKGraph()
-        let entitiDescription: NSEntityDescription! = NSEntityDescription.entityForName(GKGraphUtility.actionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
-        self.init(entity: entitiDescription, managedObjectContext: graph.managedObjectContext)
-        nodeClass = "2"
+		self.init(entity: GKManagedAction.entityDescription(), insertIntoManagedObjectContext: GKGraphManagedObjectContext.managedObjectContext)
+		nodeClass = "2"
         self.type = type
+		createdDate = NSDate()
+		propertySet = NSSet()
+		groupSet = NSSet()
         subjectSet = NSSet()
         objectSet = NSSet()
     }
@@ -75,7 +76,7 @@ internal class GKManagedAction: GKManagedNode {
                 let property: GKActionProperty = node as GKActionProperty
                 if name == property.name {
                     if nil == value {
-                        graph.managedObjectContext.deleteObject(property)
+                        GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
 						mutableSetValueForKey("propertySet").removeObject(property)
                     } else {
                         property.value = value!
@@ -84,7 +85,7 @@ internal class GKManagedAction: GKManagedNode {
                 }
             }
             if nil != value {
-                var property: GKActionProperty = GKActionProperty(name: name, value: value, managedObjectContext: graph.managedObjectContext)
+                var property: GKActionProperty = GKActionProperty(name: name, value: value)
                 property.node = self
 				mutableSetValueForKey("propertySet").addObject(property)
             }
@@ -99,7 +100,7 @@ internal class GKManagedAction: GKManagedNode {
     */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-            var group: GKActionGroup = GKActionGroup(name: name, managedObjectContext: graph.managedObjectContext)
+            var group: GKActionGroup = GKActionGroup(name: name)
             group.node = self
 			mutableSetValueForKey("groupSet").addObject(group)
             return true
@@ -133,7 +134,7 @@ internal class GKManagedAction: GKManagedNode {
         for node in groupSet {
             let group: GKActionGroup = node as GKActionGroup
             if name == group.name {
-				graph.managedObjectContext.deleteObject(group)
+				GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
 				mutableSetValueForKey("groupSet").removeObject(group)
 				return true
             }

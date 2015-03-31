@@ -138,15 +138,9 @@ public class GKGraph: NSObject {
 				return
 			}
 			
-			let (failed, error): (Bool, NSError?) = self.validateConstraints()
-			if failed {
-				completion(success: failed, error: error)
-				println("[GraphKit Error: Constraints are not satisfied.]")
-				return
-			}
-			
 			var saveError: NSError?
-			completion(success: self.managedObjectContext.save(&saveError), error: error)
+			var result = self.managedObjectContext.save(&saveError)
+			completion(success: result, error: saveError)
 			assert(nil == saveError, "[GraphKit Error: Saving to internal context.]")
 		}
 	}
@@ -775,7 +769,7 @@ public class GKGraph: NSObject {
 			propertyRelationship.name = "node"
 			propertyRelationship.minCount = 1
 			propertyRelationship.maxCount = 1
-			propertyRelationship.deleteRule = .NullifyDeleteRule
+			propertyRelationship.deleteRule = .NoActionDeleteRule
 			
 			var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertySetRelationship.name = "propertySet"
@@ -812,7 +806,7 @@ public class GKGraph: NSObject {
 			groupRelationship.name = "node"
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
-			groupRelationship.deleteRule = .NullifyDeleteRule
+			groupRelationship.deleteRule = .NoActionDeleteRule
 			
 			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"

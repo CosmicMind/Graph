@@ -30,11 +30,10 @@ internal class GKBondGroup: GKNodeGroup {
     * init
     * Initializer for the Model Object.
     * @param        name: String!
-    * @param        managedObjectContext: NSManagedObjectContext!
     */
-    convenience init(name: String!, managedObjectContext: NSManagedObjectContext!) {
-        var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.bondGroupDescriptionName, inManagedObjectContext: managedObjectContext)!
-        self.init(entityDescription: entityDescription, managedObjectContext: managedObjectContext)
+    convenience init(name: String!) {
+        var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.bondGroupDescriptionName, inManagedObjectContext: GKGraphManagedObjectContext.managedObjectContext)!
+        self.init(entityDescription: entityDescription, managedObjectContext: GKGraphManagedObjectContext.managedObjectContext)
         self.name = name
     }
 }
