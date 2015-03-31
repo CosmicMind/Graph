@@ -36,11 +36,13 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		for i in 1...1000 {
 			let prop: String = String(i)
 			e1.addGroup(prop)
+			e1[prop] = i
 		}
 		
 		for i in 1...500 {
 			let prop: String = String(i)
 			e1.removeGroup(prop)
+			e1[prop] = nil
 		}
 		
 		expectation = expectationWithDescription("Entity: Insert did not pass.")

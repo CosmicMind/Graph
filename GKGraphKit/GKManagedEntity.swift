@@ -224,6 +224,26 @@ extension GKManagedEntity {
     }
 	
 	/**
+	* addPropertySetObject
+	* Adds the Property to the propertySet for the Entity.
+	* @param        value: GKEntityProperty
+	*/
+	func addPropertySetObject(value: GKEntityProperty) {
+		let nodes: NSMutableSet = propertySet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removePropertySetObject
+	* Removes the Property to the propertySet for the Entity.
+	* @param        value: GKEntityProperty
+	*/
+	func removePropertySetObject(value: GKEntityProperty) {
+		let nodes: NSMutableSet = propertySet as NSMutableSet
+		nodes.removeObject(value)
+	}
+	
+	/**
 	* addGroupSetObject
 	* Adds the Group to the groupSet for the Entity.
 	* @param        value: GKEntityGroup
