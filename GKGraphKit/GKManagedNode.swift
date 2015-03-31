@@ -27,8 +27,8 @@ internal class GKManagedNode: NSManagedObject, Printable {
     @NSManaged internal var nodeClass: String
     @NSManaged internal var type: String
     @NSManaged internal var createdDate: NSDate
-    @NSManaged internal var propertySet: NSMutableSet
-    @NSManaged internal var groupSet: NSMutableSet
+    @NSManaged internal var propertySet: NSSet
+    @NSManaged internal var groupSet: NSSet
 
     /**
     * init
@@ -39,8 +39,8 @@ internal class GKManagedNode: NSManagedObject, Printable {
     convenience internal init(entity: NSEntityDescription, managedObjectContext: NSManagedObjectContext!) {
         self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
         createdDate = NSDate()
-        propertySet = NSMutableSet()
-        groupSet = NSMutableSet()
+        propertySet = NSSet()
+        groupSet = NSSet()
     }
 
     /**

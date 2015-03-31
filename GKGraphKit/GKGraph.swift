@@ -805,7 +805,7 @@ public class GKGraph: NSObject {
 			groupRelationship.name = "node"
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
-			groupRelationship.deleteRule = .NoActionDeleteRule
+			groupRelationship.deleteRule = .NullifyDeleteRule
 			
 			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"

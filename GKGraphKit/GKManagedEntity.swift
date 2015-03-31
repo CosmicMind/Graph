@@ -185,12 +185,6 @@ extension GKManagedEntity {
         let nodes: NSMutableSet = actionObjectSet as NSMutableSet
         nodes.removeObject(value)
     }
-}
-
-/**
-* An extension used to handle the many-to-many relationship with Bonds.
-*/
-extension GKManagedEntity {
 
     /**
     * addBondSubjectSetObject
@@ -231,4 +225,24 @@ extension GKManagedEntity {
         let nodes: NSMutableSet = bondObjectSet as NSMutableSet
         nodes.removeObject(value)
     }
+	
+	/**
+	* addBondObjectSetObject
+	* Adds the Bond to the bondObjectSet for the Entity.
+	* @param        value: GKManagedBond
+	*/
+	func addGroupSetObject(value: GKEntityGroup) {
+		let nodes: NSMutableSet = groupSet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removeBondObjectSetObject
+	* Removes the Bond to the bondObjectSet for the Entity.
+	* @param        value: GKManagedBond
+	*/
+	func removeGroupSetObject(value: GKEntityGroup) {
+		let nodes: NSMutableSet = groupSet as NSMutableSet
+		nodes.removeObject(value)
+	}
 }
