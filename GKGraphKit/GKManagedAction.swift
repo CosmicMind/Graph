@@ -75,7 +75,6 @@ internal class GKManagedAction: GKManagedNode {
                 let property: GKActionProperty = node as GKActionProperty
                 if name == property.name {
                     if nil == value {
-                        propertySet.removeObject(property)
                         managedObjectContext!.deleteObject(property)
                     } else {
                         property.value = value!
@@ -86,7 +85,6 @@ internal class GKManagedAction: GKManagedNode {
             if nil != value {
                 var property: GKActionProperty = GKActionProperty(name: name, value: value, managedObjectContext: managedObjectContext)
                 property.node = self
-                propertySet.addObject(property)
             }
         }
     }
@@ -101,7 +99,6 @@ internal class GKManagedAction: GKManagedNode {
         if !hasGroup(name) {
             var group: GKActionGroup = GKActionGroup(name: name, managedObjectContext: managedObjectContext)
             group.node = self
-            groupSet.addObject(group)
             return true
         }
         return false
@@ -133,7 +130,6 @@ internal class GKManagedAction: GKManagedNode {
         for node in groupSet {
             let group: GKActionGroup = node as GKActionGroup
             if name == group.name {
-                groupSet.removeObject(group)
                 managedObjectContext!.deleteObject(group)
                 return true
             }
