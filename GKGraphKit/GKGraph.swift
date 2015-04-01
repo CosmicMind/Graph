@@ -83,6 +83,7 @@ public protocol GKGraphDelegate {
 	optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, property: String!, value: AnyObject!)
 	
 	optional func graph(graph: GKGraph!, didInsertAction action: GKAction!)
+	optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
 	optional func graph(graph: GKGraph!, didDeleteAction action: GKAction!)
 	optional func graph(graph: GKGraph!, didInsertAction action: GKAction!, group: String!)
 	optional func graph(graph: GKGraph!, didDeleteAction action: GKAction!, group: String!)
@@ -599,6 +600,9 @@ public class GKGraph: NSObject {
 				case "GKBondProperty_GKBondProperty_":
 					let property: GKBondProperty = node as GKBondProperty
 					delegate?.graph?(self, didUpdateBond: GKBond(bond: property.node as GKManagedBond), property: property.name, value: property.value)
+					break
+				case "GKManagedAction_GKManagedAction_":
+					delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
 					break
 				default:
 					assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")

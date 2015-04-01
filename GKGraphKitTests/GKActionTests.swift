@@ -28,7 +28,8 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     var magazineInsertExpectation: XCTestExpectation?
     var magazineDeleteExpectation: XCTestExpectation?
     var readInsertExpectation: XCTestExpectation?
-    var readDeleteExpectation: XCTestExpectation?
+	var readUpdateExpectation: XCTestExpectation?
+	var readDeleteExpectation: XCTestExpectation?
     var groupInsertExpectation: XCTestExpectation?
     var groupDeleteExpectation: XCTestExpectation?
     var groupSearchExpectation: XCTestExpectation?
@@ -120,7 +121,6 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         // Wait for the delegates to be executed.
         waitForExpectationsWithTimeout(5, handler: nil)
 
-        read.delete()
         user.delete()
         book.delete()
         magazine.delete()
@@ -129,21 +129,33 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
         bookDeleteExpectation = expectationWithDescription("Book: Delete did not pass.")
         magazineDeleteExpectation = expectationWithDescription("Magazine: Delete did not pass.")
-        readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
-        groupDeleteExpectation = expectationWithDescription("Group: Delete did not pass.")
-        groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
-        nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
-        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
-        sessionDeleteExpectation = expectationWithDescription("Session: Delete did not pass.")
-        sessionSearchExpectation = expectationWithDescription("Session: Search did not pass.")
-
+        readUpdateExpectation = expectationWithDescription("Read: Update did not pass.")
+		
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
-        // Wait for the delegates to be executed.
-        waitForExpectationsWithTimeout(5, handler: nil)
+		// Wait for the delegates to be executed.
+		waitForExpectationsWithTimeout(5, handler: nil)
+		
+		read.delete()
+		
+		readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
+		groupDeleteExpectation = expectationWithDescription("Group: Delete did not pass.")
+		groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
+		nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
+		nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
+		sessionDeleteExpectation = expectationWithDescription("Session: Delete did not pass.")
+		sessionSearchExpectation = expectationWithDescription("Session: Search did not pass.")
+		
+		// Save the Graph, which will execute the delegate handlers.
+		graph.save() { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+		}
+		
+		// Wait for the delegates to be executed.
+		waitForExpectationsWithTimeout(5, handler: nil)
     }
 
     func testPerformanceExample() {
@@ -176,6 +188,12 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
+	func graph(graph: GKGraph!, didUpdateAction action: GKAction!) {
+		if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
+			readUpdateExpectation?.fulfill()
+		}
+	}
+	
     func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
         if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
             readDeleteExpectation?.fulfill()
