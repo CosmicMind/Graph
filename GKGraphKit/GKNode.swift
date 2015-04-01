@@ -26,7 +26,7 @@ import Foundation
 public class GKNode: NSObject {
     internal lazy var graph: GKGraph = GKGraph()
     internal var node: GKManagedNode?
-
+	
     /**
     * nodeClass
     * Retrieves the nodeClass for the Model Object that is wrapped internally.
@@ -234,4 +234,10 @@ public class GKNode: NSObject {
     internal func createImplementorWithType(type: String) -> GKManagedNode {
         return GKManagedNode()
     }
+}
+
+extension GKNode: Equatable {}
+
+public func ==(lhs: GKNode, rhs: GKNode) -> Bool {
+	return lhs.objectID == rhs.objectID
 }

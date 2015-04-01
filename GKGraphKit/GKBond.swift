@@ -117,3 +117,9 @@ public class GKBond: GKNode {
         return GKManagedBond(type: type)
     }
 }
+
+extension GKBond: Printable {
+	override public var description: String {
+		return "[GKBond\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubject: \(subject)\n\tobject: \(object)]"
+	}
+}

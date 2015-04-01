@@ -176,3 +176,9 @@ public class GKEntity: GKNode {
         return GKManagedEntity(type: type)
     }
 }
+
+extension GKEntity: Printable {
+	override public var description: String {
+		return "[GKEntity\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n]"
+	}
+}

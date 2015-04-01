@@ -121,10 +121,10 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         // Wait for the delegates to be executed.
         waitForExpectationsWithTimeout(5, handler: nil)
 
-        user.delete()
+		user.delete()
         book.delete()
         magazine.delete()
-
+		
         // Set Expectations for the delete watcher.
         userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
         bookDeleteExpectation = expectationWithDescription("Book: Delete did not pass.")
@@ -173,11 +173,11 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
-        if "User" == entity.type && 0 == entity.actions.count {
+        if "User" == entity.type {
             userDeleteExpectation?.fulfill()
-        } else if "Book" == entity.type && 0 == entity.actions.count {
+        } else if "Book" == entity.type {
             bookDeleteExpectation?.fulfill()
-        } else if "Magazine" == entity.type && 0 == entity.actions.count {
+        } else if "Magazine" == entity.type {
             magazineDeleteExpectation?.fulfill()
         }
     }

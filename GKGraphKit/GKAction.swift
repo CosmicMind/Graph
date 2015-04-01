@@ -105,6 +105,16 @@ public class GKAction: GKNode {
         }
         return result
     }
+	
+	/**
+	* hasSubject
+	* Checks if a GKEntity exists in the Subjects Set.
+	* @param        entity: GKEntity!
+	* @return       Bool of the result, true if exists, false otherwise.
+	*/
+	public func hasSubject(entity: GKEntity!) -> Bool {
+		return contains(subjects, entity)
+	}
 
     /**
     * addObject
@@ -136,6 +146,16 @@ public class GKAction: GKNode {
         return result
     }
 
+	/**
+	* hasObject
+	* Checks if a GKEntity exists in the Objects Set.
+	* @param        entity: GKEntity!
+	* @return       Bool of the result, true if exists, false otherwise.
+	*/
+	public func hasObject(entity: GKEntity!) -> Bool {
+		return contains(objects, entity)
+	}
+	
     /**
     * delete
     * Marks the Model Object to be deleted from the Graph.
@@ -165,4 +185,10 @@ public class GKAction: GKNode {
     override internal func createImplementorWithType(type: String) -> GKManagedNode {
         return GKManagedAction(type: type)
     }
+}
+
+extension GKAction: Printable {
+	override public var description: String {
+		return "[GKAction\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubjects: \(subjects)\n\tobjects: \(objects)]"
+	}
 }

@@ -1,4 +1,3 @@
-![GraphKit](http://graphkit.io/graphkitbanner.png) 
 GraphKit is an elegant data driven framework for managing persistence on iOS. Built on top of [CoreData](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CoreData/cdProgrammingGuide.html) and completely written in [Swift](http://www.apple.com/ca/swift/?cid=wwa-ca-kwg-features-com), it extends iOS’ powerful persistent layer while abstracting its complexities. GraphKit has a “save whatever and however I want” attitude with powerful and rich APIs that are fun to work with. 
 
 Some of the exciting features GraphKit offers, are:
