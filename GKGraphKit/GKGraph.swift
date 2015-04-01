@@ -840,7 +840,7 @@ public class GKGraph: NSObject {
 			subjectRelationship.name = "subjectSet"
 			subjectRelationship.minCount = 0
 			subjectRelationship.maxCount = 0
-			subjectRelationship.deleteRule = .NullifyDeleteRule
+			subjectRelationship.deleteRule = .NoActionDeleteRule
 			subjectRelationship.destinationEntity = entityDescription
 			
 			var actionSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -862,7 +862,7 @@ public class GKGraph: NSObject {
 			objectRelationship.name = "objectSet"
 			objectRelationship.minCount = 0
 			objectRelationship.maxCount = 0
-			objectRelationship.deleteRule = .NullifyDeleteRule
+			objectRelationship.deleteRule = .NoActionDeleteRule
 			objectRelationship.destinationEntity = entityDescription
 			
 			var actionObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -883,7 +883,7 @@ public class GKGraph: NSObject {
 			subjectRelationship.name = "subject"
 			subjectRelationship.minCount = 1
 			subjectRelationship.maxCount = 1
-			subjectRelationship.deleteRule = .NullifyDeleteRule
+			subjectRelationship.deleteRule = .NoActionDeleteRule
 			subjectRelationship.destinationEntity = entityDescription
 			
 			var bondSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -905,7 +905,7 @@ public class GKGraph: NSObject {
 			objectRelationship.name = "object"
 			objectRelationship.minCount = 1
 			objectRelationship.maxCount = 1
-			objectRelationship.deleteRule = .NullifyDeleteRule
+			objectRelationship.deleteRule = .NoActionDeleteRule
 			objectRelationship.destinationEntity = entityDescription
 			
 			var bondObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()

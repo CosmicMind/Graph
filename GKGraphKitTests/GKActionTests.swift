@@ -129,7 +129,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
         bookDeleteExpectation = expectationWithDescription("Book: Delete did not pass.")
         magazineDeleteExpectation = expectationWithDescription("Magazine: Delete did not pass.")
-        readUpdateExpectation = expectationWithDescription("Read: Update did not pass.")
+//        readUpdateExpectation = expectationWithDescription("Read: Update did not pass.")s
 		
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
