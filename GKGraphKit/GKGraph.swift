@@ -142,7 +142,6 @@ public class GKGraph: NSObject {
 			var saveError: NSError?
 			var result = self.managedObjectContext.save(&saveError)
 			completion(success: result, error: saveError)
-			assert(nil == saveError, "[GraphKit Error: Saving to internal context.]")
 		}
 	}
 	
