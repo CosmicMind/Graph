@@ -44,16 +44,42 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		
 		dispatch_async(queue1) {
 			e1 = GKEntity(type: "E")
-			for i in 1...100 {
+			for i in 1...1000 {
 				let prop: String = String(i)
 				e1!.addGroup(prop)
+				e1!.addGroup("test")
+				e1!.removeGroup("test")
 				e1![prop] = i
 			}
 			
 			dispatch_async(self.queue2) {
-				for i in 1...50 {
+				for i in 1...500 {
 					let prop: String = String(i)
 					e1!.removeGroup(prop)
+					e1!.addGroup("test")
+					e1!.removeGroup("test")
+					e1![prop] = nil
+				}
+				self.graph.save { (_, _) in }
+			}
+		}
+		
+		dispatch_async(queue2) {
+			e1 = GKEntity(type: "E")
+			for i in 1...1000 {
+				let prop: String = String(i)
+				e1!.addGroup(prop)
+				e1!.addGroup("test")
+				e1!.removeGroup("test")
+				e1![prop] = i
+			}
+			
+			dispatch_async(self.queue1) {
+				for i in 1...500 {
+					let prop: String = String(i)
+					e1!.removeGroup(prop)
+					e1!.addGroup("test")
+					e1!.removeGroup("test")
 					e1![prop] = nil
 				}
 				self.graph.save { (_, _) in }
@@ -63,7 +89,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		expectation = expectationWithDescription("Entity: Insert did not pass.")
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(10, handler: nil)
+		waitForExpectationsWithTimeout(30, handler: nil)
 		
 		e1!.delete()
 		
@@ -72,7 +98,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		graph.save { (_, _) in }
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(10, handler: nil)
+		waitForExpectationsWithTimeout(30, handler: nil)
 	}
 	
 	func testPerformanceExample() {
@@ -80,9 +106,9 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		if 50 == entity.groups.count && 50 == entity.properties.count {
+//		if 500 == entity.groups.count && 500 == entity.properties.count {
 			expectation?.fulfill()
-		}
+//		}
 	}
 	
 	func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {

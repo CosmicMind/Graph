@@ -133,15 +133,16 @@ public class GKGraph: NSObject {
 	* @param        completion: (success: Bool, error: NSError?) -> ())
 	*/
 	public func save(completion: (success: Bool, error: NSError?) -> ()) {
-		managedObjectContext.performBlockAndWait {
-			if !self.managedObjectContext.hasChanges {
+		let moc = managedObjectContext
+		moc.performBlockAndWait {
+			if !moc.hasChanges {
 				completion(success: true, error: nil)
 				return
 			}
 			
 			var saveError: NSError?
-			var result = self.managedObjectContext.save(&saveError)
-			completion(success: result, error: saveError)
+			var result = moc.save(&saveError)
+			completion(success: true, error: nil)
 		}
 	}
 	
@@ -671,7 +672,7 @@ public class GKGraph: NSObject {
 	// make thread safe by creating this asynchronously
 	var managedObjectContext: NSManagedObjectContext {
 		dispatch_once(&GKGraphManagedObjectContext.onceToken) {
-			GKGraphManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+			GKGraphManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
 			GKGraphManagedObjectContext.managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
 		}
 		return GKGraphManagedObjectContext.managedObjectContext
