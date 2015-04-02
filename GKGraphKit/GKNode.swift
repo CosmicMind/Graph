@@ -33,11 +33,7 @@ public class GKNode: NSObject {
     * @return       String!
     */
     public var nodeClass: String! {
-        var nodeClass: String!
-        graph.managedObjectContext.performBlockAndWait {
-            nodeClass = self.node!.nodeClass
-        }
-        return nodeClass
+        return node!.nodeClass
     }
 
     /**
@@ -46,11 +42,7 @@ public class GKNode: NSObject {
     * @return       String!
     */
     public var type: String! {
-        var type: String!
-        graph.managedObjectContext.performBlockAndWait {
-            type = self.node!.type
-        }
-        return type
+        return node!.type
     }
 
     /**
@@ -60,10 +52,8 @@ public class GKNode: NSObject {
     */
     public var objectID: String! {
         var oID: String!
-        graph.managedObjectContext.performBlockAndWait {
-            let nodeURL: NSURL = self.node!.objectID.URIRepresentation()
-            oID = nodeURL.lastPathComponent! as String
-        }
+        let nodeURL: NSURL = node!.objectID.URIRepresentation()
+		oID = nodeURL.lastPathComponent! as String
         return nodeClass + type + oID
     }
 
@@ -73,11 +63,7 @@ public class GKNode: NSObject {
     * @return       NSDate!
     */
     public var createdDate: NSDate! {
-        var createdDate: NSDate!
-        graph.managedObjectContext.performBlockAndWait {
-            createdDate = self.node!.createdDate
-        }
-        return createdDate
+        return node!.createdDate
     }
 
     /**
@@ -89,16 +75,10 @@ public class GKNode: NSObject {
     */
     public subscript(name: String) -> AnyObject? {
         get {
-            var value: AnyObject?
-            graph.managedObjectContext.performBlockAndWait {
-                value = self.node![name]
-            }
-            return value
+            return node![name]
         }
         set(value) {
-            graph.managedObjectContext.performBlockAndWait {
-                self.node![name] = value
-            }
+            node![name] = value
         }
     }
 
@@ -110,11 +90,7 @@ public class GKNode: NSObject {
     */
     public subscript(index: Int) -> String {
         get {
-            var value: String!
-            graph.managedObjectContext.performBlockAndWait {
-                value = self.node![index]
-            }
-            return value
+            return node![index]
         }
         set(value) {
             assert(false, "[GraphKit Error: Not allowed to set Group index directly.]")
@@ -128,11 +104,7 @@ public class GKNode: NSObject {
     * @return       Bool of the result, true if added, false otherwise.
     */
     public func addGroup(name: String!) -> Bool {
-		var result: Bool = false
-		graph.managedObjectContext.performBlockAndWait {
-            result = self.node!.addGroup(name)
-        }
-		return result
+		return node!.addGroup(name)
     }
 
     /**
@@ -142,11 +114,7 @@ public class GKNode: NSObject {
     * @return       Bool of the result, true if is a part, false otherwise.
     */
     public func hasGroup(name: String!) -> Bool {
-        var result: Bool = false
-        graph.managedObjectContext.performBlockAndWait {
-            result = self.node!.hasGroup(name)
-        }
-        return result
+        return node!.hasGroup(name)
     }
 
     /**
@@ -156,11 +124,7 @@ public class GKNode: NSObject {
     * @return       Bool of the result, true if exists, false otherwise.
     */
     public func removeGroup(name: String!) -> Bool {
-        var result: Bool = false
-        graph.managedObjectContext.performBlockAndWait {
-            result = self.node!.removeGroup(name)
-        }
-        return result
+        return node!.removeGroup(name)
     }
 
     /**
@@ -171,11 +135,9 @@ public class GKNode: NSObject {
     public var groups: Array<String> {
         get {
 			var groups: Array<String> = Array<String>()
-            graph.managedObjectContext.performBlockAndWait {
-				for group in self.node!.groupSet {
-					groups.append(group.name)
-				}
-            }
+            for group in node!.groupSet {
+				groups.append(group.name)
+			}
             return groups
         }
         set(value) {
@@ -191,10 +153,8 @@ public class GKNode: NSObject {
 	public var properties: Dictionary<String, AnyObject?> {
 		get {
 			var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
-			graph.managedObjectContext.performBlockAndWait {
-				for property in self.node!.propertySet {
-					properties[property.name] = property.value
-				}
+			for property in node!.propertySet {
+				properties[property.name] = property.value
 			}
 			return properties
 		}
@@ -220,9 +180,7 @@ public class GKNode: NSObject {
     */
     internal init(type: String) {
         super.init()
-        graph.managedObjectContext.performBlockAndWait {
-            self.node = self.createImplementorWithType(type)
-        }
+        node = createImplementorWithType(type)
     }
 
     /**

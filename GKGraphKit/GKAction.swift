@@ -42,12 +42,11 @@ public class GKAction: GKNode {
     public var subjects: Array<GKEntity> {
         get {
             var nodes: Array<GKEntity> = Array<GKEntity>()
-            graph.managedObjectContext.performBlockAndWait {
-                var node: GKManagedAction = self.node as GKManagedAction
-				for item: AnyObject in node.subjectSet {
-                    nodes.append(GKEntity(entity: item as GKManagedEntity))
-                }
-            }
+			if var n: GKManagedAction? = node as? GKManagedAction {
+				for item: AnyObject in n!.subjectSet {
+					nodes.append(GKEntity(entity: item as GKManagedEntity))
+				}
+			}
             return nodes
         }
         set(value) {
@@ -63,12 +62,11 @@ public class GKAction: GKNode {
     public var objects: Array<GKEntity> {
         get {
             var nodes: Array<GKEntity> = Array<GKEntity>()
-            graph.managedObjectContext.performBlockAndWait {
-                var node: GKManagedAction = self.node as GKManagedAction
-                for item: AnyObject in node.objectSet {
-                    nodes.append(GKEntity(entity: item as GKManagedEntity))
-                }
-            }
+			if var n: GKManagedAction? = node as? GKManagedAction {
+				for item: AnyObject in n!.objectSet {
+					nodes.append(GKEntity(entity: item as GKManagedEntity))
+				}
+			}
             return nodes
         }
         set(value) {
@@ -83,13 +81,11 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if added, false otherwise.
     */
     public func addSubject(entity: GKEntity!) -> Bool {
-        var result: Bool = false
-        graph.managedObjectContext.performBlockAndWait {
-			var node: GKManagedAction = self.node as GKManagedAction
-			result = node.addSubject(entity.node as GKManagedEntity)
-        }
-        return result
-    }
+        if var n: GKManagedAction? = node as? GKManagedAction {
+			return n!.addSubject(entity.node! as GKManagedEntity)
+		}
+		return false
+	}
 
     /**
     * removeSubject
@@ -98,12 +94,10 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if removed, false otherwise.
     */
     public func removeSubject(entity: GKEntity!) -> Bool {
-        var result: Bool = false
-        graph.managedObjectContext.performBlockAndWait {
-            var node: GKManagedAction = self.node as GKManagedAction
-            result = node.removeSubject(entity.node as GKManagedEntity)
-        }
-        return result
+		if var n: GKManagedAction? = node as? GKManagedAction {
+			return n!.removeSubject(entity.node! as GKManagedEntity)
+		}
+		return false
     }
 	
 	/**
@@ -123,12 +117,10 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if added, false otherwise.
     */
     public func addObject(entity: GKEntity!) -> Bool {
-        var result: Bool = false
-        graph.managedObjectContext.performBlockAndWait {
-            var node: GKManagedAction = self.node as GKManagedAction
-            result = node.addObject(entity.node as GKManagedEntity)
-        }
-        return result
+        if var n: GKManagedAction? = node as? GKManagedAction {
+			return n!.addObject(entity.node! as GKManagedEntity)
+		}
+		return false
     }
 
     /**
@@ -138,12 +130,10 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if removed, false otherwise.
     */
     public func removeObject(entity: GKEntity!) -> Bool {
-        var result: Bool = false
-        graph.managedObjectContext.performBlockAndWait {
-            var node: GKManagedAction = self.node as GKManagedAction
-            result = node.removeObject(entity.node as GKManagedEntity)
-        }
-        return result
+        if var n: GKManagedAction? = node as? GKManagedAction {
+			return n!.removeObject(entity.node! as GKManagedEntity)
+		}
+		return false
     }
 
 	/**
@@ -161,10 +151,9 @@ public class GKAction: GKNode {
     * Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
-        graph.managedObjectContext.performBlockAndWait {
-            var node: GKManagedAction = self.node as GKManagedAction
-            node.delete()
-        }
+		if var n: GKManagedAction? = node as? GKManagedAction {
+			n!.delete()
+		}
     }
 
     /**

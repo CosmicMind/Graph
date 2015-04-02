@@ -56,12 +56,11 @@ public class GKEntity: GKNode {
     public var actionsWhenSubject: Array<GKAction> {
         get {
             var nodes: Array<GKAction> = Array<GKAction>()
-            graph.managedObjectContext.performBlockAndWait {
-                var node: GKManagedEntity = self.node as GKManagedEntity
-                for item: AnyObject in node.actionSubjectSet {
-                    nodes.append(GKAction(action: item as GKManagedAction))
-                }
-            }
+			if var n: GKManagedEntity? = node as? GKManagedEntity {
+				for item: AnyObject in n!.actionSubjectSet {
+					nodes.append(GKAction(action: item as GKManagedAction))
+				}
+			}
             return nodes
         }
         set(value) {
@@ -77,12 +76,11 @@ public class GKEntity: GKNode {
     public var actionsWhenObject: Array<GKAction> {
         get {
             var nodes: Array<GKAction> = Array<GKAction>()
-            graph.managedObjectContext.performBlockAndWait {
-                var node: GKManagedEntity = self.node as GKManagedEntity
-                for item: AnyObject in node.actionObjectSet {
-                    nodes.append(GKAction(action: item as GKManagedAction))
-                }
-            }
+			if var n: GKManagedEntity? = node as? GKManagedEntity {
+				for item: AnyObject in n!.actionObjectSet {
+					nodes.append(GKAction(action: item as GKManagedAction))
+				}
+			}
             return nodes
         }
         set(value) {
@@ -112,12 +110,11 @@ public class GKEntity: GKNode {
     public var bondsWhenSubject: Array<GKBond> {
         get {
             var nodes: Array<GKBond> = Array<GKBond>()
-            graph.managedObjectContext.performBlockAndWait {
-                var node: GKManagedEntity = self.node as GKManagedEntity
-                for item: AnyObject in node.bondSubjectSet {
-                    nodes.append(GKBond(bond: item as GKManagedBond))
-                }
-            }
+			if var n: GKManagedEntity? = node as? GKManagedEntity {
+				for item: AnyObject in n!.bondSubjectSet {
+					nodes.append(GKBond(bond: item as GKManagedBond))
+				}
+			}
             return nodes
         }
         set(value) {
@@ -133,12 +130,11 @@ public class GKEntity: GKNode {
     public var bondsWhenObject: Array<GKBond> {
         get {
             var nodes: Array<GKBond> = Array<GKBond>()
-            graph.managedObjectContext.performBlockAndWait {
-                var node: GKManagedEntity = self.node as GKManagedEntity
-                for item: AnyObject in node.bondObjectSet {
-                    nodes.append(GKBond(bond: item as GKManagedBond))
-                }
-            }
+			if var n: GKManagedEntity? = node as? GKManagedEntity {
+				for item: AnyObject in n!.bondObjectSet {
+					nodes.append(GKBond(bond: item as GKManagedBond))
+				}
+			}
             return nodes
         }
         set(value) {
@@ -151,10 +147,9 @@ public class GKEntity: GKNode {
     * Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
-        graph.managedObjectContext.performBlockAndWait {
-            var node: GKManagedEntity = self.node as GKManagedEntity
-            node.delete()
-        }
+		if var n: GKManagedEntity? = node as? GKManagedEntity {
+			n!.delete()
+		}
     }
 
     /**
