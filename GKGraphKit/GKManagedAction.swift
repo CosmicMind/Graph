@@ -25,8 +25,8 @@ import CoreData
 
 @objc(GKManagedAction)
 internal class GKManagedAction: GKManagedNode {
-    @NSManaged internal var subjectSet: NSMutableSet
-    @NSManaged internal var objectSet: NSMutableSet
+    @NSManaged internal var subjectSet: NSSet
+    @NSManaged internal var objectSet: NSSet
 
     /**
     * entityDescription
@@ -50,8 +50,8 @@ internal class GKManagedAction: GKManagedNode {
 		createdDate = NSDate()
 		propertySet = NSMutableSet()
 		groupSet = NSMutableSet()
-        subjectSet = NSMutableSet()
-        objectSet = NSMutableSet()
+        subjectSet = NSSet()
+        objectSet = NSSet()
     }
 
     /**
@@ -146,12 +146,8 @@ internal class GKManagedAction: GKManagedNode {
     */
     internal func addSubject(entity: GKManagedEntity!) -> Bool {
         let count: Int = subjectSet.count
-        subjectSet.addObject(entity)
-		if count != subjectSet.count {
-			entity.actionSubjectSet.addObject(self)
-			return true
-		}
-		return false
+        (subjectSet as NSMutableSet).addObject(entity)
+		return count != subjectSet.count
     }
 
     /**
@@ -162,12 +158,8 @@ internal class GKManagedAction: GKManagedNode {
     */
     internal func removeSubject(entity: GKManagedEntity!) -> Bool {
         let count: Int = subjectSet.count
-		subjectSet.removeObject(entity)
-		if count != subjectSet.count {
-			entity.actionSubjectSet.removeObject(self)
-			return true
-		}
-        return count != subjectSet.count
+		(subjectSet as NSMutableSet).removeObject(entity)
+		return count != subjectSet.count
     }
 
     /**
@@ -178,12 +170,8 @@ internal class GKManagedAction: GKManagedNode {
     */
     internal func addObject(entity: GKManagedEntity!) -> Bool {
         let count: Int = objectSet.count
-		objectSet.addObject(entity)
-		if count != objectSet.count {
-			entity.actionObjectSet.addObject(self)
-			return true
-		}
-        return count != objectSet.count
+		(objectSet as NSMutableSet).addObject(entity)
+		return count != objectSet.count
     }
 
     /**
@@ -194,13 +182,17 @@ internal class GKManagedAction: GKManagedNode {
     */
     internal func removeObject(entity: GKManagedEntity!) -> Bool {
         let count: Int = objectSet.count
-		objectSet.removeObject(entity)
-		if count != objectSet.count {
-			entity.actionObjectSet.removeObject(self)
-			return true
-		}
-        return count != objectSet.count
+		(objectSet as NSMutableSet).removeObject(entity)
+		return count != objectSet.count
     }
+	
+	/**
+	* delete
+	* Marks the Model Object to be deleted from the Graph.
+	*/
+	override internal func delete() {
+		super.delete()
+	}
 }
 
 extension GKManagedAction {

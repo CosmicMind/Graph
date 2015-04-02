@@ -24,7 +24,7 @@ import Foundation
 
 @objc(GKNode)
 public class GKNode: NSObject {
-    internal var node: GKManagedNode?
+    internal var node: GKManagedNode!
 	
     /**
     * nodeClass
@@ -32,7 +32,7 @@ public class GKNode: NSObject {
     * @return       String!
     */
     public var nodeClass: String! {
-        return node!.nodeClass
+        return node.nodeClass
     }
 
     /**
@@ -41,7 +41,7 @@ public class GKNode: NSObject {
     * @return       String!
     */
     public var type: String! {
-        return node!.type
+        return node.type
     }
 
     /**
@@ -50,9 +50,8 @@ public class GKNode: NSObject {
     * @return       String! of the ID
     */
     public var objectID: String! {
-        var oID: String!
-        let nodeURL: NSURL = node!.objectID.URIRepresentation()
-		oID = nodeURL.lastPathComponent! as String
+        let nodeURL: NSURL = node.objectID.URIRepresentation()
+		var oID: String = "1" //nodeURL.lastPathComponent!
         return nodeClass + type + oID
     }
 
@@ -62,7 +61,7 @@ public class GKNode: NSObject {
     * @return       NSDate!
     */
     public var createdDate: NSDate! {
-        return node!.createdDate
+        return node.createdDate
     }
 
     /**
@@ -74,10 +73,10 @@ public class GKNode: NSObject {
     */
     public subscript(name: String) -> AnyObject? {
         get {
-            return node![name]
+            return node[name]
         }
         set(value) {
-            node![name] = value
+            node[name] = value
         }
     }
 
@@ -89,7 +88,7 @@ public class GKNode: NSObject {
     */
     public subscript(index: Int) -> String {
         get {
-            return node![index]
+            return node[index]
         }
         set(value) {
             assert(false, "[GraphKit Error: Not allowed to set Group index directly.]")
@@ -103,7 +102,7 @@ public class GKNode: NSObject {
     * @return       Bool of the result, true if added, false otherwise.
     */
     public func addGroup(name: String!) -> Bool {
-		return node!.addGroup(name)
+		return node.addGroup(name)
     }
 
     /**
@@ -113,7 +112,7 @@ public class GKNode: NSObject {
     * @return       Bool of the result, true if is a part, false otherwise.
     */
     public func hasGroup(name: String!) -> Bool {
-        return node!.hasGroup(name)
+        return node.hasGroup(name)
     }
 
     /**
@@ -123,7 +122,7 @@ public class GKNode: NSObject {
     * @return       Bool of the result, true if exists, false otherwise.
     */
     public func removeGroup(name: String!) -> Bool {
-        return node!.removeGroup(name)
+        return node.removeGroup(name)
     }
 
     /**
@@ -134,7 +133,7 @@ public class GKNode: NSObject {
     public var groups: Array<String> {
         get {
 			var groups: Array<String> = Array<String>()
-            for group in node!.groupSet {
+            for group in node.groupSet {
 				groups.append(group.name)
 			}
             return groups
@@ -152,7 +151,7 @@ public class GKNode: NSObject {
 	public var properties: Dictionary<String, AnyObject?> {
 		get {
 			var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
-			for property in node!.propertySet {
+			for property in node.propertySet {
 				properties[property.name] = property.value
 			}
 			return properties
@@ -168,8 +167,8 @@ public class GKNode: NSObject {
     * @param        node: GKManagedNode!
     */
     internal init(node: GKManagedNode!) {
-        super.init()
-        self.node = node
+		super.init()
+		self.node = node
     }
 
     /**
@@ -178,8 +177,8 @@ public class GKNode: NSObject {
     * @param        type: String!
     */
     internal init(type: String) {
-        super.init()
-        node = createImplementorWithType(type)
+		super.init()
+		node = createImplementorWithType(type)
     }
 
     /**

@@ -24,8 +24,8 @@ import CoreData
 
 @objc(GKManagedEntity)
 internal class GKManagedEntity: GKManagedNode {
-    @NSManaged internal var actionSubjectSet: NSMutableSet
-    @NSManaged internal var actionObjectSet: NSMutableSet
+    @NSManaged internal var actionSubjectSet: NSSet
+    @NSManaged internal var actionObjectSet: NSSet
     @NSManaged internal var bondSubjectSet: NSMutableSet
     @NSManaged internal var bondObjectSet: NSMutableSet
 	
@@ -51,8 +51,8 @@ internal class GKManagedEntity: GKManagedNode {
 		createdDate = NSDate()
 		propertySet = NSMutableSet()
 		groupSet = NSMutableSet()
-        actionSubjectSet = NSMutableSet()
-        actionObjectSet = NSMutableSet()
+        actionSubjectSet = NSSet()
+        actionObjectSet = NSSet()
         bondSubjectSet = NSMutableSet()
         bondObjectSet = NSMutableSet()
     }
@@ -146,14 +146,52 @@ internal class GKManagedEntity: GKManagedNode {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	override internal func delete() {
-		actionSubjectSet.removeAllObjects()
-		actionObjectSet.removeAllObjects()
 		super.delete()
 	}
 }
 
 extension GKManagedEntity {
 
+	/**
+	* addActionSubjectSetObject
+	* Adds the Action to the actionSubjectSet for the Entity.
+	* @param        value: GKManagedAction
+	*/
+	func addActionSubjectSetObject(value: GKManagedAction) {
+		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removeActionSubjectSetObject
+	* Removes the Action to the actionSubjectSet for the Entity.
+	* @param        value: GKManagedAction
+	*/
+	func removeActionSubjectSetObject(value: GKManagedAction) {
+		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+		nodes.removeObject(value)
+	}
+	
+	/**
+	* addActionObjectSetObject
+	* Adds the Action to the actionObjectSet for the Entity.
+	* @param        value: GKManagedAction
+	*/
+	func addActionObjectSetObject(value: GKManagedAction) {
+		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removeActionObjectSetObject
+	* Removes the Action to the actionObjectSet for the Entity.
+	* @param        value: GKManagedAction
+	*/
+	func removeActionObjectSetObject(value: GKManagedAction) {
+		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+		nodes.removeObject(value)
+	}
+	
     /**
     * addBondSubjectSetObject
     * Adds the Bond to the bondSubjectSet for the Entity.

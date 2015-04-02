@@ -56,8 +56,8 @@ public class GKEntity: GKNode {
     public var actionsWhenSubject: Array<GKAction> {
         get {
             var nodes: Array<GKAction> = Array<GKAction>()
-			if var n: GKManagedEntity? = node as? GKManagedEntity {
-				for item: AnyObject in n!.actionSubjectSet {
+			if let n: GKManagedEntity = node as? GKManagedEntity {
+				for item: AnyObject in n.actionSubjectSet {
 					nodes.append(GKAction(action: item as GKManagedAction))
 				}
 			}
@@ -76,8 +76,8 @@ public class GKEntity: GKNode {
     public var actionsWhenObject: Array<GKAction> {
         get {
             var nodes: Array<GKAction> = Array<GKAction>()
-			if var n: GKManagedEntity? = node as? GKManagedEntity {
-				for item: AnyObject in n!.actionObjectSet {
+			if let n: GKManagedEntity = node as? GKManagedEntity {
+				for item: AnyObject in n.actionObjectSet {
 					nodes.append(GKAction(action: item as GKManagedAction))
 				}
 			}
@@ -110,8 +110,8 @@ public class GKEntity: GKNode {
     public var bondsWhenSubject: Array<GKBond> {
         get {
             var nodes: Array<GKBond> = Array<GKBond>()
-			if var n: GKManagedEntity? = node as? GKManagedEntity {
-				for item: AnyObject in n!.bondSubjectSet {
+			if let n: GKManagedEntity = node as? GKManagedEntity {
+				for item: AnyObject in n.bondSubjectSet {
 					nodes.append(GKBond(bond: item as GKManagedBond))
 				}
 			}
@@ -130,8 +130,8 @@ public class GKEntity: GKNode {
     public var bondsWhenObject: Array<GKBond> {
         get {
             var nodes: Array<GKBond> = Array<GKBond>()
-			if var n: GKManagedEntity? = node as? GKManagedEntity {
-				for item: AnyObject in n!.bondObjectSet {
+			if let n: GKManagedEntity = node as? GKManagedEntity {
+				for item: AnyObject in n.bondObjectSet {
 					nodes.append(GKBond(bond: item as GKManagedBond))
 				}
 			}
@@ -147,8 +147,8 @@ public class GKEntity: GKNode {
     * Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
-		if var n: GKManagedEntity? = node as? GKManagedEntity {
-			n!.delete()
+		if let n: GKManagedEntity = node as? GKManagedEntity {
+			n.delete()
 		}
     }
 

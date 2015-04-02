@@ -18,19 +18,19 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 	// queue for drawing images
 	private var queub1: dispatch_queue_t = {
 		return dispatch_queue_create(("io.graphkit.BondStressTests.1" as NSString).UTF8String, nil)
-		}()
+	}()
 	
 	private var queue2: dispatch_queue_t = {
 		return dispatch_queue_create(("io.graphkit.BondStressTests.2" as NSString).UTF8String, nil)
-		}()
+	}()
 	
 	private var queue3: dispatch_queue_t = {
 		return dispatch_queue_create(("io.graphkit.BondStressTests.3" as NSString).UTF8String, nil)
-		}()
+	}()
 	
 	private var queue4: dispatch_queue_t = {
 		return dispatch_queue_create(("io.graphkit.BondStressTests.4" as NSString).UTF8String, nil)
-		}()
+	}()
 	
 	override func setUp() {
 		super.setUp()

@@ -82,7 +82,7 @@ public class GKAction: GKNode {
     */
     public func addSubject(entity: GKEntity!) -> Bool {
         if var n: GKManagedAction? = node as? GKManagedAction {
-			return n!.addSubject(entity.node! as GKManagedEntity)
+			return n!.addSubject(entity.node as GKManagedEntity)
 		}
 		return false
 	}
@@ -95,7 +95,7 @@ public class GKAction: GKNode {
     */
     public func removeSubject(entity: GKEntity!) -> Bool {
 		if var n: GKManagedAction? = node as? GKManagedAction {
-			return n!.removeSubject(entity.node! as GKManagedEntity)
+			return n!.removeSubject(entity.node as GKManagedEntity)
 		}
 		return false
     }
@@ -117,8 +117,8 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if added, false otherwise.
     */
     public func addObject(entity: GKEntity!) -> Bool {
-        if var n: GKManagedAction? = node as? GKManagedAction {
-			return n!.addObject(entity.node! as GKManagedEntity)
+        if let n: GKManagedAction = node as? GKManagedAction {
+			return n.addObject(entity.node as GKManagedEntity)
 		}
 		return false
     }
@@ -130,8 +130,8 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if removed, false otherwise.
     */
     public func removeObject(entity: GKEntity!) -> Bool {
-        if var n: GKManagedAction? = node as? GKManagedAction {
-			return n!.removeObject(entity.node! as GKManagedEntity)
+        if let n: GKManagedAction = node as? GKManagedAction {
+			return n.removeObject(entity.node as GKManagedEntity)
 		}
 		return false
     }
@@ -151,8 +151,8 @@ public class GKAction: GKNode {
     * Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
-		if var n: GKManagedAction? = node as? GKManagedAction {
-			n!.delete()
+		if let n: GKManagedAction = node as? GKManagedAction {
+			n.delete()
 		}
     }
 

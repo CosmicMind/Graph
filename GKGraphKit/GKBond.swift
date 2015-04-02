@@ -42,9 +42,9 @@ public class GKBond: GKNode {
     public var subject: GKEntity? {
         get {
             var entity: GKEntity?
-            if var n: GKManagedBond? = node as? GKManagedBond {
-				if nil != n?.subject {
-					entity = GKEntity(entity: n!.subject! as GKManagedEntity)
+            if let n: GKManagedBond = node as? GKManagedBond {
+				if nil != n.subject {
+					entity = GKEntity(entity: n.subject! as GKManagedEntity)
 				}
             }
             return entity
@@ -64,16 +64,16 @@ public class GKBond: GKNode {
     public var object: GKEntity? {
         get {
             var entity: GKEntity?
-            if var n: GKManagedBond? = node as? GKManagedBond {
-				if nil != n?.object {
-					entity = GKEntity(entity: n!.object! as GKManagedEntity)
+            if let n: GKManagedBond = node as? GKManagedBond {
+				if nil != n.object {
+					entity = GKEntity(entity: n.object! as GKManagedEntity)
 				}
             }
             return entity
         }
         set(entity) {
-            if var n: GKManagedBond? = node as? GKManagedBond {
-				n!.object = entity?.node as? GKManagedEntity
+            if let n: GKManagedBond = node as? GKManagedBond {
+				n.object = entity?.node as? GKManagedEntity
 			}
         }
     }
@@ -83,8 +83,8 @@ public class GKBond: GKNode {
     * Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
-        if var n: GKManagedBond? = node as? GKManagedBond {
-			n?.delete()
+        if let n: GKManagedBond = node as? GKManagedBond {
+			n.delete()
 		}
     }
 

@@ -83,7 +83,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         read.addSubject(user)
         read.addObject(book)
         read.addObject(magazine)
-		println(read)
+//		println(read)
 
         // Set an Expectation for the insert watcher.
         userInsertExpectation = expectationWithDescription("User: Insert did not pass.")

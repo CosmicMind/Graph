@@ -852,8 +852,8 @@ public class GKGraph: NSObject {
 			actionSubjectRelationship.inverseRelationship = actionSubjectSetRelationship
 			actionSubjectSetRelationship.inverseRelationship = actionSubjectRelationship
 			
-			entityProperties.append(actionSubjectRelationship)
-			actionProperties.append(actionSubjectSetRelationship)
+			entityProperties.append(actionSubjectRelationship.copy() as NSRelationshipDescription)
+			actionProperties.append(actionSubjectSetRelationship.copy() as NSRelationshipDescription)
 			// Inverse relationship for Subjects -- E.
 			
 			// Inverse relationship for Objects -- B.
@@ -873,8 +873,8 @@ public class GKGraph: NSObject {
 			actionObjectRelationship.inverseRelationship = actionObjectSetRelationship
 			actionObjectSetRelationship.inverseRelationship = actionObjectRelationship
 			
-			entityProperties.append(actionObjectRelationship)
-			actionProperties.append(actionObjectSetRelationship)
+			entityProperties.append(actionObjectRelationship.copy() as NSRelationshipDescription)
+			actionProperties.append(actionObjectSetRelationship.copy() as NSRelationshipDescription)
 			// Inverse relationship for Objects -- E.
 			
 			// Inverse relationship for Subjects -- B.
