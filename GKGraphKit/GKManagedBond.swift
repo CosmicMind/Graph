@@ -76,9 +76,9 @@ internal class GKManagedBond: GKManagedNode {
                 let property: GKBondProperty = node as GKBondProperty
                 if name == property.name {
                     if nil == value {
-                        GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
 						mutableSetValueForKey("propertySet").removeObject(property)
-                    } else {
+						GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
+					} else {
                         property.value = value!
                     }
                     return
@@ -134,8 +134,8 @@ internal class GKManagedBond: GKManagedNode {
         for node in groupSet {
             let group: GKBondGroup = node as GKBondGroup
             if name == group.name {
-				GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
 				mutableSetValueForKey("groupSet").removeObject(group)
+				GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
 				return true
             }
         }

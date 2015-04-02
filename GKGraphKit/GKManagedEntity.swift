@@ -79,8 +79,8 @@ internal class GKManagedEntity: GKManagedNode {
 				let property: GKEntityProperty = node as GKEntityProperty
                 if name == property.name {
                     if nil == value {
-						GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
 						mutableSetValueForKey("propertySet").removeObject(property)
+						GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
 					} else {
                         property.value = value!
                     }
@@ -136,9 +136,9 @@ internal class GKManagedEntity: GKManagedNode {
     override internal func removeGroup(name: String!) -> Bool {
         for node in groupSet {
             let group: GKEntityGroup = node as GKEntityGroup
-            if name == group.name {
-				GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
+			if name == group.name {
 				mutableSetValueForKey("groupSet").removeObject(group)
+				GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
 				return true
             }
         }

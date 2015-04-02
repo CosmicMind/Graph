@@ -24,7 +24,7 @@ import CoreData
 
 @objc(GKEntityProperty)
 internal class GKEntityProperty: GKNodeProperty {
-    @NSManaged internal var node: GKManagedEntity
+    @NSManaged internal var node: GKManagedEntity?
 
     /**
     * init
