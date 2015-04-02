@@ -174,6 +174,6 @@ public class GKEntity: GKNode {
 
 extension GKEntity: Printable {
 	override public var description: String {
-		return "[GKEntity\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n]"
+		return "[GKEntity\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tactionsWhenSubject: \(actionsWhenSubject)\n\tactionsWhenObject: \(actionsWhenObject)\n\tbondsWhenSubject: \(bondsWhenSubject)\n\tbondsWhenObject: \(bondsWhenObject)\n]"
 	}
 }

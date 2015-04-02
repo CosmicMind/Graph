@@ -24,6 +24,14 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		return dispatch_queue_create(("io.graphkit.EntityStressTests.2" as NSString).UTF8String, nil)
 	}()
 	
+	private var queue3: dispatch_queue_t = {
+		return dispatch_queue_create(("io.graphkit.EntityStressTests.3" as NSString).UTF8String, nil)
+	}()
+	
+	private var queue4: dispatch_queue_t = {
+		return dispatch_queue_create(("io.graphkit.EntityStressTests.4" as NSString).UTF8String, nil)
+	}()
+	
 	override func setUp() {
 		super.setUp()
 	}
@@ -32,7 +40,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		super.tearDown()
 	}
 	
-	func testAll() {
+	func testExternalThread() {
 
 		// Set the XCTest Class as the delegate.
 		graph.delegate = self
@@ -60,31 +68,29 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 					e1!.removeGroup("test")
 					e1![prop] = nil
 				}
-				self.graph.save { (_, _) in }
+				dispatch_async(self.queue3) {
+					for i in 1...1000 {
+						let prop: String = String(i)
+						e1!.addGroup(prop)
+						e1!.addGroup("test")
+						e1!.removeGroup("test")
+						e1![prop] = i
+					}
+				
+					dispatch_async(self.queue4) {
+						for i in 1...500 {
+							let prop: String = String(i)
+							e1!.removeGroup(prop)
+							e1!.addGroup("test")
+							e1!.removeGroup("test")
+							e1![prop] = nil
+						}
+						self.graph.save { (_, _) in }
+					}
+				}
 			}
 		}
 		
-		dispatch_async(queue2) {
-			e1 = GKEntity(type: "E")
-			for i in 1...1000 {
-				let prop: String = String(i)
-				e1!.addGroup(prop)
-				e1!.addGroup("test")
-				e1!.removeGroup("test")
-				e1![prop] = i
-			}
-			
-			dispatch_async(self.queue1) {
-				for i in 1...500 {
-					let prop: String = String(i)
-					e1!.removeGroup(prop)
-					e1!.addGroup("test")
-					e1!.removeGroup("test")
-					e1![prop] = nil
-				}
-				self.graph.save { (_, _) in }
-			}
-		}
 		
 		expectation = expectationWithDescription("Entity: Insert did not pass.")
 		
@@ -106,12 +112,13 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-//		if 500 == entity.groups.count && 500 == entity.properties.count {
+		if 500 == entity.groups.count && 500 == entity.properties.count {
 			expectation?.fulfill()
-//		}
+		}
 	}
 	
 	func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
+		println(entity)
 		if 0 == entity.groups.count && 0 == entity.properties.count {
 			expectation?.fulfill()
 		}

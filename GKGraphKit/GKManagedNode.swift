@@ -27,8 +27,8 @@ internal class GKManagedNode: NSManagedObject {
     @NSManaged internal var nodeClass: String
     @NSManaged internal var type: String
     @NSManaged internal var createdDate: NSDate
-    @NSManaged internal var propertySet: NSSet
-    @NSManaged internal var groupSet: NSSet
+    @NSManaged internal var propertySet: NSMutableSet
+    @NSManaged internal var groupSet: NSMutableSet
 
 	/**
     * properties[ ]

@@ -48,8 +48,8 @@ internal class GKManagedBond: GKManagedNode {
 		nodeClass = "3"
         self.type = type
 		createdDate = NSDate()
-		propertySet = NSSet()
-		groupSet = NSSet()
+		propertySet = NSMutableSet()
+		groupSet = NSMutableSet()
 		subject = nil
 		object = nil
     }
@@ -76,7 +76,6 @@ internal class GKManagedBond: GKManagedNode {
                 let property: GKBondProperty = node as GKBondProperty
                 if name == property.name {
                     if nil == value {
-						mutableSetValueForKey("propertySet").removeObject(property)
 						GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
 					} else {
                         property.value = value!
@@ -87,7 +86,6 @@ internal class GKManagedBond: GKManagedNode {
             if nil != value {
                 var property: GKBondProperty = GKBondProperty(name: name, value: value)
                 property.node = self
-				mutableSetValueForKey("propertySet").addObject(property)
             }
         }
     }
@@ -102,8 +100,7 @@ internal class GKManagedBond: GKManagedNode {
         if !hasGroup(name) {
             var group: GKBondGroup = GKBondGroup(name: name)
             group.node = self
-			mutableSetValueForKey("groupSet").addObject(group)
-            return true
+			return true
         }
         return false
     }
@@ -134,35 +131,12 @@ internal class GKManagedBond: GKManagedNode {
         for node in groupSet {
             let group: GKBondGroup = node as GKBondGroup
             if name == group.name {
-				mutableSetValueForKey("groupSet").removeObject(group)
 				GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
 				return true
             }
         }
         return false
     }
-	
-	/**
-	* delete
-	* Marks the Model Object to be deleted from the Graph.
-	*/
-	override internal func delete() {
-		var gs = mutableSetValueForKey("groupSet")
-		for node in groupSet {
-			let group: GKBondGroup = node as GKBondGroup
-			GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
-			gs.removeObject(group)
-		}
-		var ps = mutableSetValueForKey("propertySet")
-		for node in propertySet {
-			let property: GKBondProperty = node as GKBondProperty
-			GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
-			ps.removeObject(property)
-		}
-		subject = nil
-		object = nil
-		super.delete()
-	}
 }
 
 extension GKManagedBond {
@@ -172,8 +146,7 @@ extension GKManagedBond {
 	* @param        value: GKBondProperty
 	*/
 	func addPropertySetObject(value: GKBondProperty) {
-		let nodes: NSMutableSet = propertySet as NSMutableSet
-		nodes.addObject(value)
+		propertySet.addObject(value)
 	}
 	
 	/**
@@ -182,8 +155,7 @@ extension GKManagedBond {
 	* @param        value: GKBondProperty
 	*/
 	func removePropertySetObject(value: GKBondProperty) {
-		let nodes: NSMutableSet = propertySet as NSMutableSet
-		nodes.removeObject(value)
+		propertySet.removeObject(value)
 	}
 	
 	/**
@@ -192,8 +164,7 @@ extension GKManagedBond {
 	* @param        value: GKBondGroup
 	*/
 	func addGroupSetObject(value: GKBondGroup) {
-		let nodes: NSMutableSet = groupSet as NSMutableSet
-		nodes.addObject(value)
+		groupSet.addObject(value)
 	}
 	
 	/**
@@ -202,7 +173,6 @@ extension GKManagedBond {
 	* @param        value: GKBondGroup
 	*/
 	func removeGroupSetObject(value: GKBondGroup) {
-		let nodes: NSMutableSet = groupSet as NSMutableSet
-		nodes.removeObject(value)
+		groupSet.removeObject(value)
 	}
 }

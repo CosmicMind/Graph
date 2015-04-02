@@ -15,6 +15,23 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 	
 	var expectation: XCTestExpectation?
 	
+	// queue for drawing images
+	private var queub1: dispatch_queue_t = {
+		return dispatch_queue_create(("io.graphkit.BondStressTests.1" as NSString).UTF8String, nil)
+		}()
+	
+	private var queue2: dispatch_queue_t = {
+		return dispatch_queue_create(("io.graphkit.BondStressTests.2" as NSString).UTF8String, nil)
+		}()
+	
+	private var queue3: dispatch_queue_t = {
+		return dispatch_queue_create(("io.graphkit.BondStressTests.3" as NSString).UTF8String, nil)
+		}()
+	
+	private var queue4: dispatch_queue_t = {
+		return dispatch_queue_create(("io.graphkit.BondStressTests.4" as NSString).UTF8String, nil)
+		}()
+	
 	override func setUp() {
 		super.setUp()
 	}
@@ -31,35 +48,63 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 		// Let's watch the changes in the Graph for the following Bond values.
 		graph.watch(Bond: "B")
 		
-		let b1: GKBond = GKBond(type: "B")
+		var b1: GKBond?
 		
-		for i in 1...1000 {
-			let prop: String = String(i)
-			b1.addGroup(prop)
-			b1[prop] = i
+		dispatch_async(queub1) {
+			b1 = GKBond(type: "B")
+			for i in 1...1000 {
+				let prop: String = String(i)
+				b1!.addGroup(prop)
+				b1!.addGroup("test")
+				b1!.removeGroup("test")
+				b1![prop] = i
+			}
+			
+			dispatch_async(self.queue2) {
+				for i in 1...500 {
+					let prop: String = String(i)
+					b1!.removeGroup(prop)
+					b1!.addGroup("test")
+					b1!.removeGroup("test")
+					b1![prop] = nil
+				}
+				dispatch_async(self.queue3) {
+					for i in 1...1000 {
+						let prop: String = String(i)
+						b1!.addGroup(prop)
+						b1!.addGroup("test")
+						b1!.removeGroup("test")
+						b1![prop] = i
+					}
+					
+					dispatch_async(self.queue4) {
+						for i in 1...500 {
+							let prop: String = String(i)
+							b1!.removeGroup(prop)
+							b1!.addGroup("test")
+							b1!.removeGroup("test")
+							b1![prop] = nil
+						}
+						self.graph.save { (_, _) in }
+					}
+				}
+			}
 		}
 		
-		for i in 1...500 {
-			let prop: String = String(i)
-			b1.removeGroup(prop)
-			b1[prop] = nil
-		}
 		
 		expectation = expectationWithDescription("Bond: Insert did not pass.")
 		
-		graph.save { (_, _) in }
-		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(5, handler: nil)
+		waitForExpectationsWithTimeout(30, handler: nil)
 		
-		b1.delete()
+		b1!.delete()
 		
 		expectation = expectationWithDescription("Bond: Delete did not pass.")
 		
 		graph.save { (_, _) in }
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(5, handler: nil)
+		waitForExpectationsWithTimeout(30, handler: nil)
 	}
 	
 	func testPerformanceExample() {

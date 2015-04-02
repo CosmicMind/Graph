@@ -83,6 +83,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         read.addSubject(user)
         read.addObject(book)
         read.addObject(magazine)
+		println(read)
 
         // Set an Expectation for the insert watcher.
         userInsertExpectation = expectationWithDescription("User: Insert did not pass.")
@@ -163,7 +164,8 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-        if "User" == entity.type && 1 == entity.actionsWhenSubject.count {
+		println(entity)
+		if "User" == entity.type && 1 == entity.actionsWhenSubject.count {
             userInsertExpectation?.fulfill()
         } else if "Book" == entity.type && 1 == entity.actionsWhenObject.count {
             bookInsertExpectation?.fulfill()
