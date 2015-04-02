@@ -24,7 +24,6 @@ import Foundation
 
 @objc(GKNode)
 public class GKNode: NSObject {
-    internal lazy var graph: GKGraph = GKGraph()
     internal var node: GKManagedNode?
 	
     /**
