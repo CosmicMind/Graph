@@ -253,7 +253,7 @@ public class GKGraph: NSObject {
 		}
 		return nodes
 	}
-		
+	
 	/**
 	* search(EntityGroupMap)
 	* Retrieves all the unique Group Names for Entity Nodes with their GKEntity Objects.
@@ -772,7 +772,7 @@ public class GKGraph: NSObject {
 			propertyRelationship.name = "node"
 			propertyRelationship.minCount = 1
 			propertyRelationship.maxCount = 1
-			propertyRelationship.deleteRule = .NullifyDeleteRule
+			propertyRelationship.deleteRule = .NoActionDeleteRule
 			
 			var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertySetRelationship.name = "propertySet"
@@ -809,7 +809,7 @@ public class GKGraph: NSObject {
 			groupRelationship.name = "node"
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
-			groupRelationship.deleteRule = .NullifyDeleteRule
+			groupRelationship.deleteRule = .NoActionDeleteRule
 			
 			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"
@@ -846,7 +846,7 @@ public class GKGraph: NSObject {
 			actionSubjectRelationship.name = "actionSubjectSet"
 			actionSubjectRelationship.minCount = 0
 			actionSubjectRelationship.maxCount = 0
-			actionSubjectRelationship.deleteRule = .NullifyDeleteRule
+			actionSubjectRelationship.deleteRule = .NoActionDeleteRule
 			actionSubjectRelationship.destinationEntity = actionDescription
 			
 			actionSubjectRelationship.inverseRelationship = subjectRelationship
@@ -868,7 +868,7 @@ public class GKGraph: NSObject {
 			actionObjectRelationship.name = "actionObjectSet"
 			actionObjectRelationship.minCount = 0
 			actionObjectRelationship.maxCount = 0
-			actionObjectRelationship.deleteRule = .NullifyDeleteRule
+			actionObjectRelationship.deleteRule = .NoActionDeleteRule
 			actionObjectRelationship.destinationEntity = actionDescription
 			actionObjectRelationship.inverseRelationship = objectRelationship
 			objectRelationship.inverseRelationship = actionObjectRelationship
@@ -882,7 +882,7 @@ public class GKGraph: NSObject {
 			subjectRelationship.name = "subject"
 			subjectRelationship.minCount = 1
 			subjectRelationship.maxCount = 1
-			subjectRelationship.deleteRule = .NullifyDeleteRule
+			subjectRelationship.deleteRule = .NoActionDeleteRule
 			subjectRelationship.destinationEntity = entityDescription
 			
 			var bondSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -904,7 +904,7 @@ public class GKGraph: NSObject {
 			objectRelationship.name = "object"
 			objectRelationship.minCount = 1
 			objectRelationship.maxCount = 1
-			objectRelationship.deleteRule = .NullifyDeleteRule
+			objectRelationship.deleteRule = .NoActionDeleteRule
 			objectRelationship.destinationEntity = entityDescription
 			
 			var bondObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()

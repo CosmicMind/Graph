@@ -144,6 +144,50 @@ internal class GKManagedEntity: GKManagedNode {
         }
         return false
     }
+	
+	/**
+	* delete
+	* Marks the Model Object to be deleted from the Graph.
+	*/
+	override internal func delete() {
+		var gs = mutableSetValueForKey("groupSet")
+		for node in groupSet {
+			let group: GKEntityGroup = node as GKEntityGroup
+			GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
+			gs.removeObject(group)
+		}
+		var ps = mutableSetValueForKey("propertySet")
+		for node in propertySet {
+			let property: GKEntityProperty = node as GKEntityProperty
+			GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
+			ps.removeObject(property)
+		}
+		var ass = mutableSetValueForKey("actionSubjectSet")
+		for node in ass {
+			var action: GKManagedAction = node as GKManagedAction
+			action.removeSubject(self)
+			ass.removeObject(action)
+		}
+		var aos = mutableSetValueForKey("actionObjectSet")
+		for node in aos {
+			var action: GKManagedAction = node as GKManagedAction
+			action.removeObject(self)
+			aos.removeObject(action)
+		}
+		var bss = mutableSetValueForKey("bondSubjectSet")
+		for node in bss {
+			var bond: GKManagedBond = node as GKManagedBond
+			bond.delete()
+			bss.removeObject(bond)
+		}
+		var bos = mutableSetValueForKey("bondObjectSet")
+		for node in bos {
+			var bond: GKManagedBond = node as GKManagedBond
+			bond.delete()
+			bos.removeObject(bond)
+		}
+		super.delete()
+	}
 }
 
 extension GKManagedEntity {

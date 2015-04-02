@@ -141,6 +141,28 @@ internal class GKManagedBond: GKManagedNode {
         }
         return false
     }
+	
+	/**
+	* delete
+	* Marks the Model Object to be deleted from the Graph.
+	*/
+	override internal func delete() {
+		var gs = mutableSetValueForKey("groupSet")
+		for node in groupSet {
+			let group: GKBondGroup = node as GKBondGroup
+			GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
+			gs.removeObject(group)
+		}
+		var ps = mutableSetValueForKey("propertySet")
+		for node in propertySet {
+			let property: GKBondProperty = node as GKBondProperty
+			GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
+			ps.removeObject(property)
+		}
+		subject = nil
+		object = nil
+		super.delete()
+	}
 }
 
 extension GKManagedBond {
