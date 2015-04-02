@@ -92,7 +92,5 @@ internal class GKManagedNode: NSManagedObject {
 	* delete
 	* Marks the Model Object to be deleted from the Graph.
 	*/
-	internal func delete() {
-		GKGraphManagedObjectContext.managedObjectContext.deleteObject(self)
-	}
+	internal func delete() {}
 }

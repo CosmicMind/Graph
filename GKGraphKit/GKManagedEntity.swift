@@ -144,6 +144,24 @@ internal class GKManagedEntity: GKManagedNode {
         }
         return false
     }
+	
+	/**
+	* delete
+	* Marks the Model Object to be deleted from the Graph.
+	*/
+	override internal func delete() {
+		var bss: NSMutableSet = mutableSetValueForKey("bondSubjectSet")
+		for bond in bss {
+			bond.delete()
+		}
+		bss.removeAllObjects()
+		var bos: NSMutableSet = mutableSetValueForKey("bondObjectSet")
+		for bond in bos {
+			bond.delete()
+		}
+		bos.removeAllObjects()
+		GKGraphManagedObjectContext.managedObjectContext.deleteObject(self)
+	}
 }
 
 extension GKManagedEntity {
