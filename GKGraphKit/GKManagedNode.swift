@@ -30,6 +30,12 @@ internal class GKManagedNode: NSManagedObject {
     @NSManaged internal var propertySet: NSMutableSet
     @NSManaged internal var groupSet: NSMutableSet
 
+	internal var context: NSManagedObjectContext {
+		get {
+			return nil == managedObjectContext ? GKGraphManagedObjectContext.managedObjectContext : managedObjectContext
+		}
+	}
+	
 	/**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
@@ -93,6 +99,6 @@ internal class GKManagedNode: NSManagedObject {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
-		GKGraphManagedObjectContext.managedObjectContext.deleteObject(self)
+		context.deleteObject(self)
 	}
 }

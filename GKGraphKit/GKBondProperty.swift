@@ -32,9 +32,9 @@ internal class GKBondProperty: GKNodeProperty {
     * @param        name: String!
     * @param        value: AnyObject!
     */
-    convenience init(name: String!, value: AnyObject!) {
-        var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.bondPropertyDescriptionName, inManagedObjectContext: GKGraphManagedObjectContext.managedObjectContext)!
-        self.init(entityDescription: entityDescription, managedObjectContext: GKGraphManagedObjectContext.managedObjectContext)
+    convenience init(name: String!, value: AnyObject!, managedObjectContext: NSManagedObjectContext!) {
+        var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.bondPropertyDescriptionName, inManagedObjectContext: managedObjectContext)!
+        self.init(entityDescription: entityDescription, managedObjectContext: managedObjectContext)
         self.name = name
         self.value = value
     }

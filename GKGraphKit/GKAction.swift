@@ -178,6 +178,6 @@ public class GKAction: GKNode {
 
 extension GKAction: Printable {
 	override public var description: String {
-		return "[GKAction\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubjects: \(subjects)\n\tobjects: \(objects)]"
+		return "[GKAction\n\tobjectID: \n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubjects: \(subjects)\n\tobjects: \(objects)]"
 	}
 }

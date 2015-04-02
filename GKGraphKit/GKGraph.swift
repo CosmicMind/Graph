@@ -772,7 +772,7 @@ public class GKGraph: NSObject {
 			propertyRelationship.name = "node"
 			propertyRelationship.minCount = 1
 			propertyRelationship.maxCount = 1
-			propertyRelationship.deleteRule = .NullifyDeleteRule
+			propertyRelationship.deleteRule = .NoActionDeleteRule
 			
 			var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertySetRelationship.name = "propertySet"
@@ -809,7 +809,7 @@ public class GKGraph: NSObject {
 			groupRelationship.name = "node"
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
-			groupRelationship.deleteRule = .NullifyDeleteRule
+			groupRelationship.deleteRule = .NoActionDeleteRule
 			
 			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"

@@ -164,7 +164,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		println(entity)
+//		println(entity)
 		if "User" == entity.type && 1 == entity.actionsWhenSubject.count {
             userInsertExpectation?.fulfill()
         } else if "Book" == entity.type && 1 == entity.actionsWhenObject.count {

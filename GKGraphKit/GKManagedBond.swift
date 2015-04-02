@@ -76,7 +76,8 @@ internal class GKManagedBond: GKManagedNode {
                 let property: GKBondProperty = node as GKBondProperty
                 if name == property.name {
                     if nil == value {
-						GKGraphManagedObjectContext.managedObjectContext.deleteObject(property)
+						propertySet.removeObject(property)
+						context.deleteObject(property)
 					} else {
                         property.value = value!
                     }
@@ -84,8 +85,9 @@ internal class GKManagedBond: GKManagedNode {
                 }
             }
             if nil != value {
-                var property: GKBondProperty = GKBondProperty(name: name, value: value)
+				var property: GKBondProperty = GKBondProperty(name: name, value: value, managedObjectContext: context)
                 property.node = self
+				propertySet.addObject(property)
             }
         }
     }
@@ -98,8 +100,9 @@ internal class GKManagedBond: GKManagedNode {
     */
     override internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-            var group: GKBondGroup = GKBondGroup(name: name)
+			var group: GKBondGroup = GKBondGroup(name: name, managedObjectContext: context)
             group.node = self
+			groupSet.addObject(group)
 			return true
         }
         return false
@@ -131,12 +134,33 @@ internal class GKManagedBond: GKManagedNode {
         for node in groupSet {
             let group: GKBondGroup = node as GKBondGroup
             if name == group.name {
-				GKGraphManagedObjectContext.managedObjectContext.deleteObject(group)
+				groupSet.removeObject(group)
+				context.deleteObject(group)
 				return true
             }
         }
         return false
     }
+	
+	/**
+	* delete
+	* Marks the Model Object to be deleted from the Graph.
+	*/
+	override internal func delete() {
+		for node in groupSet {
+			let group: GKBondGroup = node as GKBondGroup
+			groupSet.removeObject(group)
+			context.deleteObject(group)
+		}
+		for node in propertySet {
+			let property: GKBondProperty = node as GKBondProperty
+			propertySet.removeObject(property)
+			context.deleteObject(property)
+		}
+		subject = nil
+		object = nil
+		super.delete()
+	}
 }
 
 extension GKManagedBond {

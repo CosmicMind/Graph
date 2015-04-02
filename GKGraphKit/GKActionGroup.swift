@@ -30,11 +30,11 @@ internal class GKActionGroup: GKNodeGroup {
     * init
     * Initializer for the Model Object.
     * @param        name: String!
+	* @param		managedObjectContext: NSManagedObjectContxt!
     */
-    convenience init(name: String!) {
-		let graph: GKGraph = GKGraph()
-        var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.actionGroupDescriptionName, inManagedObjectContext: graph.managedObjectContext)!
-        self.init(entityDescription: entityDescription, managedObjectContext: graph.managedObjectContext)
-        self.name = name
+	convenience init(name: String!, managedObjectContext: NSManagedObjectContext!) {
+		var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.actionGroupDescriptionName, inManagedObjectContext: managedObjectContext)!
+		self.init(entityDescription: entityDescription, managedObjectContext: managedObjectContext)
+		self.name = name
     }
 }

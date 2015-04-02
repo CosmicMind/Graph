@@ -52,7 +52,7 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 		
 		dispatch_async(queub1) {
 			b1 = GKBond(type: "B")
-			for i in 1...1000 {
+			for i in 1...100 {
 				let prop: String = String(i)
 				b1!.addGroup(prop)
 				b1!.addGroup("test")
@@ -61,7 +61,7 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 			}
 			
 			dispatch_async(self.queue2) {
-				for i in 1...500 {
+				for i in 1...50 {
 					let prop: String = String(i)
 					b1!.removeGroup(prop)
 					b1!.addGroup("test")
@@ -69,7 +69,7 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 					b1![prop] = nil
 				}
 				dispatch_async(self.queue3) {
-					for i in 1...1000 {
+					for i in 1...100 {
 						let prop: String = String(i)
 						b1!.addGroup(prop)
 						b1!.addGroup("test")
@@ -78,7 +78,7 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 					}
 					
 					dispatch_async(self.queue4) {
-						for i in 1...500 {
+						for i in 1...50 {
 							let prop: String = String(i)
 							b1!.removeGroup(prop)
 							b1!.addGroup("test")
@@ -112,7 +112,7 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didInsertBond bond: GKBond!) {
-		if 500 == bond.groups.count && 500 == bond.properties.count {
+		if 50 == bond.groups.count && 50 == bond.properties.count {
 			expectation?.fulfill()
 		}
 	}

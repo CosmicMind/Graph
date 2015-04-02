@@ -26,14 +26,15 @@ import CoreData
 internal class GKEntityGroup: GKNodeGroup {
     @NSManaged internal var node: GKManagedEntity
 
-    /**
-    * init
-    * Initializer for the Model Object.
-    * @param        name: String!
-    */
-    convenience init(name: String!) {
-        var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.entityGroupDescriptionName, inManagedObjectContext: GKGraphManagedObjectContext.managedObjectContext)!
-        self.init(entityDescription: entityDescription, managedObjectContext: GKGraphManagedObjectContext.managedObjectContext)
-        self.name = name
-    }
+	/**
+	* init
+	* Initializer for the Model Object.
+	* @param        name: String!
+	* @param		managedObjectContext: NSManagedObjectContxt!
+	*/
+	convenience init(name: String!, managedObjectContext: NSManagedObjectContext!) {
+		var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.entityGroupDescriptionName, inManagedObjectContext: managedObjectContext)!
+		self.init(entityDescription: entityDescription, managedObjectContext: managedObjectContext)
+		self.name = name
+	}
 }

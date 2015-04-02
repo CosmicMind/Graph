@@ -32,10 +32,10 @@ internal class GKActionProperty: GKNodeProperty {
     * @param        name: String!
     * @param        value: AnyObject!
     */
-    convenience init(name: String!, value: AnyObject!) {
-        var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.actionPropertyDescriptionName, inManagedObjectContext: GKGraphManagedObjectContext.managedObjectContext)!
-        self.init(entityDescription: entityDescription, managedObjectContext: GKGraphManagedObjectContext.managedObjectContext)
-        self.name = name
-        self.value = value
+    convenience init(name: String!, value: AnyObject!, managedObjectContext: NSManagedObjectContext!) {
+		var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.actionPropertyDescriptionName, inManagedObjectContext: managedObjectContext)!
+		self.init(entityDescription: entityDescription, managedObjectContext: managedObjectContext)
+		self.name = name
+		self.value = value
     }
 }

@@ -51,7 +51,7 @@ public class GKNode: NSObject {
     */
     public var objectID: String! {
         let nodeURL: NSURL = node.objectID.URIRepresentation()
-		var oID: String = "1" //nodeURL.lastPathComponent!
+		var oID: String = nodeURL.lastPathComponent!
         return nodeClass + type + oID
     }
 
