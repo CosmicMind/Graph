@@ -42,6 +42,7 @@ internal class GKBondProperty: NSManagedObject {
 		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.bondPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
 		self.value = value
+		worker = w
 	}
 	
 	/**

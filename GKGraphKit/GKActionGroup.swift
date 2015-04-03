@@ -39,6 +39,7 @@ internal class GKActionGroup: NSManagedObject {
 		var w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.actionGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
+		worker = w
 	}
 	
 	/**
