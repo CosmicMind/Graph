@@ -23,17 +23,147 @@
 import Foundation
 
 @objc(GKAction)
-public class GKAction: GKNode {
+public class GKAction: NSObject {
+	internal let node: GKManagedAction
 
-    /**
-    * init
-    * Initializes GKAction with a given type.
-    * @param        type: String
-    */
-    override public init(type: String) {
-        super.init(type: type)
-    }
-
+	/**
+	* init
+	* Initializes GKAction with a given GKManagedAction.
+	* @param        entity: GKManagedAction!
+	*/
+	internal init(action: GKManagedAction!) {
+		node = action
+	}
+	
+	/**
+	* init
+	* An initializer for the wrapped Model Object with a given type.
+	* @param        type: String!
+	*/
+	public convenience init(type: String) {
+		self.init(action: GKManagedAction(type: type))
+	}
+	
+	/**
+	* nodeClass
+	* Retrieves the nodeClass for the Model Object that is wrapped internally.
+	* @return       String
+	*/
+	public var nodeClass: String {
+		return node.nodeClass
+	}
+	
+	/**
+	* type
+	* Retrieves the type for the Model Object that is wrapped internally.
+	* @return       String
+	*/
+	public var type: String {
+		return node.type
+	}
+	
+	/**
+	* objectID
+	* Retrieves the ID for the Model Object that is wrapped internally.
+	* @return       String? of the ID
+	*/
+	public var objectID: String {
+		var nodeURL: NSURL = node.objectID.URIRepresentation()
+		var oID: String = nodeURL.lastPathComponent!
+		return nodeClass + type + oID
+	}
+	
+	/**
+	* createdDate
+	* Retrieves the date the Model Object was created.
+	* @return       NSDate?
+	*/
+	public var createdDate: NSDate {
+		return node.createdDate
+	}
+	
+	/**
+	* properties[ ]
+	* Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
+	* @param        name: String!
+	* get           Returns the property name value.
+	* set           Value for the property name.
+	*/
+	public subscript(name: String) -> AnyObject? {
+		get {
+			return node[name]
+		}
+		set(value) {
+			node[name] = value
+		}
+	}
+	
+	/**
+	* addGroup
+	* Adds a Group name to the list of Groups if it does not exist.
+	* @param        name: String!
+	* @return       Bool of the result, true if added, false otherwise.
+	*/
+	public func addGroup(name: String) -> Bool {
+		return node.addGroup(name)
+	}
+	
+	/**
+	* hasGroup
+	* Checks whether the Node is a part of the Group name passed or not.
+	* @param        name: String!
+	* @return       Bool of the result, true if is a part, false otherwise.
+	*/
+	public func hasGroup(name: String) -> Bool {
+		return node.hasGroup(name)
+	}
+	
+	/**
+	* removeGroup
+	* Removes a Group name from the list of Groups if it exists.
+	* @param        name: String!
+	* @return       Bool of the result, true if exists, false otherwise.
+	*/
+	public func removeGroup(name: String!) -> Bool {
+		return node.removeGroup(name)
+	}
+	
+	/**
+	* groups
+	* Retrieves the Groups the Node is a part of.
+	* @return       Array<String>
+	*/
+	public var groups: Array<String> {
+		get {
+			var groups: Array<String> = Array<String>()
+			for group in node.groupSet {
+				groups.append(group.name)
+			}
+			return groups
+		}
+		set(value) {
+			assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
+		}
+	}
+	
+	/**
+	* properties
+	* Retrieves the Properties the Node is a part of.
+	* @return       Dictionary<String, AnyObject?>
+	*/
+	public var properties: Dictionary<String, AnyObject?> {
+		get {
+			var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
+			for property in node.propertySet {
+				properties[property.name] = property.value
+			}
+			return properties
+		}
+		set(value) {
+			assert(false, "[GraphKit Error: Properties is not allowed to be set.]")
+		}
+	}
+	
     /**
     * subjects
     * Retrieves an Array of GKEntity Objects.
@@ -42,10 +172,8 @@ public class GKAction: GKNode {
     public var subjects: Array<GKEntity> {
         get {
             var nodes: Array<GKEntity> = Array<GKEntity>()
-			if var n: GKManagedAction? = node as? GKManagedAction {
-				for item: AnyObject in n!.subjectSet {
-					nodes.append(GKEntity(entity: item as GKManagedEntity))
-				}
+			for entry: AnyObject in node.subjectSet {
+				nodes.append(GKEntity(entity: entry as GKManagedEntity))
 			}
             return nodes
         }
@@ -62,10 +190,8 @@ public class GKAction: GKNode {
     public var objects: Array<GKEntity> {
         get {
             var nodes: Array<GKEntity> = Array<GKEntity>()
-			if var n: GKManagedAction? = node as? GKManagedAction {
-				for item: AnyObject in n!.objectSet {
-					nodes.append(GKEntity(entity: item as GKManagedEntity))
-				}
+			for entry: AnyObject in node.objectSet {
+				nodes.append(GKEntity(entity: entry as GKManagedEntity))
 			}
             return nodes
         }
@@ -81,10 +207,7 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if added, false otherwise.
     */
     public func addSubject(entity: GKEntity!) -> Bool {
-        if var n: GKManagedAction? = node as? GKManagedAction {
-			return n!.addSubject(entity.node as GKManagedEntity)
-		}
-		return false
+        return node.addSubject(entity.node)
 	}
 
     /**
@@ -94,10 +217,7 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if removed, false otherwise.
     */
     public func removeSubject(entity: GKEntity!) -> Bool {
-		if var n: GKManagedAction? = node as? GKManagedAction {
-			return n!.removeSubject(entity.node as GKManagedEntity)
-		}
-		return false
+		return node.removeSubject(entity.node)
     }
 	
 	/**
@@ -117,10 +237,7 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if added, false otherwise.
     */
     public func addObject(entity: GKEntity!) -> Bool {
-        if let n: GKManagedAction = node as? GKManagedAction {
-			return n.addObject(entity.node as GKManagedEntity)
-		}
-		return false
+        return node.addObject(entity.node)
     }
 
     /**
@@ -130,10 +247,7 @@ public class GKAction: GKNode {
     * @return       Bool of the result, true if removed, false otherwise.
     */
     public func removeObject(entity: GKEntity!) -> Bool {
-        if let n: GKManagedAction = node as? GKManagedAction {
-			return n.removeObject(entity.node as GKManagedEntity)
-		}
-		return false
+		return node.removeObject(entity.node)
     }
 
 	/**
@@ -151,33 +265,12 @@ public class GKAction: GKNode {
     * Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
-		if let n: GKManagedAction = node as? GKManagedAction {
-			n.delete()
-		}
-    }
-
-    /**
-    * init
-    * Initializes GKAction with a given GKManagedAction.
-    * @param        action: GKManagedAction!
-    */
-    internal init(action: GKManagedAction!) {
-        super.init(node: action)
-    }
-
-    /**
-    * createImplementorWithType
-    * Initializes GKManagedAction with a given type.
-    * @param        type: String
-    * @return       GKManagedAction
-    */
-    override internal func createImplementorWithType(type: String) -> GKManagedNode {
-        return GKManagedAction(type: type)
+		node.delete()
     }
 }
 
 extension GKAction: Printable {
 	override public var description: String {
-		return "[GKAction\n\tobjectID: \n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubjects: \(subjects)\n\tobjects: \(objects)]"
+		return "[GKAction\n\tobjectID: \((objectID))\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubjects: \(subjects)\n\tobjects: \(objects)]"
 	}
 }

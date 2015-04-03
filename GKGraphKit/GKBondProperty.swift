@@ -23,18 +23,21 @@
 import CoreData
 
 @objc(GKBondProperty)
-internal class GKBondProperty: GKNodeProperty {
-    @NSManaged internal var node: GKManagedBond
+internal class GKBondProperty: NSManagedObject {
+	@NSManaged internal var name: String
+	@NSManaged internal var value: AnyObject
+	@NSManaged internal var node: GKManagedBond?
 
     /**
     * init
     * Initializer for the Model Object.
     * @param        name: String!
     * @param        value: AnyObject!
+	* @param		managedObjectContext: NSManagedObjectContxt!
     */
     convenience init(name: String!, value: AnyObject!, managedObjectContext: NSManagedObjectContext!) {
         var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.bondPropertyDescriptionName, inManagedObjectContext: managedObjectContext)!
-        self.init(entityDescription: entityDescription, managedObjectContext: managedObjectContext)
+        self.init(entity: entityDescription, insertIntoManagedObjectContext: managedObjectContext)
         self.name = name
         self.value = value
     }

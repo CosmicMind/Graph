@@ -23,13 +23,18 @@
 import CoreData
 
 @objc(GKManagedEntity)
-internal class GKManagedEntity: GKManagedNode {
-    @NSManaged internal var actionSubjectSet: NSMutableSet
+internal class GKManagedEntity: NSManagedObject {
+	@NSManaged internal var nodeClass: String
+	@NSManaged internal var type: String
+	@NSManaged internal var createdDate: NSDate
+	@NSManaged internal var propertySet: NSMutableSet
+	@NSManaged internal var groupSet: NSMutableSet
+	@NSManaged internal var actionSubjectSet: NSMutableSet
     @NSManaged internal var actionObjectSet: NSMutableSet
     @NSManaged internal var bondSubjectSet: NSMutableSet
     @NSManaged internal var bondObjectSet: NSMutableSet
 	
-    /**
+	/**
     * entityDescription
     * Class method returning an NSEntityDescription Object for this Model Object.
     * @return        NSEntityDescription!
@@ -57,6 +62,17 @@ internal class GKManagedEntity: GKManagedNode {
         bondObjectSet = NSMutableSet()
     }
 
+	/**
+	* context
+	* Retrieves the best context for Model Object.
+	* @return       NSManagedObjectContext
+	*/
+	internal var context: NSManagedObjectContext {
+		get {
+			return nil == managedObjectContext ? GKGraphManagedObjectContext.managedObjectContext : managedObjectContext
+		}
+	}
+	
     /**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
@@ -64,10 +80,10 @@ internal class GKManagedEntity: GKManagedNode {
     * get           Returns the property name value.
     * set           Value for the property name.
     */
-    override internal subscript(name: String) -> AnyObject? {
+    internal subscript(name: String) -> AnyObject? {
         get {
-            for node in propertySet {
-				let property: GKEntityProperty = node as GKEntityProperty
+            for n in propertySet {
+				let property: GKEntityProperty = n as GKEntityProperty
 				if name == property.name {
                     return property.value
                 }
@@ -75,8 +91,8 @@ internal class GKManagedEntity: GKManagedNode {
             return nil
         }
         set(value) {
-			for node in propertySet {
-				let property: GKEntityProperty = node as GKEntityProperty
+			for n in propertySet {
+				let property: GKEntityProperty = n as GKEntityProperty
                 if name == property.name {
                     if nil == value {
 						propertySet.removeObject(property)
@@ -101,7 +117,7 @@ internal class GKManagedEntity: GKManagedNode {
     * @param        name: String!
     * @return       Bool of the result, true if added, false otherwise.
     */
-    override internal func addGroup(name: String!) -> Bool {
+    internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
             var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: context)
             group.node = self
@@ -117,9 +133,9 @@ internal class GKManagedEntity: GKManagedNode {
     * @param        name: String!
     * @return       Bool of the result, true if is a part, false otherwise.
     */
-    override internal func hasGroup(name: String!) -> Bool {
-        for node in groupSet {
-			var group: GKEntityGroup = node as GKEntityGroup
+    internal func hasGroup(name: String!) -> Bool {
+        for n in groupSet {
+			var group: GKEntityGroup = n as GKEntityGroup
 			if name == group.name {
                 return true
             }
@@ -133,9 +149,9 @@ internal class GKManagedEntity: GKManagedNode {
     * @param        name: String!
     * @return       Bool of the result, true if exists, false otherwise.
     */
-    override internal func removeGroup(name: String!) -> Bool {
-        for node in groupSet {
-            let group: GKEntityGroup = node as GKEntityGroup
+    internal func removeGroup(name: String!) -> Bool {
+        for n in groupSet {
+            let group: GKEntityGroup = n as GKEntityGroup
 			if name == group.name {
 				groupSet.removeObject(group)
 				context.deleteObject(group)
@@ -149,38 +165,38 @@ internal class GKManagedEntity: GKManagedNode {
 	* delete
 	* Marks the Model Object to be deleted from the Graph.
 	*/
-	override internal func delete() {
-		for node in groupSet {
-			let group: GKEntityGroup = node as GKEntityGroup
+	internal func delete() {
+		for n in groupSet {
+			let group: GKEntityGroup = n as GKEntityGroup
 			groupSet.removeObject(group)
 			context.deleteObject(group)
 		}
-		for node in propertySet {
-			let property: GKEntityProperty = node as GKEntityProperty
+		for n in propertySet {
+			let property: GKEntityProperty = n as GKEntityProperty
 			propertySet.removeObject(property)
 			context.deleteObject(property)
 		}
-		for node in actionSubjectSet {
-			var action: GKManagedAction = node as GKManagedAction
+		for n in actionSubjectSet {
+			var action: GKManagedAction = n as GKManagedAction
 			actionSubjectSet.removeObject(action)
 			action.removeSubject(self)
 		}
-		for node in actionObjectSet {
-			var action: GKManagedAction = node as GKManagedAction
+		for n in actionObjectSet {
+			var action: GKManagedAction = n as GKManagedAction
 			actionObjectSet.removeObject(action)
 			action.removeObject(self)
 		}
-		for node in bondSubjectSet {
-			var bond: GKManagedBond = node as GKManagedBond
+		for n in bondSubjectSet {
+			var bond: GKManagedBond = n as GKManagedBond
 			bondSubjectSet.removeObject(bond)
 			bond.delete()
 		}
-		for node in bondObjectSet {
-			var bond: GKManagedBond = node as GKManagedBond
+		for n in bondObjectSet {
+			var bond: GKManagedBond = n as GKManagedBond
 			bondObjectSet.removeObject(bond)
 			bond.delete()
 		}
-		super.delete()
+		context.deleteObject(self)
 	}
 }
 

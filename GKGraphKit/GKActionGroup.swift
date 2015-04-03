@@ -23,8 +23,9 @@
 import CoreData
 
 @objc(GKActionGroup)
-internal class GKActionGroup: GKNodeGroup {
-    @NSManaged internal var node: GKManagedAction
+internal class GKActionGroup: NSManagedObject {
+	@NSManaged internal var name: String
+    @NSManaged internal var node: GKManagedAction?
 
     /**
     * init
@@ -34,7 +35,7 @@ internal class GKActionGroup: GKNodeGroup {
     */
 	convenience init(name: String!, managedObjectContext: NSManagedObjectContext!) {
 		var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.actionGroupDescriptionName, inManagedObjectContext: managedObjectContext)!
-		self.init(entityDescription: entityDescription, managedObjectContext: managedObjectContext)
+		self.init(entity: entityDescription, insertIntoManagedObjectContext: managedObjectContext)
 		self.name = name
     }
 }

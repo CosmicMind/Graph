@@ -23,16 +23,146 @@
 import Foundation
 
 @objc(GKBond)
-public class GKBond: GKNode {
-
-    /**
-    * init
-    * Initializes GKBond with a given type.
-    * @param        type: String
-    */
-    override public init(type: String) {
-        super.init(type: type)
-    }
+public class GKBond: NSObject {
+	internal let node: GKManagedBond
+	
+	/**
+	* init
+	* Initializes GKBond with a given GKManagedBond.
+	* @param        entity: GKManagedBond!
+	*/
+	internal init(bond: GKManagedBond!) {
+		node = bond
+	}
+	
+	/**
+	* init
+	* An initializer for the wrapped Model Object with a given type.
+	* @param        type: String!
+	*/
+	public convenience init(type: String) {
+		self.init(bond: GKManagedBond(type: type))
+	}
+	
+	/**
+	* nodeClass
+	* Retrieves the nodeClass for the Model Object that is wrapped internally.
+	* @return       String
+	*/
+	public var nodeClass: String {
+		return node.nodeClass
+	}
+	
+	/**
+	* type
+	* Retrieves the type for the Model Object that is wrapped internally.
+	* @return       String
+	*/
+	public var type: String {
+		return node.type
+	}
+	
+	/**
+	* objectID
+	* Retrieves the ID for the Model Object that is wrapped internally.
+	* @return       String? of the ID
+	*/
+	public var objectID: String {
+		var nodeURL: NSURL = node.objectID.URIRepresentation()
+		var oID: String = nodeURL.lastPathComponent!
+		return nodeClass + type + oID
+	}
+	
+	/**
+	* createdDate
+	* Retrieves the date the Model Object was created.
+	* @return       NSDate?
+	*/
+	public var createdDate: NSDate {
+		return node.createdDate
+	}
+	
+	/**
+	* properties[ ]
+	* Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
+	* @param        name: String!
+	* get           Returns the property name value.
+	* set           Value for the property name.
+	*/
+	public subscript(name: String) -> AnyObject? {
+		get {
+			return node[name]
+		}
+		set(value) {
+			node[name] = value
+		}
+	}
+	
+	/**
+	* addGroup
+	* Adds a Group name to the list of Groups if it does not exist.
+	* @param        name: String!
+	* @return       Bool of the result, true if added, false otherwise.
+	*/
+	public func addGroup(name: String) -> Bool {
+		return node.addGroup(name)
+	}
+	
+	/**
+	* hasGroup
+	* Checks whether the Node is a part of the Group name passed or not.
+	* @param        name: String!
+	* @return       Bool of the result, true if is a part, false otherwise.
+	*/
+	public func hasGroup(name: String) -> Bool {
+		return node.hasGroup(name)
+	}
+	
+	/**
+	* removeGroup
+	* Removes a Group name from the list of Groups if it exists.
+	* @param        name: String!
+	* @return       Bool of the result, true if exists, false otherwise.
+	*/
+	public func removeGroup(name: String!) -> Bool {
+		return node.removeGroup(name)
+	}
+	
+	/**
+	* groups
+	* Retrieves the Groups the Node is a part of.
+	* @return       Array<String>
+	*/
+	public var groups: Array<String> {
+		get {
+			var groups: Array<String> = Array<String>()
+			for group in node.groupSet {
+				groups.append(group.name)
+			}
+			return groups
+		}
+		set(value) {
+			assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
+		}
+	}
+	
+	/**
+	* properties
+	* Retrieves the Properties the Node is a part of.
+	* @return       Dictionary<String, AnyObject?>
+	*/
+	public var properties: Dictionary<String, AnyObject?> {
+		get {
+			var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
+			for property in node.propertySet {
+				properties[property.name] = property.value
+			}
+			return properties
+		}
+		set(value) {
+			assert(false, "[GraphKit Error: Properties is not allowed to be set.]")
+		}
+	}
 
     /**
     * subject
@@ -41,18 +171,10 @@ public class GKBond: GKNode {
     */
     public var subject: GKEntity? {
         get {
-            var entity: GKEntity?
-            if let n: GKManagedBond = node as? GKManagedBond {
-				if nil != n.subject {
-					entity = GKEntity(entity: n.subject! as GKManagedEntity)
-				}
-            }
-            return entity
+			return nil == node.subject ? nil : GKEntity(entity: node.subject)
         }
         set(entity) {
-            if let n: GKManagedBond? = node as? GKManagedBond {
-				n!.subject = entity?.node as? GKManagedEntity
-			}
+            node.subject = entity?.node
         }
     }
 
@@ -62,20 +184,12 @@ public class GKBond: GKNode {
     * @return       GKEntity
     */
     public var object: GKEntity? {
-        get {
-            var entity: GKEntity?
-            if let n: GKManagedBond = node as? GKManagedBond {
-				if nil != n.object {
-					entity = GKEntity(entity: n.object! as GKManagedEntity)
-				}
-            }
-            return entity
-        }
-        set(entity) {
-            if let n: GKManagedBond = node as? GKManagedBond {
-				n.object = entity?.node as? GKManagedEntity
-			}
-        }
+		get {
+			return nil == node.object ? nil : GKEntity(entity: node.object)
+		}
+		set(entity) {
+			node.object = entity?.node
+		}
     }
 
     /**
@@ -83,28 +197,7 @@ public class GKBond: GKNode {
     * Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
-        if let n: GKManagedBond = node as? GKManagedBond {
-			n.delete()
-		}
-    }
-
-    /**
-    * init
-    * Initializes GKBond with a given GKManagedBond.
-    * @param        bond: GKManagedBond!
-    */
-    internal init(bond: GKManagedBond!) {
-        super.init(node: bond)
-    }
-
-    /**
-    * createImplementorWithType
-    * Initializes GKManagedBond with a given type.
-    * @param        type: String
-    * @return       GKManagedBond
-    */
-    override internal func createImplementorWithType(type: String) -> GKManagedNode {
-        return GKManagedBond(type: type)
+        node.delete()
     }
 }
 

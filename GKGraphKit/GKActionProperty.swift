@@ -23,18 +23,21 @@
 import CoreData
 
 @objc(GKActionProperty)
-internal class GKActionProperty: GKNodeProperty {
-    @NSManaged internal var node: GKManagedAction
+internal class GKActionProperty: NSManagedObject {
+	@NSManaged internal var name: String
+	@NSManaged internal var value: AnyObject
+	@NSManaged internal var node: GKManagedAction?
 
     /**
     * init
     * Initializer for the Model Object.
     * @param        name: String!
     * @param        value: AnyObject!
+	* @param		managedObjectContext: NSManagedObjectContxt!
     */
     convenience init(name: String!, value: AnyObject!, managedObjectContext: NSManagedObjectContext!) {
 		var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.actionPropertyDescriptionName, inManagedObjectContext: managedObjectContext)!
-		self.init(entityDescription: entityDescription, managedObjectContext: managedObjectContext)
+		self.init(entity: entityDescription, insertIntoManagedObjectContext: managedObjectContext)
 		self.name = name
 		self.value = value
     }
