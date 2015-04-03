@@ -517,9 +517,8 @@ public class GKGraph: NSObject {
 	*/
 	public func managedObjectContextDidSave(notification: NSNotification) {
 		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
-		if privateContext == incomingManagedObjectContext {
+//		if privateContext == incomingManagedObjectContext {
 			let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
-			
 			let userInfo = notification.userInfo
 			
 			// inserts
@@ -643,7 +642,7 @@ public class GKGraph: NSObject {
 					}
 				}
 			}
-		}
+//		}
 	}
 	
 	/**
@@ -764,7 +763,7 @@ public class GKGraph: NSObject {
 			propertyRelationship.minCount = 1
 			propertyRelationship.maxCount = 1
 			propertyRelationship.optional = false
-			propertyRelationship.deleteRule = .NoActionDeleteRule
+			propertyRelationship.deleteRule = .NullifyDeleteRule
 			
 			var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertySetRelationship.name = "propertySet"
@@ -803,7 +802,7 @@ public class GKGraph: NSObject {
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
 			groupRelationship.optional = false
-			groupRelationship.deleteRule = .NoActionDeleteRule
+			groupRelationship.deleteRule = .NullifyDeleteRule
 			
 			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"

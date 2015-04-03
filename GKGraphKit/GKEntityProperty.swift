@@ -42,6 +42,7 @@ internal class GKEntityProperty: NSManagedObject {
 		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.entityPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
         self.value = value
+		worker = w
     }
 	
 	/**

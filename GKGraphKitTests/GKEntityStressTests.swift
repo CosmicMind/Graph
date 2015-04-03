@@ -56,53 +56,51 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 				let prop: String = String(i)
 				e1!.addGroup(prop)
 				e1!.addGroup("test")
-				e1!.removeGroup("test")
-				e1![prop] = i
+//				e1!.removeGroup(prop)
+//				e1![prop] = i
 			}
-			
+
 			dispatch_async(self.queue2) {
 				for i in 1...500 {
 					let prop: String = String(i)
-					e1!.removeGroup(prop)
+					e1!.addGroup(prop)
 					e1!.addGroup("test")
-					e1!.removeGroup("test")
-					e1![prop] = nil
+//					e1!.removeGroup(prop)
+//					e1![prop] = nil
 				}
 				dispatch_async(self.queue3) {
 					for i in 1...1000 {
 						let prop: String = String(i)
 						e1!.addGroup(prop)
 						e1!.addGroup("test")
-						e1!.removeGroup("test")
-						e1![prop] = i
+//						e1![prop] = i
 					}
-				
+
 					dispatch_async(self.queue4) {
 						for i in 1...500 {
 							let prop: String = String(i)
-							e1!.removeGroup(prop)
+							e1!.addGroup(prop)
 							e1!.addGroup("test")
-							e1!.removeGroup("test")
-							e1![prop] = nil
+//							e1![prop] = nil
 						}
 						self.graph.save { (_, _) in }
 					}
 				}
 			}
 		}
-		
-		
+
+
 		expectation = expectationWithDescription("Entity: Insert did not pass.")
-		
+
 		// Wait for the delegates to be executed.
 		waitForExpectationsWithTimeout(30, handler: nil)
 		
-		e1!.delete()
-		
 		expectation = expectationWithDescription("Entity: Delete did not pass.")
 		
-		graph.save { (_, _) in }
+		e1!.delete()
 		
+		graph.save { (_, _) in }
+
 		// Wait for the delegates to be executed.
 		waitForExpectationsWithTimeout(30, handler: nil)
 	}
@@ -115,13 +113,13 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		println(entity)
 		println(entity.groups.count)
 		println(entity.properties.count)
-		if 500 == entity.groups.count && 500 == entity.properties.count {
+		if 1001 == entity.groups.count {
 			expectation?.fulfill()
 		}
 	}
 	
 	func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
-		if 0 == entity.groups.count && 0 == entity.properties.count {
+		if 0 == entity.groups.count {
 			expectation?.fulfill()
 		}
 	}
