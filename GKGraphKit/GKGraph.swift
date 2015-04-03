@@ -25,22 +25,22 @@ import CoreData
 
 struct GKGraphPersistentStoreCoordinator {
 	static var onceToken: dispatch_once_t = 0
-	static var persistentStoreCoordinator: NSPersistentStoreCoordinator!
+	static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
 }
 
 struct GKGraphMainManagedObjectContext {
 	static var onceToken: dispatch_once_t = 0
-	static var managedObjectContext: NSManagedObjectContext!
+	static var managedObjectContext: NSManagedObjectContext?
 }
 
 struct GKGraphPrivateManagedObjectContext {
 	static var onceToken: dispatch_once_t = 0
-	static var managedObjectContext: NSManagedObjectContext!
+	static var managedObjectContext: NSManagedObjectContext?
 }
 
 struct GKGraphManagedObjectModel {
 	static var onceToken: dispatch_once_t = 0
-	static var managedObjectModel: NSManagedObjectModel!
+	static var managedObjectModel: NSManagedObjectModel?
 }
 
 struct GKGraphUtility {
@@ -132,17 +132,20 @@ public class GKGraph: NSObject {
 	* @param        completion: (success: Bool, error: NSError?) -> ())
 	*/
 	public func save(completion: (success: Bool, error: NSError?) -> ()) {
-		var moc: NSManagedObjectContext? = worker()
-		if nil != moc {
-			if moc!.hasChanges {
-				moc!.performBlockAndWait { _ in
+		var w: NSManagedObjectContext? = worker
+		var p: NSManagedObjectContext? = privateContext
+		if nil != w && nil != p {
+			if w!.hasChanges {
+				w!.performBlockAndWait { _ in
 					var error: NSError?
-					assert(moc!.save(&error), "[GraphKit Error saving context")
+					assert(w!.save(&error), "[GraphKit Error saving context")
 				}
-				privateContext.performBlockAndWait {
-					var saveError: NSError?
-					var result = self.privateContext.save(&saveError)
-					completion(success: result, error: saveError)
+				if p!.hasChanges {
+					p!.performBlockAndWait {
+						var saveError: NSError?
+						var result = p!.save(&saveError)
+						completion(success: result, error: saveError)
+					}
 				}
 			}
 		}
@@ -653,24 +656,24 @@ public class GKGraph: NSObject {
 	* A NSManagedObjectContext that is configured to be thread safe
 	* for the NSManagedObjects calling on it.
 	*/
-	internal func worker() -> NSManagedObjectContext {
+	internal var worker: NSManagedObjectContext? {
 		dispatch_once(&GKGraphMainManagedObjectContext.onceToken) {
 			GKGraphMainManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-			GKGraphMainManagedObjectContext.managedObjectContext.parentContext = self.privateContext
+			GKGraphMainManagedObjectContext.managedObjectContext?.parentContext = self.privateContext
 		}
 		return GKGraphPrivateManagedObjectContext.managedObjectContext
 	}
 	
 	// make thread safe by creating this asynchronously
-	var privateContext: NSManagedObjectContext {
+	private var privateContext: NSManagedObjectContext? {
 		dispatch_once(&GKGraphPrivateManagedObjectContext.onceToken) {
 			GKGraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-			GKGraphPrivateManagedObjectContext.managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+			GKGraphPrivateManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
 		}
 		return GKGraphPrivateManagedObjectContext.managedObjectContext
 	}
 	
-	internal var managedObjectModel: NSManagedObjectModel {
+	private var managedObjectModel: NSManagedObjectModel? {
 		dispatch_once(&GKGraphManagedObjectModel.onceToken) {
 			GKGraphManagedObjectModel.managedObjectModel = NSManagedObjectModel()
 			
@@ -937,7 +940,7 @@ public class GKGraph: NSObject {
 			bondGroupDescription.properties = bondGroupProperties
 			bondPropertyDescription.properties = bondPropertyProperties
 			
-			GKGraphManagedObjectModel.managedObjectModel.entities = [
+			GKGraphManagedObjectModel.managedObjectModel?.entities = [
 				entityDescription,
 				entityGroupDescription,
 				entityPropertyDescription,
@@ -951,20 +954,20 @@ public class GKGraph: NSObject {
 				bondPropertyDescription
 			]
 		}
-		return GKGraphManagedObjectModel.managedObjectModel!
+		return GKGraphManagedObjectModel.managedObjectModel
 	}
 	
-	internal var persistentStoreCoordinator: NSPersistentStoreCoordinator {
+	private var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
 		dispatch_once(&GKGraphPersistentStoreCoordinator.onceToken) {
 			let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent(GKGraphUtility.storeName)
 			var error: NSError?
-			GKGraphPersistentStoreCoordinator.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+			GKGraphPersistentStoreCoordinator.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
 			var options: Dictionary = [NSReadOnlyPersistentStoreOption: false, NSSQLitePragmasOption: ["journal_mode": "DELETE"]];
-			if nil == GKGraphPersistentStoreCoordinator.persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options as NSDictionary, error: &error) {
+			if nil == GKGraphPersistentStoreCoordinator.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options as NSDictionary, error: &error) {
 				assert(nil == error, "[GraphKit Error: Saving to internal context.]")
 			}
 		}
-		return GKGraphPersistentStoreCoordinator.persistentStoreCoordinator!
+		return GKGraphPersistentStoreCoordinator.persistentStoreCoordinator
 	}
 	
 	internal var applicationDocumentsDirectory: NSURL {
@@ -1050,7 +1053,7 @@ public class GKGraph: NSObject {
 	* @param        predicate: NSPredicate!
 	* @return       Array<AnyObject>!
 	*/
-	internal func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject>! {
+	private func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject>! {
 		return search(entityDescriptorName, predicate: predicate, sort: nil)
 	}
 	
@@ -1062,9 +1065,9 @@ public class GKGraph: NSObject {
 	* @param		sort: Array<NSSortDescriptor>
 	* @return       Array<AnyObject>!
 	*/
-	internal func search(entityDescriptorName: NSString!, predicate: NSPredicate!, sort: Array<NSSortDescriptor>?) -> Array<AnyObject>! {
+	private func search(entityDescriptorName: NSString!, predicate: NSPredicate!, sort: Array<NSSortDescriptor>?) -> Array<AnyObject>! {
 		let request: NSFetchRequest = NSFetchRequest()
-		let entity: NSEntityDescription = managedObjectModel.entitiesByName[entityDescriptorName] as NSEntityDescription
+		let entity: NSEntityDescription = managedObjectModel?.entitiesByName[entityDescriptorName] as NSEntityDescription
 		request.entity = entity
 		request.predicate = predicate
 		request.fetchBatchSize = batchSize
@@ -1074,9 +1077,9 @@ public class GKGraph: NSObject {
 		var error: NSError?
 		var nodes: Array<AnyObject> = Array<AnyObject>()
 		
-		let moc: NSManagedObjectContext = worker()
-		moc.performBlockAndWait { _ in
-			if let result: Array<AnyObject> = moc.executeFetchRequest(request, error: &error) {
+		var moc: NSManagedObjectContext? = worker
+		moc?.performBlockAndWait { _ in
+			if let result: Array<AnyObject> = moc?.executeFetchRequest(request, error: &error) {
 				assert(nil == error, "[GraphKit Error: Fecthing nodes.]")
 				for item: AnyObject in result {
 					nodes.append(item)

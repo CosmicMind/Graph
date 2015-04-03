@@ -42,8 +42,8 @@ internal class GKManagedBond: NSManagedObject {
 	*/
 	convenience internal init(type: String!) {
 		let g: GKGraph = GKGraph()
-		let w: NSManagedObjectContext = g.worker()
-		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: w)!, insertIntoManagedObjectContext: w)
+		var w: NSManagedObjectContext? = g.worker
+		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		nodeClass = "3"
         self.type = type
 		createdDate = NSDate()
@@ -84,7 +84,7 @@ internal class GKManagedBond: NSManagedObject {
                 }
             }
             if nil != value {
-				var property: GKBondProperty = GKBondProperty(name: name, value: value, managedObjectContext: worker!)
+				var property: GKBondProperty = GKBondProperty(name: name, value: value, managedObjectContext: worker)
                 property.node = self
 				propertySet.addObject(property)
             }
@@ -99,7 +99,7 @@ internal class GKManagedBond: NSManagedObject {
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-			var group: GKBondGroup = GKBondGroup(name: name, managedObjectContext: worker!)
+			var group: GKBondGroup = GKBondGroup(name: name, managedObjectContext: worker)
             group.node = self
 			groupSet.addObject(group)
 			return true
@@ -145,6 +145,6 @@ internal class GKManagedBond: NSManagedObject {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
-		worker!.deleteObject(self)
+		worker?.deleteObject(self)
 	}
 }
