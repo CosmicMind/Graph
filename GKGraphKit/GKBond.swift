@@ -201,8 +201,12 @@ public class GKBond: NSObject {
     }
 }
 
-extension GKBond: Printable {
+extension GKBond: Equatable, Printable {
 	override public var description: String {
 		return "[GKBond\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubject: \(subject)\n\tobject: \(object)]"
 	}
+}
+
+public func ==(lhs: GKBond, rhs: GKBond) -> Bool {
+	return lhs.objectID == rhs.objectID
 }

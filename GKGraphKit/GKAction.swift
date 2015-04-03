@@ -269,8 +269,12 @@ public class GKAction: NSObject {
     }
 }
 
-extension GKAction: Printable {
+extension GKAction: Equatable, Printable {
 	override public var description: String {
 		return "[GKAction\n\tobjectID: \((objectID))\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubjects: \(subjects)\n\tobjects: \(objects)]"
 	}
+}
+
+public func ==(lhs: GKAction, rhs: GKAction) -> Bool {
+	return lhs.objectID == rhs.objectID
 }

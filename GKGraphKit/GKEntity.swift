@@ -273,8 +273,12 @@ public class GKEntity: NSObject {
     }
 }
 
-extension GKEntity: Printable {
+extension GKEntity: Equatable, Printable {
 	override public var description: String {
 		return "[GKEntity\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tactionsWhenSubject: \(actionsWhenSubject)\n\tactionsWhenObject: \(actionsWhenObject)\n\tbondsWhenSubject: \(bondsWhenSubject)\n\tbondsWhenObject: \(bondsWhenObject)\n]"
 	}
+}
+
+public func ==(lhs: GKEntity, rhs: GKEntity) -> Bool {
+	return lhs.objectID == rhs.objectID
 }
