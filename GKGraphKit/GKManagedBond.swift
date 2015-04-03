@@ -100,7 +100,6 @@ internal class GKManagedBond: NSManagedObject {
                 if name == property.name {
                     if nil == value {
 						propertySet.removeObject(property)
-						context.deleteObject(property)
 					} else {
                         property.value = value!
                     }
@@ -158,7 +157,6 @@ internal class GKManagedBond: NSManagedObject {
             let group: GKBondGroup = n as GKBondGroup
             if name == group.name {
 				groupSet.removeObject(group)
-				context.deleteObject(group)
 				return true
             }
         }
@@ -170,56 +168,6 @@ internal class GKManagedBond: NSManagedObject {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
-		for n in groupSet {
-			let group: GKBondGroup = n as GKBondGroup
-			groupSet.removeObject(group)
-			context.deleteObject(group)
-		}
-		for n in propertySet {
-			let property: GKBondProperty = n as GKBondProperty
-			propertySet.removeObject(property)
-			context.deleteObject(property)
-		}
-		subject = nil
-		object = nil
 		context.deleteObject(self)
-	}
-}
-
-extension GKManagedBond {
-	/**
-	* addPropertySetObject
-	* Adds the Property to the propertySet for the Bond.
-	* @param        value: GKBondProperty
-	*/
-	func addPropertySetObject(value: GKBondProperty) {
-		propertySet.addObject(value)
-	}
-	
-	/**
-	* removePropertySetObject
-	* Removes the Property to the propertySet for the Bond.
-	* @param        value: GKBondProperty
-	*/
-	func removePropertySetObject(value: GKBondProperty) {
-		propertySet.removeObject(value)
-	}
-	
-	/**
-	* addGroupSetObject
-	* Adds the Group to the groupSet for the Bond.
-	* @param        value: GKBondGroup
-	*/
-	func addGroupSetObject(value: GKBondGroup) {
-		groupSet.addObject(value)
-	}
-	
-	/**
-	* removeGroupSetObject
-	* Removes the Group to the groupSet for the Bond.
-	* @param        value: GKBondGroup
-	*/
-	func removeGroupSetObject(value: GKBondGroup) {
-		groupSet.removeObject(value)
 	}
 }

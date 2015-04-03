@@ -83,8 +83,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         read.addSubject(user)
         read.addObject(book)
         read.addObject(magazine)
-//		println(read)
-
+		
         // Set an Expectation for the insert watcher.
         userInsertExpectation = expectationWithDescription("User: Insert did not pass.")
         bookInsertExpectation = expectationWithDescription("Book: Insert did not pass.")
@@ -130,31 +129,13 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
         bookDeleteExpectation = expectationWithDescription("Book: Delete did not pass.")
         magazineDeleteExpectation = expectationWithDescription("Magazine: Delete did not pass.")
-//        readUpdateExpectation = expectationWithDescription("Read: Update did not pass.")s
+		readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
 		
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
-		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(5, handler: nil)
-		
-		read.delete()
-		
-		readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
-		groupDeleteExpectation = expectationWithDescription("Group: Delete did not pass.")
-		groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
-		nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
-		nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
-		sessionDeleteExpectation = expectationWithDescription("Session: Delete did not pass.")
-		sessionSearchExpectation = expectationWithDescription("Session: Search did not pass.")
-		
-		// Save the Graph, which will execute the delegate handlers.
-		graph.save() { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-		}
-		
 		// Wait for the delegates to be executed.
 		waitForExpectationsWithTimeout(5, handler: nil)
     }
@@ -164,7 +145,6 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-//		println(entity)
 		if "User" == entity.type && 1 == entity.actionsWhenSubject.count {
             userInsertExpectation?.fulfill()
         } else if "Book" == entity.type && 1 == entity.actionsWhenObject.count {
@@ -197,7 +177,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 	}
 	
     func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
-        if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
+		if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
             readDeleteExpectation?.fulfill()
         }
     }
@@ -207,16 +187,6 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
             groupInsertExpectation?.fulfill()
             let nodes: Array<GKAction> = graph.search(ActionGroup: group)
             if 1 == nodes.count && action.objectID == nodes[0].objectID {
-                groupSearchExpectation?.fulfill()
-            }
-        }
-    }
-
-    func graph(graph: GKGraph!, didDeleteAction action: GKAction!, group: String!) {
-        if "Holiday" == group {
-            groupDeleteExpectation?.fulfill()
-            let nodes: Array<GKAction> = graph.search(ActionGroup: group)
-            if 0 == nodes.count {
                 groupSearchExpectation?.fulfill()
             }
         }
@@ -260,28 +230,6 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
             if 1 == nodes.count && nodes[0][property] as Int == value as Int {
                 var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as Int)
                 if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                    sessionSearchExpectation?.fulfill()
-                }
-            }
-        }
-    }
-
-    func graph(graph: GKGraph!, didDeleteAction action: GKAction!, property: String!, value: AnyObject!) {
-        if "name" == property && "X-MASS" == value as String {
-            nameDeleteExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
-            if 0 == nodes.count {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as String)
-                if 0 == nodes.count {
-                    nameSearchExpectation?.fulfill()
-                }
-            }
-        } else if "session" == property && 456 == value as Int {
-            sessionDeleteExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
-            if 0 == nodes.count {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as Int)
-                if 0 == nodes.count {
                     sessionSearchExpectation?.fulfill()
                 }
             }

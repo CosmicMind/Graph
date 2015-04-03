@@ -100,7 +100,6 @@ internal class GKManagedAction: NSManagedObject {
                 if name == property.name {
                     if nil == value {
 						propertySet.removeObject(property)
-						context.deleteObject(property)
                     } else {
                         property.value = value!
                     }
@@ -158,7 +157,6 @@ internal class GKManagedAction: NSManagedObject {
             let group: GKActionGroup = n as GKActionGroup
             if name == group.name {
 				groupSet.removeObject(group)
-				context.deleteObject(group)
 				return true
             }
         }
@@ -222,64 +220,6 @@ internal class GKManagedAction: NSManagedObject {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
-		for n in groupSet {
-			let group: GKActionGroup = n as GKActionGroup
-			groupSet.removeObject(group)
-			context.deleteObject(group)
-		}
-		for n in propertySet {
-			let property: GKActionProperty = n as GKActionProperty
-			propertySet.removeObject(property)
-			context.deleteObject(property)
-		}
-		for n in objectSet {
-			var entity: GKManagedEntity = n as GKManagedEntity
-			entity.actionSubjectSet.removeObject(self)
-			subjectSet.removeObject(entity)
-		}
-		for n in objectSet {
-			var entity: GKManagedEntity = n as GKManagedEntity
-			entity.actionObjectSet.removeObject(self)
-			objectSet.removeObject(entity)
-		}
 		context.deleteObject(self)
-	}
-}
-
-extension GKManagedAction {
-	/**
-	* addPropertySetObject
-	* Adds the Property to the propertySet for the Action.
-	* @param        value: GKActionProperty
-	*/
-	func addPropertySetObject(value: GKActionProperty) {
-		propertySet.addObject(value)
-	}
-	
-	/**
-	* removePropertySetObject
-	* Removes the Property to the propertySet for the Action.
-	* @param        value: GKActionProperty
-	*/
-	func removePropertySetObject(value: GKActionProperty) {
-		propertySet.removeObject(value)
-	}
-	
-	/**
-	* addGroupSetObject
-	* Adds the Group to the groupSet for the Action.
-	* @param        value: GKActionGroup
-	*/
-	func addGroupSetObject(value: GKActionGroup) {
-		groupSet.addObject(value)
-	}
-	
-	/**
-	* removeGroupSetObject
-	* Removes the Group to the groupSet for the Action.
-	* @param        value: GKActionGroup
-	*/
-	func removeGroupSetObject(value: GKActionGroup) {
-		groupSet.removeObject(value)
 	}
 }

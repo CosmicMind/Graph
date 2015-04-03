@@ -24,15 +24,12 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
     var userInsertExpectation: XCTestExpectation?
 	var userDeleteExpectation: XCTestExpectation?
     var groupInsertExpectation: XCTestExpectation?
-    var groupDeleteExpectation: XCTestExpectation?
     var groupSearchExpectation: XCTestExpectation?
     var nameInsertExpectation: XCTestExpectation?
     var nameUpdateExpectation: XCTestExpectation?
-    var nameDeleteExpectation: XCTestExpectation?
     var nameSearchExpectation: XCTestExpectation?
     var ageInsertExpectation: XCTestExpectation?
     var ageUpdateExpectation: XCTestExpectation?
-    var ageDeleteExpectation: XCTestExpectation?
     var ageSearchExpectation: XCTestExpectation?
 
     override func setUp() {
@@ -100,13 +97,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 
         // Set an Expectation for the delete watcher.
         userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
-        groupDeleteExpectation = expectationWithDescription("Group: Delete did not pass.")
-        groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
-        nameDeleteExpectation = expectationWithDescription("Name: Delete did not pass.")
-        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
-        ageDeleteExpectation = expectationWithDescription("Age: Delete did not pass.")
-        ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
-
+        
         // Save the Graph, which will execute the delegate handlers.
         graph.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
@@ -137,16 +128,6 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
             groupInsertExpectation?.fulfill()
             let nodes: Array<GKEntity> = graph.search(EntityGroup: group)
             if 1 == nodes.count && entity.objectID == nodes[0].objectID {
-                groupSearchExpectation?.fulfill()
-            }
-        }
-    }
-
-    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, group: String!) {
-        if "Female" == group {
-            groupDeleteExpectation?.fulfill()
-            let nodes: Array<GKEntity> = graph.search(EntityGroup: group)
-            if 0 == nodes.count {
                 groupSearchExpectation?.fulfill()
             }
         }
@@ -191,28 +172,6 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
             if 1 == nodes.count && nodes[0][property] as Int == value as Int {
                 var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as Int)
                 if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                    ageSearchExpectation?.fulfill()
-                }
-            }
-        }
-    }
-
-    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, property: String!, value: AnyObject!) {
-        if "name" == property && "Daniel" == value as String {
-            nameDeleteExpectation?.fulfill()
-            var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 0 == nodes.count {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as String)
-                if 0 == nodes.count {
-                    nameSearchExpectation?.fulfill()
-                }
-            }
-        } else if "age" == property && 31 == value as Int {
-            ageDeleteExpectation?.fulfill()
-            var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 0 == nodes.count {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as Int)
-                if 0 == nodes.count {
                     ageSearchExpectation?.fulfill()
                 }
             }

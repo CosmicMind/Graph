@@ -103,7 +103,6 @@ internal class GKManagedEntity: NSManagedObject {
                 if name == property.name {
                     if nil == value {
 						propertySet.removeObject(property)
-						context.deleteObject(property)
 					} else {
                         property.value = value!
                     }
@@ -161,7 +160,6 @@ internal class GKManagedEntity: NSManagedObject {
             let group: GKEntityGroup = n as GKEntityGroup
 			if name == group.name {
 				groupSet.removeObject(group)
-				context.deleteObject(group)
 				return true
             }
         }
@@ -173,111 +171,6 @@ internal class GKManagedEntity: NSManagedObject {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
-		for n in groupSet {
-			let group: GKEntityGroup = n as GKEntityGroup
-			groupSet.removeObject(group)
-			context.deleteObject(group)
-		}
-		for n in propertySet {
-			let property: GKEntityProperty = n as GKEntityProperty
-			propertySet.removeObject(property)
-			context.deleteObject(property)
-		}
-		for n in actionSubjectSet {
-			var action: GKManagedAction = n as GKManagedAction
-			actionSubjectSet.removeObject(action)
-			action.removeSubject(self)
-		}
-		for n in actionObjectSet {
-			var action: GKManagedAction = n as GKManagedAction
-			actionObjectSet.removeObject(action)
-			action.removeObject(self)
-		}
-		for n in bondSubjectSet {
-			var bond: GKManagedBond = n as GKManagedBond
-			bondSubjectSet.removeObject(bond)
-			bond.delete()
-		}
-		for n in bondObjectSet {
-			var bond: GKManagedBond = n as GKManagedBond
-			bondObjectSet.removeObject(bond)
-			bond.delete()
-		}
 		context.deleteObject(self)
-	}
-}
-
-extension GKManagedEntity {
-
-	/**
-    * addBondSubjectSetObject
-    * Adds the Bond to the bondSubjectSet for the Entity.
-    * @param        value: GKManagedBond
-    */
-    func addBondSubjectSetObject(value: GKManagedBond) {
-        bondSubjectSet.addObject(value)
-    }
-
-    /**
-    * removeBondSubjectSetObject
-    * Removes the Bond to the bondSubjectSet for the Entity.
-    * @param        value: GKManagedBond
-    */
-    func removeBondSubjectSetObject(value: GKManagedBond) {
-		bondSubjectSet.removeObject(value)
-    }
-
-    /**
-    * addBondObjectSetObject
-    * Adds the Bond to the bondObjectSet for the Entity.
-    * @param        value: GKManagedBond
-    */
-    func addBondObjectSetObject(value: GKManagedBond) {
-        bondObjectSet.addObject(value)
-    }
-
-    /**
-    * removeBondObjectSetObject
-    * Removes the Bond to the bondObjectSet for the Entity.
-    * @param        value: GKManagedBond
-    */
-    func removeBondObjectSetObject(value: GKManagedBond) {
-        bondObjectSet.removeObject(value)
-    }
-	
-	/**
-	* addPropertySetObject
-	* Adds the Property to the propertySet for the Entity.
-	* @param        value: GKEntityProperty
-	*/
-	func addPropertySetObject(value: GKEntityProperty) {
-		propertySet.addObject(value)
-	}
-	
-	/**
-	* removePropertySetObject
-	* Removes the Property to the propertySet for the Entity.
-	* @param        value: GKEntityProperty
-	*/
-	func removePropertySetObject(value: GKEntityProperty) {
-		propertySet.removeObject(value)
-	}
-	
-	/**
-	* addGroupSetObject
-	* Adds the Group to the groupSet for the Entity.
-	* @param        value: GKEntityGroup
-	*/
-	func addGroupSetObject(value: GKEntityGroup) {
-		groupSet.addObject(value)
-	}
-	
-	/**
-	* removeGroupSetObject
-	* Removes the Group to the groupSet for the Entity.
-	* @param        value: GKEntityGroup
-	*/
-	func removeGroupSetObject(value: GKEntityGroup) {
-		groupSet.removeObject(value)
 	}
 }

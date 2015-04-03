@@ -77,27 +77,21 @@ public protocol GKGraphDelegate {
 	optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!)
 	optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!)
 	optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, group: String!)
-	optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, group: String!)
 	optional func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, property: String!, value: AnyObject!)
 	optional func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, property: String!, value: AnyObject!)
-	optional func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!, property: String!, value: AnyObject!)
 	
 	optional func graph(graph: GKGraph!, didInsertAction action: GKAction!)
 	optional func graph(graph: GKGraph!, didUpdateAction action: GKAction!)
 	optional func graph(graph: GKGraph!, didDeleteAction action: GKAction!)
 	optional func graph(graph: GKGraph!, didInsertAction action: GKAction!, group: String!)
-	optional func graph(graph: GKGraph!, didDeleteAction action: GKAction!, group: String!)
 	optional func graph(graph: GKGraph!, didInsertAction entity: GKAction!, property: String!, value: AnyObject!)
 	optional func graph(graph: GKGraph!, didUpdateAction entity: GKAction!, property: String!, value: AnyObject!)
-	optional func graph(graph: GKGraph!, didDeleteAction entity: GKAction!, property: String!, value: AnyObject!)
 	
 	optional func graph(graph: GKGraph!, didInsertBond bond: GKBond!)
 	optional func graph(graph: GKGraph!, didDeleteBond bond: GKBond!)
 	optional func graph(graph: GKGraph!, didInsertBond bond: GKBond!, group: String!)
-	optional func graph(graph: GKGraph!, didDeleteBond bond: GKBond!, group: String!)
 	optional func graph(graph: GKGraph!, didInsertBond entity: GKBond!, property: String!, value: AnyObject!)
 	optional func graph(graph: GKGraph!, didUpdateBond entity: GKBond!, property: String!, value: AnyObject!)
-	optional func graph(graph: GKGraph!, didDeleteBond entity: GKBond!, property: String!, value: AnyObject!)
 }
 
 @objc(GKGraph)
@@ -627,38 +621,13 @@ public class GKGraph: NSObject {
 					case "GKManagedEntity_GKManagedEntity_":
 						delegate?.graph?(self, didDeleteEntity: GKEntity(entity: node as GKManagedEntity))
 						break
-					case "GKEntityProperty_GKEntityProperty_":
-						let property: GKEntityProperty = node as GKEntityProperty
-						delegate?.graph?(self, didDeleteEntity: GKEntity(entity: property.node), property: property.name, value: property.value)
-						break
-					case "GKEntityGroup_GKEntityGroup_":
-						let group: GKEntityGroup = node as GKEntityGroup
-						delegate?.graph?(self, didDeleteEntity: GKEntity(entity: group.node), group: group.name)
-						break
 					case "GKManagedAction_GKManagedAction_":
 						delegate?.graph?(self, didDeleteAction: GKAction(action: node as GKManagedAction))
-						break
-					case "GKActionProperty_GKActionProperty_":
-						let property: GKActionProperty = node as GKActionProperty
-						delegate?.graph?(self, didDeleteAction: GKAction(action: property.node), property: property.name, value: property.value)
-						break
-					case "GKActionGroup_GKActionGroup_":
-						let group: GKActionGroup = node as GKActionGroup
-						delegate?.graph?(self, didDeleteAction: GKAction(action: group.node), group: group.name)
 						break
 					case "GKManagedBond_GKManagedBond_":
 						delegate?.graph?(self, didDeleteBond: GKBond(bond: node as GKManagedBond))
 						break
-					case "GKBondProperty_GKBondProperty_":
-						let property: GKBondProperty = node as GKBondProperty
-						delegate?.graph?(self, didDeleteBond: GKBond(bond: property.node), property: property.name, value: property.value)
-						break
-					case "GKBondGroup_GKBondGroup_":
-						let group: GKBondGroup = node as GKBondGroup
-						delegate?.graph?(self, didDeleteBond: GKBond(bond: group.node), group: group.name)
-						break
-					default:
-						assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
+					default:break
 					}
 				}
 			}
@@ -770,12 +739,13 @@ public class GKGraph: NSObject {
 			propertyRelationship.minCount = 1
 			propertyRelationship.maxCount = 1
 			propertyRelationship.optional = false
-			propertyRelationship.deleteRule = .NoActionDeleteRule
+			propertyRelationship.deleteRule = .NullifyDeleteRule
 			
 			var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertySetRelationship.name = "propertySet"
 			propertySetRelationship.minCount = 0
 			propertySetRelationship.maxCount = 0
+			propertySetRelationship.optional = false
 			propertySetRelationship.deleteRule = .CascadeDeleteRule
 			propertyRelationship.inverseRelationship = propertySetRelationship
 			propertySetRelationship.inverseRelationship = propertyRelationship
@@ -808,12 +778,13 @@ public class GKGraph: NSObject {
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
 			groupRelationship.optional = false
-			groupRelationship.deleteRule = .NoActionDeleteRule
+			groupRelationship.deleteRule = .NullifyDeleteRule
 			
 			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"
 			groupSetRelationship.minCount = 0
 			groupSetRelationship.maxCount = 0
+			groupSetRelationship.optional = false
 			groupSetRelationship.deleteRule = .CascadeDeleteRule
 			groupRelationship.inverseRelationship = groupSetRelationship
 			groupSetRelationship.inverseRelationship = groupRelationship
@@ -838,13 +809,15 @@ public class GKGraph: NSObject {
 			actionSubjectSetRelationship.name = "subjectSet"
 			actionSubjectSetRelationship.minCount = 0
 			actionSubjectSetRelationship.maxCount = 0
-			actionSubjectSetRelationship.deleteRule = .NoActionDeleteRule
+			actionSubjectSetRelationship.optional = false
+			actionSubjectSetRelationship.deleteRule = .NullifyDeleteRule
 			actionSubjectSetRelationship.destinationEntity = entityDescription
 			
 			var actionSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionSubjectRelationship.name = "actionSubjectSet"
 			actionSubjectRelationship.minCount = 0
 			actionSubjectRelationship.maxCount = 0
+			actionSubjectRelationship.optional = false
 			actionSubjectRelationship.deleteRule = .CascadeDeleteRule
 			actionSubjectRelationship.destinationEntity = actionDescription
 			
@@ -860,13 +833,15 @@ public class GKGraph: NSObject {
 			actionObjectSetRelationship.name = "objectSet"
 			actionObjectSetRelationship.minCount = 0
 			actionObjectSetRelationship.maxCount = 0
-			actionObjectSetRelationship.deleteRule = .NoActionDeleteRule
+			actionObjectSetRelationship.optional = false
+			actionObjectSetRelationship.deleteRule = .NullifyDeleteRule
 			actionObjectSetRelationship.destinationEntity = entityDescription
 			
 			var actionObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionObjectRelationship.name = "actionObjectSet"
 			actionObjectRelationship.minCount = 0
 			actionObjectRelationship.maxCount = 0
+			actionObjectRelationship.optional = false
 			actionObjectRelationship.deleteRule = .CascadeDeleteRule
 			actionObjectRelationship.destinationEntity = actionDescription
 			actionObjectRelationship.inverseRelationship = actionObjectSetRelationship
@@ -882,13 +857,14 @@ public class GKGraph: NSObject {
 			bondSubjectSetRelationship.minCount = 1
 			bondSubjectSetRelationship.maxCount = 1
 			bondSubjectSetRelationship.optional = true
-			bondSubjectSetRelationship.deleteRule = .NoActionDeleteRule
+			bondSubjectSetRelationship.deleteRule = .NullifyDeleteRule
 			bondSubjectSetRelationship.destinationEntity = entityDescription
 			
 			var bondSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			bondSubjectRelationship.name = "bondSubjectSet"
 			bondSubjectRelationship.minCount = 0
 			bondSubjectRelationship.maxCount = 0
+			bondSubjectRelationship.optional = false
 			bondSubjectRelationship.deleteRule = .CascadeDeleteRule
 			bondSubjectRelationship.destinationEntity = bondDescription
 			
@@ -905,13 +881,14 @@ public class GKGraph: NSObject {
 			bondObjectSetRelationship.minCount = 1
 			bondObjectSetRelationship.maxCount = 1
 			bondObjectSetRelationship.optional = true
-			bondObjectSetRelationship.deleteRule = .NoActionDeleteRule
+			bondObjectSetRelationship.deleteRule = .NullifyDeleteRule
 			bondObjectSetRelationship.destinationEntity = entityDescription
 			
 			var bondObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			bondObjectRelationship.name = "bondObjectSet"
 			bondObjectRelationship.minCount = 0
 			bondObjectRelationship.maxCount = 0
+			bondObjectRelationship.optional = false
 			bondObjectRelationship.deleteRule = .CascadeDeleteRule
 			bondObjectRelationship.destinationEntity = bondDescription
 			bondObjectRelationship.inverseRelationship = bondObjectSetRelationship
