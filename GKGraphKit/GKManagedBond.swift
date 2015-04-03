@@ -33,14 +33,16 @@ internal class GKManagedBond: NSManagedObject {
 	@NSManaged internal var subject: GKManagedEntity?
     @NSManaged internal var object: GKManagedEntity?
 
+	private var graph: GKGraph?
+	
     /**
     * entityDescription
     * Class method returning an NSEntityDescription Object for this Model Object.
     * @return        NSEntityDescription!
     */
     class func entityDescription() -> NSEntityDescription! {
-		let graph: GKGraph = GKGraph()
-		return NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: graph.managedObjectContext)
+		let g: GKGraph = GKGraph()
+		return NSEntityDescription.entityForName(GKGraphUtility.bondDescriptionName, inManagedObjectContext: g.managedObjectContext)
     }
 
     /**
@@ -49,7 +51,8 @@ internal class GKManagedBond: NSManagedObject {
     * @param        type: String!
     */
     convenience internal init(type: String!) {
-		self.init(entity: GKManagedBond.entityDescription(), insertIntoManagedObjectContext: GKGraphManagedObjectContext.managedObjectContext)
+		let g: GKGraph = GKGraph()
+		self.init(entity: GKManagedBond.entityDescription(), insertIntoManagedObjectContext: g.managedObjectContext)
 		nodeClass = "3"
         self.type = type
 		createdDate = NSDate()
@@ -57,6 +60,7 @@ internal class GKManagedBond: NSManagedObject {
 		groupSet = NSMutableSet()
 		subject = nil
 		object = nil
+		graph = g
     }
 
 	/**
@@ -66,7 +70,7 @@ internal class GKManagedBond: NSManagedObject {
 	*/
 	internal var context: NSManagedObjectContext {
 		get {
-			return nil == managedObjectContext ? GKGraphManagedObjectContext.managedObjectContext : managedObjectContext
+			return graph!.managedObjectContext
 		}
 	}
 	

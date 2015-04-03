@@ -26,7 +26,7 @@ import CoreData
 internal class GKBondProperty: NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var value: AnyObject
-	@NSManaged internal var node: GKManagedBond?
+	@NSManaged internal var node: GKManagedBond
 
     /**
     * init

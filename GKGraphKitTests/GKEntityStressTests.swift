@@ -52,7 +52,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		
 		dispatch_async(queue1) {
 			e1 = GKEntity(type: "E")
-			for i in 1...100 {
+			for i in 1...1000 {
 				let prop: String = String(i)
 				e1!.addGroup(prop)
 				e1!.addGroup("test")
@@ -61,7 +61,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 			}
 			
 			dispatch_async(self.queue2) {
-				for i in 1...50 {
+				for i in 1...500 {
 					let prop: String = String(i)
 					e1!.removeGroup(prop)
 					e1!.addGroup("test")
@@ -69,7 +69,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 					e1![prop] = nil
 				}
 				dispatch_async(self.queue3) {
-					for i in 1...100 {
+					for i in 1...1000 {
 						let prop: String = String(i)
 						e1!.addGroup(prop)
 						e1!.addGroup("test")
@@ -78,7 +78,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 					}
 				
 					dispatch_async(self.queue4) {
-						for i in 1...50 {
+						for i in 1...500 {
 							let prop: String = String(i)
 							e1!.removeGroup(prop)
 							e1!.addGroup("test")
@@ -112,7 +112,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-		if 50 == entity.groups.count && 50 == entity.properties.count {
+		if 500 == entity.groups.count && 500 == entity.properties.count {
 			expectation?.fulfill()
 		}
 	}

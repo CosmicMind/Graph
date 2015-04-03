@@ -25,7 +25,7 @@ import CoreData
 @objc(GKEntityGroup)
 internal class GKEntityGroup: NSManagedObject {
 	@NSManaged internal var name: String
-    @NSManaged internal var node: GKManagedEntity?
+    @NSManaged internal var node: GKManagedEntity
 
 	/**
 	* init

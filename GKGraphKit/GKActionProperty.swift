@@ -26,7 +26,7 @@ import CoreData
 internal class GKActionProperty: NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var value: AnyObject
-	@NSManaged internal var node: GKManagedAction?
+	@NSManaged internal var node: GKManagedAction
 
     /**
     * init

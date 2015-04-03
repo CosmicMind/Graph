@@ -33,6 +33,8 @@ internal class GKManagedAction: NSManagedObject {
 	@NSManaged internal var subjectSet: NSMutableSet
     @NSManaged internal var objectSet: NSMutableSet
 
+	private var graph: GKGraph?
+	
     /**
     * entityDescription
     * Class method returning an NSEntityDescription Object for this Model Object.
@@ -49,7 +51,8 @@ internal class GKManagedAction: NSManagedObject {
     * @param        type: String!
     */
     convenience internal init(type: String!) {
-		self.init(entity: GKManagedAction.entityDescription(), insertIntoManagedObjectContext: GKGraphManagedObjectContext.managedObjectContext)
+		let g: GKGraph = GKGraph()
+		self.init(entity: GKManagedAction.entityDescription(), insertIntoManagedObjectContext: g.managedObjectContext)
 		nodeClass = "2"
         self.type = type
 		createdDate = NSDate()
@@ -57,6 +60,7 @@ internal class GKManagedAction: NSManagedObject {
 		groupSet = NSMutableSet()
         subjectSet = NSMutableSet()
         objectSet = NSMutableSet()
+		graph = g
     }
 
 	/**
@@ -66,7 +70,7 @@ internal class GKManagedAction: NSManagedObject {
 	*/
 	internal var context: NSManagedObjectContext {
 		get {
-			return nil == managedObjectContext ? GKGraphManagedObjectContext.managedObjectContext : managedObjectContext
+			return graph!.managedObjectContext
 		}
 	}
 	
