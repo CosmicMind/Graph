@@ -73,6 +73,9 @@ internal class GKManagedEntity: NSManagedObject {
 	*/
 	internal var context: NSManagedObjectContext {
 		get {
+			if nil == graph {
+				graph = GKGraph()
+			}
 			return graph!.managedObjectContext
 		}
 	}

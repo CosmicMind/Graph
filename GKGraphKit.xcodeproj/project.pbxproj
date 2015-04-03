@@ -16,7 +16,6 @@
 		9626E9451ACD287100527625 /* GKManagedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9626E9381ACD287100527625 /* GKManagedAction.swift */; };
 		9626E9461ACD287100527625 /* GKManagedBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9626E9391ACD287100527625 /* GKManagedBond.swift */; };
 		9626E9471ACD287100527625 /* GKManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9626E93A1ACD287100527625 /* GKManagedEntity.swift */; };
-		9626E9481ACD287100527625 /* GKManagedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9626E93B1ACD287100527625 /* GKManagedNode.swift */; };
 		9626E9501ACD288500527625 /* GKAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9626E94C1ACD288500527625 /* GKAction.swift */; };
 		9626E9511ACD288500527625 /* GKBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9626E94D1ACD288500527625 /* GKBond.swift */; };
 		9626E9521ACD288500527625 /* GKEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9626E94E1ACD288500527625 /* GKEntity.swift */; };
@@ -52,7 +51,6 @@
 		9626E9381ACD287100527625 /* GKManagedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKManagedAction.swift; sourceTree = "<group>"; };
 		9626E9391ACD287100527625 /* GKManagedBond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKManagedBond.swift; sourceTree = "<group>"; };
 		9626E93A1ACD287100527625 /* GKManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKManagedEntity.swift; sourceTree = "<group>"; };
-		9626E93B1ACD287100527625 /* GKManagedNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKManagedNode.swift; sourceTree = "<group>"; };
 		9626E94C1ACD288500527625 /* GKAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKAction.swift; sourceTree = "<group>"; };
 		9626E94D1ACD288500527625 /* GKBond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKBond.swift; sourceTree = "<group>"; };
 		9626E94E1ACD288500527625 /* GKEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKEntity.swift; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 				9626E9381ACD287100527625 /* GKManagedAction.swift */,
 				9626E9391ACD287100527625 /* GKManagedBond.swift */,
 				9626E93A1ACD287100527625 /* GKManagedEntity.swift */,
-				9626E93B1ACD287100527625 /* GKManagedNode.swift */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -291,7 +288,6 @@
 				9626E9511ACD288500527625 /* GKBond.swift in Sources */,
 				9626E9531ACD288500527625 /* GKGraph.swift in Sources */,
 				9626E9471ACD287100527625 /* GKManagedEntity.swift in Sources */,
-				9626E9481ACD287100527625 /* GKManagedNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
