@@ -34,26 +34,17 @@ internal class GKManagedEntity: NSManagedObject {
     @NSManaged internal var bondSubjectSet: NSMutableSet
     @NSManaged internal var bondObjectSet: NSMutableSet
 	
-	private var graph: GKGraph?
+	private var worker: NSManagedObjectContext?
 	
 	/**
-    * entityDescription
-    * Class method returning an NSEntityDescription Object for this Model Object.
-    * @return        NSEntityDescription!
-    */
-    class func entityDescription() -> NSEntityDescription! {
-		let graph: GKGraph = GKGraph()
-		return NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: graph.managedObjectContext)
-    }
-
-    /**
     * init
     * Initializes the Model Object with e a given type.
     * @param        type: String!
     */
     convenience internal init(type: String!) {
 		let g: GKGraph = GKGraph()
-		self.init(entity: GKManagedEntity.entityDescription(), insertIntoManagedObjectContext: g.managedObjectContext)
+		let w: NSManagedObjectContext = g.worker()
+		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: w)!, insertIntoManagedObjectContext: w)
 		nodeClass = "1"
         self.type = type
 		createdDate = NSDate()
@@ -63,24 +54,10 @@ internal class GKManagedEntity: NSManagedObject {
         actionObjectSet = NSMutableSet()
         bondSubjectSet = NSMutableSet()
         bondObjectSet = NSMutableSet()
-		graph = g
+		worker = w
     }
 
 	/**
-	* context
-	* Retrieves the best context for Model Object.
-	* @return       NSManagedObjectContext
-	*/
-	internal var context: NSManagedObjectContext {
-		get {
-			if nil == graph {
-				graph = GKGraph()
-			}
-			return graph!.managedObjectContext
-		}
-	}
-	
-    /**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
     * @param        name: String!
@@ -110,7 +87,7 @@ internal class GKManagedEntity: NSManagedObject {
                 }
             }
             if nil != value {
-                var property: GKEntityProperty = GKEntityProperty(name: name, value: value, managedObjectContext: context)
+                var property: GKEntityProperty = GKEntityProperty(name: name, value: value, managedObjectContext: worker!)
                 property.node = self
 				propertySet.addObject(property)
             }
@@ -125,7 +102,7 @@ internal class GKManagedEntity: NSManagedObject {
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: context)
+            var group: GKEntityGroup = GKEntityGroup(name: name, managedObjectContext: worker!)
             group.node = self
 			groupSet.addObject(group)
 			return true
@@ -171,6 +148,6 @@ internal class GKManagedEntity: NSManagedObject {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
-		context.deleteObject(self)
+		worker!.deleteObject(self)
 	}
 }

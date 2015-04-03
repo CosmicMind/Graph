@@ -33,26 +33,17 @@ internal class GKManagedAction: NSManagedObject {
 	@NSManaged internal var subjectSet: NSMutableSet
     @NSManaged internal var objectSet: NSMutableSet
 
-	private var graph: GKGraph?
+	private var worker: NSManagedObjectContext?
 	
-    /**
-    * entityDescription
-    * Class method returning an NSEntityDescription Object for this Model Object.
-    * @return        NSEntityDescription!
-    */
-    class func entityDescription() -> NSEntityDescription! {
-		let graph: GKGraph = GKGraph()
-		return NSEntityDescription.entityForName(GKGraphUtility.actionDescriptionName, inManagedObjectContext: graph.managedObjectContext)
-    }
-
-    /**
-    * init
-    * Initializes the Model Object with e a given type.
-    * @param        type: String!
-    */
-    convenience internal init(type: String!) {
+	/**
+	* init
+	* Initializes the Model Object with e a given type.
+	* @param        type: String!
+	*/
+	convenience internal init(type: String!) {
 		let g: GKGraph = GKGraph()
-		self.init(entity: GKManagedAction.entityDescription(), insertIntoManagedObjectContext: g.managedObjectContext)
+		let w: NSManagedObjectContext = g.worker()
+		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.actionDescriptionName, inManagedObjectContext: w)!, insertIntoManagedObjectContext: w)
 		nodeClass = "2"
         self.type = type
 		createdDate = NSDate()
@@ -60,24 +51,10 @@ internal class GKManagedAction: NSManagedObject {
 		groupSet = NSMutableSet()
         subjectSet = NSMutableSet()
         objectSet = NSMutableSet()
-		graph = g
+		worker = w
     }
 
 	/**
-	* context
-	* Retrieves the best context for Model Object.
-	* @return       NSManagedObjectContext
-	*/
-	internal var context: NSManagedObjectContext {
-		get {
-			if nil == graph {
-				graph = GKGraph()
-			}
-			return graph!.managedObjectContext
-		}
-	}
-	
-    /**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
     * @param        name: String!
@@ -107,7 +84,7 @@ internal class GKManagedAction: NSManagedObject {
                 }
             }
             if nil != value {
-                var property: GKActionProperty = GKActionProperty(name: name, value: value, managedObjectContext: context)
+                var property: GKActionProperty = GKActionProperty(name: name, value: value, managedObjectContext: worker!)
                 property.node = self
 				propertySet.addObject(property)
             }
@@ -122,7 +99,7 @@ internal class GKManagedAction: NSManagedObject {
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-			var group: GKActionGroup = GKActionGroup(name: name, managedObjectContext: context)
+			var group: GKActionGroup = GKActionGroup(name: name, managedObjectContext: worker!)
             group.node = self
 			groupSet.addObject(group)
             return true
@@ -220,6 +197,6 @@ internal class GKManagedAction: NSManagedObject {
 	* Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
-		context.deleteObject(self)
+		worker!.deleteObject(self)
 	}
 }

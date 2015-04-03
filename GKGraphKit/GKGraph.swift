@@ -28,7 +28,12 @@ struct GKGraphPersistentStoreCoordinator {
 	static var persistentStoreCoordinator: NSPersistentStoreCoordinator!
 }
 
-struct GKGraphManagedObjectContext {
+struct GKGraphMainManagedObjectContext {
+	static var onceToken: dispatch_once_t = 0
+	static var managedObjectContext: NSManagedObjectContext!
+}
+
+struct GKGraphPrivateManagedObjectContext {
 	static var onceToken: dispatch_once_t = 0
 	static var managedObjectContext: NSManagedObjectContext!
 }
@@ -127,10 +132,19 @@ public class GKGraph: NSObject {
 	* @param        completion: (success: Bool, error: NSError?) -> ())
 	*/
 	public func save(completion: (success: Bool, error: NSError?) -> ()) {
-		managedObjectContext.performBlockAndWait {
-			var saveError: NSError?
-			var result = self.managedObjectContext.save(&saveError)
-			completion(success: result, error: saveError)
+		var moc: NSManagedObjectContext? = worker()
+		if nil != moc {
+			if moc!.hasChanges {
+				moc!.performBlockAndWait { _ in
+					var error: NSError?
+					assert(moc!.save(&error), "[GraphKit Error saving context")
+				}
+				privateContext.performBlockAndWait {
+					var saveError: NSError?
+					var result = self.privateContext.save(&saveError)
+					completion(success: result, error: saveError)
+				}
+			}
 		}
 	}
 	
@@ -504,8 +518,8 @@ public class GKGraph: NSObject {
 	* @param        notification: NSNotification
 	*/
 	public func managedObjectContextDidSave(notification: NSNotification) {
-		if nil != notification.userInfo {
-			let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
+		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
+		if privateContext == incomingManagedObjectContext {
 			let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
 			
 			let userInfo = notification.userInfo
@@ -634,13 +648,26 @@ public class GKGraph: NSObject {
 		}
 	}
 	
-	// make thread safe by creating this asynchronously
-	var managedObjectContext: NSManagedObjectContext {
-		dispatch_once(&GKGraphManagedObjectContext.onceToken) {
-			GKGraphManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-			GKGraphManagedObjectContext.managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+	/**
+	* worker
+	* A NSManagedObjectContext that is configured to be thread safe
+	* for the NSManagedObjects calling on it.
+	*/
+	internal func worker() -> NSManagedObjectContext {
+		dispatch_once(&GKGraphMainManagedObjectContext.onceToken) {
+			GKGraphMainManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+			GKGraphMainManagedObjectContext.managedObjectContext.parentContext = self.privateContext
 		}
-		return GKGraphManagedObjectContext.managedObjectContext
+		return GKGraphPrivateManagedObjectContext.managedObjectContext
+	}
+	
+	// make thread safe by creating this asynchronously
+	var privateContext: NSManagedObjectContext {
+		dispatch_once(&GKGraphPrivateManagedObjectContext.onceToken) {
+			GKGraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+			GKGraphPrivateManagedObjectContext.managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+		}
+		return GKGraphPrivateManagedObjectContext.managedObjectContext
 	}
 	
 	internal var managedObjectModel: NSManagedObjectModel {
@@ -951,7 +978,7 @@ public class GKGraph: NSObject {
 	*/
 	internal func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: privateContext)
 	}
 	
 	/**
@@ -1047,8 +1074,9 @@ public class GKGraph: NSObject {
 		var error: NSError?
 		var nodes: Array<AnyObject> = Array<AnyObject>()
 		
-		managedObjectContext.performBlockAndWait {
-			if let result: Array<AnyObject> = self.managedObjectContext.executeFetchRequest(request, error: &error) {
+		let moc: NSManagedObjectContext = worker()
+		moc.performBlockAndWait { _ in
+			if let result: Array<AnyObject> = moc.executeFetchRequest(request, error: &error) {
 				assert(nil == error, "[GraphKit Error: Fecthing nodes.]")
 				for item: AnyObject in result {
 					nodes.append(item)
