@@ -33,6 +33,7 @@ public class GKEntity: NSObject {
 	*/
 	internal init(entity: GKManagedEntity!) {
 		node = entity
+		node.worker = entity.managedObjectContext
 	}
 	
 	/**

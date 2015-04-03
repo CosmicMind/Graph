@@ -34,7 +34,7 @@ internal class GKManagedEntity: NSManagedObject {
     @NSManaged internal var bondSubjectSet: NSSet
     @NSManaged internal var bondObjectSet: NSSet
 	
-	private var worker: NSManagedObjectContext?
+	internal var worker: NSManagedObjectContext?
 	
 	/**
     * init

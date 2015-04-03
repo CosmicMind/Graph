@@ -33,7 +33,7 @@ internal class GKManagedBond: NSManagedObject {
 	@NSManaged internal var subject: GKManagedEntity?
     @NSManaged internal var object: GKManagedEntity?
 
-	private var worker: NSManagedObjectContext?
+	internal var worker: NSManagedObjectContext?
 	
 	/**
 	* init

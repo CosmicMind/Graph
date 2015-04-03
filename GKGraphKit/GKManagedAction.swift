@@ -33,7 +33,7 @@ internal class GKManagedAction: NSManagedObject {
 	@NSManaged internal var subjectSet: NSSet
     @NSManaged internal var objectSet: NSSet
 
-	private var worker: NSManagedObjectContext?
+	internal var worker: NSManagedObjectContext?
 	
 	/**
 	* init

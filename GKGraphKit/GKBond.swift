@@ -33,6 +33,7 @@ public class GKBond: NSObject {
 	*/
 	internal init(bond: GKManagedBond!) {
 		node = bond
+		node.worker = bond.managedObjectContext
 	}
 	
 	/**

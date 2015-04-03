@@ -33,6 +33,7 @@ public class GKAction: NSObject {
 	*/
 	internal init(action: GKManagedAction!) {
 		node = action
+		node.worker = action.managedObjectContext
 	}
 	
 	/**
