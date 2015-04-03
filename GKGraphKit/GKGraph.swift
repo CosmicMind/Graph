@@ -522,7 +522,7 @@ public class GKGraph: NSObject {
 		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
 		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
 		let userInfo = notification.userInfo
-			
+		
 		// inserts
 		let insertedSet: NSSet = userInfo?[NSInsertedObjectsKey] as NSSet
 		let	inserted: NSMutableSet = insertedSet.mutableCopy() as NSMutableSet
@@ -610,9 +610,9 @@ public class GKGraph: NSObject {
 					assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
 				}
 			}
-		
+			
 		}
-	
+		
 		// deletes
 		let deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
 		
@@ -977,7 +977,7 @@ public class GKGraph: NSObject {
 	*/
 	internal func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: worker)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: privateContext)
 	}
 	
 	/**

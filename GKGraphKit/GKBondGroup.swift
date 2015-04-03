@@ -25,9 +25,18 @@ import CoreData
 @objc(GKBondGroup)
 internal class GKBondGroup: NSManagedObject {
 	@NSManaged internal var name: String
-    @NSManaged internal var node: GKManagedBond
+	@NSManaged internal var node: GKManagedBond
 
-	private var worker: NSManagedObjectContext?
+	private var context: NSManagedObjectContext?
+	internal var worker: NSManagedObjectContext? {
+		get {
+			if nil == context {
+				let graph: GKGraph = GKGraph()
+				context = graph.worker
+			}
+			return context
+		}
+	}
 	
 	/**
 	* init
@@ -39,7 +48,7 @@ internal class GKBondGroup: NSManagedObject {
 		var w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.bondGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
-		worker = w
+		context = w
 	}
 	
 	/**

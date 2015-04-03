@@ -27,8 +27,17 @@ internal class GKActionProperty: NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var value: AnyObject
 	@NSManaged internal var node: GKManagedAction
-
-	private var worker: NSManagedObjectContext?
+	
+	private var context: NSManagedObjectContext?
+	internal var worker: NSManagedObjectContext? {
+		get {
+			if nil == context {
+				let graph: GKGraph = GKGraph()
+				context = graph.worker
+			}
+			return context
+		}
+	}
 	
 	/**
 	* init
@@ -42,7 +51,7 @@ internal class GKActionProperty: NSManagedObject {
 		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.actionPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
 		self.value = value
-		worker = w
+		context = w
 	}
 	
 	/**
