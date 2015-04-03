@@ -75,20 +75,28 @@ internal class GKManagedEntity: NSManagedObject {
             return nil
         }
         set(value) {
-			for n in propertySet {
-				let property: GKEntityProperty = n as GKEntityProperty
-                if name == property.name {
-                    if nil == value {
+			if nil == value {
+				for n in propertySet {
+					let property: GKEntityProperty = n as GKEntityProperty
+					if name == property.name {
 						property.delete()
-					} else {
-                        property.value = value!
-                    }
-                    return
-                }
-            }
-            if nil != value {
-                var property: GKEntityProperty = GKEntityProperty(name: name, value: value)
-                property.node = self
+						break
+					}
+				}
+			} else {
+				var hasProperty: Bool = false
+				for n in propertySet {
+					let property: GKEntityProperty = n as GKEntityProperty
+					if name == property.name {
+						hasProperty = true
+						property.value = value!
+						break
+					}
+				}
+				if false == hasProperty {
+					var property: GKEntityProperty = GKEntityProperty(name: name, value: value)
+					property.node = self
+				}
             }
         }
     }

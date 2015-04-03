@@ -61,7 +61,7 @@ class GKTests : XCTestCase, GKGraphDelegate {
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		XCTAssertTrue(0 == graph.search(Bond: "Author").count && 0 == user!.bonds.count, "Author: Not correctly deleted.")
-		XCTAssertTrue(1 == graph.search(Action: "Read").count, "Read: Not correctly searched.")
+		XCTAssertTrue(0 == graph.search(Action: "Read").count, "Read: Not correctly searched.")
 		
 		book2!.delete()
 		
@@ -70,7 +70,7 @@ class GKTests : XCTestCase, GKGraphDelegate {
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 
-		XCTAssertTrue(1 == graph.search(Action: "Read").count, "Read: Not correctly deleted.")
+		XCTAssertTrue(0 == graph.search(Action: "Read").count, "Read: Not correctly deleted.")
 		
 		user!.delete()
 		// Save the Graph, which will execute the delegate handlers.
@@ -78,15 +78,6 @@ class GKTests : XCTestCase, GKGraphDelegate {
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
-		XCTAssertTrue(read == graph.search(Action: "Read").last, "Read: Not correctly searched.")
-		XCTAssertTrue(0 == read!.subjects.count && 0 == read!.objects.count, "Read: Not correctly mapped.")
-		
-		read!.delete()
-		
-		// Save the Graph, which will execute the delegate handlers.
-		graph.save() { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-		}
 		XCTAssertTrue(0 == graph.search(Action: "Read").count, "Read: Not correctly deleted.")
 	}
 	

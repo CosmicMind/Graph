@@ -40,7 +40,7 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 		super.tearDown()
 	}
 	
-	func testAll() {
+	func testExternalThread() {
 		
 		// Set the XCTest Class as the delegate.
 		graph.delegate = self
@@ -56,16 +56,17 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 				let prop: String = String(i)
 				b1!.addGroup(prop)
 				b1!.addGroup("test")
-				b1!.removeGroup("test")
+				b1!["test"] = "test"
 				b1![prop] = i
 			}
-			
 			dispatch_async(self.queue2) {
 				for i in 1...500 {
 					let prop: String = String(i)
-					b1!.removeGroup(prop)
+					b1!.addGroup(prop)
 					b1!.addGroup("test")
-					b1!.removeGroup("test")
+					b1!.removeGroup(prop)
+					b1![prop] = i
+					b1!["test"] = "test"
 					b1![prop] = nil
 				}
 				dispatch_async(self.queue3) {
@@ -73,16 +74,17 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 						let prop: String = String(i)
 						b1!.addGroup(prop)
 						b1!.addGroup("test")
-						b1!.removeGroup("test")
 						b1![prop] = i
+						b1!["test"] = "test"
 					}
-					
 					dispatch_async(self.queue4) {
 						for i in 1...500 {
 							let prop: String = String(i)
-							b1!.removeGroup(prop)
+							b1!.addGroup(prop)
 							b1!.addGroup("test")
-							b1!.removeGroup("test")
+							b1!.removeGroup(prop)
+							b1![prop] = i
+							b1!["test"] = "test"
 							b1![prop] = nil
 						}
 						self.graph.save { (_, _) in }
@@ -91,20 +93,19 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 			}
 		}
 		
-		
 		expectation = expectationWithDescription("Bond: Insert did not pass.")
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(30, handler: nil)
-		
-		b1!.delete()
+		waitForExpectationsWithTimeout(120, handler: nil)
 		
 		expectation = expectationWithDescription("Bond: Delete did not pass.")
+		
+		b1!.delete()
 		
 		graph.save { (_, _) in }
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(30, handler: nil)
+		waitForExpectationsWithTimeout(120, handler: nil)
 	}
 	
 	func testPerformanceExample() {
@@ -112,7 +113,7 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didInsertBond bond: GKBond!) {
-		if 500 == bond.groups.count && 500 == bond.properties.count {
+		if 501 == bond.groups.count && 501 == bond.properties.count {
 			expectation?.fulfill()
 		}
 	}

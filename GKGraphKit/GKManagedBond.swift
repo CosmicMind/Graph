@@ -61,34 +61,42 @@ internal class GKManagedBond: NSManagedObject {
     * get           Returns the property name value.
     * set           Value for the property name.
     */
-    internal subscript(name: String) -> AnyObject? {
-        get {
-            for n in propertySet {
-                let property: GKBondProperty = n as GKBondProperty
-                if name == property.name {
-                    return property.value
-                }
-            }
-            return nil
-        }
-        set(value) {
-            for n in propertySet {
-                let property: GKBondProperty = n as GKBondProperty
-                if name == property.name {
-                    if nil == value {
+	internal subscript(name: String) -> AnyObject? {
+		get {
+			for n in propertySet {
+				let property: GKBondProperty = n as GKBondProperty
+				if name == property.name {
+					return property.value
+				}
+			}
+			return nil
+		}
+		set(value) {
+			if nil == value {
+				for n in propertySet {
+					let property: GKBondProperty = n as GKBondProperty
+					if name == property.name {
 						property.delete()
-					} else {
-                        property.value = value!
-                    }
-                    return
-                }
-            }
-            if nil != value {
-				var property: GKBondProperty = GKBondProperty(name: name, value: value)
-                property.node = self
-            }
-        }
-    }
+						break
+					}
+				}
+			} else {
+				var hasProperty: Bool = false
+				for n in propertySet {
+					let property: GKBondProperty = n as GKBondProperty
+					if name == property.name {
+						hasProperty = true
+						property.value = value!
+						break
+					}
+				}
+				if false == hasProperty {
+					var property: GKBondProperty = GKBondProperty(name: name, value: value)
+					property.node = self
+				}
+			}
+		}
+	}
 
     /**
     * addGroup

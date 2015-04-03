@@ -91,15 +91,15 @@
 		96B24D1C1AB20826008A933D /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				9626E9381ACD287100527625 /* GKManagedAction.swift */,
 				9626E9321ACD287100527625 /* GKActionGroup.swift */,
 				9626E9331ACD287100527625 /* GKActionProperty.swift */,
+				9626E9391ACD287100527625 /* GKManagedBond.swift */,
 				9626E9341ACD287100527625 /* GKBondGroup.swift */,
 				9626E9351ACD287100527625 /* GKBondProperty.swift */,
+				9626E93A1ACD287100527625 /* GKManagedEntity.swift */,
 				9626E9361ACD287100527625 /* GKEntityGroup.swift */,
 				9626E9371ACD287100527625 /* GKEntityProperty.swift */,
-				9626E9381ACD287100527625 /* GKManagedAction.swift */,
-				9626E9391ACD287100527625 /* GKManagedBond.swift */,
-				9626E93A1ACD287100527625 /* GKManagedEntity.swift */,
 			);
 			name = lib;
 			sourceTree = "<group>";

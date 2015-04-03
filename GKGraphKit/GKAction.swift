@@ -172,7 +172,7 @@ public class GKAction: NSObject {
     public var subjects: Array<GKEntity> {
         get {
             var nodes: Array<GKEntity> = Array<GKEntity>()
-			for entry: AnyObject in node.subjectSet {
+			for entry in node.subjectSet {
 				nodes.append(GKEntity(entity: entry as GKManagedEntity))
 			}
             return nodes
@@ -190,7 +190,7 @@ public class GKAction: NSObject {
     public var objects: Array<GKEntity> {
         get {
             var nodes: Array<GKEntity> = Array<GKEntity>()
-			for entry: AnyObject in node.objectSet {
+			for entry in node.objectSet {
 				nodes.append(GKEntity(entity: entry as GKManagedEntity))
 			}
             return nodes

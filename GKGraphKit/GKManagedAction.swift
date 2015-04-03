@@ -30,8 +30,8 @@ internal class GKManagedAction: NSManagedObject {
 	@NSManaged internal var createdDate: NSDate
 	@NSManaged internal var propertySet: NSSet
 	@NSManaged internal var groupSet: NSSet
-	@NSManaged internal var subjectSet: NSMutableSet
-    @NSManaged internal var objectSet: NSMutableSet
+	@NSManaged internal var subjectSet: NSSet
+    @NSManaged internal var objectSet: NSSet
 
 	private var worker: NSManagedObjectContext?
 	
@@ -47,10 +47,10 @@ internal class GKManagedAction: NSManagedObject {
 		nodeClass = "2"
         self.type = type
 		createdDate = NSDate()
-		propertySet = NSMutableSet()
-		groupSet = NSMutableSet()
-        subjectSet = NSMutableSet()
-        objectSet = NSMutableSet()
+		propertySet = NSSet()
+		groupSet = NSSet()
+        subjectSet = NSSet()
+        objectSet = NSSet()
 		worker = w
     }
 
@@ -61,34 +61,42 @@ internal class GKManagedAction: NSManagedObject {
     * get           Returns the property name value.
     * set           Value for the property name.
     */
-    internal subscript(name: String) -> AnyObject? {
-        get {
-            for n in propertySet {
-                let property: GKActionProperty = n as GKActionProperty
-                if name == property.name {
-                    return property.value
-                }
-            }
-            return nil
-        }
-        set(value) {
-            for n in propertySet {
-                let property: GKActionProperty = n as GKActionProperty
-                if name == property.name {
-                    if nil == value {
+	internal subscript(name: String) -> AnyObject? {
+		get {
+			for n in propertySet {
+				let property: GKActionProperty = n as GKActionProperty
+				if name == property.name {
+					return property.value
+				}
+			}
+			return nil
+		}
+		set(value) {
+			if nil == value {
+				for n in propertySet {
+					let property: GKActionProperty = n as GKActionProperty
+					if name == property.name {
 						property.delete()
-                    } else {
-                        property.value = value!
-                    }
-                    return
-                }
-            }
-            if nil != value {
-                var property: GKActionProperty = GKActionProperty(name: name, value: value)
-                property.node = self
-            }
-        }
-    }
+						break
+					}
+				}
+			} else {
+				var hasProperty: Bool = false
+				for n in propertySet {
+					let property: GKActionProperty = n as GKActionProperty
+					if name == property.name {
+						hasProperty = true
+						property.value = value!
+						break
+					}
+				}
+				if false == hasProperty {
+					var property: GKActionProperty = GKActionProperty(name: name, value: value)
+					property.node = self
+				}
+			}
+		}
+	}
 
     /**
     * addGroup
@@ -146,7 +154,7 @@ internal class GKManagedAction: NSManagedObject {
     */
     internal func addSubject(entity: GKManagedEntity!) -> Bool {
         let count: Int = subjectSet.count
-        subjectSet.addObject(entity)
+		mutableSetValueForKey("subjectSet").addObject(entity)
 		return count != subjectSet.count
     }
 
@@ -158,7 +166,7 @@ internal class GKManagedAction: NSManagedObject {
     */
     internal func removeSubject(entity: GKManagedEntity!) -> Bool {
         let count: Int = subjectSet.count
-		subjectSet.removeObject(entity)
+		mutableSetValueForKey("subjectSet").removeObject(entity)
 		return count != subjectSet.count
     }
 
@@ -170,7 +178,7 @@ internal class GKManagedAction: NSManagedObject {
     */
     internal func addObject(entity: GKManagedEntity!) -> Bool {
         let count: Int = objectSet.count
-		objectSet.addObject(entity)
+		mutableSetValueForKey("objectSet").addObject(entity)
 		return count != objectSet.count
     }
 
@@ -182,7 +190,7 @@ internal class GKManagedAction: NSManagedObject {
     */
     internal func removeObject(entity: GKManagedEntity!) -> Bool {
         let count: Int = objectSet.count
-		objectSet.removeObject(entity)
+		mutableSetValueForKey("objectSet").removeObject(entity)
 		return count != objectSet.count
     }
 	

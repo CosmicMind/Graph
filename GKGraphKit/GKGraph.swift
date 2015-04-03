@@ -141,6 +141,8 @@ public class GKGraph: NSObject {
 					p!.performBlockAndWait { _ in
 						completion(success: p!.save(&error), error: error)
 					}
+				} else {
+					completion(success: false, error: error)
 				}
 			}
 		}

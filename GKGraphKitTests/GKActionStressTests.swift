@@ -40,7 +40,7 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 		super.tearDown()
 	}
 	
-	func testAll() {
+	func testExternalThread() {
 		
 		// Set the XCTest Class as the delegate.
 		graph.delegate = self
@@ -52,37 +52,39 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 		
 		dispatch_async(queua1) {
 			a1 = GKAction(type: "A")
-			for i in 1...10 {
+			for i in 1...1000 {
 				let prop: String = String(i)
 				a1!.addGroup(prop)
 				a1!.addGroup("test")
-				a1!.removeGroup("test")
+				a1!["test"] = "test"
 				a1![prop] = i
 			}
-			
 			dispatch_async(self.queue2) {
-				for i in 1...5 {
+				for i in 1...500 {
 					let prop: String = String(i)
-					a1!.removeGroup(prop)
+					a1!.addGroup(prop)
 					a1!.addGroup("test")
-					a1!.removeGroup("test")
+					a1!.removeGroup(prop)
+					a1![prop] = i
+					a1!["test"] = "test"
 					a1![prop] = nil
 				}
 				dispatch_async(self.queue3) {
-					for i in 1...10 {
+					for i in 1...1000 {
 						let prop: String = String(i)
 						a1!.addGroup(prop)
 						a1!.addGroup("test")
-						a1!.removeGroup("test")
 						a1![prop] = i
+						a1!["test"] = "test"
 					}
-					
 					dispatch_async(self.queue4) {
-						for i in 1...5 {
+						for i in 1...500 {
 							let prop: String = String(i)
-							a1!.removeGroup(prop)
+							a1!.addGroup(prop)
 							a1!.addGroup("test")
-							a1!.removeGroup("test")
+							a1!.removeGroup(prop)
+							a1![prop] = i
+							a1!["test"] = "test"
 							a1![prop] = nil
 						}
 						self.graph.save { (_, _) in }
@@ -91,20 +93,19 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 			}
 		}
 		
-		
 		expectation = expectationWithDescription("Action: Insert did not pass.")
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(30, handler: nil)
-		
-		a1!.delete()
+		waitForExpectationsWithTimeout(120, handler: nil)
 		
 		expectation = expectationWithDescription("Action: Delete did not pass.")
+		
+		a1!.delete()
 		
 		graph.save { (_, _) in }
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(30, handler: nil)
+		waitForExpectationsWithTimeout(120, handler: nil)
 	}
 	
 	func testPerformanceExample() {
@@ -112,7 +113,7 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
-		if 5 == action.groups.count && 5 == action.properties.count {
+		if 501 == action.groups.count && 501 == action.properties.count {
 			expectation?.fulfill()
 		}
 	}
