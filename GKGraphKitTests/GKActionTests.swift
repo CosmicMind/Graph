@@ -42,31 +42,32 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
     var sessionDeleteExpectation: XCTestExpectation?
     var sessionSearchExpectation: XCTestExpectation?
 
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-    }
+	private var graph: GKGraph?
+	
+	override func setUp() {
+		super.setUp()
+		graph = GKGraph()
+	}
+	
+	override func tearDown() {
+		super.tearDown()
+		graph = nil
+	}
 
     func testAll() {
-        // Create a Graph instance.
-        let graph: GKGraph = GKGraph()
-
         // Set the XCTest Class as the delegate.
-        graph.delegate = self
+        graph?.delegate = self
 
         // Let's watch the changes in the Graph for the following Action values.
-        graph.watch(Action: "Read")
-        graph.watch(ActionGroup: "Holiday")
-        graph.watch(ActionProperty: "name")
-        graph.watch(ActionProperty: "session")
+        graph?.watch(Action: "Read")
+        graph?.watch(ActionGroup: "Holiday")
+        graph?.watch(ActionProperty: "name")
+        graph?.watch(ActionProperty: "session")
 
         // Let's watch the changes in the Graph for the following Entity values.
-        graph.watch(Entity: "User")
-        graph.watch(Entity: "Book")
-        graph.watch(Entity: "Magazine")
+        graph?.watch(Entity: "User")
+        graph?.watch(Entity: "Book")
+        graph?.watch(Entity: "Magazine")
 
         // Create a Read Action.
         let read: GKAction = GKAction(type: "Read")
@@ -97,7 +98,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         sessionSearchExpectation = expectationWithDescription("Session: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
+        graph?.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -114,7 +115,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         sessionSearchExpectation = expectationWithDescription("Session: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
+        graph?.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -132,7 +133,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 		readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
 		
         // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
+        graph?.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 

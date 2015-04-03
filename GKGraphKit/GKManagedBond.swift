@@ -33,7 +33,16 @@ internal class GKManagedBond: NSManagedObject {
 	@NSManaged internal var subject: GKManagedEntity?
     @NSManaged internal var object: GKManagedEntity?
 
-	internal var worker: NSManagedObjectContext?
+	private var context: NSManagedObjectContext?
+	internal var worker: NSManagedObjectContext? {
+		get {
+			if nil == context {
+				let graph: GKGraph = GKGraph()
+				context = graph.worker
+			}
+			return context
+		}
+	}
 	
 	/**
 	* init
@@ -51,7 +60,7 @@ internal class GKManagedBond: NSManagedObject {
 		groupSet = NSSet()
 		subject = nil
 		object = nil
-		worker = w
+		context = w
 	}
 
 	/**

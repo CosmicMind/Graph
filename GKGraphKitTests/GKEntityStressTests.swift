@@ -11,8 +11,6 @@ import GKGraphKit
 
 class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 	
-	lazy var graph: GKGraph = GKGraph()
-	
 	var expectation: XCTestExpectation?
 	
 	// queue for drawing images
@@ -32,21 +30,25 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		return dispatch_queue_create(("io.graphkit.EntityStressTests.4" as NSString).UTF8String, nil)
 	}()
 	
+	private var graph: GKGraph?
+	
 	override func setUp() {
 		super.setUp()
+		graph = GKGraph()
 	}
 	
 	override func tearDown() {
 		super.tearDown()
+		graph = nil
 	}
 	
 	func testExternalThread() {
 
 		// Set the XCTest Class as the delegate.
-		graph.delegate = self
+		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Entity values.
-		graph.watch(Entity: "E")
+		graph?.watch(Entity: "E")
 		
 		var e1: GKEntity?
 		
@@ -87,7 +89,9 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 							e1!["test"] = "test"
 							e1![prop] = nil
 						}
-						self.graph.save { (_, _) in }
+						self.graph?.save{ (success: Bool, error: NSError?) in
+							XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+						}
 					}
 				}
 			}
@@ -102,7 +106,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		
 		e1!.delete()
 		
-		graph.save { (_, _) in }
+		graph?.save(nil)
 
 		// Wait for the delegates to be executed.
 		waitForExpectationsWithTimeout(120, handler: nil)

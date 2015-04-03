@@ -11,8 +11,6 @@ import GKGraphKit
 
 class GKBondStressTests : XCTestCase, GKGraphDelegate {
 	
-	lazy var graph: GKGraph = GKGraph()
-	
 	var expectation: XCTestExpectation?
 	
 	// queue for drawing images
@@ -32,21 +30,25 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 		return dispatch_queue_create(("io.graphkit.BondStressTests.4" as NSString).UTF8String, nil)
 	}()
 	
+	private var graph: GKGraph?
+	
 	override func setUp() {
 		super.setUp()
+		graph = GKGraph()
 	}
 	
 	override func tearDown() {
 		super.tearDown()
+		graph = nil
 	}
 	
 	func testExternalThread() {
 		
 		// Set the XCTest Class as the delegate.
-		graph.delegate = self
+		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Bond values.
-		graph.watch(Bond: "B")
+		graph?.watch(Bond: "B")
 		
 		var b1: GKBond?
 		
@@ -87,7 +89,10 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 							b1!["test"] = "test"
 							b1![prop] = nil
 						}
-						self.graph.save { (_, _) in }
+						self.graph?.save() { (success: Bool, error: NSError?) in
+							XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+						}
+
 					}
 				}
 			}
@@ -102,7 +107,9 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 		
 		b1!.delete()
 		
-		graph.save { (_, _) in }
+		graph?.save() { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+		}
 		
 		// Wait for the delegates to be executed.
 		waitForExpectationsWithTimeout(120, handler: nil)

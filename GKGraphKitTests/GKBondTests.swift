@@ -37,29 +37,30 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
     var yearDeleteExpectation: XCTestExpectation?
     var yearSearchExpectation: XCTestExpectation?
 
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-    }
+	private var graph: GKGraph?
+	
+	override func setUp() {
+		super.setUp()
+		graph = GKGraph()
+	}
+	
+	override func tearDown() {
+		super.tearDown()
+		graph = nil
+	}
 
     func testAll() {
-        // Create a Graph instance.
-        let graph: GKGraph = GKGraph()
-
         // Set the XCTest Class as the delegate.
-        graph.delegate = self
+        graph?.delegate = self
 
         // Let's watch the changes in the Graph for the following Bond values.
-        graph.watch(Bond: "Friend")
-        graph.watch(BondGroup: "Close")
-        graph.watch(BondProperty: "permission")
-        graph.watch(BondProperty: "year")
+        graph?.watch(Bond: "Friend")
+        graph?.watch(BondGroup: "Close")
+        graph?.watch(BondProperty: "permission")
+        graph?.watch(BondProperty: "year")
 
         // Let's watch the User Entity values to test reverse Bond indices.
-        graph.watch(Entity: "User")
+        graph?.watch(Entity: "User")
 
         // Let's create two User Entity Objects.
         let u1: GKEntity = GKEntity(type: "User")
@@ -90,7 +91,7 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         yearSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
+        graph?.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -107,7 +108,7 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         yearSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
+        graph?.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -121,7 +122,7 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         friendDeleteExpectation = expectationWithDescription("Friend: Delete did not pass.")
 		
         // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
+        graph?.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 

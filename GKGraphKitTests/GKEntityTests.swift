@@ -32,26 +32,29 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
     var ageUpdateExpectation: XCTestExpectation?
     var ageSearchExpectation: XCTestExpectation?
 
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-    }
+	private var graph: GKGraph?
+	
+	var expectation: XCTestExpectation?
+	
+	override func setUp() {
+		super.setUp()
+		graph = GKGraph()
+	}
+	
+	override func tearDown() {
+		super.tearDown()
+		graph = nil
+	}
 
     func testAll() {
-        // Create a Graph instance.
-        let graph: GKGraph = GKGraph()
-
         // Set the XCTest Class as the delegate.
-        graph.delegate = self
+        graph?.delegate = self
 
         // Let's watch the changes in the Graph for the following Entity values.
-        graph.watch(Entity: "User")
-        graph.watch(EntityGroup: "Female")
-        graph.watch(EntityProperty: "name")
-        graph.watch(EntityProperty: "age")
+        graph?.watch(Entity: "User")
+        graph?.watch(EntityGroup: "Female")
+        graph?.watch(EntityProperty: "name")
+        graph?.watch(EntityProperty: "age")
 
         // Create a User Entity.
         let user: GKEntity = GKEntity(type: "User")
@@ -69,7 +72,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
+        graph?.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -86,7 +89,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
+        graph?.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -99,7 +102,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
         
         // Save the Graph, which will execute the delegate handlers.
-        graph.save() { (success: Bool, error: NSError?) in
+        graph?.save() { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 

@@ -131,18 +131,19 @@ public class GKGraph: NSObject {
 	* Updates the persistent layer by processing all the changes in the Graph.
 	* @param        completion: (success: Bool, error: NSError?) -> ())
 	*/
-	public func save(completion: (success: Bool, error: NSError?) -> ()) {
+	public func save(completion: ((success: Bool, error: NSError?) -> ())?) {
 		var w: NSManagedObjectContext? = worker
 		var p: NSManagedObjectContext? = privateContext
 		if nil != w && nil != p {
-			w!.performBlockAndWait { _ in
+			w!.performBlockAndWait {
 				var error: NSError?
-				if w!.save(&error) && nil == error {
-					p!.performBlockAndWait { _ in
-						completion(success: p!.save(&error), error: error)
+				if w!.save(&error) {
+					p!.performBlockAndWait {
+						let result: Bool = p!.save(&error)
+						completion?(success: result, error: error)
 					}
 				} else {
-					completion(success: false, error: error)
+					completion?(success: false, error: error)
 				}
 			}
 		}
@@ -521,7 +522,7 @@ public class GKGraph: NSObject {
 		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
 		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
 		let userInfo = notification.userInfo
-		
+			
 		// inserts
 		let insertedSet: NSSet = userInfo?[NSInsertedObjectsKey] as NSSet
 		let	inserted: NSMutableSet = insertedSet.mutableCopy() as NSMutableSet
@@ -609,8 +610,9 @@ public class GKGraph: NSObject {
 					assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
 				}
 			}
-		}
 		
+		}
+	
 		// deletes
 		let deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
 		
@@ -975,7 +977,7 @@ public class GKGraph: NSObject {
 	*/
 	internal func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: privateContext)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: worker)
 	}
 	
 	/**
@@ -1072,12 +1074,10 @@ public class GKGraph: NSObject {
 		var nodes: Array<AnyObject> = Array<AnyObject>()
 		
 		var moc: NSManagedObjectContext? = worker
-		moc?.performBlockAndWait { _ in
-			if let result: Array<AnyObject> = moc?.executeFetchRequest(request, error: &error) {
-				assert(nil == error, "[GraphKit Error: Fecthing nodes.]")
-				for item: AnyObject in result {
-					nodes.append(item)
-				}
+		if let result: Array<AnyObject> = moc?.executeFetchRequest(request, error: &error) {
+			assert(nil == error, "[GraphKit Error: Fecthing nodes.]")
+			for item: AnyObject in result {
+				nodes.append(item)
 			}
 		}
 		return nodes

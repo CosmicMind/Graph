@@ -11,20 +11,21 @@ import GKGraphKit
 
 class GKTests : XCTestCase, GKGraphDelegate {
 	
+	private var graph: GKGraph?
+	
 	override func setUp() {
 		super.setUp()
+		graph = GKGraph()
 	}
 	
 	override func tearDown() {
 		super.tearDown()
+		graph = nil
 	}
 	
 	func testAll() {
-		// Create a Graph instance.
-		let graph: GKGraph = GKGraph()
-		
 		// Set the XCTest Class as the delegate.
-		graph.delegate = self
+		graph?.delegate = self
 		
 		var user: GKEntity? = GKEntity(type: "User")
 		var author: GKBond? = GKBond(type: "Author")
@@ -39,7 +40,7 @@ class GKTests : XCTestCase, GKGraphDelegate {
 		author!.object = book1
 		
 		// Save the Graph, which will execute the delegate handlers.
-		graph.save() { (success: Bool, error: NSError?) in
+		graph?.save() { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
@@ -57,28 +58,28 @@ class GKTests : XCTestCase, GKGraphDelegate {
 		book1!.delete()
 		
 		// Save the Graph, which will execute the delegate handlers.
-		graph.save() { (success: Bool, error: NSError?) in
+		graph?.save() { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
-		XCTAssertTrue(0 == graph.search(Bond: "Author").count && 0 == user!.bonds.count, "Author: Not correctly deleted.")
-		XCTAssertTrue(0 == graph.search(Action: "Read").count, "Read: Not correctly searched.")
+		XCTAssertTrue(0 == graph?.search(Bond: "Author").count && 0 == user!.bonds.count, "Author: Not correctly deleted.")
+		XCTAssertTrue(0 == graph?.search(Action: "Read").count, "Read: Not correctly searched.")
 		
 		book2!.delete()
 		
 		// Save the Graph, which will execute the delegate handlers.
-		graph.save() { (success: Bool, error: NSError?) in
+		graph?.save() { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 
-		XCTAssertTrue(0 == graph.search(Action: "Read").count, "Read: Not correctly deleted.")
+		XCTAssertTrue(0 == graph?.search(Action: "Read").count, "Read: Not correctly deleted.")
 		
 		user!.delete()
 		// Save the Graph, which will execute the delegate handlers.
-		graph.save() { (success: Bool, error: NSError?) in
+		graph?.save() { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
-		XCTAssertTrue(0 == graph.search(Action: "Read").count, "Read: Not correctly deleted.")
+		XCTAssertTrue(0 == graph?.search(Action: "Read").count, "Read: Not correctly deleted.")
 	}
 	
 	func testPerformanceExample() {
