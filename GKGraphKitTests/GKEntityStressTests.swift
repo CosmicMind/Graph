@@ -112,6 +112,9 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+		println(entity)
+		println(entity.groups.count)
+		println(entity.properties.count)
 		if 500 == entity.groups.count && 500 == entity.properties.count {
 			expectation?.fulfill()
 		}

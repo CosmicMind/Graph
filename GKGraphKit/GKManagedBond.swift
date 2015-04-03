@@ -28,8 +28,8 @@ internal class GKManagedBond: NSManagedObject {
 	@NSManaged internal var nodeClass: String
 	@NSManaged internal var type: String
 	@NSManaged internal var createdDate: NSDate
-	@NSManaged internal var propertySet: NSMutableSet
-	@NSManaged internal var groupSet: NSMutableSet
+	@NSManaged internal var propertySet: NSSet
+	@NSManaged internal var groupSet: NSSet
 	@NSManaged internal var subject: GKManagedEntity?
     @NSManaged internal var object: GKManagedEntity?
 
@@ -47,8 +47,8 @@ internal class GKManagedBond: NSManagedObject {
 		nodeClass = "3"
         self.type = type
 		createdDate = NSDate()
-		propertySet = NSMutableSet()
-		groupSet = NSMutableSet()
+		propertySet = NSSet()
+		groupSet = NSSet()
 		subject = nil
 		object = nil
 		worker = w
@@ -76,7 +76,7 @@ internal class GKManagedBond: NSManagedObject {
                 let property: GKBondProperty = n as GKBondProperty
                 if name == property.name {
                     if nil == value {
-						propertySet.removeObject(property)
+						property.delete()
 					} else {
                         property.value = value!
                     }
@@ -84,9 +84,8 @@ internal class GKManagedBond: NSManagedObject {
                 }
             }
             if nil != value {
-				var property: GKBondProperty = GKBondProperty(name: name, value: value, managedObjectContext: worker)
+				var property: GKBondProperty = GKBondProperty(name: name, value: value)
                 property.node = self
-				propertySet.addObject(property)
             }
         }
     }
@@ -99,9 +98,8 @@ internal class GKManagedBond: NSManagedObject {
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-			var group: GKBondGroup = GKBondGroup(name: name, managedObjectContext: worker)
+			var group: GKBondGroup = GKBondGroup(name: name)
             group.node = self
-			groupSet.addObject(group)
 			return true
         }
         return false
@@ -133,7 +131,7 @@ internal class GKManagedBond: NSManagedObject {
         for n in groupSet {
             let group: GKBondGroup = n as GKBondGroup
             if name == group.name {
-				groupSet.removeObject(group)
+				group.delete()
 				return true
             }
         }
@@ -146,5 +144,48 @@ internal class GKManagedBond: NSManagedObject {
 	*/
 	internal func delete() {
 		worker?.deleteObject(self)
+	}
+}
+
+extension GKManagedBond {
+	
+	/**
+	* addPropertySetObject
+	* Adds the Property to the propertySet for the Bond.
+	* @param        value: GKBondProperty
+	*/
+	func addPropertySetObject(value: GKBondProperty) {
+		let nodes: NSMutableSet = propertySet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removePropertySetObject
+	* Removes the Property to the propertySet for the Bond.
+	* @param        value: GKBondProperty
+	*/
+	func removePropertySetObject(value: GKBondProperty) {
+		let nodes: NSMutableSet = propertySet as NSMutableSet
+		nodes.removeObject(value)
+	}
+	
+	/**
+	* addGroupSetObject
+	* Adds the Group to the groupSet for the Bond.
+	* @param        value: GKBondGroup
+	*/
+	func addGroupSetObject(value: GKBondGroup) {
+		let nodes: NSMutableSet = groupSet as NSMutableSet
+		nodes.addObject(value)
+	}
+	
+	/**
+	* removeGroupSetObject
+	* Removes the Group to the groupSet for the Bond.
+	* @param        value: GKBondGroup
+	*/
+	func removeGroupSetObject(value: GKBondGroup) {
+		let nodes: NSMutableSet = groupSet as NSMutableSet
+		nodes.removeObject(value)
 	}
 }

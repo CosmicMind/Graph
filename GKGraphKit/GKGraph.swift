@@ -135,16 +135,11 @@ public class GKGraph: NSObject {
 		var w: NSManagedObjectContext? = worker
 		var p: NSManagedObjectContext? = privateContext
 		if nil != w && nil != p {
-			if w!.hasChanges {
-				w!.performBlockAndWait { _ in
-					var error: NSError?
-					assert(w!.save(&error), "[GraphKit Error saving context")
-				}
-				if p!.hasChanges {
-					p!.performBlockAndWait {
-						var saveError: NSError?
-						var result = p!.save(&saveError)
-						completion(success: result, error: saveError)
+			w!.performBlockAndWait { _ in
+				var error: NSError?
+				if w!.save(&error) && nil == error {
+					p!.performBlockAndWait { _ in
+						completion(success: p!.save(&error), error: error)
 					}
 				}
 			}
@@ -769,7 +764,7 @@ public class GKGraph: NSObject {
 			propertyRelationship.minCount = 1
 			propertyRelationship.maxCount = 1
 			propertyRelationship.optional = false
-			propertyRelationship.deleteRule = .NullifyDeleteRule
+			propertyRelationship.deleteRule = .NoActionDeleteRule
 			
 			var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertySetRelationship.name = "propertySet"
@@ -808,7 +803,7 @@ public class GKGraph: NSObject {
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
 			groupRelationship.optional = false
-			groupRelationship.deleteRule = .NullifyDeleteRule
+			groupRelationship.deleteRule = .NoActionDeleteRule
 			
 			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"

@@ -27,15 +27,25 @@ internal class GKBondGroup: NSManagedObject {
 	@NSManaged internal var name: String
     @NSManaged internal var node: GKManagedBond
 
+	private var worker: NSManagedObjectContext?
+	
 	/**
 	* init
 	* Initializer for the Model Object.
 	* @param        name: String!
-	* @param		managedObjectContext: NSManagedObjectContxt!
 	*/
-	convenience init(name: String!, managedObjectContext: NSManagedObjectContext!) {
-		var entityDescription: NSEntityDescription = NSEntityDescription.entityForName(GKGraphUtility.bondGroupDescriptionName, inManagedObjectContext: managedObjectContext)!
-		self.init(entity: entityDescription, insertIntoManagedObjectContext: managedObjectContext)
+	convenience init(name: String!) {
+		let g: GKGraph = GKGraph()
+		var w: NSManagedObjectContext? = g.worker
+		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.bondGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
+	}
+	
+	/**
+	* delete
+	* Deletes the Object Model.
+	*/
+	internal func delete() {
+		worker?.deleteObject(self)
 	}
 }
