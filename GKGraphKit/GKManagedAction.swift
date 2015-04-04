@@ -86,6 +86,8 @@ internal class GKManagedAction: NSManagedObject {
 					let property: GKActionProperty = n as GKActionProperty
 					if name == property.name {
 						property.delete()
+						let set: NSMutableSet = propertySet as NSMutableSet
+						set.removeObject(property)
 						break
 					}
 				}
@@ -149,6 +151,8 @@ internal class GKManagedAction: NSManagedObject {
             let group: GKActionGroup = n as GKActionGroup
             if name == group.name {
 				group.delete()
+				let set: NSMutableSet = groupSet as NSMutableSet
+				set.removeObject(group)
 				return true
             }
         }

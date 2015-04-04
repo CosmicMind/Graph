@@ -86,6 +86,8 @@ internal class GKManagedBond: NSManagedObject {
 					let property: GKBondProperty = n as GKBondProperty
 					if name == property.name {
 						property.delete()
+						let set: NSMutableSet = propertySet as NSMutableSet
+						set.removeObject(property)
 						break
 					}
 				}
@@ -149,6 +151,8 @@ internal class GKManagedBond: NSManagedObject {
             let group: GKBondGroup = n as GKBondGroup
             if name == group.name {
 				group.delete()
+				let set: NSMutableSet = groupSet as NSMutableSet
+				set.removeObject(group)
 				return true
             }
         }

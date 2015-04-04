@@ -30,9 +30,9 @@ internal class GKManagedEntity: NSManagedObject {
 	@NSManaged internal var propertySet: NSSet
 	@NSManaged internal var groupSet: NSSet
 	@NSManaged internal var actionSubjectSet: NSSet
-    @NSManaged internal var actionObjectSet: NSSet
-    @NSManaged internal var bondSubjectSet: NSSet
-    @NSManaged internal var bondObjectSet: NSSet
+	@NSManaged internal var actionObjectSet: NSSet
+	@NSManaged internal var bondSubjectSet: NSSet
+	@NSManaged internal var bondObjectSet: NSSet
 	
 	private var context: NSManagedObjectContext?
 	internal var worker: NSManagedObjectContext? {
@@ -46,49 +46,51 @@ internal class GKManagedEntity: NSManagedObject {
 	}
 	
 	/**
-    * init
-    * Initializes the Model Object with e a given type.
-    * @param        type: String!
-    */
-    convenience internal init(type: String!) {
+	* init
+	* Initializes the Model Object with e a given type.
+	* @param        type: String!
+	*/
+	convenience internal init(type: String!) {
 		let g: GKGraph = GKGraph()
 		var w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GKGraphUtility.entityDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		nodeClass = "1"
-        self.type = type
+		self.type = type
 		createdDate = NSDate()
 		propertySet = NSSet()
 		groupSet = NSSet()
-        actionSubjectSet = NSSet()
-        actionObjectSet = NSSet()
-        bondSubjectSet = NSSet()
-        bondObjectSet = NSSet()
+		actionSubjectSet = NSSet()
+		actionObjectSet = NSSet()
+		bondSubjectSet = NSSet()
+		bondObjectSet = NSSet()
 		context = w
-    }
-
+	}
+	
 	/**
-    * properties[ ]
-    * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
-    * @param        name: String!
-    * get           Returns the property name value.
-    * set           Value for the property name.
-    */
-    internal subscript(name: String) -> AnyObject? {
-        get {
-            for n in propertySet {
+	* properties[ ]
+	* Allows for Dictionary style coding, which maps to the internal properties Dictionary.
+	* @param        name: String!
+	* get           Returns the property name value.
+	* set           Value for the property name.
+	*/
+	internal subscript(name: String) -> AnyObject? {
+		get {
+			for n in propertySet {
 				let property: GKEntityProperty = n as GKEntityProperty
 				if name == property.name {
-                    return property.value
-                }
-            }
-            return nil
-        }
-        set(value) {
+					return property.value
+				}
+			}
+			return nil
+		}
+		set(value) {
 			if nil == value {
 				for n in propertySet {
 					let property: GKEntityProperty = n as GKEntityProperty
 					if name == property.name {
 						property.delete()
+						let set: NSMutableSet = propertySet as NSMutableSet
+						set.removeObject(property)
 						break
 					}
 				}
@@ -106,57 +108,59 @@ internal class GKManagedEntity: NSManagedObject {
 					var property: GKEntityProperty = GKEntityProperty(name: name, value: value)
 					property.node = self
 				}
-            }
-        }
-    }
-
-    /**
-    * addGroup
-    * Adds a Group name to the list of Groups if it does not exist.
-    * @param        name: String!
-    * @return       Bool of the result, true if added, false otherwise.
-    */
-    internal func addGroup(name: String!) -> Bool {
-        if !hasGroup(name) {
-            var group: GKEntityGroup = GKEntityGroup(name: name)
-            group.node = self
+			}
+		}
+	}
+	
+	/**
+	* addGroup
+	* Adds a Group name to the list of Groups if it does not exist.
+	* @param        name: String!
+	* @return       Bool of the result, true if added, false otherwise.
+	*/
+	internal func addGroup(name: String!) -> Bool {
+		if !hasGroup(name) {
+			var group: GKEntityGroup = GKEntityGroup(name: name)
+			group.node = self
 			return true
-        }
-        return false
-    }
-
-    /**
-    * hasGroup
-    * Checks whether the Node is a part of the Group name passed or not.
-    * @param        name: String!
-    * @return       Bool of the result, true if is a part, false otherwise.
-    */
-    internal func hasGroup(name: String!) -> Bool {
-        for n in groupSet {
+		}
+		return false
+	}
+	
+	/**
+	* hasGroup
+	* Checks whether the Node is a part of the Group name passed or not.
+	* @param        name: String!
+	* @return       Bool of the result, true if is a part, false otherwise.
+	*/
+	internal func hasGroup(name: String!) -> Bool {
+		for n in groupSet {
 			var group: GKEntityGroup = n as GKEntityGroup
 			if name == group.name {
-                return true
-            }
-        }
-        return false
-    }
-
-    /**
-    * removeGroup
-    * Removes a Group name from the list of Groups if it exists.
-    * @param        name: String!
-    * @return       Bool of the result, true if exists, false otherwise.
-    */
-    internal func removeGroup(name: String!) -> Bool {
-        for n in groupSet {
-            let group: GKEntityGroup = n as GKEntityGroup
+				return true
+			}
+		}
+		return false
+	}
+	
+	/**
+	* removeGroup
+	* Removes a Group name from the list of Groups if it exists.
+	* @param        name: String!
+	* @return       Bool of the result, true if exists, false otherwise.
+	*/
+	internal func removeGroup(name: String!) -> Bool {
+		for n in groupSet {
+			let group: GKEntityGroup = n as GKEntityGroup
 			if name == group.name {
 				group.delete()
+				let set: NSMutableSet = groupSet as NSMutableSet
+				set.removeObject(group)
 				return true
-            }
-        }
-        return false
-    }
+			}
+		}
+		return false
+	}
 	
 	/**
 	* delete
