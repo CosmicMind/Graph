@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		968F38851AD7379F00E963AB /* GKActionSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968F38811AD7379500E963AB /* GKActionSearchTests.swift */; };
 		968F38871AD737A800E963AB /* GKBondSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968F387E1AD7372400E963AB /* GKBondSearchTests.swift */; };
-		968F38921AD7392900E963AB /* GKGraphKit iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 968F38911AD7392900E963AB /* GKGraphKit iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		968F38981AD7392900E963AB /* GKGraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968F388D1AD7392900E963AB /* GKGraphKit.framework */; };
-		968F389F1AD7392900E963AB /* GKGraphKit_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968F389E1AD7392900E963AB /* GKGraphKit_iOSTests.swift */; };
 		968F38A61AD7393900E963AB /* GKActionSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968F38811AD7379500E963AB /* GKActionSearchTests.swift */; };
 		968F38A71AD7393900E963AB /* GKActionStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C031D61AD72FE100EE4C63 /* GKActionStressTests.swift */; };
 		968F38A81AD7393900E963AB /* GKActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C031D71AD72FE100EE4C63 /* GKActionTests.swift */; };
@@ -80,11 +78,7 @@
 		968F387E1AD7372400E963AB /* GKBondSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKBondSearchTests.swift; sourceTree = "<group>"; };
 		968F38811AD7379500E963AB /* GKActionSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKActionSearchTests.swift; sourceTree = "<group>"; };
 		968F388D1AD7392900E963AB /* GKGraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GKGraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		968F38901AD7392900E963AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		968F38911AD7392900E963AB /* GKGraphKit iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GKGraphKit iOS.h"; sourceTree = "<group>"; };
 		968F38971AD7392900E963AB /* GKGraphKit iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GKGraphKit iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		968F389D1AD7392900E963AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		968F389E1AD7392900E963AB /* GKGraphKit_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GKGraphKit_iOSTests.swift; sourceTree = "<group>"; };
 		96C031B71AD72FD300EE4C63 /* GKAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKAction.swift; sourceTree = "<group>"; };
 		96C031B81AD72FD300EE4C63 /* GKActionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKActionGroup.swift; sourceTree = "<group>"; };
 		96C031B91AD72FD300EE4C63 /* GKActionProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKActionProperty.swift; sourceTree = "<group>"; };
@@ -147,40 +141,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		968F388E1AD7392900E963AB /* GKGraphKit iOS */ = {
-			isa = PBXGroup;
-			children = (
-				968F38911AD7392900E963AB /* GKGraphKit iOS.h */,
-				968F388F1AD7392900E963AB /* Supporting Files */,
-			);
-			path = "GKGraphKit iOS";
-			sourceTree = "<group>";
-		};
-		968F388F1AD7392900E963AB /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				968F38901AD7392900E963AB /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		968F389B1AD7392900E963AB /* GKGraphKit iOSTests */ = {
-			isa = PBXGroup;
-			children = (
-				968F389E1AD7392900E963AB /* GKGraphKit_iOSTests.swift */,
-				968F389C1AD7392900E963AB /* Supporting Files */,
-			);
-			path = "GKGraphKit iOSTests";
-			sourceTree = "<group>";
-		};
-		968F389C1AD7392900E963AB /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				968F389D1AD7392900E963AB /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		96C031B61AD72FD300EE4C63 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,8 +210,6 @@
 			children = (
 				96C031B61AD72FD300EE4C63 /* Source */,
 				96C031D51AD72FE100EE4C63 /* Tests */,
-				968F388E1AD7392900E963AB /* GKGraphKit iOS */,
-				968F389B1AD7392900E963AB /* GKGraphKit iOSTests */,
 				96DBB4B11A9D131D0087569F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -274,7 +232,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				968F38921AD7392900E963AB /* GKGraphKit iOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,7 +416,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				968F389F1AD7392900E963AB /* GKGraphKit_iOSTests.swift in Sources */,
 				968F38A81AD7393900E963AB /* GKActionTests.swift in Sources */,
 				968F38AA1AD7393900E963AB /* GKBondStressTests.swift in Sources */,
 				968F38A61AD7393900E963AB /* GKActionSearchTests.swift in Sources */,
@@ -791,6 +747,7 @@
 				968F38A21AD7392900E963AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		968F38A31AD7392900E963AB /* Build configuration list for PBXNativeTarget "GKGraphKit iOS Tests" */ = {
 			isa = XCConfigurationList;
@@ -799,6 +756,7 @@
 				968F38A51AD7392900E963AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		96C032021AD7306200EE4C63 /* Build configuration list for PBXNativeTarget "GKGraphKit OSX" */ = {
 			isa = XCConfigurationList;
