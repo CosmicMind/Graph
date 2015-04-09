@@ -14,6 +14,6 @@
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "GKGraphKit/*.swift",
+  "source_files": "Source/*.swift",
   "requires_arc": true
 }
