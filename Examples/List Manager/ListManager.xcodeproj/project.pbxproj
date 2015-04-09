@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		968F387D1AD7360000E963AB /* GKGraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968F387C1AD7360000E963AB /* GKGraphKit.framework */; };
 		969D41C11AB7772C005C6373 /* GraphKitLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 969D41C01AB7772C005C6373 /* GraphKitLogo.png */; };
 		969D41C31AB85A4E005C6373 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 969D41C21AB85A4E005C6373 /* Default-568h@2x.png */; };
 		96B24D331AB20A73008A933D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96B24D321AB20A73008A933D /* Images.xcassets */; };
@@ -44,6 +45,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		968F387C1AD7360000E963AB /* GKGraphKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GKGraphKit.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/GKGraphKit-ccamamchwnyhqbcxxijdxyuwfmqt/Build/Products/Debug-iphoneos/GKGraphKit.framework"; sourceTree = "<group>"; };
 		969D41C01AB7772C005C6373 /* GraphKitLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GraphKitLogo.png; sourceTree = "<group>"; };
 		969D41C21AB85A4E005C6373 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		96B24D261AB20A73008A933D /* ListManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ListManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				968F387D1AD7360000E963AB /* GKGraphKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +85,7 @@
 		96B24D1D1AB20A73008A933D = {
 			isa = PBXGroup;
 			children = (
+				968F387C1AD7360000E963AB /* GKGraphKit.framework */,
 				969D41C21AB85A4E005C6373 /* Default-568h@2x.png */,
 				96B24D281AB20A73008A933D /* ListManager */,
 				96B24D3E1AB20A73008A933D /* ListManagerTests */,
@@ -363,6 +367,7 @@
 					"$(inherited)",
 					"/Users/danieldahan/Dropbox/GraphKit/Technology/Repositories/gkgraphkit/build/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/GKTutorials-gyakpbcbwtsiltcuhrjpxfxpgqfi/Build/Products/Debug-iphoneos",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/GKGraphKit-ccamamchwnyhqbcxxijdxyuwfmqt/Build/Products/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = ListManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -383,6 +388,7 @@
 					"$(inherited)",
 					"/Users/danieldahan/Dropbox/GraphKit/Technology/Repositories/gkgraphkit/build/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/GKTutorials-gyakpbcbwtsiltcuhrjpxfxpgqfi/Build/Products/Debug-iphoneos",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/GKGraphKit-ccamamchwnyhqbcxxijdxyuwfmqt/Build/Products/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = ListManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
