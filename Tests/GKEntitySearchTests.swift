@@ -51,7 +51,7 @@ class GKEntitySearchTests : XCTestCase, GKGraphDelegate {
 		
 		var e2: GKEntity? = graph?.search(EntityProperty: "active").last
 		
-		XCTAssertTrue(e1 == e2?, "Entity: Search did not pass.")
+		XCTAssertTrue(e1 == e2, "Entity: Search did not pass.")
 		
 		expectation = expectationWithDescription("Entity: Insert did not pass.")
 		
@@ -69,7 +69,7 @@ class GKEntitySearchTests : XCTestCase, GKGraphDelegate {
 	
 	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
 		var e2: GKEntity? = graph.search(EntityProperty: "active").last
-		if entity == e2? {
+		if entity == e2 {
 			expectation?.fulfill()
 			
 			e2?["active"] = false
@@ -92,7 +92,7 @@ class GKEntitySearchTests : XCTestCase, GKGraphDelegate {
 	
 	func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, property: String!, value: AnyObject!) {
 		var e2: GKEntity? = graph.search(EntityProperty: "active").last
-		if value as Bool == entity["active"] as Bool && false == value as Bool {
+		if value as! Bool == entity["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
 			
 			entity["active"] = nil

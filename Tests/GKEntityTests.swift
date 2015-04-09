@@ -137,22 +137,22 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, property: String!, value: AnyObject!) {
-        if "name" == property && "Eve" == value as String {
+        if "name" == property && "Eve" == value as! String {
             nameInsertExpectation?.fulfill()
             var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 1 == nodes.count && nodes[0][property] as String == value as String {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as String)
-                if 1 == nodes.count && nodes[0][property] as String == value as String {
+            if 1 == nodes.count && nodes[0][property] as! String == value as! String {
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as! String)
+                if 1 == nodes.count && nodes[0][property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
 
-        } else if "age" == property && 26 == value as Int {
+        } else if "age" == property && 26 == value as! Int {
             ageInsertExpectation?.fulfill()
             var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as Int)
-                if 1 == nodes.count && nodes[0][property] as Int == value as Int {
+            if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as! Int)
+                if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
                     ageSearchExpectation?.fulfill()
                 }
             }
@@ -160,21 +160,21 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, property: String!, value: AnyObject!) {
-        if "name" == property && "Daniel" == value as String {
+        if "name" == property && "Daniel" == value as! String {
             nameUpdateExpectation?.fulfill()
             var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 1 == nodes.count && nodes[0][property] as String == value as String {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as String)
-                if 1 == nodes.count && nodes[0][property] as String == value as String {
+            if 1 == nodes.count && nodes[0][property] as! String == value as! String {
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as! String)
+                if 1 == nodes.count && nodes[0][property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
-        } else if "age" == property && 31 == value as Int {
+        } else if "age" == property && 31 == value as! Int {
             ageUpdateExpectation?.fulfill()
             var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as Int)
-                if 1 == nodes.count && nodes[0][property] as Int == value as Int {
+            if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
+                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as! Int)
+                if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
                     ageSearchExpectation?.fulfill()
                 }
             }

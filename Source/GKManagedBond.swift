@@ -73,7 +73,7 @@ internal class GKManagedBond: NSManagedObject {
 	internal subscript(name: String) -> AnyObject? {
 		get {
 			for n in propertySet {
-				let property: GKBondProperty = n as GKBondProperty
+				let property: GKBondProperty = n as! GKBondProperty
 				if name == property.name {
 					return property.value
 				}
@@ -83,10 +83,10 @@ internal class GKManagedBond: NSManagedObject {
 		set(value) {
 			if nil == value {
 				for n in propertySet {
-					let property: GKBondProperty = n as GKBondProperty
+					let property: GKBondProperty = n as! GKBondProperty
 					if name == property.name {
 						property.delete()
-						let set: NSMutableSet = propertySet as NSMutableSet
+						let set: NSMutableSet = propertySet as! NSMutableSet
 						set.removeObject(property)
 						break
 					}
@@ -94,7 +94,7 @@ internal class GKManagedBond: NSManagedObject {
 			} else {
 				var hasProperty: Bool = false
 				for n in propertySet {
-					let property: GKBondProperty = n as GKBondProperty
+					let property: GKBondProperty = n as! GKBondProperty
 					if name == property.name {
 						hasProperty = true
 						property.value = value!
@@ -132,7 +132,7 @@ internal class GKManagedBond: NSManagedObject {
     */
     internal func hasGroup(name: String!) -> Bool {
         for n in groupSet {
-            let group: GKBondGroup = n as GKBondGroup
+            let group: GKBondGroup = n as! GKBondGroup
             if name == group.name {
                 return true
             }
@@ -148,10 +148,10 @@ internal class GKManagedBond: NSManagedObject {
     */
     internal func removeGroup(name: String!) -> Bool {
         for n in groupSet {
-            let group: GKBondGroup = n as GKBondGroup
+            let group: GKBondGroup = n as! GKBondGroup
             if name == group.name {
 				group.delete()
-				let set: NSMutableSet = groupSet as NSMutableSet
+				let set: NSMutableSet = groupSet as! NSMutableSet
 				set.removeObject(group)
 				return true
             }
@@ -176,7 +176,7 @@ extension GKManagedBond {
 	* @param        value: GKBondProperty
 	*/
 	func addPropertySetObject(value: GKBondProperty) {
-		let nodes: NSMutableSet = propertySet as NSMutableSet
+		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -186,7 +186,7 @@ extension GKManagedBond {
 	* @param        value: GKBondProperty
 	*/
 	func removePropertySetObject(value: GKBondProperty) {
-		let nodes: NSMutableSet = propertySet as NSMutableSet
+		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 	
@@ -196,7 +196,7 @@ extension GKManagedBond {
 	* @param        value: GKBondGroup
 	*/
 	func addGroupSetObject(value: GKBondGroup) {
-		let nodes: NSMutableSet = groupSet as NSMutableSet
+		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -206,7 +206,7 @@ extension GKManagedBond {
 	* @param        value: GKBondGroup
 	*/
 	func removeGroupSetObject(value: GKBondGroup) {
-		let nodes: NSMutableSet = groupSet as NSMutableSet
+		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 }

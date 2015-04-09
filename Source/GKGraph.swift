@@ -232,12 +232,12 @@ public class GKGraph: NSObject {
 	* search(Entity)
 	* Searches the Graph for Entity Objects with the following type LIKE ?.
 	* @param        type: String!
-	* @return       Array<GKEntity>!
+	* @return       Array<GKEntity>
 	*/
-	public func search(Entity type: String!) -> Array<GKEntity>! {
+	public func search(Entity type: String!) -> Array<GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
 		var nodes: Array<GKEntity> = Array<GKEntity>()
-		for entity: GKManagedEntity in entries as Array<GKManagedEntity> {
+		for entity: GKManagedEntity in entries as! Array<GKManagedEntity> {
 			nodes.append(GKEntity(entity: entity))
 		}
 		return nodes
@@ -247,12 +247,12 @@ public class GKGraph: NSObject {
 	* search(EntityGroup)
 	* Searches the Graph for Entity Group Objects with the following name LIKE ?.
 	* @param        name: String!
-	* @return       Array<GKEntity>!
+	* @return       Array<GKEntity>
 	*/
-	public func search(EntityGroup name: String!) -> Array<GKEntity>! {
+	public func search(EntityGroup name: String!) -> Array<GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Array<GKEntity> = Array<GKEntity>()
-		for group: GKEntityGroup in entries as Array<GKEntityGroup> {
+		for group: GKEntityGroup in entries as! Array<GKEntityGroup> {
 			nodes.append(GKEntity(entity: group.node))
 		}
 		return nodes
@@ -261,12 +261,12 @@ public class GKGraph: NSObject {
 	/**
 	* search(EntityGroupMap)
 	* Retrieves all the unique Group Names for Entity Nodes with their GKEntity Objects.
-	* @return       Dictionary<String, Array<GKEntity>>!
+	* @return       Dictionary<String, Array<GKEntity>>
 	*/
-	public func search(EntityGroupMap name: String!) -> Dictionary<String, Array<GKEntity>>! {
+	public func search(EntityGroupMap name: String!) -> Dictionary<String, Array<GKEntity>> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Dictionary<String, Array<GKEntity>> = Dictionary<String, Array<GKEntity>>()
-		for group: GKEntityGroup in entries as Array<GKEntityGroup> {
+		for group: GKEntityGroup in entries as! Array<GKEntityGroup> {
 			if (nil == nodes[group.name]) {
 				nodes[group.name] = Array<GKEntity>(arrayLiteral: GKEntity(entity: group.node))
 			} else {
@@ -280,12 +280,12 @@ public class GKGraph: NSObject {
 	* search(EntityProperty)
 	* Searches the Graph for Entity Property Objects with the following name LIKE ?.
 	* @param        name: String!
-	* @return       Array<GKEntity>!
+	* @return       Array<GKEntity>
 	*/
-	public func search(EntityProperty name: String!) -> Array<GKEntity>! {
+	public func search(EntityProperty name: String!) -> Array<GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Array<GKEntity> = Array<GKEntity>()
-		for property: GKEntityProperty in entries as Array<GKEntityProperty> {
+		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
 			nodes.append(GKEntity(entity: property.node))
 		}
 		return nodes
@@ -296,12 +296,12 @@ public class GKGraph: NSObject {
 	* Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	* @param        name: String!
 	* @param        value: String!
-	* @return       Array<GKEntity>!
+	* @return       Array<GKEntity>
 	*/
-	public func search(EntityProperty name: String!, value: String!) -> Array<GKEntity>! {
+	public func search(EntityProperty name: String!, value: String!) -> Array<GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
 		var nodes: Array<GKEntity> = Array<GKEntity>()
-		for property: GKEntityProperty in entries as Array<GKEntityProperty> {
+		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
 			nodes.append(GKEntity(entity: property.node))
 		}
 		return nodes
@@ -312,12 +312,12 @@ public class GKGraph: NSObject {
 	* Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	* @param        name: String!
 	* @param        value: String!
-	* @return       Array<GKEntity>!
+	* @return       Array<GKEntity>
 	*/
-	public func search(EntityProperty name: String!, value: Int!) -> Array<GKEntity>! {
+	public func search(EntityProperty name: String!, value: Int!) -> Array<GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
 		var nodes: Array<GKEntity> = Array<GKEntity>()
-		for property: GKEntityProperty in entries as Array<GKEntityProperty> {
+		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
 			nodes.append(GKEntity(entity: property.node))
 		}
 		return nodes
@@ -327,12 +327,12 @@ public class GKGraph: NSObject {
 	* search(Action)
 	* Searches the Graph for Action Objects with the following type LIKE ?.
 	* @param        type: String!
-	* @return       Array<GKAction>!
+	* @return       Array<GKAction>
 	*/
-	public func search(Action type: String!) -> Array<GKAction>! {
+	public func search(Action type: String!) -> Array<GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
 		var nodes: Array<GKAction> = Array<GKAction>()
-		for action: GKManagedAction in entries as Array<GKManagedAction> {
+		for action: GKManagedAction in entries as! Array<GKManagedAction> {
 			nodes.append(GKAction(action: action))
 		}
 		return nodes
@@ -342,12 +342,12 @@ public class GKGraph: NSObject {
 	* search(ActionGroup)
 	* Searches the Graph for Action Group Objects with the following name LIKE ?.
 	* @param        name: String!
-	* @return       Array<GKAction>!
+	* @return       Array<GKAction>
 	*/
-	public func search(ActionGroup name: String!) -> Array<GKAction>! {
+	public func search(ActionGroup name: String!) -> Array<GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Array<GKAction> = Array<GKAction>()
-		for group: GKActionGroup in entries as Array<GKActionGroup> {
+		for group: GKActionGroup in entries as! Array<GKActionGroup> {
 			nodes.append(GKAction(action: group.node))
 		}
 		return nodes
@@ -356,12 +356,12 @@ public class GKGraph: NSObject {
 	/**
 	* search(ActionGroupMap)
 	* Retrieves all the unique Group Names for Action Nodes with their GKAction Objects.
-	* @return       Dictionary<String, Array<GKAction>>!
+	* @return       Dictionary<String, Array<GKAction>>
 	*/
-	public func search(ActionGroupMap name: String!) -> Dictionary<String, Array<GKAction>>! {
+	public func search(ActionGroupMap name: String!) -> Dictionary<String, Array<GKAction>> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Dictionary<String, Array<GKAction>> = Dictionary<String, Array<GKAction>>()
-		for group: GKActionGroup in entries as Array<GKActionGroup> {
+		for group: GKActionGroup in entries as! Array<GKActionGroup> {
 			if (nil == nodes[group.name]) {
 				nodes[group.name] = Array<GKAction>(arrayLiteral: GKAction(action: group.node))
 			} else {
@@ -375,12 +375,12 @@ public class GKGraph: NSObject {
 	* search(ActionProperty)
 	* Searches the Graph for Action Property Objects with the following name LIKE ?.
 	* @param        name: String!
-	* @return       Array<GKAction>!
+	* @return       Array<GKAction>
 	*/
-	public func search(ActionProperty name: String!) -> Array<GKAction>! {
+	public func search(ActionProperty name: String!) -> Array<GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Array<GKAction> = Array<GKAction>()
-		for property: GKActionProperty in entries as Array<GKActionProperty> {
+		for property: GKActionProperty in entries as! Array<GKActionProperty> {
 			nodes.append(GKAction(action: property.node))
 		}
 		return nodes
@@ -391,12 +391,12 @@ public class GKGraph: NSObject {
 	* Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	* @param        name: String!
 	* @param        value: String!
-	* @return       Array<GKAction>!
+	* @return       Array<GKAction>
 	*/
-	public func search(ActionProperty name: String!, value: String!) -> Array<GKAction>! {
+	public func search(ActionProperty name: String!, value: String!) -> Array<GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
 		var nodes: Array<GKAction> = Array<GKAction>()
-		for property: GKActionProperty in entries as Array<GKActionProperty> {
+		for property: GKActionProperty in entries as! Array<GKActionProperty> {
 			nodes.append(GKAction(action: property.node))
 		}
 		return nodes
@@ -407,12 +407,12 @@ public class GKGraph: NSObject {
 	* Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	* @param        name: String!
 	* @param        value: String!
-	* @return       Array<GKAction>!
+	* @return       Array<GKAction>
 	*/
-	public func search(ActionProperty name: String!, value: Int!) -> Array<GKAction>! {
+	public func search(ActionProperty name: String!, value: Int!) -> Array<GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
 		var nodes: Array<GKAction> = Array<GKAction>()
-		for property: GKActionProperty in entries as Array<GKActionProperty> {
+		for property: GKActionProperty in entries as! Array<GKActionProperty> {
 			nodes.append(GKAction(action: property.node))
 		}
 		return nodes
@@ -422,12 +422,12 @@ public class GKGraph: NSObject {
 	* search(Bond)
 	* Searches the Graph for Bond Objects with the following type LIKE ?.
 	* @param        type: String!
-	* @return       Array<GKBond>!
+	* @return       Array<GKBond>
 	*/
-	public func search(Bond type: String!) -> Array<GKBond>! {
+	public func search(Bond type: String!) -> Array<GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
 		var nodes: Array<GKBond> = Array<GKBond>()
-		for bond: GKManagedBond in entries as Array<GKManagedBond> {
+		for bond: GKManagedBond in entries as! Array<GKManagedBond> {
 			nodes.append(GKBond(bond: bond))
 		}
 		return nodes
@@ -437,12 +437,12 @@ public class GKGraph: NSObject {
 	* search(BondGroup)
 	* Searches the Graph for Bond Group Objects with the following name LIKE ?.
 	* @param        name: String!
-	* @return       Array<GKBond>!
+	* @return       Array<GKBond>
 	*/
-	public func search(BondGroup name: String!) -> Array<GKBond>! {
+	public func search(BondGroup name: String!) -> Array<GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Array<GKBond> = Array<GKBond>()
-		for group: GKBondGroup in entries as Array<GKBondGroup> {
+		for group: GKBondGroup in entries as! Array<GKBondGroup> {
 			nodes.append(GKBond(bond: group.node))
 		}
 		return nodes
@@ -451,12 +451,12 @@ public class GKGraph: NSObject {
 	/**
 	* search(BondGroupMap)
 	* Retrieves all the unique Group Names for Bond Nodes with their GKBond Objects.
-	* @return       Dictionary<String, Array<GKBond>>!
+	* @return       Dictionary<String, Array<GKBond>>
 	*/
-	public func search(BondGroupMap name: String!) -> Dictionary<String, Array<GKBond>>! {
+	public func search(BondGroupMap name: String!) -> Dictionary<String, Array<GKBond>> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Dictionary<String, Array<GKBond>> = Dictionary<String, Array<GKBond>>()
-		for group: GKBondGroup in entries as Array<GKBondGroup> {
+		for group: GKBondGroup in entries as! Array<GKBondGroup> {
 			if (nil == nodes[group.name]) {
 				nodes[group.name] = Array<GKBond>(arrayLiteral: GKBond(bond: group.node))
 			} else {
@@ -470,12 +470,12 @@ public class GKGraph: NSObject {
 	* search(BondProperty)
 	* Searches the Graph for Bond Property Objects with the following name LIKE ?.
 	* @param        name: String!
-	* @return       Array<GKBond>!
+	* @return       Array<GKBond>
 	*/
-	public func search(BondProperty name: String!) -> Array<GKBond>! {
+	public func search(BondProperty name: String!) -> Array<GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: Array<GKBond> = Array<GKBond>()
-		for property: GKBondProperty in entries as Array<GKBondProperty> {
+		for property: GKBondProperty in entries as! Array<GKBondProperty> {
 			nodes.append(GKBond(bond: property.node))
 		}
 		return nodes
@@ -486,12 +486,12 @@ public class GKGraph: NSObject {
 	* Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	* @param        name: String!
 	* @param        value: String!
-	* @return       Array<GKBond>!
+	* @return       Array<GKBond>
 	*/
-	public func search(BondProperty name: String!, value: String!) -> Array<GKBond>! {
+	public func search(BondProperty name: String!, value: String!) -> Array<GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
 		var nodes: Array<GKBond> = Array<GKBond>()
-		for property: GKBondProperty in entries as Array<GKBondProperty> {
+		for property: GKBondProperty in entries as! Array<GKBondProperty> {
 			nodes.append(GKBond(bond: property.node))
 		}
 		return nodes
@@ -502,12 +502,12 @@ public class GKGraph: NSObject {
 	* Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	* @param        name: String!
 	* @param        value: String!
-	* @return       Array<GKBond>!
+	* @return       Array<GKBond>
 	*/
-	public func search(BondProperty name: String!, value: Int!) -> Array<GKBond>! {
+	public func search(BondProperty name: String!, value: Int!) -> Array<GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
 		var nodes: Array<GKBond> = Array<GKBond>()
-		for property: GKBondProperty in entries as Array<GKBondProperty> {
+		for property: GKBondProperty in entries as! Array<GKBondProperty> {
 			nodes.append(GKBond(bond: property.node))
 		}
 		return nodes
@@ -519,18 +519,18 @@ public class GKGraph: NSObject {
 	* @param        notification: NSNotification
 	*/
 	public func managedObjectContextDidSave(notification: NSNotification) {
-		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as NSManagedObjectContext
+		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as! NSManagedObjectContext
 		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
 		let userInfo = notification.userInfo
 		
 		// inserts
-		let insertedSet: NSSet = userInfo?[NSInsertedObjectsKey] as NSSet
-		let	inserted: NSMutableSet = insertedSet.mutableCopy() as NSMutableSet
+		let insertedSet: NSSet = userInfo?[NSInsertedObjectsKey] as! NSSet
+		let	inserted: NSMutableSet = insertedSet.mutableCopy() as! NSMutableSet
 		
 		inserted.filterUsingPredicate(masterPredicate!)
 		
 		if 0 < inserted.count {
-			let nodes: Array<NSManagedObject> = inserted.allObjects as [NSManagedObject]
+			let nodes: Array<NSManagedObject> = inserted.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
 				if nil == className {
@@ -539,36 +539,36 @@ public class GKGraph: NSObject {
 				}
 				switch(className!) {
 				case "GKManagedEntity_GKManagedEntity_":
-					delegate?.graph?(self, didInsertEntity: GKEntity(entity: node as GKManagedEntity))
+					delegate?.graph?(self, didInsertEntity: GKEntity(entity: node as! GKManagedEntity))
 					break
 				case "GKEntityGroup_GKEntityGroup_":
-					let group: GKEntityGroup = node as GKEntityGroup
+					let group: GKEntityGroup = node as! GKEntityGroup
 					delegate?.graph?(self, didInsertEntity: GKEntity(entity: group.node), group: group.name)
 					break
 				case "GKEntityProperty_GKEntityProperty_":
-					let property: GKEntityProperty = node as GKEntityProperty
+					let property: GKEntityProperty = node as! GKEntityProperty
 					delegate?.graph?(self, didInsertEntity: GKEntity(entity: property.node), property: property.name, value: property.value)
 					break
 				case "GKManagedAction_GKManagedAction_":
-					delegate?.graph?(self, didInsertAction: GKAction(action: node as GKManagedAction))
+					delegate?.graph?(self, didInsertAction: GKAction(action: node as! GKManagedAction))
 					break
 				case "GKActionGroup_GKActionGroup_":
-					let group: GKActionGroup = node as GKActionGroup
+					let group: GKActionGroup = node as! GKActionGroup
 					delegate?.graph?(self, didInsertAction: GKAction(action: group.node), group: group.name)
 					break
 				case "GKActionProperty_GKActionProperty_":
-					let property: GKActionProperty = node as GKActionProperty
+					let property: GKActionProperty = node as! GKActionProperty
 					delegate?.graph?(self, didInsertAction: GKAction(action: property.node), property: property.name, value: property.value)
 					break
 				case "GKManagedBond_GKManagedBond_":
-					delegate?.graph?(self, didInsertBond: GKBond(bond: node as GKManagedBond))
+					delegate?.graph?(self, didInsertBond: GKBond(bond: node as! GKManagedBond))
 					break
 				case "GKBondGroup_GKBondGroup_":
-					let group: GKBondGroup = node as GKBondGroup
+					let group: GKBondGroup = node as! GKBondGroup
 					delegate?.graph?(self, didInsertBond: GKBond(bond: group.node), group: group.name)
 					break
 				case "GKBondProperty_GKBondProperty_":
-					let property: GKBondProperty = node as GKBondProperty
+					let property: GKBondProperty = node as! GKBondProperty
 					delegate?.graph?(self, didInsertBond: GKBond(bond: property.node), property: property.name, value: property.value)
 					break
 				default:
@@ -578,12 +578,12 @@ public class GKGraph: NSObject {
 		}
 		
 		// updates
-		let updatedSet: NSSet = userInfo?[NSUpdatedObjectsKey] as NSSet
-		let	updated: NSMutableSet = updatedSet.mutableCopy() as NSMutableSet
+		let updatedSet: NSSet = userInfo?[NSUpdatedObjectsKey] as! NSSet
+		let	updated: NSMutableSet = updatedSet.mutableCopy() as! NSMutableSet
 		updated.filterUsingPredicate(masterPredicate!)
 		
 		if 0 < updated.count {
-			let nodes: Array<NSManagedObject> = updated.allObjects as [NSManagedObject]
+			let nodes: Array<NSManagedObject> = updated.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
 				if nil == className {
@@ -592,19 +592,19 @@ public class GKGraph: NSObject {
 				}
 				switch(className!) {
 				case "GKEntityProperty_GKEntityProperty_":
-					let property: GKEntityProperty = node as GKEntityProperty
+					let property: GKEntityProperty = node as! GKEntityProperty
 					delegate?.graph?(self, didUpdateEntity: GKEntity(entity: property.node), property: property.name, value: property.value)
 					break
 				case "GKActionProperty_GKActionProperty_":
-					let property: GKActionProperty = node as GKActionProperty
+					let property: GKActionProperty = node as! GKActionProperty
 					delegate?.graph?(self, didUpdateAction: GKAction(action: property.node), property: property.name, value: property.value)
 					break
 				case "GKBondProperty_GKBondProperty_":
-					let property: GKBondProperty = node as GKBondProperty
+					let property: GKBondProperty = node as! GKBondProperty
 					delegate?.graph?(self, didUpdateBond: GKBond(bond: property.node), property: property.name, value: property.value)
 					break
 				case "GKManagedAction_GKManagedAction_":
-					delegate?.graph?(self, didUpdateAction: GKAction(action: node as GKManagedAction))
+					delegate?.graph?(self, didUpdateAction: GKAction(action: node as! GKManagedAction))
 					break
 				default:
 					assert(false, "[GraphKit Error: GKGraph observed an object that is invalid.]")
@@ -614,17 +614,17 @@ public class GKGraph: NSObject {
 		}
 		
 		// deletes
-		let deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
+		var deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
 		
-		if nil == deletedSet? {
+		if nil == deletedSet {
 			return
 		}
 		
-		var	deleted: NSMutableSet = deletedSet!.mutableCopy() as NSMutableSet
+		var	deleted: NSMutableSet = deletedSet!.mutableCopy() as! NSMutableSet
 		deleted.filterUsingPredicate(masterPredicate!)
 		
 		if 0 < deleted.count {
-			let nodes: Array<NSManagedObject> = deleted.allObjects as [NSManagedObject]
+			let nodes: Array<NSManagedObject> = deleted.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
 				if nil == className {
@@ -633,13 +633,13 @@ public class GKGraph: NSObject {
 				}
 				switch(className!) {
 				case "GKManagedEntity_GKManagedEntity_":
-					delegate?.graph?(self, didDeleteEntity: GKEntity(entity: node as GKManagedEntity))
+					delegate?.graph?(self, didDeleteEntity: GKEntity(entity: node as! GKManagedEntity))
 					break
 				case "GKManagedAction_GKManagedAction_":
-					delegate?.graph?(self, didDeleteAction: GKAction(action: node as GKManagedAction))
+					delegate?.graph?(self, didDeleteAction: GKAction(action: node as! GKManagedAction))
 					break
 				case "GKManagedBond_GKManagedBond_":
-					delegate?.graph?(self, didDeleteBond: GKBond(bond: node as GKManagedBond))
+					delegate?.graph?(self, didDeleteBond: GKBond(bond: node as! GKManagedBond))
 					break
 				default:break
 				}
@@ -722,33 +722,33 @@ public class GKGraph: NSObject {
 			nodeClass.name = "nodeClass"
 			nodeClass.attributeType = .StringAttributeType
 			nodeClass.optional = false
-			entityProperties.append(nodeClass.copy() as NSAttributeDescription)
-			actionProperties.append(nodeClass.copy() as NSAttributeDescription)
-			bondProperties.append(nodeClass.copy() as NSAttributeDescription)
+			entityProperties.append(nodeClass.copy() as! NSAttributeDescription)
+			actionProperties.append(nodeClass.copy() as! NSAttributeDescription)
+			bondProperties.append(nodeClass.copy() as! NSAttributeDescription)
 			
 			var type: NSAttributeDescription = NSAttributeDescription()
 			type.name = "type"
 			type.attributeType = .StringAttributeType
 			type.optional = false
-			entityProperties.append(type.copy() as NSAttributeDescription)
-			actionProperties.append(type.copy() as NSAttributeDescription)
-			bondProperties.append(type.copy() as NSAttributeDescription)
+			entityProperties.append(type.copy() as! NSAttributeDescription)
+			actionProperties.append(type.copy() as! NSAttributeDescription)
+			bondProperties.append(type.copy() as! NSAttributeDescription)
 			
 			var createdDate: NSAttributeDescription = NSAttributeDescription()
 			createdDate.name = "createdDate"
 			createdDate.attributeType = .DateAttributeType
 			createdDate.optional = false
-			entityProperties.append(createdDate.copy() as NSAttributeDescription)
-			actionProperties.append(createdDate.copy() as NSAttributeDescription)
-			bondProperties.append(createdDate.copy() as NSAttributeDescription)
+			entityProperties.append(createdDate.copy() as! NSAttributeDescription)
+			actionProperties.append(createdDate.copy() as! NSAttributeDescription)
+			bondProperties.append(createdDate.copy() as! NSAttributeDescription)
 			
 			var propertyName: NSAttributeDescription = NSAttributeDescription()
 			propertyName.name = "name"
 			propertyName.attributeType = .StringAttributeType
 			propertyName.optional = false
-			entityPropertyProperties.append(propertyName.copy() as NSAttributeDescription)
-			actionPropertyProperties.append(propertyName.copy() as NSAttributeDescription)
-			bondPropertyProperties.append(propertyName.copy() as NSAttributeDescription)
+			entityPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
+			actionPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
+			bondPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
 			
 			var propertyValue: NSAttributeDescription = NSAttributeDescription()
 			propertyValue.name = "value"
@@ -756,9 +756,9 @@ public class GKGraph: NSObject {
 			propertyValue.attributeValueClassName = "AnyObject"
 			propertyValue.optional = false
 			propertyValue.storedInExternalRecord = true
-			entityPropertyProperties.append(propertyValue.copy() as NSAttributeDescription)
-			actionPropertyProperties.append(propertyValue.copy() as NSAttributeDescription)
-			bondPropertyProperties.append(propertyValue.copy() as NSAttributeDescription)
+			entityPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
+			actionPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
+			bondPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
 			
 			var propertyRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertyRelationship.name = "node"
@@ -778,26 +778,26 @@ public class GKGraph: NSObject {
 			
 			propertyRelationship.destinationEntity = entityDescription
 			propertySetRelationship.destinationEntity = entityPropertyDescription
-			entityPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
-			entityProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
+			entityPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
+			entityProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
 			
 			propertyRelationship.destinationEntity = actionDescription
 			propertySetRelationship.destinationEntity = actionPropertyDescription
-			actionPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
-			actionProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
+			actionPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
+			actionProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
 			
 			propertyRelationship.destinationEntity = bondDescription
 			propertySetRelationship.destinationEntity = bondPropertyDescription
-			bondPropertyProperties.append(propertyRelationship.copy() as NSRelationshipDescription)
-			bondProperties.append(propertySetRelationship.copy() as NSRelationshipDescription)
+			bondPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
+			bondProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
 			
 			var group: NSAttributeDescription = NSAttributeDescription()
 			group.name = "name"
 			group.attributeType = .StringAttributeType
 			group.optional = false
-			entityGroupProperties.append(group.copy() as NSAttributeDescription)
-			actionGroupProperties.append(group.copy() as NSAttributeDescription)
-			bondGroupProperties.append(group.copy() as NSAttributeDescription)
+			entityGroupProperties.append(group.copy() as! NSAttributeDescription)
+			actionGroupProperties.append(group.copy() as! NSAttributeDescription)
+			bondGroupProperties.append(group.copy() as! NSAttributeDescription)
 			
 			var groupRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupRelationship.name = "node"
@@ -817,18 +817,18 @@ public class GKGraph: NSObject {
 			
 			groupRelationship.destinationEntity = entityDescription
 			groupSetRelationship.destinationEntity = entityGroupDescription
-			entityGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
-			entityProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
+			entityGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+			entityProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
 			
 			groupRelationship.destinationEntity = actionDescription
 			groupSetRelationship.destinationEntity = actionGroupDescription
-			actionGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
-			actionProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
+			actionGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+			actionProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
 			
 			groupRelationship.destinationEntity = bondDescription
 			groupSetRelationship.destinationEntity = bondGroupDescription
-			bondGroupProperties.append(groupRelationship.copy() as NSRelationshipDescription)
-			bondProperties.append(groupSetRelationship.copy() as NSRelationshipDescription)
+			bondGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+			bondProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
 			
 			// Inverse relationship for Subjects -- B.
 			var actionSubjectSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -850,8 +850,8 @@ public class GKGraph: NSObject {
 			actionSubjectRelationship.inverseRelationship = actionSubjectSetRelationship
 			actionSubjectSetRelationship.inverseRelationship = actionSubjectRelationship
 			
-			entityProperties.append(actionSubjectRelationship.copy() as NSRelationshipDescription)
-			actionProperties.append(actionSubjectSetRelationship.copy() as NSRelationshipDescription)
+			entityProperties.append(actionSubjectRelationship.copy() as! NSRelationshipDescription)
+			actionProperties.append(actionSubjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Subjects -- E.
 			
 			// Inverse relationship for Objects -- B.
@@ -873,8 +873,8 @@ public class GKGraph: NSObject {
 			actionObjectRelationship.inverseRelationship = actionObjectSetRelationship
 			actionObjectSetRelationship.inverseRelationship = actionObjectRelationship
 			
-			entityProperties.append(actionObjectRelationship.copy() as NSRelationshipDescription)
-			actionProperties.append(actionObjectSetRelationship.copy() as NSRelationshipDescription)
+			entityProperties.append(actionObjectRelationship.copy() as! NSRelationshipDescription)
+			actionProperties.append(actionObjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Objects -- E.
 			
 			// Inverse relationship for Subjects -- B.
@@ -897,8 +897,8 @@ public class GKGraph: NSObject {
 			bondSubjectRelationship.inverseRelationship = bondSubjectSetRelationship
 			bondSubjectSetRelationship.inverseRelationship = bondSubjectRelationship
 			
-			entityProperties.append(bondSubjectRelationship.copy() as NSRelationshipDescription)
-			bondProperties.append(bondSubjectSetRelationship.copy() as NSRelationshipDescription)
+			entityProperties.append(bondSubjectRelationship.copy() as! NSRelationshipDescription)
+			bondProperties.append(bondSubjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Subjects -- E.
 			
 			// Inverse relationship for Objects -- B.
@@ -920,8 +920,8 @@ public class GKGraph: NSObject {
 			bondObjectRelationship.inverseRelationship = bondObjectSetRelationship
 			bondObjectSetRelationship.inverseRelationship = bondObjectRelationship
 			
-			entityProperties.append(bondObjectRelationship.copy() as NSRelationshipDescription)
-			bondProperties.append(bondObjectSetRelationship.copy() as NSRelationshipDescription)
+			entityProperties.append(bondObjectRelationship.copy() as! NSRelationshipDescription)
+			bondProperties.append(bondObjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Objects -- E.
 			
 			entityDescription.properties = entityProperties
@@ -959,7 +959,7 @@ public class GKGraph: NSObject {
 			var error: NSError?
 			GKGraphPersistentStoreCoordinator.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
 			var options: Dictionary = [NSReadOnlyPersistentStoreOption: false, NSSQLitePragmasOption: ["journal_mode": "DELETE"]];
-			if nil == GKGraphPersistentStoreCoordinator.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options as NSDictionary, error: &error) {
+			if nil == GKGraphPersistentStoreCoordinator.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options as [NSObject : AnyObject], error: &error) {
 				assert(nil == error, "[GraphKit Error: Saving to internal context.]")
 			}
 		}
@@ -968,7 +968,7 @@ public class GKGraph: NSObject {
 	
 	internal var applicationDocumentsDirectory: NSURL {
 		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-		return urls[urls.endIndex - 1] as NSURL
+		return urls[urls.endIndex - 1] as! NSURL
 	}
 	
 	/**
@@ -987,7 +987,7 @@ public class GKGraph: NSObject {
 	* @param        predicate: NSPredicate!
 	*/
 	internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
-		var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)!
+		var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
 		var predicates: Array<NSPredicate> = [entityPredicate, predicate]
 		let finalPredicate: NSPredicate = NSCompoundPredicate.andPredicateWithSubpredicates(predicates)
 		masterPredicate = nil != masterPredicate ? NSCompoundPredicate.orPredicateWithSubpredicates([masterPredicate!, finalPredicate]) : finalPredicate
@@ -1037,7 +1037,7 @@ public class GKGraph: NSObject {
 		var entityDescription: NSEntityDescription = NSEntityDescription()
 		entityDescription.name = entityDescriptionName
 		entityDescription.managedObjectClassName = managedObjectClassName
-		var predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)!
+		var predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
 		addPredicateToContextWatcher(entityDescription, predicate: predicate)
 		prepareForObservation()
 	}
@@ -1063,7 +1063,7 @@ public class GKGraph: NSObject {
 	*/
 	private func search(entityDescriptorName: NSString!, predicate: NSPredicate!, sort: Array<NSSortDescriptor>?) -> Array<AnyObject>! {
 		let request: NSFetchRequest = NSFetchRequest()
-		let entity: NSEntityDescription = managedObjectModel?.entitiesByName[entityDescriptorName] as NSEntityDescription
+		let entity: NSEntityDescription = managedObjectModel?.entitiesByName[entityDescriptorName] as! NSEntityDescription
 		request.entity = entity
 		request.predicate = predicate
 		request.fetchBatchSize = batchSize

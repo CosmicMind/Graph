@@ -99,9 +99,9 @@
 		96C031DD1AD72FE100EE4C63 /* GKTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKTests.swift; sourceTree = "<group>"; };
 		96C031DE1AD72FE100EE4C63 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96C031EF1AD7306200EE4C63 /* GKGraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GKGraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		96C031F91AD7306200EE4C63 /* GKGraphKit OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GKGraphKit OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96C031F91AD7306200EE4C63 /* GKGraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GKGraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DBB4B01A9D131D0087569F /* GKGraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GKGraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		96DBB4BB1A9D131D0087569F /* GKGraphKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GKGraphKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		96DBB4BB1A9D131D0087569F /* GKGraphKit iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GKGraphKit iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,9 +213,9 @@
 			isa = PBXGroup;
 			children = (
 				96DBB4B01A9D131D0087569F /* GKGraphKit.framework */,
-				96DBB4BB1A9D131D0087569F /* GKGraphKitTests.xctest */,
+				96DBB4BB1A9D131D0087569F /* GKGraphKit iOS Tests.xctest */,
 				96C031EF1AD7306200EE4C63 /* GKGraphKit.framework */,
-				96C031F91AD7306200EE4C63 /* GKGraphKit OSXTests.xctest */,
+				96C031F91AD7306200EE4C63 /* GKGraphKit OSX Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -273,7 +273,7 @@
 			);
 			name = "GKGraphKit OSX Tests";
 			productName = "GKGraphKit OSXTests";
-			productReference = 96C031F91AD7306200EE4C63 /* GKGraphKit OSXTests.xctest */;
+			productReference = 96C031F91AD7306200EE4C63 /* GKGraphKit OSX Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		96DBB4AF1A9D131D0087569F /* GKGraphKit iOS */ = {
@@ -309,7 +309,7 @@
 			);
 			name = "GKGraphKit iOS Tests";
 			productName = GKGraphKitTests;
-			productReference = 96DBB4BB1A9D131D0087569F /* GKGraphKitTests.xctest */;
+			productReference = 96DBB4BB1A9D131D0087569F /* GKGraphKit iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -492,7 +492,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "GKGraphKit OSX/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -514,7 +514,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "GKGraphKit OSX/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -538,7 +538,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "GKGraphKit OSXTests/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -557,7 +557,7 @@
 					"$(inherited)",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "GKGraphKit OSXTests/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -696,7 +696,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = GKGraphKitTests/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -709,7 +709,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = GKGraphKitTests/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

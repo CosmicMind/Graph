@@ -187,7 +187,7 @@ public class GKEntity: NSObject {
         get {
             var nodes: Array<GKAction> = Array<GKAction>()
 			for entry in node.actionSubjectSet {
-				nodes.append(GKAction(action: entry as GKManagedAction))
+				nodes.append(GKAction(action: entry as! GKManagedAction))
 			}
             return nodes
         }
@@ -205,7 +205,7 @@ public class GKEntity: NSObject {
         get {
             var nodes: Array<GKAction> = Array<GKAction>()
 			for entry in node.actionObjectSet {
-				nodes.append(GKAction(action: entry as GKManagedAction))
+				nodes.append(GKAction(action: entry as! GKManagedAction))
 			}
             return nodes
         }
@@ -237,7 +237,7 @@ public class GKEntity: NSObject {
         get {
             var nodes: Array<GKBond> = Array<GKBond>()
 			for entry in node.bondSubjectSet {
-				nodes.append(GKBond(bond: entry as GKManagedBond))
+				nodes.append(GKBond(bond: entry as! GKManagedBond))
 			}
             return nodes
         }
@@ -255,7 +255,7 @@ public class GKEntity: NSObject {
         get {
             var nodes: Array<GKBond> = Array<GKBond>()
 			for entry in node.bondObjectSet {
-				nodes.append(GKBond(bond: entry as GKManagedBond))
+				nodes.append(GKBond(bond: entry as! GKManagedBond))
 			}
             return nodes
         }
@@ -275,7 +275,7 @@ public class GKEntity: NSObject {
 
 extension GKEntity: Equatable, Printable {
 	override public var description: String {
-		return "[GKEntity\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n]"
+		return "[GKEntity\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tcreatedDate: \(createdDate)]"
 	}
 }
 

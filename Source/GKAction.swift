@@ -173,7 +173,7 @@ public class GKAction: NSObject {
         get {
             var nodes: Array<GKEntity> = Array<GKEntity>()
 			for entry in node.subjectSet {
-				nodes.append(GKEntity(entity: entry as GKManagedEntity))
+				nodes.append(GKEntity(entity: entry as! GKManagedEntity))
 			}
             return nodes
         }
@@ -191,7 +191,7 @@ public class GKAction: NSObject {
         get {
             var nodes: Array<GKEntity> = Array<GKEntity>()
 			for entry in node.objectSet {
-				nodes.append(GKEntity(entity: entry as GKManagedEntity))
+				nodes.append(GKEntity(entity: entry as! GKManagedEntity))
 			}
             return nodes
         }
@@ -271,7 +271,7 @@ public class GKAction: NSObject {
 
 extension GKAction: Equatable, Printable {
 	override public var description: String {
-		return "[GKAction\n\tobjectID: \((objectID))\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubjects: \(subjects)\n\tobjects: \(objects)]"
+		return "[GKAction\n\tobjectID: \((objectID))\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubjects: \(subjects)\n\tobjects: \(objects)\n\tcreatedDate: \(createdDate)]"
 	}
 }
 

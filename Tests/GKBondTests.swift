@@ -135,9 +135,9 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
-        if "Eve" == entity["name"]? as String && 1 == entity.bondsWhenSubject.count {
+        if "Eve" == entity["name"] as! String && 1 == entity.bondsWhenSubject.count {
             u1InsertExpectation?.fulfill()
-        } else if "Daniel" == entity["name"]? as String && 1 == entity.bondsWhenObject.count {
+        } else if "Daniel" == entity["name"] as! String && 1 == entity.bondsWhenObject.count {
             u2InsertExpectation?.fulfill()
         }
     }
@@ -165,22 +165,22 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didInsertBond bond: GKBond!, property: String!, value: AnyObject!) {
-        if "permission" == property && "edit" == value as String {
+        if "permission" == property && "edit" == value! as! String {
             permissionInsertExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property)
-            if 1 == nodes.count && nodes[0][property] as String == value as String {
-                var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as String)
-                if 1 == nodes.count && nodes[0][property] as String == value as String {
+            if 1 == nodes.count && nodes[0][property] as! String == value as! String {
+                var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as! String)
+                if 1 == nodes.count && nodes[0][property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
             }
 
-        } else if "year" == property && 1998 == value as Int {
+        } else if "year" == property && 1998 == value as! Int {
             yearInsertExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property)
-            if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as Int)
-                if 1 == nodes.count && nodes[0][property] as Int == value as Int {
+            if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
+                var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as! Int)
+                if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }
             }
@@ -188,21 +188,21 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
     }
 
     func graph(graph: GKGraph!, didUpdateBond bond: GKBond!, property: String!, value: AnyObject!) {
-        if "permission" == property && "read" == value as String {
+        if "permission" == property && "read" == value as! String {
             permissionUpdateExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property)
-            if 1 == nodes.count && nodes[0][property] as String == value as String {
-                var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as String)
-                if 1 == nodes.count && nodes[0][property] as String == value as String {
+            if 1 == nodes.count && nodes[0][property] as! String == value as! String {
+                var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as! String)
+                if 1 == nodes.count && nodes[0][property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
             }
-        } else if "year" == property && 2001 == value as Int {
+        } else if "year" == property && 2001 == value as! Int {
             yearUpdateExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property)
-            if 1 == nodes.count && nodes[0][property] as Int == value as Int {
-                var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as Int)
-                if 1 == nodes.count && nodes[0][property] as Int == value as Int {
+            if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
+                var nodes: Array<GKBond> = graph.search(BondProperty: property, value: value as! Int)
+                if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }
             }

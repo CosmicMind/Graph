@@ -76,7 +76,7 @@ internal class GKManagedEntity: NSManagedObject {
 	internal subscript(name: String) -> AnyObject? {
 		get {
 			for n in propertySet {
-				let property: GKEntityProperty = n as GKEntityProperty
+				let property: GKEntityProperty = n as! GKEntityProperty
 				if name == property.name {
 					return property.value
 				}
@@ -86,10 +86,10 @@ internal class GKManagedEntity: NSManagedObject {
 		set(value) {
 			if nil == value {
 				for n in propertySet {
-					let property: GKEntityProperty = n as GKEntityProperty
+					let property: GKEntityProperty = n as! GKEntityProperty
 					if name == property.name {
 						property.delete()
-						let set: NSMutableSet = propertySet as NSMutableSet
+						let set: NSMutableSet = propertySet as! NSMutableSet
 						set.removeObject(property)
 						break
 					}
@@ -97,7 +97,7 @@ internal class GKManagedEntity: NSManagedObject {
 			} else {
 				var hasProperty: Bool = false
 				for n in propertySet {
-					let property: GKEntityProperty = n as GKEntityProperty
+					let property: GKEntityProperty = n as! GKEntityProperty
 					if name == property.name {
 						hasProperty = true
 						property.value = value!
@@ -135,7 +135,7 @@ internal class GKManagedEntity: NSManagedObject {
 	*/
 	internal func hasGroup(name: String!) -> Bool {
 		for n in groupSet {
-			var group: GKEntityGroup = n as GKEntityGroup
+			var group: GKEntityGroup = n as! GKEntityGroup
 			if name == group.name {
 				return true
 			}
@@ -151,10 +151,10 @@ internal class GKManagedEntity: NSManagedObject {
 	*/
 	internal func removeGroup(name: String!) -> Bool {
 		for n in groupSet {
-			let group: GKEntityGroup = n as GKEntityGroup
+			let group: GKEntityGroup = n as! GKEntityGroup
 			if name == group.name {
 				group.delete()
-				let set: NSMutableSet = groupSet as NSMutableSet
+				let set: NSMutableSet = groupSet as! NSMutableSet
 				set.removeObject(group)
 				return true
 			}
@@ -179,7 +179,7 @@ extension GKManagedEntity {
 	* @param        value: GKManagedAction
 	*/
 	func addActionSubjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+		let nodes: NSMutableSet = actionSubjectSet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -189,7 +189,7 @@ extension GKManagedEntity {
 	* @param        value: GKManagedAction
 	*/
 	func removeActionSubjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionSubjectSet as NSMutableSet
+		let nodes: NSMutableSet = actionSubjectSet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 	
@@ -199,7 +199,7 @@ extension GKManagedEntity {
 	* @param        value: GKManagedAction
 	*/
 	func addActionObjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+		let nodes: NSMutableSet = actionObjectSet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -209,7 +209,7 @@ extension GKManagedEntity {
 	* @param        value: GKManagedAction
 	*/
 	func removeActionObjectSetObject(value: GKManagedAction) {
-		let nodes: NSMutableSet = actionObjectSet as NSMutableSet
+		let nodes: NSMutableSet = actionObjectSet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 	
@@ -219,7 +219,7 @@ extension GKManagedEntity {
 	* @param        value: GKManagedBond
 	*/
 	func addBondSubjectSetObject(value: GKManagedBond) {
-		let nodes: NSMutableSet = bondSubjectSet as NSMutableSet
+		let nodes: NSMutableSet = bondSubjectSet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -229,7 +229,7 @@ extension GKManagedEntity {
 	* @param        value: GKManagedBond
 	*/
 	func removeBondSubjectSetObject(value: GKManagedBond) {
-		let nodes: NSMutableSet = bondSubjectSet as NSMutableSet
+		let nodes: NSMutableSet = bondSubjectSet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 	
@@ -239,7 +239,7 @@ extension GKManagedEntity {
 	* @param        value: GKManagedBond
 	*/
 	func addBondObjectSetObject(value: GKManagedBond) {
-		let nodes: NSMutableSet = bondObjectSet as NSMutableSet
+		let nodes: NSMutableSet = bondObjectSet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -249,7 +249,7 @@ extension GKManagedEntity {
 	* @param        value: GKManagedBond
 	*/
 	func removeBondObjectSetObject(value: GKManagedBond) {
-		let nodes: NSMutableSet = bondObjectSet as NSMutableSet
+		let nodes: NSMutableSet = bondObjectSet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 	
@@ -259,7 +259,7 @@ extension GKManagedEntity {
 	* @param        value: GKEntityProperty
 	*/
 	func addPropertySetObject(value: GKEntityProperty) {
-		let nodes: NSMutableSet = propertySet as NSMutableSet
+		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -269,7 +269,7 @@ extension GKManagedEntity {
 	* @param        value: GKEntityProperty
 	*/
 	func removePropertySetObject(value: GKEntityProperty) {
-		let nodes: NSMutableSet = propertySet as NSMutableSet
+		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 	
@@ -279,7 +279,7 @@ extension GKManagedEntity {
 	* @param        value: GKEntityGroup
 	*/
 	func addGroupSetObject(value: GKEntityGroup) {
-		let nodes: NSMutableSet = groupSet as NSMutableSet
+		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -289,7 +289,7 @@ extension GKManagedEntity {
 	* @param        value: GKEntityGroup
 	*/
 	func removeGroupSetObject(value: GKEntityGroup) {
-		let nodes: NSMutableSet = groupSet as NSMutableSet
+		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 }

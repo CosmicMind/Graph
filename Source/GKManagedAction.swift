@@ -73,7 +73,7 @@ internal class GKManagedAction: NSManagedObject {
 	internal subscript(name: String) -> AnyObject? {
 		get {
 			for n in propertySet {
-				let property: GKActionProperty = n as GKActionProperty
+				let property: GKActionProperty = n as! GKActionProperty
 				if name == property.name {
 					return property.value
 				}
@@ -83,10 +83,10 @@ internal class GKManagedAction: NSManagedObject {
 		set(value) {
 			if nil == value {
 				for n in propertySet {
-					let property: GKActionProperty = n as GKActionProperty
+					let property: GKActionProperty = n as! GKActionProperty
 					if name == property.name {
 						property.delete()
-						let set: NSMutableSet = propertySet as NSMutableSet
+						let set: NSMutableSet = propertySet as! NSMutableSet
 						set.removeObject(property)
 						break
 					}
@@ -94,7 +94,7 @@ internal class GKManagedAction: NSManagedObject {
 			} else {
 				var hasProperty: Bool = false
 				for n in propertySet {
-					let property: GKActionProperty = n as GKActionProperty
+					let property: GKActionProperty = n as! GKActionProperty
 					if name == property.name {
 						hasProperty = true
 						property.value = value!
@@ -132,7 +132,7 @@ internal class GKManagedAction: NSManagedObject {
     */
     internal func hasGroup(name: String!) -> Bool {
         for n in groupSet {
-            let group: GKActionGroup = n as GKActionGroup
+            let group: GKActionGroup = n as! GKActionGroup
             if name == group.name {
                 return true
             }
@@ -148,10 +148,10 @@ internal class GKManagedAction: NSManagedObject {
     */
     internal func removeGroup(name: String!) -> Bool {
         for n in groupSet {
-            let group: GKActionGroup = n as GKActionGroup
+            let group: GKActionGroup = n as! GKActionGroup
             if name == group.name {
 				group.delete()
-				let set: NSMutableSet = groupSet as NSMutableSet
+				let set: NSMutableSet = groupSet as! NSMutableSet
 				set.removeObject(group)
 				return true
             }
@@ -224,7 +224,7 @@ extension GKManagedAction {
 	* @param        value: GKActionProperty
 	*/
 	func addPropertySetObject(value: GKActionProperty) {
-		let nodes: NSMutableSet = propertySet as NSMutableSet
+		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -234,7 +234,7 @@ extension GKManagedAction {
 	* @param        value: GKActionProperty
 	*/
 	func removePropertySetObject(value: GKActionProperty) {
-		let nodes: NSMutableSet = propertySet as NSMutableSet
+		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 	
@@ -244,7 +244,7 @@ extension GKManagedAction {
 	* @param        value: GKActionGroup
 	*/
 	func addGroupSetObject(value: GKActionGroup) {
-		let nodes: NSMutableSet = groupSet as NSMutableSet
+		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.addObject(value)
 	}
 	
@@ -254,7 +254,7 @@ extension GKManagedAction {
 	* @param        value: GKActionGroup
 	*/
 	func removeGroupSetObject(value: GKActionGroup) {
-		let nodes: NSMutableSet = groupSet as NSMutableSet
+		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.removeObject(value)
 	}
 }

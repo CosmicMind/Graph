@@ -203,7 +203,7 @@ public class GKBond: NSObject {
 
 extension GKBond: Equatable, Printable {
 	override public var description: String {
-		return "[GKBond\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubject: \(subject)\n\tobject: \(object)]"
+		return "[GKBond\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubject: \(subject)\n\tobject: \(object)\n\tcreatedDate: \(createdDate)]"
 	}
 }
 
