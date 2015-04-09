@@ -21,7 +21,7 @@ import GKGraphKit
 
 class ItemViewController: UIViewController, UITextViewDelegate {
 	
-	private let item: GKEntity!
+	private var item: GKEntity?
 	private lazy var graph: GKGraph = GKGraph()
 	private lazy var textView: UITextView = UITextView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height))
 	
@@ -42,7 +42,7 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 		view.backgroundColor = .whiteColor()
 		
 		textView.delegate = self
-		textView.text = item["note"] as? String
+		textView.text = item!["note"] as? String
 		view.addSubview(textView)
 	}
 	
@@ -52,7 +52,7 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 	
 	override func viewDidAppear(animated: Bool) {
 		var rightButton: UIBarButtonItem
-		if nil == item["note"] {
+		if nil == item!["note"] {
 			textView.becomeFirstResponder()
 			rightButton = UIBarButtonItem(title: "Save", style: .Done, target: self, action: "saveTask")
 		} else {
@@ -64,7 +64,7 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 	override func viewWillDisappear(animated: Bool) {
 		navigationController!.navigationBar.topItem!.rightBarButtonItem = nil
 		
-		if 0 == countElements(textView.text) {
+		if 0 == count(textView.text) {
 			item?.delete()
 		}
 	}
@@ -72,10 +72,10 @@ class ItemViewController: UIViewController, UITextViewDelegate {
 	// MARK: - Selectors
 	
 	func saveTask() {
-		if 0 < countElements(textView.text) {
-			item["note"] = textView.text
+		if 0 < count(textView.text) {
+			item!["note"] = textView.text
 			let photo: String = NSBundle.mainBundle().pathForResource("GraphKitLogo", ofType: "png")!
-			item["photo"] = UIImage(contentsOfFile: photo)
+			item!["photo"] = UIImage(contentsOfFile: photo)
 			graph.save() { (success: Bool, error: NSError?) in }
 		}
 		navigationController!.popViewControllerAnimated(true)

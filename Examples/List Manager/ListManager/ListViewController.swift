@@ -28,7 +28,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	
 	// Represents the list as an object.
 	// This
-	private let list: GKEntity!
+	private var list: GKEntity?
 	
 	// GKGraph property value
 	// may also be setup as a local variable in 
@@ -161,7 +161,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 	}
 	
 	func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		var cell: UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("UICollectionViewCell", forIndexPath: indexPath) as UICollectionViewCell;
+		var cell: UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("UICollectionViewCell", forIndexPath: indexPath) as! UICollectionViewCell;
 		
 		// clear before reuse
 		for subView: AnyObject in cell.subviews {
@@ -175,7 +175,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		// generate the size that the text affects
 		let font: UIFont = UIFont(name: "Helvetica Neue", size: 20)!
 		let width: Double? = Double(collectionView.bounds.width - 32)
-		let text: String = item["note"] as String
+		let text: String = item["note"] as! String
 		var r: CGSize = font.sizeOfString(text, constrainedToWidth: width)
 		
 		var label: UILabel = UILabel(frame: CGRectMake(0, 0, collectionView.bounds.width - 32, r.height))
@@ -206,7 +206,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
 		// generate the size that the text affects
 		let font: UIFont = UIFont(name: "Helvetica Neue", size: 20)!
 		let width: Double? = Double(collectionView.bounds.width - 32)
-		let text: String = item["note"] as String
+		let text: String = item["note"] as! String
 		var r: CGSize = font.sizeOfString(text, constrainedToWidth: width)
 		
 		if nil != item["photo"] {

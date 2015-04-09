@@ -39,7 +39,7 @@ extension UIToolbar {
 			return view as? UIImageView
 		}
 		for subView: AnyObject in view.subviews {
-			var imageView: UIImageView? = findHairlineImageViewUnder(subView as UIView)
+			var imageView: UIImageView? = findHairlineImageViewUnder(subView as! UIView)
 			if nil != imageView {
 				return imageView
 			}
