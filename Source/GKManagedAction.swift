@@ -251,7 +251,7 @@ extension GKManagedAction {
 	/**
 	* removeGroupSetObject
 	* Removes the Group to the groupSet for the Action.
-	* @param        value: GKActionGroup
+	* @ param        value: GKActionGroup
 	*/
 	func removeGroupSetObject(value: GKActionGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet

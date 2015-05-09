@@ -966,7 +966,7 @@ public class GKGraph: NSObject {
 		return GKGraphPersistentStoreCoordinator.persistentStoreCoordinator
 	}
 	
-	internal var applicationDocumentsDirectory: NSURL {
+	private var applicationDocumentsDirectory: NSURL {
 		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
 		return urls[urls.endIndex - 1] as! NSURL
 	}
@@ -975,7 +975,7 @@ public class GKGraph: NSObject {
 	* prepareForObservation
 	* Ensures NotificationCenter is watching the callback selector for this Graph.
 	*/
-	internal func prepareForObservation() {
+	private func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: privateContext)
 	}
@@ -986,7 +986,7 @@ public class GKGraph: NSObject {
 	* @param        entityDescription: NSEntityDescription!
 	* @param        predicate: NSPredicate!
 	*/
-	internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
+	private func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
 		var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
 		var predicates: Array<NSPredicate> = [entityPredicate, predicate]
 		let finalPredicate: NSPredicate = NSCompoundPredicate.andPredicateWithSubpredicates(predicates)
@@ -994,23 +994,13 @@ public class GKGraph: NSObject {
 	}
 	
 	/**
-	* validateConstraints
-	* Validates any constraints are not being violated when saving.
-	* @return Bool, NSError, false if passing with no Error, true if failed with error.
-	*/
-	internal func validateConstraints() -> (Bool, NSError?) {
-		var result: (failed: Bool, error: NSError?) = (false, nil)
-		return result
-	}
-	
-	/**
-	* isWatching
+	* ensureWatching
 	* A sanity check if the Graph is already watching the specified index and key.
 	* @param        key: String!
 	* @param        index: String!
 	* @return       Bool, true if watching, false otherwise.
 	*/
-	internal func isWatching(key: String!, index: String!) -> Bool {
+	private func ensureWatching(key: String!, index: String!) -> Bool {
 		var watch: Array<String> = nil != watching[index] ? watching[index]! as Array<String> : Array<String>()
 		for entry: String in watch {
 			if entry == key {
@@ -1031,7 +1021,7 @@ public class GKGraph: NSObject {
 	* @param        entityDescriptionName: Srting!
 	*/
 	internal func addWatcher(key: String!, value: String!, index: String!, entityDescriptionName: String!, managedObjectClassName: String!) {
-		if true == isWatching(value, index: index) {
+		if true == ensureWatching(value, index: index) {
 			return
 		}
 		var entityDescription: NSEntityDescription = NSEntityDescription()
