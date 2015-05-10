@@ -144,13 +144,13 @@
 		96C031B61AD72FD300EE4C63 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				96C031E91AD72FFB00EE4C63 /* Library */,
+				96C031E81AD72FEE00EE4C63 /* Supporting Files */,
+				96C031C51AD72FD300EE4C63 /* LICENSE */,
 				96C031B71AD72FD300EE4C63 /* GKAction.swift */,
 				96C031BA1AD72FD300EE4C63 /* GKBond.swift */,
 				96C031BD1AD72FD300EE4C63 /* GKEntity.swift */,
 				96C031C01AD72FD300EE4C63 /* GKGraph.swift */,
-				96C031E91AD72FFB00EE4C63 /* Library */,
-				96C031E81AD72FEE00EE4C63 /* Supporting Files */,
-				96C031C51AD72FD300EE4C63 /* LICENSE */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -158,6 +158,7 @@
 		96C031D51AD72FE100EE4C63 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				96C0321D1AD730D200EE4C63 /* Supporting Files */,
 				968F38811AD7379500E963AB /* GKActionSearchTests.swift */,
 				96C031D61AD72FE100EE4C63 /* GKActionStressTests.swift */,
 				96C031D71AD72FE100EE4C63 /* GKActionTests.swift */,
@@ -168,7 +169,6 @@
 				96C031DB1AD72FE100EE4C63 /* GKEntityStressTests.swift */,
 				96C031DC1AD72FE100EE4C63 /* GKEntityTests.swift */,
 				96C031DD1AD72FE100EE4C63 /* GKTests.swift */,
-				96C0321D1AD730D200EE4C63 /* Supporting Files */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -541,8 +541,9 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -558,8 +559,9 @@
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -583,6 +585,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = GKGraphKit;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -605,6 +608,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = GKGraphKit;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -628,6 +632,7 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -647,6 +652,7 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};

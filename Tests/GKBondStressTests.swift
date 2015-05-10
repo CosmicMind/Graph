@@ -48,8 +48,9 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	override func tearDown() {
-		super.tearDown()
 		graph = nil
+		expectation = nil
+		super.tearDown()
 	}
 	
 	func testExternalThread() {

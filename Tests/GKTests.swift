@@ -29,8 +29,8 @@ class GKTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	override func tearDown() {
-		super.tearDown()
 		graph = nil
+		super.tearDown()
 	}
 	
 	func testAll() {
