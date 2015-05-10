@@ -42,8 +42,18 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	override func tearDown() {
-		super.tearDown()
 		graph = nil
+		userInsertExpectation = nil
+		userDeleteExpectation = nil
+		groupInsertExpectation = nil
+		groupSearchExpectation = nil
+		nameInsertExpectation = nil
+		nameUpdateExpectation = nil
+		nameSearchExpectation = nil
+		ageInsertExpectation = nil
+		ageUpdateExpectation = nil
+		ageSearchExpectation = nil
+		super.tearDown()
 	}
 
     func testAll() {

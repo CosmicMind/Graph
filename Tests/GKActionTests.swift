@@ -50,8 +50,28 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	override func tearDown() {
-		super.tearDown()
 		graph = nil
+		userInsertExpectation = nil
+		userDeleteExpectation = nil
+		bookInsertExpectation = nil
+		bookDeleteExpectation = nil
+		magazineInsertExpectation = nil
+		magazineDeleteExpectation = nil
+		readInsertExpectation = nil
+		readUpdateExpectation = nil
+		readDeleteExpectation = nil
+		groupInsertExpectation = nil
+		groupDeleteExpectation = nil
+		groupSearchExpectation = nil
+		nameInsertExpectation = nil
+		nameUpdateExpectation = nil
+		nameDeleteExpectation = nil
+		nameSearchExpectation = nil
+		sessionInsertExpectation = nil
+		sessionUpdateExpectation = nil
+		sessionDeleteExpectation = nil
+		sessionSearchExpectation = nil
+		super.tearDown()
 	}
 
     func testAll() {

@@ -31,8 +31,9 @@ class GKEntitySearchTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	override func tearDown() {
-		super.tearDown()
 		graph = nil
+		expectation = nil
+		super.tearDown()
 	}
 	
 	func testAll() {

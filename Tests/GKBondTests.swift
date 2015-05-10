@@ -45,8 +45,23 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
 	}
 	
 	override func tearDown() {
-		super.tearDown()
 		graph = nil
+		u1InsertExpectation = nil
+		u2InsertExpectation = nil
+		friendInsertExpectation = nil
+		friendDeleteExpectation = nil
+		groupInsertExpectation = nil
+		groupDeleteExpectation = nil
+		groupSearchExpectation = nil
+		permissionInsertExpectation = nil
+		permissionUpdateExpectation = nil
+		permissionDeleteExpectation = nil
+		permissionSearchExpectation = nil
+		yearInsertExpectation = nil
+		yearUpdateExpectation = nil
+		yearDeleteExpectation = nil
+		yearSearchExpectation = nil
+		super.tearDown()
 	}
 
     func testAll() {
