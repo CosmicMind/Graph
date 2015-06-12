@@ -237,17 +237,57 @@
 			name = Sort;
 			sourceTree = "<group>";
 		};
+		961243141B2B484700CD47E0 /* Action */ = {
+			isa = PBXGroup;
+			children = (
+				96C031B71AD72FD300EE4C63 /* GKAction.swift */,
+				96C031C11AD72FD300EE4C63 /* GKManagedAction.swift */,
+				96C031B81AD72FD300EE4C63 /* GKActionGroup.swift */,
+				96C031B91AD72FD300EE4C63 /* GKActionProperty.swift */,
+			);
+			name = Action;
+			sourceTree = "<group>";
+		};
+		961243151B2B485800CD47E0 /* Bond */ = {
+			isa = PBXGroup;
+			children = (
+				96C031BA1AD72FD300EE4C63 /* GKBond.swift */,
+				96C031C21AD72FD300EE4C63 /* GKManagedBond.swift */,
+				96C031BB1AD72FD300EE4C63 /* GKBondGroup.swift */,
+				96C031BC1AD72FD300EE4C63 /* GKBondProperty.swift */,
+			);
+			name = Bond;
+			sourceTree = "<group>";
+		};
+		961243161B2B487200CD47E0 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				96C031BD1AD72FD300EE4C63 /* GKEntity.swift */,
+				96C031BE1AD72FD300EE4C63 /* GKEntityGroup.swift */,
+				96C031BF1AD72FD300EE4C63 /* GKEntityProperty.swift */,
+				96C031C31AD72FD300EE4C63 /* GKManagedEntity.swift */,
+			);
+			name = Entity;
+			sourceTree = "<group>";
+		};
+		961243171B2B488700CD47E0 /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				96C031C01AD72FD300EE4C63 /* GKGraph.swift */,
+			);
+			name = Graph;
+			sourceTree = "<group>";
+		};
 		96C031B61AD72FD300EE4C63 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				961243171B2B488700CD47E0 /* Graph */,
+				961243161B2B487200CD47E0 /* Entity */,
+				961243151B2B485800CD47E0 /* Bond */,
+				961243141B2B484700CD47E0 /* Action */,
 				961242D41B2B366600CD47E0 /* GKAlgoKit */,
-				96C031E91AD72FFB00EE4C63 /* Library */,
 				96C031E81AD72FEE00EE4C63 /* Supporting Files */,
 				96C031C51AD72FD300EE4C63 /* LICENSE */,
-				96C031B71AD72FD300EE4C63 /* GKAction.swift */,
-				96C031BA1AD72FD300EE4C63 /* GKBond.swift */,
-				96C031BD1AD72FD300EE4C63 /* GKEntity.swift */,
-				96C031C01AD72FD300EE4C63 /* GKGraph.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -279,22 +319,6 @@
 				96C031C41AD72FD300EE4C63 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		96C031E91AD72FFB00EE4C63 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				96C031B81AD72FD300EE4C63 /* GKActionGroup.swift */,
-				96C031B91AD72FD300EE4C63 /* GKActionProperty.swift */,
-				96C031BB1AD72FD300EE4C63 /* GKBondGroup.swift */,
-				96C031BC1AD72FD300EE4C63 /* GKBondProperty.swift */,
-				96C031BE1AD72FD300EE4C63 /* GKEntityGroup.swift */,
-				96C031BF1AD72FD300EE4C63 /* GKEntityProperty.swift */,
-				96C031C11AD72FD300EE4C63 /* GKManagedAction.swift */,
-				96C031C21AD72FD300EE4C63 /* GKManagedBond.swift */,
-				96C031C31AD72FD300EE4C63 /* GKManagedEntity.swift */,
-			);
-			name = Library;
 			sourceTree = "<group>";
 		};
 		96C0321D1AD730D200EE4C63 /* Supporting Files */ = {
