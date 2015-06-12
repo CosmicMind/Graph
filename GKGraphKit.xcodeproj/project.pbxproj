@@ -201,16 +201,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		961242D41B2B366600CD47E0 /* GKAlgoKit */ = {
-			isa = PBXGroup;
-			children = (
-				961242D71B2B36A400CD47E0 /* Sort */,
-				961242D61B2B369C00CD47E0 /* Tree */,
-				961242D51B2B369000CD47E0 /* Set */,
-			);
-			name = GKAlgoKit;
-			sourceTree = "<group>";
-		};
 		961242D51B2B369000CD47E0 /* Set */ = {
 			isa = PBXGroup;
 			children = (
@@ -281,11 +271,13 @@
 		96C031B61AD72FD300EE4C63 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				961242D71B2B36A400CD47E0 /* Sort */,
+				961242D61B2B369C00CD47E0 /* Tree */,
+				961242D51B2B369000CD47E0 /* Set */,
 				961243171B2B488700CD47E0 /* Graph */,
 				961243161B2B487200CD47E0 /* Entity */,
 				961243151B2B485800CD47E0 /* Bond */,
 				961243141B2B484700CD47E0 /* Action */,
-				961242D41B2B366600CD47E0 /* GKAlgoKit */,
 				96C031E81AD72FEE00EE4C63 /* Supporting Files */,
 				96C031C51AD72FD300EE4C63 /* LICENSE */,
 			);

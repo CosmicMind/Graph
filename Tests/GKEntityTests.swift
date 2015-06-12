@@ -140,7 +140,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         if "Female" == group {
             groupInsertExpectation?.fulfill()
             let nodes: Array<GKEntity> = graph.search(EntityGroup: group)
-            if 1 == nodes.count && entity.objectID == nodes[0].objectID {
+            if 1 == nodes.count && entity.id == nodes[0].id {
                 groupSearchExpectation?.fulfill()
             }
         }

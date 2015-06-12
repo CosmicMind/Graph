@@ -63,11 +63,11 @@ public class GKAction: NSObject {
 	}
 	
 	/**
-	* objectID
+	* id
 	* Retrieves the ID for the Model Object that is wrapped internally.
 	* @return       String? of the ID
 	*/
-	public var objectID: String {
+	public var id: String {
 		var nodeURL: NSURL = node.objectID.URIRepresentation()
 		var oID: String = nodeURL.lastPathComponent!
 		return nodeClass + type + oID
@@ -271,10 +271,10 @@ public class GKAction: NSObject {
 
 extension GKAction: Equatable, Printable {
 	override public var description: String {
-		return "[GKAction\n\tobjectID: \((objectID))\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubjects: \(subjects)\n\tobjects: \(objects)\n\tcreatedDate: \(createdDate)]"
+		return "{id: \((id)), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)}"
 	}
 }
 
 public func ==(lhs: GKAction, rhs: GKAction) -> Bool {
-	return lhs.objectID == rhs.objectID
+	return lhs.id == rhs.id
 }
