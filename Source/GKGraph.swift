@@ -231,10 +231,10 @@ public class GKGraph: NSObject {
 	/**
 	* search(Entity)
 	* Searches the Graph for Entity Objects with the following type LIKE ?.
-	* @param        type: String!
+	* @param        type: String
 	* @return       GKSet<String, GKEntity>
 	*/
-	public func search(Entity type: String!) -> GKSet<String, GKEntity> {
+	public func search(Entity type: String) -> GKSet<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
 		var nodes: GKSet<String, GKEntity> = GKSet<String, GKEntity>()
 		for entity: GKManagedEntity in entries as! Array<GKManagedEntity> {
@@ -247,10 +247,10 @@ public class GKGraph: NSObject {
 	/**
 	* search(EntityGroup)
 	* Searches the Graph for Entity Group Objects with the following name LIKE ?.
-	* @param        name: String!
+	* @param        name: String
 	* @return       GKSet<String, GKEntity>
 	*/
-	public func search(EntityGroup name: String!) -> GKSet<String, GKEntity> {
+	public func search(EntityGroup name: String) -> GKSet<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: GKSet<String, GKEntity> = GKSet<String, GKEntity>()
 		for group: GKEntityGroup in entries as! Array<GKEntityGroup> {
@@ -263,9 +263,10 @@ public class GKGraph: NSObject {
 	/**
 	* search(EntityGroupMap)
 	* Retrieves all the unique Group Names for Entity Nodes with their GKEntity Objects.
+	* @param        name: String
 	* @return       Dictionary<String, Array<GKEntity>>
 	*/
-	public func search(EntityGroupMap name: String!) -> GKSet<String, GKSet<String, GKEntity>> {
+	public func search(EntityGroupMap name: String) -> GKSet<String, GKSet<String, GKEntity>> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: GKSet<String, GKSet<String, GKEntity>> = GKSet<String, GKSet<String, GKEntity>>()
 		for group: GKEntityGroup in entries as! Array<GKEntityGroup> {
@@ -284,10 +285,10 @@ public class GKGraph: NSObject {
 	/**
 	* search(EntityProperty)
 	* Searches the Graph for Entity Property Objects with the following name LIKE ?.
-	* @param        name: String!
+	* @param        name: String
 	* @return       GKSet<String, GKEntity>
 	*/
-	public func search(EntityProperty name: String!) -> GKSet<String, GKEntity> {
+	public func search(EntityProperty name: String) -> GKSet<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
 		var nodes: GKSet<String, GKEntity> = GKSet<String, GKEntity>()
 		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
@@ -300,11 +301,11 @@ public class GKGraph: NSObject {
 	/**
 	* search(EntityProperty)
 	* Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
-	* @param        name: String!
-	* @param        value: String!
+	* @param        name: String
+	* @param        value: String
 	* @return       GKMultiset<String, GKEntity>
 	*/
-	public func search(EntityProperty name: String!, value: String!) -> GKMultiset<String, GKEntity> {
+	public func search(EntityProperty name: String, value: String) -> GKMultiset<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
 		var nodes: GKMultiset<String, GKEntity> = GKMultiset<String, GKEntity>()
 		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
@@ -317,11 +318,11 @@ public class GKGraph: NSObject {
 	/**
 	* search(EntityProperty)
 	* Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
-	* @param        name: String!
-	* @param        value: String!
+	* @param        name: String
+	* @param        value: Int
 	* @return       GKMultiset<Int, GKEntity>
 	*/
-	public func search(EntityProperty name: String!, value: Int!) -> GKMultiset<Int, GKEntity> {
+	public func search(EntityProperty name: String, value: Int) -> GKMultiset<Int, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
 		var nodes: GKMultiset<Int, GKEntity> = GKMultiset<Int, GKEntity>()
 		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {

@@ -22,11 +22,10 @@ internal class GKRedBlackTree<K: Comparable, V>: Printable {
 	internal typealias GKRBTree = GKRedBlackTree<K, V>
 	internal typealias GKRBNode = GKRedBlackNode<K, V>
 	
-	private let unique: Bool
-	
 	internal private(set) var sentinel: GKRBNode
 	internal private(set) var root: GKRBNode
 	internal private(set) var count: Int
+	internal private(set) var unique: Bool
 	
 	internal var description: String {
 		var output: String = "GKRedBlackTree("

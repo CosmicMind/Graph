@@ -112,7 +112,7 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 		expectation = expectationWithDescription("Action: Insert did not pass.")
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(120, handler: nil)
+		waitForExpectationsWithTimeout(5, handler: nil)
 		
 		expectation = expectationWithDescription("Action: Delete did not pass.")
 		
@@ -123,7 +123,7 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 		}
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(120, handler: nil)
+		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
 	func testPerformanceExample() {

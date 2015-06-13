@@ -111,7 +111,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		expectation = expectationWithDescription("Entity: Insert did not pass.")
 
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(120, handler: nil)
+		waitForExpectationsWithTimeout(5, handler: nil)
 		
 		expectation = expectationWithDescription("Entity: Delete did not pass.")
 		
@@ -120,7 +120,7 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		graph?.save(nil)
 
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(120, handler: nil)
+		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
 	func testPerformanceExample() {

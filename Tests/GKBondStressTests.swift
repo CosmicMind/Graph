@@ -112,7 +112,7 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 		expectation = expectationWithDescription("Bond: Insert did not pass.")
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(120, handler: nil)
+		waitForExpectationsWithTimeout(5, handler: nil)
 		
 		expectation = expectationWithDescription("Bond: Delete did not pass.")
 		
@@ -123,7 +123,7 @@ class GKBondStressTests : XCTestCase, GKGraphDelegate {
 		}
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(120, handler: nil)
+		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
 	func testPerformanceExample() {
