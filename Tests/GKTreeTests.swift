@@ -19,7 +19,7 @@
 import XCTest
 import GKGraphKit
 
-class GKMultisetTests: XCTestCase {
+class GKTreeTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -31,8 +31,8 @@ class GKMultisetTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testMultisetInt() {
-		let s: GKMultiset<Int, Int> = GKMultiset<Int, Int>()
+	func testSetInt() {
+		let s: GKTree<Int, Int> = GKTree<Int, Int>()
 		
 		XCTAssert(0 == s.count, "Set count incorrect, got \(s.count).")
 		
@@ -42,17 +42,17 @@ class GKMultisetTests: XCTestCase {
 			s.insert(3, data: 3)
 		}
 		
-		XCTAssert(3000 == s.count, "Test failed.")
+		XCTAssert(3 == s.count, "Test failed.\(s)")
 		XCTAssert(1 == s[0]!, "Test failed.")
-		XCTAssert(1 == s[1]!, "Test failed.")
-		XCTAssert(1 == s[2]!, "Test failed.")
+		XCTAssert(2 == s[1]!, "Test failed.")
+		XCTAssert(3 == s[2]!, "Test failed.")
 		
 		for (var i: Int = 500; i > 0; --i) {
 			s.remove(1)
 			s.remove(3)
 		}
 		
-		XCTAssert(1000 == s.count, "Test failed.")
+		XCTAssert(1 == s.count, "Test failed.")
 		XCTAssert(true == s.remove(2), "Test failed.")
 		XCTAssert(false == s.remove(2), "Test failed.")
 		XCTAssert(true == s.insert(2, data: 10), "Test failed.")
@@ -62,8 +62,8 @@ class GKMultisetTests: XCTestCase {
 		XCTAssert(true == (s.remove(2) && 0 == s.count), "Test failed.")
 	}
 	
-	func testMultisetString() {
-		let s: GKMultiset<String, Array<Int>> = GKMultiset<String, Array<Int>>()
+	func testSetString() {
+		let s: GKTree<String, Array<Int>> = GKTree<String, Array<Int>>()
 		s.insert("friends", data: [1, 2, 3])
 		s["menu"] = [11, 22, 33]
 		
@@ -76,8 +76,8 @@ class GKMultisetTests: XCTestCase {
 		XCTAssert(2 == s.count, "Test failed.")
 	}
 	
-	func testMultisetSearch() {
-		let s1: GKMultiset<Int, Int> = GKMultiset<Int, Int>()
+	func testSetSearch() {
+		let s1: GKTree<Int, Int> = GKTree<Int, Int>()
 		XCTAssert(0 == s1.count, "Set count incorrect, got \(s1.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
@@ -86,16 +86,16 @@ class GKMultisetTests: XCTestCase {
 			s1.insert(3, data: 3)
 		}
 		
-		XCTAssert(3000 == s1.count, "Test failed.")
+		XCTAssert(3 == s1.count, "Test failed.")
 		
-		let s2: GKMultiset<Int, Int> = s1.search(1)
-		XCTAssert(1000 == s2.count, "Set count incorrect, got \(s2.count).")
+		let s2: GKTree<Int, Int> = s1.search(1)
+		XCTAssert(1 == s2.count, "Set count incorrect, got \(s2.count).")
 		
-		let s3: GKMultiset<Int, Int> = s1.search(2)
-		XCTAssert(1000 == s3.count, "Set count incorrect, got \(s3.count).")
+		let s3: GKTree<Int, Int> = s1.search(2)
+		XCTAssert(1 == s3.count, "Set count incorrect, got \(s3.count).")
 		
-		let s4: GKMultiset<Int, Int> = s1.search(3)
-		XCTAssert(1000 == s4.count, "Set count incorrect, got \(s4.count).")
+		let s4: GKTree<Int, Int> = s1.search(3)
+		XCTAssert(1 == s4.count, "Set count incorrect, got \(s4.count).")
 	}
 	
 	func testPerformanceExample() {

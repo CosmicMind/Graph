@@ -104,7 +104,7 @@ public class GKGraph: NSObject {
 	public var batchSize: Int = 20
 	public var batchOffset: Int = 0
 	
-	internal var watching: GKSet<String, Array<String>>
+	internal var watching: GKTree<String, Array<String>>
 	internal var masterPredicate: NSPredicate?
 	
 	public weak var delegate: GKGraphDelegate?
@@ -114,7 +114,7 @@ public class GKGraph: NSObject {
 	* Initializer for the Object.
 	*/
 	override public init() {
-		watching = GKSet<String, Array<String>>()
+		watching = GKTree<String, Array<String>>()
 		super.init()
 	}
 	
@@ -232,11 +232,11 @@ public class GKGraph: NSObject {
 	* search(Entity)
 	* Searches the Graph for Entity Objects with the following type LIKE ?.
 	* @param        type: String
-	* @return       GKSet<String, GKEntity>
+	* @return       GKTree<String, GKEntity>
 	*/
-	public func search(Entity type: String) -> GKSet<String, GKEntity> {
+	public func search(Entity type: String) -> GKTree<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: GKSet<String, GKEntity> = GKSet<String, GKEntity>()
+		var nodes: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
 		for entity: GKManagedEntity in entries as! Array<GKManagedEntity> {
 			let node: GKEntity = GKEntity(entity: entity)
 			nodes.insert(node.id, data: node)
@@ -248,11 +248,11 @@ public class GKGraph: NSObject {
 	* search(EntityGroup)
 	* Searches the Graph for Entity Group Objects with the following name LIKE ?.
 	* @param        name: String
-	* @return       GKSet<String, GKEntity>
+	* @return       GKTree<String, GKEntity>
 	*/
-	public func search(EntityGroup name: String) -> GKSet<String, GKEntity> {
+	public func search(EntityGroup name: String) -> GKTree<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: GKSet<String, GKEntity> = GKSet<String, GKEntity>()
+		var nodes: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
 		for group: GKEntityGroup in entries as! Array<GKEntityGroup> {
 			let node: GKEntity = GKEntity(entity: group.node)
 			nodes.insert(node.id, data: node)
@@ -266,13 +266,13 @@ public class GKGraph: NSObject {
 	* @param        name: String
 	* @return       Dictionary<String, Array<GKEntity>>
 	*/
-	public func search(EntityGroupMap name: String) -> GKSet<String, GKSet<String, GKEntity>> {
+	public func search(EntityGroupMap name: String) -> GKTree<String, GKTree<String, GKEntity>> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: GKSet<String, GKSet<String, GKEntity>> = GKSet<String, GKSet<String, GKEntity>>()
+		var nodes: GKTree<String, GKTree<String, GKEntity>> = GKTree<String, GKTree<String, GKEntity>>()
 		for group: GKEntityGroup in entries as! Array<GKEntityGroup> {
 			let node: GKEntity = GKEntity(entity: group.node)
 			if (nil == nodes[group.name]) {
-				let set: GKSet<String, GKEntity> = GKSet<String, GKEntity>()
+				let set: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
 				set.insert(node.id, data: node)
 				nodes.insert(group.name, data: set)
 			} else {
@@ -286,11 +286,11 @@ public class GKGraph: NSObject {
 	* search(EntityProperty)
 	* Searches the Graph for Entity Property Objects with the following name LIKE ?.
 	* @param        name: String
-	* @return       GKSet<String, GKEntity>
+	* @return       GKTree<String, GKEntity>
 	*/
-	public func search(EntityProperty name: String) -> GKSet<String, GKEntity> {
+	public func search(EntityProperty name: String) -> GKTree<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: GKSet<String, GKEntity> = GKSet<String, GKEntity>()
+		var nodes: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
 		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
 			let node: GKEntity = GKEntity(entity: property.node)
 			nodes.insert(node.id, data: node)
@@ -303,11 +303,11 @@ public class GKGraph: NSObject {
 	* Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	* @param        name: String
 	* @param        value: String
-	* @return       GKMultiset<String, GKEntity>
+	* @return       GKMultiTree<String, GKEntity>
 	*/
-	public func search(EntityProperty name: String, value: String) -> GKMultiset<String, GKEntity> {
+	public func search(EntityProperty name: String, value: String) -> GKMultiTree<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
-		var nodes: GKMultiset<String, GKEntity> = GKMultiset<String, GKEntity>()
+		var nodes: GKMultiTree<String, GKEntity> = GKMultiTree<String, GKEntity>()
 		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
 			let node: GKEntity = GKEntity(entity: property.node)
 			nodes.insert(node[name] as! String, data: node)
@@ -320,11 +320,11 @@ public class GKGraph: NSObject {
 	* Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	* @param        name: String
 	* @param        value: Int
-	* @return       GKMultiset<Int, GKEntity>
+	* @return       GKMultiTree<Int, GKEntity>
 	*/
-	public func search(EntityProperty name: String, value: Int) -> GKMultiset<Int, GKEntity> {
+	public func search(EntityProperty name: String, value: Int) -> GKMultiTree<Int, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
-		var nodes: GKMultiset<Int, GKEntity> = GKMultiset<Int, GKEntity>()
+		var nodes: GKMultiTree<Int, GKEntity> = GKMultiTree<Int, GKEntity>()
 		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
 			let node: GKEntity = GKEntity(entity: property.node)
 			nodes.insert(node[name] as! Int, data: node)
