@@ -36,10 +36,9 @@ internal class GKRedBlackNode<K: Comparable, V>: Comparable, Equatable, Printabl
 	internal init() {
 		red = false
 		order = 0
-		data = nil
 	}
 	
-	internal init(parent: GKRBNode, sentinel: GKRBNode, key: K!, data: V?) {
+	internal init(parent: GKRBNode, sentinel: GKRBNode, key: K, data: V?) {
 		self.key = key
 		self.data = data
 		self.parent = parent

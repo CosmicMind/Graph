@@ -23,6 +23,7 @@ class GKBondSearchTests : XCTestCase, GKGraphDelegate {
 	override func tearDown() {
 		graph = nil
 		expectation = nil
+
 		super.tearDown()
 	}
 	
@@ -58,7 +59,7 @@ class GKBondSearchTests : XCTestCase, GKGraphDelegate {
 		self.measureBlock() {}
 	}
 	
-	func graph(graph: GKGraph!, didInsertBond bond: GKBond!) {
+	func graph(graph: GKGraph, didInsertBond bond: GKBond) {
 		var b2: GKBond? = graph.search(BondProperty: "active").last
 		if bond == b2 {
 			expectation?.fulfill()
@@ -73,7 +74,7 @@ class GKBondSearchTests : XCTestCase, GKGraphDelegate {
 		}
 	}
 	
-	func graph(graph: GKGraph!, didDeleteBond bond: GKBond!) {
+	func graph(graph: GKGraph, didDeleteBond bond: GKBond) {
 		var b2: GKBond? = graph.search(BondProperty: "active").last
 		if nil == b2 {
 			expectation?.fulfill()
@@ -81,7 +82,7 @@ class GKBondSearchTests : XCTestCase, GKGraphDelegate {
 		}
 	}
 	
-	func graph(graph: GKGraph!, didUpdateBond bond: GKBond!, property: String!, value: AnyObject!) {
+	func graph(graph: GKGraph, didUpdateBond bond: GKBond, property: String, value: AnyObject) {
 		var b2: GKBond? = graph.search(BondProperty: "active").last
 		if value as! Bool == bond["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()

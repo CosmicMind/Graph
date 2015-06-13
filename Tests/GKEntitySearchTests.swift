@@ -68,7 +68,7 @@ class GKEntitySearchTests : XCTestCase, GKGraphDelegate {
 		self.measureBlock() {}
 	}
 	
-	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+	func graph(graph: GKGraph, didInsertEntity entity: GKEntity) {
 		var e2: GKEntity? = graph.search(EntityProperty: "active").last
 		if entity == e2 {
 			expectation?.fulfill()
@@ -83,7 +83,7 @@ class GKEntitySearchTests : XCTestCase, GKGraphDelegate {
 		}
 	}
 	
-	func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
+	func graph(graph: GKGraph, didDeleteEntity entity: GKEntity) {
 		var e2: GKEntity? = graph.search(EntityProperty: "active").last
 		if nil == e2 {
 			expectation?.fulfill()
@@ -91,7 +91,7 @@ class GKEntitySearchTests : XCTestCase, GKGraphDelegate {
 		}
 	}
 	
-	func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, property: String!, value: AnyObject!) {
+	func graph(graph: GKGraph, didUpdateEntity entity: GKEntity, property: String, value: AnyObject) {
 		var e2: GKEntity? = graph.search(EntityProperty: "active").last
 		if value as! Bool == entity["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()

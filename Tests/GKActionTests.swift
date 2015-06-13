@@ -165,7 +165,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         self.measureBlock() {}
     }
 
-    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+    func graph(graph: GKGraph, didInsertEntity entity: GKEntity) {
 		if "User" == entity.type && 1 == entity.actionsWhenSubject.count {
             userInsertExpectation?.fulfill()
         } else if "Book" == entity.type && 1 == entity.actionsWhenObject.count {
@@ -175,7 +175,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
+    func graph(graph: GKGraph, didDeleteEntity entity: GKEntity) {
         if "User" == entity.type {
             userDeleteExpectation?.fulfill()
         } else if "Book" == entity.type {
@@ -185,25 +185,25 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
+    func graph(graph: GKGraph, didInsertAction action: GKAction) {
         if "Read" == action.type && 1 == action.subjects.count && 2 == action.objects.count {
             readInsertExpectation?.fulfill()
         }
     }
 
-	func graph(graph: GKGraph!, didUpdateAction action: GKAction!) {
+	func graph(graph: GKGraph, didUpdateAction action: GKAction) {
 		if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
 			readUpdateExpectation?.fulfill()
 		}
 	}
 	
-    func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
+    func graph(graph: GKGraph,didDeleteAction action: GKAction){
 		if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
             readDeleteExpectation?.fulfill()
         }
     }
 
-    func graph(graph: GKGraph!, didInsertAction action: GKAction!, group: String!) {
+    func graph(graph: GKGraph, didInsertAction action: GKAction, group: String) {
         if "Holiday" == group {
             groupInsertExpectation?.fulfill()
             let nodes: Array<GKAction> = graph.search(ActionGroup: group)
@@ -213,7 +213,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didInsertAction action: GKAction!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph, didInsertAction action: GKAction, property: String, value: AnyObject) {
         if "name" == property && "New Years" == value as! String {
             nameInsertExpectation?.fulfill()
             var nodes: Array<GKAction> = graph.search(ActionProperty: property)
@@ -235,7 +235,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didUpdateAction action: GKAction!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph, didUpdateAction action: GKAction, property: String, value: AnyObject) {
         if "name" == property && "X-MASS" == value as! String {
             nameUpdateExpectation?.fulfill()
             var nodes: Array<GKAction> = graph.search(ActionProperty: property)

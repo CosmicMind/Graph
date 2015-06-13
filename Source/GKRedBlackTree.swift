@@ -39,6 +39,17 @@ internal class GKRedBlackTree<K: Comparable, V>: Printable {
 		return output + ")"
 	}
 	
+	internal var last: V? {
+		if count == 0 {
+			return sentinel.data
+		}
+		return internalSelect(root, order: count).data
+	}
+	
+	internal var first: V? {
+		return internalSelect(root, order: 1).data
+	}
+	
 	internal init() {
 		unique = false
 		sentinel = GKRBNode()
@@ -303,7 +314,7 @@ internal class GKRedBlackTree<K: Comparable, V>: Printable {
 		return y
 	}
 	
-	private func transplant(var u: GKRBNode, var v: GKRBNode) {
+	private func transplant(u: GKRBNode, v: GKRBNode) {
 		if u.parent === sentinel {
 			root = v
 		} else if u === u.parent.left {
@@ -314,7 +325,7 @@ internal class GKRedBlackTree<K: Comparable, V>: Printable {
 		v.parent = u.parent
 	}
 	
-	private func leftRotate(var x: GKRBNode) {
+	private func leftRotate(x: GKRBNode) {
 		var y: GKRBNode = x.right
 		
 		x.right = y.left
@@ -338,7 +349,7 @@ internal class GKRedBlackTree<K: Comparable, V>: Printable {
 		x.order = x.left.order + x.right.order + 1
 	}
 	
-	private func rightRotate(var y: GKRBNode) {
+	private func rightRotate(y: GKRBNode) {
 		var x: GKRBNode = y.left
 		
 		y.left = x.right
@@ -373,7 +384,7 @@ internal class GKRedBlackTree<K: Comparable, V>: Printable {
 		return sentinel
 	}
 	
-	private func internalSelect(var x: GKRBNode, order: Int) -> GKRBNode {
+	private func internalSelect(x: GKRBNode, order: Int) -> GKRBNode {
 		var r: Int = x.left.order + 1
 		if order == r {
 			return x

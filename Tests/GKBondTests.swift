@@ -149,7 +149,7 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         self.measureBlock() {}
     }
 
-    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+    func graph(graph: GKGraph, didInsertEntity entity: GKEntity) {
         if "Eve" == entity["name"] as! String && 1 == entity.bondsWhenSubject.count {
             u1InsertExpectation?.fulfill()
         } else if "Daniel" == entity["name"] as! String && 1 == entity.bondsWhenObject.count {
@@ -157,19 +157,19 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didInsertBond bond: GKBond!) {
+    func graph(graph: GKGraph, didInsertBond bond: GKBond) {
         if "Friend" == bond.type && "User" == bond.subject?.type && "User" == bond.object?.type {
             friendInsertExpectation?.fulfill()
 		}
     }
 
-    func graph(graph: GKGraph!, didDeleteBond bond: GKBond!) {
+    func graph(graph: GKGraph, didDeleteBond bond: GKBond){
         if "Friend" == bond.type && nil == bond.subject && nil == bond.object {
             friendDeleteExpectation?.fulfill()
         }
     }
 
-    func graph(graph: GKGraph!, didInsertBond bond: GKBond!, group: String!) {
+    func graph(graph: GKGraph, didInsertBond bond: GKBond, group: String) {
         if "Close" == group {
             groupInsertExpectation?.fulfill()
             let nodes: Array<GKBond> = graph.search(BondGroup: group)
@@ -179,8 +179,8 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didInsertBond bond: GKBond!, property: String!, value: AnyObject!) {
-        if "permission" == property && "edit" == value! as! String {
+    func graph(graph: GKGraph, didInsertBond bond: GKBond, property: String, value: AnyObject){
+        if "permission" == property && "edit" == value as! String {
             permissionInsertExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property)
             if 1 == nodes.count && nodes[0][property] as! String == value as! String {
@@ -202,7 +202,7 @@ class GKBondTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didUpdateBond bond: GKBond!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph, didUpdateBond bond: GKBond, property: String, value: AnyObject) {
         if "permission" == property && "read" == value as! String {
             permissionUpdateExpectation?.fulfill()
             var nodes: Array<GKBond> = graph.search(BondProperty: property)

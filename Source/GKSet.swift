@@ -25,6 +25,14 @@ public class GKSet<K: Comparable, V>: Printable {
 		return tree.count
 	}
 	
+	public var last: V? {
+		return tree.last
+	}
+	
+	public var first: V? {
+		return tree.first
+	}
+	
 	public var description: String {
 		var output: String = "GKSet("
 		for (var i: Int = 1; i <= count; ++i) {

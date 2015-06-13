@@ -130,13 +130,13 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 		self.measureBlock() {}
 	}
 	
-	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
+	func graph(graph: GKGraph, didInsertAction action: GKAction) {
 		if 51 == action.groups.count && 51 == action.properties.count {
 			expectation?.fulfill()
 		}
 	}
 	
-	func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
+	func graph(graph: GKGraph, didDeleteAction action: GKAction) {
 		if 0 == action.groups.count && 0 == action.properties.count {
 			expectation?.fulfill()
 		}

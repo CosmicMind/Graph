@@ -127,13 +127,13 @@ class GKEntityStressTests : XCTestCase, GKGraphDelegate {
 		self.measureBlock() {}
 	}
 	
-	func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+	func graph(graph: GKGraph, didInsertEntity entity: GKEntity) {
 		if 51 == entity.groups.count && 51 == entity.properties.count {
 			expectation?.fulfill()
 		}
 	}
 	
-	func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
+	func graph(graph: GKGraph, didDeleteEntity entity: GKEntity) {
 		if 0 == entity.groups.count && 0 == entity.properties.count {
 			expectation?.fulfill()
 		}

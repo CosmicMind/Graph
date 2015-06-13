@@ -58,13 +58,13 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
 
     func testAll() {
         // Set the XCTest Class as the delegate.
-        graph?.delegate = self
+        graph!.delegate = self
 
         // Let's watch the changes in the Graph for the following Entity values.
-        graph?.watch(Entity: "User")
-        graph?.watch(EntityGroup: "Female")
-        graph?.watch(EntityProperty: "name")
-        graph?.watch(EntityProperty: "age")
+        graph!.watch(Entity: "User")
+        graph!.watch(EntityGroup: "Female")
+        graph!.watch(EntityProperty: "name")
+        graph!.watch(EntityProperty: "age")
 
         // Create a User Entity.
         let user: GKEntity = GKEntity(type: "User")
@@ -82,7 +82,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph?.save() { (success: Bool, error: NSError?) in
+        graph!.save { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -99,7 +99,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph?.save() { (success: Bool, error: NSError?) in
+        graph!.save { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -112,7 +112,7 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
         
         // Save the Graph, which will execute the delegate handlers.
-        graph?.save() { (success: Bool, error: NSError?) in
+        graph!.save { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -124,70 +124,70 @@ class GKEntityTests : XCTestCase, GKGraphDelegate {
         self.measureBlock() {}
     }
 
-    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+    func graph(graph: GKGraph, didInsertEntity entity: GKEntity) {
         if "User" == entity.type {
             userInsertExpectation?.fulfill()
 		}
     }
 
-    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
+    func graph(graph: GKGraph, didDeleteEntity entity: GKEntity) {
         if "User" == entity.type {
             userDeleteExpectation?.fulfill()
         }
     }
 
-    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, group: String!) {
+    func graph(graph: GKGraph, didInsertEntity entity: GKEntity, group: String) {
         if "Female" == group {
             groupInsertExpectation?.fulfill()
-            let nodes: Array<GKEntity> = graph.search(EntityGroup: group)
-            if 1 == nodes.count && entity.id == nodes[0].id {
+            let nodes:GKSet<String, GKEntity> = graph.search(EntityGroup: group)
+            if 1 == nodes.count && entity.id == nodes.first!.id {
                 groupSearchExpectation?.fulfill()
             }
         }
     }
 
-    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph, didInsertEntity entity: GKEntity, property: String, value: AnyObject) {
         if "name" == property && "Eve" == value as! String {
             nameInsertExpectation?.fulfill()
-            var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 1 == nodes.count && nodes[0][property] as! String == value as! String {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as! String)
-                if 1 == nodes.count && nodes[0][property] as! String == value as! String {
+            let n: GKSet<String, GKEntity> = graph.search(EntityProperty: property)
+            if 1 == n.count && n.first![property] as! String == value as! String {
+				let m: GKMultiset<String, GKEntity> = graph.search(EntityProperty: property, value: value as! String)
+                if 1 == m.count && m.first![property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
 
         } else if "age" == property && 26 == value as! Int {
             ageInsertExpectation?.fulfill()
-            var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as! Int)
-                if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
+            let n: GKSet<String, GKEntity> = graph.search(EntityProperty: property)
+            if 1 == n.count && n.first![property] as! Int == value as! Int {
+				let m: GKMultiset<Int, GKEntity> = graph.search(EntityProperty: property, value: value as! Int)
+				if 1 == m.count && m.first![property] as! Int == value as! Int {
                     ageSearchExpectation?.fulfill()
                 }
             }
         }
     }
 
-    func graph(graph: GKGraph!, didUpdateEntity entity: GKEntity!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph, didUpdateEntity entity: GKEntity, property: String, value: AnyObject) {
         if "name" == property && "Daniel" == value as! String {
             nameUpdateExpectation?.fulfill()
-            var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 1 == nodes.count && nodes[0][property] as! String == value as! String {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as! String)
-                if 1 == nodes.count && nodes[0][property] as! String == value as! String {
-                    nameSearchExpectation?.fulfill()
-                }
-            }
+			let n: GKSet<String, GKEntity> = graph.search(EntityProperty: property)
+			if 1 == n.count && n.first![property] as! String == value as! String {
+				let m: GKMultiset<String, GKEntity> = graph.search(EntityProperty: property, value: value as! String)
+				if 1 == m.count && m.first![property] as! String == value as! String {
+					nameSearchExpectation?.fulfill()
+				}
+			}
         } else if "age" == property && 31 == value as! Int {
             ageUpdateExpectation?.fulfill()
-            var nodes: Array<GKEntity> = graph.search(EntityProperty: property)
-            if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
-                var nodes: Array<GKEntity> = graph.search(EntityProperty: property, value: value as! Int)
-                if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
-                    ageSearchExpectation?.fulfill()
-                }
-            }
+			let n: GKSet<String, GKEntity> = graph.search(EntityProperty: property)
+			if 1 == n.count && n.first![property] as! Int == value as! Int {
+				let m: GKMultiset<Int, GKEntity> = graph.search(EntityProperty: property, value: value as! Int)
+				if 1 == m.count && m.first![property] as! Int == value as! Int {
+					ageSearchExpectation?.fulfill()
+				}
+			}
         }
     }
 }
