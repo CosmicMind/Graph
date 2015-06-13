@@ -236,7 +236,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(Entity type: String) -> GKTree<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
+		let nodes: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
 		for entity: GKManagedEntity in entries as! Array<GKManagedEntity> {
 			let node: GKEntity = GKEntity(entity: entity)
 			nodes.insert(node.id, data: node)
@@ -252,7 +252,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(EntityGroup name: String) -> GKTree<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
+		let nodes: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
 		for group: GKEntityGroup in entries as! Array<GKEntityGroup> {
 			let node: GKEntity = GKEntity(entity: group.node)
 			nodes.insert(node.id, data: node)
@@ -268,7 +268,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(EntityGroupMap name: String) -> GKTree<String, GKTree<String, GKEntity>> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: GKTree<String, GKTree<String, GKEntity>> = GKTree<String, GKTree<String, GKEntity>>()
+		let nodes: GKTree<String, GKTree<String, GKEntity>> = GKTree<String, GKTree<String, GKEntity>>()
 		for group: GKEntityGroup in entries as! Array<GKEntityGroup> {
 			let node: GKEntity = GKEntity(entity: group.node)
 			if (nil == nodes[group.name]) {
@@ -290,7 +290,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(EntityProperty name: String) -> GKTree<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
+		let nodes: GKTree<String, GKEntity> = GKTree<String, GKEntity>()
 		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
 			let node: GKEntity = GKEntity(entity: property.node)
 			nodes.insert(node.id, data: node)
@@ -307,7 +307,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(EntityProperty name: String, value: String) -> GKMultiTree<String, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
-		var nodes: GKMultiTree<String, GKEntity> = GKMultiTree<String, GKEntity>()
+		let nodes: GKMultiTree<String, GKEntity> = GKMultiTree<String, GKEntity>()
 		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
 			let node: GKEntity = GKEntity(entity: property.node)
 			nodes.insert(node[name] as! String, data: node)
@@ -324,7 +324,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(EntityProperty name: String, value: Int) -> GKMultiTree<Int, GKEntity> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
-		var nodes: GKMultiTree<Int, GKEntity> = GKMultiTree<Int, GKEntity>()
+		let nodes: GKMultiTree<Int, GKEntity> = GKMultiTree<Int, GKEntity>()
 		for property: GKEntityProperty in entries as! Array<GKEntityProperty> {
 			let node: GKEntity = GKEntity(entity: property.node)
 			nodes.insert(node[name] as! Int, data: node)
@@ -340,7 +340,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(Action type: String) -> GKTree<String, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: GKTree<String, GKAction> = GKTree<String, GKAction>()
+		let nodes: GKTree<String, GKAction> = GKTree<String, GKAction>()
 		for action: GKManagedAction in entries as! Array<GKManagedAction> {
 			let node: GKAction = GKAction(action: action)
 			nodes.insert(node.id, data: node)
@@ -356,7 +356,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(ActionGroup name: String) -> GKTree<String, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: GKTree<String, GKAction> = GKTree<String, GKAction>()
+		let nodes: GKTree<String, GKAction> = GKTree<String, GKAction>()
 		for group: GKActionGroup in entries as! Array<GKActionGroup> {
 			let node: GKAction = GKAction(action: group.node)
 			nodes.insert(node.id, data: node)
@@ -372,7 +372,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(ActionGroupMap name: String) -> GKTree<String, GKTree<String, GKAction>> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: GKTree<String, GKTree<String, GKAction>> = GKTree<String, GKTree<String, GKAction>>()
+		let nodes: GKTree<String, GKTree<String, GKAction>> = GKTree<String, GKTree<String, GKAction>>()
 		for group: GKActionGroup in entries as! Array<GKActionGroup> {
 			let node: GKAction = GKAction(action: group.node)
 			if (nil == nodes[group.name]) {
@@ -394,7 +394,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(ActionProperty name: String) -> GKTree<String, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: GKTree<String, GKAction> = GKTree<String, GKAction>()
+		let nodes: GKTree<String, GKAction> = GKTree<String, GKAction>()
 		for property: GKActionProperty in entries as! Array<GKActionProperty> {
 			let node: GKAction = GKAction(action: property.node)
 			nodes.insert(node.id, data: node)
@@ -411,7 +411,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(ActionProperty name: String, value: String) -> GKMultiTree<String, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
-		var nodes: GKMultiTree<String, GKAction> = GKMultiTree<String, GKAction>()
+		let nodes: GKMultiTree<String, GKAction> = GKMultiTree<String, GKAction>()
 		for property: GKActionProperty in entries as! Array<GKActionProperty> {
 			let node: GKAction = GKAction(action: property.node)
 			nodes.insert(node[name] as! String, data: node)
@@ -428,7 +428,7 @@ public class GKGraph: NSObject {
 	*/
 	public func search(ActionProperty name: String, value: Int) -> GKMultiTree<Int, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
-		var nodes: GKMultiTree<Int, GKAction> = GKMultiTree<Int, GKAction>()
+		let nodes: GKMultiTree<Int, GKAction> = GKMultiTree<Int, GKAction>()
 		for property: GKActionProperty in entries as! Array<GKActionProperty> {
 			let node: GKAction = GKAction(action: property.node)
 			nodes.insert(node[name] as! Int, data: node)
@@ -439,14 +439,15 @@ public class GKGraph: NSObject {
 	/**
 	* search(Bond)
 	* Searches the Graph for Bond Objects with the following type LIKE ?.
-	* @param        type: String!
-	* @return       Array<GKBond>
+	* @param        type: String
+	* @return       GKTree<String, GKBond>
 	*/
-	public func search(Bond type: String!) -> Array<GKBond> {
+	public func search(Bond type: String) -> GKTree<String, GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: Array<GKBond> = Array<GKBond>()
+		let nodes: GKTree<String, GKBond> = GKTree<String, GKBond>()
 		for bond: GKManagedBond in entries as! Array<GKManagedBond> {
-			nodes.append(GKBond(bond: bond))
+			let node: GKBond = GKBond(bond: bond)
+			nodes.insert(node.id, data: node)
 		}
 		return nodes
 	}
@@ -454,14 +455,15 @@ public class GKGraph: NSObject {
 	/**
 	* search(BondGroup)
 	* Searches the Graph for Bond Group Objects with the following name LIKE ?.
-	* @param        name: String!
-	* @return       Array<GKBond>
+	* @param        name: String
+	* @return       GKTree<String, GKBond>
 	*/
-	public func search(BondGroup name: String!) -> Array<GKBond> {
+	public func search(BondGroup name: String) -> GKTree<String, GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: Array<GKBond> = Array<GKBond>()
+		let nodes: GKTree<String, GKBond> = GKTree<String, GKBond>()
 		for group: GKBondGroup in entries as! Array<GKBondGroup> {
-			nodes.append(GKBond(bond: group.node))
+			let node: GKBond = GKBond(bond: group.node)
+			nodes.insert(node.id, data: node)
 		}
 		return nodes
 	}
@@ -469,16 +471,20 @@ public class GKGraph: NSObject {
 	/**
 	* search(BondGroupMap)
 	* Retrieves all the unique Group Names for Bond Nodes with their GKBond Objects.
+	* @param        name: String
 	* @return       Dictionary<String, Array<GKBond>>
 	*/
-	public func search(BondGroupMap name: String!) -> Dictionary<String, Array<GKBond>> {
+	public func search(BondGroupMap name: String) -> GKTree<String, GKTree<String, GKBond>> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: Dictionary<String, Array<GKBond>> = Dictionary<String, Array<GKBond>>()
+		let nodes: GKTree<String, GKTree<String, GKBond>> = GKTree<String, GKTree<String, GKBond>>()
 		for group: GKBondGroup in entries as! Array<GKBondGroup> {
+			let node: GKBond = GKBond(bond: group.node)
 			if (nil == nodes[group.name]) {
-				nodes[group.name] = Array<GKBond>(arrayLiteral: GKBond(bond: group.node))
+				let set: GKTree<String, GKBond> = GKTree<String, GKBond>()
+				set.insert(node.id, data: node)
+				nodes.insert(group.name, data: set)
 			} else {
-				nodes[group.name]!.append(GKBond(bond: group.node))
+				nodes[group.name]!.insert(node.id, data: node)
 			}
 		}
 		return nodes
@@ -487,14 +493,15 @@ public class GKGraph: NSObject {
 	/**
 	* search(BondProperty)
 	* Searches the Graph for Bond Property Objects with the following name LIKE ?.
-	* @param        name: String!
-	* @return       Array<GKBond>
+	* @param        name: String
+	* @return       GKTree<String, GKBond>
 	*/
-	public func search(BondProperty name: String!) -> Array<GKBond> {
+	public func search(BondProperty name: String) -> GKTree<String, GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: Array<GKBond> = Array<GKBond>()
+		let nodes: GKTree<String, GKBond> = GKTree<String, GKBond>()
 		for property: GKBondProperty in entries as! Array<GKBondProperty> {
-			nodes.append(GKBond(bond: property.node))
+			let node: GKBond = GKBond(bond: property.node)
+			nodes.insert(node.id, data: node)
 		}
 		return nodes
 	}
@@ -502,15 +509,16 @@ public class GKGraph: NSObject {
 	/**
 	* search(BondProperty)
 	* Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
-	* @param        name: String!
-	* @param        value: String!
-	* @return       Array<GKBond>
+	* @param        name: String
+	* @param        value: String
+	* @return       GKMultiTree<String, GKBond>
 	*/
-	public func search(BondProperty name: String!, value: String!) -> Array<GKBond> {
+	public func search(BondProperty name: String, value: String) -> GKMultiTree<String, GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
-		var nodes: Array<GKBond> = Array<GKBond>()
+		let nodes: GKMultiTree<String, GKBond> = GKMultiTree<String, GKBond>()
 		for property: GKBondProperty in entries as! Array<GKBondProperty> {
-			nodes.append(GKBond(bond: property.node))
+			let node: GKBond = GKBond(bond: property.node)
+			nodes.insert(node[name] as! String, data: node)
 		}
 		return nodes
 	}
@@ -518,15 +526,16 @@ public class GKGraph: NSObject {
 	/**
 	* search(BondProperty)
 	* Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
-	* @param        name: String!
-	* @param        value: String!
-	* @return       Array<GKBond>
+	* @param        name: String
+	* @param        value: Int
+	* @return       GKMultiTree<Int, GKBond>
 	*/
-	public func search(BondProperty name: String!, value: Int!) -> Array<GKBond> {
+	public func search(BondProperty name: String, value: Int) -> GKMultiTree<Int, GKBond> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
-		var nodes: Array<GKBond> = Array<GKBond>()
+		let nodes: GKMultiTree<Int, GKBond> = GKMultiTree<Int, GKBond>()
 		for property: GKBondProperty in entries as! Array<GKBondProperty> {
-			nodes.append(GKBond(bond: property.node))
+			let node: GKBond = GKBond(bond: property.node)
+			nodes.insert(node[name] as! Int, data: node)
 		}
 		return nodes
 	}
