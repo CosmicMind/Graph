@@ -155,11 +155,7 @@ public class GKMultiTree<K: Comparable, V>: Printable {
 	* @return		GKMultiTree<K, V> subset.
 	*/
 	public func search(keys: K...) -> GKMultiTree<K, V> {
-		var s: GKMultiTree<K, V> = GKMultiTree<K, V>()
-		for key: K in keys {
-			traverse(key, node: tree.root, set: &s)
-		}
-		return s
+		return search(keys)
 	}
 	
 	/**
