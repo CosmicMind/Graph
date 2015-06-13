@@ -58,7 +58,7 @@ class GKActionSearchTests : XCTestCase, GKGraphDelegate {
 		self.measureBlock() {}
 	}
 	
-	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
+	func graph(graph: GKGraph, didInsertAction action: GKAction) {
 		var a2: GKAction? = graph.search(ActionProperty: "active").last
 		if action == a2 {
 			expectation?.fulfill()
@@ -73,7 +73,7 @@ class GKActionSearchTests : XCTestCase, GKGraphDelegate {
 		}
 	}
 	
-	func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
+	func graph(graph: GKGraph, didDeleteAction action: GKAction) {
 		var a2: GKAction? = graph.search(ActionProperty: "active").last
 		if nil == a2 {
 			expectation?.fulfill()
@@ -81,7 +81,7 @@ class GKActionSearchTests : XCTestCase, GKGraphDelegate {
 		}
 	}
 	
-	func graph(graph: GKGraph!, didUpdateAction action: GKAction!, property: String!, value: AnyObject!) {
+	func graph(graph: GKGraph,didUpdateAction action: GKAction,property: String,value: AnyObject){
 		var a2: GKAction? = graph.search(ActionProperty: "active").last
 		if value as! Bool == action["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()

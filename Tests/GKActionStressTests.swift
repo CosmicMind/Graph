@@ -65,7 +65,7 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 		
 		dispatch_async(queua1) {
 			a1 = GKAction(type: "A")
-			for i in 1...1000 {
+			for i in 1...100 {
 				let prop: String = String(i)
 				a1!.addGroup(prop)
 				a1!.addGroup("test")
@@ -73,7 +73,7 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 				a1![prop] = i
 			}
 			dispatch_async(self.queue2) {
-				for i in 1...500 {
+				for i in 1...50 {
 					let prop: String = String(i)
 					a1!.addGroup(prop)
 					a1!.addGroup("test")
@@ -83,7 +83,7 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 					a1![prop] = nil
 				}
 				dispatch_async(self.queue3) {
-					for i in 1...1000 {
+					for i in 1...100 {
 						let prop: String = String(i)
 						a1!.addGroup(prop)
 						a1!.addGroup("test")
@@ -91,7 +91,7 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 						a1!["test"] = "test"
 					}
 					dispatch_async(self.queue4) {
-						for i in 1...500 {
+						for i in 1...50 {
 							let prop: String = String(i)
 							a1!.addGroup(prop)
 							a1!.addGroup("test")
@@ -112,7 +112,7 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 		expectation = expectationWithDescription("Action: Insert did not pass.")
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(120, handler: nil)
+		waitForExpectationsWithTimeout(5, handler: nil)
 		
 		expectation = expectationWithDescription("Action: Delete did not pass.")
 		
@@ -123,20 +123,20 @@ class GKActionStressTests : XCTestCase, GKGraphDelegate {
 		}
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(120, handler: nil)
+		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
 	func testPerformanceExample() {
 		self.measureBlock() {}
 	}
 	
-	func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
-		if 501 == action.groups.count && 501 == action.properties.count {
+	func graph(graph: GKGraph, didInsertAction action: GKAction) {
+		if 51 == action.groups.count && 51 == action.properties.count {
 			expectation?.fulfill()
 		}
 	}
 	
-	func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
+	func graph(graph: GKGraph, didDeleteAction action: GKAction) {
 		if 0 == action.groups.count && 0 == action.properties.count {
 			expectation?.fulfill()
 		}

@@ -76,18 +76,18 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 
     func testAll() {
         // Set the XCTest Class as the delegate.
-        graph?.delegate = self
+        graph!.delegate = self
 
         // Let's watch the changes in the Graph for the following Action values.
-        graph?.watch(Action: "Read")
-        graph?.watch(ActionGroup: "Holiday")
-        graph?.watch(ActionProperty: "name")
-        graph?.watch(ActionProperty: "session")
+        graph!.watch(Action: "Read")
+        graph!.watch(ActionGroup: "Holiday")
+        graph!.watch(ActionProperty: "name")
+        graph!.watch(ActionProperty: "session")
 
         // Let's watch the changes in the Graph for the following Entity values.
-        graph?.watch(Entity: "User")
-        graph?.watch(Entity: "Book")
-        graph?.watch(Entity: "Magazine")
+        graph!.watch(Entity: "User")
+        graph!.watch(Entity: "Book")
+        graph!.watch(Entity: "Magazine")
 
         // Create a Read Action.
         let read: GKAction = GKAction(type: "Read")
@@ -118,7 +118,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         sessionSearchExpectation = expectationWithDescription("Session: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph?.save() { (success: Bool, error: NSError?) in
+        graph!.save { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -135,7 +135,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         sessionSearchExpectation = expectationWithDescription("Session: Search did not pass.")
 
         // Save the Graph, which will execute the delegate handlers.
-        graph?.save() { (success: Bool, error: NSError?) in
+        graph!.save { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -153,7 +153,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
 		readDeleteExpectation = expectationWithDescription("Read: Delete did not pass.")
 		
         // Save the Graph, which will execute the delegate handlers.
-        graph?.save() { (success: Bool, error: NSError?) in
+        graph!.save { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "Cannot save the Graph: \(error)")
         }
 
@@ -165,7 +165,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         self.measureBlock() {}
     }
 
-    func graph(graph: GKGraph!, didInsertEntity entity: GKEntity!) {
+    func graph(graph: GKGraph, didInsertEntity entity: GKEntity) {
 		if "User" == entity.type && 1 == entity.actionsWhenSubject.count {
             userInsertExpectation?.fulfill()
         } else if "Book" == entity.type && 1 == entity.actionsWhenObject.count {
@@ -175,7 +175,7 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didDeleteEntity entity: GKEntity!) {
+    func graph(graph: GKGraph, didDeleteEntity entity: GKEntity) {
         if "User" == entity.type {
             userDeleteExpectation?.fulfill()
         } else if "Book" == entity.type {
@@ -185,72 +185,72 @@ class GKActionTests : XCTestCase, GKGraphDelegate {
         }
     }
 
-    func graph(graph: GKGraph!, didInsertAction action: GKAction!) {
+    func graph(graph: GKGraph, didInsertAction action: GKAction) {
         if "Read" == action.type && 1 == action.subjects.count && 2 == action.objects.count {
             readInsertExpectation?.fulfill()
         }
     }
 
-	func graph(graph: GKGraph!, didUpdateAction action: GKAction!) {
+	func graph(graph: GKGraph, didUpdateAction action: GKAction) {
 		if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
 			readUpdateExpectation?.fulfill()
 		}
 	}
 	
-    func graph(graph: GKGraph!, didDeleteAction action: GKAction!) {
+    func graph(graph: GKGraph,didDeleteAction action: GKAction){
 		if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
             readDeleteExpectation?.fulfill()
         }
     }
 
-    func graph(graph: GKGraph!, didInsertAction action: GKAction!, group: String!) {
+    func graph(graph: GKGraph, didInsertAction action: GKAction, group: String) {
         if "Holiday" == group {
             groupInsertExpectation?.fulfill()
-            let nodes: Array<GKAction> = graph.search(ActionGroup: group)
-            if 1 == nodes.count && action.objectID == nodes[0].objectID {
+            let n: GKTree<String, GKAction> = graph.search(ActionGroup: group)
+            if action.id == n.first!.id {
                 groupSearchExpectation?.fulfill()
             }
         }
     }
 
-    func graph(graph: GKGraph!, didInsertAction action: GKAction!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph, didInsertAction action: GKAction, property: String, value: AnyObject) {
         if "name" == property && "New Years" == value as! String {
             nameInsertExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
-            if 1 == nodes.count && nodes[0][property] as! String == value as! String {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as! String)
-                if 1 == nodes.count && nodes[0][property] as! String == value as! String {
+            let n: GKTree<String, GKAction> = graph.search(ActionProperty: property)
+            if n.first![property] as! String == value as! String {
+                let m: GKMultiTree<String, GKAction> = graph.search(ActionProperty: property, value: value as! String)
+                if m.first![property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
         } else if "session" == property && 123 == value as! Int {
             sessionInsertExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
-            if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as! Int)
-                if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
+            let n: GKTree<String, GKAction> = graph.search(ActionProperty: property)
+            if n.first![property] as! Int == value as! Int {
+                let m: GKMultiTree<Int, GKAction> = graph.search(ActionProperty: property, value: value as! Int)
+                if m.first![property] as! Int == value as! Int {
                     sessionSearchExpectation?.fulfill()
                 }
             }
         }
     }
 
-    func graph(graph: GKGraph!, didUpdateAction action: GKAction!, property: String!, value: AnyObject!) {
+    func graph(graph: GKGraph, didUpdateAction action: GKAction, property: String, value: AnyObject) {
         if "name" == property && "X-MASS" == value as! String {
             nameUpdateExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
-            if 1 == nodes.count && nodes[0][property] as! String == value as! String {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as! String)
-                if 1 == nodes.count && nodes[0][property] as! String == value as! String {
+            let n: GKTree<String, GKAction> = graph.search(ActionProperty: property)
+            if n.first![property] as! String == value as! String {
+                let m: GKMultiTree<String, GKAction> = graph.search(ActionProperty: property, value: value as! String)
+                if m.first![property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
         } else if "session" == property && 456 == value as! Int {
             sessionUpdateExpectation?.fulfill()
-            var nodes: Array<GKAction> = graph.search(ActionProperty: property)
-            if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
-                var nodes: Array<GKAction> = graph.search(ActionProperty: property, value: value as! Int)
-                if 1 == nodes.count && nodes[0][property] as! Int == value as! Int {
+            let n: GKTree<String, GKAction> = graph.search(ActionProperty: property)
+            if n.first![property] as! Int == value as! Int {
+                let m: GKMultiTree<Int, GKAction> = graph.search(ActionProperty: property, value: value as! Int)
+                if m.first![property] as! Int == value as! Int {
                     sessionSearchExpectation?.fulfill()
                 }
             }

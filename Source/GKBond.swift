@@ -63,11 +63,11 @@ public class GKBond: NSObject {
 	}
 	
 	/**
-	* objectID
+	* id
 	* Retrieves the ID for the Model Object that is wrapped internally.
 	* @return       String? of the ID
 	*/
-	public var objectID: String {
+	public var id: String {
 		var nodeURL: NSURL = node.objectID.URIRepresentation()
 		var oID: String = nodeURL.lastPathComponent!
 		return nodeClass + type + oID
@@ -203,10 +203,10 @@ public class GKBond: NSObject {
 
 extension GKBond: Equatable, Printable {
 	override public var description: String {
-		return "[GKBond\n\tobjectID: \(objectID)\n\ttype: \(type)\n\tgroups: \(groups)\n\tproperties: \(properties)\n\tsubject: \(subject)\n\tobject: \(object)\n\tcreatedDate: \(createdDate)]"
+		return "[id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
 	}
 }
 
 public func ==(lhs: GKBond, rhs: GKBond) -> Bool {
-	return lhs.objectID == rhs.objectID
+	return lhs.id == rhs.id
 }
