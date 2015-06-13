@@ -335,14 +335,15 @@ public class GKGraph: NSObject {
 	/**
 	* search(Action)
 	* Searches the Graph for Action Objects with the following type LIKE ?.
-	* @param        type: String!
-	* @return       Array<GKAction>
+	* @param        type: String
+	* @return       GKTree<String, GKAction>
 	*/
-	public func search(Action type: String!) -> Array<GKAction> {
+	public func search(Action type: String) -> GKTree<String, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: Array<GKAction> = Array<GKAction>()
+		var nodes: GKTree<String, GKAction> = GKTree<String, GKAction>()
 		for action: GKManagedAction in entries as! Array<GKManagedAction> {
-			nodes.append(GKAction(action: action))
+			let node: GKAction = GKAction(action: action)
+			nodes.insert(node.id, data: node)
 		}
 		return nodes
 	}
@@ -350,14 +351,15 @@ public class GKGraph: NSObject {
 	/**
 	* search(ActionGroup)
 	* Searches the Graph for Action Group Objects with the following name LIKE ?.
-	* @param        name: String!
-	* @return       Array<GKAction>
+	* @param        name: String
+	* @return       GKTree<String, GKAction>
 	*/
-	public func search(ActionGroup name: String!) -> Array<GKAction> {
+	public func search(ActionGroup name: String) -> GKTree<String, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: Array<GKAction> = Array<GKAction>()
+		var nodes: GKTree<String, GKAction> = GKTree<String, GKAction>()
 		for group: GKActionGroup in entries as! Array<GKActionGroup> {
-			nodes.append(GKAction(action: group.node))
+			let node: GKAction = GKAction(action: group.node)
+			nodes.insert(node.id, data: node)
 		}
 		return nodes
 	}
@@ -365,16 +367,20 @@ public class GKGraph: NSObject {
 	/**
 	* search(ActionGroupMap)
 	* Retrieves all the unique Group Names for Action Nodes with their GKAction Objects.
+	* @param        name: String
 	* @return       Dictionary<String, Array<GKAction>>
 	*/
-	public func search(ActionGroupMap name: String!) -> Dictionary<String, Array<GKAction>> {
+	public func search(ActionGroupMap name: String) -> GKTree<String, GKTree<String, GKAction>> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: Dictionary<String, Array<GKAction>> = Dictionary<String, Array<GKAction>>()
+		var nodes: GKTree<String, GKTree<String, GKAction>> = GKTree<String, GKTree<String, GKAction>>()
 		for group: GKActionGroup in entries as! Array<GKActionGroup> {
+			let node: GKAction = GKAction(action: group.node)
 			if (nil == nodes[group.name]) {
-				nodes[group.name] = Array<GKAction>(arrayLiteral: GKAction(action: group.node))
+				let set: GKTree<String, GKAction> = GKTree<String, GKAction>()
+				set.insert(node.id, data: node)
+				nodes.insert(group.name, data: set)
 			} else {
-				nodes[group.name]!.append(GKAction(action: group.node))
+				nodes[group.name]!.insert(node.id, data: node)
 			}
 		}
 		return nodes
@@ -383,14 +389,15 @@ public class GKGraph: NSObject {
 	/**
 	* search(ActionProperty)
 	* Searches the Graph for Action Property Objects with the following name LIKE ?.
-	* @param        name: String!
-	* @return       Array<GKAction>
+	* @param        name: String
+	* @return       GKTree<String, GKAction>
 	*/
-	public func search(ActionProperty name: String!) -> Array<GKAction> {
+	public func search(ActionProperty name: String) -> GKTree<String, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: Array<GKAction> = Array<GKAction>()
+		var nodes: GKTree<String, GKAction> = GKTree<String, GKAction>()
 		for property: GKActionProperty in entries as! Array<GKActionProperty> {
-			nodes.append(GKAction(action: property.node))
+			let node: GKAction = GKAction(action: property.node)
+			nodes.insert(node.id, data: node)
 		}
 		return nodes
 	}
@@ -398,15 +405,16 @@ public class GKGraph: NSObject {
 	/**
 	* search(ActionProperty)
 	* Searches the Graph for Action Property Objects with the following name == ? and value == ?.
-	* @param        name: String!
-	* @param        value: String!
-	* @return       Array<GKAction>
+	* @param        name: String
+	* @param        value: String
+	* @return       GKMultiTree<String, GKAction>
 	*/
-	public func search(ActionProperty name: String!, value: String!) -> Array<GKAction> {
+	public func search(ActionProperty name: String, value: String) -> GKMultiTree<String, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
-		var nodes: Array<GKAction> = Array<GKAction>()
+		var nodes: GKMultiTree<String, GKAction> = GKMultiTree<String, GKAction>()
 		for property: GKActionProperty in entries as! Array<GKActionProperty> {
-			nodes.append(GKAction(action: property.node))
+			let node: GKAction = GKAction(action: property.node)
+			nodes.insert(node[name] as! String, data: node)
 		}
 		return nodes
 	}
@@ -414,15 +422,16 @@ public class GKGraph: NSObject {
 	/**
 	* search(ActionProperty)
 	* Searches the Graph for Action Property Objects with the following name == ? and value == ?.
-	* @param        name: String!
-	* @param        value: String!
-	* @return       Array<GKAction>
+	* @param        name: String
+	* @param        value: Int
+	* @return       GKMultiTree<Int, GKAction>
 	*/
-	public func search(ActionProperty name: String!, value: Int!) -> Array<GKAction> {
+	public func search(ActionProperty name: String, value: Int) -> GKMultiTree<Int, GKAction> {
 		let entries: Array<AnyObject> = search(GKGraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
-		var nodes: Array<GKAction> = Array<GKAction>()
+		var nodes: GKMultiTree<Int, GKAction> = GKMultiTree<Int, GKAction>()
 		for property: GKActionProperty in entries as! Array<GKActionProperty> {
-			nodes.append(GKAction(action: property.node))
+			let node: GKAction = GKAction(action: property.node)
+			nodes.insert(node[name] as! Int, data: node)
 		}
 		return nodes
 	}
