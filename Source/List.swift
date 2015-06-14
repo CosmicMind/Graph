@@ -79,11 +79,7 @@ public class List<V>: Printable {
 		return 0 == count
 	}
 	
-	public var iteratorAtBegin: Bool {
-		return current === sentinel
-	}
-	
-	public var iteratorAtEnd: Bool {
+	public var cursorAtEnd: Bool {
 		return current === sentinel
 	}
 	
@@ -157,11 +153,11 @@ public class List<V>: Printable {
 		return data
 	}
 	
-	public func resetToFront() {
+	public func cursorToFront() {
 		current = head
 	}
 	
-	public func resetToBack() {
+	public func cursorToBack() {
 		current = tail
 	}
 	

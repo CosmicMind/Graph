@@ -47,10 +47,14 @@ class ListTests: XCTestCase {
 		l.insertAtBack(6)
 		l.insertAtBack(7)
 		
-		l.resetToFront()
-		while !l.iteratorAtEnd {
-			println(l.cursor)
+		l.cursorToFront()
+		while !l.cursorAtEnd {
 			l.next
+		}
+		
+		l.cursorToBack()
+		while !l.cursorAtEnd {
+			l.previous
 		}
 		
 		XCTAssert(6 == l.count, "Count incorrect, got \(l.count).")
@@ -58,7 +62,7 @@ class ListTests: XCTestCase {
 		XCTAssert(3 == l.front, "Front incorrect, got \(l.front)")
 		XCTAssert(7 == l.back, "Back incorrect, got \(l.back)")
 		
-		l.resetToFront()
+		l.cursorToFront()
 		XCTAssert(l.front == l.cursor, "Current incorrect, got \(l.cursor)")
 		XCTAssert(2 == l.next!, "Next incorrect, got \(l.cursor)")
 		XCTAssert(1 == l.next!, "Next incorrect, got \(l.cursor)")
@@ -66,7 +70,7 @@ class ListTests: XCTestCase {
 		XCTAssert(6 == l.next!, "Next incorrect, got \(l.cursor)")
 		XCTAssert(7 == l.next!, "Next incorrect, got \(l.cursor)")
 		
-		l.resetToBack()
+		l.cursorToBack()
 		XCTAssert(l.back == l.cursor, "Current incorrect, got \(l.cursor)")
 		XCTAssert(6 == l.previous!, "Previous incorrect, got \(l.cursor)")
 		XCTAssert(5 == l.previous!, "Previous incorrect, got \(l.cursor)")
@@ -74,12 +78,12 @@ class ListTests: XCTestCase {
 		XCTAssert(2 == l.previous!, "Previous incorrect, got \(l.cursor)")
 		XCTAssert(3 == l.previous!, "Previous incorrect, got \(l.cursor)")
 		
-		l.resetToFront()
+		l.cursorToFront()
 		XCTAssert(3 == l.removeAtFront() && 5 == l.count && 2 == l.cursor, "RemoveAtFront incorrect")
 		XCTAssert(2 == l.removeAtFront() && 4 == l.count && 1 == l.cursor, "RemoveAtFront incorrect")
 		XCTAssert(1 == l.removeAtFront() && 3 == l.count && 5 == l.cursor, "RemoveAtFront incorrect")
 		
-		l.resetToBack()
+		l.cursorToBack()
 		XCTAssert(7 == l.removeAtBack() && 2 == l.count && 6 == l.cursor, "RemoveAtBack incorrect")
 		XCTAssert(6 == l.removeAtBack() && 1 == l.count && 5 == l.cursor, "RemoveAtBack incorrect")
 		XCTAssert(5 == l.removeAtBack() && 0 == l.count && nil == l.cursor, "RemoveAtBack incorrect")
