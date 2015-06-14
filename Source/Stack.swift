@@ -14,32 +14,44 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Stack
 */
 
-import XCTest
-import GraphKit
-
-class QueueTests: XCTestCase {
+public class Stack<V>: Printable {
+	private var list: List<V>
 	
-	override func setUp() {
-		super.setUp()
-		// Put setup code here. This method is called before the invocation of each test method in the class.
+	public var count: Int {
+		return list.count
 	}
 	
-	override func tearDown() {
-		// Put teardown code here. This method is called after the invocation of each test method in the class.
-		super.tearDown()
+	public var top: V? {
+		return list.front
 	}
 	
-	func testQueueInt() {
-
+	/**
+	* empty
+	* A boolean if the Stack is empty.
+	*/
+	public var empty: Bool {
+		return list.empty
 	}
 	
-	func testPerformanceExample() {
-		// This is an example of a performance test case.
-		self.measureBlock() {
-			// Put the code you want to measure the time of here.
-		}
+	public var description: String {
+		var output: String = "Stack("
+		output += ")"
+		return output
 	}
 	
+	public init() {
+		list = List<V>()
+	}
+	
+	public func push(data: V?) {
+		list.insertAtFront(data)
+	}
+	
+	public func pop() -> V? {
+		return list.removeAtFront()
+	}
 }

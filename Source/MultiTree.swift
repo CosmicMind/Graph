@@ -57,6 +57,14 @@ public class MultiTree<K: Comparable, V>: Printable {
 	}
 	
 	/**
+	* empty
+	* A boolean if the MultiTree is empty.
+	*/
+	public var empty: Bool {
+		return 0 == count
+	}
+	
+	/**
 	* description
 	* Conforms to the Printable Protocol. Outputs the
 	* data in the MultiTree in a readable format.

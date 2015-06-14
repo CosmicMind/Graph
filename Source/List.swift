@@ -54,6 +54,14 @@ public class List<V>: Printable {
 		return current?.data
 	}
 	
+	/**
+	* empty
+	* A boolean if the List is empty.
+	*/
+	public var empty: Bool {
+		return 0 == count
+	}
+	
 	public var next: V? {
 		if nil == current || tail === current {
 			return nil

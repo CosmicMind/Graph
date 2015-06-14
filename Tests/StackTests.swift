@@ -19,7 +19,7 @@
 import XCTest
 import GraphKit
 
-class QueueTests: XCTestCase {
+class StackTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -31,8 +31,29 @@ class QueueTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testQueueInt() {
-
+	func testListInt() {
+		let s: Stack<Int> = Stack<Int>()
+		
+		s.push(1)
+		s.push(2)
+		s.push(3)
+		
+		XCTAssert(3 == s.count, "Count incorrect, got \(s.count).")
+		XCTAssert(3 == s.top, "Top incorrect, got \(s.top)")
+		
+		s.push(5)
+		s.push(6)
+		s.push(7)
+		
+		XCTAssert(6 == s.count, "Count incorrect, got \(s.count).")
+		XCTAssert(7 == s.top, "Top incorrect, got \(s.top)")
+		
+		XCTAssert(7 == s.pop() && 5 == s.count && 6 == s.top, "Pop incorrect")
+		XCTAssert(6 == s.pop() && 4 == s.count && 5 == s.top, "Pop incorrect")
+		XCTAssert(5 == s.pop() && 3 == s.count && 3 == s.top, "Pop incorrect")
+		XCTAssert(3 == s.pop() && 2 == s.count && 2 == s.top, "Pop incorrect")
+		XCTAssert(2 == s.pop() && 1 == s.count && 1 == s.top, "Pop incorrect")
+		XCTAssert(1 == s.pop() && 0 == s.count && nil == s.top, "Pop incorrect")
 	}
 	
 	func testPerformanceExample() {
