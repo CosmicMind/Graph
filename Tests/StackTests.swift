@@ -31,7 +31,7 @@ class StackTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testListInt() {
+	func testInt() {
 		let s: Stack<Int> = Stack<Int>()
 		
 		s.push(1)

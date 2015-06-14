@@ -31,7 +31,7 @@ class DequeTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testDequeInt() {
+	func testInt() {
 		let d: Deque<Int> = Deque<Int>()
 		
 		d.pushFront(1)

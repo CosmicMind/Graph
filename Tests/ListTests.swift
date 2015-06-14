@@ -31,7 +31,7 @@ class ListTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testListInt() {
+	func testInt() {
 		let l: List<Int> = List<Int>()
 		
 		l.insertAtFront(1)
@@ -46,6 +46,12 @@ class ListTests: XCTestCase {
 		l.insertAtBack(5)
 		l.insertAtBack(6)
 		l.insertAtBack(7)
+		
+		l.resetToFront()
+		while !l.iteratorAtEnd {
+			println(l.cursor)
+			l.next
+		}
 		
 		XCTAssert(6 == l.count, "Count incorrect, got \(l.count).")
 		

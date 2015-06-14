@@ -31,7 +31,7 @@ class QueueTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testListInt() {
+	func testInt() {
 		let q: Queue<Int> = Queue<Int>()
 		
 		q.enqueue(1)

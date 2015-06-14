@@ -23,6 +23,7 @@ public class List<V>: Printable {
 	
 	private var head: LNode?
 	private var tail: LNode?
+	private var sentinel: LNode?
 	private var current: LNode?
 	
 	public private(set) var count: Int
@@ -54,6 +55,22 @@ public class List<V>: Printable {
 		return current?.data
 	}
 	
+	public var next: V? {
+		current = current?.next
+		if sentinel === current {
+			return nil
+		}
+		return current!.data
+	}
+	
+	public var previous: V? {
+		current = current?.previous
+		if sentinel === current {
+			return nil
+		}
+		return current!.data
+	}
+	
 	/**
 	* empty
 	* A boolean if the List is empty.
@@ -62,36 +79,27 @@ public class List<V>: Printable {
 		return 0 == count
 	}
 	
-	public var next: V? {
-		if nil == current || tail === current {
-			return nil
-		}
-		var data: V? = current!.next.data
-		current = current!.next
-		return data
+	public var iteratorAtBegin: Bool {
+		return current === sentinel
 	}
 	
-	public var previous: V? {
-		if nil == current || head === current {
-			return nil
-		}
-		
-		var data: V? = current!.previous.data
-		current = current!.previous
-		return data
+	public var iteratorAtEnd: Bool {
+		return current === sentinel
 	}
 	
 	public init() {
 		count = 0
+		sentinel = LNode(data: nil)
+		resetList()
 	}
 	
 	public func insertAtFront(data: V?) {
 		let z: LNode = LNode(data: data)
-		if nil == head {
-			head = z
-			tail = z
+		if sentinel === head {
+			initialNode(z)
 		} else {
 			z.next = head
+			z.previous = head!.previous
 			head!.previous = z
 			head = z
 		}
@@ -99,15 +107,13 @@ public class List<V>: Printable {
 	}
 	
 	public func removeAtFront() -> V? {
-		if nil == head {
-			return nil
+		if sentinel === head {
+			return sentinel!.data
 		}
 		
 		var data: V? = head!.data
 		if 1 == count {
-			head = nil
-			tail = nil
-			current = nil
+			resetList()
 		} else {
 			if head === current {
 				current = head!.next
@@ -121,27 +127,25 @@ public class List<V>: Printable {
 	
 	public func insertAtBack(data: V?) {
 		let z: LNode = LNode(data: data)
-		if nil == tail {
-			head = z
-			tail = z
+		if sentinel === tail {
+			initialNode(z)
 		} else {
-			tail!.next = z
 			z.previous = tail
+			z.next = tail!.next
+			tail!.next = z
 			tail = z
 		}
 		++count
 	}
 	
 	public func removeAtBack() -> V? {
-		if nil == tail {
-			return nil
+		if sentinel === tail {
+			return sentinel!.data
 		}
 		
 		var data: V? = tail!.data
 		if 1 == count {
-			head = nil
-			tail = nil
-			current = nil
+			resetList()
 		} else {
 			if tail === current {
 				current = tail!.previous
@@ -159,5 +163,18 @@ public class List<V>: Printable {
 	
 	public func resetToBack() {
 		current = tail
+	}
+	
+	private func initialNode(z: LNode) {
+		head = z
+		tail = z
+		head!.previous = sentinel
+		tail!.next = sentinel
+	}
+	
+	private func resetList() {
+		head = sentinel
+		tail = sentinel
+		current = sentinel
 	}
 }
