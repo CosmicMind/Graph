@@ -54,6 +54,13 @@ class QueueTests: XCTestCase {
 		XCTAssert(5 == q.dequeue() && 2 == q.count && 6 == q.peek, "Dequeue incorrect")
 		XCTAssert(6 == q.dequeue() && 1 == q.count && 7 == q.peek, "Dequeue incorrect")
 		XCTAssert(7 == q.dequeue() && 0 == q.count && nil == q.peek, "Dequeue incorrect")
+		
+		q.enqueue(1)
+		q.enqueue(2)
+		q.enqueue(3)
+		q.clear()
+		
+		XCTAssert(0 == q.count, "Count incorrect, got \(q.count).")
 	}
 	
 	func testPerformanceExample() {

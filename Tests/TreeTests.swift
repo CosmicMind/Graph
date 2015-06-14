@@ -34,7 +34,7 @@ class TreeTests: XCTestCase {
 	func testSetInt() {
 		let s: Tree<Int, Int> = Tree<Int, Int>()
 		
-		XCTAssert(0 == s.count, "Set count incorrect, got \(s.count).")
+		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
 			s.insert(1, data: 1)
@@ -60,6 +60,12 @@ class TreeTests: XCTestCase {
 		XCTAssert(10 == s.find(2)!, "Test failed.")
 		XCTAssert(10 == s[0]!, "Test failed.")
 		XCTAssert(true == (s.remove(2) && 0 == s.count), "Test failed.")
+		
+		s.insert(1, data: 1)
+		s.insert(2, data: 2)
+		s.insert(3, data: 3)
+		s.clear()
+		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
 	func testSetString() {
@@ -78,7 +84,7 @@ class TreeTests: XCTestCase {
 	
 	func testSetSearch() {
 		let s1: Tree<Int, Int> = Tree<Int, Int>()
-		XCTAssert(0 == s1.count, "Set count incorrect, got \(s1.count).")
+		XCTAssert(0 == s1.count, "Test failed, got \(s1.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
 			s1.insert(1, data: 1)
@@ -89,13 +95,13 @@ class TreeTests: XCTestCase {
 		XCTAssert(3 == s1.count, "Test failed.")
 		
 		let s2: Tree<Int, Int> = s1.search(1)
-		XCTAssert(1 == s2.count, "Set count incorrect, got \(s2.count).")
+		XCTAssert(1 == s2.count, "Test failed, got \(s2.count).")
 		
 		let s3: Tree<Int, Int> = s1.search(2)
-		XCTAssert(1 == s3.count, "Set count incorrect, got \(s3.count).")
+		XCTAssert(1 == s3.count, "Test failed, got \(s3.count).")
 		
 		let s4: Tree<Int, Int> = s1.search(3)
-		XCTAssert(1 == s4.count, "Set count incorrect, got \(s4.count).")
+		XCTAssert(1 == s4.count, "Test failed, got \(s4.count).")
 	}
 	
 	func testPerformanceExample() {

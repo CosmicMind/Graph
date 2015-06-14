@@ -183,6 +183,14 @@ public class Tree<K: Comparable, V>: Printable {
 	}
 	
 	/**
+	* clear
+	* Removes all nodes in the Tree.
+	*/
+	public func clear() {
+		tree.clear()
+	}
+	
+	/**
 	* traverse
 	* Traverses the Tree and looking for a key value. 
 	* This is used for internal search. 

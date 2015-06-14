@@ -21,54 +21,100 @@
 public class List<V>: Printable {
 	private typealias LNode = ListNode<V>
 	
-	private var head: LNode?
-	private var tail: LNode?
-	private var sentinel: LNode?
-	private var current: LNode?
+	/**
+	* sentinel
+	* Sentinel node.
+	*/
+	private var sentinel: LNode
 	
+	/**
+	* current
+	* Current cursor position when iterating.
+	*/
+	private var current: LNode
+	
+	/**
+	* head
+	* First node in the list.
+	*/
+	private var head: LNode
+	
+	/**
+	* tail
+	* Last node in list.
+	*/
+	private var tail: LNode
+	
+	/**
+	* count
+	* Number of nodes in List.
+	*/
 	public private(set) var count: Int
 	
+	/**
+	* description
+	* Conforms to Printable Protocol.
+	*/
 	public var description: String {
 		var output: String = "List("
-		var x: LNode? = head
 		var c: Int = 0
-		while nil !== x {
-			output += x!.description
+		var x: LNode = head
+		while sentinel !== x {
+			output += x.description
 			if ++c != count {
 				output += ", "
 			}
-			x = x!.next
+			x = x.next
 		}
 		output += ")"
 		return output
 	}
 	
+	/**
+	* front
+	* Retrieves the data at first node of the List.
+	*/
 	public var front: V? {
-		return head?.data
+		return head.data
 	}
 	
+	/**
+	* back
+	* Retrieves the data at the back node of teh List.
+	*/
 	public var back: V? {
-		return tail?.data
+		return tail.data
 	}
 	
+	/**
+	* cursor
+	* Retrieves the data at the current iterator position
+	* in the List.
+	*/
 	public var cursor: V? {
-		return current?.data
+		return current.data
 	}
 	
+	/**
+	* next
+	* Retrieves the data at the poistion after the 
+	* current cursor poistion. Also moves the cursor
+	* to that node.
+	*/
 	public var next: V? {
-		current = current?.next
-		if sentinel === current {
-			return nil
-		}
-		return current!.data
+		current = current.next
+		return current.data
 	}
 	
+	/**
+	* previous
+	* Retrieves the data at the poistion before the
+	* current cursor poistion. Also moves the cursor
+	* to that node.
+	*/
 	public var previous: V? {
-		current = current?.previous
-		if sentinel === current {
-			return nil
-		}
-		return current!.data
+		current = current.previous
+		return current.data
 	}
 	
 	/**
@@ -79,96 +125,167 @@ public class List<V>: Printable {
 		return 0 == count
 	}
 	
+	/**
+	* cursorAtEnd
+	* A boolean of whether the cursor has reached
+	* the end of an iteration cycle.
+	*/
 	public var cursorAtEnd: Bool {
-		return current === sentinel
+		return sentinel === current
 	}
 	
+	/**
+	* init
+	* Constructor.
+	*/
 	public init() {
 		count = 0
-		sentinel = LNode(data: nil)
-		resetList()
+		sentinel = LNode()
+		head = sentinel
+		tail = sentinel
+		current = sentinel
 	}
 	
+	/**
+	* clear
+	* Removes all nodes from the List.
+	*/
+	public func clear() {
+		while !empty {
+			removeAtFront()
+		}
+	}
+	
+	/**
+	* insertAtFront
+	* Insert a new node with data at the front
+	* of the List.
+	* @param		data: V?
+	*/
 	public func insertAtFront(data: V?) {
-		let z: LNode = LNode(data: data)
-		if sentinel === head {
-			initialNode(z)
-		} else {
-			z.next = head
-			z.previous = head!.previous
-			head!.previous = z
-			head = z
-		}
-		++count
-	}
-	
-	public func removeAtFront() -> V? {
-		if sentinel === head {
-			return sentinel!.data
-		}
-		
-		var data: V? = head!.data
-		if 1 == count {
-			resetList()
-		} else {
-			if head === current {
-				current = head!.next
-			}
-			head!.next!.previous = nil
-			head = head!.next
-		}
-		--count
-		return data
-	}
-	
-	public func insertAtBack(data: V?) {
-		let z: LNode = LNode(data: data)
-		if sentinel === tail {
-			initialNode(z)
-		} else {
-			z.previous = tail
-			z.next = tail!.next
-			tail!.next = z
+		var z: LNode
+		if 0 == count {
+			z = LNode(next: sentinel, previous: sentinel,  data: data)
 			tail = z
+		} else {
+			z = LNode(next: head, previous: sentinel, data: data)
+			head.previous = z
 		}
+		head = z
 		++count
 	}
 	
-	public func removeAtBack() -> V? {
-		if sentinel === tail {
-			return sentinel!.data
+	/**
+	* removeAtFront
+	* Remove the node at the front of the List
+	* and return the data at the poistion.
+	* @return		data V?
+	*/
+	public func removeAtFront() -> V? {
+		if 0 == count {
+			return sentinel.data
 		}
-		
-		var data: V? = tail!.data
-		if 1 == count {
-			resetList()
+		var data: V? = head.data
+		if 0 == --count {
+			reset()
 		} else {
-			if tail === current {
-				current = tail!.previous
-			}
-			tail!.previous!.next = nil
-			tail = tail!.previous
+			head.next.previous = sentinel
+			head = head.next
 		}
-		--count
 		return data
 	}
 	
+	/**
+	* insertAtBack
+	* Insert a new node with data at the back
+	* of the List.
+	* @param		data: V?
+	*/
+	public func insertAtBack(data: V?) {
+		var z: LNode
+		if 0 == count {
+			z = LNode(next: sentinel, previous: sentinel,  data: data)
+			head = z
+		} else {
+			z = LNode(next: sentinel, previous: tail, data: data)
+			tail.next = z
+		}
+		tail = z
+		++count
+	}
+	
+	/**
+	* removeAtBack
+	* Remove the node at the back of the List
+	* and return the data at the poistion.
+	* @return		data V?
+	*/
+	public func removeAtBack() -> V? {
+		if 0 == count {
+			return sentinel.data
+		}
+		var data: V? = tail.data
+		if 0 == --count {
+			reset()
+		} else {
+			tail.previous.next = sentinel
+			tail = tail.previous
+		}
+		return data
+	}
+	
+	/**
+	* cursorToFront
+	* Move the cursor to the front of the List.
+	*/
 	public func cursorToFront() {
 		current = head
 	}
 	
+	/**
+	* cursorToBack
+	* Move the cursor to the back of the List.
+	*/
 	public func cursorToBack() {
 		current = tail
 	}
 	
-	private func initialNode(z: LNode) {
-		head = z
-		tail = z
-		head!.previous = sentinel
-		tail!.next = sentinel
+	/**
+	* insertBeforeCursor
+	* Insert a new node with data before the current
+	* cursor position.
+	* @param		data: V?
+	*/
+	public func insertBeforeCursor(data: V?) {
+		if sentinel === current || head === current {
+			insertAtFront(data)
+		} else {
+			let z: LNode = LNode(next: current, previous: current.previous,  data: data)
+			current.previous = z
+			++count
+		}
 	}
 	
-	private func resetList() {
+	/**
+	* insertAfterCursor
+	* Insert a new node with data after the current
+	* cursor position.
+	* @param		data: V?
+	*/
+	public func insertAfterCursor(data: V?) {
+		if sentinel === current || tail === current {
+			insertAtBack(data)
+		} else {
+			current.next = LNode(next: current.next, previous: current,  data: data)
+			++count
+		}
+	}
+	
+	/**
+	* reset
+	* Reinitializes pointers to sentinel value.
+	*/
+	func reset() {
 		head = sentinel
 		tail = sentinel
 		current = sentinel

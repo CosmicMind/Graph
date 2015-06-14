@@ -29,7 +29,11 @@ internal class ListNode<V>: Printable {
 		return "\(data)"
 	}
 	
-	internal init(data: V?) {
+	internal init() {}
+	
+	internal init(next: LNode, previous: LNode, data: V?) {
+		self.next = next
+		self.previous = previous
 		self.data = data
 	}
 }

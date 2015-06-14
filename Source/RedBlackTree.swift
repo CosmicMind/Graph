@@ -71,6 +71,12 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		count = 0
 	}
 	
+	internal func clear() {
+		while sentinel !== root {
+			internalRemove(root.key)
+		}
+	}
+	
 	internal func insert(key: K, data: V?) -> Bool {
 		return sentinel !== internalInsert(key, data: data)
 	}

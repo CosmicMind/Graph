@@ -53,4 +53,8 @@ public class Stack<V>: Printable {
 	public func pop() -> V? {
 		return list.removeAtFront()
 	}
+	
+	public func clear() {
+		list.clear()
+	}
 }

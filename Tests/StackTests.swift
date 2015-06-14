@@ -54,6 +54,13 @@ class StackTests: XCTestCase {
 		XCTAssert(3 == s.pop() && 2 == s.count && 2 == s.top, "Pop incorrect")
 		XCTAssert(2 == s.pop() && 1 == s.count && 1 == s.top, "Pop incorrect")
 		XCTAssert(1 == s.pop() && 0 == s.count && nil == s.top, "Pop incorrect")
+		
+		s.push(1)
+		s.push(2)
+		s.push(3)
+		s.clear()
+		
+		XCTAssert(0 == s.count, "Count incorrect, got \(s.count).")
 	}
 	
 	func testPerformanceExample() {

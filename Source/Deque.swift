@@ -65,4 +65,8 @@ public class Deque<V>: Printable {
 	public func popBack() -> V? {
 		return list.removeAtBack()
 	}
+	
+	public func clear() {
+		list.clear()
+	}
 }

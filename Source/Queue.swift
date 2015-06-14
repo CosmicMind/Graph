@@ -53,4 +53,8 @@ public class Queue<V>: Printable {
 	public func dequeue() -> V? {
 		return list.removeAtFront()
 	}
+	
+	public func clear() {
+		list.clear()
+	}
 }

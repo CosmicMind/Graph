@@ -51,42 +51,107 @@ class ListTests: XCTestCase {
 		while !l.cursorAtEnd {
 			l.next
 		}
-		
+
 		l.cursorToBack()
 		while !l.cursorAtEnd {
 			l.previous
 		}
-		
+
 		XCTAssert(6 == l.count, "Count incorrect, got \(l.count).")
 		
 		XCTAssert(3 == l.front, "Front incorrect, got \(l.front)")
 		XCTAssert(7 == l.back, "Back incorrect, got \(l.back)")
-		
+
 		l.cursorToFront()
-		XCTAssert(l.front == l.cursor, "Current incorrect, got \(l.cursor)")
-		XCTAssert(2 == l.next!, "Next incorrect, got \(l.cursor)")
-		XCTAssert(1 == l.next!, "Next incorrect, got \(l.cursor)")
-		XCTAssert(5 == l.next!, "Next incorrect, got \(l.cursor)")
-		XCTAssert(6 == l.next!, "Next incorrect, got \(l.cursor)")
-		XCTAssert(7 == l.next!, "Next incorrect, got \(l.cursor)")
+		XCTAssert(3 == l.front && l.front == l.cursor, "Current incorrect, got \(l.cursor)")
+		XCTAssert(2 == l.next, "Next incorrect, got \(l.cursor)")
+		XCTAssert(1 == l.next, "Next incorrect, got \(l.cursor)")
+		XCTAssert(5 == l.next, "Next incorrect, got \(l.cursor)")
+		XCTAssert(6 == l.next, "Next incorrect, got \(l.cursor)")
+		XCTAssert(7 == l.next, "Next incorrect, got \(l.cursor)")
+
+		l.cursorToBack()
+		XCTAssert(7 == l.back && l.back == l.cursor, "Current incorrect, got \(l.cursor)")
+		XCTAssert(6 == l.previous, "Previous incorrect, got \(l.cursor)")
+		XCTAssert(5 == l.previous, "Previous incorrect, got \(l.cursor)")
+		XCTAssert(1 == l.previous, "Previous incorrect, got \(l.cursor)")
+		XCTAssert(2 == l.previous, "Previous incorrect, got \(l.cursor)")
+		XCTAssert(3 == l.previous, "Previous incorrect, got \(l.cursor)")
+
+		l.cursorToFront()
+		XCTAssert(3 == l.removeAtFront() && 5 == l.count, "RemoveAtFront incorrect")
+		XCTAssert(2 == l.removeAtFront() && 4 == l.count, "RemoveAtFront incorrect")
+		XCTAssert(1 == l.removeAtFront() && 3 == l.count, "RemoveAtFront incorrect")
 		
 		l.cursorToBack()
-		XCTAssert(l.back == l.cursor, "Current incorrect, got \(l.cursor)")
-		XCTAssert(6 == l.previous!, "Previous incorrect, got \(l.cursor)")
-		XCTAssert(5 == l.previous!, "Previous incorrect, got \(l.cursor)")
-		XCTAssert(1 == l.previous!, "Previous incorrect, got \(l.cursor)")
-		XCTAssert(2 == l.previous!, "Previous incorrect, got \(l.cursor)")
-		XCTAssert(3 == l.previous!, "Previous incorrect, got \(l.cursor)")
+		XCTAssert(7 == l.removeAtBack() && 2 == l.count, "RemoveAtBack incorrect")
+		XCTAssert(6 == l.removeAtBack() && 1 == l.count, "RemoveAtBack incorrect")
+		XCTAssert(5 == l.removeAtBack() && 0 == l.count, "RemoveAtBack incorrect")
 		
 		l.cursorToFront()
-		XCTAssert(3 == l.removeAtFront() && 5 == l.count && 2 == l.cursor, "RemoveAtFront incorrect")
-		XCTAssert(2 == l.removeAtFront() && 4 == l.count && 1 == l.cursor, "RemoveAtFront incorrect")
-		XCTAssert(1 == l.removeAtFront() && 3 == l.count && 5 == l.cursor, "RemoveAtFront incorrect")
+		l.insertBeforeCursor(1)
+		XCTAssert(1 == l.front && 1 == l.count && nil == l.cursor, "Cursor failed, got Front \(l.front) Cursor \(l.cursor)")
+		l.cursorToFront()
+		XCTAssert(l.cursor == l.removeAtFront() && 0 == l.count, "Cursor failed, got \(l.cursor)")
+		
+		l.cursorToFront()
+		l.insertAfterCursor(1)
+		XCTAssert(1 == l.front && 1 == l.count && nil == l.cursor, "Cursor failed, got Front \(l.front) Cursor \(l.cursor)")
+		l.cursorToFront()
+		XCTAssert(l.cursor == l.removeAtFront() && 0 == l.count, "Cursor failed, got \(l.cursor)")
 		
 		l.cursorToBack()
-		XCTAssert(7 == l.removeAtBack() && 2 == l.count && 6 == l.cursor, "RemoveAtBack incorrect")
-		XCTAssert(6 == l.removeAtBack() && 1 == l.count && 5 == l.cursor, "RemoveAtBack incorrect")
-		XCTAssert(5 == l.removeAtBack() && 0 == l.count && nil == l.cursor, "RemoveAtBack incorrect")
+		l.insertBeforeCursor(1)
+		XCTAssert(1 == l.back && 1 == l.count && nil == l.cursor, "Cursor failed, got Front \(l.front) Cursor \(l.cursor)")
+		l.cursorToBack()
+		XCTAssert(l.cursor == l.removeAtBack() && 0 == l.count, "Cursor failed, got \(l.cursor)")
+		
+		l.cursorToBack()
+		l.insertAfterCursor(1)
+		XCTAssert(1 == l.back && 1 == l.count && nil == l.cursor, "Cursor failed, got Front \(l.front) Cursor \(l.cursor)")
+		l.cursorToBack()
+		XCTAssert(l.cursor == l.removeAtBack() && 0 == l.count, "Cursor failed, got \(l.cursor)")
+		
+		l.clear()
+		XCTAssert(l.front == l.back && 0 == l.count, "Cursor failed, got Front \(l.front) Back \(l.back)")
+		
+		l.cursorToFront()
+		l.insertBeforeCursor(1)
+		XCTAssert(1 == l.front && nil == l.cursor && 1 == l.count, "Cursor failed, got Front \(l.front) Cursor \(l.cursor)")
+		
+		l.insertAfterCursor(2)
+		XCTAssert(2 == l.back && nil == l.cursor && 2 == l.count, "Cursor failed, got Back \(l.back) Cursor \(l.cursor)")
+
+		l.insertAfterCursor(3)
+		XCTAssert(3 == l.back && nil == l.cursor && 3 == l.count, "Cursor failed, got Back \(l.back) Cursor \(l.cursor)")
+
+		l.insertBeforeCursor(4)
+		XCTAssert(4 == l.front && nil == l.cursor && 4 == l.count, "Cursor failed, got Front \(l.front) Cursor \(l.cursor)")
+
+		l.cursorToFront()
+		XCTAssert(1 == l.next && 1 == l.cursor && 4 == l.count, "Cursor failed, got Cursor \(l.cursor)")
+		
+		l.insertBeforeCursor(5)
+//		XCTAssert(1 == l.cursor && 5 == l.previous && 5 == l.cursor && 5 == l.count, "Cursor failed, got Cursor \(l.cursor)")
+//
+//		l.insertAfterCursor(3)
+//		XCTAssert(5 == l.cursor && 6 == l.count && 4 == l.front, "After cursor incorrect, got Front \(l.front) Cursor \(l.cursor)")
+		
+		
+		println("Front", l, l.count)
+		l.cursorToFront()
+		while !l.cursorAtEnd {
+			println(l.cursor)
+			l.next
+		}
+		
+		
+		println("Back", l, l.count)
+		l.cursorToBack()
+		while !l.cursorAtEnd {
+			println(l.cursor)
+			l.previous
+		}
 	}
 	
 	func testPerformanceExample() {

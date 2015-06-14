@@ -59,6 +59,13 @@ class DequeTests: XCTestCase {
 		XCTAssert(7 == d.popBack() && 2 == d.count && 6 == d.back, "PopBack incorrect")
 		XCTAssert(6 == d.popBack() && 1 == d.count && 5 == d.back, "PopBack incorrect")
 		XCTAssert(5 == d.popBack() && 0 == d.count && nil == d.back, "PopBack incorrect")
+		
+		d.pushFront(1)
+		d.pushFront(2)
+		d.pushFront(3)
+		d.clear()
+		
+		XCTAssert(0 == d.count, "Count incorrect, got \(d.count).")
 	}
 	
 	func testPerformanceExample() {

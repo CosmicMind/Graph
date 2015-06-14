@@ -183,6 +183,14 @@ public class MultiTree<K: Comparable, V>: Printable {
 	}
 	
 	/**
+	* clear
+	* Removes all nodes in the MultiTree.
+	*/
+	public func clear() {
+		tree.clear()
+	}
+	
+	/**
 	* traverse
 	* Traverses the MultiTree and looking for a key value.
 	* This is used for internal search.
