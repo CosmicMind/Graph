@@ -15,23 +15,27 @@
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
-* Stack
+* Deque
 */
 
-public class Stack<V>: Printable {
+public class Deque<V>: Printable {
 	private var list: List<V>
 	
 	public var count: Int {
 		return list.count
 	}
 	
-	public var top: V? {
+	public var front: V? {
 		return list.front
+	}
+	
+	public var back: V? {
+		return list.back
 	}
 	
 	/**
 	* empty
-	* A boolean if the Stack is empty.
+	* A boolean if the Queue is empty.
 	*/
 	public var empty: Bool {
 		return list.empty
@@ -39,18 +43,26 @@ public class Stack<V>: Printable {
 	
 	public var description: String {
 		var output: String = list.description
-		return "Stack" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
+		return "Deque" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
 	}
 	
 	public init() {
 		list = List<V>()
 	}
 	
-	public func push(data: V?) {
+	public func pushFront(data: V?) {
 		list.insertAtFront(data)
 	}
 	
-	public func pop() -> V? {
+	public func popFront() -> V? {
 		return list.removeAtFront()
+	}
+	
+	public func pushBack(data: V?) {
+		list.insertAtBack(data)
+	}
+	
+	public func popBack() -> V? {
+		return list.removeAtBack()
 	}
 }

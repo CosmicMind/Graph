@@ -15,23 +15,23 @@
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
-* Stack
+* Queue
 */
 
-public class Stack<V>: Printable {
+public class Queue<V>: Printable {
 	private var list: List<V>
 	
 	public var count: Int {
 		return list.count
 	}
 	
-	public var top: V? {
+	public var peek: V? {
 		return list.front
 	}
 	
 	/**
 	* empty
-	* A boolean if the Stack is empty.
+	* A boolean if the Queue is empty.
 	*/
 	public var empty: Bool {
 		return list.empty
@@ -39,18 +39,18 @@ public class Stack<V>: Printable {
 	
 	public var description: String {
 		var output: String = list.description
-		return "Stack" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
+		return "Queue" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
 	}
 	
 	public init() {
 		list = List<V>()
 	}
 	
-	public func push(data: V?) {
-		list.insertAtFront(data)
+	public func enqueue(data: V?) {
+		list.insertAtBack(data)
 	}
 	
-	public func pop() -> V? {
+	public func dequeue() -> V? {
 		return list.removeAtFront()
 	}
 }

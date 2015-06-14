@@ -49,6 +49,14 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		return internalSelect(root, order: 1).data
 	}
 	
+	/**
+	* empty
+	* A boolean if the RedBlackTree is empty.
+	*/
+	internal var empty: Bool {
+		return 0 == count
+	}
+	
 	internal init() {
 		unique = false
 		sentinel = RBNode()

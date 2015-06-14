@@ -61,7 +61,7 @@ public class MultiTree<K: Comparable, V>: Printable {
 	* A boolean if the MultiTree is empty.
 	*/
 	public var empty: Bool {
-		return 0 == count
+		return tree.empty
 	}
 	
 	/**
