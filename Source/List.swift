@@ -67,6 +67,7 @@ public class List<V>: Printable {
 		if nil == current || head === current {
 			return nil
 		}
+		
 		var data: V? = current!.previous.data
 		current = current!.previous
 		return data
@@ -89,6 +90,27 @@ public class List<V>: Printable {
 		++count
 	}
 	
+	public func removeAtFront() -> V? {
+		if nil == head {
+			return nil
+		}
+		
+		var data: V? = head!.data
+		if 1 == count {
+			head = nil
+			tail = nil
+			current = nil
+		} else {
+			if head === current {
+				current = head!.next
+			}
+			head!.next!.previous = nil
+			head = head!.next
+		}
+		--count
+		return data
+	}
+	
 	public func insertAtBack(data: V?) {
 		let z: LNode = LNode(data: data)
 		if nil == tail {
@@ -100,6 +122,27 @@ public class List<V>: Printable {
 			tail = z
 		}
 		++count
+	}
+	
+	public func removeAtBack() -> V? {
+		if nil == tail {
+			return nil
+		}
+		
+		var data: V? = tail!.data
+		if 1 == count {
+			head = nil
+			tail = nil
+			current = nil
+		} else {
+			if tail === current {
+				current = tail!.previous
+			}
+			tail!.previous!.next = nil
+			tail = tail!.previous
+		}
+		--count
+		return data
 	}
 	
 	public func resetToFront() {

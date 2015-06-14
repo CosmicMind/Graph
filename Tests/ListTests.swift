@@ -54,14 +54,29 @@ class ListTests: XCTestCase {
 		
 		l.resetToFront()
 		XCTAssert(l.front == l.cursor, "Current incorrect, got \(l.cursor)")
+		XCTAssert(2 == l.next!, "Next incorrect, got \(l.cursor)")
+		XCTAssert(1 == l.next!, "Next incorrect, got \(l.cursor)")
+		XCTAssert(5 == l.next!, "Next incorrect, got \(l.cursor)")
+		XCTAssert(6 == l.next!, "Next incorrect, got \(l.cursor)")
+		XCTAssert(7 == l.next!, "Next incorrect, got \(l.cursor)")
 		
-		println(l)
+		l.resetToBack()
+		XCTAssert(l.back == l.cursor, "Current incorrect, got \(l.cursor)")
+		XCTAssert(6 == l.previous!, "Previous incorrect, got \(l.cursor)")
+		XCTAssert(5 == l.previous!, "Previous incorrect, got \(l.cursor)")
+		XCTAssert(1 == l.previous!, "Previous incorrect, got \(l.cursor)")
+		XCTAssert(2 == l.previous!, "Previous incorrect, got \(l.cursor)")
+		XCTAssert(3 == l.previous!, "Previous incorrect, got \(l.cursor)")
 		
-//		XCTAssert(2 == l.next!, "Next incorrect, got \(l.next!)")
-//		XCTAssert(1 == l.next?, "Next incorrect, got \(l.next)")
-//		XCTAssert(5 == l.next?, "Next incorrect, got \(l.next)")
-//		XCTAssert(6 == l.next?, "Next incorrect, got \(l.next)")
-//		XCTAssert(7 == l.next?, "Next incorrect, got \(l.next)")
+		l.resetToFront()
+		XCTAssert(3 == l.removeAtFront() && 5 == l.count && 2 == l.cursor, "RemoveAtFront incorrect")
+		XCTAssert(2 == l.removeAtFront() && 4 == l.count && 1 == l.cursor, "RemoveAtFront incorrect")
+		XCTAssert(1 == l.removeAtFront() && 3 == l.count && 5 == l.cursor, "RemoveAtFront incorrect")
+		
+		l.resetToBack()
+		XCTAssert(7 == l.removeAtBack() && 2 == l.count && 6 == l.cursor, "RemoveAtBack incorrect")
+		XCTAssert(6 == l.removeAtBack() && 1 == l.count && 5 == l.cursor, "RemoveAtBack incorrect")
+		XCTAssert(5 == l.removeAtBack() && 0 == l.count && nil == l.cursor, "RemoveAtBack incorrect")
 	}
 	
 	func testPerformanceExample() {
