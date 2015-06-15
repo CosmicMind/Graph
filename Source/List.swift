@@ -96,9 +96,6 @@ public class List<V>: Printable {
 	* to that node.
 	*/
 	public var next: V? {
-		if nil == current {
-			return nil
-		}
 		current = current?.next
 		return current?.data
 	}
@@ -110,9 +107,6 @@ public class List<V>: Printable {
 	* to that node.
 	*/
 	public var previous: V? {
-		if nil == current {
-			return nil
-		}
 		current = current?.previous
 		return current?.data
 	}
@@ -180,7 +174,11 @@ public class List<V>: Printable {
 			head!.previous = z
 		}
 		head = z
-		++count
+		if 1 == ++count {
+			current = head
+		} else if head === current {
+			current = head!.next
+		}
 	}
 	
 	/**
@@ -218,7 +216,11 @@ public class List<V>: Printable {
 			tail!.next = z
 		}
 		tail = z
-		++count
+		if 1 == ++count {
+			current = tail
+		} else if tail === current {
+			current = tail!.previous
+		}
 	}
 	
 	/**
@@ -266,7 +268,9 @@ public class List<V>: Printable {
 		if nil == current || head === current {
 			insertAtFront(data)
 		} else {
-			current!.previous = LNode(next: current, previous: current!.previous,  data: data)
+			let z: LNode = LNode(next: current, previous: current!.previous,  data: data)
+			current!.previous?.next = z
+			current!.previous = z
 			++count
 		}
 	}
@@ -281,7 +285,9 @@ public class List<V>: Printable {
 		if nil == current || tail === current {
 			insertAtBack(data)
 		} else {
-			current!.next = LNode(next: current!.next, previous: current,  data: data)
+			let z: LNode = LNode(next: current!.next, previous: current,  data: data)
+			current!.next?.previous = z
+			current!.next = z
 			++count
 		}
 	}

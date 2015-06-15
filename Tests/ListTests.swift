@@ -88,8 +88,30 @@ class ListTests: XCTestCase {
 		XCTAssert(6 == l.removeAtBack() && 1 == l.count, "RemoveAtBack incorrect")
 		XCTAssert(5 == l.removeAtBack() && 0 == l.count, "RemoveAtBack incorrect")
 		
+		l.clear()
 		l.cursorToFront()
+		XCTAssert(nil == l.cursor && 0 == l.count, "Cursor incorrect, got \(l.cursor)")
 		l.insertBeforeCursor(1)
+		XCTAssert(1 == l.cursor && 1 == l.count, "Cursor incorrect, got \(l.cursor)")
+		
+		l.clear()
+		l.cursorToBack()
+		XCTAssert(nil == l.cursor && 0 == l.count, "Cursor incorrect, got \(l.cursor)")
+		l.insertAfterCursor(1)
+		XCTAssert(1 == l.cursor && 1 == l.count, "Cursor incorrect, got \(l.cursor)")
+		
+		l.clear()
+		l.insertAtBack(1)
+		XCTAssert(1 == l.cursor && 1 == l.count, "Cursor incorrect, got \(l.cursor)")
+		l.insertAfterCursor(2)
+		l.next
+		XCTAssert(2 == l.cursor && 2 == l.count, "Cursor incorrect, got \(l.cursor)")
+		l.insertBeforeCursor(3)
+		l.previous
+		XCTAssert(3 == l.cursor && 3 == l.count, "Cursor incorrect, got \(l.cursor)")
+		l.insertAtBack(4)
+		l.previous
+		XCTAssert(1 == l.cursor && 4 == l.count, "Cursor incorrect, got \(l.cursor)")
 		
 		
 		println("Front", l, l.count)
