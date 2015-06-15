@@ -22,11 +22,36 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	internal typealias RBTree = RedBlackTree<K, V>
 	internal typealias RBNode = RedBlackNode<K, V>
 	
+	/**
+	* sentinel
+	* A node used to mark the end of a path in the tree.
+	*/
 	internal private(set) var sentinel: RBNode
+	
+	/**
+	* root
+	* The root of the tree data structure.
+	*/
 	internal private(set) var root: RBNode
+	
+	/**
+	* count
+	* Total number of nodes in the tree.
+	*/
 	internal private(set) var count: Int
+	
+	/**
+	* unique
+	* A boolean used to indicate whether to allow the
+	* tree to store non-unique key values or only unique
+	* key values.
+	*/
 	internal private(set) var unique: Bool
 	
+	/**
+	* description
+	* Conforms to the Printable Protocol.
+	*/
 	internal var description: String {
 		var output: String = "RedBlackTree("
 		for (var i: Int = 1; i <= count; ++i) {
@@ -38,6 +63,12 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		return output + ")"
 	}
 	
+	/**
+	* last
+	* Get the last data item in the tree, this is
+	* the last item based on the order of keys where 
+	* k1 <= k2 <= K3 ... <= Kn
+	*/
 	internal var last: V? {
 		if count == 0 {
 			return sentinel.data
@@ -45,18 +76,29 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		return internalSelect(root, order: count).data
 	}
 	
+	/**
+	* first
+	* Get the first data item in the tree, this is
+	* the first item based on the order of keys where
+	* k1 <= k2 <= K3 ... <= Kn
+	*/
 	internal var first: V? {
 		return internalSelect(root, order: 1).data
 	}
 	
 	/**
 	* empty
-	* A boolean if the RedBlackTree is empty.
+	* A boolean of whether the RedBlackTree is empty.
 	*/
 	internal var empty: Bool {
 		return 0 == count
 	}
 	
+	/**
+	* init
+	* Constructor where the tree is guaranteed to store
+	* non-unique keys.
+	*/
 	internal init() {
 		unique = false
 		sentinel = RBNode()
@@ -64,6 +106,12 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		count = 0
 	}
 	
+	/**
+	* init
+	* Constructor where the tree is optionally allowed
+	* to store uniqe or non-unique keys.
+	* @param		unique: Bool
+	*/
 	internal init(unique: Bool) {
 		self.unique = unique
 		sentinel = RBNode()
@@ -71,12 +119,25 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		count = 0
 	}
 	
+	/**
+	* clear
+	* Remove all nodes from the tree.
+	*/
 	internal func clear() {
 		while sentinel !== root {
 			internalRemove(root.key)
 		}
 	}
 	
+	/**
+	* insert
+	* Insert a new data item in the tree.
+	* @param		key: K
+	* @Param		data: V?
+	* @return		A boolean indicating the success of the insert. 
+	*				Would return false if the tree is uniquely keyed.
+	*				a the key already exists in the tree.
+	*/
 	internal func insert(key: K, data: V?) -> Bool {
 		return sentinel !== internalInsert(key, data: data)
 	}

@@ -58,7 +58,7 @@ public class Deque<T>: Printable {
 	
 	/**
 	* empty
-	* A boolean if the Deque is empty.
+	* A boolean of whether the Deque is empty.
 	*/
 	public var empty: Bool {
 		return list.empty

@@ -49,7 +49,7 @@ public class Stack<T>: Printable {
 	
 	/**
 	* empty
-	* A boolean if the Stack is empty.
+	* A boolean of whether the Stack is empty.
 	*/
 	public var empty: Bool {
 		return list.empty

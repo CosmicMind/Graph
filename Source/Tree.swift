@@ -58,7 +58,7 @@ public class Tree<K: Comparable, V>: Printable {
 	
 	/**
 	* empty
-	* A boolean if the Tree is empty. 
+	* A boolean of whether the Tree is empty. 
 	*/
 	public var empty: Bool {
 		return tree.empty

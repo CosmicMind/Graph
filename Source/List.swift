@@ -113,7 +113,7 @@ public class List<T>: Printable {
 	
 	/**
 	* empty
-	* A boolean if the List is empty.
+	* A boolean of whether the List is empty.
 	*/
 	public var empty: Bool {
 		return 0 == count

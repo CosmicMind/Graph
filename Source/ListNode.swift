@@ -16,19 +16,47 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
 * ListNode
+* 
+* Used internally by the List data structure to store pointers to nodes and satellite
+* data.
 */
 
 internal class ListNode<T>: Printable {
 	private typealias LNode = ListNode<T>
 	
+	/**
+	* next
+	* Points to the successor item in the List.
+	*/
 	internal var next: LNode?
+	
+	/**
+	* previous
+	* points to the predacessor item in the List.
+	*/
 	internal var previous: LNode?
+	
+	/**
+	* data
+	* Satellite data.
+	*/
 	internal var data: T?
 	
+	/**
+	* description
+	* Conforms to the Printtable Protocol.
+	*/
 	internal var description: String {
 		return "\(data)"
 	}
 	
+	/**
+	* init
+	* Constructor.
+	* @param		next: ListNode<T>?
+	* @param		previous: ListNode<T>?
+	* @param		data: T?
+	*/
 	internal init(next: LNode?, previous: LNode?, data: T?) {
 		self.next = next
 		self.previous = previous

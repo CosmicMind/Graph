@@ -48,7 +48,7 @@ public class Queue<T>: Printable {
 	
 	/**
 	* empty
-	* A boolean if the Queue is empty.
+	* A boolean of whether the Queue is empty.
 	*/
 	public var empty: Bool {
 		return list.empty
