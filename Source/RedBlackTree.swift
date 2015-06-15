@@ -16,6 +16,11 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
 * RedBlackTree
+*
+* The following is a RedBlackTree implementation with an Order Statistic. 
+* The power of the Order Statistic allows the RedBlackTree to reliably operate
+* in log(n) time, while maintaining order of the nodes as if in a sorted Array.
+* Also, it is possible to specifiy a unique keyed tree or non-unique keyed tree.
 */
 
 internal class RedBlackTree<K: Comparable, V>: Printable {
@@ -142,6 +147,14 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		return sentinel !== internalInsert(key, data: data)
 	}
 	
+	/**
+	* remove
+	* Removes a node from the tree based on the key value given.
+	* If the tree allows non-unique keys, then all keys matching 
+	* the given key value will be removed.
+	* @param		key: K
+	* @return		A boolean value of the result.
+	*/
 	internal func remove(key: K) -> Bool {
 		var removed: Bool = false
 		while sentinel !== internalRemove(key) {
@@ -150,14 +163,37 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		return removed
 	}
 	
+	/**
+	* find
+	* Finds the first instance in a non-unique tree and only instance
+	* in unique tree of a given keyed node.
+	* @param		key: K
+	* @return		data V?
+	*/
 	internal func find(key: K) -> V? {
 		return internalFindByKey(key).data
 	}
 	
-	internal func select(var x: RBNode, order: Int) -> RBNode {
+	/**
+	* select
+	* Searches for a node based on the order statistic value.
+	* @param		x: RedBlackNode<K, V>
+	* @param		order: In
+	* @param		RedBlackNode<K, V>
+	*/
+	internal func select(x: RBNode, order: Int) -> RBNode {
 		return internalSelect(x, order: order)
 	}
 	
+	/**
+	* operator [0...count - 1]
+	* Allos array like access of the index.
+	* Items are kept in order, so when iterating
+	* through the items, they are returned in their
+	* ordered form.
+	* @param		index: Int
+	* @return		data V?
+	*/
 	internal subscript(index: Int) -> V? {
 		get {
 			if index < 0 || index >= count {
@@ -167,6 +203,14 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		}
 	}
 	
+	/**
+	* operator ["key 1"..."key 2"]
+	* Property key mapping. If the key type is a
+	* String, this feature allows access like a
+	* Dictionary.
+	* @param		name: String
+	* @return		data V?
+	*/
 	internal subscript(name: String) -> V? {
 		get {
 			return internalFindByKey(name as! K).data
@@ -181,6 +225,15 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		}
 	}
 	
+	/**
+	* internalInsert
+	* Insert a new node with the given key anda data. 
+	* @param		key: K
+	* @param		data: V?
+	* @return		RedBlackNode<K, V>. If the tree is uniquely keyed
+	*				and key already exists, the sentinel value is returned
+	*				otherwise the node inserted is returned.
+	*/
 	private func internalInsert(key: K, data: V?) -> RBNode {
 		var y: RBNode = sentinel
 		var x: RBNode = root
@@ -222,6 +275,11 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		return z
 	}
 	
+	/**
+	* insertCleanUp
+	* The clean up procedure needed to maintain the RedBlackTree balance.
+	* @param		RedBlackNode<K, V>
+	*/
 	private func insertCleanUp(var z: RBNode) {
 		while true == z.parent.red {
 			if z.parent === z.parent.parent.left {
@@ -268,6 +326,13 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		root.red = false
 	}
 	
+	/**
+	* internalRemove
+	* Removes a node with the given key value and returns that
+	* node. If the value does not exist, the sentinel is returned.
+	* @param		key: K
+	* @return		RedBlackNode<K, V>
+	*/
 	private func internalRemove(key: K) -> RBNode {
 		var z: RBNode = internalFindByKey(key)
 		if z === sentinel {
@@ -318,13 +383,19 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 			y.order = y.left.order + y.right.order + 1
 		}
 		if false == red {
-			removeCleanup(x)
+			removeCleanUp(x)
 		}
 		--count
 		return z
 	}
 	
-	private func removeCleanup(var x: RBNode) {
+	/**
+	* removeCleanUp
+	* After a successful removal of a node, the RedBlackTree
+	* is rebalanced by this method.
+	* @param		RedBlackNode<K, V>
+	*/
+	private func removeCleanUp(var x: RBNode) {
 		while x !== root && false == x.red {
 			if x === x.parent.left {
 				var y: RBNode = x.parent.right
@@ -379,6 +450,13 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		x.red = false
 	}
 	
+	/**
+	* minimum
+	* Finds the minimum keyed node.
+	* @param		var x: RedBlackNode<K, V>
+	* @return		RedBlackNode<K, V>. The sentinel is
+	*				returned if the tree is empty.
+	*/
 	private func minimum(var x: RBNode) -> RBNode {
 		var y: RBNode = sentinel
 		while x !== sentinel {
@@ -388,6 +466,12 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		return y
 	}
 	
+	/**
+	* transplant
+	* Swaps two subtrees in the tree.
+	* @param		u: RedBlackNode<K, V>
+	* @param		v: RedBlackNode<K, V>
+	*/
 	private func transplant(u: RBNode, v: RBNode) {
 		if u.parent === sentinel {
 			root = v
@@ -399,6 +483,12 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		v.parent = u.parent
 	}
 	
+	/**
+	* leftRotate
+	* Rotates the nodes to satisfy the RedBlackTree 
+	* balance property.
+	* @param		x: RedBlackNode<K, V>
+	*/
 	private func leftRotate(x: RBNode) {
 		var y: RBNode = x.right
 		
@@ -423,6 +513,12 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		x.order = x.left.order + x.right.order + 1
 	}
 	
+	/**
+	* rightRotate
+	* Rotates the nodes to satisfy the RedBlackTree
+	* balance property.
+	* @param		y: RedBlackNode<K, V>
+	*/
 	private func rightRotate(y: RBNode) {
 		var x: RBNode = y.left
 		
@@ -447,6 +543,13 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		y.order = y.left.order + y.right.order + 1
 	}
 	
+	/**
+	* internalFindByKey
+	* Finds a node with a given key value.
+	* @param		key: K
+	* @return		RedBlackNode<K, V>. The sentinel is returned
+	*				a node with the given key is not found.
+	*/
 	private func internalFindByKey(key: K) -> RBNode {
 		var z: RBNode = root
 		while z !== sentinel {
@@ -458,6 +561,13 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		return sentinel
 	}
 	
+	/**
+	* internalSelect
+	* Internally searches for a node by the order statistic value. 
+	* @param		x: RedBlackNode<K, V>
+	* @param		order: Int
+	* @return		RedBlackNode<K, V>
+	*/
 	private func internalSelect(x: RBNode, order: Int) -> RBNode {
 		var r: Int = x.left.order + 1
 		if order == r {
