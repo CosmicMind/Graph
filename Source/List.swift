@@ -22,12 +22,6 @@ public class List<V>: Printable {
 	private typealias LNode = ListNode<V>
 	
 	/**
-	* current
-	* Current cursor position when iterating.
-	*/
-	private var current: LNode?
-	
-	/**
 	* head
 	* First node in the list.
 	*/
@@ -38,6 +32,12 @@ public class List<V>: Printable {
 	* Last node in list.
 	*/
 	private var tail: LNode?
+	
+	/**
+	* current
+	* Current cursor position when iterating.
+	*/
+	private var current: LNode?
 	
 	/**
 	* count
@@ -143,9 +143,7 @@ public class List<V>: Printable {
 	*/
 	public init() {
 		count = 0
-		head = nil
-		tail = nil
-		current = head
+		reset()
 	}
 	
 	/**
@@ -298,7 +296,7 @@ public class List<V>: Printable {
 	* @return		data V?
 	*/
 	public func removeAtCursor() -> V? {
-		if 1 == count {
+		if 1 >= count {
 			return removeAtFront()
 		} else {
 			var data: V? = current!.data
@@ -306,6 +304,10 @@ public class List<V>: Printable {
 			current!.next?.previous = current!.previous
 			if tail === current {
 				current = current!.previous
+				tail = current
+			} else if head === current {
+				current = current!.next
+				head = current
 			} else {
 				current = current!.next
 			}

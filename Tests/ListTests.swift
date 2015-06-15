@@ -122,7 +122,7 @@ class ListTests: XCTestCase {
 		l.removeAtCursor()
 		XCTAssert(1 == l.previous && 2 == l.count, "Test failed, got \(l.cursor)")
 		l.removeAtCursor()
-		XCTAssert(4 == l.cursor && 1 == l.count, "Test failed, got \(l.cursor)")
+		XCTAssert(l.front == l.cursor && l.back == l.cursor && 1 == l.count, "Test failed, got \(l.cursor)")
 		l.removeAtCursor()
 		XCTAssert(nil == l.cursor && 0 == l.count, "Test failed, got \(l.cursor)")
 	}
