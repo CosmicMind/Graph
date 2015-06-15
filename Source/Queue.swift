@@ -22,12 +22,12 @@
 * entered. The following Queue implementation is backed by a List data structure.
 */
 
-public class Queue<V>: Printable {
+public class Queue<T>: Printable {
 	/**
 	* list
 	* Underlying data structure.
 	*/
-	private var list: List<V>
+	private var list: List<T>
 	
 	/**
 	* count
@@ -42,7 +42,7 @@ public class Queue<V>: Printable {
 	* Get the value at the front of 
 	* the Queue, and do not remove it.
 	*/
-	public var peek: V? {
+	public var peek: T? {
 		return list.front
 	}
 	
@@ -68,14 +68,14 @@ public class Queue<V>: Printable {
 	* Constructor
 	*/
 	public init() {
-		list = List<V>()
+		list = List<T>()
 	}
 	
 	/**
 	* enqueue
 	* Insert data at the back of the Queue.
 	*/
-	public func enqueue(data: V?) {
+	public func enqueue(data: T?) {
 		list.insertAtBack(data)
 	}
 	
@@ -84,7 +84,7 @@ public class Queue<V>: Printable {
 	* Get and remove data at the front
 	* of the Queue.
 	*/
-	public func dequeue() -> V? {
+	public func dequeue() -> T? {
 		return list.removeAtFront()
 	}
 	

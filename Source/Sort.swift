@@ -16,6 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
 * Sort
+* Sort algorithms are addaed to Sort struct.
 */
 
 public struct Sort {}

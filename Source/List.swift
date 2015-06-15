@@ -18,8 +18,8 @@
 * List
 */
 
-public class List<V>: Printable {
-	private typealias LNode = ListNode<V>
+public class List<T>: Printable {
+	private typealias LNode = ListNode<T>
 	
 	/**
 	* head
@@ -68,7 +68,7 @@ public class List<V>: Printable {
 	* front
 	* Retrieves the data at first node of the List.
 	*/
-	public var front: V? {
+	public var front: T? {
 		return head?.data
 	}
 	
@@ -76,7 +76,7 @@ public class List<V>: Printable {
 	* back
 	* Retrieves the data at the back node of teh List.
 	*/
-	public var back: V? {
+	public var back: T? {
 		return tail?.data
 	}
 	
@@ -85,7 +85,7 @@ public class List<V>: Printable {
 	* Retrieves the data at the current iterator position
 	* in the List.
 	*/
-	public var cursor: V? {
+	public var cursor: T? {
 		return current?.data
 	}
 	
@@ -95,7 +95,7 @@ public class List<V>: Printable {
 	* current cursor poistion. Also moves the cursor
 	* to that node.
 	*/
-	public var next: V? {
+	public var next: T? {
 		current = current?.next
 		return current?.data
 	}
@@ -106,7 +106,7 @@ public class List<V>: Printable {
 	* current cursor poistion. Also moves the cursor
 	* to that node.
 	*/
-	public var previous: V? {
+	public var previous: T? {
 		current = current?.previous
 		return current?.data
 	}
@@ -160,9 +160,9 @@ public class List<V>: Printable {
 	* insertAtFront
 	* Insert a new node with data at the front
 	* of the List.
-	* @param		data: V?
+	* @param		data: T?
 	*/
-	public func insertAtFront(data: V?) {
+	public func insertAtFront(data: T?) {
 		var z: LNode
 		if 0 == count {
 			z = LNode(next: nil, previous: nil,  data: data)
@@ -183,13 +183,13 @@ public class List<V>: Printable {
 	* removeAtFront
 	* Remove the node at the front of the List
 	* and return the data at the poistion.
-	* @return		data V?
+	* @return		data T?
 	*/
-	public func removeAtFront() -> V? {
+	public func removeAtFront() -> T? {
 		if 0 == count {
 			return nil
 		}
-		var data: V? = head!.data
+		var data: T? = head!.data
 		if 0 == --count {
 			reset()
 		} else {
@@ -202,9 +202,9 @@ public class List<V>: Printable {
 	* insertAtBack
 	* Insert a new node with data at the back
 	* of the List.
-	* @param		data: V?
+	* @param		data: T?
 	*/
-	public func insertAtBack(data: V?) {
+	public func insertAtBack(data: T?) {
 		var z: LNode
 		if 0 == count {
 			z = LNode(next: nil, previous: nil,  data: data)
@@ -225,13 +225,13 @@ public class List<V>: Printable {
 	* removeAtBack
 	* Remove the node at the back of the List
 	* and return the data at the poistion.
-	* @return		data V?
+	* @return		data T?
 	*/
-	public func removeAtBack() -> V? {
+	public func removeAtBack() -> T? {
 		if 0 == count {
 			return nil
 		}
-		var data: V? = tail!.data
+		var data: T? = tail!.data
 		if 0 == --count {
 			reset()
 		} else {
@@ -260,9 +260,9 @@ public class List<V>: Printable {
 	* insertBeforeCursor
 	* Insert a new node with data before the current
 	* cursor position.
-	* @param		data: V?
+	* @param		data: T?
 	*/
-	public func insertBeforeCursor(data: V?) {
+	public func insertBeforeCursor(data: T?) {
 		if nil == current || head === current {
 			insertAtFront(data)
 		} else {
@@ -277,9 +277,9 @@ public class List<V>: Printable {
 	* insertAfterCursor
 	* Insert a new node with data after the current
 	* cursor position.
-	* @param		data: V?
+	* @param		data: T?
 	*/
-	public func insertAfterCursor(data: V?) {
+	public func insertAfterCursor(data: T?) {
 		if nil == current || tail === current {
 			insertAtBack(data)
 		} else {
@@ -293,13 +293,13 @@ public class List<V>: Printable {
 	/**
 	* removeAtCursor
 	* Removes a node at the current cursor position.
-	* @return		data V?
+	* @return		data T?
 	*/
-	public func removeAtCursor() -> V? {
+	public func removeAtCursor() -> T? {
 		if 1 >= count {
 			return removeAtFront()
 		} else {
-			var data: V? = current!.data
+			var data: T? = current!.data
 			current!.previous?.next = current!.next
 			current!.next?.previous = current!.previous
 			if tail === current {

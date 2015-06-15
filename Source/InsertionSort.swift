@@ -15,12 +15,17 @@
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
-* InsertionSort
+* Sort.insertion
 *
 * Insertion Sort algorithm.
 */
 
 extension Sort {
+	/**
+	* An implementation of the popular Insertion Sort algorithm. 
+	* An inplace sort that sorts small sized Arrays well in O(n^2) time.
+	* @param		inout items: Array<T>
+	*/
 	static public func insertion<T: Comparable>(inout items: Array<T>) {
 		var i: Int
 		var j: Int

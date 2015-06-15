@@ -22,12 +22,12 @@
 * in. The following Stack implementation is backed by a List data structure.
 */
 
-public class Stack<V>: Printable {
+public class Stack<T>: Printable {
 	/**
 	* list
 	* Underlying data structure.
 	*/
-	private var list: List<V>
+	private var list: List<T>
 	
 	/**
 	* count
@@ -43,7 +43,7 @@ public class Stack<V>: Printable {
 	* of the Stack and do not remove 
 	* it.
 	*/
-	public var top: V? {
+	public var top: T? {
 		return list.front
 	}
 	
@@ -69,14 +69,14 @@ public class Stack<V>: Printable {
 	* Constructor
 	*/
 	public init() {
-		list = List<V>()
+		list = List<T>()
 	}
 	
 	/**
 	* push
 	* Insert data at the top of the Stack.
 	*/
-	public func push(data: V?) {
+	public func push(data: T?) {
 		list.insertAtFront(data)
 	}
 	
@@ -86,7 +86,7 @@ public class Stack<V>: Printable {
 	* the Stack and remove it from the
 	* Stack.
 	*/
-	public func pop() -> V? {
+	public func pop() -> T? {
 		return list.removeAtFront()
 	}
 	

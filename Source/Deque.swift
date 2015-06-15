@@ -16,20 +16,43 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
 * Deque
+*
+* A Deque is a combination between a Stack and Queue. It allows for
+* access of the latest and oldest data, as well as, allows insertion
+* of data to be placed at the back or front of the structure. The
+* following Deque implementation is backed by a List data structure.
 */
 
-public class Deque<V>: Printable {
-	private var list: List<V>
+public class Deque<T>: Printable {
+	/**
+	* list
+	* Underlying data structure.
+	*/
+	private var list: List<T>
 	
+	/**
+	* count
+	* Total number of items in the Deque.
+	*/
 	public var count: Int {
 		return list.count
 	}
 	
-	public var front: V? {
+	/**
+	* front
+	* Get the item at the front of the Deque
+	* and do not remove it.
+	*/
+	public var front: T? {
 		return list.front
 	}
 	
-	public var back: V? {
+	/**
+	* back
+	* Get the item at the back of the Deque
+	* and do not remove it.
+	*/
+	public var back: T? {
 		return list.back
 	}
 	
@@ -41,31 +64,60 @@ public class Deque<V>: Printable {
 		return list.empty
 	}
 	
+	/**
+	* description
+	* Conforms to the Printable Protocol.
+	*/
 	public var description: String {
 		var output: String = list.description
 		return "Deque" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
 	}
 	
+	/**
+	* init
+	* Constructor.
+	*/
 	public init() {
-		list = List<V>()
+		list = List<T>()
 	}
 	
-	public func pushFront(data: V?) {
+	/**
+	* pushFront
+	* Insert a new item at the front of the Deque.
+	*/
+	public func pushFront(data: T?) {
 		list.insertAtFront(data)
 	}
 	
-	public func popFront() -> V? {
+	/**
+	* popFront
+	* Get the item at the front of the Deque
+	* and remove it.
+	*/
+	public func popFront() -> T? {
 		return list.removeAtFront()
 	}
 	
-	public func pushBack(data: V?) {
+	/**
+	* pushBack
+	* Insert a new item at the back of the Deque.
+	*/
+	public func pushBack(data: T?) {
 		list.insertAtBack(data)
 	}
 	
-	public func popBack() -> V? {
+	/**
+	* Get the item at the back of the Deque
+	* and remove it.
+	*/
+	public func popBack() -> T? {
 		return list.removeAtBack()
 	}
 	
+	/**
+	* clear
+	* Remove all items from the Deque.
+	*/
 	public func clear() {
 		list.clear()
 	}
