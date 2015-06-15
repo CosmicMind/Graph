@@ -75,10 +75,7 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
 	internal var last: V? {
-		if count == 0 {
-			return sentinel.data
-		}
-		return internalSelect(root, order: count).data
+		return empty ? sentinel.data : internalSelect(root, order: count).data
 	}
 	
 	/**
@@ -195,12 +192,10 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	* @return		data V?
 	*/
 	internal subscript(index: Int) -> V? {
-		get {
-			if index < 0 || index >= count {
-				assert(false, "[AlgoKit Error: Index out of bounds.]")
-			}
-			return internalSelect(root, order: index + 1).data
+		if index < 0 || index >= count {
+			assert(false, "[AlgoKit Error: Index out of bounds.]")
 		}
+		return internalSelect(root, order: index + 1).data
 	}
 	
 	/**
