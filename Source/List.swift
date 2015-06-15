@@ -303,10 +303,10 @@ public class List<V>: Printable {
 			current!.previous?.next = current!.next
 			current!.next?.previous = current!.previous
 			if tail === current {
-				current = current!.previous
+				current = tail!.previous
 				tail = current
 			} else if head === current {
-				current = current!.next
+				current = head!.next
 				head = current
 			} else {
 				current = current!.next
