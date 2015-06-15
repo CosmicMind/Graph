@@ -293,6 +293,28 @@ public class List<V>: Printable {
 	}
 	
 	/**
+	* removeAtCursor
+	* Removes a node at the current cursor position.
+	* @return		data V?
+	*/
+	public func removeAtCursor() -> V? {
+		if 1 == count {
+			return removeAtFront()
+		} else {
+			var data: V? = current!.data
+			current!.previous?.next = current!.next
+			current!.next?.previous = current!.previous
+			if tail === current {
+				current = current!.previous
+			} else {
+				current = current!.next
+			}
+			--count
+			return data
+		}
+	}
+	
+	/**
 	* reset
 	* Reinitializes pointers to sentinel value.
 	*/
