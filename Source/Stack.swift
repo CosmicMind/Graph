@@ -16,15 +16,33 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
 * Stack
+*
+* A Stack is a first-in, last-out (FILO) data structure. A Stack is an 
+* excellent data structure for working with the most current data coming
+* in. The following Stack implementation is backed by a List data structure.
 */
 
 public class Stack<V>: Printable {
+	/**
+	* list
+	* Underlying data structure.
+	*/
 	private var list: List<V>
 	
+	/**
+	* count
+	* Total number of items in the Stack.
+	*/
 	public var count: Int {
 		return list.count
 	}
 	
+	/**
+	* top
+	* Get the latest item at the top
+	* of the Stack and do not remove 
+	* it.
+	*/
 	public var top: V? {
 		return list.front
 	}
@@ -37,23 +55,45 @@ public class Stack<V>: Printable {
 		return list.empty
 	}
 	
+	/**
+	* description
+	* Conforms to the Printable Protocol.
+	*/
 	public var description: String {
 		var output: String = list.description
 		return "Stack" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
 	}
 	
+	/**
+	* init
+	* Constructor
+	*/
 	public init() {
 		list = List<V>()
 	}
 	
+	/**
+	* push
+	* Insert data at the top of the Stack.
+	*/
 	public func push(data: V?) {
 		list.insertAtFront(data)
 	}
 	
+	/**
+	* pop
+	* Get the latest data at the top of 
+	* the Stack and remove it from the
+	* Stack.
+	*/
 	public func pop() -> V? {
 		return list.removeAtFront()
 	}
 	
+	/**
+	* clear
+	* Remove all items from the Stack.
+	*/
 	public func clear() {
 		list.clear()
 	}

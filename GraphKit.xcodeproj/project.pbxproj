@@ -304,13 +304,6 @@
 			name = Graph;
 			sourceTree = "<group>";
 		};
-		969F6D9A1B2DC35D00B573F8 /* Node */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Node;
-			sourceTree = "<group>";
-		};
 		969F6DA01B2DCAF300B573F8 /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,7 +323,6 @@
 				961242D71B2B36A400CD47E0 /* Sort */,
 				961242D61B2B369C00CD47E0 /* Tree */,
 				961243171B2B488700CD47E0 /* Graph */,
-				969F6D9A1B2DC35D00B573F8 /* Node */,
 				961243161B2B487200CD47E0 /* Entity */,
 				961243151B2B485800CD47E0 /* Bond */,
 				961243141B2B484700CD47E0 /* Action */,

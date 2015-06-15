@@ -132,9 +132,7 @@ public class MultiTree<K: Comparable, V>: Printable {
 	* @return		data V?
 	*/
 	public subscript(index: Int) -> V? {
-		get {
-			return tree[index]
-		}
+		return tree[index]
 	}
 	
 	/**
