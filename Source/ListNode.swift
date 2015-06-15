@@ -21,17 +21,15 @@
 internal class ListNode<V>: Printable {
 	private typealias LNode = ListNode<V>
 	
-	internal var next: LNode!
-	internal var previous: LNode!
+	internal var next: LNode?
+	internal var previous: LNode?
 	internal var data: V?
 	
 	internal var description: String {
 		return "\(data)"
 	}
 	
-	internal init() {}
-	
-	internal init(next: LNode, previous: LNode, data: V?) {
+	internal init(next: LNode?, previous: LNode?, data: V?) {
 		self.next = next
 		self.previous = previous
 		self.data = data

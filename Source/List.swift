@@ -22,28 +22,22 @@ public class List<V>: Printable {
 	private typealias LNode = ListNode<V>
 	
 	/**
-	* sentinel
-	* Sentinel node.
-	*/
-	private var sentinel: LNode
-	
-	/**
 	* current
 	* Current cursor position when iterating.
 	*/
-	private var current: LNode
+	private var current: LNode?
 	
 	/**
 	* head
 	* First node in the list.
 	*/
-	private var head: LNode
+	private var head: LNode?
 	
 	/**
 	* tail
 	* Last node in list.
 	*/
-	private var tail: LNode
+	private var tail: LNode?
 	
 	/**
 	* count
@@ -58,13 +52,13 @@ public class List<V>: Printable {
 	public var description: String {
 		var output: String = "List("
 		var c: Int = 0
-		var x: LNode = head
-		while sentinel !== x {
-			output += x.description
+		var x: LNode? = head
+		while nil != x {
+			output += x!.description
 			if ++c != count {
 				output += ", "
 			}
-			x = x.next
+			x = x!.next
 		}
 		output += ")"
 		return output
@@ -75,7 +69,7 @@ public class List<V>: Printable {
 	* Retrieves the data at first node of the List.
 	*/
 	public var front: V? {
-		return head.data
+		return head?.data
 	}
 	
 	/**
@@ -83,7 +77,7 @@ public class List<V>: Printable {
 	* Retrieves the data at the back node of teh List.
 	*/
 	public var back: V? {
-		return tail.data
+		return tail?.data
 	}
 	
 	/**
@@ -92,7 +86,7 @@ public class List<V>: Printable {
 	* in the List.
 	*/
 	public var cursor: V? {
-		return current.data
+		return current?.data
 	}
 	
 	/**
@@ -102,8 +96,11 @@ public class List<V>: Printable {
 	* to that node.
 	*/
 	public var next: V? {
-		current = current.next
-		return current.data
+		if nil == current {
+			return nil
+		}
+		current = current?.next
+		return current?.data
 	}
 	
 	/**
@@ -113,8 +110,11 @@ public class List<V>: Printable {
 	* to that node.
 	*/
 	public var previous: V? {
-		current = current.previous
-		return current.data
+		if nil == current {
+			return nil
+		}
+		current = current?.previous
+		return current?.data
 	}
 	
 	/**
@@ -126,12 +126,21 @@ public class List<V>: Printable {
 	}
 	
 	/**
-	* cursorAtEnd
+	* cursorAtBack
 	* A boolean of whether the cursor has reached
-	* the end of an iteration cycle.
+	* the back of the List.
 	*/
-	public var cursorAtEnd: Bool {
-		return sentinel === current
+	public var cursorAtBack: Bool {
+		return nil == current
+	}
+	
+	/**
+	* cursorAtFront
+	* A boolean of whether the cursor has reached
+	* the front of the List.
+	*/
+	public var cursorAtFront: Bool {
+		return nil == current
 	}
 	
 	/**
@@ -140,10 +149,9 @@ public class List<V>: Printable {
 	*/
 	public init() {
 		count = 0
-		sentinel = LNode()
-		head = sentinel
-		tail = sentinel
-		current = sentinel
+		head = nil
+		tail = nil
+		current = head
 	}
 	
 	/**
@@ -165,11 +173,11 @@ public class List<V>: Printable {
 	public func insertAtFront(data: V?) {
 		var z: LNode
 		if 0 == count {
-			z = LNode(next: sentinel, previous: sentinel,  data: data)
+			z = LNode(next: nil, previous: nil,  data: data)
 			tail = z
 		} else {
-			z = LNode(next: head, previous: sentinel, data: data)
-			head.previous = z
+			z = LNode(next: head, previous: nil, data: data)
+			head!.previous = z
 		}
 		head = z
 		++count
@@ -183,14 +191,13 @@ public class List<V>: Printable {
 	*/
 	public func removeAtFront() -> V? {
 		if 0 == count {
-			return sentinel.data
+			return nil
 		}
-		var data: V? = head.data
+		var data: V? = head!.data
 		if 0 == --count {
 			reset()
 		} else {
-			head.next.previous = sentinel
-			head = head.next
+			head = head!.next
 		}
 		return data
 	}
@@ -204,11 +211,11 @@ public class List<V>: Printable {
 	public func insertAtBack(data: V?) {
 		var z: LNode
 		if 0 == count {
-			z = LNode(next: sentinel, previous: sentinel,  data: data)
+			z = LNode(next: nil, previous: nil,  data: data)
 			head = z
 		} else {
-			z = LNode(next: sentinel, previous: tail, data: data)
-			tail.next = z
+			z = LNode(next: nil, previous: tail, data: data)
+			tail!.next = z
 		}
 		tail = z
 		++count
@@ -222,14 +229,13 @@ public class List<V>: Printable {
 	*/
 	public func removeAtBack() -> V? {
 		if 0 == count {
-			return sentinel.data
+			return nil
 		}
-		var data: V? = tail.data
+		var data: V? = tail!.data
 		if 0 == --count {
 			reset()
 		} else {
-			tail.previous.next = sentinel
-			tail = tail.previous
+			tail = tail!.previous
 		}
 		return data
 	}
@@ -257,11 +263,10 @@ public class List<V>: Printable {
 	* @param		data: V?
 	*/
 	public func insertBeforeCursor(data: V?) {
-		if sentinel === current || head === current {
+		if nil == current || head === current {
 			insertAtFront(data)
 		} else {
-			let z: LNode = LNode(next: current, previous: current.previous,  data: data)
-			current.previous = z
+			current!.previous = LNode(next: current, previous: current!.previous,  data: data)
 			++count
 		}
 	}
@@ -273,10 +278,10 @@ public class List<V>: Printable {
 	* @param		data: V?
 	*/
 	public func insertAfterCursor(data: V?) {
-		if sentinel === current || tail === current {
+		if nil == current || tail === current {
 			insertAtBack(data)
 		} else {
-			current.next = LNode(next: current.next, previous: current,  data: data)
+			current!.next = LNode(next: current!.next, previous: current,  data: data)
 			++count
 		}
 	}
@@ -286,8 +291,8 @@ public class List<V>: Printable {
 	* Reinitializes pointers to sentinel value.
 	*/
 	func reset() {
-		head = sentinel
-		tail = sentinel
-		current = sentinel
+		head = nil
+		tail = nil
+		current = nil
 	}
 }
