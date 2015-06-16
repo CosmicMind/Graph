@@ -22,25 +22,25 @@
 */
 
 internal class RedBlackNode<K: Comparable, V>: Comparable, Equatable, Printable {
-	internal typealias RBNode = RedBlackNode<K, V>
+	internal typealias NodeType = RedBlackNode<K, V>
 	
 	/**
 	* parent
 	* A reference to the parent node of a given node.
 	*/
-	internal var parent: RBNode!
+	internal var parent: NodeType!
 	
 	/**
 	* left
 	* A reference to the left child node of a given node.
 	*/
-	internal var left: RBNode!
+	internal var left: NodeType!
 	
 	/**
 	* right
 	* A reference to the right child node of a given node.
 	*/
-	internal var right: RBNode!
+	internal var right: NodeType!
 	
 	/**
 	* red
@@ -88,12 +88,12 @@ internal class RedBlackNode<K: Comparable, V>: Comparable, Equatable, Printable 
 	/**
 	* init
 	* Constructor used for nodes that store data.
-	* @param		parent: RedBlackNode<K, V>
-	* @param		sentinel: RedBlackNode<K, V>
+	* @param		parent: NodeType
+	* @param		sentinel: NodeType
 	* @param		key: K
 	* @param		value: V?
 	*/
-	internal init(parent: RBNode, sentinel: RBNode, key: K, value: V?) {
+	internal init(parent: NodeType, sentinel: NodeType, key: K, value: V?) {
 		self.key = key
 		self.value = value
 		self.parent = parent

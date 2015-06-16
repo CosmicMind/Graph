@@ -147,10 +147,10 @@ public class List<T>: Printable {
 	}
 	
 	/**
-	* clear
+	* removeAll
 	* Removes all nodes from the List.
 	*/
-	public func clear() {
+	public func removeAll() {
 		while !empty {
 			removeAtFront()
 		}

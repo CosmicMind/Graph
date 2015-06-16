@@ -58,7 +58,7 @@ class StackTests: XCTestCase {
 		s.push(1)
 		s.push(2)
 		s.push(3)
-		s.clear()
+		s.removeAll()
 		
 		XCTAssert(0 == s.count, "Count incorrect, got \(s.count).")
 	}

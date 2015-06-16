@@ -63,7 +63,7 @@ class DequeTests: XCTestCase {
 		d.pushFront(1)
 		d.pushFront(2)
 		d.pushFront(3)
-		d.clear()
+		d.removeAll()
 		
 		XCTAssert(0 == d.count, "Count incorrect, got \(d.count).")
 	}

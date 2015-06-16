@@ -115,10 +115,10 @@ public class Deque<T>: Printable {
 	}
 	
 	/**
-	* clear
+	* removeAll
 	* Remove all items from the Deque.
 	*/
-	public func clear() {
-		list.clear()
+	public func removeAll() {
+		list.removeAll()
 	}
 }

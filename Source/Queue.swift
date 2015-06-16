@@ -89,10 +89,10 @@ public class Queue<T>: Printable {
 	}
 	
 	/**
-	* clear
+	* removeAll
 	* Remove all data from the Queue.
 	*/
-	public func clear() {
-		list.clear()
+	public func removeAll() {
+		list.removeAll()
 	}
 }

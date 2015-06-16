@@ -88,19 +88,19 @@ class ListTests: XCTestCase {
 		XCTAssert(6 == l.removeAtBack() && 1 == l.count, "Test failed.")
 		XCTAssert(5 == l.removeAtBack() && 0 == l.count, "Test failed.")
 		
-		l.clear()
+		l.removeAll()
 		l.cursorToFront()
 		XCTAssert(nil == l.cursor && 0 == l.count, "Test failed, got \(l.cursor)")
 		l.insertBeforeCursor(1)
 		XCTAssert(1 == l.cursor && 1 == l.count, "Test failed, got \(l.cursor)")
 		
-		l.clear()
+		l.removeAll()
 		l.cursorToBack()
 		XCTAssert(nil == l.cursor && 0 == l.count, "Test failed, got \(l.cursor)")
 		l.insertAfterCursor(1)
 		XCTAssert(1 == l.cursor && 1 == l.count, "Test failed, got \(l.cursor)")
 		
-		l.clear()
+		l.removeAll()
 		l.insertAtBack(1)
 		XCTAssert(1 == l.cursor && 1 == l.count, "Test failed, got \(l.cursor)")
 		l.insertAfterCursor(2)

@@ -91,10 +91,10 @@ public class Stack<T>: Printable {
 	}
 	
 	/**
-	* clear
+	* removeAll
 	* Remove all items from the Stack.
 	*/
-	public func clear() {
-		list.clear()
+	public func removeAll() {
+		list.removeAll()
 	}
 }
