@@ -75,10 +75,7 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
 	internal var last: V? {
-		if count == 0 {
-			return sentinel.data
-		}
-		return internalSelect(root, order: count).data
+		return empty ? sentinel.value : internalSelect(root, order: count).value
 	}
 	
 	/**
@@ -88,7 +85,7 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
 	internal var first: V? {
-		return internalSelect(root, order: 1).data
+		return internalSelect(root, order: 1).value
 	}
 	
 	/**
@@ -138,13 +135,13 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	* insert
 	* Insert a new data item in the tree.
 	* @param		key: K
-	* @Param		data: V?
+	* @Param		value: V?
 	* @return		A boolean indicating the success of the insert. 
 	*				Would return false if the tree is uniquely keyed.
 	*				a the key already exists in the tree.
 	*/
-	internal func insert(key: K, data: V?) -> Bool {
-		return sentinel !== internalInsert(key, data: data)
+	internal func insert(key: K, value: V?) -> Bool {
+		return sentinel !== internalInsert(key, value: value)
 	}
 	
 	/**
@@ -168,10 +165,10 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	* Finds the first instance in a non-unique tree and only instance
 	* in unique tree of a given keyed node.
 	* @param		key: K
-	* @return		data V?
+	* @return		value V?
 	*/
 	internal func find(key: K) -> V? {
-		return internalFindByKey(key).data
+		return internalFindByKey(key).value
 	}
 	
 	/**
@@ -192,15 +189,13 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	* through the items, they are returned in their
 	* ordered form.
 	* @param		index: Int
-	* @return		data V?
+	* @return		value V?
 	*/
 	internal subscript(index: Int) -> V? {
-		get {
-			if index < 0 || index >= count {
-				assert(false, "[AlgoKit Error: Index out of bounds.]")
-			}
-			return internalSelect(root, order: index + 1).data
+		if index < 0 || index >= count {
+			assert(false, "[AlgoKit Error: Index out of bounds.]")
 		}
+		return internalSelect(root, order: index + 1).value
 	}
 	
 	/**
@@ -209,32 +204,32 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	* String, this feature allows access like a
 	* Dictionary.
 	* @param		name: String
-	* @return		data V?
+	* @return		value V?
 	*/
 	internal subscript(name: String) -> V? {
 		get {
-			return internalFindByKey(name as! K).data
+			return internalFindByKey(name as! K).value
 		}
 		set(value) {
 			let node: RBNode = internalFindByKey(name as! K)
 			if sentinel === node {
-				insert(name as! K, data: value!)
+				insert(name as! K, value: value!)
 			} else {
-				node.data = value
+				node.value = value
 			}
 		}
 	}
 	
 	/**
 	* internalInsert
-	* Insert a new node with the given key anda data. 
+	* Insert a new node with the given key anda value. 
 	* @param		key: K
-	* @param		data: V?
+	* @param		value: V?
 	* @return		RedBlackNode<K, V>. If the tree is uniquely keyed
 	*				and key already exists, the sentinel value is returned
 	*				otherwise the node inserted is returned.
 	*/
-	private func internalInsert(key: K, data: V?) -> RBNode {
+	private func internalInsert(key: K, value: V?) -> RBNode {
 		var y: RBNode = sentinel
 		var x: RBNode = root
 		
@@ -260,7 +255,7 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 			}
 		}
 		
-		var z: RBNode = RBNode(parent: y, sentinel: sentinel, key: key, data: data)
+		var z: RBNode = RBNode(parent: y, sentinel: sentinel, key: key, value: value)
 		
 		if y === sentinel {
 			root = z
