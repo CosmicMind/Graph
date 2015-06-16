@@ -64,6 +64,7 @@ class MultiTreeTests: XCTestCase {
 		s.insert(1, value: 1)
 		s.insert(2, value: 2)
 		s.insert(3, value: 3)
+
 		s.insert(3, value: 3)
 		
 		s.update(3, value: 5)
