@@ -100,7 +100,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 							b1!["test"] = "test"
 							b1![prop] = nil
 						}
-						self.graph?.save() { (success: Bool, error: NSError?) in
+						self.graph?.save { (success: Bool, error: NSError?) in
 							XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 						}
 

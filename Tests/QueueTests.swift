@@ -58,7 +58,7 @@ class QueueTests: XCTestCase {
 		q.enqueue(1)
 		q.enqueue(2)
 		q.enqueue(3)
-		q.clear()
+		q.removeAll()
 		
 		XCTAssert(0 == q.count, "Count incorrect, got \(q.count).")
 	}

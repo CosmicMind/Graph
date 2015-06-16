@@ -100,7 +100,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 							e1!["test"] = "test"
 							e1![prop] = nil
 						}
-						self.graph?.save{ (success: Bool, error: NSError?) in
+						self.graph?.save { (success: Bool, error: NSError?) in
 							XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 						}
 					}

@@ -66,7 +66,7 @@ class TreeTests: XCTestCase {
 		s.insert(3, value: 3)
 		
 		s.update(3, value: 5)
-		let subs: Tree = s.search(3)
+		let subs: Tree<Int, Int> = s.search(3)
 		XCTAssert(1 == subs.count, "Test failed.")
 		
 		var generator = subs.generate()
@@ -74,7 +74,12 @@ class TreeTests: XCTestCase {
 			XCTAssert(5 == x, "Test failed.")
 		}
 		
-		s.clear()
+		for (var i: Int = s.endIndex - 1; i >= s.startIndex; --i) {
+			s[i] = 100
+			XCTAssert(100 == s[i], "Test failed.")
+		}
+		
+		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
