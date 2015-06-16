@@ -73,7 +73,7 @@ internal class RedBlackNode<K: Comparable, V>: Comparable, Equatable, Printable 
 	* Conforms to the Printable Protocol.
 	*/
 	internal var description: String {
-		return "{\(key): \(value)}"
+		return "[\(key): \(value)]"
 	}
 	
 	/**
