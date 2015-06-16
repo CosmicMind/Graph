@@ -23,14 +23,14 @@
 * may not be uniquely keyed.
 */
 
-public class MultiTree<K: Comparable, V>: Printable {
+public class MultiTree<K: Comparable, V> {
 	private typealias MultiTreeNode = RedBlackNode<K, V>
 	
 	/**
 	* tree
 	* Underlying data structure.
 	*/
-	private var tree: RedBlackTree<K, V>
+	internal var tree: RedBlackTree<K, V>
 	
 	/**
 	* count
@@ -65,22 +65,6 @@ public class MultiTree<K: Comparable, V>: Printable {
 	}
 	
 	/**
-	* description
-	* Conforms to the Printable Protocol. Outputs the
-	* data in the MultiTree in a readable format.
-	*/
-	public var description: String {
-		var output: String = "MultiTree("
-		for (var i: Int = 1; i <= count; ++i) {
-			output += tree.select(tree.root, order: i).description
-			if i != count {
-				output += ","
-			}
-		}
-		return output + ")"
-	}
-	
-	/**
 	* init
 	* Constructor.
 	*/
@@ -92,13 +76,13 @@ public class MultiTree<K: Comparable, V>: Printable {
 	* insert
 	* Insert a new node into the MultiTree.
 	* @param		key: K
-	* @param		data: V?
+	* @param		value: V?
 	* @return		Bool of the result. True if inserted, false otherwise.
 	*				Failure of insertion would mean the key already
 	*				exists in the MultiTree.
 	*/
-	public func insert(key: K, data: V?) -> Bool {
-		return tree.insert(key, data: data)
+	public func insert(key: K, value: V?) -> Bool {
+		return tree.insert(key, value: value)
 	}
 	
 	/**
@@ -112,11 +96,22 @@ public class MultiTree<K: Comparable, V>: Printable {
 	}
 	
 	/**
+	* update
+	* Updates a node for the given key value.
+	* @param		key: K
+	* @param		value: V?
+	* @return		A boolean value of the result.
+	*/
+	public func update(key: K, value: V?) -> Bool {
+		return tree.update(key, value: value)
+	}
+	
+	/**
 	* find
 	* Finds a node by its key value and returns the
 	* data that the node points to.
 	* @param		key: K
-	* @return		data V?
+	* @return		value V?
 	*/
 	public func find(key: K) -> V? {
 		return tree.find(key)
@@ -129,10 +124,15 @@ public class MultiTree<K: Comparable, V>: Printable {
 	* through the items, they are returned in their
 	* ordered form.
 	* @param		index: Int
-	* @return		data V?
+	* @return		value V?
 	*/
 	public subscript(index: Int) -> V? {
-		return tree[index]
+		get {
+			return tree[index]
+		}
+		set(value) {
+			tree[index] = value
+		}
 	}
 	
 	/**
@@ -141,7 +141,7 @@ public class MultiTree<K: Comparable, V>: Printable {
 	* String, this feature allows access like a
 	* Dictionary.
 	* @param		name: String
-	* @return		data V?
+	* @return		value V?
 	*/
 	public subscript(name: String) -> V? {
 		get {
@@ -158,9 +158,9 @@ public class MultiTree<K: Comparable, V>: Printable {
 	* MultiTree with the indicated values if
 	* they exist.
 	* @param		keys: K...
-	* @return		MultiTree<K, V> subset.
+	* @return		MultiTree subset.
 	*/
-	public func search(keys: K...) -> MultiTree<K, V> {
+	public func search(keys: K...) -> MultiTree {
 		return search(keys)
 	}
 	
@@ -170,12 +170,12 @@ public class MultiTree<K: Comparable, V>: Printable {
 	* MultiTree with the indicated values if
 	* they exist.
 	* @param		keys: K...
-	* @return		MultiTree<K, V> subset.
+	* @return		MultiTree subset.
 	*/
-	public func search(keys: Array<K>) -> MultiTree<K, V> {
+	public func search(array: Array<K>) -> MultiTree {
 		var s: MultiTree<K, V> = MultiTree<K, V>()
-		for key: K in keys {
-			traverse(key, node: tree.root, set: &s)
+		for key: K in array {
+			tree.subset(key, node: tree.root, set: &s.tree)
 		}
 		return s
 	}
@@ -187,22 +187,35 @@ public class MultiTree<K: Comparable, V>: Printable {
 	public func clear() {
 		tree.clear()
 	}
+}
+
+extension MultiTree: Printable {
+	/**
+	* description
+	* Conforms to the Printable Protocol. Outputs the
+	* data in the MultiTree in a readable format.
+	*/
+	public var description: String {
+		return "MultiTree" + tree.description
+	}
+}
+
+extension MultiTree: SequenceType {
+	private typealias Generator = GeneratorOf<V?>
 	
 	/**
-	* traverse
-	* Traverses the MultiTree and looking for a key value.
-	* This is used for internal search.
-	* @param		key: K
-	* @param		node: MultiTreeNode
-	* @param		inout set: MultiTree<K, V>
+	* generate
+	* Conforms to the SequenceType Protocol. Returns
+	* the next value in the sequence of nodes using
+	* index values [0...n-1].
 	*/
-	private func traverse(key: K, node: MultiTreeNode, inout set: MultiTree<K, V>) {
-		if tree.sentinel !== node {
-			if key == node.key {
-				set.insert(key, data: node.data)
+	public func generate() -> Generator {
+		var index = 0
+		return GeneratorOf {
+			if index < self.count {
+				return self.tree[index++]
 			}
-			traverse(key, node: node.left, set: &set)
-			traverse(key, node: node.right, set: &set)
+			return nil
 		}
 	}
 }

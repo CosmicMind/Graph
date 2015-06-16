@@ -239,7 +239,7 @@ public class Graph: NSObject {
 		let nodes: Tree<String, Entity> = Tree<String, Entity>()
 		for entity: ManagedEntity in entries as! Array<ManagedEntity> {
 			let node: Entity = Entity(entity: entity)
-			nodes.insert(node.id, data: node)
+			nodes.insert(node.id, value: node)
 		}
 		return nodes
 	}
@@ -255,7 +255,7 @@ public class Graph: NSObject {
 		let nodes: Tree<String, Entity> = Tree<String, Entity>()
 		for group: EntityGroup in entries as! Array<EntityGroup> {
 			let node: Entity = Entity(entity: group.node)
-			nodes.insert(node.id, data: node)
+			nodes.insert(node.id, value: node)
 		}
 		return nodes
 	}
@@ -273,10 +273,10 @@ public class Graph: NSObject {
 			let node: Entity = Entity(entity: group.node)
 			if (nil == nodes[group.name]) {
 				let set: Tree<String, Entity> = Tree<String, Entity>()
-				set.insert(node.id, data: node)
-				nodes.insert(group.name, data: set)
+				set.insert(node.id, value: node)
+				nodes.insert(group.name, value: set)
 			} else {
-				nodes[group.name]!.insert(node.id, data: node)
+				nodes[group.name]!.insert(node.id, value: node)
 			}
 		}
 		return nodes
@@ -293,7 +293,7 @@ public class Graph: NSObject {
 		let nodes: Tree<String, Entity> = Tree<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
-			nodes.insert(node.id, data: node)
+			nodes.insert(node.id, value: node)
 		}
 		return nodes
 	}
@@ -310,7 +310,7 @@ public class Graph: NSObject {
 		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
-			nodes.insert(node[name] as! String, data: node)
+			nodes.insert(node[name] as! String, value: node)
 		}
 		return nodes
 	}
@@ -327,7 +327,7 @@ public class Graph: NSObject {
 		let nodes: MultiTree<Int, Entity> = MultiTree<Int, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
-			nodes.insert(node[name] as! Int, data: node)
+			nodes.insert(node[name] as! Int, value: node)
 		}
 		return nodes
 	}
@@ -343,7 +343,7 @@ public class Graph: NSObject {
 		let nodes: Tree<String, Action> = Tree<String, Action>()
 		for action: ManagedAction in entries as! Array<ManagedAction> {
 			let node: Action = Action(action: action)
-			nodes.insert(node.id, data: node)
+			nodes.insert(node.id, value: node)
 		}
 		return nodes
 	}
@@ -359,7 +359,7 @@ public class Graph: NSObject {
 		let nodes: Tree<String, Action> = Tree<String, Action>()
 		for group: ActionGroup in entries as! Array<ActionGroup> {
 			let node: Action = Action(action: group.node)
-			nodes.insert(node.id, data: node)
+			nodes.insert(node.id, value: node)
 		}
 		return nodes
 	}
@@ -377,10 +377,10 @@ public class Graph: NSObject {
 			let node: Action = Action(action: group.node)
 			if (nil == nodes[group.name]) {
 				let set: Tree<String, Action> = Tree<String, Action>()
-				set.insert(node.id, data: node)
-				nodes.insert(group.name, data: set)
+				set.insert(node.id, value: node)
+				nodes.insert(group.name, value: set)
 			} else {
-				nodes[group.name]!.insert(node.id, data: node)
+				nodes[group.name]!.insert(node.id, value: node)
 			}
 		}
 		return nodes
@@ -397,7 +397,7 @@ public class Graph: NSObject {
 		let nodes: Tree<String, Action> = Tree<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
-			nodes.insert(node.id, data: node)
+			nodes.insert(node.id, value: node)
 		}
 		return nodes
 	}
@@ -414,7 +414,7 @@ public class Graph: NSObject {
 		let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
-			nodes.insert(node[name] as! String, data: node)
+			nodes.insert(node[name] as! String, value: node)
 		}
 		return nodes
 	}
@@ -431,7 +431,7 @@ public class Graph: NSObject {
 		let nodes: MultiTree<Int, Action> = MultiTree<Int, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
-			nodes.insert(node[name] as! Int, data: node)
+			nodes.insert(node[name] as! Int, value: node)
 		}
 		return nodes
 	}
@@ -447,7 +447,7 @@ public class Graph: NSObject {
 		let nodes: Tree<String, Bond> = Tree<String, Bond>()
 		for bond: ManagedBond in entries as! Array<ManagedBond> {
 			let node: Bond = Bond(bond: bond)
-			nodes.insert(node.id, data: node)
+			nodes.insert(node.id, value: node)
 		}
 		return nodes
 	}
@@ -463,7 +463,7 @@ public class Graph: NSObject {
 		let nodes: Tree<String, Bond> = Tree<String, Bond>()
 		for group: BondGroup in entries as! Array<BondGroup> {
 			let node: Bond = Bond(bond: group.node)
-			nodes.insert(node.id, data: node)
+			nodes.insert(node.id, value: node)
 		}
 		return nodes
 	}
@@ -481,10 +481,10 @@ public class Graph: NSObject {
 			let node: Bond = Bond(bond: group.node)
 			if (nil == nodes[group.name]) {
 				let set: Tree<String, Bond> = Tree<String, Bond>()
-				set.insert(node.id, data: node)
-				nodes.insert(group.name, data: set)
+				set.insert(node.id, value: node)
+				nodes.insert(group.name, value: set)
 			} else {
-				nodes[group.name]!.insert(node.id, data: node)
+				nodes[group.name]!.insert(node.id, value: node)
 			}
 		}
 		return nodes
@@ -501,7 +501,7 @@ public class Graph: NSObject {
 		let nodes: Tree<String, Bond> = Tree<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
-			nodes.insert(node.id, data: node)
+			nodes.insert(node.id, value: node)
 		}
 		return nodes
 	}
@@ -518,7 +518,7 @@ public class Graph: NSObject {
 		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
-			nodes.insert(node[name] as! String, data: node)
+			nodes.insert(node[name] as! String, value: node)
 		}
 		return nodes
 	}
@@ -535,7 +535,7 @@ public class Graph: NSObject {
 		let nodes: MultiTree<Int, Bond> = MultiTree<Int, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
-			nodes.insert(node[name] as! Int, data: node)
+			nodes.insert(node[name] as! Int, value: node)
 		}
 		return nodes
 	}

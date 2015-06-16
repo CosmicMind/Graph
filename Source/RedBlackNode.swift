@@ -63,17 +63,17 @@ internal class RedBlackNode<K: Comparable, V>: Comparable, Equatable, Printable 
 	internal var key: K! = nil
 	
 	/**
-	* data
+	* value
 	* Satellite data stored in the node.
 	*/
-	internal var data: V?
+	internal var value: V?
 	
 	/**
 	* description
 	* Conforms to the Printable Protocol.
 	*/
 	internal var description: String {
-		return "{\(key): \(data)}"
+		return "{\(key): \(value)}"
 	}
 	
 	/**
@@ -91,11 +91,11 @@ internal class RedBlackNode<K: Comparable, V>: Comparable, Equatable, Printable 
 	* @param		parent: RedBlackNode<K, V>
 	* @param		sentinel: RedBlackNode<K, V>
 	* @param		key: K
-	* @param		data: V?
+	* @param		value: V?
 	*/
-	internal init(parent: RBNode, sentinel: RBNode, key: K, data: V?) {
+	internal init(parent: RBNode, sentinel: RBNode, key: K, value: V?) {
 		self.key = key
-		self.data = data
+		self.value = value
 		self.parent = parent
 		left = sentinel
 		right = sentinel
