@@ -64,6 +64,18 @@ class MultiTreeTests: XCTestCase {
 		s.insert(1, value: 1)
 		s.insert(2, value: 2)
 		s.insert(3, value: 3)
+
+		s.insert(3, value: 3)
+		
+		s.update(3, value: 5)
+		let subs: MultiTree = s.search(3)
+		XCTAssert(2 == subs.count, "Test failed.")
+		
+		var generator = subs.generate()
+		while let x = generator.next() {
+			XCTAssert(5 == x, "Test failed.")
+		}
+		
 		s.clear()
 		XCTAssert(0 == s.count, "Test failed.")
 	}

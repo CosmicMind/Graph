@@ -40,12 +40,6 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	internal private(set) var root: RBNode
 	
 	/**
-	* count
-	* Total number of nodes in the tree.
-	*/
-	internal private(set) var count: Int
-	
-	/**
 	* unique
 	* A boolean used to indicate whether to allow the
 	* tree to store non-unique key values or only unique
@@ -55,10 +49,11 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	
 	/**
 	* description
-	* Conforms to the Printable Protocol.
+	* Conforms to the Printable Protocol. Outputs the
+	* data in the Tree in a readable format.
 	*/
 	internal var description: String {
-		var output: String = "RedBlackTree("
+		var output: String = "("
 		for (var i: Int = 1; i <= count; ++i) {
 			output += internalSelect(root, order: i).description
 			if i != count {
@@ -67,6 +62,12 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		}
 		return output + ")"
 	}
+	
+	/**
+	* count
+	* Total number of nodes in the tree.
+	*/
+	internal private(set) var count: Int
 	
 	/**
 	* last
@@ -159,6 +160,28 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		}
 		return removed
 	}
+
+	/**
+	* update
+	* Updates a node for the given key value.
+	* If the tree allows non-unique keys, then all keys matching
+	* the given key value will be updated.
+	* @param		key: K
+	* @param		value: V?
+	* @return		A boolean value of the result.
+	*/
+	internal func update(key: K, value: V?) -> Bool {
+		var updated: Bool = false
+		var x: RBNode = root
+		while x !== sentinel {
+			if key == x.key {
+				x.value = value
+				updated = true
+			}
+			x = key < x.key ? x.left : x.right
+		}
+		return updated
+	}
 	
 	/**
 	* find
@@ -172,14 +195,21 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	}
 	
 	/**
-	* select
-	* Searches for a node based on the order statistic value.
-	* @param		x: RedBlackNode<K, V>
-	* @param		order: In
-	* @param		RedBlackNode<K, V>
+	* internalTraverse
+	* Traverses the Tree and looking for a key value.
+	* This is used for internal search.
+	* @param		key: K
+	* @param		node: TreeNode
+	* @param		inout set: Tree<K, V>
 	*/
-	internal func select(x: RBNode, order: Int) -> RBNode {
-		return internalSelect(x, order: order)
+	internal func subset(key: K, node: RBNode, inout set: RBTree) {
+		if node !== sentinel {
+			if key == node.key {
+				set.insert(key, value: node.value)
+			}
+			subset(key, node: node.left, set: &set)
+			subset(key, node: node.right, set: &set)
+		}
 	}
 	
 	/**
@@ -192,10 +222,19 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	* @return		value V?
 	*/
 	internal subscript(index: Int) -> V? {
-		if index < 0 || index >= count {
-			assert(false, "[AlgoKit Error: Index out of bounds.]")
+		get {
+			if index < 0 || index >= count {
+				assert(false, "[AlgoKit Error: Index out of bounds.]")
+			}
+			return internalSelect(root, order: index + 1).value
 		}
-		return internalSelect(root, order: index + 1).value
+		set(value) {
+			if index < 0 || index >= count {
+				assert(false, "[AlgoKit Error: Index out of bounds.]")
+			}
+			var x: RBNode = internalSelect(root, order: index + 1)
+			x.value = value
+		}
 	}
 	
 	/**
@@ -221,8 +260,19 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 	}
 	
 	/**
+	* select
+	* Searches for a node based on the order statistic value.
+	* @param		x: RedBlackNode<K, V>
+	* @param		order: In
+	* @param		RedBlackNode<K, V>
+	*/
+	internal func select(x: RBNode, order: Int) -> RBNode {
+		return internalSelect(x, order: order)
+	}
+	
+	/**
 	* internalInsert
-	* Insert a new node with the given key anda value. 
+	* Insert a new node with the given key and value.
 	* @param		key: K
 	* @param		value: V?
 	* @return		RedBlackNode<K, V>. If the tree is uniquely keyed
@@ -573,4 +623,3 @@ internal class RedBlackTree<K: Comparable, V>: Printable {
 		return internalSelect(x.right, order: order - r)
 	}
 }
-

@@ -23,14 +23,14 @@
 * are uniquely keyed.
 */
 
-public class Tree<K: Comparable, V>: Printable {
+public class Tree<K: Comparable, V> {
 	private typealias TreeNode = RedBlackNode<K, V>
 	
 	/**
 	* tree
 	* Underlying data structure.
 	*/
-	private var tree: RedBlackTree<K, V>
+	internal var tree: RedBlackTree<K, V>
 	
 	/**
 	* count
@@ -65,22 +65,6 @@ public class Tree<K: Comparable, V>: Printable {
 	}
 	
 	/**
-	* description
-	* Conforms to the Printable Protocol. Outputs the
-	* data in the Tree in a readable format.
-	*/
-	public var description: String {
-		var output: String = "Tree("
-		for (var i: Int = 1; i <= count; ++i) {
-			output += tree.select(tree.root, order: i).description
-			if i != count {
-				output += ","
-			}
-		}
-		return output + ")"
-	}
-	
-	/**
 	* init
 	* Constructor.
 	*/
@@ -112,6 +96,17 @@ public class Tree<K: Comparable, V>: Printable {
 	}
 	
 	/**
+	* update
+	* Updates a node for the given key value.
+	* @param		key: K
+	* @param		value: V?
+	* @return		A boolean value of the result.
+	*/
+	public func update(key: K, value: V?) -> Bool {
+		return tree.update(key, value: value)
+	}
+	
+	/**
 	* find
 	* Finds a node by its key value and returns the
 	* data that the node points to.
@@ -124,7 +119,7 @@ public class Tree<K: Comparable, V>: Printable {
 	
 	/**
 	* operator [0...count - 1]
-	* Allos array like access of the index. 
+	* Allos array like access of the index.
 	* Items are kept in order, so when iterating
 	* through the items, they are returned in their
 	* ordered form.
@@ -132,7 +127,12 @@ public class Tree<K: Comparable, V>: Printable {
 	* @return		value V?
 	*/
 	public subscript(index: Int) -> V? {
-		return tree[index]
+		get {
+			return tree[index]
+		}
+		set(value) {
+			tree[index] = value
+		}
 	}
 	
 	/**
@@ -158,9 +158,9 @@ public class Tree<K: Comparable, V>: Printable {
 	* Tree with the indicated values if
 	* they exist. 
 	* @param		keys: K...
-	* @return		Tree<K, V> subset.
+	* @return		Tree subset.
 	*/
-	public func search(keys: K...) -> Tree<K, V> {
+	public func search(keys: K...) -> Tree {
 		return search(keys)
 	}
 
@@ -170,12 +170,12 @@ public class Tree<K: Comparable, V>: Printable {
 	* Tree with the indicated values if
 	* they exist.
 	* @param		keys: K...
-	* @return		Tree<K, V> subset.
+	* @return		Tree subset.
 	*/
-	public func search(keys: Array<K>) -> Tree<K, V> {
+	public func search(array: Array<K>) -> Tree {
 		var s: Tree<K, V> = Tree<K, V>()
-		for key: K in keys {
-			traverse(key, node: tree.root, set: &s)
+		for key: K in array {
+			tree.subset(key, node: tree.root, set: &s.tree)
 		}
 		return s
 	}
@@ -187,22 +187,35 @@ public class Tree<K: Comparable, V>: Printable {
 	public func clear() {
 		tree.clear()
 	}
+}
+
+extension Tree: Printable {
+	/**
+	* description
+	* Conforms to the Printable Protocol. Outputs the
+	* data in the Tree in a readable format.
+	*/
+	public var description: String {
+		return "Tree" + tree.description
+	}
+}
+
+extension Tree: SequenceType {
+	private typealias Generator = GeneratorOf<V?>
 	
 	/**
-	* traverse
-	* Traverses the Tree and looking for a key value. 
-	* This is used for internal search. 
-	* @param		key: K
-	* @param		node: TreeNode
-	* @param		inout set: Tree<K, V>
+	* generate
+	* Conforms to the SequenceType Protocol. Returns 
+	* the next value in the sequence of nodes using
+	* index values [0...n-1].
 	*/
-	private func traverse(key: K, node: TreeNode, inout set: Tree<K, V>) {
-		if tree.sentinel !== node {
-			if key == node.key {
-				set.insert(key, value: node.value)
+	public func generate() -> Generator {
+		var index = 0
+		return GeneratorOf {
+			if index < self.count {
+				return self.tree[index++]
 			}
-			traverse(key, node: node.left, set: &set)
-			traverse(key, node: node.right, set: &set)
+			return nil
 		}
 	}
 }
