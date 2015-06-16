@@ -92,13 +92,13 @@ public class Tree<K: Comparable, V>: Printable {
 	* insert
 	* Insert a new node into the Tree.
 	* @param		key: K
-	* @param		data: V?
+	* @param		value: V?
 	* @return		Bool of the result. True if inserted, false otherwise. 
 	*				Failure of insertion would mean the key already
 	*				exists in the Tree.
 	*/
-	public func insert(key: K, data: V?) -> Bool {
-		return tree.insert(key, data: data)
+	public func insert(key: K, value: V?) -> Bool {
+		return tree.insert(key, value: value)
 	}
 	
 	/**
@@ -114,9 +114,9 @@ public class Tree<K: Comparable, V>: Printable {
 	/**
 	* find
 	* Finds a node by its key value and returns the
-	* data that the node points to. 
+	* data that the node points to.
 	* @param		key: K
-	* @return		data V?
+	* @return		value V?
 	*/
 	public func find(key: K) -> V? {
 		return tree.find(key)
@@ -129,7 +129,7 @@ public class Tree<K: Comparable, V>: Printable {
 	* through the items, they are returned in their
 	* ordered form.
 	* @param		index: Int
-	* @return		data V?
+	* @return		value V?
 	*/
 	public subscript(index: Int) -> V? {
 		return tree[index]
@@ -141,7 +141,7 @@ public class Tree<K: Comparable, V>: Printable {
 	* String, this feature allows access like a
 	* Dictionary. 
 	* @param		name: String
-	* @return		data V?
+	* @return		value V?
 	*/
 	public subscript(name: String) -> V? {
 		get {
@@ -199,7 +199,7 @@ public class Tree<K: Comparable, V>: Printable {
 	private func traverse(key: K, node: TreeNode, inout set: Tree<K, V>) {
 		if tree.sentinel !== node {
 			if key == node.key {
-				set.insert(key, data: node.data)
+				set.insert(key, value: node.value)
 			}
 			traverse(key, node: node.left, set: &set)
 			traverse(key, node: node.right, set: &set)

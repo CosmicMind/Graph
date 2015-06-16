@@ -37,9 +37,9 @@ class MultiTreeTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
-			s.insert(1, data: 1)
-			s.insert(2, data: 2)
-			s.insert(3, data: 3)
+			s.insert(1, value: 1)
+			s.insert(2, value: 2)
+			s.insert(3, value: 3)
 		}
 		
 		XCTAssert(3000 == s.count, "Test failed.")
@@ -55,22 +55,22 @@ class MultiTreeTests: XCTestCase {
 		XCTAssert(1000 == s.count, "Test failed.")
 		XCTAssert(true == s.remove(2), "Test failed.")
 		XCTAssert(false == s.remove(2), "Test failed.")
-		XCTAssert(true == s.insert(2, data: 10), "Test failed.")
+		XCTAssert(true == s.insert(2, value: 10), "Test failed.")
 		XCTAssert(1 == s.count, "Test failed.")
 		XCTAssert(10 == s.find(2)!, "Test failed.")
 		XCTAssert(10 == s[0]!, "Test failed.")
 		XCTAssert(true == (s.remove(2) && 0 == s.count), "Test failed.")
 		
-		s.insert(1, data: 1)
-		s.insert(2, data: 2)
-		s.insert(3, data: 3)
+		s.insert(1, value: 1)
+		s.insert(2, value: 2)
+		s.insert(3, value: 3)
 		s.clear()
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
 	func testMultisetString() {
 		let s: MultiTree<String, Array<Int>> = MultiTree<String, Array<Int>>()
-		s.insert("friends", data: [1, 2, 3])
+		s.insert("friends", value: [1, 2, 3])
 		s["menu"] = [11, 22, 33]
 		
 		XCTAssert(s["friends"]! == s[0]!, "Test failed.")
@@ -87,9 +87,9 @@ class MultiTreeTests: XCTestCase {
 		XCTAssert(0 == s1.count, "Test failed, got \(s1.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
-			s1.insert(1, data: 1)
-			s1.insert(2, data: 2)
-			s1.insert(3, data: 3)
+			s1.insert(1, value: 1)
+			s1.insert(2, value: 2)
+			s1.insert(3, value: 3)
 		}
 		
 		XCTAssert(3000 == s1.count, "Test failed.")
