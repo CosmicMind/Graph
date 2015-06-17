@@ -18,8 +18,9 @@
 * List
 */
 
-public class List<T>: Printable {
+public class List<T>: Printable, CollectionType {
 	private typealias LNode = ListNode<T>
+	internal typealias Generator = GeneratorOf<T?>
 	
 	/**
 	* head
@@ -46,10 +47,11 @@ public class List<T>: Printable {
 	public private(set) var count: Int
 	
 	/**
-	* description
-	* Conforms to Printable Protocol.
+	* internalDescription
+	* Returns a String with only the node data for all
+	* nodes in the List.
 	*/
-	public var description: String {
+	internal var internalDescription: String {
 		var output: String = "List("
 		var c: Int = 0
 		var x: LNode? = head
@@ -62,6 +64,14 @@ public class List<T>: Printable {
 		}
 		output += ")"
 		return output
+	}
+	
+	/**
+	* description
+	* Conforms to Printable Protocol.
+	*/
+	public var description: String {
+		return "List" + internalDescription
 	}
 	
 	/**
@@ -138,12 +148,55 @@ public class List<T>: Printable {
 	}
 	
 	/**
+	* startIndex
+	* Conforms to the CollectionType Protocol.
+	*/
+	public var startIndex: Int {
+		return 0
+	}
+	
+	/**
+	* endIndex
+	* Conforms to the CollectionType Protocol.
+	*/
+	public var endIndex: Int {
+		return count
+	}
+	
+	/**
 	* init
 	* Constructor.
 	*/
 	public init() {
 		count = 0
 		reset()
+	}
+	
+	/**
+	* generate
+	* Conforms to the SequenceType Protocol. Returns
+	* the next value in the sequence of nodes using
+	* index values [0...n-1].
+	*/
+	public func generate() -> Generator {
+		cursorToFront()
+		return GeneratorOf {
+			if !self.cursorAtBack {
+				var data: T? = self.cursor
+				self.next
+				return data
+			}
+			return nil
+		}
+	}
+	
+	/**
+	* operator [0...count - 1]
+	* Generate handles this.
+	* @return nil
+	*/
+	public subscript(index: Int) -> T? {
+		return nil
 	}
 	
 	/**
@@ -320,7 +373,7 @@ public class List<T>: Printable {
 	* reset
 	* Reinitializes pointers to sentinel value.
 	*/
-	func reset() {
+	private func reset() {
 		head = nil
 		tail = nil
 		current = nil
