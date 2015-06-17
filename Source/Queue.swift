@@ -61,8 +61,7 @@ public class Queue<T>: Printable, CollectionType {
 	* Conforms to the Printable Protocol.
 	*/
 	public var description: String {
-		var output: String = list.description
-		return "Queue" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
+		return "Queue" + list.internalDescription
 	}
 	
 	/**

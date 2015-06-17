@@ -69,8 +69,7 @@ public class Deque<T>: Printable {
 	* Conforms to the Printable Protocol.
 	*/
 	public var description: String {
-		var output: String = list.description
-		return "Deque" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
+		return "Deque" + list.internalDescription
 	}
 	
 	/**

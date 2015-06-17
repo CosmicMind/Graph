@@ -60,8 +60,7 @@ public class Stack<T>: Printable {
 	* Conforms to the Printable Protocol.
 	*/
 	public var description: String {
-		var output: String = list.description
-		return "Stack" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
+		return "Stack" + list.internalDescription
 	}
 	
 	/**
