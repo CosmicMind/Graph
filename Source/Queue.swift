@@ -75,8 +75,7 @@ public class Queue<T>: Printable, SequenceType {
 	/**
 	* generate
 	* Conforms to the SequenceType Protocol. Returns
-	* the next value in the sequence of nodes using
-	* index values [0...n-1].
+	* the next value in the sequence of nodes.
 	*/
 	public func generate() -> Generator {
 		return list.generate()
