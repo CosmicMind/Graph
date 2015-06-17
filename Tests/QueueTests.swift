@@ -61,6 +61,16 @@ class QueueTests: XCTestCase {
 		q.removeAll()
 		
 		XCTAssert(0 == q.count, "Count incorrect, got \(q.count).")
+		
+		q.enqueue(1)
+		q.enqueue(2)
+		q.enqueue(3)
+		
+		println(q)
+		for x in q {
+			println(q.dequeue())
+		}
+		println(q)
 	}
 	
 	func testPerformanceExample() {

@@ -238,7 +238,7 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	
 	/**
 	* operator [0...count - 1]
-	* Allos array like access of the index.
+	* Allows array like access of the index.
 	* Items are kept in order, so when iterating
 	* through the items, they are returned in their
 	* ordered form.
@@ -247,17 +247,19 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	*/
 	public subscript(index: Int) -> V? {
 		get {
-			if index < 0 || index >= count {
-				assert(false, "[AlgoKit Error: Index out of bounds.]")
+			if !isIndexValid(index) {
+				return internalSelect(root, order: index + 1).value
+			} else {
+				assert(false, "[GraphKit Error: Index out of bounds.]")
 			}
-			return internalSelect(root, order: index + 1).value
 		}
 		set(value) {
-			if index < 0 || index >= count {
-				assert(false, "[AlgoKit Error: Index out of bounds.]")
+			if !isIndexValid(index) {
+				var x: NodeType = internalSelect(root, order: index + 1)
+				x.value = value
+			} else {
+				assert(false, "[GraphKit Error: Index out of bounds.]")
 			}
-			var x: NodeType = internalSelect(root, order: index + 1)
-			x.value = value
 		}
 	}
 	
@@ -645,5 +647,15 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 			return internalSelect(x.left, order: order)
 		}
 		return internalSelect(x.right, order: order - r)
+	}
+	
+	/**
+	* isIndexValid
+	* Checks the validation of the index being within range of 0...n-1.
+	* @param		index: Int
+	* @return		Bool
+	*/
+	private func isIndexValid(index: Int) -> Bool {
+		return index < startIndex || index >= endIndex
 	}
 }

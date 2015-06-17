@@ -22,7 +22,9 @@
 * in. The following Stack implementation is backed by a List data structure.
 */
 
-public class Stack<T>: Printable {
+public class Stack<T>: Printable, SequenceType {
+	internal typealias Generator = GeneratorOf<T?>
+	
 	/**
 	* list
 	* Underlying data structure.
@@ -60,8 +62,7 @@ public class Stack<T>: Printable {
 	* Conforms to the Printable Protocol.
 	*/
 	public var description: String {
-		var output: String = list.description
-		return "Stack" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
+		return "Stack" + list.internalDescription
 	}
 	
 	/**
@@ -70,6 +71,15 @@ public class Stack<T>: Printable {
 	*/
 	public init() {
 		list = List<T>()
+	}
+	
+	/**
+	* generate
+	* Conforms to the SequenceType Protocol. Returns
+	* the next value in the sequence of nodes.
+	*/
+	public func generate() -> Generator {
+		return list.generate()
 	}
 	
 	/**

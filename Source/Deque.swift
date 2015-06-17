@@ -23,7 +23,9 @@
 * following Deque implementation is backed by a List data structure.
 */
 
-public class Deque<T>: Printable {
+public class Deque<T>: Printable, SequenceType {
+	internal typealias Generator = GeneratorOf<T?>
+	
 	/**
 	* list
 	* Underlying data structure.
@@ -69,8 +71,7 @@ public class Deque<T>: Printable {
 	* Conforms to the Printable Protocol.
 	*/
 	public var description: String {
-		var output: String = list.description
-		return "Deque" + output.substringWithRange(Range<String.Index>(start: advance(output.startIndex, 4), end: output.endIndex))
+		return "Deque" + list.internalDescription
 	}
 	
 	/**
@@ -79,6 +80,15 @@ public class Deque<T>: Printable {
 	*/
 	public init() {
 		list = List<T>()
+	}
+	
+	/**
+	* generate
+	* Conforms to the SequenceType Protocol. Returns
+	* the next value in the sequence of nodes.
+	*/
+	public func generate() -> Generator {
+		return list.generate()
 	}
 	
 	/**
