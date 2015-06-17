@@ -250,7 +250,7 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 			if !isIndexValid(index) {
 				return internalSelect(root, order: index + 1).value
 			} else {
-				assert(false, "[AlgoKit Error: Index out of bounds.]")
+				assert(false, "[GraphKit Error: Index out of bounds.]")
 			}
 		}
 		set(value) {
@@ -258,7 +258,7 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 				var x: NodeType = internalSelect(root, order: index + 1)
 				x.value = value
 			} else {
-				assert(false, "[AlgoKit Error: Index out of bounds.]")
+				assert(false, "[GraphKit Error: Index out of bounds.]")
 			}
 		}
 	}
