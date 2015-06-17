@@ -125,6 +125,14 @@ class ListTests: XCTestCase {
 		XCTAssert(l.front == l.cursor && l.back == l.cursor && 1 == l.count, "Test failed, got \(l.cursor)")
 		l.removeAtCursor()
 		XCTAssert(nil == l.cursor && 0 == l.count, "Test failed, got \(l.cursor)")
+		
+		l.insertAtFront(1)
+		l.insertAtBack(2)
+		l.insertAtFront(3)
+		
+		for x in l {
+			println(x)
+		}
 	}
 	
 	func testPerformanceExample() {

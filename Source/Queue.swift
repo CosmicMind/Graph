@@ -22,7 +22,9 @@
 * entered. The following Queue implementation is backed by a List data structure.
 */
 
-public class Queue<T>: Printable {
+public class Queue<T>: Printable, CollectionType {
+	internal typealias Generator = GeneratorOf<T?>
+	
 	/**
 	* list
 	* Underlying data structure.
@@ -64,11 +66,46 @@ public class Queue<T>: Printable {
 	}
 	
 	/**
+	* startIndex
+	* Conforms to the CollectionType Protocol.
+	*/
+	public var startIndex: Int {
+		return 0
+	}
+	
+	/**
+	* endIndex
+	* Conforms to the CollectionType Protocol.
+	*/
+	public var endIndex: Int {
+		return count
+	}
+	
+	/**
 	* init
 	* Constructor
 	*/
 	public init() {
 		list = List<T>()
+	}
+	
+	/**
+	* generate
+	* Conforms to the SequenceType Protocol. Returns
+	* the next value in the sequence of nodes using
+	* index values [0...n-1].
+	*/
+	public func generate() -> Generator {
+		return list.generate()
+	}
+	
+	/**
+	* operator [0...count - 1]
+	* Generate handles this.
+	* @return nil
+	*/
+	public subscript(index: Int) -> T? {
+		return nil
 	}
 	
 	/**

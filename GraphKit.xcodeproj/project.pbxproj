@@ -248,8 +248,8 @@
 			children = (
 				961242E11B2B36DD00CD47E0 /* Tree.swift */,
 				961242E41B2B36E800CD47E0 /* MultiTree.swift */,
-				961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */,
 				961242D81B2B36B800CD47E0 /* RedBlackTree.swift */,
+				961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */,
 			);
 			name = Tree;
 			sourceTree = "<group>";
