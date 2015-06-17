@@ -66,9 +66,11 @@ class QueueTests: XCTestCase {
 		q.enqueue(2)
 		q.enqueue(3)
 		
+		println(q)
 		for x in q {
-			println(x)
+			println(q.dequeue())
 		}
+		println(q)
 	}
 	
 	func testPerformanceExample() {

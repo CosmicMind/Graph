@@ -18,7 +18,7 @@
 * List
 */
 
-public class List<T>: Printable, CollectionType {
+public class List<T>: Printable, SequenceType {
 	private typealias LNode = ListNode<T>
 	internal typealias Generator = GeneratorOf<T?>
 	
@@ -52,7 +52,7 @@ public class List<T>: Printable, CollectionType {
 	* nodes in the List.
 	*/
 	internal var internalDescription: String {
-		var output: String = "List("
+		var output: String = "("
 		var c: Int = 0
 		var x: LNode? = head
 		while nil != x {
@@ -148,22 +148,6 @@ public class List<T>: Printable, CollectionType {
 	}
 	
 	/**
-	* startIndex
-	* Conforms to the CollectionType Protocol.
-	*/
-	public var startIndex: Int {
-		return 0
-	}
-	
-	/**
-	* endIndex
-	* Conforms to the CollectionType Protocol.
-	*/
-	public var endIndex: Int {
-		return count
-	}
-	
-	/**
 	* init
 	* Constructor.
 	*/
@@ -188,15 +172,6 @@ public class List<T>: Printable, CollectionType {
 			}
 			return nil
 		}
-	}
-	
-	/**
-	* operator [0...count - 1]
-	* Generate handles this.
-	* @return nil
-	*/
-	public subscript(index: Int) -> T? {
-		return nil
 	}
 	
 	/**
