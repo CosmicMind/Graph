@@ -22,19 +22,19 @@
 */
 
 internal class ListNode<T>: Printable {
-	private typealias LNode = ListNode<T>
+	private typealias NodeType = ListNode<T>
 	
 	/**
 	* next
 	* Points to the successor item in the List.
 	*/
-	internal var next: LNode?
+	internal var next: NodeType?
 	
 	/**
 	* previous
 	* points to the predacessor item in the List.
 	*/
-	internal var previous: LNode?
+	internal var previous: NodeType?
 	
 	/**
 	* data
@@ -57,7 +57,7 @@ internal class ListNode<T>: Printable {
 	* @param		previous: ListNode<T>?
 	* @param		data: T?
 	*/
-	internal init(next: LNode?, previous: LNode?, data: T?) {
+	internal init(next: NodeType?, previous: NodeType?, data: T?) {
 		self.next = next
 		self.previous = previous
 		self.data = data

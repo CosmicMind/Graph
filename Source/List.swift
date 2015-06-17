@@ -19,26 +19,26 @@
 */
 
 public class List<T>: Printable, SequenceType {
-	private typealias LNode = ListNode<T>
+	private typealias NodeType = ListNode<T>
 	internal typealias Generator = GeneratorOf<T?>
 	
 	/**
 	* head
 	* First node in the list.
 	*/
-	private var head: LNode?
+	private var head: NodeType?
 	
 	/**
 	* tail
 	* Last node in list.
 	*/
-	private var tail: LNode?
+	private var tail: NodeType?
 	
 	/**
 	* current
 	* Current cursor position when iterating.
 	*/
-	private var current: LNode?
+	private var current: NodeType?
 	
 	/**
 	* count
@@ -54,7 +54,7 @@ public class List<T>: Printable, SequenceType {
 	internal var internalDescription: String {
 		var output: String = "("
 		var c: Int = 0
-		var x: LNode? = head
+		var x: NodeType? = head
 		while nil != x {
 			output += x!.description
 			if ++c != count {
@@ -190,12 +190,12 @@ public class List<T>: Printable, SequenceType {
 	* @param		data: T?
 	*/
 	public func insertAtFront(data: T?) {
-		var z: LNode
+		var z: NodeType
 		if 0 == count {
-			z = LNode(next: nil, previous: nil,  data: data)
+			z = NodeType(next: nil, previous: nil,  data: data)
 			tail = z
 		} else {
-			z = LNode(next: head, previous: nil, data: data)
+			z = NodeType(next: head, previous: nil, data: data)
 			head!.previous = z
 		}
 		head = z
@@ -232,12 +232,12 @@ public class List<T>: Printable, SequenceType {
 	* @param		data: T?
 	*/
 	public func insertAtBack(data: T?) {
-		var z: LNode
+		var z: NodeType
 		if 0 == count {
-			z = LNode(next: nil, previous: nil,  data: data)
+			z = NodeType(next: nil, previous: nil,  data: data)
 			head = z
 		} else {
-			z = LNode(next: nil, previous: tail, data: data)
+			z = NodeType(next: nil, previous: tail, data: data)
 			tail!.next = z
 		}
 		tail = z
@@ -293,7 +293,7 @@ public class List<T>: Printable, SequenceType {
 		if nil == current || head === current {
 			insertAtFront(data)
 		} else {
-			let z: LNode = LNode(next: current, previous: current!.previous,  data: data)
+			let z: NodeType = NodeType(next: current, previous: current!.previous,  data: data)
 			current!.previous?.next = z
 			current!.previous = z
 			++count
@@ -310,7 +310,7 @@ public class List<T>: Printable, SequenceType {
 		if nil == current || tail === current {
 			insertAtBack(data)
 		} else {
-			let z: LNode = LNode(next: current!.next, previous: current,  data: data)
+			let z: NodeType = NodeType(next: current!.next, previous: current,  data: data)
 			current!.next?.previous = z
 			current!.next = z
 			++count
