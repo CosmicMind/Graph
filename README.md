@@ -10,9 +10,9 @@ GraphKit is a framework for data. Completely written in Swift, take advantage of
 * [List](https://github.com/GraphKit/GraphKit/wiki/List)
 
 ### Advanced Data Structures
-* [Red-Black Tree](https://github.com/GraphKit/GraphKit/wiki/Red-Black-Tree)
+* [Red-Black Tree](https://github.com/GraphKit/GraphKit/wiki/RedBlackTree)
 * [Tree](https://github.com/GraphKit/GraphKit/wiki/Tree)
-* [Multi Tree](https://github.com/GraphKit/GraphKit/wiki/Multi-Tree)
+* [Multi Tree](https://github.com/GraphKit/GraphKit/wiki/MultiTree)
 
 ### License 
 [AGPLv3](http://choosealicense.com/licenses/agpl-3.0/) 
