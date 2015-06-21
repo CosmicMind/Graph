@@ -87,7 +87,7 @@ public class Stack<T>: Printable, SequenceType {
 	* Insert data at the top of the Stack.
 	*/
 	public func push(data: T?) {
-		list.insertAtFront(data)
+		list.insertFront(data)
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class Stack<T>: Printable, SequenceType {
 	* Stack.
 	*/
 	public func pop() -> T? {
-		return list.removeAtFront()
+		return list.removeFront()
 	}
 	
 	/**

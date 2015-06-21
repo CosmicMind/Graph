@@ -130,20 +130,20 @@ public class List<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* cursorAtBack
+	* cursorBack
 	* A boolean of whether the cursor has reached
 	* the back of the List.
 	*/
-	public var cursorAtBack: Bool {
+	public var cursorBack: Bool {
 		return nil == current
 	}
 	
 	/**
-	* cursorAtFront
+	* cursorFront
 	* A boolean of whether the cursor has reached
 	* the front of the List.
 	*/
-	public var cursorAtFront: Bool {
+	public var cursorFront: Bool {
 		return nil == current
 	}
 	
@@ -164,7 +164,7 @@ public class List<T>: Printable, SequenceType {
 	public func generate() -> Generator {
 		cursorToFront()
 		return GeneratorOf {
-			if !self.cursorAtBack {
+			if !self.cursorBack {
 				var data: T? = self.cursor
 				self.next
 				return data
@@ -179,17 +179,17 @@ public class List<T>: Printable, SequenceType {
 	*/
 	public func removeAll() {
 		while !empty {
-			removeAtFront()
+			removeFront()
 		}
 	}
 	
 	/**
-	* insertAtFront
+	* insertFront
 	* Insert a new node with data at the front
 	* of the List.
 	* @param		data: T?
 	*/
-	public func insertAtFront(data: T?) {
+	public func insertFront(data: T?) {
 		var z: NodeType
 		if 0 == count {
 			z = NodeType(next: nil, previous: nil,  data: data)
@@ -207,12 +207,12 @@ public class List<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* removeAtFront
+	* removeFront
 	* Remove the node at the front of the List
 	* and return the data at the poistion.
 	* @return		data T?
 	*/
-	public func removeAtFront() -> T? {
+	public func removeFront() -> T? {
 		if 0 == count {
 			return nil
 		}
@@ -226,12 +226,12 @@ public class List<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* insertAtBack
+	* insertBack
 	* Insert a new node with data at the back
 	* of the List.
 	* @param		data: T?
 	*/
-	public func insertAtBack(data: T?) {
+	public func insertBack(data: T?) {
 		var z: NodeType
 		if 0 == count {
 			z = NodeType(next: nil, previous: nil,  data: data)
@@ -249,12 +249,12 @@ public class List<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* removeAtBack
+	* removeBack
 	* Remove the node at the back of the List
 	* and return the data at the poistion.
 	* @return		data T?
 	*/
-	public func removeAtBack() -> T? {
+	public func removeBack() -> T? {
 		if 0 == count {
 			return nil
 		}
@@ -291,7 +291,7 @@ public class List<T>: Printable, SequenceType {
 	*/
 	public func insertBeforeCursor(data: T?) {
 		if nil == current || head === current {
-			insertAtFront(data)
+			insertFront(data)
 		} else {
 			let z: NodeType = NodeType(next: current, previous: current!.previous,  data: data)
 			current!.previous?.next = z
@@ -308,7 +308,7 @@ public class List<T>: Printable, SequenceType {
 	*/
 	public func insertAfterCursor(data: T?) {
 		if nil == current || tail === current {
-			insertAtBack(data)
+			insertBack(data)
 		} else {
 			let z: NodeType = NodeType(next: current!.next, previous: current,  data: data)
 			current!.next?.previous = z
@@ -318,13 +318,13 @@ public class List<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* removeAtCursor
+	* removeCursor
 	* Removes a node at the current cursor position.
 	* @return		data T?
 	*/
-	public func removeAtCursor() -> T? {
+	public func removeCursor() -> T? {
 		if 1 >= count {
-			return removeAtFront()
+			return removeFront()
 		} else {
 			var data: T? = current!.data
 			current!.previous?.next = current!.next

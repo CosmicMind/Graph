@@ -86,7 +86,7 @@ public class Queue<T>: Printable, SequenceType {
 	* Insert data at the back of the Queue.
 	*/
 	public func enqueue(data: T?) {
-		list.insertAtBack(data)
+		list.insertBack(data)
 	}
 	
 	/**
@@ -95,7 +95,7 @@ public class Queue<T>: Printable, SequenceType {
 	* of the Queue.
 	*/
 	public func dequeue() -> T? {
-		return list.removeAtFront()
+		return list.removeFront()
 	}
 	
 	/**

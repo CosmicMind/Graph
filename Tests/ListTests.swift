@@ -34,26 +34,26 @@ class ListTests: XCTestCase {
 	func testInt() {
 		let l: List<Int> = List<Int>()
 		
-		l.insertAtFront(1)
-		l.insertAtFront(2)
-		l.insertAtFront(3)
+		l.insertFront(1)
+		l.insertFront(2)
+		l.insertFront(3)
 		
 		XCTAssert(3 == l.count, "Count incorrect, got \(l.count).")
 		
 		XCTAssert(3 == l.front, "Front incorrect, got \(l.front)")
 		XCTAssert(1 == l.back, "Back incorrect, got \(l.back)")
 		
-		l.insertAtBack(5)
-		l.insertAtBack(6)
-		l.insertAtBack(7)
+		l.insertBack(5)
+		l.insertBack(6)
+		l.insertBack(7)
 		
 		l.cursorToFront()
-		while !l.cursorAtBack {
+		while !l.cursorBack {
 			l.next
 		}
 
 		l.cursorToBack()
-		while !l.cursorAtFront {
+		while !l.cursorFront {
 			l.previous
 		}
 
@@ -79,14 +79,14 @@ class ListTests: XCTestCase {
 		XCTAssert(3 == l.previous, "Test failed, got \(l.cursor)")
 
 		l.cursorToFront()
-		XCTAssert(3 == l.removeAtFront() && 5 == l.count, "Test failed.")
-		XCTAssert(2 == l.removeAtFront() && 4 == l.count, "Test failed.")
-		XCTAssert(1 == l.removeAtFront() && 3 == l.count, "Test failed.")
+		XCTAssert(3 == l.removeFront() && 5 == l.count, "Test failed.")
+		XCTAssert(2 == l.removeFront() && 4 == l.count, "Test failed.")
+		XCTAssert(1 == l.removeFront() && 3 == l.count, "Test failed.")
 		
 		l.cursorToBack()
-		XCTAssert(7 == l.removeAtBack() && 2 == l.count, "Test failed.")
-		XCTAssert(6 == l.removeAtBack() && 1 == l.count, "Test failed.")
-		XCTAssert(5 == l.removeAtBack() && 0 == l.count, "Test failed.")
+		XCTAssert(7 == l.removeBack() && 2 == l.count, "Test failed.")
+		XCTAssert(6 == l.removeBack() && 1 == l.count, "Test failed.")
+		XCTAssert(5 == l.removeBack() && 0 == l.count, "Test failed.")
 		
 		l.removeAll()
 		l.cursorToFront()
@@ -101,7 +101,7 @@ class ListTests: XCTestCase {
 		XCTAssert(1 == l.cursor && 1 == l.count, "Test failed, got \(l.cursor)")
 		
 		l.removeAll()
-		l.insertAtBack(1)
+		l.insertBack(1)
 		XCTAssert(1 == l.cursor && 1 == l.count, "Test failed, got \(l.cursor)")
 		l.insertAfterCursor(2)
 		l.insertAfterCursor(6)
@@ -111,24 +111,24 @@ class ListTests: XCTestCase {
 		l.insertBeforeCursor(5)
 		l.previous
 		XCTAssert(5 == l.cursor && 5 == l.count, "Test failed, got \(l.cursor)")
-		l.insertAtBack(4)
+		l.insertBack(4)
 		l.previous
-		l.removeAtCursor()
+		l.removeCursor()
 		XCTAssert(5 == l.cursor && 5 == l.count, "Test failed, got \(l.cursor)")
-		l.removeAtCursor()
+		l.removeCursor()
 		XCTAssert(6 == l.cursor && 4 == l.count, "Test failed, got \(l.cursor)")
-		l.removeAtCursor()
+		l.removeCursor()
 		XCTAssert(2 == l.cursor && 3 == l.count, "Test failed, got \(l.cursor)")
-		l.removeAtCursor()
+		l.removeCursor()
 		XCTAssert(1 == l.previous && 2 == l.count, "Test failed, got \(l.cursor)")
-		l.removeAtCursor()
+		l.removeCursor()
 		XCTAssert(l.front == l.cursor && l.back == l.cursor && 1 == l.count, "Test failed, got \(l.cursor)")
-		l.removeAtCursor()
+		l.removeCursor()
 		XCTAssert(nil == l.cursor && 0 == l.count, "Test failed, got \(l.cursor)")
 		
-		l.insertAtFront(1)
-		l.insertAtBack(2)
-		l.insertAtFront(3)
+		l.insertFront(1)
+		l.insertBack(2)
+		l.insertFront(3)
 		
 		for x in l {
 			println(x)

@@ -34,35 +34,35 @@ class DequeTests: XCTestCase {
 	func testInt() {
 		let d: Deque<Int> = Deque<Int>()
 		
-		d.pushFront(1)
-		d.pushFront(2)
-		d.pushFront(3)
+		d.insertFront(1)
+		d.insertFront(2)
+		d.insertFront(3)
 		
 		XCTAssert(3 == d.count, "Count incorrect, got \(d.count).")
 		
 		XCTAssert(3 == d.front, "Front incorrect, got \(d.front)")
 		XCTAssert(1 == d.back, "Back incorrect, got \(d.back)")
 		
-		d.pushBack(5)
-		d.pushBack(6)
-		d.pushBack(7)
+		d.insertBack(5)
+		d.insertBack(6)
+		d.insertBack(7)
 		
 		XCTAssert(6 == d.count, "Count incorrect, got \(d.count).")
 		
 		XCTAssert(3 == d.front, "Front incorrect, got \(d.front)")
 		XCTAssert(7 == d.back, "Back incorrect, got \(d.back)")
 		
-		XCTAssert(3 == d.popFront() && 5 == d.count && 2 == d.front, "PopFront incorrect")
-		XCTAssert(2 == d.popFront() && 4 == d.count && 1 == d.front, "PopFront incorrect")
-		XCTAssert(1 == d.popFront() && 3 == d.count && 5 == d.front, "PopFront incorrect")
+		XCTAssert(3 == d.removeFront() && 5 == d.count && 2 == d.front, "removeFront incorrect")
+		XCTAssert(2 == d.removeFront() && 4 == d.count && 1 == d.front, "removeFront incorrect")
+		XCTAssert(1 == d.removeFront() && 3 == d.count && 5 == d.front, "removeFront incorrect")
 		
-		XCTAssert(7 == d.popBack() && 2 == d.count && 6 == d.back, "PopBack incorrect")
-		XCTAssert(6 == d.popBack() && 1 == d.count && 5 == d.back, "PopBack incorrect")
-		XCTAssert(5 == d.popBack() && 0 == d.count && nil == d.back, "PopBack incorrect")
+		XCTAssert(7 == d.removeBack() && 2 == d.count && 6 == d.back, "removeBack incorrect")
+		XCTAssert(6 == d.removeBack() && 1 == d.count && 5 == d.back, "removeBack incorrect")
+		XCTAssert(5 == d.removeBack() && 0 == d.count && nil == d.back, "removeBack incorrect")
 		
-		d.pushFront(1)
-		d.pushFront(2)
-		d.pushFront(3)
+		d.insertFront(1)
+		d.insertFront(2)
+		d.insertFront(3)
 		d.removeAll()
 		
 		XCTAssert(0 == d.count, "Count incorrect, got \(d.count).")
