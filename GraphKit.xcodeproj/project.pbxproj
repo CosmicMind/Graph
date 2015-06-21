@@ -170,7 +170,7 @@
 		968F387E1AD7372400E963AB /* BondSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BondSearchTests.swift; sourceTree = "<group>"; };
 		968F38811AD7379500E963AB /* ActionSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSearchTests.swift; sourceTree = "<group>"; };
 		968F388D1AD7392900E963AB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		968F38971AD7392900E963AB /* GKGraphKit iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "GKGraphKit iOS Tests.xctest"; path = "GraphKit iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		968F38971AD7392900E963AB /* GraphKit iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		969F6D8C1B2CC76E00B573F8 /* QueueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		969F6D9B1B2DC81900B573F8 /* Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		969F6DA11B2DCB0200B573F8 /* Deque.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deque.swift; sourceTree = "<group>"; };
@@ -206,7 +206,7 @@
 		96C031DD1AD72FE100EE4C63 /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		96C031DE1AD72FE100EE4C63 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96C031EF1AD7306200EE4C63 /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		96C031F91AD7306200EE4C63 /* GKGraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "GKGraphKit OSX Tests.xctest"; path = "GraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96C031F91AD7306200EE4C63 /* GraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -386,9 +386,9 @@
 			isa = PBXGroup;
 			children = (
 				96C031EF1AD7306200EE4C63 /* GraphKit.framework */,
-				96C031F91AD7306200EE4C63 /* GKGraphKit OSX Tests.xctest */,
+				96C031F91AD7306200EE4C63 /* GraphKit OSX Tests.xctest */,
 				968F388D1AD7392900E963AB /* GraphKit.framework */,
-				968F38971AD7392900E963AB /* GKGraphKit iOS Tests.xctest */,
+				968F38971AD7392900E963AB /* GraphKit iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -494,7 +494,7 @@
 			);
 			name = "GraphKit iOS Tests";
 			productName = "GKGraphKit iOSTests";
-			productReference = 968F38971AD7392900E963AB /* GKGraphKit iOS Tests.xctest */;
+			productReference = 968F38971AD7392900E963AB /* GraphKit iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		96C031EE1AD7306200EE4C63 /* GraphKit OSX */ = {
@@ -530,7 +530,7 @@
 			);
 			name = "GraphKit OSX Tests";
 			productName = "GKGraphKit OSXTests";
-			productReference = 96C031F91AD7306200EE4C63 /* GKGraphKit OSX Tests.xctest */;
+			productReference = 96C031F91AD7306200EE4C63 /* GraphKit OSX Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
