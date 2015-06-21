@@ -92,27 +92,27 @@ public class Deque<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* pushFront
+	* insertAtFront
 	* Insert a new item at the front of the Deque.
 	*/
-	public func pushFront(data: T?) {
+	public func insertAtFront(data: T?) {
 		list.insertAtFront(data)
 	}
 	
 	/**
-	* popFront
+	* removeAtFront
 	* Get the item at the front of the Deque
 	* and remove it.
 	*/
-	public func popFront() -> T? {
+	public func removeAtFront() -> T? {
 		return list.removeAtFront()
 	}
 	
 	/**
-	* pushBack
+	* insertAtBack
 	* Insert a new item at the back of the Deque.
 	*/
-	public func pushBack(data: T?) {
+	public func insertAtBack(data: T?) {
 		list.insertAtBack(data)
 	}
 	
@@ -120,7 +120,7 @@ public class Deque<T>: Printable, SequenceType {
 	* Get the item at the back of the Deque
 	* and remove it.
 	*/
-	public func popBack() -> T? {
+	public func removeAtBack() -> T? {
 		return list.removeAtBack()
 	}
 	
