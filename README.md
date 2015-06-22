@@ -1,6 +1,6 @@
 ## GraphKit
 
-GraphKit is a framework for data completely written in Swift, that allows you to take advantage of powerful data manipulation in a fraction of the time. GraphKit data structures may be used on their own, or combined with the power of Graph, which is a Graph data store built on CoreData.
+GraphKit is a framework for data completely written in Swift that allows you to take advantage of powerful data manipulation in a fraction of the time. GraphKit data structures may be used on their own, or combined with the power of Graph, which is a Graph data store built on CoreData.
 
 
 ### Elementary Data Structures
