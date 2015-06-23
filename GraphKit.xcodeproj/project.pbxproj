@@ -289,9 +289,9 @@
 			isa = PBXGroup;
 			children = (
 				96C031BD1AD72FD300EE4C63 /* Entity.swift */,
+				96C031C31AD72FD300EE4C63 /* ManagedEntity.swift */,
 				96C031BE1AD72FD300EE4C63 /* EntityGroup.swift */,
 				96C031BF1AD72FD300EE4C63 /* EntityProperty.swift */,
-				96C031C31AD72FD300EE4C63 /* ManagedEntity.swift */,
 			);
 			name = Entity;
 			sourceTree = "<group>";

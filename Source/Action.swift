@@ -68,8 +68,8 @@ public class Action: NSObject {
 	* @return       String? of the ID
 	*/
 	public var id: String {
-		var nodeURL: NSURL = node.objectID.URIRepresentation()
-		var oID: String = nodeURL.lastPathComponent!
+		let nodeURL: NSURL = node.objectID.URIRepresentation()
+		let oID: String = nodeURL.lastPathComponent!
 		return nodeClass + type + oID
 	}
 	
@@ -134,16 +134,11 @@ public class Action: NSObject {
 	* @return       Array<String>
 	*/
 	public var groups: Array<String> {
-		get {
-			var groups: Array<String> = Array<String>()
-			for group in node.groupSet {
-				groups.append(group.name)
-			}
-			return groups
+		var groups: Array<String> = Array<String>()
+		for group in node.groupSet {
+			groups.append(group.name)
 		}
-		set(value) {
-			assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
-		}
+		return groups
 	}
 	
 	/**
@@ -152,52 +147,41 @@ public class Action: NSObject {
 	* @return       Dictionary<String, AnyObject?>
 	*/
 	public var properties: Dictionary<String, AnyObject?> {
-		get {
-			var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
-			for property in node.propertySet {
-				properties[property.name] = property.value
-			}
-			return properties
+		var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
+		for property in node.propertySet {
+			properties[property.name] = property.value
 		}
-		set(value) {
-			assert(false, "[GraphKit Error: Properties is not allowed to be set.]")
-		}
+		return properties
 	}
 	
     /**
     * subjects
-    * Retrieves an Array of Entity Objects.
-    * @return       Array<Entity>
+    * Retrieves a MultiTree of Entity Objects. Where the key is the type
+	* of Entity, and the value is the Entity instance.
+    * @return       MultiTree<String, Entity>
     */
-    public var subjects: Array<Entity> {
-        get {
-            var nodes: Array<Entity> = Array<Entity>()
-			for entry in node.subjectSet {
-				nodes.append(Entity(entity: entry as! ManagedEntity))
-			}
-            return nodes
-        }
-        set(value) {
-            assert(false, "[GraphKit Error: Subjects may not be set.]")
-        }
+    public var subjects: MultiTree<String, Entity> {
+		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
+		for entry in node.subjectSet {
+			let entity: Entity = Entity(entity: entry as! ManagedEntity)
+			nodes.insert(entity.type, value: entity)
+		}
+		return nodes
     }
 
     /**
     * objects
-    * Retrieves an Array of Entity Objects.
-    * @return       Array<Entity>
+	* Retrieves a MultiTree of Entity Objects. Where the key is the type
+	* of Entity, and the value is the Entity instance.
+    * @return       MultiTree<String, Entity>
     */
-    public var objects: Array<Entity> {
-        get {
-            var nodes: Array<Entity> = Array<Entity>()
-			for entry in node.objectSet {
-				nodes.append(Entity(entity: entry as! ManagedEntity))
-			}
-            return nodes
-        }
-        set(value) {
-            assert(false, "[GraphKit Error: Objects may not be set.]")
-        }
+    public var objects: MultiTree<String, Entity> {
+		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
+		for entry in node.objectSet {
+			let entity: Entity = Entity(entity: entry as! ManagedEntity)
+			nodes.insert(entity.type, value: entity)
+		}
+		return nodes
     }
 
     /**
@@ -227,7 +211,12 @@ public class Action: NSObject {
 	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	public func hasSubject(entity: Entity!) -> Bool {
-		return contains(subjects, entity)
+		for e in subjects.search(entity.type) {
+			if e!.id == entity.id {
+				return true
+			}
+		}
+		return false
 	}
 
     /**
@@ -257,7 +246,12 @@ public class Action: NSObject {
 	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	public func hasObject(entity: Entity!) -> Bool {
-		return contains(objects, entity)
+		for e in objects.search(entity.type) {
+			if e!.id == entity.id {
+				return true
+			}
+		}
+		return false
 	}
 	
     /**

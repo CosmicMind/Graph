@@ -89,3 +89,36 @@ public class Tree<K: Comparable, V>: RedBlackTree<K, V> {
 		}
 	}
 }
+
+func +<K: Comparable, V>(lhs: Tree<K, V>, rhs: Tree<K, V>) -> Tree<K, V> {
+	var t1: Tree<K, V>?
+	var t2: Tree<K, V>?
+	if lhs.count < rhs.count {
+		t1 = rhs
+		t2 = lhs
+	} else {
+		t1 = lhs
+		t2 = rhs
+	}
+	for var i: Int = t2!.count; i > 0; --i {
+		let n: RedBlackNode<K, V> = t2!.select(t2!.root, order: i)
+		t1!.insert(n.key, value: n.value)
+	}
+	return t1!
+}
+
+func -<K: Comparable, V>(lhs: Tree<K, V>, rhs: Tree<K, V>) -> Tree<K, V> {
+	var t1: Tree<K, V>?
+	var t2: Tree<K, V>?
+	if lhs.count < rhs.count {
+		t1 = rhs
+		t2 = lhs
+	} else {
+		t1 = lhs
+		t2 = rhs
+	}
+	for var i: Int = t2!.count; i > 0; --i {
+		t1!.remove(t2!.select(t2!.root, order: i).key)
+	}
+	return t1!
+}

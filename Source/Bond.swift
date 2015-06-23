@@ -68,8 +68,8 @@ public class Bond: NSObject {
 	* @return       String? of the ID
 	*/
 	public var id: String {
-		var nodeURL: NSURL = node.objectID.URIRepresentation()
-		var oID: String = nodeURL.lastPathComponent!
+		let nodeURL: NSURL = node.objectID.URIRepresentation()
+		let oID: String = nodeURL.lastPathComponent!
 		return nodeClass + type + oID
 	}
 	
@@ -134,16 +134,11 @@ public class Bond: NSObject {
 	* @return       Array<String>
 	*/
 	public var groups: Array<String> {
-		get {
-			var groups: Array<String> = Array<String>()
-			for group in node.groupSet {
-				groups.append(group.name)
-			}
-			return groups
+		var groups: Array<String> = Array<String>()
+		for group in node.groupSet {
+			groups.append(group.name)
 		}
-		set(value) {
-			assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
-		}
+		return groups
 	}
 	
 	/**
@@ -152,16 +147,11 @@ public class Bond: NSObject {
 	* @return       Dictionary<String, AnyObject?>
 	*/
 	public var properties: Dictionary<String, AnyObject?> {
-		get {
-			var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
-			for property in node.propertySet {
-				properties[property.name] = property.value
-			}
-			return properties
+		var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
+		for property in node.propertySet {
+			properties[property.name] = property.value
 		}
-		set(value) {
-			assert(false, "[GraphKit Error: Properties is not allowed to be set.]")
-		}
+		return properties
 	}
 
     /**

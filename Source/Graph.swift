@@ -264,19 +264,19 @@ public class Graph: NSObject {
 	* search(EntityGroupMap)
 	* Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
 	* @param        name: String
-	* @return       Dictionary<String, Array<Entity>>
+	* @return       Tree<String, MultiTree<String, Entity>>
 	*/
-	public func search(EntityGroupMap name: String) -> Tree<String, Tree<String, Entity>> {
+	public func search(EntityGroupMap name: String) -> Tree<String, MultiTree<String, Entity>> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: Tree<String, Tree<String, Entity>> = Tree<String, Tree<String, Entity>>()
+		let nodes: Tree<String, MultiTree<String, Entity>> = Tree<String, MultiTree<String, Entity>>()
 		for group: EntityGroup in entries as! Array<EntityGroup> {
 			let node: Entity = Entity(entity: group.node)
 			if (nil == nodes[group.name]) {
-				let set: Tree<String, Entity> = Tree<String, Entity>()
-				set.insert(node.id, value: node)
+				let set: MultiTree<String, Entity> = MultiTree<String, Entity>()
+				set.insert(node.type, value: node)
 				nodes.insert(group.name, value: set)
 			} else {
-				nodes[group.name]!.insert(node.id, value: node)
+				nodes[group.name]!.insert(node.type, value: node)
 			}
 		}
 		return nodes
@@ -286,14 +286,14 @@ public class Graph: NSObject {
 	* search(EntityProperty)
 	* Searches the Graph for Entity Property Objects with the following name LIKE ?.
 	* @param        name: String
-	* @return       Tree<String, Entity>
+	* @return       MultiTree<String, Entity>
 	*/
-	public func search(EntityProperty name: String) -> Tree<String, Entity> {
+	public func search(EntityProperty name: String) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: Tree<String, Entity> = Tree<String, Entity>()
+		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
-			nodes.insert(node.id, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -310,7 +310,7 @@ public class Graph: NSObject {
 		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
-			nodes.insert(node[name] as! String, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -320,14 +320,14 @@ public class Graph: NSObject {
 	* Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	* @param        name: String
 	* @param        value: Int
-	* @return       MultiTree<Int, Entity>
+	* @return       MultiTree<String, Entity>
 	*/
-	public func search(EntityProperty name: String, value: Int) -> MultiTree<Int, Entity> {
+	public func search(EntityProperty name: String, value: Int) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
-		let nodes: MultiTree<Int, Entity> = MultiTree<Int, Entity>()
+		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
-			nodes.insert(node[name] as! Int, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -352,14 +352,14 @@ public class Graph: NSObject {
 	* search(ActionGroup)
 	* Searches the Graph for Action Group Objects with the following name LIKE ?.
 	* @param        name: String
-	* @return       Tree<String, Action>
+	* @return       MultiTree<String, Action>
 	*/
-	public func search(ActionGroup name: String) -> Tree<String, Action> {
+	public func search(ActionGroup name: String) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: Tree<String, Action> = Tree<String, Action>()
+		let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
 		for group: ActionGroup in entries as! Array<ActionGroup> {
 			let node: Action = Action(action: group.node)
-			nodes.insert(node.id, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -368,19 +368,19 @@ public class Graph: NSObject {
 	* search(ActionGroupMap)
 	* Retrieves all the unique Group Names for Action Nodes with their Action Objects.
 	* @param        name: String
-	* @return       Dictionary<String, Array<Action>>
+	* @return       Tree<String, MultiTree<String, Action>>
 	*/
-	public func search(ActionGroupMap name: String) -> Tree<String, Tree<String, Action>> {
+	public func search(ActionGroupMap name: String) -> Tree<String, MultiTree<String, Action>> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: Tree<String, Tree<String, Action>> = Tree<String, Tree<String, Action>>()
+		let nodes: Tree<String, MultiTree<String, Action>> = Tree<String, MultiTree<String, Action>>()
 		for group: ActionGroup in entries as! Array<ActionGroup> {
 			let node: Action = Action(action: group.node)
 			if (nil == nodes[group.name]) {
-				let set: Tree<String, Action> = Tree<String, Action>()
-				set.insert(node.id, value: node)
+				let set: MultiTree<String, Action> = MultiTree<String, Action>()
+				set.insert(node.type, value: node)
 				nodes.insert(group.name, value: set)
 			} else {
-				nodes[group.name]!.insert(node.id, value: node)
+				nodes[group.name]!.insert(node.type, value: node)
 			}
 		}
 		return nodes
@@ -390,14 +390,14 @@ public class Graph: NSObject {
 	* search(ActionProperty)
 	* Searches the Graph for Action Property Objects with the following name LIKE ?.
 	* @param        name: String
-	* @return       Tree<String, Action>
+	* @return       MultiTree<String, Action>
 	*/
-	public func search(ActionProperty name: String) -> Tree<String, Action> {
+	public func search(ActionProperty name: String) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: Tree<String, Action> = Tree<String, Action>()
+		let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
-			nodes.insert(node.id, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -414,7 +414,7 @@ public class Graph: NSObject {
 		let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
-			nodes.insert(node[name] as! String, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -424,14 +424,14 @@ public class Graph: NSObject {
 	* Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	* @param        name: String
 	* @param        value: Int
-	* @return       MultiTree<Int, Action>
+	* @return       MultiTree<String, Action>
 	*/
-	public func search(ActionProperty name: String, value: Int) -> MultiTree<Int, Action> {
+	public func search(ActionProperty name: String, value: Int) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
-		let nodes: MultiTree<Int, Action> = MultiTree<Int, Action>()
+		let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
-			nodes.insert(node[name] as! Int, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -456,14 +456,14 @@ public class Graph: NSObject {
 	* search(BondGroup)
 	* Searches the Graph for Bond Group Objects with the following name LIKE ?.
 	* @param        name: String
-	* @return       Tree<String, Bond>
+	* @return       MultiTree<String, Bond>
 	*/
-	public func search(BondGroup name: String) -> Tree<String, Bond> {
+	public func search(BondGroup name: String) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: Tree<String, Bond> = Tree<String, Bond>()
+		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
 		for group: BondGroup in entries as! Array<BondGroup> {
 			let node: Bond = Bond(bond: group.node)
-			nodes.insert(node.id, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -472,19 +472,19 @@ public class Graph: NSObject {
 	* search(BondGroupMap)
 	* Retrieves all the unique Group Names for Bond Nodes with their Bond Objects.
 	* @param        name: String
-	* @return       Dictionary<String, Array<Bond>>
+	* @return       Tree<String, MultiTree<String, Bond>>
 	*/
-	public func search(BondGroupMap name: String) -> Tree<String, Tree<String, Bond>> {
+	public func search(BondGroupMap name: String) -> Tree<String, MultiTree<String, Bond>> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: Tree<String, Tree<String, Bond>> = Tree<String, Tree<String, Bond>>()
+		let nodes: Tree<String, MultiTree<String, Bond>> = Tree<String, MultiTree<String, Bond>>()
 		for group: BondGroup in entries as! Array<BondGroup> {
 			let node: Bond = Bond(bond: group.node)
 			if (nil == nodes[group.name]) {
-				let set: Tree<String, Bond> = Tree<String, Bond>()
-				set.insert(node.id, value: node)
+				let set: MultiTree<String, Bond> = MultiTree<String, Bond>()
+				set.insert(node.type, value: node)
 				nodes.insert(group.name, value: set)
 			} else {
-				nodes[group.name]!.insert(node.id, value: node)
+				nodes[group.name]!.insert(node.type, value: node)
 			}
 		}
 		return nodes
@@ -494,14 +494,14 @@ public class Graph: NSObject {
 	* search(BondProperty)
 	* Searches the Graph for Bond Property Objects with the following name LIKE ?.
 	* @param        name: String
-	* @return       Tree<String, Bond>
+	* @return       MultiTree<String, Bond>
 	*/
-	public func search(BondProperty name: String) -> Tree<String, Bond> {
+	public func search(BondProperty name: String) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: Tree<String, Bond> = Tree<String, Bond>()
+		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
-			nodes.insert(node.id, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -518,7 +518,7 @@ public class Graph: NSObject {
 		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
-			nodes.insert(node[name] as! String, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
@@ -528,14 +528,14 @@ public class Graph: NSObject {
 	* Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	* @param        name: String
 	* @param        value: Int
-	* @return       MultiTree<Int, Bond>
+	* @return       MultiTree<String, Bond>
 	*/
-	public func search(BondProperty name: String, value: Int) -> MultiTree<Int, Bond> {
+	public func search(BondProperty name: String, value: Int) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
-		let nodes: MultiTree<Int, Bond> = MultiTree<Int, Bond>()
+		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
-			nodes.insert(node[name] as! Int, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}

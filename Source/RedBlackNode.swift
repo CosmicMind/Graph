@@ -104,42 +104,22 @@ internal class RedBlackNode<K: Comparable, V>: Comparable, Equatable, Printable 
 	}
 }
 
-/**
-* ==
-* Conforms to the Comparable Protocol.
-*/
-func == <K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
+func ==<K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
 	return lhs.key == rhs.key
 }
 
-/**
-* <=
-* Conforms to the Comparable Protocol.
-*/
-func <= <K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
+func <=<K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
 	return lhs.key <= rhs.key
 }
 
-/**
-* >=
-* Conforms to the Comparable Protocol.
-*/
-func >= <K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
+func >=<K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
 	return lhs.key >= rhs.key
 }
 
-/**
-* >
-* Conforms to the Comparable Protocol.
-*/
-func > <K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
+func ><K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
 	return lhs.key > rhs.key
 }
 
-/**
-* <
-* Conforms to the Comparable Protocol.
-*/
-func < <K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
+func <<K: Comparable, V>(lhs: RedBlackNode<K, V>, rhs: RedBlackNode<K, V>) -> Bool {
 	return lhs.key < rhs.key
 }

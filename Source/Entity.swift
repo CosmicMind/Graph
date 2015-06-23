@@ -68,8 +68,8 @@ public class Entity: NSObject {
 	* @return       String? of the ID
 	*/
 	public var id: String {
-		var nodeURL: NSURL = node.objectID.URIRepresentation()
-		var oID: String = nodeURL.lastPathComponent!
+		let nodeURL: NSURL = node.objectID.URIRepresentation()
+		let oID: String = nodeURL.lastPathComponent!
 		return nodeClass + type + oID
 	}
 	
@@ -134,16 +134,11 @@ public class Entity: NSObject {
 	* @return       Array<String>
 	*/
 	public var groups: Array<String> {
-		get {
-			var groups: Array<String> = Array<String>()
-			for group in node.groupSet {
-				groups.append(group.name)
-			}
-			return groups
+		var groups: Array<String> = Array<String>()
+		for group in node.groupSet {
+			groups.append(group.name)
 		}
-		set(value) {
-			assert(false, "[GraphKit Error: Groups is not allowed to be set.]")
-		}
+		return groups
 	}
 	
 	/**
@@ -152,116 +147,99 @@ public class Entity: NSObject {
 	* @return       Dictionary<String, AnyObject?>
 	*/
 	public var properties: Dictionary<String, AnyObject?> {
-		get {
-			var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
-			for property in node.propertySet {
-				properties[property.name] = property.value
-			}
-			return properties
+		var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
+		for property in node.propertySet {
+			properties[property.name] = property.value
 		}
-		set(value) {
-			assert(false, "[GraphKit Error: Properties is not allowed to be set.]")
-		}
+		return properties
 	}
 	
 	/**
     * actions
-    * Retrieves an Array of Action Objects.
-    * @return       Array<Action>
+    * Retrieves a MultiTree of Action objects. Where the key
+	* is the type of Action and the value is the Action instance.
+    * @return       MultiTree<String, Action>
     */
-    public var actions: Array<Action> {
-        get {
-            return actionsWhenSubject + actionsWhenObject
-        }
-        set(value) {
-            assert(false, "[GraphKit Error: Actions may not be set.]")
-        }
+    public var actions: MultiTree<String, Action> {
+        return actionsWhenSubject + actionsWhenObject
     }
 
     /**
     * actionsWhenSubject
-    * Retrieves an Array of Action Objects when the Entity is a Subject of the Action.
-    * @return       Array<Action>
+	* Retrieves a MultiTree of Action objects. Where the key
+	* is the type of Action and the value is the Action instance.
+	* The Actions included are those when the Entity is the subject of
+	* the Action.
+    * @return       MultiTree<String, Action>
     */
-    public var actionsWhenSubject: Array<Action> {
-        get {
-            var nodes: Array<Action> = Array<Action>()
-			for entry in node.actionSubjectSet {
-				nodes.append(Action(action: entry as! ManagedAction))
-			}
-            return nodes
-        }
-        set(value) {
-            assert(false, "[GraphKit Error: ActionWhenSubject may not be set.]")
-        }
+    public var actionsWhenSubject: MultiTree<String, Action> {
+		let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
+		for entry in node.actionSubjectSet {
+			let action: Action = Action(action: entry as! ManagedAction)
+			nodes.insert(action.type, value: action)
+		}
+		return nodes
     }
 
     /**
     * actionsWhenObject
-    * Retrieves an Array of Action Objects when the Entity is an Object of the Action.
-    * @return       Array<Action>
+	* Retrieves a MultiTree of Action objects. Where the key
+	* is the type of Action and the value is the Action instance.
+	* The Actions included are those when the Entity is the object of
+	* the Action.
+	* @return       MultiTree<String, Action>
     */
-    public var actionsWhenObject: Array<Action> {
-        get {
-            var nodes: Array<Action> = Array<Action>()
-			for entry in node.actionObjectSet {
-				nodes.append(Action(action: entry as! ManagedAction))
-			}
-            return nodes
-        }
-        set(value) {
-            assert(false, "[GraphKit Error: ActionWhenObject may not be set.]")
-        }
+    public var actionsWhenObject: MultiTree<String, Action> {
+        let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
+		for entry in node.actionObjectSet {
+			let action: Action = Action(action: entry as! ManagedAction)
+			nodes.insert(action.type, value: action)
+		}
+		return nodes
     }
 
     /**
     * bonds
-    * Retrieves an Array of Bond Objects.
-    * @return       Array<Bond>
+	* Retrieves a MultiTree of Bond objects. Where the key
+	* is the type of Bond and the value is the Bond instance.
+	* @return       MultiTree<String, Bond>
     */
-    public var bonds: Array<Bond> {
-        get {
-            return bondsWhenSubject + bondsWhenObject
-        }
-        set(value) {
-            assert(false, "[GraphKit Error: Bonds may not be set.]")
-        }
+    public var bonds: MultiTree<String, Bond> {
+        return bondsWhenSubject + bondsWhenObject
     }
 
     /**
     * bondsWhenSubject
-    * Retrieves an Array of Bond Objects when the Entity is a Subject of the Bond.
-    * @return       Array<Bond>
+	* Retrieves a MultiTree of Bond objects. Where the key
+	* is the type of Bond and the value is the Bond instance.
+	* The Bonds included are those when the Entity is the subject of
+	* the Bond.
+	* @return       MultiTree<String, Bond>
     */
-    public var bondsWhenSubject: Array<Bond> {
-        get {
-            var nodes: Array<Bond> = Array<Bond>()
-			for entry in node.bondSubjectSet {
-				nodes.append(Bond(bond: entry as! ManagedBond))
-			}
-            return nodes
-        }
-        set(value) {
-            assert(false, "[GraphKit Error: BondWhenSubject may not be set.]")
-        }
+    public var bondsWhenSubject: MultiTree<String, Bond> {
+		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
+		for entry in node.bondSubjectSet {
+			let bond: Bond = Bond(bond: entry as! ManagedBond)
+			nodes.insert(bond.type, value: bond)
+		}
+		return nodes
     }
 
     /**
     * bondsWhenObject
-    * Retrieves an Array of Bond Objects when the Entity is an Object of the Bond.
-    * @return       Array<Bond>
+	* Retrieves a MultiTree of Bond objects. Where the key
+	* is the type of Bond and the value is the Bond instance.
+	* The Bonds included are those when the Entity is the object of
+	* the Bond.
+	* @return       MultiTree<String, Bond>
     */
-    public var bondsWhenObject: Array<Bond> {
-        get {
-            var nodes: Array<Bond> = Array<Bond>()
-			for entry in node.bondObjectSet {
-				nodes.append(Bond(bond: entry as! ManagedBond))
-			}
-            return nodes
-        }
-        set(value) {
-            assert(false, "[GraphKit Error: BondWhenObject may not be set.]")
-        }
+    public var bondsWhenObject: MultiTree<String, Bond> {
+		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
+		for entry in node.bondObjectSet {
+			let bond: Bond = Bond(bond: entry as! ManagedBond)
+			nodes.insert(bond.type, value: bond)
+		}
+		return nodes
     }
 
     /**

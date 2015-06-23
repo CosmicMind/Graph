@@ -29,13 +29,11 @@ internal class BondGroup: NSManagedObject {
 
 	private var context: NSManagedObjectContext?
 	internal var worker: NSManagedObjectContext? {
-		get {
-			if nil == context {
-				let graph: Graph = Graph()
-				context = graph.worker
-			}
-			return context
+		if nil == context {
+			let graph: Graph = Graph()
+			context = graph.worker
 		}
+		return context
 	}
 	
 	/**
