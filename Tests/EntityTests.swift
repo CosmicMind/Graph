@@ -139,7 +139,7 @@ class EntityTests : XCTestCase, GraphDelegate {
     func graph(graph: Graph, didInsertEntity entity: Entity, group: String) {
         if "Female" == group {
             groupInsertExpectation?.fulfill()
-            let nodes:Tree<String, Entity> = graph.search(EntityGroup: group)
+            let nodes: MultiTree<String, Entity> = graph.search(EntityGroup: group)
             if entity.id == nodes.first!.id {
                 groupSearchExpectation?.fulfill()
             }
