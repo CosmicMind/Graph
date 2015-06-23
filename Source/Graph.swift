@@ -138,10 +138,8 @@ public class Graph: NSObject {
 			w!.performBlockAndWait {
 				var error: NSError?
 				if w!.save(&error) {
-					p!.performBlockAndWait {
-						dispatch_async(dispatch_get_main_queue()) {
-							completion?(success: p!.save(&error), error: error)
-						}
+					dispatch_async(dispatch_get_main_queue()) {
+						completion?(success: p!.save(&error), error: error)
 					}
 				} else {
 					dispatch_async(dispatch_get_main_queue()) {
@@ -251,14 +249,14 @@ public class Graph: NSObject {
 	* search(EntityGroup)
 	* Searches the Graph for Entity Group Objects with the following name LIKE ?.
 	* @param        name: String
-	* @return       Tree<String, Entity>
+	* @return       MultiTree<String, Entity>
 	*/
-	public func search(EntityGroup name: String) -> Tree<String, Entity> {
+	public func search(EntityGroup name: String) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: Tree<String, Entity> = Tree<String, Entity>()
+		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
 		for group: EntityGroup in entries as! Array<EntityGroup> {
 			let node: Entity = Entity(entity: group.node)
-			nodes.insert(node.id, value: node)
+			nodes.insert(node.type, value: node)
 		}
 		return nodes
 	}
