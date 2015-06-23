@@ -17,7 +17,7 @@
 *
 * Deque
 *
-* A Deque is a combination between a Stack and Queue. It allows for
+* A Deque is a combination between a Deque and Queue. It allows for
 * access of the latest and oldest data, as well as, allows insertion
 * of data to be placed at the back or front of the structure. The
 * following Deque implementation is backed by a List data structure.
@@ -131,4 +131,15 @@ public class Deque<T>: Printable, SequenceType {
 	public func removeAll() {
 		list.removeAll()
 	}
+}
+
+public func +<T>(lhs: Deque<T>, rhs: Deque<T>) -> Deque<T> {
+	let d: Deque<T> = Deque<T>()
+	for x in lhs {
+		d.insertAtBack(x)
+	}
+	for x in rhs {
+		d.insertAtBack(x)
+	}
+	return d
 }

@@ -106,3 +106,14 @@ public class Queue<T>: Printable, SequenceType {
 		list.removeAll()
 	}
 }
+
+public func +<T>(lhs: Queue<T>, rhs: Queue<T>) -> Queue<T> {
+	let q: Queue<T> = Queue<T>()
+	for x in lhs {
+		q.enqueue(x)
+	}
+	for x in rhs {
+		q.enqueue(x)
+	}
+	return q
+}

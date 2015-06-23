@@ -68,6 +68,28 @@ class DequeTests: XCTestCase {
 		XCTAssert(0 == d.count, "Count incorrect, got \(d.count).")
 	}
 	
+	func testConcat() {
+		let d1: Deque<Int> = Deque<Int>()
+		d1.insertAtBack(1)
+		d1.insertAtBack(2)
+		d1.insertAtBack(3)
+		
+		let d2: Deque<Int> = Deque<Int>()
+		d2.insertAtBack(4)
+		d2.insertAtBack(5)
+		d2.insertAtBack(6)
+		
+		let d3: Deque<Int> = d1 + d2
+		
+		for x in d1 {
+			XCTAssert(x == d3.removeAtFront(), "Concat incorrect.")
+		}
+		
+		for x in d2 {
+			XCTAssert(x == d3.removeAtFront(), "Concat incorrect.")
+		}
+	}
+	
 	func testPerformanceExample() {
 		// This is an example of a performance test case.
 		self.measureBlock() {
