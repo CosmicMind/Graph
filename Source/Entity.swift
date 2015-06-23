@@ -131,12 +131,13 @@ public class Entity: NSObject {
 	/**
 	* groups
 	* Retrieves the Groups the Node is a part of.
-	* @return       Array<String>
+	* @return       Tree<String, String>
 	*/
-	public var groups: Array<String> {
-		var groups: Array<String> = Array<String>()
+	public var groups: Tree<String, String> {
+		var groups: Tree<String, String> = Tree<String, String>()
 		for group in node.groupSet {
-			groups.append(group.name)
+			let name: String = group.name
+			groups.insert(name, value: name)
 		}
 		return groups
 	}
@@ -144,12 +145,12 @@ public class Entity: NSObject {
 	/**
 	* properties
 	* Retrieves the Properties the Node is a part of.
-	* @return       Dictionary<String, AnyObject?>
+	* @return       Tree<String, AnyObject?>
 	*/
-	public var properties: Dictionary<String, AnyObject?> {
-		var properties: Dictionary<String, AnyObject?> = Dictionary<String, AnyObject>()
+	public var properties: Tree<String, AnyObject?> {
+		var properties: Tree<String, AnyObject?> = Tree<String, AnyObject?>()
 		for property in node.propertySet {
-			properties[property.name] = property.value
+			properties.insert(property.name, value: property.value)
 		}
 		return properties
 	}
