@@ -135,6 +135,28 @@ class ListTests: XCTestCase {
 		}
 	}
 	
+	func testConcat() {
+		let l1: List<Int> = List<Int>()
+		l1.insertAtBack(1)
+		l1.insertAtBack(2)
+		l1.insertAtBack(3)
+		
+		let l2: List<Int> = List<Int>()
+		l2.insertAtBack(4)
+		l2.insertAtBack(5)
+		l2.insertAtBack(6)
+		
+		let l3: List<Int> = l1 + l2
+		
+		for x in l1 {
+			XCTAssert(x == l3.removeAtFront(), "Concat incorrect.")
+		}
+		
+		for x in l2 {
+			XCTAssert(x == l3.removeAtFront(), "Concat incorrect.")
+		}
+	}
+	
 	func testPerformanceExample() {
 		// This is an example of a performance test case.
 		self.measureBlock() {

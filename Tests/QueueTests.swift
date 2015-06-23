@@ -73,6 +73,28 @@ class QueueTests: XCTestCase {
 		println(q)
 	}
 	
+	func testConcat() {
+		let q1: Queue<Int> = Queue<Int>()
+		q1.enqueue(1)
+		q1.enqueue(2)
+		q1.enqueue(3)
+		
+		let q2: Queue<Int> = Queue<Int>()
+		q2.enqueue(4)
+		q2.enqueue(5)
+		q2.enqueue(6)
+		
+		let q3: Queue<Int> = q1 + q2
+		
+		for x in q1 {
+			XCTAssert(x == q3.dequeue(), "Concat incorrect.")
+		}
+		
+		for x in q2 {
+			XCTAssert(x == q3.dequeue(), "Concat incorrect.")
+		}
+	}
+	
 	func testPerformanceExample() {
 		// This is an example of a performance test case.
 		self.measureBlock() {

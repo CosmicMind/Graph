@@ -63,6 +63,21 @@ class StackTests: XCTestCase {
 		XCTAssert(0 == s.count, "Count incorrect, got \(s.count).")
 	}
 	
+	func testConcat() {
+		let s1: Stack<Int> = Stack<Int>()
+		s1.push(1)
+		s1.push(2)
+		s1.push(3)
+		
+		let s2: Stack<Int> = Stack<Int>()
+		s2.push(4)
+		s2.push(5)
+		s2.push(6)
+		
+		let s3: Stack<Int> = s1 + s2
+		XCTAssert(6 == s3.count, "Concat incorrect.")
+	}
+	
 	func testPerformanceExample() {
 		// This is an example of a performance test case.
 		self.measureBlock() {

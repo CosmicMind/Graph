@@ -661,34 +661,14 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 }
 
 public func +<K: Comparable, V>(lhs: RedBlackTree<K, V>, rhs: RedBlackTree<K, V>) -> RedBlackTree<K, V> {
-	var rb1: RedBlackTree<K, V>?
-	var rb2: RedBlackTree<K, V>?
-	if lhs.count < rhs.count {
-		rb1 = rhs
-		rb2 = lhs
-	} else {
-		rb1 = lhs
-		rb2 = rhs
+	let rb: RedBlackTree<K, V> = RedBlackTree<K, V>()
+	for var i: Int = lhs.count; i > 0; --i {
+		let n: RedBlackNode<K, V> = lhs.select(lhs.root, order: i)
+		rb.insert(n.key, value: n.value)
 	}
-	for var i: Int = rb2!.count; i > 0; --i {
-		let n: RedBlackNode<K, V> = rb2!.select(rb2!.root, order: i)
-		rb1!.insert(n.key, value: n.value)
+	for var i: Int = rhs.count; i > 0; --i {
+		let n: RedBlackNode<K, V> = rhs.select(rhs.root, order: i)
+		rb.insert(n.key, value: n.value)
 	}
-	return rb1!
-}
-
-public func -<K: Comparable, V>(lhs: RedBlackTree<K, V>, rhs: RedBlackTree<K, V>) -> RedBlackTree<K, V> {
-	var rb1: RedBlackTree<K, V>?
-	var rb2: RedBlackTree<K, V>?
-	if lhs.count < rhs.count {
-		rb1 = rhs
-		rb2 = lhs
-	} else {
-		rb1 = lhs
-		rb2 = rhs
-	}
-	for var i: Int = rb2!.count; i > 0; --i {
-		rb1!.remove(rb2!.select(rb2!.root, order: i).key)
-	}
-	return rb1!
+	return rb
 }

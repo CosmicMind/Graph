@@ -97,26 +97,48 @@ class TreeTests: XCTestCase {
 		XCTAssert(2 == s.count, "Test failed.")
 	}
 	
-	func testSetSearch() {
-		let s1: Tree<Int, Int> = Tree<Int, Int>()
-		XCTAssert(0 == s1.count, "Test failed, got \(s1.count).")
+	func testSearch() {
+		let t1: Tree<Int, Int> = Tree<Int, Int>()
+		XCTAssert(0 == t1.count, "Test failed, got \(t1.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
-			s1.insert(1, value: 1)
-			s1.insert(2, value: 2)
-			s1.insert(3, value: 3)
+			t1.insert(1, value: 1)
+			t1.insert(2, value: 2)
+			t1.insert(3, value: 3)
 		}
 		
-		XCTAssert(3 == s1.count, "Test failed.")
+		XCTAssert(3 == t1.count, "Test failed.")
 		
-		let s2: Tree<Int, Int> = s1.search(1)
-		XCTAssert(1 == s2.count, "Test failed, got \(s2.count).")
+		let t2: Tree<Int, Int> = t1.search(1)
+		XCTAssert(1 == t2.count, "Test failed, got \(t2.count).")
 		
-		let s3: Tree<Int, Int> = s1.search(2)
-		XCTAssert(1 == s3.count, "Test failed, got \(s3.count).")
+		let t3: Tree<Int, Int> = t1.search(2)
+		XCTAssert(1 == t3.count, "Test failed, got \(t3.count).")
 		
-		let s4: Tree<Int, Int> = s1.search(3)
-		XCTAssert(1 == s4.count, "Test failed, got \(s4.count).")
+		let t4: Tree<Int, Int> = t1.search(3)
+		XCTAssert(1 == t4.count, "Test failed, got \(t4.count).")
+	}
+	
+	func testConcat() {
+		let t1: Tree<Int, Int> = Tree<Int, Int>()
+		t1.insert(1, value: 1)
+		t1.insert(2, value: 2)
+		t1.insert(3, value: 3)
+		
+		let t2: Tree<Int, Int> = Tree<Int, Int>()
+		t2.insert(4, value: 4)
+		t2.insert(5, value: 5)
+		t2.insert(6, value: 6)
+		
+		let t3: Tree<Int, Int> = t1 + t2
+		
+		for var i: Int = t1.count - 1; i >= 0; --i {
+			XCTAssert(t1[i] == t3.find(t1[i]!), "Test failed.")
+		}
+		
+		for var i: Int = t2.count - 1; i >= 0; --i {
+			XCTAssert(t2[i] == t3.find(t2[i]!), "Test failed.")
+		}
 	}
 	
 	func testPerformanceExample() {

@@ -137,14 +137,9 @@ public class Graph: NSObject {
 		if nil != w && nil != p {
 			w!.performBlockAndWait {
 				var error: NSError?
-				if w!.save(&error) {
-					dispatch_async(dispatch_get_main_queue()) {
-						completion?(success: p!.save(&error), error: error)
-					}
-				} else {
-					dispatch_async(dispatch_get_main_queue()) {
-						completion?(success: false, error: error)
-					}
+				let result: Bool = w!.save(&error)
+				dispatch_async(dispatch_get_main_queue()) {
+					completion?(success: result ? p!.save(&error) : false, error: error)
 				}
 			}
 		}

@@ -99,25 +99,47 @@ class MultiTreeTests: XCTestCase {
 	}
 	
 	func testMultisetSearch() {
-		let s1: MultiTree<Int, Int> = MultiTree<Int, Int>()
-		XCTAssert(0 == s1.count, "Test failed, got \(s1.count).")
+		let mt1: MultiTree<Int, Int> = MultiTree<Int, Int>()
+		XCTAssert(0 == mt1.count, "Test failed, got \(mt1.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
-			s1.insert(1, value: 1)
-			s1.insert(2, value: 2)
-			s1.insert(3, value: 3)
+			mt1.insert(1, value: 1)
+			mt1.insert(2, value: 2)
+			mt1.insert(3, value: 3)
 		}
 		
-		XCTAssert(3000 == s1.count, "Test failed.")
+		XCTAssert(3000 == mt1.count, "Test failed.")
 		
-		let s2: MultiTree<Int, Int> = s1.search(1)
-		XCTAssert(1000 == s2.count, "Test failed, got \(s2.count).")
+		let mt2: MultiTree<Int, Int> = mt1.search(1)
+		XCTAssert(1000 == mt2.count, "Test failed, got \(mt2.count).")
 		
-		let s3: MultiTree<Int, Int> = s1.search(2)
-		XCTAssert(1000 == s3.count, "Test failed, got \(s3.count).")
+		let mt3: MultiTree<Int, Int> = mt1.search(2)
+		XCTAssert(1000 == mt3.count, "Test failed, got \(mt3.count).")
 		
-		let s4: MultiTree<Int, Int> = s1.search(3)
-		XCTAssert(1000 == s4.count, "Test failed, got \(s4.count).")
+		let mt4: MultiTree<Int, Int> = mt1.search(3)
+		XCTAssert(1000 == mt4.count, "Test failed, got \(mt4.count).")
+	}
+	
+	func testConcat() {
+		let mt1: MultiTree<Int, Int> = MultiTree<Int, Int>()
+		mt1.insert(1, value: 1)
+		mt1.insert(2, value: 2)
+		mt1.insert(3, value: 3)
+		
+		let mt2: MultiTree<Int, Int> = MultiTree<Int, Int>()
+		mt2.insert(4, value: 4)
+		mt2.insert(5, value: 5)
+		mt2.insert(6, value: 6)
+		
+		let mt3: MultiTree<Int, Int> = mt1 + mt2
+		
+		for var i: Int = mt1.count - 1; i >= 0; --i {
+			XCTAssert(mt1[i] == mt3.find(mt1[i]!), "Test failed.")
+		}
+		
+		for var i: Int = mt2.count - 1; i >= 0; --i {
+			XCTAssert(mt2[i] == mt3.find(mt2[i]!), "Test failed.")
+		}
 	}
 	
 	func testPerformanceExample() {

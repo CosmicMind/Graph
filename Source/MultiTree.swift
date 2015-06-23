@@ -90,36 +90,15 @@ public class MultiTree<K: Comparable, V>: RedBlackTree<K, V> {
 	}
 }
 
-func +<K: Comparable, V>(lhs: MultiTree<K, V>, rhs: MultiTree<K, V>) -> MultiTree<K, V> {
-	var mt1: MultiTree<K, V>?
-	var mt2: MultiTree<K, V>?
-	if lhs.count < rhs.count {
-		mt1 = rhs
-		mt2 = lhs
-	} else {
-		mt1 = lhs
-		mt2 = rhs
+public func +<K: Comparable, V>(lhs: MultiTree<K, V>, rhs: MultiTree<K, V>) -> MultiTree<K, V> {
+	let mt: MultiTree<K, V> = MultiTree<K, V>()
+	for var i: Int = lhs.count; i > 0; --i {
+		let n: RedBlackNode<K, V> = lhs.select(lhs.root, order: i)
+		mt.insert(n.key, value: n.value)
 	}
-	for var i: Int = mt2!.count; i > 0; --i {
-		let n: RedBlackNode<K, V> = mt2!.select(mt2!.root, order: i)
-		mt1!.insert(n.key, value: n.value)
+	for var i: Int = rhs.count; i > 0; --i {
+		let n: RedBlackNode<K, V> = rhs.select(rhs.root, order: i)
+		mt.insert(n.key, value: n.value)
 	}
-	return mt1!
+	return mt
 }
-
-func -<K: Comparable, V>(lhs: MultiTree<K, V>, rhs: MultiTree<K, V>) -> MultiTree<K, V> {
-	var mt1: MultiTree<K, V>?
-	var mt2: MultiTree<K, V>?
-	if lhs.count < rhs.count {
-		mt1 = rhs
-		mt2 = lhs
-	} else {
-		mt1 = lhs
-		mt2 = rhs
-	}
-	for var i: Int = mt2!.count; i > 0; --i {
-		mt1!.remove(mt2!.select(mt2!.root, order: i).key)
-	}
-	return mt1!
-}
-

@@ -108,3 +108,14 @@ public class Stack<T>: Printable, SequenceType {
 		list.removeAll()
 	}
 }
+
+public func +<T>(lhs: Stack<T>, rhs: Stack<T>) -> Stack<T> {
+	let s: Stack<T> = Stack<T>()
+	for x in lhs {
+		s.push(x)
+	}
+	for x in rhs {
+		s.push(x)
+	}
+	return s
+}

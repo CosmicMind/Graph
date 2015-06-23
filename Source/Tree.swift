@@ -90,35 +90,15 @@ public class Tree<K: Comparable, V>: RedBlackTree<K, V> {
 	}
 }
 
-func +<K: Comparable, V>(lhs: Tree<K, V>, rhs: Tree<K, V>) -> Tree<K, V> {
-	var t1: Tree<K, V>?
-	var t2: Tree<K, V>?
-	if lhs.count < rhs.count {
-		t1 = rhs
-		t2 = lhs
-	} else {
-		t1 = lhs
-		t2 = rhs
+public func +<K: Comparable, V>(lhs: Tree<K, V>, rhs: Tree<K, V>) -> Tree<K, V> {
+	let t: Tree<K, V> = Tree<K, V>()
+	for var i: Int = lhs.count; i > 0; --i {
+		let n: RedBlackNode<K, V> = lhs.select(lhs.root, order: i)
+		t.insert(n.key, value: n.value)
 	}
-	for var i: Int = t2!.count; i > 0; --i {
-		let n: RedBlackNode<K, V> = t2!.select(t2!.root, order: i)
-		t1!.insert(n.key, value: n.value)
+	for var i: Int = rhs.count; i > 0; --i {
+		let n: RedBlackNode<K, V> = rhs.select(rhs.root, order: i)
+		t.insert(n.key, value: n.value)
 	}
-	return t1!
-}
-
-func -<K: Comparable, V>(lhs: Tree<K, V>, rhs: Tree<K, V>) -> Tree<K, V> {
-	var t1: Tree<K, V>?
-	var t2: Tree<K, V>?
-	if lhs.count < rhs.count {
-		t1 = rhs
-		t2 = lhs
-	} else {
-		t1 = lhs
-		t2 = rhs
-	}
-	for var i: Int = t2!.count; i > 0; --i {
-		t1!.remove(t2!.select(t2!.root, order: i).key)
-	}
-	return t1!
+	return t
 }

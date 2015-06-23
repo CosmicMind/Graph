@@ -353,3 +353,14 @@ public class List<T>: Printable, SequenceType {
 		current = nil
 	}
 }
+
+public func +<T>(lhs: List<T>, rhs: List<T>) -> List<T> {
+	let l: List<T> = List<T>()
+	for x in lhs {
+		l.insertAtBack(x)
+	}
+	for x in rhs {
+		l.insertAtBack(x)
+	}
+	return l
+}
