@@ -56,10 +56,10 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 	func testExternalThread() {
 		
 		// Set the XCTest Class as the delegate.
-		graph?.delegate = self
+		graph!.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Action values.
-		graph?.watch(Action: "A")
+		graph!.watch(Action: "A")
 		
 		var a1: Action?
 		
@@ -100,7 +100,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 							a1!["test"] = "test"
 							a1![prop] = nil
 						}
-						self.graph?.save { (success: Bool, error: NSError?) in
+						self.graph!.save { (success: Bool, error: NSError?) in
 							XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 						}
 
@@ -118,7 +118,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		
 		a1!.delete()
 		
-		graph?.save() { (success: Bool, error: NSError?) in
+		graph!.save { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		

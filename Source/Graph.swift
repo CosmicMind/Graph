@@ -139,11 +139,14 @@ public class Graph: NSObject {
 				var error: NSError?
 				if w!.save(&error) {
 					p!.performBlockAndWait {
-						let result: Bool = p!.save(&error)
-						completion?(success: result, error: error)
+						dispatch_async(dispatch_get_main_queue()) {
+							completion?(success: p!.save(&error), error: error)
+						}
 					}
 				} else {
-					completion?(success: false, error: error)
+					dispatch_async(dispatch_get_main_queue()) {
+						completion?(success: false, error: error)
+					}
 				}
 			}
 		}
