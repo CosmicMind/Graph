@@ -136,7 +136,7 @@ public class Action: NSObject {
 	public var groups: Tree<String, String> {
 		var groups: Tree<String, String> = Tree<String, String>()
 		for group in node.groupSet {
-			let name: String = group.name!
+			let name: String = group.name
 			groups.insert(name, value: name)
 		}
 		return groups
@@ -147,10 +147,10 @@ public class Action: NSObject {
 	* Retrieves the Properties the Node is a part of.
 	* @return       Tree<String, AnyObject?>
 	*/
-	public var properties: Tree<String, AnyObject?> {
-		var properties: Tree<String, AnyObject?> = Tree<String, AnyObject?>()
+	public var properties: Tree<String, AnyObject> {
+		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
 		for property in node.propertySet {
-			properties.insert(property.name, value: property.value!)
+			properties.insert(property.name, value: property.value)
 		}
 		return properties
 	}
