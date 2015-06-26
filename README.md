@@ -29,7 +29,7 @@ Advanced data structures introduces the core flow of information in GraphKit. Mu
 
 ### Introduction to Persistence with Graph
 
-Welcome to the core of GraphKit -- Graph. This is where the magic happens and if you read the initial sections you are in for a treat. If you jumped strait to this section, then welcome to an explosive persistence layer built on Apple's CoreData. Personally, I have seen developers build an entire application with using the Entity and Graph APIs alone. In this section you will find a primer to the awesome power of GraphKit. 
+Welcome to the core of GraphKit -- Graph. This is where the magic happens and if you read the initial sections you are in for a treat. If you jumped strait to this section, then welcome to an explosive persistence layer built on Apple's CoreData. In this section you will find a primer to the awesome power of GraphKit. 
 
 * [Graph](https://github.com/GraphKit/GraphKit/wiki/Graph)
 * [Entity](https://github.com/GraphKit/GraphKit/wiki/Entity)
