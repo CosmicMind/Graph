@@ -1,4 +1,4 @@
-:## GraphKit
+## GraphKit
 
 GraphKit is a framework for data completely written in Swift that allows you to take advantage of powerful data manipulation in a fraction of the time. GraphKit data structures may be used on their own, or combined with the power of Graph, which is a Graph data store built on CoreData. 
 
@@ -36,16 +36,13 @@ Welcome to the core of GraphKit -- Graph. This is where the magic happens and if
 * [Bond](https://github.com/GraphKit/GraphKit/wiki/Bond)
 * [Action](https://github.com/GraphKit/GraphKit/wiki/Action)
 
-### License
+### License 
 
+[AGPLv3](http://choosealicense.com/licenses/agpl-3.0/) 
 
-[AGPLv3](http://choosealicense.com/licenses/agpl-3.0/)
+### Contributors 
 
-
-### Contributors
-
-
-[Daniel Dahan](https://github.com/danieldahan)
+[Daniel Dahan](https://github.com/danieldahan)  
 
 
 
