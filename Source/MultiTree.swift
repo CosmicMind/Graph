@@ -64,11 +64,11 @@ public class MultiTree<K: Comparable, V>: RedBlackTree<K, V> {
 	* @return		TreeType subtree.
 	*/
 	public func search(array: Array<K>) -> TreeType {
-		var s: TreeType = TreeType()
+		var tree: TreeType = TreeType()
 		for key: K in array {
-			subtree(key, node: root, set: &s)
+			subtree(key, node: root, tree: &tree)
 		}
-		return s
+		return tree
 	}
 	
 	/**
@@ -77,15 +77,15 @@ public class MultiTree<K: Comparable, V>: RedBlackTree<K, V> {
 	* This is used for internal search.
 	* @param		key: K
 	* @param		node: NodeType
-	* @param		inout set: TreeType
+	* @param		inout tree: TreeType
 	*/
-	internal func subtree(key: K, node: NodeType, inout set: TreeType) {
+	internal func subtree(key: K, node: NodeType, inout tree: TreeType) {
 		if node !== sentinel {
 			if key == node.key {
-				set.insert(key, value: node.value)
+				tree.insert(key, value: node.value)
 			}
-			subtree(key, node: node.left, set: &set)
-			subtree(key, node: node.right, set: &set)
+			subtree(key, node: node.left, tree: &tree)
+			subtree(key, node: node.right, tree: &tree)
 		}
 	}
 }
