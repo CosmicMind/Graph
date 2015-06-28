@@ -80,23 +80,23 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	public private(set) var count: Int
 	
 	/**
-	* last
-	* Get the last data item in the tree, this is
-	* the last item based on the order of keys where 
-	* k1 <= k2 <= K3 ... <= Kn
-	*/
-	public var last: V? {
-		return empty ? sentinel.value : internalSelect(root, order: count).value
-	}
-	
-	/**
 	* first
-	* Get the first data item in the tree, this is
+	* Get the first value item in the tree, this is
 	* the first item based on the order of keys where
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var first: V? {
 		return internalSelect(root, order: 1).value
+	}
+	
+	/**
+	* last
+	* Get the last value item in the tree, this is
+	* the last item based on the order of keys where
+	* k1 <= k2 <= K3 ... <= Kn
+	*/
+	public var last: V? {
+		return empty ? sentinel.value : internalSelect(root, order: count).value
 	}
 	
 	/**
@@ -618,7 +618,7 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* internalFindByKey
 	* Finds a node with a given key value.
 	* @param		key: K
-	* @return		NodeType. The sentinel is returned
+	* @return		NodeType. The sentinel is returned if
 	*				a node with the given key is not found.
 	*/
 	private func internalFindByKey(key: K) -> NodeType {
