@@ -81,8 +81,8 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	
 	/**
 	* first
-	* Get the first value item in the tree, this is
-	* the first item based on the order of keys where
+	* Get the first node value in the tree, this is
+	* the first node based on the order of keys where
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var first: V? {
@@ -91,8 +91,8 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	
 	/**
 	* last
-	* Get the last value item in the tree, this is
-	* the last item based on the order of keys where
+	* Get the last node value in the tree, this is
+	* the last node based on the order of keys where
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var last: V? {
