@@ -176,12 +176,10 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	
 	/**
 	* insert
-	* Insert a new data item in the tree.
+	* Insert a node in the tree.
 	* @param		key: K
 	* @Param		value: V?
-	* @return		A boolean indicating the success of the insert. 
-	*				Would return false if the tree is uniquely keyed.
-	*				a the key already exists in the tree.
+	* @return		A boolean indicating the success of the insert.
 	*/
 	public func insert(key: K, value: V?) -> Bool {
 		return sentinel !== internalInsert(key, value: value)
@@ -193,7 +191,7 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* If the tree allows non-unique keys, then all keys matching 
 	* the given key value will be removed.
 	* @param		key: K
-	* @return		A boolean value of the result.
+	* @return		A boolean indicating the success of the removal.
 	*/
 	public func remove(key: K) -> Bool {
 		var removed: Bool = false
