@@ -304,29 +304,17 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	*				otherwise the node inserted is returned.
 	*/
 	private func internalInsert(key: K, value: V?) -> NodeType {
+		if unique && sentinel !== internalFindByKey(key) {
+			return sentinel;
+		}
+		
 		var y: NodeType = sentinel
 		var x: NodeType = root
 		
-		if true == unique {
-			while x !== sentinel {
-				y = x
-				++y.order
-				if key == x.key {
-					while x !== root {
-						--x.order
-						x = x.parent
-					}
-					--x.order
-					return sentinel
-				}
-				x = key < x.key ? x.left : x.right
-			}
-		} else {
-			while x !== sentinel {
-				y = x
-				++y.order
-				x = key < x.key ? x.left : x.right
-			}
+		while x !== sentinel {
+			y = x
+			++y.order
+			x = key < x.key ? x.left : x.right
 		}
 		
 		var z: NodeType = NodeType(parent: y, sentinel: sentinel, key: key, value: value)
@@ -350,11 +338,11 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* @param		NodeType
 	*/
 	private func insertCleanUp(var z: NodeType) {
-		while true == z.parent.red {
+		while z.parent.red {
 			if z.parent === z.parent.parent.left {
 				var y: NodeType = z.parent.parent.right
 				// violation 1, parent child relationship re to red
-				if true == y.red {
+				if y.red {
 					z.parent.red = false
 					y.red = false
 					z.parent.parent.red = true
@@ -374,7 +362,7 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 				// symetric
 				var y: NodeType = z.parent.parent.left
 				// violation 1, parent child relationship re to red
-				if true == y.red {
+				if y.red {
 					z.parent.red = false
 					y.red = false
 					z.parent.parent.red = true
@@ -451,7 +439,7 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 			y.red = z.red
 			y.order = y.left.order + y.right.order + 1
 		}
-		if false == red {
+		if !red {
 			removeCleanUp(x)
 		}
 		--count
@@ -465,20 +453,20 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* @param		NodeType
 	*/
 	private func removeCleanUp(var x: NodeType) {
-		while x !== root && false == x.red {
+		while x !== root && !x.red {
 			if x === x.parent.left {
 				var y: NodeType = x.parent.right
-				if true == y.red {
+				if y.red {
 					y.red = false
 					x.parent.red = true
 					leftRotate(x.parent)
 					y = x.parent.right
 				}
-				if false == y.left.red && false == y.right.red {
+				if !y.left.red && !y.right.red {
 					y.red = true
 					x = x.parent
 				} else {
-					if false == y.right.red {
+					if !y.right.red {
 						y.left.red = false
 						y.red = true
 						rightRotate(y)
@@ -492,17 +480,17 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 				}
 			} else { // symetric left and right
 				var y: NodeType = x.parent.left
-				if true == y.red {
+				if y.red {
 					y.red = false
 					x.parent.red = true
 					rightRotate(x.parent)
 					y = x.parent.left
 				}
-				if false == y.right.red && false == y.left.red {
+				if !y.right.red && !y.left.red {
 					y.red = true
 					x = x.parent
 				} else {
-					if false == y.left.red {
+					if !y.left.red {
 						y.right.red = false
 						y.red = true
 						leftRotate(y)
