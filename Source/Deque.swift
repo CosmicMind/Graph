@@ -59,11 +59,11 @@ public class Deque<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* empty
+	* isEmpty
 	* A boolean of whether the Deque is empty.
 	*/
-	public var empty: Bool {
-		return list.empty
+	public var isEmpty: Bool {
+		return list.isEmpty
 	}
 	
 	/**

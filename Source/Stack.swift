@@ -50,11 +50,11 @@ public class Stack<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* empty
+	* isEmpty
 	* A boolean of whether the Stack is empty.
 	*/
-	public var empty: Bool {
-		return list.empty
+	public var isEmpty: Bool {
+		return list.isEmpty
 	}
 	
 	/**

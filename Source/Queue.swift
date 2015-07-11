@@ -49,11 +49,11 @@ public class Queue<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* empty
+	* isEmpty
 	* A boolean of whether the Queue is empty.
 	*/
-	public var empty: Bool {
-		return list.empty
+	public var isEmpty: Bool {
+		return list.isEmpty
 	}
 	
 	/**

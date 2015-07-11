@@ -96,14 +96,14 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var last: V? {
-		return empty ? sentinel.value : internalSelect(root, order: count).value
+		return isEmpty ? sentinel.value : internalSelect(root, order: count).value
 	}
 	
 	/**
-	* empty
+	* isEmpty
 	* A boolean of whether the RedBlackTree is empty.
 	*/
-	public var empty: Bool {
+	public var isEmpty: Bool {
 		return 0 == count
 	}
 	

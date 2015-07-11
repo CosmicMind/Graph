@@ -122,10 +122,10 @@ public class List<T>: Printable, SequenceType {
 	}
 	
 	/**
-	* empty
+	* isEmpty
 	* A boolean of whether the List is empty.
 	*/
-	public var empty: Bool {
+	public var isEmpty: Bool {
 		return 0 == count
 	}
 	
@@ -178,7 +178,7 @@ public class List<T>: Printable, SequenceType {
 	* Removes all nodes from the List.
 	*/
 	public func removeAll() {
-		while !empty {
+		while !isEmpty {
 			removeAtFront()
 		}
 	}

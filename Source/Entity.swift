@@ -130,14 +130,14 @@ public class Entity: NSObject {
 	
 	/**
 	* groups
-	* Retrieves the Groups the Node is a part of.
-	* @return       Tree<String, String>
+	* Retrieves the Groups the Entity is a part of.
+	* @return       OrderedSet<String>
 	*/
-	public var groups: Tree<String, String> {
-		var groups: Tree<String, String> = Tree<String, String>()
+	public var groups: OrderedSet<String> {
+		var groups: OrderedSet<String> = OrderedSet<String>()
 		for group in node.groupSet {
 			let name: String = group.name
-			groups.insert(name, value: name)
+			groups.insert(name)
 		}
 		return groups
 	}
