@@ -19,7 +19,7 @@
 import XCTest
 import GraphKit
 
-class OrderedSetTests: XCTestCase {
+class ProbabilityTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -34,34 +34,28 @@ class OrderedSetTests: XCTestCase {
 	func testSetInt() {
 		let s: OrderedSet<Int> = OrderedSet<Int>()
 		
-		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
-		
-		for (var i: Int = 1000; i > 0; --i) {
-			s.insert(1)
-			s.insert(2)
-			s.insert(3)
-		}
-		
-		XCTAssert(3 == s.count, "Test failed.\(s)")
-		XCTAssert(1 == s[0], "Test failed.")
-		XCTAssert(2 == s[1], "Test failed.")
-		XCTAssert(3 == s[2], "Test failed.")
-		
-		for (var i: Int = 500; i > 0; --i) {
-			s.remove(1)
-			s.remove(3)
-		}
-		
-		XCTAssert(1 == s.count, "Test failed.")
-		XCTAssert(true == s.remove(2), "Test failed.")
-		XCTAssert(false == s.remove(2), "Test failed.")
-		XCTAssert(true == s.insert(10), "Test failed.")
-		XCTAssert(1 == s.count, "Test failed.")
-		XCTAssert(true == (s.remove(10) && 0 == s.count), "Test failed.")
-		
 		s.insert(1)
 		s.insert(2)
 		s.insert(3)
+		
+		var ev: Double = Double(s.countOf(3)) / Double(s.count)
+		
+		XCTAssert(ev == s.expectedValue(3), "Test failed.")
+		
+		s.removeAll()
+		XCTAssert(0 == s.count, "Test failed.")
+	}
+	
+	func testTreeInt() {
+		let s: Tree<Int, Int> = Tree<Int, Int>()
+		
+		s.insert(1, value: 1)
+		s.insert(2, value: 2)
+		s.insert(3, value: 3)
+		
+		var ev: Double = Double(s.countOf(3)) / Double(s.count)
+		
+		XCTAssert(ev == s.expectedValue(3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")

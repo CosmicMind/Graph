@@ -23,7 +23,7 @@
 * Also, it is possible to specifiy a unique keyed tree or non-unique keyed tree.
 */
 
-public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
+public class RedBlackTree<K: Comparable, V>: Probability<K>, CollectionType, Printable {
 	private typealias TreeType = RedBlackTree<K, V>
 	internal typealias NodeType = RedBlackNode<K, V>
 	internal typealias Generator = GeneratorOf<V?>
@@ -74,12 +74,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	}
 	
 	/**
-	* count
-	* Total number of nodes in the tree.
-	*/
-	public private(set) var count: Int
-	
-	/**
 	* first
 	* Get the first node value in the tree, this is
 	* the first node based on the order of keys where
@@ -128,11 +122,10 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* Constructor where the tree is guaranteed to store
 	* non-unique keys.
 	*/
-	public init() {
+	public override init() {
 		unique = false
 		sentinel = NodeType()
 		root = sentinel
-		count = 0
 	}
 	
 	/**
@@ -145,7 +138,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 		self.unique = unique
 		sentinel = NodeType()
 		root = sentinel
-		count = 0
 	}
 	
 	/**

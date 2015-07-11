@@ -44,6 +44,22 @@ public class Tree<K: Comparable, V>: RedBlackTree<K, V> {
 	}
 
 	/**
+	* countOf
+	* Conforms to _ProbabilityType protocol.
+	*/
+	public override func countOf(members: K...) -> Int {
+		return countOf(members)
+	}
+
+	/**
+	* countOf
+	* Conforms to _ProbabilityType protocol.
+	*/
+	public override func countOf(members: Array<K>) -> Int {
+		return search(members).count
+	}
+	
+	/**
 	* search
 	* Accepts a paramter list of keys and returns a subset
 	* Tree with the indicated values if

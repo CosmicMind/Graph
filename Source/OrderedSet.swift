@@ -23,7 +23,7 @@
 * are uniquely keyed.
 */
 
-public class OrderedSet<T: Comparable>: CollectionType, Printable {
+public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Printable {
 	private typealias TreeType = Tree<T, T>
 	internal typealias OrderedSetType = OrderedSet<T>
 	internal typealias Generator = GeneratorOf<T>
@@ -40,14 +40,6 @@ public class OrderedSet<T: Comparable>: CollectionType, Printable {
 	*/
 	public var description: String {
 		return "OrderedSet" + tree.internalDescription
-	}
-	
-	/**
-	* count
-	* Total number of nodes in the tree.
-	*/
-	public var count: Int {
-		return tree.count
 	}
 	
 	/**
@@ -98,7 +90,7 @@ public class OrderedSet<T: Comparable>: CollectionType, Printable {
 	* init
 	* Constructor
 	*/
-	public init() {
+	public override init() {
 		tree = TreeType()
 	}
 	
@@ -131,12 +123,36 @@ public class OrderedSet<T: Comparable>: CollectionType, Printable {
 		return tree[index]!
 	}
 	
+	/**
+	* countOf
+	* Conforms to _ProbabilityType protocol.
+	*/
+	public override func countOf(members: T...) -> Int {
+		return tree.countOf(members)
+	}
+	
+	/**
+	* countOf
+	* Conforms to _ProbabilityType protocol.
+	*/
+	public override func countOf(members: Array<T>) -> Int {
+		return tree.countOf(members)
+	}
+	
 	public func insert(member: T) -> Bool {
-		return tree.insert(member, value: member)
+		let result: Bool = tree.insert(member, value: member)
+		if result {
+			++count
+		}
+		return result
 	}
 	
 	public func remove(member: T) -> Bool {
-		return tree.remove(member)
+		let result: Bool = tree.remove(member)
+		if result {
+			--count
+		}
+		return result
 	}
 	
 	/**
@@ -145,18 +161,6 @@ public class OrderedSet<T: Comparable>: CollectionType, Printable {
 	*/
 	public func removeAll() {
 		tree.removeAll()
+		count = 0
 	}
 }
-
-//public func +<T: Comparable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> OrderedSet<T> {
-//	let s: OrderedSet<T> = OrderedSet<T>()
-//	for var i: Int = lhs.count; i > 0; --i {
-//		let n: RedBlackNode<T, T> = lhs.select(lhs.root, order: i)
-//		s.insert(n.key, value: n.value)
-//	}
-//	for var i: Int = rhs.count; i > 0; --i {
-//		let n: RedBlackNode<T, T> = rhs.select(rhs.root, order: i)
-//		s.insert(n.key, value: n.value)
-//	}
-//	return s
-//}

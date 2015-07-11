@@ -65,6 +65,10 @@
 		968C009E1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */; };
 		968C00A21B51B4DC00E3FA9E /* OrderedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */; };
 		968C00A31B51B4DD00E3FA9E /* OrderedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */; };
+		968C00A61B51BF9900E3FA9E /* Probability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00A51B51BF9900E3FA9E /* Probability.swift */; };
+		968C00A71B51BF9900E3FA9E /* Probability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00A51B51BF9900E3FA9E /* Probability.swift */; };
+		968C00AC1B51D76D00E3FA9E /* ProbabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */; };
+		968C00AD1B51D76D00E3FA9E /* ProbabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */; };
 		968F38851AD7379F00E963AB /* ActionSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968F38811AD7379500E963AB /* ActionSearchTests.swift */; };
 		968F38871AD737A800E963AB /* BondSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968F387E1AD7372400E963AB /* BondSearchTests.swift */; };
 		968F38981AD7392900E963AB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968F388D1AD7392900E963AB /* GraphKit.framework */; };
@@ -176,6 +180,8 @@
 		968C00991B51B0C800E3FA9E /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiSet.swift; sourceTree = "<group>"; };
 		968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSetTest.swift; sourceTree = "<group>"; };
+		968C00A51B51BF9900E3FA9E /* Probability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Probability.swift; sourceTree = "<group>"; };
+		968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProbabilityTests.swift; sourceTree = "<group>"; };
 		968F387E1AD7372400E963AB /* BondSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BondSearchTests.swift; sourceTree = "<group>"; };
 		968F38811AD7379500E963AB /* ActionSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSearchTests.swift; sourceTree = "<group>"; };
 		968F388D1AD7392900E963AB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -315,6 +321,14 @@
 			name = Graph;
 			sourceTree = "<group>";
 		};
+		968C00A41B51BF7F00E3FA9E /* Probability */ = {
+			isa = PBXGroup;
+			children = (
+				968C00A51B51BF9900E3FA9E /* Probability.swift */,
+			);
+			name = Probability;
+			sourceTree = "<group>";
+		};
 		969F6DA01B2DCAF300B573F8 /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,8 +344,9 @@
 		96C031B61AD72FD300EE4C63 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				969F6DA01B2DCAF300B573F8 /* List */,
 				961242D71B2B36A400CD47E0 /* Sort */,
+				968C00A41B51BF7F00E3FA9E /* Probability */,
+				969F6DA01B2DCAF300B573F8 /* List */,
 				961242D61B2B369C00CD47E0 /* Tree */,
 				961243171B2B488700CD47E0 /* Graph */,
 				961243161B2B487200CD47E0 /* Entity */,
@@ -365,6 +380,7 @@
 				969F6DB11B2DE06200B573F8 /* StackTests.swift */,
 				969F6DC01B2DECAA00B573F8 /* ListTests.swift */,
 				968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */,
+				968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -650,6 +666,7 @@
 				969F6DA21B2DCB0200B573F8 /* Deque.swift in Sources */,
 				968F38BC1AD7394300E963AB /* ManagedEntity.swift in Sources */,
 				969F6DB51B2DE23500B573F8 /* Queue.swift in Sources */,
+				968C00A61B51BF9900E3FA9E /* Probability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,6 +689,7 @@
 				961242E81B2B376800CD47E0 /* TreeTests.swift in Sources */,
 				968F38AB1AD7393900E963AB /* BondTests.swift in Sources */,
 				968F38A91AD7393900E963AB /* BondSearchTests.swift in Sources */,
+				968C00AC1B51D76D00E3FA9E /* ProbabilityTests.swift in Sources */,
 				968F38AE1AD7393900E963AB /* EntityTests.swift in Sources */,
 				968F38A71AD7393900E963AB /* ActionStressTests.swift in Sources */,
 				969F6D8D1B2CC76E00B573F8 /* QueueTests.swift in Sources */,
@@ -708,6 +726,7 @@
 				969F6DA31B2DCB0200B573F8 /* Deque.swift in Sources */,
 				96C032141AD730C200EE4C63 /* ManagedEntity.swift in Sources */,
 				969F6DB61B2DE23500B573F8 /* Queue.swift in Sources */,
+				968C00A71B51BF9900E3FA9E /* Probability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +749,7 @@
 				961242E91B2B376800CD47E0 /* TreeTests.swift in Sources */,
 				96C032171AD730CC00EE4C63 /* BondStressTests.swift in Sources */,
 				968F38851AD7379F00E963AB /* ActionSearchTests.swift in Sources */,
+				968C00AD1B51D76D00E3FA9E /* ProbabilityTests.swift in Sources */,
 				968F38871AD737A800E963AB /* BondSearchTests.swift in Sources */,
 				96C0321B1AD730CC00EE4C63 /* EntityTests.swift in Sources */,
 				969F6D8E1B2CC76E00B573F8 /* QueueTests.swift in Sources */,
