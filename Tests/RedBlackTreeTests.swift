@@ -43,9 +43,9 @@ class RedBlackTreeTests: XCTestCase {
 		}
 		
 		XCTAssert(3 == s.count, "Test failed.\(s)")
-		XCTAssert(1 == s[0]!, "Test failed.")
-		XCTAssert(2 == s[1]!, "Test failed.")
-		XCTAssert(3 == s[2]!, "Test failed.")
+		XCTAssert(1 == s[0].value, "Test failed.")
+		XCTAssert(2 == s[1].value, "Test failed.")
+		XCTAssert(3 == s[2].value, "Test failed.")
 		
 		for (var i: Int = 500; i > 0; --i) {
 			s.remove(1)
@@ -58,7 +58,7 @@ class RedBlackTreeTests: XCTestCase {
 		XCTAssert(true == s.insert(2, value: 10), "Test failed.")
 		XCTAssert(1 == s.count, "Test failed.")
 		XCTAssert(10 == s.find(2)!, "Test failed.")
-		XCTAssert(10 == s[0]!, "Test failed.")
+		XCTAssert(10 == s[0].value, "Test failed.")
 		XCTAssert(true == (s.remove(2) && 0 == s.count), "Test failed.")
 		
 		s.insert(1, value: 1)
@@ -66,8 +66,8 @@ class RedBlackTreeTests: XCTestCase {
 		s.insert(3, value: 3)
 		
 		for (var i: Int = s.endIndex - 1; i >= s.startIndex; --i) {
-			s[i] = 100
-			XCTAssert(100 == s[i], "Test failed.")
+			s[i] = (s[i].key, 100)
+			XCTAssert(100 == s[i].value, "Test failed.")
 		}
 		
 		s.removeAll()
@@ -79,8 +79,8 @@ class RedBlackTreeTests: XCTestCase {
 		s.insert("friends", value: [1, 2, 3])
 		s["menu"] = [11, 22, 33]
 		
-		XCTAssert(s["friends"]! == s[0]!, "Test failed.")
-		XCTAssert(s["menu"]! == s[1]!, "Test failed.")
+		XCTAssert(s["friends"]! == s[0].value!, "Test failed.")
+		XCTAssert(s["menu"]! == s[1].value!, "Test failed.")
 		XCTAssert(s["empty"] == nil, "Test failed.")
 		s["menu"] = [22, 33, 44]
 		XCTAssert(s["menu"]! == [22, 33, 44], "Test failed.")
@@ -102,11 +102,11 @@ class RedBlackTreeTests: XCTestCase {
 		let t3: RedBlackTree<Int, Int> = t1 + t2
 		
 		for var i: Int = t1.count - 1; i >= 0; --i {
-			XCTAssert(t1[i] == t3.find(t1[i]!), "Test failed.")
+			XCTAssert(t1[i].value == t3.find(t1[i].value!), "Test failed.")
 		}
 		
 		for var i: Int = t2.count - 1; i >= 0; --i {
-			XCTAssert(t2[i] == t3.find(t2[i]!), "Test failed.")
+			XCTAssert(t2[i].value == t3.find(t2[i].value!), "Test failed.")
 		}
 	}
 	

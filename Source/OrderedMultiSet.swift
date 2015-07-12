@@ -36,7 +36,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	public var description: String {
 		var output: String = "OrderedMultiSet("
 		for var i: Int = 0; i < count; ++i {
-			output += "\(tree[i]!)"
+			output += "\(tree[i].value!)"
 			if i + 1 != count {
 				output += ", "
 			}
@@ -122,7 +122,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	* @return		value V?
 	*/
 	public subscript(index: Int) -> Element {
-		return tree[index]!
+		return tree[index].value!
 	}
 	
 	/**

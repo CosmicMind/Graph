@@ -212,7 +212,7 @@ public class Action: NSObject {
 	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	public func hasSubject(entity: Entity!) -> Bool {
-		for e in subjects.search(entity.type) {
+		for (k, e) in subjects.search(entity.type) {
 			if e!.id == entity.id {
 				return true
 			}
@@ -247,7 +247,7 @@ public class Action: NSObject {
 	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	public func hasObject(entity: Entity!) -> Bool {
-		for e in objects.search(entity.type) {
+		for (k, e) in objects.search(entity.type) {
 			if e!.id == entity.id {
 				return true
 			}

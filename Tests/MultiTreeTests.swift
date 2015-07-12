@@ -43,9 +43,9 @@ class MultiTreeTests: XCTestCase {
 		}
 		
 		XCTAssert(3000 == s.count, "Test failed.")
-		XCTAssert(1 == s[0]!, "Test failed.")
-		XCTAssert(1 == s[1]!, "Test failed.")
-		XCTAssert(1 == s[2]!, "Test failed.")
+		XCTAssert(1 == s[0].value, "Test failed.")
+		XCTAssert(1 == s[1].value, "Test failed.")
+		XCTAssert(1 == s[2].value, "Test failed.")
 		
 		for (var i: Int = 500; i > 0; --i) {
 			s.remove(1)
@@ -58,7 +58,7 @@ class MultiTreeTests: XCTestCase {
 		XCTAssert(true == s.insert(2, value: 10), "Test failed.")
 		XCTAssert(1 == s.count, "Test failed.")
 		XCTAssert(10 == s.find(2)!, "Test failed.")
-		XCTAssert(10 == s[0]!, "Test failed.")
+		XCTAssert(10 == s[0].value!, "Test failed.")
 		XCTAssert(true == (s.remove(2) && 0 == s.count), "Test failed.")
 		
 		s.insert(1, value: 1)
@@ -72,12 +72,12 @@ class MultiTreeTests: XCTestCase {
 		
 		var generator = subs.generate()
 		while let x = generator.next() {
-			XCTAssert(5 == x, "Test failed.")
+			XCTAssert(5 == x.value, "Test failed.")
 		}
 		
 		for (var i: Int = s.endIndex - 1; i >= s.startIndex; --i) {
-			s[i] = 100
-			XCTAssert(100 == s[i], "Test failed.")
+			s[i] = (s[i].key, 100)
+			XCTAssert(100 == s[i].value, "Test failed.")
 		}
 		
 		s.removeAll()
@@ -89,8 +89,8 @@ class MultiTreeTests: XCTestCase {
 		s.insert("friends", value: [1, 2, 3])
 		s["menu"] = [11, 22, 33]
 		
-		XCTAssert(s["friends"]! == s[0]!, "Test failed.")
-		XCTAssert(s["menu"]! == s[1]!, "Test failed.")
+		XCTAssert(s["friends"]! == s[0].value!, "Test failed.")
+		XCTAssert(s["menu"]! == s[1].value!, "Test failed.")
 		XCTAssert(s["empty"] == nil, "Test failed.")
 		s["menu"] = [22, 33, 44]
 		XCTAssert(s["menu"]! == [22, 33, 44], "Test failed.")
@@ -134,11 +134,11 @@ class MultiTreeTests: XCTestCase {
 		let mt3: MultiTree<Int, Int> = mt1 + mt2
 		
 		for var i: Int = mt1.count - 1; i >= 0; --i {
-			XCTAssert(mt1[i] == mt3.find(mt1[i]!), "Test failed.")
+			XCTAssert(mt1[i].value == mt3.find(mt1[i].value!), "Test failed.")
 		}
 		
 		for var i: Int = mt2.count - 1; i >= 0; --i {
-			XCTAssert(mt2[i] == mt3.find(mt2[i]!), "Test failed.")
+			XCTAssert(mt2[i].value == mt3.find(mt2[i].value!), "Test failed.")
 		}
 	}
 	

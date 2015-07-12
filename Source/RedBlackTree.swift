@@ -26,7 +26,8 @@
 public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionType, Printable {
 	private typealias TreeType = RedBlackTree<Key, Value>
 	internal typealias NodeType = RedBlackNode<Key, Value>
-	internal typealias Generator = GeneratorOf<Value?>
+	internal typealias Element = (key: Key, value: Value?)
+	internal typealias Generator = GeneratorOf<Element>
 	
 	/**
 	* sentinel
@@ -235,18 +236,22 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 	* @param		index: Int
 	* @return		value Value?
 	*/
-	public subscript(index: Int) -> Value? {
+	public subscript(index: Int) -> Element {
 		get {
 			if !isIndexValid(index) {
-				return internalSelect(root, order: index + 1).value
+				let x: NodeType = internalSelect(root, order: index + 1)
+				return (x.key, x.value)
 			} else {
 				assert(false, "[GraphKit Error: Index out of bounds.]")
 			}
 		}
-		set(value) {
+		set(element) {
 			if !isIndexValid(index) {
-				var x: NodeType = internalSelect(root, order: index + 1)
-				x.value = value
+				let x: NodeType = internalSelect(root, order: index + 1)
+				if x.key != element.key {
+					assert(false, "[GraphKit Error: Key error.]")
+				}
+				x.value = element.value
 			} else {
 				assert(false, "[GraphKit Error: Index out of bounds.]")
 			}
