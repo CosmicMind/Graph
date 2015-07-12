@@ -45,7 +45,6 @@ internal class ManagedBond: NSManagedObject {
 	/**
 	* init
 	* Initializes the Model Object with e a given type.
-	* @param        type: String!
 	*/
 	convenience internal init(type: String!) {
 		let g: Graph = Graph()
@@ -64,9 +63,6 @@ internal class ManagedBond: NSManagedObject {
 	/**
     * properties[ ]
     * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
-    * @param        name: String!
-    * get           Returns the property name value.
-    * set           Value for the property name.
     */
 	internal subscript(name: String) -> AnyObject? {
 		get {
@@ -110,8 +106,6 @@ internal class ManagedBond: NSManagedObject {
     /**
     * addGroup
     * Adds a Group name to the list of Groups if it does not exist.
-    * @param        name: String!
-    * @return       Bool of the result, true if added, false otherwise.
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
@@ -125,8 +119,6 @@ internal class ManagedBond: NSManagedObject {
     /**
     * hasGroup
     * Checks whether the Node is a part of the Group name passed or not.
-    * @param        name: String!
-    * @return       Bool of the result, true if is a part, false otherwise.
     */
     internal func hasGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -141,8 +133,6 @@ internal class ManagedBond: NSManagedObject {
     /**
     * removeGroup
     * Removes a Group name from the list of Groups if it exists.
-    * @param        name: String!
-    * @return       Bool of the result, true if exists, false otherwise.
     */
     internal func removeGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -171,7 +161,6 @@ extension ManagedBond {
 	/**
 	* addPropertySetObject
 	* Adds the Property to the propertySet for the Bond.
-	* @param        value: BondProperty
 	*/
 	func addPropertySetObject(value: BondProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
@@ -181,7 +170,6 @@ extension ManagedBond {
 	/**
 	* removePropertySetObject
 	* Removes the Property to the propertySet for the Bond.
-	* @param        value: BondProperty
 	*/
 	func removePropertySetObject(value: BondProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
@@ -191,7 +179,6 @@ extension ManagedBond {
 	/**
 	* addGroupSetObject
 	* Adds the Group to the groupSet for the Bond.
-	* @param        value: BondGroup
 	*/
 	func addGroupSetObject(value: BondGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
@@ -201,7 +188,6 @@ extension ManagedBond {
 	/**
 	* removeGroupSetObject
 	* Removes the Group to the groupSet for the Bond.
-	* @param        value: BondGroup
 	*/
 	func removeGroupSetObject(value: BondGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet

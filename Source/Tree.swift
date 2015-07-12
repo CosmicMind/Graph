@@ -64,8 +64,6 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	* Accepts a paramter list of keys and returns a subset
 	* Tree with the indicated values if
 	* they exist.
-	* @param		keys: Key...
-	* @return		TreeType subtree.
 	*/
 	public func search(keys: Key...) -> TreeType {
 		return search(keys)
@@ -76,8 +74,6 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	* Accepts an array of keys and returns a subset
 	* Tree with the indicated values if
 	* they exist.
-	* @param		keys: Key...
-	* @return		TreeType subtree.
 	*/
 	public func search(array: Array<Key>) -> TreeType {
 		var tree: TreeType = TreeType()
@@ -91,9 +87,6 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	* subtree
 	* Traverses the Tree and looking for a key value.
 	* This is used for internal search.
-	* @param		key: Key
-	* @param		node: NodeType
-	* @param		inout tree: TreeType
 	*/
 	internal func subtree(key: Key, node: NodeType, inout tree: TreeType) {
 		if sentinel !== node {

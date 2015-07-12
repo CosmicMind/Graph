@@ -40,8 +40,6 @@ internal class ActionProperty: NSManagedObject {
 	/**
 	* init
 	* Initializer for the Model Object.
-	* @param        name: String!
-	* @param        value: AnyObject!
 	*/
 	convenience init(name: String!, value: AnyObject!) {
 		let g: Graph = Graph()

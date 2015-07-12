@@ -118,8 +118,6 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	* Items are kept in order, so when iterating
 	* through the items, they are returned in their
 	* ordered form.
-	* @param		index: Int
-	* @return		value V?
 	*/
 	public subscript(index: Int) -> Element {
 		return tree[index].value!
@@ -144,7 +142,6 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	/**
 	* insert
 	* Inserts new members into the OrderedMultiSet.
-	* @param		members: Element...
 	*/
 	public func insert(members: Element...) {
 		insert(members)
@@ -153,7 +150,6 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	/**
 	* insert
 	* Inserts new members into the OrderedMultiSet.
-	* @param		member: Array<Element>
 	*/
 	public func insert(members: Array<Element>) {
 		for x in members {
@@ -166,7 +162,6 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	/**
 	* remove
 	* Removes members from the OrderedMultiSet.
-	* @param		members: Element...
 	*/
 	public func remove(members: Element...) {
 		remove(members)
@@ -175,7 +170,6 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	/**
 	* remove
 	* Removes members from the OrderedMultiSet.
-	* @param		member: Array<Element>
 	*/
 	public func remove(members: Array<Element>) {
 		for x in members {
@@ -197,8 +191,6 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	/**
 	* interset
 	* Return a new set with elements common to this set and a finite sequence of sets.
-	* @param		sets: SetType...
-	* @return		SetType
 	*/
 	public func intersect(sets: SetType...) -> SetType {
 		return intersect(sets)
@@ -207,8 +199,6 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	/**
 	* interset
 	* Return a new set with elements common to this set and a finite sequence of sets.
-	* @param		sets: Array<SetType>
-	* @return		SetType
 	*/
 	public func intersect(sets: Array<SetType>) -> SetType {
 		let s: SetType = SetType()
@@ -229,7 +219,6 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	/**
 	* intersetInPlace
 	* Remove any members of this set that aren't also in a finite sequence of sets.
-	* @param		sets: SetType...
 	*/
 	public func intersectInPlace(sets: SetType...) {
 		intersectInPlace(sets)
@@ -238,7 +227,6 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	/**
 	* intersetInPlace
 	* Remove any members of this set that aren't also in a finite sequence of sets.
-	* @param		sets: Array<SetType>
 	*/
 	public func intersectInPlace(sets: Array<SetType>) {
 		let s: SetType = SetType()

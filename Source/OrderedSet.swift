@@ -118,8 +118,6 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	* Items are kept in order, so when iterating
 	* through the items, they are returned in their
 	* ordered form.
-	* @param		index: Int
-	* @return		value V?
 	*/
 	public subscript(index: Int) -> Element {
 		return tree[index].value!
@@ -127,7 +125,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	
 	/**
 	* countOf
-	* Conforms to _ProbabilityType protocol.
+	* Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(members: Element...) -> Int {
 		return tree.countOf(members)
@@ -144,7 +142,6 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	/**
 	* insert
 	* Inserts new members into the OrderedSet.
-	* @param		members: Element...
 	*/
 	public func insert(members: Element...) {
 		insert(members)
@@ -153,7 +150,6 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	/**
 	* insert
 	* Inserts new members into the OrderedSet.
-	* @param		member: Array<Element>
 	*/
 	public func insert(members: Array<Element>) {
 		for x in members {
@@ -166,7 +162,6 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	/**
 	* remove
 	* Removes members from the OrderedSet.
-	* @param		members: Element...
 	*/
 	public func remove(members: Element...) {
 		remove(members)
@@ -175,7 +170,6 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	/**
 	* remove
 	* Removes members from the OrderedSet.
-	* @param		member: Array<Element>
 	*/
 	public func remove(members: Array<Element>) {
 		for x in members {
@@ -195,10 +189,14 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	}
 	
 	/**
+	* isDisjointWith
+	* Returns true if no members in the set are in a finite sequence as Sets.
+	*/
+	
+	
+	/**
 	* interset
-	* Return a new set with elements common to this set and a finite sequence of sets.
-	* @param		sets: SetType...
-	* @return		SetType
+	* Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
 	public func intersect(sets: SetType...) -> SetType {
 		return intersect(sets)
@@ -206,9 +204,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	
 	/**
 	* interset
-	* Return a new set with elements common to this set and a finite sequence of sets.
-	* @param		sets: Array<SetType>
-	* @return		SetType
+	* Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
 	public func intersect(sets: Array<SetType>) -> SetType {
 		let s: SetType = SetType()
@@ -229,8 +225,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	
 	/**
 	* intersetInPlace
-	* Remove any members of this set that aren't also in a finite sequence of sets.
-	* @param		sets: SetType...
+	* Remove any members of this set that aren't also in a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: SetType...) {
 		intersectInPlace(sets)
@@ -238,8 +233,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	
 	/**
 	* intersetInPlace
-	* Remove any members of this set that aren't also in a finite sequence of sets.
-	* @param		sets: Array<SetType>
+	* Remove any members of this set that aren't also in a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: Array<SetType>) {
 		let s: SetType = SetType()

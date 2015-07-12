@@ -73,7 +73,7 @@ internal class RedBlackNode<Key: Comparable, Value>: Comparable, Equatable, Prin
 	* Conforms to the Printable Protocol.
 	*/
 	internal var description: String {
-		return "[\(key): \(value)]"
+		return "(\(key): \(value))"
 	}
 	
 	/**
@@ -88,10 +88,6 @@ internal class RedBlackNode<Key: Comparable, Value>: Comparable, Equatable, Prin
 	/**
 	* init
 	* Constructor used for nodes that store data.
-	* @param		parent: NodeType
-	* @param		sentinel: NodeType
-	* @param		key: Key
-	* @param		value: Value?
 	*/
 	internal init(parent: NodeType, sentinel: NodeType, key: Key, value: Value?) {
 		self.key = key

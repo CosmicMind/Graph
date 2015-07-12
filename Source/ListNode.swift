@@ -53,9 +53,6 @@ internal class ListNode<Element>: Printable {
 	/**
 	* init
 	* Constructor.
-	* @param		next: ListNode<T>?
-	* @param		previous: ListNode<T>?
-	* @param		element: Element?
 	*/
 	internal init(next: NodeType?, previous: NodeType?, element: Element?) {
 		self.next = next

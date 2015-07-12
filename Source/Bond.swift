@@ -29,7 +29,6 @@ public class Bond: NSObject {
 	/**
 	* init
 	* Initializes Bond with a given ManagedBond.
-	* @param        entity: ManagedBond!
 	*/
 	internal init(bond: ManagedBond!) {
 		node = bond
@@ -38,7 +37,6 @@ public class Bond: NSObject {
 	/**
 	* init
 	* An initializer for the wrapped Model Object with a given type.
-	* @param        type: String!
 	*/
 	public convenience init(type: String) {
 		self.init(bond: ManagedBond(type: type))
@@ -47,7 +45,6 @@ public class Bond: NSObject {
 	/**
 	* nodeClass
 	* Retrieves the nodeClass for the Model Object that is wrapped internally.
-	* @return       String
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
@@ -56,7 +53,6 @@ public class Bond: NSObject {
 	/**
 	* type
 	* Retrieves the type for the Model Object that is wrapped internally.
-	* @return       String
 	*/
 	public var type: String {
 		return node.type
@@ -65,7 +61,6 @@ public class Bond: NSObject {
 	/**
 	* id
 	* Retrieves the ID for the Model Object that is wrapped internally.
-	* @return       String? of the ID
 	*/
 	public var id: String {
 		let nodeURL: NSURL = node.objectID.URIRepresentation()
@@ -76,7 +71,6 @@ public class Bond: NSObject {
 	/**
 	* createdDate
 	* Retrieves the date the Model Object was created.
-	* @return       NSDate?
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
@@ -85,9 +79,6 @@ public class Bond: NSObject {
 	/**
 	* properties[ ]
 	* Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
-	* @param        name: String!
-	* get           Returns the property name value.
-	* set           Value for the property name.
 	*/
 	public subscript(name: String) -> AnyObject? {
 		get {
@@ -101,8 +92,6 @@ public class Bond: NSObject {
 	/**
 	* addGroup
 	* Adds a Group name to the list of Groups if it does not exist.
-	* @param        name: String!
-	* @return       Bool of the result, true if added, false otherwise.
 	*/
 	public func addGroup(name: String) -> Bool {
 		return node.addGroup(name)
@@ -111,8 +100,6 @@ public class Bond: NSObject {
 	/**
 	* hasGroup
 	* Checks whether the Node is a part of the Group name passed or not.
-	* @param        name: String!
-	* @return       Bool of the result, true if is a part, false otherwise.
 	*/
 	public func hasGroup(name: String) -> Bool {
 		return node.hasGroup(name)
@@ -121,8 +108,6 @@ public class Bond: NSObject {
 	/**
 	* removeGroup
 	* Removes a Group name from the list of Groups if it exists.
-	* @param        name: String!
-	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	public func removeGroup(name: String!) -> Bool {
 		return node.removeGroup(name)
@@ -131,7 +116,6 @@ public class Bond: NSObject {
 	/**
 	* groups
 	* Retrieves the Groups the Bond is a part of.
-	* @return       OrderedSet<String>
 	*/
 	public var groups: OrderedSet<String> {
 		var groups: OrderedSet<String> = OrderedSet<String>()
@@ -145,7 +129,6 @@ public class Bond: NSObject {
 	/**
 	* properties
 	* Retrieves the Properties the Node is a part of.
-	* @return       Tree<String, AnyObject?>
 	*/
 	public var properties: Tree<String, AnyObject> {
 		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
@@ -158,7 +141,6 @@ public class Bond: NSObject {
     /**
     * subject
     * Retrieves an Entity Object.
-    * @return       Entity
     */
     public var subject: Entity? {
         get {
@@ -172,7 +154,6 @@ public class Bond: NSObject {
     /**
     * object
     * Retrieves an Entity Object.
-    * @return       Entity
     */
     public var object: Entity? {
 		get {

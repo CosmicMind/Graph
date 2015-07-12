@@ -29,7 +29,6 @@ public class Entity: NSObject {
 	/**
 	* init
 	* Initializes Entity with a given ManagedEntity.
-	* @param        entity: ManagedEntity!
 	*/
 	internal init(entity: ManagedEntity!) {
 		node = entity
@@ -38,7 +37,6 @@ public class Entity: NSObject {
 	/**
 	* init
 	* An initializer for the wrapped Model Object with a given type.
-	* @param        type: String!
 	*/
 	public convenience init(type: String) {
 		self.init(entity: ManagedEntity(type: type))
@@ -47,7 +45,6 @@ public class Entity: NSObject {
 	/**
 	* nodeClass
 	* Retrieves the nodeClass for the Model Object that is wrapped internally.
-	* @return       String
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
@@ -56,7 +53,6 @@ public class Entity: NSObject {
 	/**
 	* type
 	* Retrieves the type for the Model Object that is wrapped internally.
-	* @return       String
 	*/
 	public var type: String {
 		return node.type
@@ -65,7 +61,6 @@ public class Entity: NSObject {
 	/**
 	* id
 	* Retrieves the ID for the Model Object that is wrapped internally.
-	* @return       String? of the ID
 	*/
 	public var id: String {
 		let nodeURL: NSURL = node.objectID.URIRepresentation()
@@ -76,7 +71,6 @@ public class Entity: NSObject {
 	/**
 	* createdDate
 	* Retrieves the date the Model Object was created.
-	* @return       NSDate?
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
@@ -85,9 +79,6 @@ public class Entity: NSObject {
 	/**
 	* properties[ ]
 	* Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
-	* @param        name: String!
-	* get           Returns the property name value.
-	* set           Value for the property name.
 	*/
 	public subscript(name: String) -> AnyObject? {
 		get {
@@ -101,8 +92,6 @@ public class Entity: NSObject {
 	/**
 	* addGroup
 	* Adds a Group name to the list of Groups if it does not exist.
-	* @param        name: String!
-	* @return       Bool of the result, true if added, false otherwise.
 	*/
 	public func addGroup(name: String) -> Bool {
 		return node.addGroup(name)
@@ -111,8 +100,6 @@ public class Entity: NSObject {
 	/**
 	* hasGroup
 	* Checks whether the Node is a part of the Group name passed or not.
-	* @param        name: String!
-	* @return       Bool of the result, true if is a part, false otherwise.
 	*/
 	public func hasGroup(name: String) -> Bool {
 		return node.hasGroup(name)
@@ -121,8 +108,6 @@ public class Entity: NSObject {
 	/**
 	* removeGroup
 	* Removes a Group name from the list of Groups if it exists.
-	* @param        name: String!
-	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	public func removeGroup(name: String!) -> Bool {
 		return node.removeGroup(name)
@@ -131,7 +116,6 @@ public class Entity: NSObject {
 	/**
 	* groups
 	* Retrieves the Groups the Entity is a part of.
-	* @return       OrderedSet<String>
 	*/
 	public var groups: OrderedSet<String> {
 		var groups: OrderedSet<String> = OrderedSet<String>()
@@ -145,7 +129,6 @@ public class Entity: NSObject {
 	/**
 	* properties
 	* Retrieves the Properties the Node is a part of.
-	* @return       Tree<String, AnyObject?>
 	*/
 	public var properties: Tree<String, AnyObject> {
 		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
@@ -159,7 +142,6 @@ public class Entity: NSObject {
     * actions
     * Retrieves a MultiTree of Action objects. Where the key
 	* is the type of Action and the value is the Action instance.
-    * @return       MultiTree<String, Action>
     */
     public var actions: MultiTree<String, Action> {
         return actionsWhenSubject + actionsWhenObject
@@ -171,7 +153,6 @@ public class Entity: NSObject {
 	* is the type of Action and the value is the Action instance.
 	* The Actions included are those when the Entity is the subject of
 	* the Action.
-    * @return       MultiTree<String, Action>
     */
     public var actionsWhenSubject: MultiTree<String, Action> {
 		let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
@@ -188,8 +169,7 @@ public class Entity: NSObject {
 	* is the type of Action and the value is the Action instance.
 	* The Actions included are those when the Entity is the object of
 	* the Action.
-	* @return       MultiTree<String, Action>
-    */
+	*/
     public var actionsWhenObject: MultiTree<String, Action> {
         let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
 		for entry in node.actionObjectSet {
@@ -203,8 +183,7 @@ public class Entity: NSObject {
     * bonds
 	* Retrieves a MultiTree of Bond objects. Where the key
 	* is the type of Bond and the value is the Bond instance.
-	* @return       MultiTree<String, Bond>
-    */
+	*/
     public var bonds: MultiTree<String, Bond> {
         return bondsWhenSubject + bondsWhenObject
     }
@@ -215,8 +194,7 @@ public class Entity: NSObject {
 	* is the type of Bond and the value is the Bond instance.
 	* The Bonds included are those when the Entity is the subject of
 	* the Bond.
-	* @return       MultiTree<String, Bond>
-    */
+	*/
     public var bondsWhenSubject: MultiTree<String, Bond> {
 		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
 		for entry in node.bondSubjectSet {
@@ -232,8 +210,7 @@ public class Entity: NSObject {
 	* is the type of Bond and the value is the Bond instance.
 	* The Bonds included are those when the Entity is the object of
 	* the Bond.
-	* @return       MultiTree<String, Bond>
-    */
+	*/
     public var bondsWhenObject: MultiTree<String, Bond> {
 		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
 		for entry in node.bondObjectSet {

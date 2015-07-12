@@ -24,16 +24,15 @@ extension Sort {
 	/**
 	* An implementation of the popular Insertion Sort algorithm. 
 	* An inplace sort that sorts small sized Arrays well in O(n^2) time.
-	* @param		inout items: Array<T>
 	*/
-	static public func insertion<T: Comparable>(inout items: Array<T>) {
+	static public func insertion<Element: Comparable>(inout elements: Array<Element>) {
 		var i: Int
 		var j: Int
-		let n: Int = items.count
+		let n: Int = elements.count
 		for (i = 1; i < n; ++i) {
 			j = i
-			while (0 < j && items[j] < items[j - 1]) {
-				swap(&items[j], &items[j - 1])
+			while (0 < j && elements[j] < elements[j - 1]) {
+				swap(&elements[j], &elements[j - 1])
 				--j
 			}
 		}

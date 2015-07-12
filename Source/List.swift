@@ -187,7 +187,6 @@ public class List<Element>: Printable, SequenceType {
 	* insertAtFront
 	* Insert a new element at the front
 	* of the List.
-	* @param		element: Element?
 	*/
 	public func insertAtFront(element: Element?) {
 		var z: NodeType
@@ -210,7 +209,6 @@ public class List<Element>: Printable, SequenceType {
 	* removeAtFront
 	* Remove the element at the front of the List
 	* and return the element at the poistion.
-	* @return		element Element?
 	*/
 	public func removeAtFront() -> Element? {
 		if 0 == count {
@@ -229,7 +227,6 @@ public class List<Element>: Printable, SequenceType {
 	* insertAtBack
 	* Insert a new element at the back
 	* of the List.
-	* @param		element: Element?
 	*/
 	public func insertAtBack(element: Element?) {
 		var z: NodeType
@@ -252,7 +249,6 @@ public class List<Element>: Printable, SequenceType {
 	* removeAtBack
 	* Remove the element at the back of the List
 	* and return the element at the poistion.
-	* @return		element Element?
 	*/
 	public func removeAtBack() -> Element? {
 		if 0 == count {
@@ -286,7 +282,6 @@ public class List<Element>: Printable, SequenceType {
 	/**
 	* insertBeforeCursor
 	* Insert a new element before the cursor position.
-	* @param		element: Element?
 	*/
 	public func insertBeforeCursor(element: Element?) {
 		if nil == current || head === current {
@@ -302,7 +297,6 @@ public class List<Element>: Printable, SequenceType {
 	/**
 	* insertAfterCursor
 	* Insert a new element after the cursor position.
-	* @param		element: Element?
 	*/
 	public func insertAfterCursor(element: Element?) {
 		if nil == current || tail === current {
@@ -318,7 +312,6 @@ public class List<Element>: Printable, SequenceType {
 	/**
 	* removeAtCursor
 	* Removes the element at the cursor position.
-	* @return		element Element?
 	*/
 	public func removeAtCursor() -> Element? {
 		if 1 >= count {

@@ -29,7 +29,6 @@ public class Action: NSObject {
 	/**
 	* init
 	* Initializes Action with a given ManagedAction.
-	* @param        entity: ManagedAction!
 	*/
 	internal init(action: ManagedAction!) {
 		node = action
@@ -38,7 +37,6 @@ public class Action: NSObject {
 	/**
 	* init
 	* An initializer for the wrapped Model Object with a given type.
-	* @param        type: String!
 	*/
 	public convenience init(type: String) {
 		self.init(action: ManagedAction(type: type))
@@ -47,7 +45,6 @@ public class Action: NSObject {
 	/**
 	* nodeClass
 	* Retrieves the nodeClass for the Model Object that is wrapped internally.
-	* @return       String
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
@@ -56,7 +53,6 @@ public class Action: NSObject {
 	/**
 	* type
 	* Retrieves the type for the Model Object that is wrapped internally.
-	* @return       String
 	*/
 	public var type: String {
 		return node.type
@@ -65,7 +61,6 @@ public class Action: NSObject {
 	/**
 	* id
 	* Retrieves the ID for the Model Object that is wrapped internally.
-	* @return       String? of the ID
 	*/
 	public var id: String {
 		let nodeURL: NSURL = node.objectID.URIRepresentation()
@@ -76,7 +71,6 @@ public class Action: NSObject {
 	/**
 	* createdDate
 	* Retrieves the date the Model Object was created.
-	* @return       NSDate?
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
@@ -85,9 +79,6 @@ public class Action: NSObject {
 	/**
 	* properties[ ]
 	* Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
-	* @param        name: String!
-	* get           Returns the property name value.
-	* set           Value for the property name.
 	*/
 	public subscript(name: String) -> AnyObject? {
 		get {
@@ -101,8 +92,6 @@ public class Action: NSObject {
 	/**
 	* addGroup
 	* Adds a Group name to the list of Groups if it does not exist.
-	* @param        name: String!
-	* @return       Bool of the result, true if added, false otherwise.
 	*/
 	public func addGroup(name: String) -> Bool {
 		return node.addGroup(name)
@@ -111,8 +100,6 @@ public class Action: NSObject {
 	/**
 	* hasGroup
 	* Checks whether the Node is a part of the Group name passed or not.
-	* @param        name: String!
-	* @return       Bool of the result, true if is a part, false otherwise.
 	*/
 	public func hasGroup(name: String) -> Bool {
 		return node.hasGroup(name)
@@ -121,8 +108,6 @@ public class Action: NSObject {
 	/**
 	* removeGroup
 	* Removes a Group name from the list of Groups if it exists.
-	* @param        name: String!
-	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	public func removeGroup(name: String!) -> Bool {
 		return node.removeGroup(name)
@@ -131,7 +116,6 @@ public class Action: NSObject {
 	/**
 	* groups
 	* Retrieves the Groups the Action is a part of.
-	* @return       OrderedSet<String>
 	*/
 	public var groups: OrderedSet<String> {
 		var groups: OrderedSet<String> = OrderedSet<String>()
@@ -145,7 +129,6 @@ public class Action: NSObject {
 	/**
 	* properties
 	* Retrieves the Properties the Node is a part of.
-	* @return       Tree<String, AnyObject?>
 	*/
 	public var properties: Tree<String, AnyObject> {
 		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
@@ -159,7 +142,6 @@ public class Action: NSObject {
     * subjects
     * Retrieves a MultiTree of Entity Objects. Where the key is the type
 	* of Entity, and the value is the Entity instance.
-    * @return       MultiTree<String, Entity>
     */
     public var subjects: MultiTree<String, Entity> {
 		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
@@ -174,7 +156,6 @@ public class Action: NSObject {
     * objects
 	* Retrieves a MultiTree of Entity Objects. Where the key is the type
 	* of Entity, and the value is the Entity instance.
-    * @return       MultiTree<String, Entity>
     */
     public var objects: MultiTree<String, Entity> {
 		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
@@ -188,8 +169,6 @@ public class Action: NSObject {
     /**
     * addSubject
     * Adds a Entity Model Object to the Subject Set.
-    * @param        entity: Entity!
-    * @return       Bool of the result, true if added, false otherwise.
     */
     public func addSubject(entity: Entity!) -> Bool {
         return node.addSubject(entity.node)
@@ -198,8 +177,6 @@ public class Action: NSObject {
     /**
     * removeSubject
     * Removes a Entity Model Object from the Subject Set.
-    * @param        entity: Entity!
-    * @return       Bool of the result, true if removed, false otherwise.
     */
     public func removeSubject(entity: Entity!) -> Bool {
 		return node.removeSubject(entity.node)
@@ -208,11 +185,9 @@ public class Action: NSObject {
 	/**
 	* hasSubject
 	* Checks if a Entity exists in the Subjects Set.
-	* @param        entity: Entity!
-	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	public func hasSubject(entity: Entity!) -> Bool {
-		for (k, e) in subjects.search(entity.type) {
+		for (_, e) in subjects.search(entity.type) {
 			if e!.id == entity.id {
 				return true
 			}
@@ -223,8 +198,6 @@ public class Action: NSObject {
     /**
     * addObject
     * Adds a Entity Object to the Object Set.
-    * @param        entity: Entity!
-    * @return       Bool of the result, true if added, false otherwise.
     */
     public func addObject(entity: Entity!) -> Bool {
         return node.addObject(entity.node)
@@ -233,8 +206,6 @@ public class Action: NSObject {
     /**
     * removeObject
     * Removes a Entity Model Object from the Object Set.
-    * @param        entity: Entity!
-    * @return       Bool of the result, true if removed, false otherwise.
     */
     public func removeObject(entity: Entity!) -> Bool {
 		return node.removeObject(entity.node)
@@ -243,11 +214,9 @@ public class Action: NSObject {
 	/**
 	* hasObject
 	* Checks if a Entity exists in the Objects Set.
-	* @param        entity: Entity!
-	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	public func hasObject(entity: Entity!) -> Bool {
-		for (k, e) in objects.search(entity.type) {
+		for (_, e) in objects.search(entity.type) {
 			if e!.id == entity.id {
 				return true
 			}

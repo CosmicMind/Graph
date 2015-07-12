@@ -17,10 +17,10 @@
 *
 * Deque
 *
-* A Deque is a combination between a Deque and Queue. It allows for
-* access of the latest and oldest data, as well as, allows insertion
-* of data to be placed at the back or front of the structure. The
-* following Deque implementation is backed by a List data structure.
+* A Deque is a combination between a Stack and Queue. It allows for
+* access of the latest and oldest elements, as well as, allows insertion
+* of elements to be placed at the back or front of the structure. The
+* following Deque implementation is backed by a List structure.
 */
 
 public class Deque<Element>: Printable, SequenceType {
@@ -28,7 +28,7 @@ public class Deque<Element>: Printable, SequenceType {
 	
 	/**
 	* list
-	* Underlying data structure.
+	* Underlying element structure.
 	*/
 	private var list: List<Element>
 	
@@ -112,8 +112,8 @@ public class Deque<Element>: Printable, SequenceType {
 	* insertAtBack
 	* Insert a new element at the back of the Deque.
 	*/
-	public func insertAtBack(data: Element?) {
-		list.insertAtBack(data)
+	public func insertAtBack(element: Element?) {
+		list.insertAtBack(element)
 	}
 	
 	/**
