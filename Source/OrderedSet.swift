@@ -36,7 +36,7 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatabl
 	public var description: String {
 		var output: String = "OrderedSet("
 		for var i: Int = 0; i < count; ++i {
-			output += String(stringInterpolationSegment: tree[i]!)
+			output += "\(tree[i]!)"
 			if i + 1 != count {
 				output += ", "
 			}
@@ -226,16 +226,50 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatabl
 		}
 		return s
 	}
+	
+	/**
+	* intersetInPlace
+	* Remove any members of this set that aren't also in a finite sequence of sets.
+	* @param		sets: SetType...
+	*/
+	public func intersectInPlace(sets: SetType...) {
+		intersectInPlace(sets)
+	}
+	
+	/**
+	* intersetInPlace
+	* Remove any members of this set that aren't also in a finite sequence of sets.
+	* @param		sets: Array<SetType>
+	*/
+	public func intersectInPlace(sets: Array<SetType>) {
+		let s: SetType = SetType()
+		for x in self {
+			var toInsert: Bool = true
+			for set in sets {
+				if nil == set.tree.find(x) {
+					toInsert = false
+					break
+				}
+			}
+			if toInsert {
+				s.insert(x)
+			}
+		}
+		removeAll()
+		for x in s {
+			insert(x)
+		}
+	}
 }
 
 public func ==<T: Comparable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> Bool {
-	if lhs.count == rhs.count {
-		for var i: Int = lhs.count - 1; 0 <= i; --i {
-			if lhs[i] != rhs[i] {
-				return false
-			}
-		}
-		return true
+	if lhs.count != rhs.count {
+		return false
 	}
-	return false
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		if lhs[i] != rhs[i] {
+			return false
+		}
+	}
+	return true
 }

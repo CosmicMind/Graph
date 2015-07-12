@@ -57,17 +57,22 @@ class OrderedSetTests: XCTestCase {
 		s.remove(2)
 		s.insert(10)
 		XCTAssert(1 == s.count, "Test failed.")
-		XCTAssert(true == (s.remove(10) && 0 == s.count), "Test failed.")
+		
+		s.remove(10)
+		XCTAssert(0 == s.count, "Test failed.")
 		
 		s.insert(1)
 		s.insert(2)
 		s.insert(3)
 		
+		s.remove(1, 2)
+		XCTAssert(1 == s.count, "Test failed.")
+		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testIntersection() {
+	func testIntersect() {
 		let s1: OrderedSet<Int> = OrderedSet<Int>()
 		s1.insert(22, 23, 1, 2, 3, 4, 5)
 		
@@ -81,6 +86,23 @@ class OrderedSetTests: XCTestCase {
 		s4.insert(22, 23)
 		
 		XCTAssert(s4 == s1.intersect(s2, s3), "Test failed.")
+	}
+	
+	func testIntersectInPlace() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>()
+		s1.insert(22, 23, 1, 2, 3, 4, 5)
+		
+		let s2: OrderedSet<Int> = OrderedSet<Int>()
+		s2.insert(22, 23, 5, 6, 7, 8, 9, 10)
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>()
+		s3.insert(22, 23, 10, 11, 12, 13, 14, 15)
+		
+		let s4: OrderedSet<Int> = OrderedSet<Int>()
+		s4.insert(22, 23)
+		
+		s1.intersectInPlace(s2, s3)
+		XCTAssert(s4 == s1, "Test failed.")
 	}
 	
 	func testPerformanceExample() {

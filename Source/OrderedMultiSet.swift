@@ -36,7 +36,7 @@ public class OrderedMultiSet<T: Comparable>: Probability<T>, CollectionType, Pri
 	public var description: String {
 		var output: String = "OrderedMultiSet("
 		for var i: Int = 0; i < count; ++i {
-			output += String(stringInterpolationSegment: tree[i]!)
+			output += "\(tree[i]!)"
 			if i + 1 != count {
 				output += ", "
 			}
