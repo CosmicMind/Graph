@@ -16,23 +16,69 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 *
 * OrderedMultiSet
-*
-* A powerful data structure that is backed by a RedBlackOrderedMultiSet using an order
-* statistic. This allows for manipulation and access of the data as if an array,
-* while maintaining log(n) performance on all operations. All items in a OrderedMultiSet
-* are uniquely keyed.
 */
 
-public class OrderedMultiSet<T: Comparable>: RedBlackTree<T, T> {
+public class OrderedMultiSet<T: Comparable>: Probability<T>, CollectionType, Printable {
+	private typealias TreeType = MultiTree<T, T>
 	internal typealias OrderedMultiSetType = OrderedMultiSet<T>
+	internal typealias Generator = GeneratorOf<T>
+	
+	/**
+	* tree
+	*/
+	internal var tree: TreeType
 	
 	/**
 	* description
 	* Conforms to the Printable Protocol. Outputs the
 	* data in the OrderedMultiSet in a readable format.
 	*/
-	public override var description: String {
-		return "OrderedMultiSet" + internalDescription
+	public var description: String {
+		return "OrderedMultiSet" + tree.internalDescription
+	}
+	
+	/**
+	* first
+	* Get the first node value in the tree, this is
+	* the first node based on the order of keys where
+	* k1 <= k2 <= K3 ... <= Kn
+	*/
+	public var first: T? {
+		return tree.first
+	}
+	
+	/**
+	* last
+	* Get the last node value in the tree, this is
+	* the last node based on the order of keys where
+	* k1 <= k2 <= K3 ... <= Kn
+	*/
+	public var last: T? {
+		return tree.last
+	}
+	
+	/**
+	* isEmpty
+	* A boolean of whether the RedBlackTree is empty.
+	*/
+	public var isEmpty: Bool {
+		return 0 == count
+	}
+	
+	/**
+	* startIndex
+	* Conforms to the CollectionType Protocol.
+	*/
+	public var startIndex: Int {
+		return 0
+	}
+	
+	/**
+	* endIndex
+	* Conforms to the CollectionType Protocol.
+	*/
+	public var endIndex: Int {
+		return count
 	}
 	
 	/**
@@ -40,65 +86,76 @@ public class OrderedMultiSet<T: Comparable>: RedBlackTree<T, T> {
 	* Constructor
 	*/
 	public override init() {
-		super.init(unique: false)
+		tree = TreeType()
 	}
 	
 	/**
-	* search
-	* Accepts a paramter list of keys and returns a subset
-	* OrderedMultiSet with the indicated values if
-	* they exist.
-	* @param		keys: T...
-	* @return		OrderedMultiSetType subtree.
+	* generate
+	* Conforms to the SequenceType Protocol. Returns
+	* the next value in the sequence of nodes using
+	* index values [0...n-1].
 	*/
-	public func search(keys: T...) -> OrderedMultiSetType {
-		return search(keys)
-	}
-	
-	/**
-	* search
-	* Accepts an array of keys and returns a subset
-	* OrderedMultiSet with the indicated values if
-	* they exist.
-	* @param		keys: T...
-	* @return		OrderedMultiSetType subtree.
-	*/
-	public func search(array: Array<T>) -> OrderedMultiSetType {
-		var set: OrderedMultiSetType = OrderedMultiSetType()
-		for key: T in array {
-			subtree(key, node: root, tree: &set)
-		}
-		return set
-	}
-	
-	/**
-	* subtree
-	* Traverses the OrderedMultiSet and looking for a key value.
-	* This is used for internal search.
-	* @param		key: T
-	* @param		node: NodeType
-	* @param		inout tree: OrderedMultiSetType
-	*/
-	internal func subtree(key: T, node: NodeType, inout tree: OrderedMultiSetType) {
-		if sentinel !== node {
-			if key == node.key {
-				tree.insert(key, value: node.value)
+	public func generate() -> Generator {
+		var index = startIndex
+		return GeneratorOf {
+			if index < self.endIndex {
+				return self[index++]
 			}
-			subtree(key, node: node.left, tree: &tree)
-			subtree(key, node: node.right, tree: &tree)
+			return nil
 		}
 	}
-}
-
-public func +<T: Comparable>(lhs: OrderedMultiSet<T>, rhs: OrderedMultiSet<T>) -> OrderedMultiSet<T> {
-	let s: OrderedMultiSet<T> = OrderedMultiSet<T>()
-	for var i: Int = lhs.count; i > 0; --i {
-		let n: RedBlackNode<T, T> = lhs.select(lhs.root, order: i)
-		s.insert(n.key, value: n.value)
+	
+	/**
+	* operator [0...count - 1]
+	* Allows array like access of the index.
+	* Items are kept in order, so when iterating
+	* through the items, they are returned in their
+	* ordered form.
+	* @param		index: Int
+	* @return		value V?
+	*/
+	public subscript(index: Int) -> T {
+		return tree[index]!
 	}
-	for var i: Int = rhs.count; i > 0; --i {
-		let n: RedBlackNode<T, T> = rhs.select(rhs.root, order: i)
-		s.insert(n.key, value: n.value)
+	
+	/**
+	* countOf
+	* Conforms to _ProbabilityType protocol.
+	*/
+	public override func countOf(members: T...) -> Int {
+		return tree.countOf(members)
 	}
-	return s
+	
+	/**
+	* countOf
+	* Conforms to _ProbabilityType protocol.
+	*/
+	public override func countOf(members: Array<T>) -> Int {
+		return tree.countOf(members)
+	}
+	
+	public func insert(member: T) -> Bool {
+		let result: Bool = tree.insert(member, value: member)
+		if result {
+			++count
+		}
+		return result
+	}
+	
+	public func remove(member: T) -> Bool {
+		let result: Bool = tree.remove(member)
+		if result {
+			--count
+		}
+		return result
+	}
+	
+	/**
+	* removeAll
+	* Remove all nodes from the tree.
+	*/
+	public func removeAll() {
+		tree.removeAll()
+		count = 0
+	}
 }

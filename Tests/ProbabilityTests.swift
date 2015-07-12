@@ -40,7 +40,7 @@ class ProbabilityTests: XCTestCase {
 		
 		var ev: Double = Double(s.countOf(3)) / Double(s.count)
 		
-		XCTAssert(ev == s.expectedValue(3), "Test failed.")
+		XCTAssert(ev == s.expectedValue(1, members: 3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
@@ -53,9 +53,9 @@ class ProbabilityTests: XCTestCase {
 		s.insert(2, value: 2)
 		s.insert(3, value: 3)
 		
-		var ev: Double = Double(s.countOf(3)) / Double(s.count)
+		var ev: Double = Double(s.countOf([2, 3])) / Double(s.count)
 		
-		XCTAssert(ev == s.expectedValue(3), "Test failed.")
+		XCTAssert(ev == s.expectedValue(1, members: [2, 3]), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")

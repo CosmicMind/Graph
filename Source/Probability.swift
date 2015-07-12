@@ -20,20 +20,35 @@
 */
 
 
-public protocol _ProbabilityType {
-	typealias MemberType
-	func countOf(members: MemberType...) -> Int
-	func countOf(members: Array<MemberType>) -> Int
+public protocol ProbabilityType {
+	typealias Element
+	func countOf(members: Element...) -> Int
+	func countOf(members: Array<Element>) -> Int
 }
 
-public class Probability<T: Comparable>: _ProbabilityType {
-	typealias MemberType = T
+public class Probability<T: Comparable>: ProbabilityType {
+	typealias Element = T
 	public internal(set) var count: Int = 0
-	public func countOf(members: MemberType...) -> Int { return 0 }
-	public func countOf(members: Array<MemberType>) -> Int { return 0 }
-	public func expectedValue(members: T...) -> Double {
+	
+	public func countOf(members: Element...) -> Int { return 0 }
+	
+	public func countOf(members: Array<Element>) -> Int { return 0 }
+	
+	public func probability(members: T...) -> Double {
+		return probability(members)
+	}
+	
+	public func probability(members: Array<T>) -> Double {
 		let x: Double = Double(countOf(members))
 		let y: Double = Double(count)
 		return 0 == y ? 0 : x / y
+	}
+	
+	public func expectedValue(trials: Int, members: T...) -> Double {
+		return expectedValue(trials, members: members)
+	}
+	
+	public func expectedValue(trials: Int, members: Array<T>) -> Double {
+		return Double(trials) * probability(members)
 	}
 }
