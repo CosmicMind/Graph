@@ -18,9 +18,9 @@
 * OrderedSet
 */
 
-public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Printable {
-	private typealias TreeType = Tree<T, T>
-	internal typealias OrderedSetType = OrderedSet<T>
+public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatable, Printable {
+	internal typealias TreeType = Tree<T, T>
+	internal typealias SetType = OrderedSet<T>
 	internal typealias Generator = GeneratorOf<T>
 	
 	/**
@@ -34,7 +34,14 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Printabl
 	* data in the OrderedSet in a readable format.
 	*/
 	public var description: String {
-		return "OrderedSet" + tree.internalDescription
+		var output: String = "OrderedSet("
+		for var i: Int = 0; i < count; ++i {
+			output += String(stringInterpolationSegment: tree[i]!)
+			if i + 1 != count {
+				output += ", "
+			}
+		}
+		return output + ")"
 	}
 	
 	/**
@@ -134,20 +141,48 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Printabl
 		return tree.countOf(members)
 	}
 	
-	public func insert(member: T) -> Bool {
-		let result: Bool = tree.insert(member, value: member)
-		if result {
-			++count
-		}
-		return result
+	/**
+	* insert
+	* Inserts new members into the OrderedSet.
+	* @param		members: T...
+	*/
+	public func insert(members: T...) {
+		insert(members)
 	}
 	
-	public func remove(member: T) -> Bool {
-		let result: Bool = tree.remove(member)
-		if result {
-			--count
+	/**
+	* insert
+	* Inserts new members into the OrderedSet.
+	* @param		member: Array<T>
+	*/
+	public func insert(members: Array<T>) {
+		for x in members {
+			if tree.insert(x, value: x) {
+				++count
+			}
 		}
-		return result
+	}
+	
+	/**
+	* remove
+	* Removes members from the OrderedSet.
+	* @param		members: T...
+	*/
+	public func remove(members: T...) {
+		remove(members)
+	}
+	
+	/**
+	* remove
+	* Removes members from the OrderedSet.
+	* @param		member: Array<T>
+	*/
+	public func remove(members: Array<T>) {
+		for x in members {
+			if tree.remove(x) {
+				--count
+			}
+		}
 	}
 	
 	/**
@@ -158,4 +193,49 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Printabl
 		tree.removeAll()
 		count = 0
 	}
+	
+	/**
+	* interset
+	* Return a new set with elements common to this set and a finite sequence of sets.
+	* @param		sets: SetType...
+	* @return		SetType
+	*/
+	public func intersect(sets: SetType...) -> SetType {
+		return intersect(sets)
+	}
+	
+	/**
+	* interset
+	* Return a new set with elements common to this set and a finite sequence of sets.
+	* @param		sets: Array<SetType>
+	* @return		SetType
+	*/
+	public func intersect(sets: Array<SetType>) -> SetType {
+		let s: SetType = SetType()
+		for x in self {
+			var toInsert: Bool = true
+			for set in sets {
+				if nil == set.tree.find(x) {
+					toInsert = false
+					break
+				}
+			}
+			if toInsert {
+				s.insert(x)
+			}
+		}
+		return s
+	}
+}
+
+public func ==<T: Comparable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> Bool {
+	if lhs.count == rhs.count {
+		for var i: Int = lhs.count - 1; 0 <= i; --i {
+			if lhs[i] != rhs[i] {
+				return false
+			}
+		}
+		return true
+	}
+	return false
 }

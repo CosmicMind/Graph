@@ -31,7 +31,7 @@ class TreeTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testSetInt() {
+	func testInt() {
 		let s: Tree<Int, Int> = Tree<Int, Int>()
 		
 		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
@@ -83,7 +83,7 @@ class TreeTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testSetString() {
+	func testString() {
 		let s: Tree<String, Array<Int>> = Tree<String, Array<Int>>()
 		s.insert("friends", value: [1, 2, 3])
 		s["menu"] = [11, 22, 33]

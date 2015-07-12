@@ -55,10 +55,10 @@ public class RedBlackTree<K: Comparable, V>: Probability<K>, CollectionType, Pri
 	*/
 	internal var internalDescription: String {
 		var output: String = "("
-		for (var i: Int = 1; i <= count; ++i) {
+		for var i: Int = 1; i <= count; ++i {
 			output += internalSelect(root, order: i).description
 			if i != count {
-				output += ","
+				output += ", "
 			}
 		}
 		return output + ")"

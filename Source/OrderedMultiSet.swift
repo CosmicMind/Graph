@@ -34,7 +34,14 @@ public class OrderedMultiSet<T: Comparable>: Probability<T>, CollectionType, Pri
 	* data in the OrderedMultiSet in a readable format.
 	*/
 	public var description: String {
-		return "OrderedMultiSet" + tree.internalDescription
+		var output: String = "OrderedMultiSet("
+		for var i: Int = 0; i < count; ++i {
+			output += String(stringInterpolationSegment: tree[i]!)
+			if i + 1 != count {
+				output += ", "
+			}
+		}
+		return output + ")"
 	}
 	
 	/**

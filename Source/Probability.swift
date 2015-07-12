@@ -20,7 +20,7 @@
 */
 
 
-public protocol ProbabilityType {
+internal protocol ProbabilityType {
 	typealias Element
 	func countOf(members: Element...) -> Int
 	func countOf(members: Array<Element>) -> Int
