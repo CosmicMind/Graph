@@ -18,10 +18,10 @@
 * OrderedSet
 */
 
-public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatable, Printable {
-	internal typealias TreeType = Tree<T, T>
-	internal typealias SetType = OrderedSet<T>
-	internal typealias Generator = GeneratorOf<T>
+public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionType, Equatable, Printable {
+	internal typealias TreeType = Tree<Element, Element>
+	internal typealias SetType = OrderedSet<Element>
+	internal typealias Generator = GeneratorOf<Element>
 	
 	/**
 	* tree
@@ -50,7 +50,7 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatabl
 	* the first node based on the order of keys where
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
-	public var first: T? {
+	public var first: Element? {
 		return tree.first
 	}
 	
@@ -60,7 +60,7 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatabl
 	* the last node based on the order of keys where
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
-	public var last: T? {
+	public var last: Element? {
 		return tree.last
 	}
 	
@@ -121,7 +121,7 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatabl
 	* @param		index: Int
 	* @return		value V?
 	*/
-	public subscript(index: Int) -> T {
+	public subscript(index: Int) -> Element {
 		return tree[index]!
 	}
 	
@@ -129,36 +129,36 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatabl
 	* countOf
 	* Conforms to _ProbabilityType protocol.
 	*/
-	public override func countOf(members: T...) -> Int {
+	public override func countOf(members: Element...) -> Int {
 		return tree.countOf(members)
 	}
 	
 	/**
 	* countOf
-	* Conforms to _ProbabilityType protocol.
+	* Conforms to ProbabilityType protocol.
 	*/
-	public override func countOf(members: Array<T>) -> Int {
+	public override func countOf(members: Array<Element>) -> Int {
 		return tree.countOf(members)
 	}
 	
 	/**
 	* insert
 	* Inserts new members into the OrderedSet.
-	* @param		members: T...
+	* @param		members: Element...
 	*/
-	public func insert(members: T...) {
+	public func insert(members: Element...) {
 		insert(members)
 	}
 	
 	/**
 	* insert
 	* Inserts new members into the OrderedSet.
-	* @param		member: Array<T>
+	* @param		member: Array<Element>
 	*/
-	public func insert(members: Array<T>) {
+	public func insert(members: Array<Element>) {
 		for x in members {
 			if tree.insert(x, value: x) {
-				++count
+				count = tree.count
 			}
 		}
 	}
@@ -166,21 +166,21 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatabl
 	/**
 	* remove
 	* Removes members from the OrderedSet.
-	* @param		members: T...
+	* @param		members: Element...
 	*/
-	public func remove(members: T...) {
+	public func remove(members: Element...) {
 		remove(members)
 	}
 	
 	/**
 	* remove
 	* Removes members from the OrderedSet.
-	* @param		member: Array<T>
+	* @param		member: Array<Element>
 	*/
-	public func remove(members: Array<T>) {
+	public func remove(members: Array<Element>) {
 		for x in members {
 			if tree.remove(x) {
-				--count
+				count = tree.count
 			}
 		}
 	}
@@ -191,7 +191,7 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatabl
 	*/
 	public func removeAll() {
 		tree.removeAll()
-		count = 0
+		count = tree.count
 	}
 	
 	/**
@@ -262,7 +262,7 @@ public class OrderedSet<T: Comparable>: Probability<T>, CollectionType, Equatabl
 	}
 }
 
-public func ==<T: Comparable>(lhs: OrderedSet<T>, rhs: OrderedSet<T>) -> Bool {
+public func ==<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}

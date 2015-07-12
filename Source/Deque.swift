@@ -23,14 +23,14 @@
 * following Deque implementation is backed by a List data structure.
 */
 
-public class Deque<T>: Printable, SequenceType {
-	internal typealias Generator = GeneratorOf<T?>
+public class Deque<Element>: Printable, SequenceType {
+	internal typealias Generator = GeneratorOf<Element?>
 	
 	/**
 	* list
 	* Underlying data structure.
 	*/
-	private var list: List<T>
+	private var list: List<Element>
 	
 	/**
 	* count
@@ -42,19 +42,19 @@ public class Deque<T>: Printable, SequenceType {
 	
 	/**
 	* front
-	* Get the item at the front of the Deque
+	* Get the element at the front of the Deque
 	* and do not remove it.
 	*/
-	public var front: T? {
+	public var front: Element? {
 		return list.front
 	}
 	
 	/**
 	* back
-	* Get the item at the back of the Deque
+	* Get the element at the back of the Deque
 	* and do not remove it.
 	*/
-	public var back: T? {
+	public var back: Element? {
 		return list.back
 	}
 	
@@ -79,7 +79,7 @@ public class Deque<T>: Printable, SequenceType {
 	* Constructor.
 	*/
 	public init() {
-		list = List<T>()
+		list = List<Element>()
 	}
 	
 	/**
@@ -93,48 +93,48 @@ public class Deque<T>: Printable, SequenceType {
 	
 	/**
 	* insertAtFront
-	* Insert a new item at the front of the Deque.
+	* Insert a new element at the front of the Deque.
 	*/
-	public func insertAtFront(data: T?) {
-		list.insertAtFront(data)
+	public func insertAtFront(element: Element?) {
+		list.insertAtFront(element)
 	}
 	
 	/**
 	* removeAtFront
-	* Get the item at the front of the Deque
+	* Get the element at the front of the Deque
 	* and remove it.
 	*/
-	public func removeAtFront() -> T? {
+	public func removeAtFront() -> Element? {
 		return list.removeAtFront()
 	}
 	
 	/**
 	* insertAtBack
-	* Insert a new item at the back of the Deque.
+	* Insert a new element at the back of the Deque.
 	*/
-	public func insertAtBack(data: T?) {
+	public func insertAtBack(data: Element?) {
 		list.insertAtBack(data)
 	}
 	
 	/**
-	* Get the item at the back of the Deque
+	* Get the element at the back of the Deque
 	* and remove it.
 	*/
-	public func removeAtBack() -> T? {
+	public func removeAtBack() -> Element? {
 		return list.removeAtBack()
 	}
 	
 	/**
 	* removeAll
-	* Remove all items from the Deque.
+	* Remove all elements from the Deque.
 	*/
 	public func removeAll() {
 		list.removeAll()
 	}
 }
 
-public func +<T>(lhs: Deque<T>, rhs: Deque<T>) -> Deque<T> {
-	let d: Deque<T> = Deque<T>()
+public func +<Element>(lhs: Deque<Element>, rhs: Deque<Element>) -> Deque<Element> {
+	let d: Deque<Element> = Deque<Element>()
 	for x in lhs {
 		d.insertAtBack(x)
 	}

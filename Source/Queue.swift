@@ -22,14 +22,14 @@
 * entered. The following Queue implementation is backed by a List data structure.
 */
 
-public class Queue<T>: Printable, SequenceType {
-	internal typealias Generator = GeneratorOf<T?>
+public class Queue<Element>: Printable, SequenceType {
+	internal typealias Generator = GeneratorOf<Element?>
 	
 	/**
 	* list
 	* Underlying data structure.
 	*/
-	private var list: List<T>
+	private var list: List<Element>
 	
 	/**
 	* count
@@ -41,10 +41,10 @@ public class Queue<T>: Printable, SequenceType {
 	
 	/**
 	* peek
-	* Get the value at the front of 
+	* Get the element at the front of
 	* the Queue, and do not remove it.
 	*/
-	public var peek: T? {
+	public var peek: Element? {
 		return list.front
 	}
 	
@@ -69,7 +69,7 @@ public class Queue<T>: Printable, SequenceType {
 	* Constructor
 	*/
 	public init() {
-		list = List<T>()
+		list = List<Element>()
 	}
 	
 	/**
@@ -83,32 +83,32 @@ public class Queue<T>: Printable, SequenceType {
 	
 	/**
 	* enqueue
-	* Insert data at the back of the Queue.
+	* Insert a new element at the back of the Queue.
 	*/
-	public func enqueue(data: T?) {
-		list.insertAtBack(data)
+	public func enqueue(element: Element?) {
+		list.insertAtBack(element)
 	}
 	
 	/**
 	* dequeue
-	* Get and remove data at the front
+	* Get and remove the element at the front
 	* of the Queue.
 	*/
-	public func dequeue() -> T? {
+	public func dequeue() -> Element? {
 		return list.removeAtFront()
 	}
 	
 	/**
 	* removeAll
-	* Remove all data from the Queue.
+	* Remove all elements from the Queue.
 	*/
 	public func removeAll() {
 		list.removeAll()
 	}
 }
 
-public func +<T>(lhs: Queue<T>, rhs: Queue<T>) -> Queue<T> {
-	let q: Queue<T> = Queue<T>()
+public func +<Element>(lhs: Queue<Element>, rhs: Queue<Element>) -> Queue<Element> {
+	let q: Queue<Element> = Queue<Element>()
 	for x in lhs {
 		q.enqueue(x)
 	}

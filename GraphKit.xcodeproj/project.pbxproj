@@ -157,6 +157,8 @@
 		96CB07C81B52E8FA00EB4A58 /* OrderedMultiSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96CB07CA1B52F33900EB4A58 /* RedBlackTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */; };
 		96CB07CB1B52F33900EB4A58 /* RedBlackTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */; };
+		96CB07CD1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */; };
+		96CB07CE1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -231,6 +233,7 @@
 		96C031EF1AD7306200EE4C63 /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96C031F91AD7306200EE4C63 /* GraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTreeTests.swift; sourceTree = "<group>"; };
+		96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiSetTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -381,6 +384,7 @@
 				96C031DB1AD72FE100EE4C63 /* EntityStressTests.swift */,
 				96C031DC1AD72FE100EE4C63 /* EntityTests.swift */,
 				96C031DD1AD72FE100EE4C63 /* Tests.swift */,
+				96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */,
 				961242E71B2B376800CD47E0 /* TreeTests.swift */,
 				961242EA1B2B378400CD47E0 /* MultiTreeTests.swift */,
 				961242ED1B2B37A500CD47E0 /* InsertionSortTests.swift */,
@@ -389,8 +393,8 @@
 				969F6DB11B2DE06200B573F8 /* StackTests.swift */,
 				969F6DC01B2DECAA00B573F8 /* ListTests.swift */,
 				968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */,
+				96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */,
 				968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */,
-				96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -696,6 +700,7 @@
 				968F38A61AD7393900E963AB /* ActionSearchTests.swift in Sources */,
 				968F38AD1AD7393900E963AB /* EntityStressTests.swift in Sources */,
 				969F6DB21B2DE06200B573F8 /* StackTests.swift in Sources */,
+				96CB07CD1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
 				961242EB1B2B378400CD47E0 /* MultiTreeTests.swift in Sources */,
 				968F38AC1AD7393900E963AB /* EntitySearchTests.swift in Sources */,
 				968F38AF1AD7393900E963AB /* Tests.swift in Sources */,
@@ -757,6 +762,7 @@
 				96C032151AD730CC00EE4C63 /* ActionStressTests.swift in Sources */,
 				96C032161AD730CC00EE4C63 /* ActionTests.swift in Sources */,
 				969F6DB31B2DE06200B573F8 /* StackTests.swift in Sources */,
+				96CB07CE1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
 				961242EC1B2B378400CD47E0 /* MultiTreeTests.swift in Sources */,
 				96C0321A1AD730CC00EE4C63 /* EntityStressTests.swift in Sources */,
 				96C0321C1AD730CC00EE4C63 /* Tests.swift in Sources */,

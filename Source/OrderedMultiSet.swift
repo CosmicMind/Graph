@@ -18,10 +18,10 @@
 * OrderedMultiSet
 */
 
-public class OrderedMultiSet<T: Comparable>: Probability<T>, CollectionType, Printable {
-	private typealias TreeType = MultiTree<T, T>
-	internal typealias OrderedMultiSetType = OrderedMultiSet<T>
-	internal typealias Generator = GeneratorOf<T>
+public class OrderedMultiSet<Element: Comparable>: Probability<Element>, CollectionType, Equatable, Printable {
+	internal typealias TreeType = MultiTree<Element, Element>
+	internal typealias SetType = OrderedMultiSet<Element>
+	internal typealias Generator = GeneratorOf<Element>
 	
 	/**
 	* tree
@@ -50,7 +50,7 @@ public class OrderedMultiSet<T: Comparable>: Probability<T>, CollectionType, Pri
 	* the first node based on the order of keys where
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
-	public var first: T? {
+	public var first: Element? {
 		return tree.first
 	}
 	
@@ -60,7 +60,7 @@ public class OrderedMultiSet<T: Comparable>: Probability<T>, CollectionType, Pri
 	* the last node based on the order of keys where
 	* k1 <= k2 <= K3 ... <= Kn
 	*/
-	public var last: T? {
+	public var last: Element? {
 		return tree.last
 	}
 	
@@ -121,7 +121,7 @@ public class OrderedMultiSet<T: Comparable>: Probability<T>, CollectionType, Pri
 	* @param		index: Int
 	* @return		value V?
 	*/
-	public subscript(index: Int) -> T {
+	public subscript(index: Int) -> Element {
 		return tree[index]!
 	}
 	
@@ -129,32 +129,60 @@ public class OrderedMultiSet<T: Comparable>: Probability<T>, CollectionType, Pri
 	* countOf
 	* Conforms to _ProbabilityType protocol.
 	*/
-	public override func countOf(members: T...) -> Int {
+	public override func countOf(members: Element...) -> Int {
 		return tree.countOf(members)
 	}
 	
 	/**
 	* countOf
-	* Conforms to _ProbabilityType protocol.
+	* Conforms to ProbabilityType protocol.
 	*/
-	public override func countOf(members: Array<T>) -> Int {
+	public override func countOf(members: Array<Element>) -> Int {
 		return tree.countOf(members)
 	}
 	
-	public func insert(member: T) -> Bool {
-		let result: Bool = tree.insert(member, value: member)
-		if result {
-			++count
-		}
-		return result
+	/**
+	* insert
+	* Inserts new members into the OrderedMultiSet.
+	* @param		members: Element...
+	*/
+	public func insert(members: Element...) {
+		insert(members)
 	}
 	
-	public func remove(member: T) -> Bool {
-		let result: Bool = tree.remove(member)
-		if result {
-			--count
+	/**
+	* insert
+	* Inserts new members into the OrderedMultiSet.
+	* @param		member: Array<Element>
+	*/
+	public func insert(members: Array<Element>) {
+		for x in members {
+			if tree.insert(x, value: x) {
+				count = tree.count
+			}
 		}
-		return result
+	}
+	
+	/**
+	* remove
+	* Removes members from the OrderedMultiSet.
+	* @param		members: Element...
+	*/
+	public func remove(members: Element...) {
+		remove(members)
+	}
+	
+	/**
+	* remove
+	* Removes members from the OrderedMultiSet.
+	* @param		member: Array<Element>
+	*/
+	public func remove(members: Array<Element>) {
+		for x in members {
+			if tree.remove(x) {
+				count = tree.count
+			}
+		}
 	}
 	
 	/**
@@ -163,6 +191,84 @@ public class OrderedMultiSet<T: Comparable>: Probability<T>, CollectionType, Pri
 	*/
 	public func removeAll() {
 		tree.removeAll()
-		count = 0
+		count = tree.count
 	}
+	
+	/**
+	* interset
+	* Return a new set with elements common to this set and a finite sequence of sets.
+	* @param		sets: SetType...
+	* @return		SetType
+	*/
+	public func intersect(sets: SetType...) -> SetType {
+		return intersect(sets)
+	}
+	
+	/**
+	* interset
+	* Return a new set with elements common to this set and a finite sequence of sets.
+	* @param		sets: Array<SetType>
+	* @return		SetType
+	*/
+	public func intersect(sets: Array<SetType>) -> SetType {
+		let s: SetType = SetType()
+		for x in self {
+			var toInsert: Bool = true
+			for set in sets {
+				if nil == set.tree.find(x) {
+					toInsert = false
+					break
+				}
+			}
+			if toInsert {
+				s.insert(x)
+			}
+		}
+		return s	}
+	
+	/**
+	* intersetInPlace
+	* Remove any members of this set that aren't also in a finite sequence of sets.
+	* @param		sets: SetType...
+	*/
+	public func intersectInPlace(sets: SetType...) {
+		intersectInPlace(sets)
+	}
+	
+	/**
+	* intersetInPlace
+	* Remove any members of this set that aren't also in a finite sequence of sets.
+	* @param		sets: Array<SetType>
+	*/
+	public func intersectInPlace(sets: Array<SetType>) {
+		let s: SetType = SetType()
+		for x in self {
+			var toInsert: Bool = true
+			for set in sets {
+				if nil == set.tree.find(x) {
+					toInsert = false
+					break
+				}
+			}
+			if toInsert {
+				s.insert(x)
+			}
+		}
+		removeAll()
+		for x in s {
+			insert(x)
+		}
+	}
+}
+
+public func ==<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+	if lhs.count != rhs.count {
+		return false
+	}
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		if lhs[i] != rhs[i] {
+			return false
+		}
+	}
+	return true
 }

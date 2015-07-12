@@ -23,13 +23,13 @@
 * may not be uniquely keyed.
 */
 
-public class MultiTree<K: Comparable, V>: RedBlackTree<K, V> {
-	internal typealias TreeType = MultiTree<K, V>
+public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
+	internal typealias TreeType = MultiTree<Key, Value>
 	
 	/**
 	* description
 	* Conforms to the Printable Protocol. Outputs the
-	* data in the Tree in a readable format.
+	* data in the MultiTree in a readable format.
 	*/
 	public override var description: String {
 		return "MultiTree" + internalDescription
@@ -45,18 +45,18 @@ public class MultiTree<K: Comparable, V>: RedBlackTree<K, V> {
 	
 	/**
 	* countOf
-	* Conforms to _ProbabilityType protocol.
+	* Conforms to ProbabilityType protocol.
 	*/
-	public override func countOf(members: K...) -> Int {
-		return countOf(members)
+	public override func countOf(keys: Key...) -> Int {
+		return countOf(keys)
 	}
 	
 	/**
 	* countOf
-	* Conforms to _ProbabilityType protocol.
+	* Conforms to ProbabilityType protocol.
 	*/
-	public override func countOf(members: Array<K>) -> Int {
-		return search(members).count
+	public override func countOf(keys: Array<Key>) -> Int {
+		return search(keys).count
 	}
 	
 	/**
@@ -64,10 +64,10 @@ public class MultiTree<K: Comparable, V>: RedBlackTree<K, V> {
 	* Accepts a paramter list of keys and returns a subset
 	* Tree with the indicated values if
 	* they exist.
-	* @param		keys: K...
+	* @param		keys: Key...
 	* @return		TreeType subtree.
 	*/
-	public func search(keys: K...) -> TreeType {
+	public func search(keys: Key...) -> TreeType {
 		return search(keys)
 	}
 	
@@ -76,12 +76,12 @@ public class MultiTree<K: Comparable, V>: RedBlackTree<K, V> {
 	* Accepts an array of keys and returns a subset
 	* Tree with the indicated values if
 	* they exist.
-	* @param		keys: K...
+	* @param		keys: Key...
 	* @return		TreeType subtree.
 	*/
-	public func search(array: Array<K>) -> TreeType {
+	public func search(array: Array<Key>) -> TreeType {
 		var tree: TreeType = TreeType()
-		for key: K in array {
+		for key: Key in array {
 			subtree(key, node: root, tree: &tree)
 		}
 		return tree
@@ -91,11 +91,11 @@ public class MultiTree<K: Comparable, V>: RedBlackTree<K, V> {
 	* subtree
 	* Traverses the Tree and looking for a key value.
 	* This is used for internal search.
-	* @param		key: K
+	* @param		key: Key
 	* @param		node: NodeType
 	* @param		inout tree: TreeType
 	*/
-	internal func subtree(key: K, node: NodeType, inout tree: TreeType) {
+	internal func subtree(key: Key, node: NodeType, inout tree: TreeType) {
 		if node !== sentinel {
 			if key == node.key {
 				tree.insert(key, value: node.value)
@@ -106,14 +106,14 @@ public class MultiTree<K: Comparable, V>: RedBlackTree<K, V> {
 	}
 }
 
-public func +<K: Comparable, V>(lhs: MultiTree<K, V>, rhs: MultiTree<K, V>) -> MultiTree<K, V> {
-	let mt: MultiTree<K, V> = MultiTree<K, V>()
+public func +<Key: Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
+	let mt: MultiTree<Key, Value> = MultiTree<Key, Value>()
 	for var i: Int = lhs.count; i > 0; --i {
-		let n: RedBlackNode<K, V> = lhs.select(lhs.root, order: i)
+		let n: RedBlackNode<Key, Value> = lhs.select(lhs.root, order: i)
 		mt.insert(n.key, value: n.value)
 	}
 	for var i: Int = rhs.count; i > 0; --i {
-		let n: RedBlackNode<K, V> = rhs.select(rhs.root, order: i)
+		let n: RedBlackNode<Key, Value> = rhs.select(rhs.root, order: i)
 		mt.insert(n.key, value: n.value)
 	}
 	return mt

@@ -21,34 +21,34 @@
 
 
 internal protocol ProbabilityType {
-	typealias Element
-	func countOf(members: Element...) -> Int
-	func countOf(members: Array<Element>) -> Int
+	typealias ElementType
+	func countOf(elements: ElementType...) -> Int
+	func countOf(elements: Array<ElementType>) -> Int
 }
 
-public class Probability<T: Comparable>: ProbabilityType {
-	typealias Element = T
+public class Probability<Element: Comparable>: ProbabilityType {
+	typealias ElementType = Element
 	public internal(set) var count: Int = 0
 	
-	public func countOf(members: Element...) -> Int { return 0 }
+	public func countOf(elements: Element...) -> Int { return 0 }
 	
-	public func countOf(members: Array<Element>) -> Int { return 0 }
+	public func countOf(elements: Array<Element>) -> Int { return 0 }
 	
-	public func probability(members: T...) -> Double {
-		return probability(members)
+	public func probability(elements: Element...) -> Double {
+		return probability(elements)
 	}
 	
-	public func probability(members: Array<T>) -> Double {
-		let x: Double = Double(countOf(members))
+	public func probability(elements: Array<Element>) -> Double {
+		let x: Double = Double(countOf(elements))
 		let y: Double = Double(count)
 		return 0 == y ? 0 : x / y
 	}
 	
-	public func expectedValue(trials: Int, members: T...) -> Double {
-		return expectedValue(trials, members: members)
+	public func expectedValue(trials: Int, elements: Element...) -> Double {
+		return expectedValue(trials, elements: elements)
 	}
 	
-	public func expectedValue(trials: Int, members: Array<T>) -> Double {
-		return Double(trials) * probability(members)
+	public func expectedValue(trials: Int, elements: Array<Element>) -> Double {
+		return Double(trials) * probability(elements)
 	}
 }
