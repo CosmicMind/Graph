@@ -97,6 +97,23 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	}
 	
 	/**
+	* init
+	* Constructor
+	*/
+	public convenience init(members: Element...) {
+		self.init(members: members)
+	}
+	
+	/**
+	* init
+	* Constructor
+	*/
+	public convenience init(members: Array<Element>) {
+		self.init()
+		insert(members)
+	}
+	
+	/**
 	* generate
 	* Conforms to the SequenceType Protocol. Returns
 	* the next value in the sequence of nodes using
@@ -189,8 +206,77 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	}
 	
 	/**
+	* isDisjointWith
+	* Returns true if no members in the set are in a finite sequence of Sets.
+	*/
+	public func isDisjointWith(sets: SetType...) -> Bool {
+		return isDisjointWith(sets)
+	}
+	
+	/**
+	* isDisjointWith
+	* Returns true if no members in the set are in a finite sequence of Sets.
+	*/
+	public func isDisjointWith(sets: Array<SetType>) -> Bool {
+		return intersect(sets).isEmpty
+	}
+	
+	/**
+	* subtract
+	* Return a new set with elements in this set that do not occur in a finite sequence of Sets.
+	*/
+	public func subtract(sets: SetType...) -> SetType {
+		return subtract(sets)
+	}
+	
+	/**
+	* subtract
+	* Return a new set with elements in this set that do not occur in a finite sequence of Sets.
+	*/
+	public func subtract(sets: Array<SetType>) -> SetType {
+		let s: SetType = SetType()
+		for x in self {
+			var toInsert: Bool = true
+			for u in sets {
+				if nil != u.tree.find(x) {
+					toInsert = false
+					break
+				}
+			}
+			if toInsert {
+				for u in sets {
+					for var i = abs(u.tree.search(x).count - tree.search(x).count) - 1; 0 <= i; --i {
+						s.insert(x)
+					}
+				}
+			}
+		}
+		return s
+	}
+	
+	/**
+	* subtractInPlace
+	* Remove all members in the set that occur in a finite sequence of Sets.
+	*/
+	public func subtractInPlace(sets: SetType...) {
+		return subtractInPlace(sets)
+	}
+	
+	/**
+	* subtractInPlace
+	* Remove all members in the set that occur in a finite sequence of Sets.
+	*/
+	public func subtractInPlace(sets: Array<SetType>) {
+		let s: SetType = subtract(sets)
+		removeAll()
+		for x in s {
+			insert(x)
+		}
+	}
+	
+	/**
 	* interset
-	* Return a new set with elements common to this set and a finite sequence of sets.
+	* Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
 	public func intersect(sets: SetType...) -> SetType {
 		return intersect(sets)
@@ -198,27 +284,33 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	
 	/**
 	* interset
-	* Return a new set with elements common to this set and a finite sequence of sets.
+	* Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
-	public func intersect(sets: Array<SetType>) -> SetType {
+	public func intersect(var sets: Array<SetType>) -> SetType {
 		let s: SetType = SetType()
+		sets.append(self)
 		for x in self {
 			var toInsert: Bool = true
-			for set in sets {
-				if nil == set.tree.find(x) {
+			for u in sets {
+				if nil == u.tree.find(x) {
 					toInsert = false
 					break
 				}
 			}
 			if toInsert {
-				s.insert(x)
+				for u in sets {
+					for t in u.tree.search(x) {
+						s.insert(x)
+					}
+				}
 			}
 		}
-		return s	}
+		return s
+	}
 	
 	/**
 	* intersetInPlace
-	* Remove any members of this set that aren't also in a finite sequence of sets.
+	* Insert elements of a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: SetType...) {
 		intersectInPlace(sets)
@@ -226,10 +318,53 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	
 	/**
 	* intersetInPlace
-	* Remove any members of this set that aren't also in a finite sequence of sets.
+	* Remove any members of this set that aren't also in a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: Array<SetType>) {
 		let s: SetType = intersect(sets)
+		removeAll()
+		for x in s {
+			insert(x)
+		}
+	}
+	
+	/**
+	* union
+	* Return a new Set with items in both this set and a finite sequence of Sets.
+	*/
+	public func union(sets: SetType...) -> SetType {
+		return union(sets)
+	}
+	
+	/**
+	* union
+	* Return a new Set with items in both this set and a finite sequence of Sets.
+	*/
+	public func union(var sets: Array<SetType>) -> SetType {
+		let s: SetType = SetType()
+		sets.append(self)
+		for u in sets {
+			for x in u {
+				s.insert(x)
+			}
+		}
+		return s
+	}
+	
+	/**
+	* unionInPlace
+	* Return a new Set with items in both this set and a finite sequence of Sets.
+	*/
+	public func unionInPlace(sets: SetType...) {
+		unionInPlace(sets)
+	}
+	
+	/**
+	* unionInPlace
+	* Insert elements of a finite sequence of Sets.
+	*/
+	public func unionInPlace(sets: Array<SetType>) {
+		let s: SetType = union(sets)
 		removeAll()
 		for x in s {
 			insert(x)

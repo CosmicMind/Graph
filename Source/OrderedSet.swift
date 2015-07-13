@@ -263,7 +263,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	* Remove all members in the set that occur in a finite sequence of Sets.
 	*/
 	public func subtractInPlace(sets: Array<SetType>) {
-		let s: SetType = self.subtract(sets)
+		let s: SetType = subtract(sets)
 		removeAll()
 		for x in s {
 			insert(x)
@@ -300,6 +300,26 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	}
 	
 	/**
+	* intersetInPlace
+	* Insert elements of a finite sequence of Sets.
+	*/
+	public func intersectInPlace(sets: SetType...) {
+		intersectInPlace(sets)
+	}
+	
+	/**
+	* intersetInPlace
+	* Remove any members of this set that aren't also in a finite sequence of Sets.
+	*/
+	public func intersectInPlace(sets: Array<SetType>) {
+		let s: SetType = intersect(sets)
+		removeAll()
+		for x in s {
+			insert(x)
+		}
+	}
+	
+	/**
 	* union
 	* Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
@@ -325,19 +345,19 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	}
 	
 	/**
-	* intersetInPlace
-	* Remove any members of this set that aren't also in a finite sequence of Sets.
+	* unionInPlace
+	* Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
-	public func intersectInPlace(sets: SetType...) {
-		intersectInPlace(sets)
+	public func unionInPlace(sets: SetType...) {
+		unionInPlace(sets)
 	}
 	
 	/**
-	* intersetInPlace
-	* Remove any members of this set that aren't also in a finite sequence of Sets.
+	* unionInPlace
+	* Insert elements of a finite sequence of Sets.
 	*/
-	public func intersectInPlace(sets: Array<SetType>) {
-		let s: SetType = intersect(sets)
+	public func unionInPlace(sets: Array<SetType>) {
+		let s: SetType = union(sets)
 		removeAll()
 		for x in s {
 			insert(x)

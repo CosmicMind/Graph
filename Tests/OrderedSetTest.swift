@@ -160,6 +160,19 @@ class OrderedSetTests: XCTestCase {
 		XCTAssert(s3 == s1.union(s2), "Test failed.")
 	}
 	
+	func testUnionInPlace() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>()
+		s1.insert(1, 2, 3, 4, 5)
+		
+		let s2: OrderedSet<Int> = OrderedSet<Int>()
+		s2.insert(5, 6, 7, 8, 9)
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5, 6, 7, 8, 9)
+		
+		s1.unionInPlace(s2)
+		XCTAssert(s3 == s1, "Test failed.")
+	}
+	
 	func testPerformanceExample() {
 		// This is an example of a performance test case.
 		self.measureBlock() {
