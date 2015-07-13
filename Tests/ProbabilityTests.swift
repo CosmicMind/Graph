@@ -31,16 +31,27 @@ class ProbabilityTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testSetInt() {
+	func testOrderedSetInt() {
 		let s: OrderedSet<Int> = OrderedSet<Int>()
 		
-		s.insert(1)
-		s.insert(2)
-		s.insert(3)
+		s.insert(1, 2, 3, 3)
 		
-		var ev: Double = Double(s.countOf(3)) / Double(s.count)
+		var ev: Double = 16 * s.probabilityOf(2, 3)
 		
-		XCTAssert(ev == s.expectedValue(1, elements: 3), "Test failed.")
+		XCTAssert(ev == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		
+		s.removeAll()
+		XCTAssert(0 == s.count, "Test failed.")
+	}
+	
+	func testOrderedMultiSetInt() {
+		let s: OrderedSet<Int> = OrderedSet<Int>()
+		
+		s.insert(1, 2, 3, 3)
+		
+		var ev: Double = 16 * s.probabilityOf(2, 3)
+		
+		XCTAssert(ev == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
@@ -52,10 +63,27 @@ class ProbabilityTests: XCTestCase {
 		s.insert(1, value: 1)
 		s.insert(2, value: 2)
 		s.insert(3, value: 3)
+		s.insert(3, value: 3)
 		
-		var ev: Double = Double(s.countOf([2, 3])) / Double(s.count)
+		var ev: Double = 16 * s.probabilityOf(2, 3)
 		
-		XCTAssert(ev == s.expectedValue(1, elements: [2, 3]), "Test failed.")
+		XCTAssert(ev == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		
+		s.removeAll()
+		XCTAssert(0 == s.count, "Test failed.")
+	}
+	
+	func testMultiTreeInt() {
+		let s: MultiTree<Int, Int> = MultiTree<Int, Int>()
+		
+		s.insert(1, value: 1)
+		s.insert(2, value: 2)
+		s.insert(3, value: 3)
+		s.insert(3, value: 3)
+		
+		var ev: Double = 16 * s.probabilityOf(2, 3)
+		
+		XCTAssert(ev == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
