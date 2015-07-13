@@ -229,19 +229,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 	* Remove any members of this set that aren't also in a finite sequence of sets.
 	*/
 	public func intersectInPlace(sets: Array<SetType>) {
-		let s: SetType = SetType()
-		for x in self {
-			var toInsert: Bool = true
-			for set in sets {
-				if nil == set.tree.find(x) {
-					toInsert = false
-					break
-				}
-			}
-			if toInsert {
-				s.insert(x)
-			}
-		}
+		let s: SetType = intersect(sets)
 		removeAll()
 		for x in s {
 			insert(x)

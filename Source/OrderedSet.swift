@@ -97,6 +97,23 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	}
 	
 	/**
+	* init
+	* Constructor
+	*/
+	public convenience init(members: Element...) {
+		self.init(members: members)
+	}
+	
+	/**
+	* init
+	* Constructor
+	*/
+	public convenience init(members: Array<Element>) {
+		self.init()
+		insert(members)
+	}
+	
+	/**
 	* generate
 	* Conforms to the SequenceType Protocol. Returns
 	* the next value in the sequence of nodes using
@@ -190,9 +207,68 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	
 	/**
 	* isDisjointWith
-	* Returns true if no members in the set are in a finite sequence as Sets.
+	* Returns true if no members in the set are in a finite sequence of Sets.
 	*/
+	public func isDisjointWith(sets: SetType...) -> Bool {
+		return isDisjointWith(sets)
+	}
 	
+	/**
+	* isDisjointWith
+	* Returns true if no members in the set are in a finite sequence of Sets.
+	*/
+	public func isDisjointWith(sets: Array<SetType>) -> Bool {
+		return intersect(sets).isEmpty
+	}
+	
+	/**
+	* subtract
+	* Return a new set with elements in this set that do not occur in a finite sequence of Sets.
+	*/
+	public func subtract(sets: SetType...) -> SetType {
+		return subtract(sets)
+	}
+	
+	/**
+	* subtract
+	* Return a new set with elements in this set that do not occur in a finite sequence of Sets.
+	*/
+	public func subtract(sets: Array<SetType>) -> SetType {
+		let s: SetType = SetType()
+		for x in self {
+			var toInsert: Bool = true
+			for u in sets {
+				if nil != u.tree.find(x) {
+					toInsert = false
+					break
+				}
+			}
+			if toInsert {
+				s.insert(x)
+			}
+		}
+		return s
+	}
+	
+	/**
+	* subtractInPlace
+	* Remove all members in the set that occur in a finite sequence of Sets.
+	*/
+	public func subtractInPlace(sets: SetType...) {
+		return subtractInPlace(sets)
+	}
+	
+	/**
+	* subtractInPlace
+	* Remove all members in the set that occur in a finite sequence of Sets.
+	*/
+	public func subtractInPlace(sets: Array<SetType>) {
+		let s: SetType = self.subtract(sets)
+		removeAll()
+		for x in s {
+			insert(x)
+		}
+	}
 	
 	/**
 	* interset
@@ -210,8 +286,8 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 		let s: SetType = SetType()
 		for x in self {
 			var toInsert: Bool = true
-			for set in sets {
-				if nil == set.tree.find(x) {
+			for u in sets {
+				if nil == u.tree.find(x) {
 					toInsert = false
 					break
 				}
@@ -219,6 +295,31 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 			if toInsert {
 				s.insert(x)
 			}
+		}
+		return s
+	}
+	
+	/**
+	* union
+	* Return a new Set with items in both this set and a finite sequence of Sets.
+	*/
+	public func union(sets: SetType...) -> SetType {
+		return union(sets)
+	}
+	
+	/**
+	* union
+	* Return a new Set with items in both this set and a finite sequence of Sets.
+	*/
+	public func union(sets: Array<SetType>) -> SetType {
+		let s: SetType = SetType()
+		for u in sets {
+			for x in u {
+				s.insert(x)
+			}
+		}
+		for x in self {
+			s.insert(x)
 		}
 		return s
 	}
@@ -236,19 +337,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	* Remove any members of this set that aren't also in a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: Array<SetType>) {
-		let s: SetType = SetType()
-		for x in self {
-			var toInsert: Bool = true
-			for set in sets {
-				if nil == set.tree.find(x) {
-					toInsert = false
-					break
-				}
-			}
-			if toInsert {
-				s.insert(x)
-			}
-		}
+		let s: SetType = intersect(sets)
 		removeAll()
 		for x in s {
 			insert(x)

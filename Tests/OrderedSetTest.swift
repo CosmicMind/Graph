@@ -105,6 +105,61 @@ class OrderedSetTests: XCTestCase {
 		XCTAssert(s4 == s1, "Test failed.")
 	}
 	
+	func testIsDisjointWith() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>()
+		s1.insert(1, 2, 3)
+		
+		let s2: OrderedSet<Int> = OrderedSet<Int>()
+		s2.insert(3, 4, 5)
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>()
+		s3.insert(5, 6, 7)
+		
+		XCTAssert(false == s1.isDisjointWith(s2), "Test failed.")
+		XCTAssert(true == s1.isDisjointWith(s3), "Test failed.")
+	}
+	
+	func testSubtract() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>()
+		s1.insert(1, 2, 3, 4, 5, 7, 8, 9 , 10)
+		
+		let s2: OrderedSet<Int> = OrderedSet<Int>()
+		s2.insert(4, 5, 6, 7)
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>()
+		s3.insert(7, 8, 9)
+		
+		let s4: OrderedSet<Int> = s1.subtract(s2, s3)
+		XCTAssert(false == s1.isDisjointWith(s4), "Test failed.")
+	}
+	
+	func testSubtractInPlace() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>()
+		s1.insert(1, 2, 3, 4, 5, 7, 8, 9 , 10)
+		
+		let s2: OrderedSet<Int> = OrderedSet<Int>()
+		s2.insert(4, 5, 6, 7)
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>()
+		s3.insert(7, 8, 9)
+		
+		let s4: OrderedSet<Int> = s1.subtract(s2, s3)
+		s1.subtractInPlace(s2, s3)
+		XCTAssert(s4 == s1, "Test failed.")
+	}
+	
+	func testUnion() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>()
+		s1.insert(1, 2, 3, 4, 5)
+		
+		let s2: OrderedSet<Int> = OrderedSet<Int>()
+		s2.insert(5, 6, 7, 8, 9)
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5, 6, 7, 8, 9)
+		
+		XCTAssert(s3 == s1.union(s2), "Test failed.")
+	}
+	
 	func testPerformanceExample() {
 		// This is an example of a performance test case.
 		self.measureBlock() {
