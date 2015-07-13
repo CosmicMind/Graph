@@ -18,7 +18,7 @@
 * OrderedMultiSet
 */
 
-public class OrderedMultiSet<Element: Comparable>: Probability<Element>, CollectionType, Equatable, Printable {
+public class OrderedMultiSet<Element: Comparable>: Probability<Element>, CollectionType, Comparable, Equatable, Printable {
 	internal typealias TreeType = MultiTree<Element, Element>
 	internal typealias SetType = OrderedMultiSet<Element>
 	internal typealias Generator = GeneratorOf<Element>
@@ -381,5 +381,29 @@ public func ==<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedM
 			return false
 		}
 	}
+	return true
+}
+
+public func +<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
+	return lhs.union(rhs)
+}
+
+public func -<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
+	return lhs.subtract(rhs)
+}
+
+public func <=<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+	return true
+}
+
+public func >=<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+	return true
+}
+
+public func ><Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+	return true
+}
+
+public func <<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
 	return true
 }
