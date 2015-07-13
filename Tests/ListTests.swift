@@ -129,10 +129,6 @@ class ListTests: XCTestCase {
 		l.insertAtFront(1)
 		l.insertAtBack(2)
 		l.insertAtFront(3)
-		
-		for x in l {
-			println(x)
-		}
 	}
 	
 	func testConcat() {

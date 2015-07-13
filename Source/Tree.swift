@@ -44,22 +44,6 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	}
 
 	/**
-	* countOf
-	* Conforms to ProbabilityType protocol.
-	*/
-	public override func countOf(keys: Key...) -> Int {
-		return countOf(keys)
-	}
-
-	/**
-	* countOf
-	* Conforms to ProbabilityType protocol.
-	*/
-	public override func countOf(keys: Array<Key>) -> Int {
-		return search(keys).count
-	}
-	
-	/**
 	* search
 	* Accepts a paramter list of keys and returns a subset
 	* Tree with the indicated values if
@@ -101,13 +85,26 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 
 public func +<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
 	let t: Tree<Key, Value> = Tree<Key, Value>()
-	for var i: Int = lhs.count; i > 0; --i {
-		let n: RedBlackNode<Key, Value> = lhs.select(lhs.root, order: i)
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = lhs[i]
 		t.insert(n.key, value: n.value)
 	}
-	for var i: Int = rhs.count; i > 0; --i {
-		let n: RedBlackNode<Key, Value> = rhs.select(rhs.root, order: i)
+	for var i: Int = rhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = rhs[i]
 		t.insert(n.key, value: n.value)
+	}
+	return t
+}
+
+public func -<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
+	let t: Tree<Key, Value> = Tree<Key, Value>()
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = lhs[i]
+		t.insert(n.key, value: n.value)
+	}
+	for var i: Int = rhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = rhs[i]
+		t.remove(n.key)
 	}
 	return t
 }

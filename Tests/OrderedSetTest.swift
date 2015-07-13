@@ -73,104 +73,105 @@ class OrderedSetTests: XCTestCase {
 	}
 	
 	func testIntersect() {
-		let s1: OrderedSet<Int> = OrderedSet<Int>()
-		s1.insert(22, 23, 1, 2, 3, 4, 5)
-		
-		let s2: OrderedSet<Int> = OrderedSet<Int>()
-		s2.insert(22, 23, 5, 6, 7, 8, 9, 10)
-		
-		let s3: OrderedSet<Int> = OrderedSet<Int>()
-		s3.insert(22, 23, 10, 11, 12, 13, 14, 15)
-		
-		let s4: OrderedSet<Int> = OrderedSet<Int>()
-		s4.insert(22, 23)
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 22, 23, 1, 2, 3, 4, 5)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 22, 23, 5, 6, 7, 8, 9, 10)
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 22, 23, 10, 11, 12, 13, 14, 15)
+		let s4: OrderedSet<Int> = OrderedSet<Int>(members: 22, 23)
 		
 		XCTAssert(s4 == s1.intersect(s2, s3), "Test failed.")
 	}
 	
 	func testIntersectInPlace() {
-		let s1: OrderedSet<Int> = OrderedSet<Int>()
-		s1.insert(22, 23, 1, 2, 3, 4, 5)
-		
-		let s2: OrderedSet<Int> = OrderedSet<Int>()
-		s2.insert(22, 23, 5, 6, 7, 8, 9, 10)
-		
-		let s3: OrderedSet<Int> = OrderedSet<Int>()
-		s3.insert(22, 23, 10, 11, 12, 13, 14, 15)
-		
-		let s4: OrderedSet<Int> = OrderedSet<Int>()
-		s4.insert(22, 23)
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 22, 23, 1, 2, 3, 4, 5)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 22, 23, 5, 6, 7, 8, 9, 10)
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 22, 23, 10, 11, 12, 13, 14, 15)
+		let s4: OrderedSet<Int> = OrderedSet<Int>(members: 22, 23)
 		
 		s1.intersectInPlace(s2, s3)
 		XCTAssert(s4 == s1, "Test failed.")
 	}
 	
 	func testIsDisjointWith() {
-		let s1: OrderedSet<Int> = OrderedSet<Int>()
-		s1.insert(1, 2, 3)
-		
-		let s2: OrderedSet<Int> = OrderedSet<Int>()
-		s2.insert(3, 4, 5)
-		
-		let s3: OrderedSet<Int> = OrderedSet<Int>()
-		s3.insert(5, 6, 7)
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 3, 4, 5)
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 5, 6, 7)
 		
 		XCTAssert(false == s1.isDisjointWith(s2), "Test failed.")
 		XCTAssert(true == s1.isDisjointWith(s3), "Test failed.")
 	}
 	
 	func testSubtract() {
-		let s1: OrderedSet<Int> = OrderedSet<Int>()
-		s1.insert(1, 2, 3, 4, 5, 7, 8, 9 , 10)
-		
-		let s2: OrderedSet<Int> = OrderedSet<Int>()
-		s2.insert(4, 5, 6, 7)
-		
-		let s3: OrderedSet<Int> = OrderedSet<Int>()
-		s3.insert(7, 8, 9)
-		
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5, 7, 8, 9 , 10)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 4, 5, 6, 7)
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 7, 8, 9)
 		let s4: OrderedSet<Int> = s1.subtract(s2, s3)
+		
 		XCTAssert(false == s1.isDisjointWith(s4), "Test failed.")
 	}
 	
 	func testSubtractInPlace() {
-		let s1: OrderedSet<Int> = OrderedSet<Int>()
-		s1.insert(1, 2, 3, 4, 5, 7, 8, 9 , 10)
-		
-		let s2: OrderedSet<Int> = OrderedSet<Int>()
-		s2.insert(4, 5, 6, 7)
-		
-		let s3: OrderedSet<Int> = OrderedSet<Int>()
-		s3.insert(7, 8, 9)
-		
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5, 7, 8, 9 , 10)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 4, 5, 6, 7)
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 7, 8, 9)
 		let s4: OrderedSet<Int> = s1.subtract(s2, s3)
+		
 		s1.subtractInPlace(s2, s3)
 		XCTAssert(s4 == s1, "Test failed.")
 	}
 	
 	func testUnion() {
-		let s1: OrderedSet<Int> = OrderedSet<Int>()
-		s1.insert(1, 2, 3, 4, 5)
-		
-		let s2: OrderedSet<Int> = OrderedSet<Int>()
-		s2.insert(5, 6, 7, 8, 9)
-		
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 5, 6, 7, 8, 9)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5, 6, 7, 8, 9)
 		
 		XCTAssert(s3 == s1.union(s2), "Test failed.")
 	}
 	
 	func testUnionInPlace() {
-		let s1: OrderedSet<Int> = OrderedSet<Int>()
-		s1.insert(1, 2, 3, 4, 5)
-		
-		let s2: OrderedSet<Int> = OrderedSet<Int>()
-		s2.insert(5, 6, 7, 8, 9)
-		
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 5, 6, 7, 8, 9)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5, 6, 7, 8, 9)
 		
 		s1.unionInPlace(s2)
 		XCTAssert(s3 == s1, "Test failed.")
+	}
+	
+	func testIsSubsetOf() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5)
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 2, 3, 4, 5)
+		
+		XCTAssert(s1 <= s1, "Test failed.")
+		XCTAssert(s1 <= s2, "Test failed.")
+		XCTAssert(false == (s1 <= s3), "Test failed.")
+	}
+	
+	func testIsSupersetOf() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5, 6, 7)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5)
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 5, 6, 7, 8)
+		
+		XCTAssert(s1 >= s1, "Test failed.")
+		XCTAssert(s1 >= s2, "Test failed.")
+		XCTAssert(false == (s1 >= s3), "Test failed.")
+	}
+	
+	func testIsStrictSubsetOf() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5)
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 2, 3, 4, 5)
+		
+		XCTAssert(s1 < s2, "Test failed.")
+		XCTAssert(false == (s1 < s3), "Test failed.")
+	}
+	
+	func testIsStrictSupersetOf() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5, 6, 7)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5)
+		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 5, 6, 7, 8)
+		
+		XCTAssert(s1 > s2, "Test failed.")
+		XCTAssert(false == (s1 > s3), "Test failed.")
 	}
 	
 	func testPerformanceExample() {
