@@ -171,13 +171,7 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 	public override func countOf(keys: Array<Key>) -> Int {
 		var count: Int = 0
 		for key in keys {
-			var x: NodeType = root
-			while x !== sentinel {
-				if key == x.key {
-					++count
-				}
-				x = key < x.key ? x.left : x.right
-			}
+			internalCount(key, node: root, count: &count)
 		}
 		return count
 	}
@@ -616,6 +610,20 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 			return internalSelect(x.left, order: order)
 		}
 		return internalSelect(x.right, order: order - r)
+	}
+	
+	/**
+	* internalCount
+	* Traverses the Tree while counting number of times a key appears.
+	*/
+	private func internalCount(key: Key, node: NodeType, inout count: Int) {
+		if sentinel !== node {
+			if key == node.key {
+				++count
+			}
+			internalCount(key, node: node.left, count: &count)
+			internalCount(key, node: node.right, count: &count)
+		}
 	}
 	
 	/**
