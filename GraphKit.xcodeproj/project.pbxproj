@@ -25,7 +25,7 @@
 		961242EF1B2B37A500CD47E0 /* InsertionSortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242ED1B2B37A500CD47E0 /* InsertionSortTests.swift */; };
 		961242F01B2B38AB00CD47E0 /* InsertionSort.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242DE1B2B36D300CD47E0 /* InsertionSort.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961242F11B2B38AB00CD47E0 /* RedBlackNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */; settings = {ATTRIBUTES = (Private, ); }; };
-		961242F21B2B38AB00CD47E0 /* RedBlackTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961242F21B2B38AB00CD47E0 /* RedBlackTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961242F31B2B38AB00CD47E0 /* Tree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242E11B2B36DD00CD47E0 /* Tree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961242F41B2B38AB00CD47E0 /* MultiTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242E41B2B36E800CD47E0 /* MultiTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961242F51B2B38AB00CD47E0 /* ActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031B81AD72FD300EE4C63 /* ActionGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -43,7 +43,7 @@
 		961243011B2B38AB00CD47E0 /* Graph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031C01AD72FD300EE4C63 /* Graph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961243021B2B38E000CD47E0 /* InsertionSort.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242DE1B2B36D300CD47E0 /* InsertionSort.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961243031B2B38E000CD47E0 /* RedBlackNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */; settings = {ATTRIBUTES = (Private, ); }; };
-		961243041B2B38E000CD47E0 /* RedBlackTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		961243041B2B38E000CD47E0 /* RedBlackTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961243051B2B38E000CD47E0 /* Tree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242E11B2B36DD00CD47E0 /* Tree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961243061B2B38E000CD47E0 /* MultiTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242E41B2B36E800CD47E0 /* MultiTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961243071B2B38E000CD47E0 /* ActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031B81AD72FD300EE4C63 /* ActionGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -59,6 +59,16 @@
 		961243111B2B38E000CD47E0 /* Bond.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031BA1AD72FD300EE4C63 /* Bond.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961243121B2B38E000CD47E0 /* Entity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031BD1AD72FD300EE4C63 /* Entity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961243131B2B38E000CD47E0 /* Graph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031C01AD72FD300EE4C63 /* Graph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		968C009A1B51B0C800E3FA9E /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00991B51B0C800E3FA9E /* OrderedSet.swift */; };
+		968C009B1B51B0C800E3FA9E /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00991B51B0C800E3FA9E /* OrderedSet.swift */; };
+		968C009D1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */; };
+		968C009E1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */; };
+		968C00A21B51B4DC00E3FA9E /* OrderedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */; };
+		968C00A31B51B4DD00E3FA9E /* OrderedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */; };
+		968C00A61B51BF9900E3FA9E /* Probability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00A51B51BF9900E3FA9E /* Probability.swift */; };
+		968C00A71B51BF9900E3FA9E /* Probability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00A51B51BF9900E3FA9E /* Probability.swift */; };
+		968C00AC1B51D76D00E3FA9E /* ProbabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */; };
+		968C00AD1B51D76D00E3FA9E /* ProbabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */; };
 		968F38851AD7379F00E963AB /* ActionSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968F38811AD7379500E963AB /* ActionSearchTests.swift */; };
 		968F38871AD737A800E963AB /* BondSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968F387E1AD7372400E963AB /* BondSearchTests.swift */; };
 		968F38981AD7392900E963AB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968F388D1AD7392900E963AB /* GraphKit.framework */; };
@@ -139,6 +149,16 @@
 		96C0321A1AD730CC00EE4C63 /* EntityStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C031DB1AD72FE100EE4C63 /* EntityStressTests.swift */; };
 		96C0321B1AD730CC00EE4C63 /* EntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C031DC1AD72FE100EE4C63 /* EntityTests.swift */; };
 		96C0321C1AD730CC00EE4C63 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C031DD1AD72FE100EE4C63 /* Tests.swift */; };
+		96CB07C31B52E8DA00EB4A58 /* Probability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C00A51B51BF9900E3FA9E /* Probability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96CB07C41B52E8DA00EB4A58 /* OrderedSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C00991B51B0C800E3FA9E /* OrderedSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96CB07C51B52E8DA00EB4A58 /* OrderedMultiSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96CB07C61B52E8FA00EB4A58 /* Probability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C00A51B51BF9900E3FA9E /* Probability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96CB07C71B52E8FA00EB4A58 /* OrderedSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C00991B51B0C800E3FA9E /* OrderedSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96CB07C81B52E8FA00EB4A58 /* OrderedMultiSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96CB07CA1B52F33900EB4A58 /* RedBlackTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */; };
+		96CB07CB1B52F33900EB4A58 /* RedBlackTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */; };
+		96CB07CD1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */; };
+		96CB07CE1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +187,11 @@
 		961242E71B2B376800CD47E0 /* TreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTests.swift; sourceTree = "<group>"; };
 		961242EA1B2B378400CD47E0 /* MultiTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiTreeTests.swift; sourceTree = "<group>"; };
 		961242ED1B2B37A500CD47E0 /* InsertionSortTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertionSortTests.swift; sourceTree = "<group>"; };
+		968C00991B51B0C800E3FA9E /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
+		968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiSet.swift; sourceTree = "<group>"; };
+		968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSetTest.swift; sourceTree = "<group>"; };
+		968C00A51B51BF9900E3FA9E /* Probability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Probability.swift; sourceTree = "<group>"; };
+		968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProbabilityTests.swift; sourceTree = "<group>"; };
 		968F387E1AD7372400E963AB /* BondSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BondSearchTests.swift; sourceTree = "<group>"; };
 		968F38811AD7379500E963AB /* ActionSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSearchTests.swift; sourceTree = "<group>"; };
 		968F388D1AD7392900E963AB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,6 +232,8 @@
 		96C031DE1AD72FE100EE4C63 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96C031EF1AD7306200EE4C63 /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96C031F91AD7306200EE4C63 /* GraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTreeTests.swift; sourceTree = "<group>"; };
+		96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiSetTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +273,8 @@
 		961242D61B2B369C00CD47E0 /* Tree */ = {
 			isa = PBXGroup;
 			children = (
+				968C00991B51B0C800E3FA9E /* OrderedSet.swift */,
+				968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */,
 				961242E11B2B36DD00CD47E0 /* Tree.swift */,
 				961242E41B2B36E800CD47E0 /* MultiTree.swift */,
 				961242D81B2B36B800CD47E0 /* RedBlackTree.swift */,
@@ -304,6 +333,14 @@
 			name = Graph;
 			sourceTree = "<group>";
 		};
+		968C00A41B51BF7F00E3FA9E /* Probability */ = {
+			isa = PBXGroup;
+			children = (
+				968C00A51B51BF9900E3FA9E /* Probability.swift */,
+			);
+			name = Probability;
+			sourceTree = "<group>";
+		};
 		969F6DA01B2DCAF300B573F8 /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,8 +356,9 @@
 		96C031B61AD72FD300EE4C63 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				969F6DA01B2DCAF300B573F8 /* List */,
 				961242D71B2B36A400CD47E0 /* Sort */,
+				968C00A41B51BF7F00E3FA9E /* Probability */,
+				969F6DA01B2DCAF300B573F8 /* List */,
 				961242D61B2B369C00CD47E0 /* Tree */,
 				961243171B2B488700CD47E0 /* Graph */,
 				961243161B2B487200CD47E0 /* Entity */,
@@ -346,6 +384,7 @@
 				96C031DB1AD72FE100EE4C63 /* EntityStressTests.swift */,
 				96C031DC1AD72FE100EE4C63 /* EntityTests.swift */,
 				96C031DD1AD72FE100EE4C63 /* Tests.swift */,
+				96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */,
 				961242E71B2B376800CD47E0 /* TreeTests.swift */,
 				961242EA1B2B378400CD47E0 /* MultiTreeTests.swift */,
 				961242ED1B2B37A500CD47E0 /* InsertionSortTests.swift */,
@@ -353,6 +392,9 @@
 				969F6DA71B2DCC9700B573F8 /* DequeTests.swift */,
 				969F6DB11B2DE06200B573F8 /* StackTests.swift */,
 				969F6DC01B2DECAA00B573F8 /* ListTests.swift */,
+				968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */,
+				96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */,
+				968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -411,10 +453,13 @@
 				969F6DB71B2DE24300B573F8 /* Queue.swift in Headers */,
 				969F6DB81B2DE24300B573F8 /* Stack.swift in Headers */,
 				969F6DBF1B2DEC8600B573F8 /* List.swift in Headers */,
+				96CB07C41B52E8DA00EB4A58 /* OrderedSet.swift in Headers */,
+				96CB07C51B52E8DA00EB4A58 /* OrderedMultiSet.swift in Headers */,
+				961242F21B2B38AB00CD47E0 /* RedBlackTree.swift in Headers */,
+				96CB07C31B52E8DA00EB4A58 /* Probability.swift in Headers */,
 				969F6DAD1B2DCCF000B573F8 /* ListNode.swift in Headers */,
 				961242F01B2B38AB00CD47E0 /* InsertionSort.swift in Headers */,
 				961242F11B2B38AB00CD47E0 /* RedBlackNode.swift in Headers */,
-				961242F21B2B38AB00CD47E0 /* RedBlackTree.swift in Headers */,
 				961242F51B2B38AB00CD47E0 /* ActionGroup.swift in Headers */,
 				961242F61B2B38AB00CD47E0 /* ActionProperty.swift in Headers */,
 				961242F71B2B38AB00CD47E0 /* BondGroup.swift in Headers */,
@@ -442,10 +487,13 @@
 				969F6DB91B2DE25400B573F8 /* Queue.swift in Headers */,
 				969F6DBA1B2DE25400B573F8 /* Stack.swift in Headers */,
 				969F6DBE1B2DEC7900B573F8 /* List.swift in Headers */,
+				96CB07C71B52E8FA00EB4A58 /* OrderedSet.swift in Headers */,
+				96CB07C81B52E8FA00EB4A58 /* OrderedMultiSet.swift in Headers */,
+				961243041B2B38E000CD47E0 /* RedBlackTree.swift in Headers */,
+				96CB07C61B52E8FA00EB4A58 /* Probability.swift in Headers */,
 				969F6DAA1B2DCCDA00B573F8 /* ListNode.swift in Headers */,
 				961243021B2B38E000CD47E0 /* InsertionSort.swift in Headers */,
 				961243031B2B38E000CD47E0 /* RedBlackNode.swift in Headers */,
-				961243041B2B38E000CD47E0 /* RedBlackTree.swift in Headers */,
 				961243071B2B38E000CD47E0 /* ActionGroup.swift in Headers */,
 				961243081B2B38E000CD47E0 /* ActionProperty.swift in Headers */,
 				961243091B2B38E000CD47E0 /* BondGroup.swift in Headers */,
@@ -621,6 +669,7 @@
 				961242E21B2B36DD00CD47E0 /* Tree.swift in Sources */,
 				968F38B81AD7394300E963AB /* EntityGroup.swift in Sources */,
 				969F6DA51B2DCB3900B573F8 /* ListNode.swift in Sources */,
+				968C009A1B51B0C800E3FA9E /* OrderedSet.swift in Sources */,
 				961242DF1B2B36D300CD47E0 /* InsertionSort.swift in Sources */,
 				961242D91B2B36B800CD47E0 /* RedBlackTree.swift in Sources */,
 				961242DC1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */,
@@ -629,6 +678,7 @@
 				968F38B51AD7394300E963AB /* ActionProperty.swift in Sources */,
 				968F38BB1AD7394300E963AB /* ManagedBond.swift in Sources */,
 				969F6DAF1B2DDE6500B573F8 /* Stack.swift in Sources */,
+				968C009D1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */,
 				969F6DBC1B2DEB6200B573F8 /* List.swift in Sources */,
 				968F38B21AD7394300E963AB /* Entity.swift in Sources */,
 				968F38B11AD7394300E963AB /* Bond.swift in Sources */,
@@ -636,6 +686,7 @@
 				969F6DA21B2DCB0200B573F8 /* Deque.swift in Sources */,
 				968F38BC1AD7394300E963AB /* ManagedEntity.swift in Sources */,
 				969F6DB51B2DE23500B573F8 /* Queue.swift in Sources */,
+				968C00A61B51BF9900E3FA9E /* Probability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,18 +696,22 @@
 			files = (
 				968F38A81AD7393900E963AB /* ActionTests.swift in Sources */,
 				968F38AA1AD7393900E963AB /* BondStressTests.swift in Sources */,
+				968C00A21B51B4DC00E3FA9E /* OrderedSetTest.swift in Sources */,
 				968F38A61AD7393900E963AB /* ActionSearchTests.swift in Sources */,
 				968F38AD1AD7393900E963AB /* EntityStressTests.swift in Sources */,
 				969F6DB21B2DE06200B573F8 /* StackTests.swift in Sources */,
+				96CB07CD1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
 				961242EB1B2B378400CD47E0 /* MultiTreeTests.swift in Sources */,
 				968F38AC1AD7393900E963AB /* EntitySearchTests.swift in Sources */,
 				968F38AF1AD7393900E963AB /* Tests.swift in Sources */,
+				96CB07CA1B52F33900EB4A58 /* RedBlackTreeTests.swift in Sources */,
 				969F6DC11B2DECAA00B573F8 /* ListTests.swift in Sources */,
 				961242EE1B2B37A500CD47E0 /* InsertionSortTests.swift in Sources */,
 				969F6DA81B2DCC9700B573F8 /* DequeTests.swift in Sources */,
 				961242E81B2B376800CD47E0 /* TreeTests.swift in Sources */,
 				968F38AB1AD7393900E963AB /* BondTests.swift in Sources */,
 				968F38A91AD7393900E963AB /* BondSearchTests.swift in Sources */,
+				968C00AC1B51D76D00E3FA9E /* ProbabilityTests.swift in Sources */,
 				968F38AE1AD7393900E963AB /* EntityTests.swift in Sources */,
 				968F38A71AD7393900E963AB /* ActionStressTests.swift in Sources */,
 				969F6D8D1B2CC76E00B573F8 /* QueueTests.swift in Sources */,
@@ -676,6 +731,7 @@
 				961242E31B2B36DD00CD47E0 /* Tree.swift in Sources */,
 				96C032101AD730C200EE4C63 /* EntityGroup.swift in Sources */,
 				961242E01B2B36D300CD47E0 /* InsertionSort.swift in Sources */,
+				968C009B1B51B0C800E3FA9E /* OrderedSet.swift in Sources */,
 				969F6DA61B2DCB3900B573F8 /* ListNode.swift in Sources */,
 				961242DA1B2B36B800CD47E0 /* RedBlackTree.swift in Sources */,
 				961242DD1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */,
@@ -684,6 +740,7 @@
 				96C0320D1AD730C200EE4C63 /* ActionProperty.swift in Sources */,
 				96C032131AD730C200EE4C63 /* ManagedBond.swift in Sources */,
 				969F6DB01B2DDE6500B573F8 /* Stack.swift in Sources */,
+				968C009E1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */,
 				969F6DBD1B2DEB6200B573F8 /* List.swift in Sources */,
 				96C0320A1AD730C200EE4C63 /* Entity.swift in Sources */,
 				96C032091AD730C200EE4C63 /* Bond.swift in Sources */,
@@ -691,6 +748,7 @@
 				969F6DA31B2DCB0200B573F8 /* Deque.swift in Sources */,
 				96C032141AD730C200EE4C63 /* ManagedEntity.swift in Sources */,
 				969F6DB61B2DE23500B573F8 /* Queue.swift in Sources */,
+				968C00A71B51BF9900E3FA9E /* Probability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,18 +758,22 @@
 			files = (
 				96C032181AD730CC00EE4C63 /* BondTests.swift in Sources */,
 				96C032191AD730CC00EE4C63 /* EntitySearchTests.swift in Sources */,
+				968C00A31B51B4DD00E3FA9E /* OrderedSetTest.swift in Sources */,
 				96C032151AD730CC00EE4C63 /* ActionStressTests.swift in Sources */,
 				96C032161AD730CC00EE4C63 /* ActionTests.swift in Sources */,
 				969F6DB31B2DE06200B573F8 /* StackTests.swift in Sources */,
+				96CB07CE1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
 				961242EC1B2B378400CD47E0 /* MultiTreeTests.swift in Sources */,
 				96C0321A1AD730CC00EE4C63 /* EntityStressTests.swift in Sources */,
 				96C0321C1AD730CC00EE4C63 /* Tests.swift in Sources */,
+				96CB07CB1B52F33900EB4A58 /* RedBlackTreeTests.swift in Sources */,
 				969F6DC21B2DECAA00B573F8 /* ListTests.swift in Sources */,
 				961242EF1B2B37A500CD47E0 /* InsertionSortTests.swift in Sources */,
 				969F6DA91B2DCC9700B573F8 /* DequeTests.swift in Sources */,
 				961242E91B2B376800CD47E0 /* TreeTests.swift in Sources */,
 				96C032171AD730CC00EE4C63 /* BondStressTests.swift in Sources */,
 				968F38851AD7379F00E963AB /* ActionSearchTests.swift in Sources */,
+				968C00AD1B51D76D00E3FA9E /* ProbabilityTests.swift in Sources */,
 				968F38871AD737A800E963AB /* BondSearchTests.swift in Sources */,
 				96C0321B1AD730CC00EE4C63 /* EntityTests.swift in Sources */,
 				969F6D8E1B2CC76E00B573F8 /* QueueTests.swift in Sources */,

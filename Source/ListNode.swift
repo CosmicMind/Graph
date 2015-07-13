@@ -21,18 +21,18 @@
 * data.
 */
 
-internal class ListNode<T>: Printable {
-	private typealias NodeType = ListNode<T>
+internal class ListNode<Element>: Printable {
+	private typealias NodeType = ListNode<Element>
 	
 	/**
 	* next
-	* Points to the successor item in the List.
+	* Points to the successor element in the List.
 	*/
 	internal var next: NodeType?
 	
 	/**
 	* previous
-	* points to the predacessor item in the List.
+	* points to the predacessor element in the List.
 	*/
 	internal var previous: NodeType?
 	
@@ -40,26 +40,23 @@ internal class ListNode<T>: Printable {
 	* data
 	* Satellite data.
 	*/
-	internal var data: T?
+	internal var element: Element?
 	
 	/**
 	* description
-	* Conforms to the Printtable Protocol.
+	* Conforms to the Printable Protocol.
 	*/
 	internal var description: String {
-		return "\(data)"
+		return "\(element)"
 	}
 	
 	/**
 	* init
 	* Constructor.
-	* @param		next: ListNode<T>?
-	* @param		previous: ListNode<T>?
-	* @param		data: T?
 	*/
-	internal init(next: NodeType?, previous: NodeType?, data: T?) {
+	internal init(next: NodeType?, previous: NodeType?, element: Element?) {
 		self.next = next
 		self.previous = previous
-		self.data = data
+		self.element = element
 	}
 }

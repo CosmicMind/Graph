@@ -39,7 +39,6 @@ internal class BondGroup: NSManagedObject {
 	/**
 	* init
 	* Initializer for the Model Object.
-	* @param        name: String!
 	*/
 	convenience init(name: String!) {
 		let g: Graph = Graph()

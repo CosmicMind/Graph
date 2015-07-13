@@ -23,10 +23,11 @@
 * Also, it is possible to specifiy a unique keyed tree or non-unique keyed tree.
 */
 
-public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
-	private typealias TreeType = RedBlackTree<K, V>
-	internal typealias NodeType = RedBlackNode<K, V>
-	internal typealias Generator = GeneratorOf<V?>
+public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionType, Printable {
+	private typealias TreeType = RedBlackTree<Key, Value>
+	internal typealias NodeType = RedBlackNode<Key, Value>
+	internal typealias Element = (key: Key, value: Value?)
+	internal typealias Generator = GeneratorOf<Element>
 	
 	/**
 	* sentinel
@@ -55,10 +56,10 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	*/
 	internal var internalDescription: String {
 		var output: String = "("
-		for (var i: Int = 1; i <= count; ++i) {
+		for var i: Int = 1; i <= count; ++i {
 			output += internalSelect(root, order: i).description
 			if i != count {
-				output += ","
+				output += ", "
 			}
 		}
 		return output + ")"
@@ -74,18 +75,12 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	}
 	
 	/**
-	* count
-	* Total number of nodes in the tree.
-	*/
-	public private(set) var count: Int
-	
-	/**
 	* first
 	* Get the first node value in the tree, this is
 	* the first node based on the order of keys where
-	* k1 <= k2 <= K3 ... <= Kn
+	* k1 <= k2 <= Key3 ... <= Keyn
 	*/
-	public var first: V? {
+	public var first: Value? {
 		return internalSelect(root, order: 1).value
 	}
 	
@@ -93,17 +88,17 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* last
 	* Get the last node value in the tree, this is
 	* the last node based on the order of keys where
-	* k1 <= k2 <= K3 ... <= Kn
+	* k1 <= k2 <= Key3 ... <= Keyn
 	*/
-	public var last: V? {
-		return empty ? sentinel.value : internalSelect(root, order: count).value
+	public var last: Value? {
+		return isEmpty ? sentinel.value : internalSelect(root, order: count).value
 	}
 	
 	/**
-	* empty
+	* isEmpty
 	* A boolean of whether the RedBlackTree is empty.
 	*/
-	public var empty: Bool {
+	public var isEmpty: Bool {
 		return 0 == count
 	}
 	
@@ -128,24 +123,21 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* Constructor where the tree is guaranteed to store
 	* non-unique keys.
 	*/
-	public init() {
+	public override init() {
 		unique = false
 		sentinel = NodeType()
 		root = sentinel
-		count = 0
 	}
 	
 	/**
 	* init
 	* Constructor where the tree is optionally allowed
 	* to store uniqe or non-unique keys.
-	* @param		unique: Bool
 	*/
 	public init(unique: Bool) {
 		self.unique = unique
 		sentinel = NodeType()
 		root = sentinel
-		count = 0
 	}
 	
 	/**
@@ -177,11 +169,8 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	/**
 	* insert
 	* Insert a node in the tree.
-	* @param		key: K
-	* @Param		value: V?
-	* @return		A boolean indicating the success of the insert.
 	*/
-	public func insert(key: K, value: V?) -> Bool {
+	public func insert(key: Key, value: Value?) -> Bool {
 		return sentinel !== internalInsert(key, value: value)
 	}
 	
@@ -190,10 +179,8 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* Removes a node from the tree based on the key value given.
 	* If the tree allows non-unique keys, then all keys matching 
 	* the given key value will be removed.
-	* @param		key: K
-	* @return		A boolean indicating the success of the removal.
 	*/
-	public func remove(key: K) -> Bool {
+	public func remove(key: Key) -> Bool {
 		var removed: Bool = false
 		while sentinel !== internalRemove(key) {
 			removed = true
@@ -206,11 +193,8 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* Updates a node for the given key value.
 	* If the tree allows non-unique keys, then all keys matching
 	* the given key value will be updated.
-	* @param		key: K
-	* @param		value: V?
-	* @return		A boolean value of the result.
 	*/
-	public func update(key: K, value: V?) -> Bool {
+	public func update(key: Key, value: Value?) -> Bool {
 		var updated: Bool = false
 		var x: NodeType = root
 		while x !== sentinel {
@@ -227,10 +211,8 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* find
 	* Finds the first instance in a non-unique tree and only instance
 	* in unique tree of a given keyed node.
-	* @param		key: K
-	* @return		value V?
 	*/
-	public func find(key: K) -> V? {
+	public func find(key: Key) -> Value? {
 		return internalFindByKey(key).value
 	}
 	
@@ -240,21 +222,23 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* Items are kept in order, so when iterating
 	* through the items, they are returned in their
 	* ordered form.
-	* @param		index: Int
-	* @return		value V?
 	*/
-	public subscript(index: Int) -> V? {
+	public subscript(index: Int) -> Element {
 		get {
 			if !isIndexValid(index) {
-				return internalSelect(root, order: index + 1).value
+				let x: NodeType = internalSelect(root, order: index + 1)
+				return (x.key, x.value)
 			} else {
 				assert(false, "[GraphKit Error: Index out of bounds.]")
 			}
 		}
-		set(value) {
+		set(element) {
 			if !isIndexValid(index) {
-				var x: NodeType = internalSelect(root, order: index + 1)
-				x.value = value
+				let x: NodeType = internalSelect(root, order: index + 1)
+				if x.key != element.key {
+					assert(false, "[GraphKit Error: Key error.]")
+				}
+				x.value = element.value
 			} else {
 				assert(false, "[GraphKit Error: Index out of bounds.]")
 			}
@@ -266,17 +250,15 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* Property key mapping. If the key type is a
 	* String, this feature allows access like a
 	* Dictionary.
-	* @param		name: String
-	* @return		value V?
 	*/
-	public subscript(name: String) -> V? {
+	public subscript(name: String) -> Value? {
 		get {
-			return internalFindByKey(name as! K).value
+			return internalFindByKey(name as! Key).value
 		}
 		set(value) {
-			let node: NodeType = internalFindByKey(name as! K)
+			let node: NodeType = internalFindByKey(name as! Key)
 			if sentinel === node {
-				insert(name as! K, value: value!)
+				insert(name as! Key, value: value!)
 			} else {
 				node.value = value
 			}
@@ -286,9 +268,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	/**
 	* select
 	* Searches for a node based on the order statistic value.
-	* @param		x: NodeType
-	* @param		order: In
-	* @return		NodeTYpe
 	*/
 	internal func select(x: NodeType, order: Int) -> NodeType {
 		return internalSelect(x, order: order)
@@ -297,13 +276,8 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	/**
 	* internalInsert
 	* Insert a new node with the given key and value.
-	* @param		key: K
-	* @param		value: V?
-	* @return		NodeType. If the tree is uniquely keyed
-	*				and key already exists, the sentinel value is returned
-	*				otherwise the node inserted is returned.
 	*/
-	private func internalInsert(key: K, value: V?) -> NodeType {
+	private func internalInsert(key: Key, value: Value?) -> NodeType {
 		if unique && sentinel !== internalFindByKey(key) {
 			return sentinel;
 		}
@@ -335,7 +309,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	/**
 	* insertCleanUp
 	* The clean up procedure needed to maintain the RedBlackTree balance.
-	* @param		NodeType
 	*/
 	private func insertCleanUp(var z: NodeType) {
 		while z.parent.red {
@@ -387,10 +360,8 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* internalRemove
 	* Removes a node with the given key value and returns that
 	* node. If the value does not exist, the sentinel is returned.
-	* @param		key: K
-	* @return		NodeType
 	*/
-	private func internalRemove(key: K) -> NodeType {
+	private func internalRemove(key: Key) -> NodeType {
 		var z: NodeType = internalFindByKey(key)
 		if z === sentinel {
 			return sentinel
@@ -450,7 +421,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* removeCleanUp
 	* After a successful removal of a node, the RedBlackTree
 	* is rebalanced by this method.
-	* @param		NodeType
 	*/
 	private func removeCleanUp(var x: NodeType) {
 		while x !== root && !x.red {
@@ -510,9 +480,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	/**
 	* minimum
 	* Finds the minimum keyed node.
-	* @param		var x: NodeType
-	* @return		NodeType. The sentinel is
-	*				returned if the tree is empty.
 	*/
 	private func minimum(var x: NodeType) -> NodeType {
 		var y: NodeType = sentinel
@@ -526,8 +493,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	/**
 	* transplant
 	* Swaps two subtrees in the tree.
-	* @param		u: NodeType
-	* @param		v: NodeType
 	*/
 	private func transplant(u: NodeType, v: NodeType) {
 		if u.parent === sentinel {
@@ -544,7 +509,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* leftRotate
 	* Rotates the nodes to satisfy the RedBlackTree 
 	* balance property.
-	* @param		x: NodeType
 	*/
 	private func leftRotate(x: NodeType) {
 		var y: NodeType = x.right
@@ -574,7 +538,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	* rightRotate
 	* Rotates the nodes to satisfy the RedBlackTree
 	* balance property.
-	* @param		y: NodeType
 	*/
 	private func rightRotate(y: NodeType) {
 		var x: NodeType = y.left
@@ -603,11 +566,8 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	/**
 	* internalFindByKey
 	* Finds a node with a given key value.
-	* @param		key: K
-	* @return		NodeType. The sentinel is returned if
-	*				a node with the given key is not found.
 	*/
-	private func internalFindByKey(key: K) -> NodeType {
+	private func internalFindByKey(key: Key) -> NodeType {
 		var z: NodeType = root
 		while z !== sentinel {
 			if key == z.key {
@@ -621,9 +581,6 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	/**
 	* internalSelect
 	* Internally searches for a node by the order statistic value. 
-	* @param		x: NodeType
-	* @param		order: Int
-	* @return		NodeType
 	*/
 	private func internalSelect(x: NodeType, order: Int) -> NodeType {
 		var r: Int = x.left.order + 1
@@ -638,22 +595,20 @@ public class RedBlackTree<K: Comparable, V>: CollectionType, Printable {
 	/**
 	* isIndexValid
 	* Checks the validation of the index being within range of 0...n-1.
-	* @param		index: Int
-	* @return		Bool
 	*/
 	private func isIndexValid(index: Int) -> Bool {
 		return index < startIndex || index >= endIndex
 	}
 }
 
-public func +<K: Comparable, V>(lhs: RedBlackTree<K, V>, rhs: RedBlackTree<K, V>) -> RedBlackTree<K, V> {
-	let rb: RedBlackTree<K, V> = RedBlackTree<K, V>()
+public func +<Key: Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
+	let rb: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>()
 	for var i: Int = lhs.count; i > 0; --i {
-		let n: RedBlackNode<K, V> = lhs.select(lhs.root, order: i)
+		let n: RedBlackNode<Key, Value> = lhs.select(lhs.root, order: i)
 		rb.insert(n.key, value: n.value)
 	}
 	for var i: Int = rhs.count; i > 0; --i {
-		let n: RedBlackNode<K, V> = rhs.select(rhs.root, order: i)
+		let n: RedBlackNode<Key, Value> = rhs.select(rhs.root, order: i)
 		rb.insert(n.key, value: n.value)
 	}
 	return rb

@@ -46,7 +46,6 @@ internal class ManagedEntity: NSManagedObject {
 	/**
 	* init
 	* Initializes the Model Object with e a given type.
-	* @param        type: String!
 	*/
 	convenience internal init(type: String!) {
 		let g: Graph = Graph()
@@ -67,9 +66,6 @@ internal class ManagedEntity: NSManagedObject {
 	/**
 	* properties[ ]
 	* Allows for Dictionary style coding, which maps to the internal properties Dictionary.
-	* @param        name: String!
-	* get           Returns the property name value.
-	* set           Value for the property name.
 	*/
 	internal subscript(name: String) -> AnyObject? {
 		get {
@@ -113,8 +109,6 @@ internal class ManagedEntity: NSManagedObject {
 	/**
 	* addGroup
 	* Adds a Group name to the list of Groups if it does not exist.
-	* @param        name: String!
-	* @return       Bool of the result, true if added, false otherwise.
 	*/
 	internal func addGroup(name: String!) -> Bool {
 		if !hasGroup(name) {
@@ -128,8 +122,6 @@ internal class ManagedEntity: NSManagedObject {
 	/**
 	* hasGroup
 	* Checks whether the Node is a part of the Group name passed or not.
-	* @param        name: String!
-	* @return       Bool of the result, true if is a part, false otherwise.
 	*/
 	internal func hasGroup(name: String!) -> Bool {
 		for n in groupSet {
@@ -144,8 +136,6 @@ internal class ManagedEntity: NSManagedObject {
 	/**
 	* removeGroup
 	* Removes a Group name from the list of Groups if it exists.
-	* @param        name: String!
-	* @return       Bool of the result, true if exists, false otherwise.
 	*/
 	internal func removeGroup(name: String!) -> Bool {
 		for n in groupSet {
@@ -174,7 +164,6 @@ extension ManagedEntity {
 	/**
 	* addActionSubjectSetObject
 	* Adds the Action to the actionSubjectSet for the Entity.
-	* @param        value: ManagedAction
 	*/
 	func addActionSubjectSetObject(value: ManagedAction) {
 		let nodes: NSMutableSet = actionSubjectSet as! NSMutableSet
@@ -184,7 +173,6 @@ extension ManagedEntity {
 	/**
 	* removeActionSubjectSetObject
 	* Removes the Action to the actionSubjectSet for the Entity.
-	* @param        value: ManagedAction
 	*/
 	func removeActionSubjectSetObject(value: ManagedAction) {
 		let nodes: NSMutableSet = actionSubjectSet as! NSMutableSet
@@ -194,7 +182,6 @@ extension ManagedEntity {
 	/**
 	* addActionObjectSetObject
 	* Adds the Action to the actionObjectSet for the Entity.
-	* @param        value: ManagedAction
 	*/
 	func addActionObjectSetObject(value: ManagedAction) {
 		let nodes: NSMutableSet = actionObjectSet as! NSMutableSet
@@ -204,7 +191,6 @@ extension ManagedEntity {
 	/**
 	* removeActionObjectSetObject
 	* Removes the Action to the actionObjectSet for the Entity.
-	* @param        value: ManagedAction
 	*/
 	func removeActionObjectSetObject(value: ManagedAction) {
 		let nodes: NSMutableSet = actionObjectSet as! NSMutableSet
@@ -214,7 +200,6 @@ extension ManagedEntity {
 	/**
 	* addBondSubjectSetObject
 	* Adds the Bond to the bondSubjectSet for the Entity.
-	* @param        value: ManagedBond
 	*/
 	func addBondSubjectSetObject(value: ManagedBond) {
 		let nodes: NSMutableSet = bondSubjectSet as! NSMutableSet
@@ -224,7 +209,6 @@ extension ManagedEntity {
 	/**
 	* removeBondSubjectSetObject
 	* Removes the Bond to the bondSubjectSet for the Entity.
-	* @param        value: ManagedBond
 	*/
 	func removeBondSubjectSetObject(value: ManagedBond) {
 		let nodes: NSMutableSet = bondSubjectSet as! NSMutableSet
@@ -234,7 +218,6 @@ extension ManagedEntity {
 	/**
 	* addBondObjectSetObject
 	* Adds the Bond to the bondObjectSet for the Entity.
-	* @param        value: ManagedBond
 	*/
 	func addBondObjectSetObject(value: ManagedBond) {
 		let nodes: NSMutableSet = bondObjectSet as! NSMutableSet
@@ -244,7 +227,6 @@ extension ManagedEntity {
 	/**
 	* removeBondObjectSetObject
 	* Removes the Bond to the bondObjectSet for the Entity.
-	* @param        value: ManagedBond
 	*/
 	func removeBondObjectSetObject(value: ManagedBond) {
 		let nodes: NSMutableSet = bondObjectSet as! NSMutableSet
@@ -254,7 +236,6 @@ extension ManagedEntity {
 	/**
 	* addPropertySetObject
 	* Adds the Property to the propertySet for the Entity.
-	* @param        value: EntityProperty
 	*/
 	func addPropertySetObject(value: EntityProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
@@ -264,7 +245,6 @@ extension ManagedEntity {
 	/**
 	* removePropertySetObject
 	* Removes the Property to the propertySet for the Entity.
-	* @param        value: EntityProperty
 	*/
 	func removePropertySetObject(value: EntityProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
@@ -274,7 +254,6 @@ extension ManagedEntity {
 	/**
 	* addGroupSetObject
 	* Adds the Group to the groupSet for the Entity.
-	* @param        value: EntityGroup
 	*/
 	func addGroupSetObject(value: EntityGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
@@ -284,7 +263,6 @@ extension ManagedEntity {
 	/**
 	* removeGroupSetObject
 	* Removes the Group to the groupSet for the Entity.
-	* @param        value: EntityGroup
 	*/
 	func removeGroupSetObject(value: EntityGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet

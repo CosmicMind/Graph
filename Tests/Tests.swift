@@ -55,10 +55,10 @@ class Tests : XCTestCase, GraphDelegate {
 		}
 		
 		XCTAssertTrue(read!.subjects.count == 1, "Read: did not save User.")
-		XCTAssertTrue(user!.actionsWhenSubject[0] == read, "User: does not have access to Read when Subject.")
+		XCTAssertTrue(user!.actionsWhenSubject[0].value == read, "User: does not have access to Read when Subject.")
 		XCTAssertTrue(0 == user!.actionsWhenObject.count, "User: should not have access to Read when Object.")
-		XCTAssertTrue(user!.actions[0] == read, "User: does not have access to Read.")
-		XCTAssertTrue(user!.bondsWhenSubject[0] == author, "User: does not have access to Author when Subject.")
+		XCTAssertTrue(user!.actions[0].value == read, "User: does not have access to Read.")
+		XCTAssertTrue(user!.bondsWhenSubject[0].value == author, "User: does not have access to Author when Subject.")
 		XCTAssertTrue(0 == user!.bondsWhenObject.count, "User: should not have access to Author when Object.")
 		XCTAssertTrue(user == author!.subject && book1 == author!.object, "Author: Not correctly mapped.")
 		XCTAssertTrue(read!.hasSubject(user), "Read: Not correctly mapped.")

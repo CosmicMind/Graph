@@ -22,14 +22,14 @@
 * in. The following Stack implementation is backed by a List data structure.
 */
 
-public class Stack<T>: Printable, SequenceType {
-	internal typealias Generator = GeneratorOf<T?>
+public class Stack<Element>: Printable, SequenceType {
+	internal typealias Generator = GeneratorOf<Element?>
 	
 	/**
 	* list
 	* Underlying data structure.
 	*/
-	private var list: List<T>
+	private var list: List<Element>
 	
 	/**
 	* count
@@ -41,20 +41,20 @@ public class Stack<T>: Printable, SequenceType {
 	
 	/**
 	* top
-	* Get the latest item at the top
+	* Get the latest element at the top
 	* of the Stack and do not remove 
 	* it.
 	*/
-	public var top: T? {
+	public var top: Element? {
 		return list.front
 	}
 	
 	/**
-	* empty
+	* isEmpty
 	* A boolean of whether the Stack is empty.
 	*/
-	public var empty: Bool {
-		return list.empty
+	public var isEmpty: Bool {
+		return list.isEmpty
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public class Stack<T>: Printable, SequenceType {
 	* Constructor
 	*/
 	public init() {
-		list = List<T>()
+		list = List<Element>()
 	}
 	
 	/**
@@ -84,33 +84,33 @@ public class Stack<T>: Printable, SequenceType {
 	
 	/**
 	* push
-	* Insert data at the top of the Stack.
+	* Insert a new element at the top of the Stack.
 	*/
-	public func push(data: T?) {
-		list.insertAtFront(data)
+	public func push(element: Element?) {
+		list.insertAtFront(element)
 	}
 	
 	/**
 	* pop
-	* Get the latest data at the top of 
+	* Get the latest element at the top of
 	* the Stack and remove it from the
 	* Stack.
 	*/
-	public func pop() -> T? {
+	public func pop() -> Element? {
 		return list.removeAtFront()
 	}
 	
 	/**
 	* removeAll
-	* Remove all items from the Stack.
+	* Remove all elements from the Stack.
 	*/
 	public func removeAll() {
 		list.removeAll()
 	}
 }
 
-public func +<T>(lhs: Stack<T>, rhs: Stack<T>) -> Stack<T> {
-	let s: Stack<T> = Stack<T>()
+public func +<Element>(lhs: Stack<Element>, rhs: Stack<Element>) -> Stack<Element> {
+	let s: Stack<Element> = Stack<Element>()
 	for x in lhs {
 		s.push(x)
 	}
