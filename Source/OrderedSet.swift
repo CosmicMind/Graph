@@ -18,7 +18,7 @@
 * OrderedSet
 */
 
-public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionType, Equatable, Printable {
+public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionType, Comparable, Equatable, Printable {
 	internal typealias TreeType = Tree<Element, Element>
 	internal typealias SetType = OrderedSet<Element>
 	internal typealias Generator = GeneratorOf<Element>
@@ -374,5 +374,29 @@ public func ==<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<El
 			return false
 		}
 	}
+	return true
+}
+
+public func +<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> OrderedSet<Element> {
+	return lhs.union(rhs)
+}
+
+public func -<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> OrderedSet<Element> {
+	return lhs.subtract(rhs)
+}
+
+public func <=<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+	return true
+}
+
+public func >=<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+	return true
+}
+
+public func ><Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+	return true
+}
+
+public func <<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
 	return true
 }

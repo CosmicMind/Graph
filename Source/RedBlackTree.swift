@@ -602,14 +602,27 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 }
 
 public func +<Key: Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
-	let rb: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>()
-	for var i: Int = lhs.count; i > 0; --i {
-		let n: RedBlackNode<Key, Value> = lhs.select(lhs.root, order: i)
-		rb.insert(n.key, value: n.value)
+	let t: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>()
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = lhs[i]
+		t.insert(n.key, value: n.value)
 	}
-	for var i: Int = rhs.count; i > 0; --i {
-		let n: RedBlackNode<Key, Value> = rhs.select(rhs.root, order: i)
-		rb.insert(n.key, value: n.value)
+	for var i: Int = rhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = rhs[i]
+		t.insert(n.key, value: n.value)
 	}
-	return rb
+	return t
+}
+
+public func -<Key: Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
+	let t: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>()
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = lhs[i]
+		t.insert(n.key, value: n.value)
+	}
+	for var i: Int = rhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = rhs[i]
+		t.remove(n.key)
+	}
+	return t
 }
