@@ -271,7 +271,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	}
 	
 	/**
-	* interset
+	* intersect
 	* Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
 	public func intersect(sets: SetType...) -> SetType {
@@ -279,7 +279,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	}
 	
 	/**
-	* interset
+	* intersect
 	* Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
 	public func intersect(sets: Array<SetType>) -> SetType {
@@ -300,7 +300,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	}
 	
 	/**
-	* intersetInPlace
+	* intersectInPlace
 	* Insert elements of a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: SetType...) {
@@ -308,7 +308,7 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 	}
 	
 	/**
-	* intersetInPlace
+	* intersectInPlace
 	* Remove any members of this set that aren't also in a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: Array<SetType>) {
@@ -363,6 +363,44 @@ public class OrderedSet<Element: Comparable>: Probability<Element>, CollectionTy
 			insert(x)
 		}
 	}
+	
+	/**
+	* isSubsetOf
+	* Returns true if the set is a subset of a finite sequence as a Set.
+	*/
+	public func isSubsetOf(set: SetType) -> Bool {
+		if count > set.count {
+			return false
+		}
+		return count == intersect(set).count
+	}
+	
+	/**
+	* isSupersetOf
+	* Returns true if the set is a superset of a finite sequence as a Set.
+	*/
+	public func isSupersetOf(set: SetType) -> Bool {
+		if count < set.count {
+			return false
+		}
+		return set.count == intersect(set).count
+	}
+	
+	/**
+	* isStrictSubsetOf
+	* Returns true if the set is a subset of a finite sequence as a Set but not equal.
+	*/
+	public func isStrictSubsetOf(set: SetType) -> Bool {
+		return count < set.count && isSubsetOf(set)
+	}
+	
+	/**
+	* isStrictSupersetOf
+	* Returns true if the set is a superset of a finite sequence as a Set but not equal.
+	*/
+	public func isStrictSupersetOf(set: SetType) -> Bool {
+		return count > set.count && isSupersetOf(set)
+	}
 }
 
 public func ==<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
@@ -386,17 +424,17 @@ public func -<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Ele
 }
 
 public func <=<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
-	return true
+	return lhs.isSubsetOf(rhs)
 }
 
 public func >=<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
-	return true
+	return lhs.isSupersetOf(rhs)
 }
 
 public func ><Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
-	return true
+	return lhs.isStrictSupersetOf(rhs)
 }
 
 public func <<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
-	return true
+	return lhs.isStrictSubsetOf(rhs)
 }

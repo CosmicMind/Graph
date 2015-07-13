@@ -44,22 +44,6 @@ public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	}
 	
 	/**
-	* countOf
-	* Conforms to ProbabilityType protocol.
-	*/
-	public override func countOf(keys: Key...) -> Int {
-		return countOf(keys)
-	}
-	
-	/**
-	* countOf
-	* Conforms to ProbabilityType protocol.
-	*/
-	public override func countOf(keys: Array<Key>) -> Int {
-		return search(keys).count
-	}
-	
-	/**
 	* search
 	* Accepts a paramter list of keys and returns a subset
 	* Tree with the indicated values if

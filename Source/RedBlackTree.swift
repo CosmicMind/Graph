@@ -157,13 +157,29 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 	}
 	
 	/**
-	* removeAll
-	* Remove all nodes from the tree.
+	* countOf
+	* Conforms to ProbabilityType protocol.
 	*/
-	public func removeAll() {
-		while sentinel !== root {
-			internalRemove(root.key)
+	public override func countOf(keys: Key...) -> Int {
+		return countOf(keys)
+	}
+	
+	/**
+	* countOf
+	* Conforms to ProbabilityType protocol.
+	*/
+	public override func countOf(keys: Array<Key>) -> Int {
+		var count: Int = 0
+		for key in keys {
+			var x: NodeType = root
+			while x !== sentinel {
+				if key == x.key {
+					++count
+				}
+				x = key < x.key ? x.left : x.right
+			}
 		}
+		return count
 	}
 	
 	/**
@@ -188,6 +204,16 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		return removed
 	}
 
+	/**
+	* removeAll
+	* Remove all nodes from the tree.
+	*/
+	public func removeAll() {
+		while sentinel !== root {
+			internalRemove(root.key)
+		}
+	}
+	
 	/**
 	* update
 	* Updates a node for the given key value.

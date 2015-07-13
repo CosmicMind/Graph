@@ -513,10 +513,6 @@ public class Graph: NSObject {
 			let nodes: Array<NSManagedObject> = inserted.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
-				if nil == className {
-					println("[GraphKit Error: Cannot get Object Class name.]")
-					continue
-				}
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
 					delegate?.graph?(self, didInsertEntity: Entity(entity: node as! ManagedEntity))
@@ -566,10 +562,6 @@ public class Graph: NSObject {
 			let nodes: Array<NSManagedObject> = updated.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
-				if nil == className {
-					println("[GraphKit Error: Cannot get Object Class name.]")
-					continue
-				}
 				switch(className!) {
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
@@ -607,10 +599,6 @@ public class Graph: NSObject {
 			let nodes: Array<NSManagedObject> = deleted.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
-				if nil == className {
-					println("[GraphKit Error: Cannot get Object Class name.]")
-					continue
-				}
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
 					delegate?.graph?(self, didDeleteEntity: Entity(entity: node as! ManagedEntity))
