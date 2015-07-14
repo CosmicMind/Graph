@@ -26,6 +26,8 @@ Advanced data structures introduces the core flow of information in GraphKit. Mu
 * [RedBlackTree](https://github.com/GraphKit/GraphKit/wiki/RedBlackTree)
 * [Tree](https://github.com/GraphKit/GraphKit/wiki/Tree)
 * [MultiTree](https://github.com/GraphKit/GraphKit/wiki/MultiTree)
+* [OrderedSet](https://github.com/GraphKit/GraphKit/wiki/OrderedSet)
+* [OrderedMultiSet](https://github.com/GraphKit/GraphKit/wiki/OrderedMultiSet)
 
 ### Introduction to Persistence with Graph
 
@@ -43,6 +45,4 @@ Welcome to the core of GraphKit -- Graph. This is where the magic happens and if
 ### Contributors 
 
 [Daniel Dahan](https://github.com/danieldahan)  
-
-
 
