@@ -22,7 +22,8 @@ import Foundation
 	Overview
 	Represents Action Nodes, which are repetitive relationships between Entity Nodes.
 */
-@objc(Action) public class Action: NSObject {
+@objc(Action)
+public class Action: NSObject {
 	internal let node: ManagedAction
 
 	/**
