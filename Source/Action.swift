@@ -19,7 +19,6 @@
 import Foundation
 
 /**
-	Overview
 	Represents Action Nodes, which are repetitive relationships between Entity Nodes.
 */
 @objc(Action)

@@ -23,7 +23,7 @@ function parseFile(file) {
     fs.readFile(DEFAULT_DIRECTORY + file, function (error, data) {
       if (error) { throw error; }
       data = data.toString();
-      var comments = data.match(/(\/\*\*(?:(?!\*\/).|[\n\r])*\*\/)\n(.*\{)/g);
+      var comments = data.match(/(\/\*\*(?:(?!\*\/).|[\n\r])*\*\/)([\n\r])*(.*\{)/g);
       for (var i = comments.length - 1; 0 <= i; --i) {
           comments[i] = comments[i].replace(/(\/\*\*)/, '').replace(/(\*\/)/, '');
           var description = comments[i].replace(/^\s+|\s+$/g, '').split('\n');

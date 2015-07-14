@@ -19,7 +19,6 @@
 import Foundation
 
 /**
-	Bond
 	Represents Bond Nodes, which are unique relationships between Entity Nodes.
 */
 @objc(Bond)

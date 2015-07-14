@@ -14,20 +14,19 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* BondProperty
-*
-* Stores a reference to the ManagedBond Model Object.
 */
 
 import CoreData
 
+/**
+	Stores a reference to the ManagedBond Model Object.
+*/
 @objc(BondProperty)
 internal class BondProperty: NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var value: AnyObject
 	@NSManaged internal var node: ManagedBond
-	
+
 	private var context: NSManagedObjectContext?
 	internal var worker: NSManagedObjectContext? {
 		if nil == context {
@@ -36,10 +35,10 @@ internal class BondProperty: NSManagedObject {
 		}
 		return context
 	}
-	
+
 	/**
-	* init
-	* Initializer for the Model Object.
+		init
+		Initializer for the Model Object.
 	*/
 	convenience init(name: String!, value: AnyObject!) {
 		let g: Graph = Graph()
@@ -49,10 +48,10 @@ internal class BondProperty: NSManagedObject {
 		self.value = value
 		context = w
 	}
-	
+
 	/**
-	* delete
-	* Deletes the Object Model.
+		delete
+		Deletes the Object Model.
 	*/
 	internal func delete() {
 		worker?.deleteObject(self)

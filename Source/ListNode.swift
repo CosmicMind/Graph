@@ -14,45 +14,40 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* ListNode
-* 
-* Used internally by the List data structure to store pointers to nodes and satellite
-* data.
 */
 
 internal class ListNode<Element>: Printable {
 	private typealias NodeType = ListNode<Element>
-	
+
 	/**
-	* next
-	* Points to the successor element in the List.
+		next
+		Points to the successor element in the List.
 	*/
 	internal var next: NodeType?
-	
+
 	/**
-	* previous
-	* points to the predacessor element in the List.
+		previous
+		points to the predacessor element in the List.
 	*/
 	internal var previous: NodeType?
-	
+
 	/**
-	* data
-	* Satellite data.
+		data
+		Satellite data.
 	*/
 	internal var element: Element?
-	
+
 	/**
-	* description
-	* Conforms to the Printable Protocol.
+		description
+		Conforms to the Printable Protocol.
 	*/
 	internal var description: String {
 		return "\(element)"
 	}
-	
+
 	/**
-	* init
-	* Constructor.
+		init
+		Constructor.
 	*/
 	internal init(next: NodeType?, previous: NodeType?, element: Element?) {
 		self.next = next

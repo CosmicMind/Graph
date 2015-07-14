@@ -14,119 +14,118 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Deque
-*
-* A Deque is a combination between a Stack and Queue. It allows for
-* access of the latest and oldest elements, as well as, allows insertion
-* of elements to be placed at the back or front of the structure. The
-* following Deque implementation is backed by a List structure.
 */
 
+/**
+	A Deque is a combination between a Stack and Queue. It allows for
+	access of the latest and oldest elements, as well as, allows insertion
+	of elements to be placed at the back or front of the structure. The
+	following Deque implementation is backed by a List structure.
+*/
 public class Deque<Element>: Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
-	
+
 	/**
-	* list
-	* Underlying element structure.
+		list
+		Underlying element structure.
 	*/
 	private var list: List<Element>
-	
+
 	/**
-	* count
-	* Total number of items in the Deque.
+		count
+		Total number of items in the Deque.
 	*/
 	public var count: Int {
 		return list.count
 	}
-	
+
 	/**
-	* front
-	* Get the element at the front of the Deque
-	* and do not remove it.
+		front
+		Get the element at the front of the Deque
+		and do not remove it.
 	*/
 	public var front: Element? {
 		return list.front
 	}
-	
+
 	/**
-	* back
-	* Get the element at the back of the Deque
-	* and do not remove it.
+		back
+		Get the element at the back of the Deque
+		and do not remove it.
 	*/
 	public var back: Element? {
 		return list.back
 	}
-	
+
 	/**
-	* isEmpty
-	* A boolean of whether the Deque is empty.
+		isEmpty
+		A boolean of whether the Deque is empty.
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
 	}
-	
+
 	/**
-	* description
-	* Conforms to the Printable Protocol.
+		description
+		Conforms to the Printable Protocol.
 	*/
 	public var description: String {
 		return "Deque" + list.internalDescription
 	}
-	
+
 	/**
-	* init
-	* Constructor.
+		init
+		Constructor.
 	*/
 	public init() {
 		list = List<Element>()
 	}
-	
+
 	/**
-	* generate
-	* Conforms to the SequenceType Protocol. Returns
-	* the next value in the sequence of nodes.
+		generate
+		Conforms to the SequenceType Protocol. Returns
+		the next value in the sequence of nodes.
 	*/
 	public func generate() -> Generator {
 		return list.generate()
 	}
-	
+
 	/**
-	* insertAtFront
-	* Insert a new element at the front of the Deque.
+		insertAtFront
+		Insert a new element at the front of the Deque.
 	*/
 	public func insertAtFront(element: Element?) {
 		list.insertAtFront(element)
 	}
-	
+
 	/**
-	* removeAtFront
-	* Get the element at the front of the Deque
-	* and remove it.
+		removeAtFront
+		Get the element at the front of the Deque
+		and remove it.
 	*/
 	public func removeAtFront() -> Element? {
 		return list.removeAtFront()
 	}
-	
+
 	/**
-	* insertAtBack
-	* Insert a new element at the back of the Deque.
+		insertAtBack
+		Insert a new element at the back of the Deque.
 	*/
 	public func insertAtBack(element: Element?) {
 		list.insertAtBack(element)
 	}
-	
+
 	/**
-	* Get the element at the back of the Deque
-	* and remove it.
+		Get the element at the back of the Deque
+		and remove it.
 	*/
 	public func removeAtBack() -> Element? {
 		return list.removeAtBack()
 	}
-	
+
 	/**
-	* removeAll
-	* Remove all elements from the Deque.
+		removeAll
+		Remove all elements from the Deque.
 	*/
 	public func removeAll() {
 		list.removeAll()

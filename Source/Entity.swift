@@ -19,7 +19,6 @@
 import Foundation
 
 /**
-	Entity
 	Represents Entity Nodes, which are person, places, or things -- nouns.
 */
 @objc(Entity)
