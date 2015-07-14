@@ -14,15 +14,14 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Graph
-*
-* Manages Nodes in the persistent layer, as well as, offers watchers to monitor
-* changes in the persistent layer.
 */
 
 import CoreData
 
+/**
+	Manages Nodes in the persistent layer, as well as, offers watchers to monitor
+	changes in the persistent layer.
+*/
 private struct GraphPersistentStoreCoordinator {
 	static var onceToken: dispatch_once_t = 0
 	static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
@@ -45,7 +44,7 @@ private struct GraphManagedObjectModel {
 
 internal struct GraphUtility {
 	static let storeName: String = "GraphKit.sqlite"
-	
+
 	static let entityIndexName: String = "ManagedEntity"
 	static let entityDescriptionName: String = "ManagedEntity"
 	static let entityObjectClassName: String = "ManagedEntity"
@@ -55,7 +54,7 @@ internal struct GraphUtility {
 	static let entityPropertyIndexName: String = "EntityProperty"
 	static let entityPropertyObjectClassName: String = "EntityProperty"
 	static let entityPropertyDescriptionName: String = "EntityProperty"
-	
+
 	static let actionIndexName: String = "ManagedAction"
 	static let actionDescriptionName: String = "ManagedAction"
 	static let actionObjectClassName: String = "ManagedAction"
@@ -65,7 +64,7 @@ internal struct GraphUtility {
 	static let actionPropertyIndexName: String = "ActionProperty"
 	static let actionPropertyObjectClassName: String = "ActionProperty"
 	static let actionPropertyDescriptionName: String = "ActionProperty"
-	
+
 	static let bondIndexName: String = "ManagedBond"
 	static let bondDescriptionName: String = "ManagedBond"
 	static let bondObjectClassName: String = "ManagedBond"
@@ -84,14 +83,14 @@ public protocol GraphDelegate {
 	optional func graph(graph: Graph, didInsertEntity entity: Entity, group: String!)
 	optional func graph(graph: Graph, didInsertEntity entity: Entity, property: String, value: AnyObject)
 	optional func graph(graph: Graph, didUpdateEntity entity: Entity, property: String, value: AnyObject)
-	
+
 	optional func graph(graph: Graph, didInsertAction action: Action)
 	optional func graph(graph: Graph, didUpdateAction action: Action)
 	optional func graph(graph: Graph, didDeleteAction action: Action)
 	optional func graph(graph: Graph, didInsertAction action: Action, group: String)
 	optional func graph(graph: Graph, didInsertAction entity: Action, property: String, value: AnyObject)
 	optional func graph(graph: Graph, didUpdateAction entity: Action, property: String, value: AnyObject)
-	
+
 	optional func graph(graph: Graph, didInsertBond bond: Bond)
 	optional func graph(graph: Graph, didDeleteBond bond: Bond)
 	optional func graph(graph: Graph, didInsertBond bond: Bond, group: String)
@@ -103,33 +102,40 @@ public protocol GraphDelegate {
 public class Graph: NSObject {
 	public var batchSize: Int = 20
 	public var batchOffset: Int = 0
-	
+
 	internal var watching: Tree<String, Array<String>>
 	internal var masterPredicate: NSPredicate?
-	
+
 	public weak var delegate: GraphDelegate?
-	
+
 	/**
-	* init
-	* Initializer for the Object.
+		init
+		Initializer for the Object.
 	*/
 	override public init() {
 		watching = Tree<String, Array<String>>()
 		super.init()
 	}
-	
+
 	/**
-	* deinit
-	* Deinitializes the Object, mainly removing itself as an observer for NSNotifications.
+		deinit
+		Deinitializes the Object, mainly removing itself as an observer for NSNotifications.
 	*/
 	deinit {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
 	}
-	
+
 	/**
-	* save
-	* Updates the persistent layer by processing all the changes in the Graph.
-	* @param        completion: (success: Bool, error: NSError?) -> ())
+		save
+		Updates the persistent layer by processing all the changes in the Graph.
+	*/
+	public func save() {
+		save(nil)
+	}
+
+	/**
+		save
+		Updates the persistent layer by processing all the changes in the Graph.
 	*/
 	public func save(completion: ((success: Bool, error: NSError?) -> ())?) {
 		var w: NSManagedObjectContext? = worker
@@ -144,91 +150,82 @@ public class Graph: NSObject {
 			}
 		}
 	}
-	
+
 	/**
-	* watch(Entity)
-	* Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the spcified type.
-	* @param        type: String!
+		watch(Entity)
+		Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the spcified type.
 	*/
 	public func watch(Entity type: String!) {
 		addWatcher("type", value: type, index: GraphUtility.entityIndexName, entityDescriptionName: GraphUtility.entityDescriptionName, managedObjectClassName: GraphUtility.entityObjectClassName)
 	}
-	
+
 	/**
-	* watch(EntityGroup)
-	* Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified group name.
-	* @param        name: String!
+		watch(EntityGroup)
+		Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified group name.
 	*/
 	public func watch(EntityGroup name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.entityGroupIndexName, entityDescriptionName: GraphUtility.entityGroupDescriptionName, managedObjectClassName: GraphUtility.entityGroupObjectClassName)
 	}
-	
+
 	/**
-	* watch(EntityProperty)
-	* Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified property name.
-	* @param        name: String!
+		watch(EntityProperty)
+		Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified property name.
 	*/
 	public func watch(EntityProperty name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.entityPropertyIndexName, entityDescriptionName: GraphUtility.entityPropertyDescriptionName, managedObjectClassName: GraphUtility.entityPropertyObjectClassName)
 	}
-	
+
 	/**
-	* watch(Action)
-	* Attaches the Graph instance to NotificationCenter in order to Observe changes for an Action with the spcified type.
+		watch(Action)
+		Attaches the Graph instance to NotificationCenter in order to Observe changes for an Action with the spcified type.
 	*/
 	public func watch(Action type: String!) {
 		addWatcher("type", value: type, index: GraphUtility.actionIndexName, entityDescriptionName: GraphUtility.actionDescriptionName, managedObjectClassName: GraphUtility.actionObjectClassName)
 	}
-	
+
 	/**
-	* watch(ActionGroup)
-	* Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified group name.
-	* @param        name: String!
+		watch(ActionGroup)
+		Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified group name.
 	*/
 	public func watch(ActionGroup name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.actionGroupIndexName, entityDescriptionName: GraphUtility.actionGroupDescriptionName, managedObjectClassName: GraphUtility.actionGroupObjectClassName)
 	}
-	
+
 	/**
-	* watch(ActionProperty)
-	* Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified property name.
-	* @param        name: String!
+		watch(ActionProperty)
+		Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified property name.
 	*/
 	public func watch(ActionProperty name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.actionPropertyIndexName, entityDescriptionName: GraphUtility.actionPropertyDescriptionName, managedObjectClassName: GraphUtility.actionPropertyObjectClassName)
 	}
-	
+
 	/**
-	* watch(Bond)
-	* Attaches the Graph instance to NotificationCenter in order to Observe changes for an Bond with the spcified type.
+		watch(Bond)
+		Attaches the Graph instance to NotificationCenter in order to Observe changes for an Bond with the spcified type.
 	*/
 	public func watch(Bond type: String!) {
 		addWatcher("type", value: type, index: GraphUtility.bondIndexName, entityDescriptionName: GraphUtility.bondDescriptionName, managedObjectClassName: GraphUtility.bondObjectClassName)
 	}
-	
+
 	/**
-	* watch(BondGroup)
-	* Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified group name.
-	* @param        name: String!
+		watch(BondGroup)
+		Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified group name.
 	*/
 	public func watch(BondGroup name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.bondGroupIndexName, entityDescriptionName: GraphUtility.bondGroupDescriptionName, managedObjectClassName: GraphUtility.bondGroupObjectClassName)
 	}
-	
+
 	/**
-	* watch(BondProperty)
-	* Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified property name.
-	* @param        name: String!
+		watch(BondProperty)
+		Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified property name.
 	*/
 	public func watch(BondProperty name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.bondPropertyIndexName, entityDescriptionName: GraphUtility.bondPropertyDescriptionName, managedObjectClassName: GraphUtility.bondPropertyObjectClassName)
 	}
-	
+
 	/**
-	* search(Entity)
-	* Searches the Graph for Entity Objects with the following type LIKE ?.
-	* @param        type: String
-	* @return       Tree<String, Entity>
+		search(Entity)
+		Searches the Graph for Entity Objects with the following type LIKE ?.
 	*/
 	public func search(Entity type: String) -> Tree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
@@ -239,12 +236,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(EntityGroup)
-	* Searches the Graph for Entity Group Objects with the following name LIKE ?.
-	* @param        name: String
-	* @return       MultiTree<String, Entity>
+		search(EntityGroup)
+		Searches the Graph for Entity Group Objects with the following name LIKE ?.
 	*/
 	public func search(EntityGroup name: String) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -255,12 +250,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(EntityGroupMap)
-	* Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
-	* @param        name: String
-	* @return       Tree<String, MultiTree<String, Entity>>
+		search(EntityGroupMap)
+		Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
 	*/
 	public func search(EntityGroupMap name: String) -> Tree<String, MultiTree<String, Entity>> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -277,12 +270,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(EntityProperty)
-	* Searches the Graph for Entity Property Objects with the following name LIKE ?.
-	* @param        name: String
-	* @return       MultiTree<String, Entity>
+		search(EntityProperty)
+		Searches the Graph for Entity Property Objects with the following name LIKE ?.
 	*/
 	public func search(EntityProperty name: String) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -293,13 +284,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(EntityProperty)
-	* Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
-	* @param        name: String
-	* @param        value: String
-	* @return       MultiTree<String, Entity>
+		search(EntityProperty)
+		Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(EntityProperty name: String, value: String) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
@@ -310,13 +298,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(EntityProperty)
-	* Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
-	* @param        name: String
-	* @param        value: Int
-	* @return       MultiTree<String, Entity>
+		search(EntityProperty)
+		Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(EntityProperty name: String, value: Int) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
@@ -327,12 +312,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(Action)
-	* Searches the Graph for Action Objects with the following type LIKE ?.
-	* @param        type: String
-	* @return       Tree<String, Action>
+		search(Action)
+		Searches the Graph for Action Objects with the following type LIKE ?.
 	*/
 	public func search(Action type: String) -> Tree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
@@ -343,12 +326,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(ActionGroup)
-	* Searches the Graph for Action Group Objects with the following name LIKE ?.
-	* @param        name: String
-	* @return       MultiTree<String, Action>
+		search(ActionGroup)
+		Searches the Graph for Action Group Objects with the following name LIKE ?.
 	*/
 	public func search(ActionGroup name: String) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -359,12 +340,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(ActionGroupMap)
-	* Retrieves all the unique Group Names for Action Nodes with their Action Objects.
-	* @param        name: String
-	* @return       Tree<String, MultiTree<String, Action>>
+		search(ActionGroupMap)
+		Retrieves all the unique Group Names for Action Nodes with their Action Objects.
 	*/
 	public func search(ActionGroupMap name: String) -> Tree<String, MultiTree<String, Action>> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -381,12 +360,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(ActionProperty)
-	* Searches the Graph for Action Property Objects with the following name LIKE ?.
-	* @param        name: String
-	* @return       MultiTree<String, Action>
+		search(ActionProperty)
+		Searches the Graph for Action Property Objects with the following name LIKE ?.
 	*/
 	public func search(ActionProperty name: String) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -397,13 +374,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(ActionProperty)
-	* Searches the Graph for Action Property Objects with the following name == ? and value == ?.
-	* @param        name: String
-	* @param        value: String
-	* @return       MultiTree<String, Action>
+		search(ActionProperty)
+		Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(ActionProperty name: String, value: String) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
@@ -414,13 +388,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(ActionProperty)
-	* Searches the Graph for Action Property Objects with the following name == ? and value == ?.
-	* @param        name: String
-	* @param        value: Int
-	* @return       MultiTree<String, Action>
+		search(ActionProperty)
+		Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(ActionProperty name: String, value: Int) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
@@ -431,12 +402,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(Bond)
-	* Searches the Graph for Bond Objects with the following type LIKE ?.
-	* @param        type: String
-	* @return       Tree<String, Bond>
+		search(Bond)
+		Searches the Graph for Bond Objects with the following type LIKE ?.
 	*/
 	public func search(Bond type: String) -> Tree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
@@ -447,12 +416,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(BondGroup)
-	* Searches the Graph for Bond Group Objects with the following name LIKE ?.
-	* @param        name: String
-	* @return       MultiTree<String, Bond>
+		search(BondGroup)
+		Searches the Graph for Bond Group Objects with the following name LIKE ?.
 	*/
 	public func search(BondGroup name: String) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -463,12 +430,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(BondGroupMap)
-	* Retrieves all the unique Group Names for Bond Nodes with their Bond Objects.
-	* @param        name: String
-	* @return       Tree<String, MultiTree<String, Bond>>
+		search(BondGroupMap)
+		Retrieves all the unique Group Names for Bond Nodes with their Bond Objects.
 	*/
 	public func search(BondGroupMap name: String) -> Tree<String, MultiTree<String, Bond>> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -485,12 +450,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(BondProperty)
-	* Searches the Graph for Bond Property Objects with the following name LIKE ?.
-	* @param        name: String
-	* @return       MultiTree<String, Bond>
+		search(BondProperty)
+		Searches the Graph for Bond Property Objects with the following name LIKE ?.
 	*/
 	public func search(BondProperty name: String) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -501,13 +464,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(BondProperty)
-	* Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
-	* @param        name: String
-	* @param        value: String
-	* @return       MultiTree<String, Bond>
+		search(BondProperty)
+		Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(BondProperty name: String, value: String) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
@@ -518,13 +478,10 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* search(BondProperty)
-	* Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
-	* @param        name: String
-	* @param        value: Int
-	* @return       MultiTree<String, Bond>
+		search(BondProperty)
+		Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(BondProperty name: String, value: Int) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
@@ -535,31 +492,26 @@ public class Graph: NSObject {
 		}
 		return nodes
 	}
-	
+
 	/**
-	* managedObjectContextDidSave
-	* The callback that NotificationCenter uses when changes occur in the Graph.
-	* @param        notification: NSNotification
+		managedObjectContextDidSave
+		The callback that NotificationCenter uses when changes occur in the Graph.
 	*/
 	public func managedObjectContextDidSave(notification: NSNotification) {
 		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as! NSManagedObjectContext
 		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
 		let userInfo = notification.userInfo
-		
+
 		// inserts
 		let insertedSet: NSSet = userInfo?[NSInsertedObjectsKey] as! NSSet
 		let	inserted: NSMutableSet = insertedSet.mutableCopy() as! NSMutableSet
-		
+
 		inserted.filterUsingPredicate(masterPredicate!)
-		
+
 		if 0 < inserted.count {
 			let nodes: Array<NSManagedObject> = inserted.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
-				if nil == className {
-					println("[GraphKit Error: Cannot get Object Class name.]")
-					continue
-				}
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
 					delegate?.graph?(self, didInsertEntity: Entity(entity: node as! ManagedEntity))
@@ -599,20 +551,16 @@ public class Graph: NSObject {
 				}
 			}
 		}
-		
+
 		// updates
 		let updatedSet: NSSet = userInfo?[NSUpdatedObjectsKey] as! NSSet
 		let	updated: NSMutableSet = updatedSet.mutableCopy() as! NSMutableSet
 		updated.filterUsingPredicate(masterPredicate!)
-		
+
 		if 0 < updated.count {
 			let nodes: Array<NSManagedObject> = updated.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
-				if nil == className {
-					println("[GraphKit Error: Cannot get Object Class name.]")
-					continue
-				}
 				switch(className!) {
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
@@ -633,27 +581,23 @@ public class Graph: NSObject {
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 				}
 			}
-			
+
 		}
-		
+
 		// deletes
 		var deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
-		
+
 		if nil == deletedSet {
 			return
 		}
-		
+
 		var	deleted: NSMutableSet = deletedSet!.mutableCopy() as! NSMutableSet
 		deleted.filterUsingPredicate(masterPredicate!)
-		
+
 		if 0 < deleted.count {
 			let nodes: Array<NSManagedObject> = deleted.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
 				let className = String.fromCString(object_getClassName(node))
-				if nil == className {
-					println("[GraphKit Error: Cannot get Object Class name.]")
-					continue
-				}
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
 					delegate?.graph?(self, didDeleteEntity: Entity(entity: node as! ManagedEntity))
@@ -669,11 +613,11 @@ public class Graph: NSObject {
 			}
 		}
 	}
-	
+
 	/**
-	* worker
-	* A NSManagedObjectContext that is configured to be thread safe
-	* for the NSManagedObjects calling on it.
+		worker
+		A NSManagedObjectContext that is configured to be thread safe
+		for the NSManagedObjects calling on it.
 	*/
 	internal var worker: NSManagedObjectContext? {
 		dispatch_once(&GraphMainManagedObjectContext.onceToken) {
@@ -682,7 +626,7 @@ public class Graph: NSObject {
 		}
 		return GraphPrivateManagedObjectContext.managedObjectContext
 	}
-	
+
 	// make thread safe by creating this asynchronously
 	private var privateContext: NSManagedObjectContext? {
 		dispatch_once(&GraphPrivateManagedObjectContext.onceToken) {
@@ -691,56 +635,56 @@ public class Graph: NSObject {
 		}
 		return GraphPrivateManagedObjectContext.managedObjectContext
 	}
-	
+
 	private var managedObjectModel: NSManagedObjectModel? {
 		dispatch_once(&GraphManagedObjectModel.onceToken) {
 			GraphManagedObjectModel.managedObjectModel = NSManagedObjectModel()
-			
+
 			var entityDescription: NSEntityDescription = NSEntityDescription()
 			var entityProperties: Array<AnyObject> = Array<AnyObject>()
 			entityDescription.name = GraphUtility.entityDescriptionName
 			entityDescription.managedObjectClassName = GraphUtility.entityObjectClassName
-			
+
 			var actionDescription: NSEntityDescription = NSEntityDescription()
 			var actionProperties: Array<AnyObject> = Array<AnyObject>()
 			actionDescription.name = GraphUtility.actionDescriptionName
 			actionDescription.managedObjectClassName = GraphUtility.actionObjectClassName
-			
+
 			var bondDescription: NSEntityDescription = NSEntityDescription()
 			var bondProperties: Array<AnyObject> = Array<AnyObject>()
 			bondDescription.name = GraphUtility.bondDescriptionName
 			bondDescription.managedObjectClassName = GraphUtility.bondObjectClassName
-			
+
 			var entityPropertyDescription: NSEntityDescription = NSEntityDescription()
 			var entityPropertyProperties: Array<AnyObject> = Array<AnyObject>()
 			entityPropertyDescription.name = GraphUtility.entityPropertyDescriptionName
 			entityPropertyDescription.managedObjectClassName = GraphUtility.entityPropertyObjectClassName
-			
+
 			var actionPropertyDescription: NSEntityDescription = NSEntityDescription()
 			var actionPropertyProperties: Array<AnyObject> = Array<AnyObject>()
 			actionPropertyDescription.name = GraphUtility.actionPropertyDescriptionName
 			actionPropertyDescription.managedObjectClassName = GraphUtility.actionPropertyObjectClassName
-			
+
 			var bondPropertyDescription: NSEntityDescription = NSEntityDescription()
 			var bondPropertyProperties: Array<AnyObject> = Array<AnyObject>()
 			bondPropertyDescription.name = GraphUtility.bondPropertyDescriptionName
 			bondPropertyDescription.managedObjectClassName = GraphUtility.bondPropertyObjectClassName
-			
+
 			var entityGroupDescription: NSEntityDescription = NSEntityDescription()
 			var entityGroupProperties: Array<AnyObject> = Array<AnyObject>()
 			entityGroupDescription.name = GraphUtility.entityGroupDescriptionName
 			entityGroupDescription.managedObjectClassName = GraphUtility.entityGroupObjectClassName
-			
+
 			var actionGroupDescription: NSEntityDescription = NSEntityDescription()
 			var actionGroupProperties: Array<AnyObject> = Array<AnyObject>()
 			actionGroupDescription.name = GraphUtility.actionGroupDescriptionName
 			actionGroupDescription.managedObjectClassName = GraphUtility.actionGroupObjectClassName
-			
+
 			var bondGroupDescription: NSEntityDescription = NSEntityDescription()
 			var bondGroupProperties: Array<AnyObject> = Array<AnyObject>()
 			bondGroupDescription.name = GraphUtility.bondGroupDescriptionName
 			bondGroupDescription.managedObjectClassName = GraphUtility.bondGroupObjectClassName
-			
+
 			var nodeClass: NSAttributeDescription = NSAttributeDescription()
 			nodeClass.name = "nodeClass"
 			nodeClass.attributeType = .StringAttributeType
@@ -748,7 +692,7 @@ public class Graph: NSObject {
 			entityProperties.append(nodeClass.copy() as! NSAttributeDescription)
 			actionProperties.append(nodeClass.copy() as! NSAttributeDescription)
 			bondProperties.append(nodeClass.copy() as! NSAttributeDescription)
-			
+
 			var type: NSAttributeDescription = NSAttributeDescription()
 			type.name = "type"
 			type.attributeType = .StringAttributeType
@@ -756,7 +700,7 @@ public class Graph: NSObject {
 			entityProperties.append(type.copy() as! NSAttributeDescription)
 			actionProperties.append(type.copy() as! NSAttributeDescription)
 			bondProperties.append(type.copy() as! NSAttributeDescription)
-			
+
 			var createdDate: NSAttributeDescription = NSAttributeDescription()
 			createdDate.name = "createdDate"
 			createdDate.attributeType = .DateAttributeType
@@ -764,7 +708,7 @@ public class Graph: NSObject {
 			entityProperties.append(createdDate.copy() as! NSAttributeDescription)
 			actionProperties.append(createdDate.copy() as! NSAttributeDescription)
 			bondProperties.append(createdDate.copy() as! NSAttributeDescription)
-			
+
 			var propertyName: NSAttributeDescription = NSAttributeDescription()
 			propertyName.name = "name"
 			propertyName.attributeType = .StringAttributeType
@@ -772,7 +716,7 @@ public class Graph: NSObject {
 			entityPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
 			actionPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
 			bondPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
-			
+
 			var propertyValue: NSAttributeDescription = NSAttributeDescription()
 			propertyValue.name = "value"
 			propertyValue.attributeType = .TransformableAttributeType
@@ -782,14 +726,14 @@ public class Graph: NSObject {
 			entityPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
 			actionPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
 			bondPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
-			
+
 			var propertyRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertyRelationship.name = "node"
 			propertyRelationship.minCount = 1
 			propertyRelationship.maxCount = 1
 			propertyRelationship.optional = false
 			propertyRelationship.deleteRule = .NullifyDeleteRule
-			
+
 			var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertySetRelationship.name = "propertySet"
 			propertySetRelationship.minCount = 0
@@ -798,22 +742,22 @@ public class Graph: NSObject {
 			propertySetRelationship.deleteRule = .CascadeDeleteRule
 			propertyRelationship.inverseRelationship = propertySetRelationship
 			propertySetRelationship.inverseRelationship = propertyRelationship
-			
+
 			propertyRelationship.destinationEntity = entityDescription
 			propertySetRelationship.destinationEntity = entityPropertyDescription
 			entityPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
 			entityProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
-			
+
 			propertyRelationship.destinationEntity = actionDescription
 			propertySetRelationship.destinationEntity = actionPropertyDescription
 			actionPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
-			
+
 			propertyRelationship.destinationEntity = bondDescription
 			propertySetRelationship.destinationEntity = bondPropertyDescription
 			bondPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
 			bondProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
-			
+
 			var group: NSAttributeDescription = NSAttributeDescription()
 			group.name = "name"
 			group.attributeType = .StringAttributeType
@@ -821,14 +765,14 @@ public class Graph: NSObject {
 			entityGroupProperties.append(group.copy() as! NSAttributeDescription)
 			actionGroupProperties.append(group.copy() as! NSAttributeDescription)
 			bondGroupProperties.append(group.copy() as! NSAttributeDescription)
-			
+
 			var groupRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupRelationship.name = "node"
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
 			groupRelationship.optional = false
 			groupRelationship.deleteRule = .NullifyDeleteRule
-			
+
 			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"
 			groupSetRelationship.minCount = 0
@@ -837,22 +781,22 @@ public class Graph: NSObject {
 			groupSetRelationship.deleteRule = .CascadeDeleteRule
 			groupRelationship.inverseRelationship = groupSetRelationship
 			groupSetRelationship.inverseRelationship = groupRelationship
-			
+
 			groupRelationship.destinationEntity = entityDescription
 			groupSetRelationship.destinationEntity = entityGroupDescription
 			entityGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
 			entityProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
-			
+
 			groupRelationship.destinationEntity = actionDescription
 			groupSetRelationship.destinationEntity = actionGroupDescription
 			actionGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
-			
+
 			groupRelationship.destinationEntity = bondDescription
 			groupSetRelationship.destinationEntity = bondGroupDescription
 			bondGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
 			bondProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
-			
+
 			// Inverse relationship for Subjects -- B.
 			var actionSubjectSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionSubjectSetRelationship.name = "subjectSet"
@@ -861,7 +805,7 @@ public class Graph: NSObject {
 			actionSubjectSetRelationship.optional = false
 			actionSubjectSetRelationship.deleteRule = .NullifyDeleteRule
 			actionSubjectSetRelationship.destinationEntity = entityDescription
-			
+
 			var actionSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionSubjectRelationship.name = "actionSubjectSet"
 			actionSubjectRelationship.minCount = 0
@@ -869,14 +813,14 @@ public class Graph: NSObject {
 			actionSubjectRelationship.optional = false
 			actionSubjectRelationship.deleteRule = .CascadeDeleteRule
 			actionSubjectRelationship.destinationEntity = actionDescription
-			
+
 			actionSubjectRelationship.inverseRelationship = actionSubjectSetRelationship
 			actionSubjectSetRelationship.inverseRelationship = actionSubjectRelationship
-			
+
 			entityProperties.append(actionSubjectRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(actionSubjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Subjects -- E.
-			
+
 			// Inverse relationship for Objects -- B.
 			var actionObjectSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionObjectSetRelationship.name = "objectSet"
@@ -885,7 +829,7 @@ public class Graph: NSObject {
 			actionObjectSetRelationship.optional = false
 			actionObjectSetRelationship.deleteRule = .NullifyDeleteRule
 			actionObjectSetRelationship.destinationEntity = entityDescription
-			
+
 			var actionObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionObjectRelationship.name = "actionObjectSet"
 			actionObjectRelationship.minCount = 0
@@ -895,11 +839,11 @@ public class Graph: NSObject {
 			actionObjectRelationship.destinationEntity = actionDescription
 			actionObjectRelationship.inverseRelationship = actionObjectSetRelationship
 			actionObjectSetRelationship.inverseRelationship = actionObjectRelationship
-			
+
 			entityProperties.append(actionObjectRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(actionObjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Objects -- E.
-			
+
 			// Inverse relationship for Subjects -- B.
 			var bondSubjectSetRelationship = NSRelationshipDescription()
 			bondSubjectSetRelationship.name = "subject"
@@ -908,7 +852,7 @@ public class Graph: NSObject {
 			bondSubjectSetRelationship.optional = true
 			bondSubjectSetRelationship.deleteRule = .NullifyDeleteRule
 			bondSubjectSetRelationship.destinationEntity = entityDescription
-			
+
 			var bondSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			bondSubjectRelationship.name = "bondSubjectSet"
 			bondSubjectRelationship.minCount = 0
@@ -916,14 +860,14 @@ public class Graph: NSObject {
 			bondSubjectRelationship.optional = false
 			bondSubjectRelationship.deleteRule = .CascadeDeleteRule
 			bondSubjectRelationship.destinationEntity = bondDescription
-			
+
 			bondSubjectRelationship.inverseRelationship = bondSubjectSetRelationship
 			bondSubjectSetRelationship.inverseRelationship = bondSubjectRelationship
-			
+
 			entityProperties.append(bondSubjectRelationship.copy() as! NSRelationshipDescription)
 			bondProperties.append(bondSubjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Subjects -- E.
-			
+
 			// Inverse relationship for Objects -- B.
 			var bondObjectSetRelationship = NSRelationshipDescription()
 			bondObjectSetRelationship.name = "object"
@@ -932,7 +876,7 @@ public class Graph: NSObject {
 			bondObjectSetRelationship.optional = true
 			bondObjectSetRelationship.deleteRule = .NullifyDeleteRule
 			bondObjectSetRelationship.destinationEntity = entityDescription
-			
+
 			var bondObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			bondObjectRelationship.name = "bondObjectSet"
 			bondObjectRelationship.minCount = 0
@@ -942,32 +886,32 @@ public class Graph: NSObject {
 			bondObjectRelationship.destinationEntity = bondDescription
 			bondObjectRelationship.inverseRelationship = bondObjectSetRelationship
 			bondObjectSetRelationship.inverseRelationship = bondObjectRelationship
-			
+
 			entityProperties.append(bondObjectRelationship.copy() as! NSRelationshipDescription)
 			bondProperties.append(bondObjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Objects -- E.
-			
+
 			entityDescription.properties = entityProperties
 			entityGroupDescription.properties = entityGroupProperties
 			entityPropertyDescription.properties = entityPropertyProperties
-			
+
 			actionDescription.properties = actionProperties
 			actionGroupDescription.properties = actionGroupProperties
 			actionPropertyDescription.properties = actionPropertyProperties
-			
+
 			bondDescription.properties = bondProperties
 			bondGroupDescription.properties = bondGroupProperties
 			bondPropertyDescription.properties = bondPropertyProperties
-			
+
 			GraphManagedObjectModel.managedObjectModel?.entities = [
 				entityDescription,
 				entityGroupDescription,
 				entityPropertyDescription,
-				
+
 				actionDescription,
 				actionGroupDescription,
 				actionPropertyDescription,
-				
+
 				bondDescription,
 				bondGroupDescription,
 				bondPropertyDescription
@@ -975,7 +919,7 @@ public class Graph: NSObject {
 		}
 		return GraphManagedObjectModel.managedObjectModel
 	}
-	
+
 	private var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
 		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) {
 			let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent(GraphUtility.storeName)
@@ -988,26 +932,24 @@ public class Graph: NSObject {
 		}
 		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
 	}
-	
+
 	private var applicationDocumentsDirectory: NSURL {
 		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
 		return urls[urls.endIndex - 1] as! NSURL
 	}
-	
+
 	/**
-	* prepareForObservation
-	* Ensures NotificationCenter is watching the callback selector for this Graph.
+		prepareForObservation
+		Ensures NotificationCenter is watching the callback selector for this Graph.
 	*/
 	private func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: privateContext)
 	}
-	
+
 	/**
-	* addPredicateToContextWatcher
-	* Adds the given predicate to the master predicate, which holds all watchers for the Graph.
-	* @param        entityDescription: NSEntityDescription!
-	* @param        predicate: NSPredicate!
+		addPredicateToContextWatcher
+		Adds the given predicate to the master predicate, which holds all watchers for the Graph.
 	*/
 	private func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
 		var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
@@ -1015,13 +957,10 @@ public class Graph: NSObject {
 		let finalPredicate: NSPredicate = NSCompoundPredicate.andPredicateWithSubpredicates(predicates)
 		masterPredicate = nil != masterPredicate ? NSCompoundPredicate.orPredicateWithSubpredicates([masterPredicate!, finalPredicate]) : finalPredicate
 	}
-	
+
 	/**
-	* ensureWatching
-	* A sanity check if the Graph is already watching the specified index and key.
-	* @param        key: String!
-	* @param        index: String!
-	* @return       Bool, true if watching, false otherwise.
+		ensureWatching
+		A sanity check if the Graph is already watching the specified index and key.
 	*/
 	private func ensureWatching(key: String!, index: String!) -> Bool {
 		var watch: Array<String> = nil != watching[index] ? watching[index]! as Array<String> : Array<String>()
@@ -1034,14 +973,10 @@ public class Graph: NSObject {
 		watching[index] = watch
 		return false
 	}
-	
+
 	/**
-	* addWatcher
-	* Adds a watcher to the Graph.
-	* @param        key: String!
-	* @param        value: String!
-	* @param        index: String!
-	* @param        entityDescriptionName: Srting!
+		addWatcher
+		Adds a watcher to the Graph.
 	*/
 	internal func addWatcher(key: String!, value: String!, index: String!, entityDescriptionName: String!, managedObjectClassName: String!) {
 		if true == ensureWatching(value, index: index) {
@@ -1054,25 +989,18 @@ public class Graph: NSObject {
 		addPredicateToContextWatcher(entityDescription, predicate: predicate)
 		prepareForObservation()
 	}
-	
+
 	/**
-	* search
-	* Executes a search through CoreData.
-	* @param        entityDescriptorName: NSString!
-	* @param        predicate: NSPredicate!
-	* @return       Array<AnyObject>!
+		search
+		Executes a search through CoreData.
 	*/
 	private func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject>! {
 		return search(entityDescriptorName, predicate: predicate, sort: nil)
 	}
-	
+
 	/**
-	* search
-	* Executes a search through CoreData.
-	* @param        entityDescriptorName: NSString!
-	* @param        predicate: NSPredicate!
-	* @param		sort: Array<NSSortDescriptor>
-	* @return       Array<AnyObject>!
+		search
+		Executes a search through CoreData.
 	*/
 	private func search(entityDescriptorName: NSString!, predicate: NSPredicate!, sort: Array<NSSortDescriptor>?) -> Array<AnyObject>! {
 		let request: NSFetchRequest = NSFetchRequest()
@@ -1082,10 +1010,10 @@ public class Graph: NSObject {
 		request.fetchBatchSize = batchSize
 		request.fetchOffset = batchOffset
 		request.sortDescriptors = sort
-		
+
 		var error: NSError?
 		var nodes: Array<AnyObject> = Array<AnyObject>()
-		
+
 		var moc: NSManagedObjectContext? = worker
 		if let result: Array<AnyObject> = moc?.executeFetchRequest(request, error: &error) {
 			assert(nil == error, "[GraphKit Error: Fecthing nodes.]")

@@ -14,9 +14,9 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Sort
-* Sort algorithms are addaed to Sort struct.
 */
 
+/**
+    Sort algorithms are addaed to Sort struct.
+*/
 public struct Sort {}

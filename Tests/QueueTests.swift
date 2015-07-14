@@ -65,12 +65,6 @@ class QueueTests: XCTestCase {
 		q.enqueue(1)
 		q.enqueue(2)
 		q.enqueue(3)
-		
-		println(q)
-		for x in q {
-			println(q.dequeue())
-		}
-		println(q)
 	}
 	
 	func testConcat() {

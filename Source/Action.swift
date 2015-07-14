@@ -14,80 +14,119 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Action
-*
-* Represents Action Nodes, which are repetitive relationships between Entity Nodes.
 */
 
 import Foundation
 
+/**
+	Represents Action Nodes, which are repetitive relationships between Entity Nodes.
+*/
 @objc(Action)
 public class Action: NSObject {
 	internal let node: ManagedAction
 
 	/**
-	* init
-	* Initializes Action with a given ManagedAction.
-	* @param        entity: ManagedAction!
+		init
+		Initializes Action with a given ManagedAction.
 	*/
 	internal init(action: ManagedAction!) {
 		node = action
 	}
-	
+
 	/**
-	* init
-	* An initializer for the wrapped Model Object with a given type.
-	* @param        type: String!
+		init
+		An initializer for the wrapped Model Object with a given type.
 	*/
 	public convenience init(type: String) {
 		self.init(action: ManagedAction(type: type))
 	}
-	
+
 	/**
-	* nodeClass
-	* Retrieves the nodeClass for the Model Object that is wrapped internally.
-	* @return       String
+		nodeClass
+		Retrieves the nodeClass for the Model Object that is wrapped internally.
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
 	}
-	
+
 	/**
-	* type
-	* Retrieves the type for the Model Object that is wrapped internally.
-	* @return       String
+		type
+		Retrieves the type for the Model Object that is wrapped internally.
 	*/
 	public var type: String {
 		return node.type
 	}
-	
+
 	/**
-	* id
-	* Retrieves the ID for the Model Object that is wrapped internally.
-	* @return       String? of the ID
+		id
+		Retrieves the ID for the Model Object that is wrapped internally.
 	*/
 	public var id: String {
 		let nodeURL: NSURL = node.objectID.URIRepresentation()
 		let oID: String = nodeURL.lastPathComponent!
 		return nodeClass + type + oID
 	}
-	
+
 	/**
-	* createdDate
-	* Retrieves the date the Model Object was created.
-	* @return       NSDate?
+		createdDate
+		Retrieves the date the Model Object was created.
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
 	}
-	
+
 	/**
-	* properties[ ]
-	* Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
-	* @param        name: String!
-	* get           Returns the property name value.
-	* set           Value for the property name.
+		groups
+		Retrieves the Groups the Action is a part of.
+	*/
+	public var groups: OrderedSet<String> {
+		var groups: OrderedSet<String> = OrderedSet<String>()
+		for group in node.groupSet {
+			let name: String = group.name
+			groups.insert(name)
+		}
+		return groups
+	}
+
+	/**
+		addGroup
+		Adds a Group name to the list of Groups if it does not exist.
+	*/
+	public func addGroup(name: String) -> Bool {
+		return node.addGroup(name)
+	}
+
+	/**
+		hasGroup
+		Checks whether the Node is a part of the Group name passed or not.
+	*/
+	public func hasGroup(name: String) -> Bool {
+		return node.hasGroup(name)
+	}
+
+	/**
+		removeGroup
+		Removes a Group name from the list of Groups if it exists.
+	*/
+	public func removeGroup(name: String) -> Bool {
+		return node.removeGroup(name)
+	}
+
+	/**
+		properties
+		Retrieves the Properties the Node is a part of.
+	*/
+	public var properties: Tree<String, AnyObject> {
+		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
+		for property in node.propertySet {
+			properties.insert(property.name, value: property.value)
+		}
+		return properties
+	}
+
+	/**
+		properties
+		Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
 	*/
 	public subscript(name: String) -> AnyObject? {
 		get {
@@ -97,69 +136,11 @@ public class Action: NSObject {
 			node[name] = value
 		}
 	}
-	
-	/**
-	* addGroup
-	* Adds a Group name to the list of Groups if it does not exist.
-	* @param        name: String!
-	* @return       Bool of the result, true if added, false otherwise.
-	*/
-	public func addGroup(name: String) -> Bool {
-		return node.addGroup(name)
-	}
-	
-	/**
-	* hasGroup
-	* Checks whether the Node is a part of the Group name passed or not.
-	* @param        name: String!
-	* @return       Bool of the result, true if is a part, false otherwise.
-	*/
-	public func hasGroup(name: String) -> Bool {
-		return node.hasGroup(name)
-	}
-	
-	/**
-	* removeGroup
-	* Removes a Group name from the list of Groups if it exists.
-	* @param        name: String!
-	* @return       Bool of the result, true if exists, false otherwise.
-	*/
-	public func removeGroup(name: String!) -> Bool {
-		return node.removeGroup(name)
-	}
-	
-	/**
-	* groups
-	* Retrieves the Groups the Node is a part of.
-	* @return       Tree<String, String>
-	*/
-	public var groups: Tree<String, String> {
-		var groups: Tree<String, String> = Tree<String, String>()
-		for group in node.groupSet {
-			let name: String = group.name
-			groups.insert(name, value: name)
-		}
-		return groups
-	}
-	
-	/**
-	* properties
-	* Retrieves the Properties the Node is a part of.
-	* @return       Tree<String, AnyObject?>
-	*/
-	public var properties: Tree<String, AnyObject> {
-		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
-		for property in node.propertySet {
-			properties.insert(property.name, value: property.value)
-		}
-		return properties
-	}
-	
+
     /**
-    * subjects
-    * Retrieves a MultiTree of Entity Objects. Where the key is the type
-	* of Entity, and the value is the Entity instance.
-    * @return       MultiTree<String, Entity>
+    	subjects
+    	Retrieves a MultiTree of Entity Objects. Where the key is the type
+		of Entity, and the value is the Entity instance.
     */
     public var subjects: MultiTree<String, Entity> {
 		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
@@ -171,10 +152,9 @@ public class Action: NSObject {
     }
 
     /**
-    * objects
-	* Retrieves a MultiTree of Entity Objects. Where the key is the type
-	* of Entity, and the value is the Entity instance.
-    * @return       MultiTree<String, Entity>
+    	objects
+		Retrieves a MultiTree of Entity Objects. Where the key is the type
+		of Entity, and the value is the Entity instance.
     */
     public var objects: MultiTree<String, Entity> {
 		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
@@ -186,33 +166,27 @@ public class Action: NSObject {
     }
 
     /**
-    * addSubject
-    * Adds a Entity Model Object to the Subject Set.
-    * @param        entity: Entity!
-    * @return       Bool of the result, true if added, false otherwise.
+    	addSubject
+    	Adds a Entity Model Object to the Subject Set.
     */
     public func addSubject(entity: Entity!) -> Bool {
         return node.addSubject(entity.node)
 	}
 
     /**
-    * removeSubject
-    * Removes a Entity Model Object from the Subject Set.
-    * @param        entity: Entity!
-    * @return       Bool of the result, true if removed, false otherwise.
+    	removeSubject
+    	Removes a Entity Model Object from the Subject Set.
     */
     public func removeSubject(entity: Entity!) -> Bool {
 		return node.removeSubject(entity.node)
     }
-	
+
 	/**
-	* hasSubject
-	* Checks if a Entity exists in the Subjects Set.
-	* @param        entity: Entity!
-	* @return       Bool of the result, true if exists, false otherwise.
+		hasSubject
+		Checks if a Entity exists in the Subjects Set.
 	*/
 	public func hasSubject(entity: Entity!) -> Bool {
-		for e in subjects.search(entity.type) {
+		for (_, e) in subjects.search(entity.type) {
 			if e!.id == entity.id {
 				return true
 			}
@@ -221,43 +195,37 @@ public class Action: NSObject {
 	}
 
     /**
-    * addObject
-    * Adds a Entity Object to the Object Set.
-    * @param        entity: Entity!
-    * @return       Bool of the result, true if added, false otherwise.
+    	addObject
+    	Adds a Entity Object to the Object Set.
     */
     public func addObject(entity: Entity!) -> Bool {
         return node.addObject(entity.node)
     }
 
     /**
-    * removeObject
-    * Removes a Entity Model Object from the Object Set.
-    * @param        entity: Entity!
-    * @return       Bool of the result, true if removed, false otherwise.
+    	removeObject
+    	Removes a Entity Model Object from the Object Set.
     */
     public func removeObject(entity: Entity!) -> Bool {
 		return node.removeObject(entity.node)
     }
 
 	/**
-	* hasObject
-	* Checks if a Entity exists in the Objects Set.
-	* @param        entity: Entity!
-	* @return       Bool of the result, true if exists, false otherwise.
+		hasObject
+		Checks if a Entity exists in the Objects Set.
 	*/
 	public func hasObject(entity: Entity!) -> Bool {
-		for e in objects.search(entity.type) {
+		for (_, e) in objects.search(entity.type) {
 			if e!.id == entity.id {
 				return true
 			}
 		}
 		return false
 	}
-	
+
     /**
-    * delete
-    * Marks the Model Object to be deleted from the Graph.
+    	delete
+    	Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
 		node.delete()
