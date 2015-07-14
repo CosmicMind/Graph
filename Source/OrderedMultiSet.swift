@@ -140,7 +140,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 
 	/**
 		countOf
-		Conforms to _ProbabilityType protocol.
+		Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(members: Element...) -> Int {
 		return tree.countOf(members)
