@@ -25,7 +25,7 @@ import Foundation
 @objc(Bond)
 public class Bond: NSObject {
 	internal let node: ManagedBond
-	
+
 	/**
 	* init
 	* Initializes Bond with a given ManagedBond.
@@ -33,7 +33,7 @@ public class Bond: NSObject {
 	internal init(bond: ManagedBond!) {
 		node = bond
 	}
-	
+
 	/**
 	* init
 	* An initializer for the wrapped Model Object with a given type.
@@ -41,7 +41,7 @@ public class Bond: NSObject {
 	public convenience init(type: String) {
 		self.init(bond: ManagedBond(type: type))
 	}
-	
+
 	/**
 	* nodeClass
 	* Retrieves the nodeClass for the Model Object that is wrapped internally.
@@ -49,7 +49,7 @@ public class Bond: NSObject {
 	public var nodeClass: String {
 		return node.nodeClass
 	}
-	
+
 	/**
 	* type
 	* Retrieves the type for the Model Object that is wrapped internally.
@@ -57,7 +57,7 @@ public class Bond: NSObject {
 	public var type: String {
 		return node.type
 	}
-	
+
 	/**
 	* id
 	* Retrieves the ID for the Model Object that is wrapped internally.
@@ -67,7 +67,7 @@ public class Bond: NSObject {
 		let oID: String = nodeURL.lastPathComponent!
 		return nodeClass + type + oID
 	}
-	
+
 	/**
 	* createdDate
 	* Retrieves the date the Model Object was created.
@@ -75,7 +75,7 @@ public class Bond: NSObject {
 	public var createdDate: NSDate {
 		return node.createdDate
 	}
-	
+
 	/**
 	* properties[ ]
 	* Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
@@ -88,7 +88,7 @@ public class Bond: NSObject {
 			node[name] = value
 		}
 	}
-	
+
 	/**
 	* addGroup
 	* Adds a Group name to the list of Groups if it does not exist.
@@ -96,7 +96,7 @@ public class Bond: NSObject {
 	public func addGroup(name: String) -> Bool {
 		return node.addGroup(name)
 	}
-	
+
 	/**
 	* hasGroup
 	* Checks whether the Node is a part of the Group name passed or not.
@@ -104,15 +104,15 @@ public class Bond: NSObject {
 	public func hasGroup(name: String) -> Bool {
 		return node.hasGroup(name)
 	}
-	
+
 	/**
 	* removeGroup
 	* Removes a Group name from the list of Groups if it exists.
 	*/
-	public func removeGroup(name: String!) -> Bool {
+	public func removeGroup(name: String) -> Bool {
 		return node.removeGroup(name)
 	}
-	
+
 	/**
 	* groups
 	* Retrieves the Groups the Bond is a part of.
@@ -125,7 +125,7 @@ public class Bond: NSObject {
 		}
 		return groups
 	}
-	
+
 	/**
 	* properties
 	* Retrieves the Properties the Node is a part of.
