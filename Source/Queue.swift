@@ -14,93 +14,92 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Queue
-*
-* A Queue is a first-in, first-out (FIFO) data structure that is excellent for
-* incoming data that may need to be temporarily cached and used in the order it
-* entered. The following Queue implementation is backed by a List data structure.
 */
 
+/**
+	A Queue is a first-in, first-out (FIFO) data structure that is excellent for
+	incoming data that may need to be temporarily cached and used in the order it
+	entered. The following Queue implementation is backed by a List data structure.
+*/
 public class Queue<Element>: Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
-	
+
 	/**
-	* list
-	* Underlying data structure.
+		list
+		Underlying data structure.
 	*/
 	private var list: List<Element>
-	
+
 	/**
-	* count
-	* Total number of items in the Queue.
+		count
+		Total number of items in the Queue.
 	*/
 	public var count: Int {
 		return list.count
 	}
-	
+
 	/**
-	* peek
-	* Get the element at the front of
-	* the Queue, and do not remove it.
+		peek
+		Get the element at the front of
+		the Queue, and do not remove it.
 	*/
 	public var peek: Element? {
 		return list.front
 	}
-	
+
 	/**
-	* isEmpty
-	* A boolean of whether the Queue is empty.
+		isEmpty
+		A boolean of whether the Queue is empty.
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
 	}
-	
+
 	/**
-	* description
-	* Conforms to the Printable Protocol.
+		description
+		Conforms to the Printable Protocol.
 	*/
 	public var description: String {
 		return "Queue" + list.internalDescription
 	}
-	
+
 	/**
-	* init
-	* Constructor
+		init
+		Constructor
 	*/
 	public init() {
 		list = List<Element>()
 	}
-	
+
 	/**
-	* generate
-	* Conforms to the SequenceType Protocol. Returns
-	* the next value in the sequence of nodes.
+		generate
+		Conforms to the SequenceType Protocol. Returns
+		the next value in the sequence of nodes.
 	*/
 	public func generate() -> Generator {
 		return list.generate()
 	}
-	
+
 	/**
-	* enqueue
-	* Insert a new element at the back of the Queue.
+		enqueue
+		Insert a new element at the back of the Queue.
 	*/
 	public func enqueue(element: Element?) {
 		list.insertAtBack(element)
 	}
-	
+
 	/**
-	* dequeue
-	* Get and remove the element at the front
-	* of the Queue.
+		dequeue
+		Get and remove the element at the front
+		of the Queue.
 	*/
 	public func dequeue() -> Element? {
 		return list.removeAtFront()
 	}
-	
+
 	/**
-	* removeAll
-	* Remove all elements from the Queue.
+		removeAll
+		Remove all elements from the Queue.
 	*/
 	public func removeAll() {
 		list.removeAll()

@@ -14,24 +14,22 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* OrderedMultiSet
 */
 
 public class OrderedMultiSet<Element: Comparable>: Probability<Element>, CollectionType, Comparable, Equatable, Printable {
 	internal typealias TreeType = MultiTree<Element, Element>
 	internal typealias SetType = OrderedMultiSet<Element>
 	internal typealias Generator = GeneratorOf<Element>
-	
+
 	/**
-	* tree
+		tree
 	*/
 	internal var tree: TreeType
-	
+
 	/**
-	* description
-	* Conforms to the Printable Protocol. Outputs the
-	* data in the OrderedMultiSet in a readable format.
+		description
+		Conforms to the Printable Protocol. Outputs the
+		data in the OrderedMultiSet in a readable format.
 	*/
 	public var description: String {
 		var output: String = "OrderedMultiSet("
@@ -43,81 +41,81 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		}
 		return output + ")"
 	}
-	
+
 	/**
-	* first
-	* Get the first node value in the tree, this is
-	* the first node based on the order of keys where
-	* k1 <= k2 <= K3 ... <= Kn
+		first
+		Get the first node value in the tree, this is
+		the first node based on the order of keys where
+		k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var first: Element? {
 		return tree.first
 	}
-	
+
 	/**
-	* last
-	* Get the last node value in the tree, this is
-	* the last node based on the order of keys where
-	* k1 <= k2 <= K3 ... <= Kn
+		last
+		Get the last node value in the tree, this is
+		the last node based on the order of keys where
+		k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var last: Element? {
 		return tree.last
 	}
-	
+
 	/**
-	* isEmpty
-	* A boolean of whether the RedBlackTree is empty.
+		isEmpty
+		A boolean of whether the RedBlackTree is empty.
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
 	}
-	
+
 	/**
-	* startIndex
-	* Conforms to the CollectionType Protocol.
+		startIndex
+		Conforms to the CollectionType Protocol.
 	*/
 	public var startIndex: Int {
 		return 0
 	}
-	
+
 	/**
-	* endIndex
-	* Conforms to the CollectionType Protocol.
+		endIndex
+		Conforms to the CollectionType Protocol.
 	*/
 	public var endIndex: Int {
 		return count
 	}
-	
+
 	/**
-	* init
-	* Constructor
+		init
+		Constructor
 	*/
 	public override init() {
 		tree = TreeType()
 	}
-	
+
 	/**
-	* init
-	* Constructor
+		init
+		Constructor
 	*/
 	public convenience init(members: Element...) {
 		self.init(members: members)
 	}
-	
+
 	/**
-	* init
-	* Constructor
+		init
+		Constructor
 	*/
 	public convenience init(members: Array<Element>) {
 		self.init()
 		insert(members)
 	}
-	
+
 	/**
-	* generate
-	* Conforms to the SequenceType Protocol. Returns
-	* the next value in the sequence of nodes using
-	* index values [0...n-1].
+		generate
+		Conforms to the SequenceType Protocol. Returns
+		the next value in the sequence of nodes using
+		index values [0...n-1].
 	*/
 	public func generate() -> Generator {
 		var index = startIndex
@@ -128,45 +126,45 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 			return nil
 		}
 	}
-	
+
 	/**
-	* operator [0...count - 1]
-	* Allows array like access of the index.
-	* Items are kept in order, so when iterating
-	* through the items, they are returned in their
-	* ordered form.
+		operator [0...count - 1]
+		Allows array like access of the index.
+		Items are kept in order, so when iterating
+		through the items, they are returned in their
+		ordered form.
 	*/
 	public subscript(index: Int) -> Element {
 		return tree[index].value!
 	}
-	
+
 	/**
-	* countOf
-	* Conforms to _ProbabilityType protocol.
+		countOf
+		Conforms to _ProbabilityType protocol.
 	*/
 	public override func countOf(members: Element...) -> Int {
 		return tree.countOf(members)
 	}
-	
+
 	/**
-	* countOf
-	* Conforms to ProbabilityType protocol.
+		countOf
+		Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(members: Array<Element>) -> Int {
 		return tree.countOf(members)
 	}
-	
+
 	/**
-	* insert
-	* Inserts new members into the OrderedMultiSet.
+		insert
+		Inserts new members into the OrderedMultiSet.
 	*/
 	public func insert(members: Element...) {
 		insert(members)
 	}
-	
+
 	/**
-	* insert
-	* Inserts new members into the OrderedMultiSet.
+		insert
+		Inserts new members into the OrderedMultiSet.
 	*/
 	public func insert(members: Array<Element>) {
 		for x in members {
@@ -175,18 +173,18 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 			}
 		}
 	}
-	
+
 	/**
-	* remove
-	* Removes members from the OrderedMultiSet.
+		remove
+		Removes members from the OrderedMultiSet.
 	*/
 	public func remove(members: Element...) {
 		remove(members)
 	}
-	
+
 	/**
-	* remove
-	* Removes members from the OrderedMultiSet.
+		remove
+		Removes members from the OrderedMultiSet.
 	*/
 	public func remove(members: Array<Element>) {
 		for x in members {
@@ -195,43 +193,43 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 			}
 		}
 	}
-	
+
 	/**
-	* removeAll
-	* Remove all nodes from the tree.
+		removeAll
+		Remove all nodes from the tree.
 	*/
 	public func removeAll() {
 		tree.removeAll()
 		count = tree.count
 	}
-	
+
 	/**
-	* isDisjointWith
-	* Returns true if no members in the set are in a finite sequence of Sets.
+		isDisjointWith
+		Returns true if no members in the set are in a finite sequence of Sets.
 	*/
 	public func isDisjointWith(sets: SetType...) -> Bool {
 		return isDisjointWith(sets)
 	}
-	
+
 	/**
-	* isDisjointWith
-	* Returns true if no members in the set are in a finite sequence of Sets.
+		isDisjointWith
+		Returns true if no members in the set are in a finite sequence of Sets.
 	*/
 	public func isDisjointWith(sets: Array<SetType>) -> Bool {
 		return intersect(sets).isEmpty
 	}
-	
+
 	/**
-	* subtract
-	* Return a new set with elements in this set that do not occur in a finite sequence of Sets.
+		subtract
+		Return a new set with elements in this set that do not occur in a finite sequence of Sets.
 	*/
 	public func subtract(sets: SetType...) -> SetType {
 		return subtract(sets)
 	}
-	
+
 	/**
-	* subtract
-	* Return a new set with elements in this set that do not occur in a finite sequence of Sets.
+		subtract
+		Return a new set with elements in this set that do not occur in a finite sequence of Sets.
 	*/
 	public func subtract(sets: Array<SetType>) -> SetType {
 		let s: SetType = SetType()
@@ -255,18 +253,18 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		}
 		return s
 	}
-	
+
 	/**
-	* subtractInPlace
-	* Remove all members in the set that occur in a finite sequence of Sets.
+		subtractInPlace
+		Remove all members in the set that occur in a finite sequence of Sets.
 	*/
 	public func subtractInPlace(sets: SetType...) {
 		return subtractInPlace(sets)
 	}
-	
+
 	/**
-	* subtractInPlace
-	* Remove all members in the set that occur in a finite sequence of Sets.
+		subtractInPlace
+		Remove all members in the set that occur in a finite sequence of Sets.
 	*/
 	public func subtractInPlace(sets: Array<SetType>) {
 		let s: SetType = subtract(sets)
@@ -275,18 +273,18 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 			insert(x)
 		}
 	}
-	
+
 	/**
-	* intersect
-	* Return a new set with elements common to this set and a finite sequence of Sets.
+		intersect
+		Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
 	public func intersect(sets: SetType...) -> SetType {
 		return intersect(sets)
 	}
-	
+
 	/**
-	* intersect
-	* Return a new set with elements common to this set and a finite sequence of Sets.
+		intersect
+		Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
 	public func intersect(sets: Array<SetType>) -> SetType {
 		let s: SetType = SetType()
@@ -318,18 +316,18 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		}
 		return s
 	}
-	
+
 	/**
-	* intersectInPlace
-	* Insert elements of a finite sequence of Sets.
+		intersectInPlace
+		Insert elements of a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: SetType...) {
 		intersectInPlace(sets)
 	}
-	
+
 	/**
-	* intersectInPlace
-	* Remove any members of this set that aren't also in a finite sequence of Sets.
+		intersectInPlace
+		Remove any members of this set that aren't also in a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: Array<SetType>) {
 		let s: SetType = intersect(sets)
@@ -338,18 +336,18 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 			insert(x)
 		}
 	}
-	
+
 	/**
-	* union
-	* Return a new Set with items in both this set and a finite sequence of Sets.
+		union
+		Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
 	public func union(sets: SetType...) -> SetType {
 		return union(sets)
 	}
-	
+
 	/**
-	* union
-	* Return a new Set with items in both this set and a finite sequence of Sets.
+		union
+		Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
 	public func union(sets: Array<SetType>) -> SetType {
 		let s: SetType = SetType()
@@ -363,18 +361,18 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		}
 		return s
 	}
-	
+
 	/**
-	* unionInPlace
-	* Return a new Set with items in both this set and a finite sequence of Sets.
+		unionInPlace
+		Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
 	public func unionInPlace(sets: SetType...) {
 		unionInPlace(sets)
 	}
-	
+
 	/**
-	* unionInPlace
-	* Insert elements of a finite sequence of Sets.
+		unionInPlace
+		Insert elements of a finite sequence of Sets.
 	*/
 	public func unionInPlace(sets: Array<SetType>) {
 		let s: SetType = union(sets)
@@ -383,10 +381,10 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 			insert(x)
 		}
 	}
-	
+
 	/**
-	* isSubsetOf
-	* Returns true if the set is a subset of a finite sequence as a Set.
+		isSubsetOf
+		Returns true if the set is a subset of a finite sequence as a Set.
 	*/
 	public func isSubsetOf(set: SetType) -> Bool {
 		if count > set.count {
@@ -394,10 +392,10 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		}
 		return count == intersect(set).count
 	}
-	
+
 	/**
-	* isSupersetOf
-	* Returns true if the set is a superset of a finite sequence as a Set.
+		isSupersetOf
+		Returns true if the set is a superset of a finite sequence as a Set.
 	*/
 	public func isSupersetOf(set: SetType) -> Bool {
 		if count < set.count {
@@ -405,18 +403,18 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		}
 		return set.count == intersect(set).count
 	}
-	
+
 	/**
-	* isStrictSubsetOf
-	* Returns true if the set is a subset of a finite sequence as a Set but not equal.
+		isStrictSubsetOf
+		Returns true if the set is a subset of a finite sequence as a Set but not equal.
 	*/
 	public func isStrictSubsetOf(set: SetType) -> Bool {
 		return count < set.count && isSubsetOf(set)
 	}
-	
+
 	/**
-	* isStrictSupersetOf
-	* Returns true if the set is a superset of a finite sequence as a Set but not equal.
+		isStrictSupersetOf
+		Returns true if the set is a superset of a finite sequence as a Set but not equal.
 	*/
 	public func isStrictSupersetOf(set: SetType) -> Bool {
 		return count > set.count && isSupersetOf(set)

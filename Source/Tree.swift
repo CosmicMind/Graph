@@ -14,50 +14,49 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Tree
-*
-* A powerful data structure that is backed by a RedBlackTree using an order
-* statistic. This allows for manipulation and access of the data as if an array,
-* while maintaining log(n) performance on all operations. All items in a Tree
-* are uniquely keyed.
 */
 
+/**
+	A powerful data structure that is backed by a RedBlackTree using an order
+	statistic. This allows for manipulation and access of the data as if an array,
+	while maintaining log(n) performance on all operations. All items in a Tree
+	are uniquely keyed.
+*/
 public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	internal typealias TreeType = Tree<Key, Value>
-	
+
 	/**
-	* description
-	* Conforms to the Printable Protocol. Outputs the
-	* data in the Tree in a readable format.
+		description
+		Conforms to the Printable Protocol. Outputs the
+		data in the Tree in a readable format.
 	*/
 	public override var description: String {
 		return "Tree" + internalDescription
 	}
-	
+
 	/**
-	* init
-	* Constructor
+		init
+		Constructor
 	*/
 	public override init() {
 		super.init(unique: true)
 	}
 
 	/**
-	* search
-	* Accepts a paramter list of keys and returns a subset
-	* Tree with the indicated values if
-	* they exist.
+		search
+		Accepts a paramter list of keys and returns a subset
+		Tree with the indicated values if
+		they exist.
 	*/
 	public func search(keys: Key...) -> TreeType {
 		return search(keys)
 	}
-	
+
 	/**
-	* search
-	* Accepts an array of keys and returns a subset
-	* Tree with the indicated values if
-	* they exist.
+		search
+		Accepts an array of keys and returns a subset
+		Tree with the indicated values if
+		they exist.
 	*/
 	public func search(array: Array<Key>) -> TreeType {
 		var tree: TreeType = TreeType()
@@ -66,11 +65,11 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 		}
 		return tree
 	}
-	
+
 	/**
-	* subtree
-	* Traverses the Tree and looking for a key value.
-	* This is used for internal search.
+		subtree
+		Traverses the Tree and looking for a key value.
+		This is used for internal search.
 	*/
 	internal func subtree(key: Key, node: NodeType, inout tree: TreeType) {
 		if sentinel !== node {

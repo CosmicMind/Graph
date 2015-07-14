@@ -14,12 +14,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* ManagedAction
-*
-* Represents an Action Model Object in the persistent layer.
 */
-
 
 import CoreData
 
@@ -41,10 +36,10 @@ internal class ManagedAction: NSManagedObject {
 		}
 		return context
 	}
-	
+
 	/**
-	* init
-	* Initializes the Model Object with e a given type.
+		init
+		Initializes the Model Object with e a given type.
 	*/
 	convenience internal init(type: String!) {
 		let g: Graph = Graph()
@@ -61,8 +56,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
 	/**
-    * properties[ ]
-    * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
+		properties
+		Allows for Dictionary style coding, which maps to the internal properties Dictionary.
     */
 	internal subscript(name: String) -> AnyObject? {
 		get {
@@ -104,8 +99,8 @@ internal class ManagedAction: NSManagedObject {
 	}
 
     /**
-    * addGroup
-    * Adds a Group name to the list of Groups if it does not exist.
+		addGroup
+		Adds a Group name to the list of Groups if it does not exist.
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
@@ -117,8 +112,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * hasGroup
-    * Checks whether the Node is a part of the Group name passed or not.
+		hasGroup
+		Checks whether the Node is a part of the Group name passed or not.
     */
     internal func hasGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -131,8 +126,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * removeGroup
-    * Removes a Group name from the list of Groups if it exists.
+		removeGroup
+		Removes a Group name from the list of Groups if it exists.
     */
     internal func removeGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -148,8 +143,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * addSubject
-    * Adds a ManagedEntity Model Object to the Subject Set.
+		addSubject
+		Adds a ManagedEntity Model Object to the Subject Set.
     */
     internal func addSubject(entity: ManagedEntity!) -> Bool {
         let count: Int = subjectSet.count
@@ -158,8 +153,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * removeSubject
-    * Removes a ManagedEntity Model Object from the Subject Set.
+		removeSubject
+		Removes a ManagedEntity Model Object from the Subject Set.
     */
     internal func removeSubject(entity: ManagedEntity!) -> Bool {
         let count: Int = subjectSet.count
@@ -168,8 +163,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * addObject
-    * Adds a ManagedEntity Model Object to the Object Set.
+		addObject
+		Adds a ManagedEntity Model Object to the Object Set.
     */
     internal func addObject(entity: ManagedEntity!) -> Bool {
         let count: Int = objectSet.count
@@ -178,18 +173,18 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * removeObject
-    * Removes a ManagedEntity Model Object from the Object Set.
+		removeObject
+		Removes a ManagedEntity Model Object from the Object Set.
     */
     internal func removeObject(entity: ManagedEntity!) -> Bool {
         let count: Int = objectSet.count
 		mutableSetValueForKey("objectSet").removeObject(entity)
 		return count != objectSet.count
     }
-	
+
 	/**
-	* delete
-	* Marks the Model Object to be deleted from the Graph.
+		delete
+		Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
 		worker?.deleteObject(self)
@@ -197,37 +192,37 @@ internal class ManagedAction: NSManagedObject {
 }
 
 extension ManagedAction {
-	
+
 	/**
-	* addPropertySetObject
-	* Adds the Property to the propertySet for the Action.
+		addPropertySetObject
+		Adds the Property to the propertySet for the Action.
 	*/
 	func addPropertySetObject(value: ActionProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.addObject(value)
 	}
-	
+
 	/**
-	* removePropertySetObject
-	* Removes the Property to the propertySet for the Action.
+		removePropertySetObject
+		Removes the Property to the propertySet for the Action.
 	*/
 	func removePropertySetObject(value: ActionProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.removeObject(value)
 	}
-	
+
 	/**
-	* addGroupSetObject
-	* Adds the Group to the groupSet for the Action.
+		addGroupSetObject
+		Adds the Group to the groupSet for the Action.
 	*/
 	func addGroupSetObject(value: ActionGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.addObject(value)
 	}
-	
+
 	/**
-	* removeGroupSetObject
-	* Removes the Group to the groupSet for the Action.
+		removeGroupSetObject
+		Removes the Group to the groupSet for the Action.
 	*/
 	func removeGroupSetObject(value: ActionGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet

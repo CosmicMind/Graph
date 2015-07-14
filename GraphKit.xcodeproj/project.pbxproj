@@ -179,6 +179,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		65C794911B54ADA8000FB68F /* parser.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = parser.js; sourceTree = "<group>"; };
 		961242D81B2B36B800CD47E0 /* RedBlackTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackNode.swift; sourceTree = "<group>"; };
 		961242DE1B2B36D300CD47E0 /* InsertionSort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertionSort.swift; sourceTree = "<group>"; };
@@ -270,6 +271,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		65C794901B54ADA8000FB68F /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				65C794911B54ADA8000FB68F /* parser.js */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		961242D61B2B369C00CD47E0 /* Tree */ = {
 			isa = PBXGroup;
 			children = (
@@ -418,6 +427,7 @@
 		96DBB4A61A9D131D0087569F = {
 			isa = PBXGroup;
 			children = (
+				65C794901B54ADA8000FB68F /* Util */,
 				96C031B61AD72FD300EE4C63 /* Source */,
 				96C031D51AD72FE100EE4C63 /* Tests */,
 				96DBB4B11A9D131D0087569F /* Products */,

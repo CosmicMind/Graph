@@ -14,42 +14,40 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* List
 */
 
 public class List<Element>: Printable, SequenceType {
 	private typealias NodeType = ListNode<Element>
 	internal typealias Generator = GeneratorOf<Element?>
-	
+
 	/**
-	* head
-	* First node in the list.
+		head
+		First node in the list.
 	*/
 	private var head: NodeType?
-	
+
 	/**
-	* tail
-	* Last node in list.
+		tail
+		Last node in list.
 	*/
 	private var tail: NodeType?
-	
+
 	/**
-	* current
-	* Current cursor position when iterating.
+		current
+		Current cursor position when iterating.
 	*/
 	private var current: NodeType?
-	
+
 	/**
-	* count
-	* Number of nodes in List.
+		count
+		Number of nodes in List.
 	*/
 	public private(set) var count: Int
-	
+
 	/**
-	* internalDescription
-	* Returns a String with only the node data for all
-	* nodes in the List.
+		internalDescription
+		Returns a String with only the node data for all
+		nodes in the List.
 	*/
 	internal var internalDescription: String {
 		var output: String = "("
@@ -65,101 +63,101 @@ public class List<Element>: Printable, SequenceType {
 		output += ")"
 		return output
 	}
-	
+
 	/**
-	* description
-	* Conforms to Printable Protocol.
+		description
+		Conforms to Printable Protocol.
 	*/
 	public var description: String {
 		return "List" + internalDescription
 	}
-	
+
 	/**
-	* front
-	* Retrieves the data at first node of the List.
+		front
+		Retrieves the data at first node of the List.
 	*/
 	public var front: Element? {
 		return head?.element
 	}
-	
+
 	/**
-	* back
-	* Retrieves the element at the back node of teh List.
+		back
+		Retrieves the element at the back node of teh List.
 	*/
 	public var back: Element? {
 		return tail?.element
 	}
-	
+
 	/**
-	* cursor
-	* Retrieves the element at the current iterator position
-	* in the List.
+		cursor
+		Retrieves the element at the current iterator position
+		in the List.
 	*/
 	public var cursor: Element? {
 		return current?.element
 	}
-	
+
 	/**
-	* next
-	* Retrieves the element at the poistion after the
-	* current cursor poistion. Also moves the cursor
-	* to that node.
+		next
+		Retrieves the element at the poistion after the
+		current cursor poistion. Also moves the cursor
+		to that node.
 	*/
 	public var next: Element? {
 		current = current?.next
 		return current?.element
 	}
-	
+
 	/**
-	* previous
-	* Retrieves the element at the poistion before the
-	* current cursor poistion. Also moves the cursor
-	* to that node.
+		previous
+		Retrieves the element at the poistion before the
+		current cursor poistion. Also moves the cursor
+		to that node.
 	*/
 	public var previous: Element? {
 		current = current?.previous
 		return current?.element
 	}
-	
+
 	/**
-	* isEmpty
-	* A boolean of whether the List is empty.
+		isEmpty
+		A boolean of whether the List is empty.
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
 	}
-	
+
 	/**
-	* cursorAtBack
-	* A boolean of whether the cursor has reached
-	* the back of the List.
+		cursorAtBack
+		A boolean of whether the cursor has reached
+		the back of the List.
 	*/
 	public var cursorAtBack: Bool {
 		return nil == current
 	}
-	
+
 	/**
-	* cursorAtFront
-	* A boolean of whether the cursor has reached
-	* the front of the List.
+		cursorAtFront
+		A boolean of whether the cursor has reached
+		the front of the List.
 	*/
 	public var cursorAtFront: Bool {
 		return nil == current
 	}
-	
+
 	/**
-	* init
-	* Constructor.
+		init
+		Constructor.
 	*/
 	public init() {
 		count = 0
 		reset()
 	}
-	
+
 	/**
-	* generate
-	* Conforms to the SequenceType Protocol. Returns
-	* the next value in the sequence of nodes.
+		generate
+		Conforms to the SequenceType Protocol. Returns
+		the next value in the sequence of nodes.
 	*/
 	public func generate() -> Generator {
 		cursorToFront()
@@ -172,21 +170,21 @@ public class List<Element>: Printable, SequenceType {
 			return nil
 		}
 	}
-	
+
 	/**
-	* removeAll
-	* Removes all nodes from the List.
+		removeAll
+		Removes all nodes from the List.
 	*/
 	public func removeAll() {
 		while !isEmpty {
 			removeAtFront()
 		}
 	}
-	
+
 	/**
-	* insertAtFront
-	* Insert a new element at the front
-	* of the List.
+		insertAtFront
+		Insert a new element at the front
+		of the List.
 	*/
 	public func insertAtFront(element: Element?) {
 		var z: NodeType
@@ -204,11 +202,11 @@ public class List<Element>: Printable, SequenceType {
 			current = head!.next
 		}
 	}
-	
+
 	/**
-	* removeAtFront
-	* Remove the element at the front of the List
-	* and return the element at the poistion.
+		removeAtFront
+		Remove the element at the front of the List
+		and return the element at the poistion.
 	*/
 	public func removeAtFront() -> Element? {
 		if 0 == count {
@@ -222,11 +220,11 @@ public class List<Element>: Printable, SequenceType {
 		}
 		return element
 	}
-	
+
 	/**
-	* insertAtBack
-	* Insert a new element at the back
-	* of the List.
+		insertAtBack
+		Insert a new element at the back
+		of the List.
 	*/
 	public func insertAtBack(element: Element?) {
 		var z: NodeType
@@ -244,11 +242,11 @@ public class List<Element>: Printable, SequenceType {
 			current = tail!.previous
 		}
 	}
-	
+
 	/**
-	* removeAtBack
-	* Remove the element at the back of the List
-	* and return the element at the poistion.
+		removeAtBack
+		Remove the element at the back of the List
+		and return the element at the poistion.
 	*/
 	public func removeAtBack() -> Element? {
 		if 0 == count {
@@ -262,26 +260,26 @@ public class List<Element>: Printable, SequenceType {
 		}
 		return element
 	}
-	
+
 	/**
-	* cursorToFront
-	* Move the cursor to the front of the List.
+		cursorToFront
+		Move the cursor to the front of the List.
 	*/
 	public func cursorToFront() {
 		current = head
 	}
-	
+
 	/**
-	* cursorToBack
-	* Move the cursor to the back of the List.
+		cursorToBack
+		Move the cursor to the back of the List.
 	*/
 	public func cursorToBack() {
 		current = tail
 	}
-	
+
 	/**
-	* insertBeforeCursor
-	* Insert a new element before the cursor position.
+		insertBeforeCursor
+		Insert a new element before the cursor position.
 	*/
 	public func insertBeforeCursor(element: Element?) {
 		if nil == current || head === current {
@@ -293,10 +291,10 @@ public class List<Element>: Printable, SequenceType {
 			++count
 		}
 	}
-	
+
 	/**
-	* insertAfterCursor
-	* Insert a new element after the cursor position.
+		insertAfterCursor
+		Insert a new element after the cursor position.
 	*/
 	public func insertAfterCursor(element: Element?) {
 		if nil == current || tail === current {
@@ -308,10 +306,10 @@ public class List<Element>: Printable, SequenceType {
 			++count
 		}
 	}
-	
+
 	/**
-	* removeAtCursor
-	* Removes the element at the cursor position.
+		removeAtCursor
+		Removes the element at the cursor position.
 	*/
 	public func removeAtCursor() -> Element? {
 		if 1 >= count {
@@ -333,10 +331,10 @@ public class List<Element>: Printable, SequenceType {
 			return element
 		}
 	}
-	
+
 	/**
-	* reset
-	* Reinitializes pointers to sentinel value.
+		reset
+		Reinitializes pointers to sentinel value.
 	*/
 	private func reset() {
 		head = nil

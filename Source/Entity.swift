@@ -14,108 +14,70 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Entity
-*
-* Represents Entity Nodes, which are person, places, or things -- nouns.
 */
 
 import Foundation
 
+/**
+	Represents Entity Nodes, which are person, places, or things -- nouns.
+*/
 @objc(Entity)
 public class Entity: NSObject {
 	internal let node: ManagedEntity
-	
+
 	/**
-	* init
-	* Initializes Entity with a given ManagedEntity.
+		init
+		Initializes Entity with a given ManagedEntity.
 	*/
 	internal init(entity: ManagedEntity!) {
 		node = entity
 	}
-	
+
 	/**
-	* init
-	* An initializer for the wrapped Model Object with a given type.
+		init
+		An initializer for the wrapped Model Object with a given type.
 	*/
 	public convenience init(type: String) {
 		self.init(entity: ManagedEntity(type: type))
 	}
-	
+
 	/**
-	* nodeClass
-	* Retrieves the nodeClass for the Model Object that is wrapped internally.
+		nodeClass
+		Retrieves the nodeClass for the Model Object that is wrapped internally.
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
 	}
-	
+
 	/**
-	* type
-	* Retrieves the type for the Model Object that is wrapped internally.
+		type
+		Retrieves the type for the Model Object that is wrapped internally.
 	*/
 	public var type: String {
 		return node.type
 	}
-	
+
 	/**
-	* id
-	* Retrieves the ID for the Model Object that is wrapped internally.
+		id
+		Retrieves the ID for the Model Object that is wrapped internally.
 	*/
 	public var id: String {
 		let nodeURL: NSURL = node.objectID.URIRepresentation()
 		let oID: String = nodeURL.lastPathComponent!
 		return nodeClass + type + oID
 	}
-	
+
 	/**
-	* createdDate
-	* Retrieves the date the Model Object was created.
+		createdDate
+		Retrieves the date the Model Object was created.
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
 	}
-	
+
 	/**
-	* properties[ ]
-	* Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
-	*/
-	public subscript(name: String) -> AnyObject? {
-		get {
-			return node[name]
-		}
-		set(value) {
-			node[name] = value
-		}
-	}
-	
-	/**
-	* addGroup
-	* Adds a Group name to the list of Groups if it does not exist.
-	*/
-	public func addGroup(name: String) -> Bool {
-		return node.addGroup(name)
-	}
-	
-	/**
-	* hasGroup
-	* Checks whether the Node is a part of the Group name passed or not.
-	*/
-	public func hasGroup(name: String) -> Bool {
-		return node.hasGroup(name)
-	}
-	
-	/**
-	* removeGroup
-	* Removes a Group name from the list of Groups if it exists.
-	*/
-	public func removeGroup(name: String!) -> Bool {
-		return node.removeGroup(name)
-	}
-	
-	/**
-	* groups
-	* Retrieves the Groups the Entity is a part of.
+		groups
+		Retrieves the Groups the Entity is a part of.
 	*/
 	public var groups: OrderedSet<String> {
 		var groups: OrderedSet<String> = OrderedSet<String>()
@@ -125,10 +87,47 @@ public class Entity: NSObject {
 		}
 		return groups
 	}
-	
+
 	/**
-	* properties
-	* Retrieves the Properties the Node is a part of.
+		addGroup
+		Adds a Group name to the list of Groups if it does not exist.
+	*/
+	public func addGroup(name: String) -> Bool {
+		return node.addGroup(name)
+	}
+
+	/**
+		hasGroup
+		Checks whether the Node is a part of the Group name passed or not.
+	*/
+	public func hasGroup(name: String) -> Bool {
+		return node.hasGroup(name)
+	}
+
+	/**
+		removeGroup
+		Removes a Group name from the list of Groups if it exists.
+	*/
+	public func removeGroup(name: String) -> Bool {
+		return node.removeGroup(name)
+	}
+
+	/**
+		properties
+		Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
+	*/
+	public subscript(name: String) -> AnyObject? {
+		get {
+			return node[name]
+		}
+		set(value) {
+			node[name] = value
+		}
+	}
+
+	/**
+		properties
+		Retrieves the Properties the Node is a part of.
 	*/
 	public var properties: Tree<String, AnyObject> {
 		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
@@ -137,10 +136,10 @@ public class Entity: NSObject {
 		}
 		return properties
 	}
-	
+
 	/**
-    * actions
-    * Retrieves a MultiTree of Action objects. Where the key
+    	actions
+    	Retrieves a MultiTree of Action objects. Where the key
 	* is the type of Action and the value is the Action instance.
     */
     public var actions: MultiTree<String, Action> {
@@ -148,11 +147,11 @@ public class Entity: NSObject {
     }
 
     /**
-    * actionsWhenSubject
-	* Retrieves a MultiTree of Action objects. Where the key
-	* is the type of Action and the value is the Action instance.
-	* The Actions included are those when the Entity is the subject of
-	* the Action.
+    	actionsWhenSubject
+		Retrieves a MultiTree of Action objects. Where the key
+		is the type of Action and the value is the Action instance.
+		The Actions included are those when the Entity is the subject of
+		the Action.
     */
     public var actionsWhenSubject: MultiTree<String, Action> {
 		let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
@@ -164,11 +163,11 @@ public class Entity: NSObject {
     }
 
     /**
-    * actionsWhenObject
-	* Retrieves a MultiTree of Action objects. Where the key
-	* is the type of Action and the value is the Action instance.
-	* The Actions included are those when the Entity is the object of
-	* the Action.
+    	actionsWhenObject
+		Retrieves a MultiTree of Action objects. Where the key
+		is the type of Action and the value is the Action instance.
+		The Actions included are those when the Entity is the object of
+		the Action.
 	*/
     public var actionsWhenObject: MultiTree<String, Action> {
         let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
@@ -180,20 +179,20 @@ public class Entity: NSObject {
     }
 
     /**
-    * bonds
-	* Retrieves a MultiTree of Bond objects. Where the key
-	* is the type of Bond and the value is the Bond instance.
+    	bonds
+		Retrieves a MultiTree of Bond objects. Where the key
+		is the type of Bond and the value is the Bond instance.
 	*/
     public var bonds: MultiTree<String, Bond> {
         return bondsWhenSubject + bondsWhenObject
     }
 
     /**
-    * bondsWhenSubject
-	* Retrieves a MultiTree of Bond objects. Where the key
-	* is the type of Bond and the value is the Bond instance.
-	* The Bonds included are those when the Entity is the subject of
-	* the Bond.
+    	bondsWhenSubject
+		Retrieves a MultiTree of Bond objects. Where the key
+		is the type of Bond and the value is the Bond instance.
+		The Bonds included are those when the Entity is the subject of
+		the Bond.
 	*/
     public var bondsWhenSubject: MultiTree<String, Bond> {
 		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
@@ -205,11 +204,11 @@ public class Entity: NSObject {
     }
 
     /**
-    * bondsWhenObject
-	* Retrieves a MultiTree of Bond objects. Where the key
-	* is the type of Bond and the value is the Bond instance.
-	* The Bonds included are those when the Entity is the object of
-	* the Bond.
+    	bondsWhenObject
+		Retrieves a MultiTree of Bond objects. Where the key
+		is the type of Bond and the value is the Bond instance.
+		The Bonds included are those when the Entity is the object of
+		the Bond.
 	*/
     public var bondsWhenObject: MultiTree<String, Bond> {
 		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
@@ -221,8 +220,8 @@ public class Entity: NSObject {
     }
 
     /**
-    * delete
-    * Marks the Model Object to be deleted from the Graph.
+    	delete
+    	Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
 		node.delete()

@@ -14,16 +14,12 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Sort.insertion
-*
-* Insertion Sort algorithm.
 */
 
 extension Sort {
 	/**
-	* An implementation of the popular Insertion Sort algorithm. 
-	* An inplace sort that sorts small sized Arrays well in O(n^2) time.
+		An implementation of the popular Insertion Sort algorithm.
+		An inplace sort that sorts small sized Arrays well in O(n^2) time.
 	*/
 	static public func insertion<Element: Comparable>(inout elements: Array<Element>) {
 		var i: Int

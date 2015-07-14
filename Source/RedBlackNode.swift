@@ -14,80 +14,78 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* RedBlackNode
-*
-* Used internally by the RedBlackTree data structure to store pointers to nodes and satellite
-* data.
 */
 
+/**
+	Used internally by the RedBlackTree data structure to store pointers to nodes and satellite data.
+*/
 internal class RedBlackNode<Key: Comparable, Value>: Comparable, Equatable, Printable {
 	internal typealias NodeType = RedBlackNode<Key, Value>
-	
+
 	/**
-	* parent
-	* A reference to the parent node of a given node.
+		parent
+		A reference to the parent node of a given node.
 	*/
 	internal var parent: NodeType!
-	
+
 	/**
-	* left
-	* A reference to the left child node of a given node.
+		left
+		A reference to the left child node of a given node.
 	*/
 	internal var left: NodeType!
-	
+
 	/**
-	* right
-	* A reference to the right child node of a given node.
+		right
+		A reference to the right child node of a given node.
 	*/
 	internal var right: NodeType!
-	
+
 	/**
-	* red
-	* A boolean indicating whether te node is marked red or black.
+		red
+		A boolean indicating whether te node is marked red or black.
 	*/
 	internal var red: Bool
-	
+
 	/**
-	* order
-	* Used to track the order statistic of a node, which maintains
-	* key order in the tree.
+		order
+		Used to track the order statistic of a node, which maintains
+		key order in the tree.
 	*/
 	internal var order: Int
-	
+
 	/**
-	* key
-	* A reference to the key value of the node, which is what organizes
-	* a node in a given tree.
+		key
+		A reference to the key value of the node, which is what organizes
+		a node in a given tree.
 	*/
 	internal var key: Key! = nil
-	
+
 	/**
-	* value
-	* Satellite data stored in the node.
+		value
+		Satellite data stored in the node.
 	*/
 	internal var value: Value?
-	
+
 	/**
-	* description
-	* Conforms to the Printable Protocol.
+		description
+		Conforms to the Printable Protocol.
 	*/
 	internal var description: String {
 		return "(\(key): \(value))"
 	}
-	
+
 	/**
-	* init
-	* Constructor used for sentinel nodes.
+		init
+		Constructor used for sentinel nodes.
 	*/
 	internal init() {
 		red = false
 		order = 0
 	}
-	
+
 	/**
-	* init
-	* Constructor used for nodes that store data.
+		init
+		Constructor used for nodes that store data.
 	*/
 	internal init(parent: NodeType, sentinel: NodeType, key: Key, value: Value?) {
 		self.key = key

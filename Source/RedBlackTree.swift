@@ -14,45 +14,44 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* RedBlackTree
-*
-* The following is a RedBlackTree implementation with an Order Statistic. 
-* The power of the Order Statistic allows the RedBlackTree to reliably operate
-* in log(n) time, while maintaining order of the nodes as if in a sorted Array.
-* Also, it is possible to specifiy a unique keyed tree or non-unique keyed tree.
 */
 
+/**
+	The following is a RedBlackTree implementation with an Order Statistic.
+	The power of the Order Statistic allows the RedBlackTree to reliably operate
+	in log(n) time, while maintaining order of the nodes as if in a sorted Array.
+	Also, it is possible to specifiy a unique keyed tree or non-unique keyed tree.
+*/
 public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionType, Printable {
 	private typealias TreeType = RedBlackTree<Key, Value>
 	internal typealias NodeType = RedBlackNode<Key, Value>
 	internal typealias Element = (key: Key, value: Value?)
 	internal typealias Generator = GeneratorOf<Element>
-	
+
 	/**
-	* sentinel
-	* A node used to mark the end of a path in the tree.
+		sentinel
+		A node used to mark the end of a path in the tree.
 	*/
 	internal private(set) var sentinel: NodeType
-	
+
 	/**
-	* root
-	* The root of the tree data structure.
+		root
+		The root of the tree data structure.
 	*/
 	internal private(set) var root: NodeType
-	
+
 	/**
-	* unique
-	* A boolean used to indicate whether to allow the
-	* tree to store non-unique key values or only unique
-	* key values.
+		unique
+		A boolean used to indicate whether to allow the
+		tree to store non-unique key values or only unique
+		key values.
 	*/
 	public private(set) var unique: Bool
-	
+
 	/**
-	* internalDescription
-	* Returns a String with only the node data for all
-	* nodes in the Tree.
+		internalDescription
+		Returns a String with only the node data for all
+		nodes in the Tree.
 	*/
 	internal var internalDescription: String {
 		var output: String = "("
@@ -64,87 +63,87 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		}
 		return output + ")"
 	}
-	
+
 	/**
-	* description
-	* Conforms to the Printable Protocol. Outputs the
-	* data in the Tree in a readable format.
+		description
+		Conforms to the Printable Protocol. Outputs the
+		data in the Tree in a readable format.
 	*/
 	public var description: String {
 		return "RedBlackTree" + internalDescription
 	}
-	
+
 	/**
-	* first
-	* Get the first node value in the tree, this is
-	* the first node based on the order of keys where
-	* k1 <= k2 <= Key3 ... <= Keyn
+		first
+		Get the first node value in the tree, this is
+		the first node based on the order of keys where
+		k1 <= k2 <= Key3 ... <= Keyn
 	*/
 	public var first: Value? {
 		return internalSelect(root, order: 1).value
 	}
-	
+
 	/**
-	* last
-	* Get the last node value in the tree, this is
-	* the last node based on the order of keys where
-	* k1 <= k2 <= Key3 ... <= Keyn
+		last
+		Get the last node value in the tree, this is
+		the last node based on the order of keys where
+		k1 <= k2 <= Key3 ... <= Keyn
 	*/
 	public var last: Value? {
 		return isEmpty ? sentinel.value : internalSelect(root, order: count).value
 	}
-	
+
 	/**
-	* isEmpty
-	* A boolean of whether the RedBlackTree is empty.
+		isEmpty
+		A boolean of whether the RedBlackTree is empty.
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
 	}
-	
+
 	/**
-	* startIndex
-	* Conforms to the CollectionType Protocol.
+		startIndex
+		Conforms to the CollectionType Protocol.
 	*/
 	public var startIndex: Int {
 		return 0
 	}
-	
+
 	/**
-	* endIndex
-	* Conforms to the CollectionType Protocol.
+		endIndex
+		Conforms to the CollectionType Protocol.
 	*/
 	public var endIndex: Int {
 		return count
 	}
-	
+
 	/**
-	* init
-	* Constructor where the tree is guaranteed to store
-	* non-unique keys.
+		init
+		Constructor where the tree is guaranteed to store
+		non-unique keys.
 	*/
 	public override init() {
 		unique = false
 		sentinel = NodeType()
 		root = sentinel
 	}
-	
+
 	/**
-	* init
-	* Constructor where the tree is optionally allowed
-	* to store uniqe or non-unique keys.
+		init
+		Constructor where the tree is optionally allowed
+		to store uniqe or non-unique keys.
 	*/
 	public init(unique: Bool) {
 		self.unique = unique
 		sentinel = NodeType()
 		root = sentinel
 	}
-	
+
 	/**
-	* generate
-	* Conforms to the SequenceType Protocol. Returns
-	* the next value in the sequence of nodes using
-	* index values [0...n-1].
+		generate
+		Conforms to the SequenceType Protocol. Returns
+		the next value in the sequence of nodes using
+		index values [0...n-1].
 	*/
 	public func generate() -> Generator {
 		var index = startIndex
@@ -155,18 +154,18 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 			return nil
 		}
 	}
-	
+
 	/**
-	* countOf
-	* Conforms to ProbabilityType protocol.
+		countOf
+		Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(keys: Key...) -> Int {
 		return countOf(keys)
 	}
-	
+
 	/**
-	* countOf
-	* Conforms to ProbabilityType protocol.
+		countOf
+		Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {
 		var count: Int = 0
@@ -175,20 +174,20 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		}
 		return count
 	}
-	
+
 	/**
-	* insert
-	* Insert a node in the tree.
+		insert
+		Insert a node in the tree.
 	*/
 	public func insert(key: Key, value: Value?) -> Bool {
 		return sentinel !== internalInsert(key, value: value)
 	}
-	
+
 	/**
-	* remove
-	* Removes a node from the tree based on the key value given.
-	* If the tree allows non-unique keys, then all keys matching 
-	* the given key value will be removed.
+		remove
+		Removes a node from the tree based on the key value given.
+		If the tree allows non-unique keys, then all keys matching
+		the given key value will be removed.
 	*/
 	public func remove(key: Key) -> Bool {
 		var removed: Bool = false
@@ -199,20 +198,20 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 	}
 
 	/**
-	* removeAll
-	* Remove all nodes from the tree.
+		removeAll
+		Remove all nodes from the tree.
 	*/
 	public func removeAll() {
 		while sentinel !== root {
 			internalRemove(root.key)
 		}
 	}
-	
+
 	/**
-	* update
-	* Updates a node for the given key value.
-	* If the tree allows non-unique keys, then all keys matching
-	* the given key value will be updated.
+		update
+		Updates a node for the given key value.
+		If the tree allows non-unique keys, then all keys matching
+		the given key value will be updated.
 	*/
 	public func update(key: Key, value: Value?) -> Bool {
 		var updated: Bool = false
@@ -226,22 +225,22 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		}
 		return updated
 	}
-	
+
 	/**
-	* find
-	* Finds the first instance in a non-unique tree and only instance
-	* in unique tree of a given keyed node.
+		find
+		Finds the first instance in a non-unique tree and only instance
+		in unique tree of a given keyed node.
 	*/
 	public func find(key: Key) -> Value? {
 		return internalFindByKey(key).value
 	}
-	
+
 	/**
-	* operator [0...count - 1]
-	* Allows array like access of the index.
-	* Items are kept in order, so when iterating
-	* through the items, they are returned in their
-	* ordered form.
+		operator [0...count - 1]
+		Allows array like access of the index.
+		Items are kept in order, so when iterating
+		through the items, they are returned in their
+		ordered form.
 	*/
 	public subscript(index: Int) -> Element {
 		get {
@@ -264,12 +263,12 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 			}
 		}
 	}
-	
+
 	/**
-	* operator ["key 1"..."key 2"]
-	* Property key mapping. If the key type is a
-	* String, this feature allows access like a
-	* Dictionary.
+		operator ["key 1"..."key 2"]
+		Property key mapping. If the key type is a
+		String, this feature allows access like a
+		Dictionary.
 	*/
 	public subscript(name: String) -> Value? {
 		get {
@@ -284,35 +283,35 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 			}
 		}
 	}
-	
+
 	/**
-	* select
-	* Searches for a node based on the order statistic value.
+		select
+		Searches for a node based on the order statistic value.
 	*/
 	internal func select(x: NodeType, order: Int) -> NodeType {
 		return internalSelect(x, order: order)
 	}
-	
+
 	/**
-	* internalInsert
-	* Insert a new node with the given key and value.
+		internalInsert
+		Insert a new node with the given key and value.
 	*/
 	private func internalInsert(key: Key, value: Value?) -> NodeType {
 		if unique && sentinel !== internalFindByKey(key) {
 			return sentinel;
 		}
-		
+
 		var y: NodeType = sentinel
 		var x: NodeType = root
-		
+
 		while x !== sentinel {
 			y = x
 			++y.order
 			x = key < x.key ? x.left : x.right
 		}
-		
+
 		var z: NodeType = NodeType(parent: y, sentinel: sentinel, key: key, value: value)
-		
+
 		if y === sentinel {
 			root = z
 		} else if key < y.key {
@@ -320,15 +319,15 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		} else {
 			y.right = z
 		}
-		
+
 		insertCleanUp(z)
 		++count
 		return z
 	}
-	
+
 	/**
-	* insertCleanUp
-	* The clean up procedure needed to maintain the RedBlackTree balance.
+		insertCleanUp
+		The clean up procedure needed to maintain the RedBlackTree balance.
 	*/
 	private func insertCleanUp(var z: NodeType) {
 		while z.parent.red {
@@ -375,18 +374,18 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		}
 		root.red = false
 	}
-	
+
 	/**
-	* internalRemove
-	* Removes a node with the given key value and returns that
-	* node. If the value does not exist, the sentinel is returned.
+		internalRemove
+		Removes a node with the given key value and returns that
+		node. If the value does not exist, the sentinel is returned.
 	*/
 	private func internalRemove(key: Key) -> NodeType {
 		var z: NodeType = internalFindByKey(key)
 		if z === sentinel {
 			return sentinel
 		}
-		
+
 		if z !== root {
 			var t: NodeType = z.parent
 			while t !== root {
@@ -395,12 +394,12 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 			}
 			--root.order
 		}
-		
-		
+
+
 		var x: NodeType!
 		var y: NodeType = z
 		var red: Bool = y.red
-		
+
 		if z.left === sentinel {
 			x = z.right
 			transplant(z, v: z.right)
@@ -436,11 +435,11 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		--count
 		return z
 	}
-	
+
 	/**
-	* removeCleanUp
-	* After a successful removal of a node, the RedBlackTree
-	* is rebalanced by this method.
+		removeCleanUp
+		After a successful removal of a node, the RedBlackTree
+		is rebalanced by this method.
 	*/
 	private func removeCleanUp(var x: NodeType) {
 		while x !== root && !x.red {
@@ -496,10 +495,10 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		}
 		x.red = false
 	}
-	
+
 	/**
-	* minimum
-	* Finds the minimum keyed node.
+		minimum
+		Finds the minimum keyed node.
 	*/
 	private func minimum(var x: NodeType) -> NodeType {
 		var y: NodeType = sentinel
@@ -509,10 +508,10 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		}
 		return y
 	}
-	
+
 	/**
-	* transplant
-	* Swaps two subtrees in the tree.
+		transplant
+		Swaps two subtrees in the tree.
 	*/
 	private func transplant(u: NodeType, v: NodeType) {
 		if u.parent === sentinel {
@@ -524,22 +523,22 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		}
 		v.parent = u.parent
 	}
-	
+
 	/**
-	* leftRotate
-	* Rotates the nodes to satisfy the RedBlackTree 
-	* balance property.
+		leftRotate
+		Rotates the nodes to satisfy the RedBlackTree
+		balance property.
 	*/
 	private func leftRotate(x: NodeType) {
 		var y: NodeType = x.right
-		
+
 		x.right = y.left
 		if sentinel !== y.left {
 			y.left.parent = x
 		}
-		
+
 		y.parent = x.parent
-		
+
 		if sentinel === x.parent {
 			root = y
 		} else if x === x.parent.left {
@@ -547,28 +546,28 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		} else {
 			x.parent.right = y
 		}
-		
+
 		y.left = x
 		x.parent = y
 		y.order = x.order
 		x.order = x.left.order + x.right.order + 1
 	}
-	
+
 	/**
-	* rightRotate
-	* Rotates the nodes to satisfy the RedBlackTree
-	* balance property.
+		rightRotate
+		Rotates the nodes to satisfy the RedBlackTree
+		balance property.
 	*/
 	private func rightRotate(y: NodeType) {
 		var x: NodeType = y.left
-		
+
 		y.left = x.right
 		if sentinel !== x.right {
 			x.right.parent = y
 		}
-		
+
 		x.parent = y.parent
-		
+
 		if sentinel === y.parent {
 			root = x
 		} else if y === y.parent.right {
@@ -576,16 +575,16 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		} else {
 			y.parent.left = x
 		}
-		
+
 		x.right = y
 		y.parent = x
 		x.order = y.order
 		y.order = y.left.order + y.right.order + 1
 	}
-	
+
 	/**
-	* internalFindByKey
-	* Finds a node with a given key value.
+		internalFindByKey
+		Finds a node with a given key value.
 	*/
 	private func internalFindByKey(key: Key) -> NodeType {
 		var z: NodeType = root
@@ -597,10 +596,10 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		}
 		return sentinel
 	}
-	
+
 	/**
-	* internalSelect
-	* Internally searches for a node by the order statistic value. 
+		internalSelect
+		Internally searches for a node by the order statistic value.
 	*/
 	private func internalSelect(x: NodeType, order: Int) -> NodeType {
 		var r: Int = x.left.order + 1
@@ -611,10 +610,10 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 		}
 		return internalSelect(x.right, order: order - r)
 	}
-	
+
 	/**
-	* internalCount
-	* Traverses the Tree while counting number of times a key appears.
+		internalCount
+		Traverses the Tree while counting number of times a key appears.
 	*/
 	private func internalCount(key: Key, node: NodeType, inout count: Int) {
 		if sentinel !== node {
@@ -625,10 +624,10 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 			internalCount(key, node: node.right, count: &count)
 		}
 	}
-	
+
 	/**
-	* isIndexValid
-	* Checks the validation of the index being within range of 0...n-1.
+		isIndexValid
+		Checks the validation of the index being within range of 0...n-1.
 	*/
 	private func isIndexValid(index: Int) -> Bool {
 		return index < startIndex || index >= endIndex
