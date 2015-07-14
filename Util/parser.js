@@ -23,11 +23,13 @@ function parseFile(file) {
     fs.readFile(DEFAULT_DIRECTORY + file, function (error, data) {
       if (error) { throw error; }
       data = data.toString();
+      var myArray = [];
       var comments = data.match(/(\/\*\*(?:(?!\*\/).|[\n\r])*\*\/)([\n\r])*(.*\{)/g);
       for (var i = comments.length - 1; 0 <= i; --i) {
           comments[i] = comments[i].replace(/(\/\*\*)/, '').replace(/(\*\/)/, '');
           var description = comments[i].replace(/^\s+|\s+$/g, '').split('\n');
-          comments[i] = '### ' + description.shift() + '\n';
+          var myObject = {};
+          myObject.title = description.shift();
 
           var declaration = description.pop();
           declaration = declaration.split(' ');
@@ -36,10 +38,11 @@ function parseFile(file) {
           for (var j = description.length - 1; 0 <= j; --j) {
               description[j] = description[j].replace(/^\s+|\s+$/g, '');
           }
-          comments[i] += description.join(' ');
-          comments[i] += '\n```swift\n' + declaration.join(' ').replace(/^\s+|\s+$/g, '') + '\n```';
+
+          myObject.description = description.join(' ')
+          myObject.declaration = declaration.join(' ').replace(/^\s+|\s+$/g, '');
+          myArray.push(myObject);
       }
-      comments.shift();
-      console.log(comments.join('\n'));
+      console.log(myArray);
     });
 }
