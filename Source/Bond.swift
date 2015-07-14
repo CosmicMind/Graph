@@ -174,7 +174,7 @@ public class Bond: NSObject {
 
 extension Bond: Equatable, Printable {
 	override public var description: String {
-		return "[id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
+		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
 	}
 }
 
