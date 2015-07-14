@@ -76,16 +76,16 @@ import Foundation
 	}
 
 	/**
-		properties
-		Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
+		groups
+		Retrieves the Groups the Action is a part of.
 	*/
-	public subscript(name: String) -> AnyObject? {
-		get {
-			return node[name]
+	public var groups: OrderedSet<String> {
+		var groups: OrderedSet<String> = OrderedSet<String>()
+		for group in node.groupSet {
+			let name: String = group.name
+			groups.insert(name)
 		}
-		set(value) {
-			node[name] = value
-		}
+		return groups
 	}
 
 	/**
@@ -113,19 +113,6 @@ import Foundation
 	}
 
 	/**
-		groups
-		Retrieves the Groups the Action is a part of.
-	*/
-	public var groups: OrderedSet<String> {
-		var groups: OrderedSet<String> = OrderedSet<String>()
-		for group in node.groupSet {
-			let name: String = group.name
-			groups.insert(name)
-		}
-		return groups
-	}
-
-	/**
 		properties
 		Retrieves the Properties the Node is a part of.
 	*/
@@ -135,6 +122,19 @@ import Foundation
 			properties.insert(property.name, value: property.value)
 		}
 		return properties
+	}
+
+	/**
+		properties
+		Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
+	*/
+	public subscript(name: String) -> AnyObject? {
+		get {
+			return node[name]
+		}
+		set(value) {
+			node[name] = value
+		}
 	}
 
     /**
