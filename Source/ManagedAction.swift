@@ -14,12 +14,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* ManagedAction
-*
-* Represents an Action Model Object in the persistent layer.
 */
-
 
 import CoreData
 
@@ -41,11 +36,10 @@ internal class ManagedAction: NSManagedObject {
 		}
 		return context
 	}
-	
+
 	/**
-	* init
-	* Initializes the Model Object with e a given type.
-	* @param        type: String!
+		init
+		Initializes the Model Object with e a given type.
 	*/
 	convenience internal init(type: String!) {
 		let g: Graph = Graph()
@@ -62,11 +56,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
 	/**
-    * properties[ ]
-    * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
-    * @param        name: String!
-    * get           Returns the property name value.
-    * set           Value for the property name.
+		properties
+		Allows for Dictionary style coding, which maps to the internal properties Dictionary.
     */
 	internal subscript(name: String) -> AnyObject? {
 		get {
@@ -108,10 +99,8 @@ internal class ManagedAction: NSManagedObject {
 	}
 
     /**
-    * addGroup
-    * Adds a Group name to the list of Groups if it does not exist.
-    * @param        name: String!
-    * @return       Bool of the result, true if added, false otherwise.
+		addGroup
+		Adds a Group name to the list of Groups if it does not exist.
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
@@ -123,10 +112,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * hasGroup
-    * Checks whether the Node is a part of the Group name passed or not.
-    * @param        name: String!
-    * @return       Bool of the result, true if is a part, false otherwise.
+		hasGroup
+		Checks whether the Node is a part of the Group name passed or not.
     */
     internal func hasGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -139,10 +126,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * removeGroup
-    * Removes a Group name from the list of Groups if it exists.
-    * @param        name: String!
-    * @return       Bool of the result, true if exists, false otherwise.
+		removeGroup
+		Removes a Group name from the list of Groups if it exists.
     */
     internal func removeGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -158,10 +143,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * addSubject
-    * Adds a ManagedEntity Model Object to the Subject Set.
-    * @param        entity: ManagedEntity!
-    * @return       Bool of the result, true if added, false otherwise.
+		addSubject
+		Adds a ManagedEntity Model Object to the Subject Set.
     */
     internal func addSubject(entity: ManagedEntity!) -> Bool {
         let count: Int = subjectSet.count
@@ -170,10 +153,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * removeSubject
-    * Removes a ManagedEntity Model Object from the Subject Set.
-    * @param        entity: ManagedEntity!
-    * @return       Bool of the result, true if removed, false otherwise.
+		removeSubject
+		Removes a ManagedEntity Model Object from the Subject Set.
     */
     internal func removeSubject(entity: ManagedEntity!) -> Bool {
         let count: Int = subjectSet.count
@@ -182,10 +163,8 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * addObject
-    * Adds a ManagedEntity Model Object to the Object Set.
-    * @param        entity: ManagedEntity!
-    * @return       Bool of the result, true if added, false otherwise.
+		addObject
+		Adds a ManagedEntity Model Object to the Object Set.
     */
     internal func addObject(entity: ManagedEntity!) -> Bool {
         let count: Int = objectSet.count
@@ -194,20 +173,18 @@ internal class ManagedAction: NSManagedObject {
     }
 
     /**
-    * removeObject
-    * Removes a ManagedEntity Model Object from the Object Set.
-    * @param        entity: ManagedEntity!
-    * @return       Bool of the result, true if removed, false otherwise.
+		removeObject
+		Removes a ManagedEntity Model Object from the Object Set.
     */
     internal func removeObject(entity: ManagedEntity!) -> Bool {
         let count: Int = objectSet.count
 		mutableSetValueForKey("objectSet").removeObject(entity)
 		return count != objectSet.count
     }
-	
+
 	/**
-	* delete
-	* Marks the Model Object to be deleted from the Graph.
+		delete
+		Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
 		worker?.deleteObject(self)
@@ -215,41 +192,37 @@ internal class ManagedAction: NSManagedObject {
 }
 
 extension ManagedAction {
-	
+
 	/**
-	* addPropertySetObject
-	* Adds the Property to the propertySet for the Action.
-	* @param        value: ActionProperty
+		addPropertySetObject
+		Adds the Property to the propertySet for the Action.
 	*/
 	func addPropertySetObject(value: ActionProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.addObject(value)
 	}
-	
+
 	/**
-	* removePropertySetObject
-	* Removes the Property to the propertySet for the Action.
-	* @param        value: ActionProperty
+		removePropertySetObject
+		Removes the Property to the propertySet for the Action.
 	*/
 	func removePropertySetObject(value: ActionProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.removeObject(value)
 	}
-	
+
 	/**
-	* addGroupSetObject
-	* Adds the Group to the groupSet for the Action.
-	* @param        value: ActionGroup
+		addGroupSetObject
+		Adds the Group to the groupSet for the Action.
 	*/
 	func addGroupSetObject(value: ActionGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.addObject(value)
 	}
-	
+
 	/**
-	* removeGroupSetObject
-	* Removes the Group to the groupSet for the Action.
-	* @ param        value: ActionGroup
+		removeGroupSetObject
+		Removes the Group to the groupSet for the Action.
 	*/
 	func removeGroupSetObject(value: ActionGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet

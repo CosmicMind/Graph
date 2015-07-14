@@ -14,103 +14,102 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Stack
-*
-* A Stack is a first-in, last-out (FILO) data structure. A Stack is an 
-* excellent data structure for working with the most current data coming
-* in. The following Stack implementation is backed by a List data structure.
 */
 
-public class Stack<T>: Printable, SequenceType {
-	internal typealias Generator = GeneratorOf<T?>
-	
+/**
+	A Stack is a first-in, last-out (FILO) data structure. A Stack is an
+	excellent data structure for working with the most current data coming
+	in. The following Stack implementation is backed by a List data structure.
+*/
+public class Stack<Element>: Printable, SequenceType {
+	internal typealias Generator = GeneratorOf<Element?>
+
 	/**
-	* list
-	* Underlying data structure.
+		list
+		Underlying data structure.
 	*/
-	private var list: List<T>
-	
+	private var list: List<Element>
+
 	/**
-	* count
-	* Total number of items in the Stack.
+		count
+		Total number of items in the Stack.
 	*/
 	public var count: Int {
 		return list.count
 	}
-	
+
 	/**
-	* top
-	* Get the latest item at the top
-	* of the Stack and do not remove 
-	* it.
+		top
+		Get the latest element at the top
+		of the Stack and do not remove
+		it.
 	*/
-	public var top: T? {
+	public var top: Element? {
 		return list.front
 	}
-	
+
 	/**
-	* empty
-	* A boolean of whether the Stack is empty.
+		isEmpty
+		A boolean of whether the Stack is empty.
 	*/
-	public var empty: Bool {
-		return list.empty
+	public var isEmpty: Bool {
+		return list.isEmpty
 	}
-	
+
 	/**
-	* description
-	* Conforms to the Printable Protocol.
+		description
+		Conforms to the Printable Protocol.
 	*/
 	public var description: String {
 		return "Stack" + list.internalDescription
 	}
-	
+
 	/**
-	* init
-	* Constructor
+		init
+		Constructor
 	*/
 	public init() {
-		list = List<T>()
+		list = List<Element>()
 	}
-	
+
 	/**
-	* generate
-	* Conforms to the SequenceType Protocol. Returns
-	* the next value in the sequence of nodes.
+		generate
+		Conforms to the SequenceType Protocol. Returns
+		the next value in the sequence of nodes.
 	*/
 	public func generate() -> Generator {
 		return list.generate()
 	}
-	
+
 	/**
-	* push
-	* Insert data at the top of the Stack.
+		push
+		Insert a new element at the top of the Stack.
 	*/
-	public func push(data: T?) {
-		list.insertAtFront(data)
+	public func push(element: Element?) {
+		list.insertAtFront(element)
 	}
-	
+
 	/**
-	* pop
-	* Get the latest data at the top of 
-	* the Stack and remove it from the
-	* Stack.
+		pop
+		Get the latest element at the top of
+		the Stack and remove it from the
+		Stack.
 	*/
-	public func pop() -> T? {
+	public func pop() -> Element? {
 		return list.removeAtFront()
 	}
-	
+
 	/**
-	* removeAll
-	* Remove all items from the Stack.
+		removeAll
+		Remove all elements from the Stack.
 	*/
 	public func removeAll() {
 		list.removeAll()
 	}
 }
 
-public func +<T>(lhs: Stack<T>, rhs: Stack<T>) -> Stack<T> {
-	let s: Stack<T> = Stack<T>()
+public func +<Element>(lhs: Stack<Element>, rhs: Stack<Element>) -> Stack<Element> {
+	let s: Stack<Element> = Stack<Element>()
 	for x in lhs {
 		s.push(x)
 	}

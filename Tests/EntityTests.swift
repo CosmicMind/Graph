@@ -150,10 +150,8 @@ class EntityTests : XCTestCase, GraphDelegate {
         if "name" == property && "Eve" == value as! String {
             nameInsertExpectation?.fulfill()
             let n: MultiTree<String, Entity> = graph.search(EntityProperty: property)
-			println(n)
 			if n.first![property] as! String == value as! String {
 				let m: MultiTree<String, Entity> = graph.search(EntityProperty: property, value: value as! String)
-				println(m)
 				if m.first![property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
@@ -162,10 +160,8 @@ class EntityTests : XCTestCase, GraphDelegate {
         } else if "age" == property && 26 == value as! Int {
             ageInsertExpectation?.fulfill()
             let n: MultiTree<String, Entity> = graph.search(EntityProperty: property)
-			println(n)
 			if  n.first![property] as! Int == value as! Int {
 				let m: MultiTree<String, Entity> = graph.search(EntityProperty: property, value: value as! Int)
-				println(m)
 				if m.first![property] as! Int == value as! Int {
                     ageSearchExpectation?.fulfill()
                 }

@@ -14,10 +14,6 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* ManagedBond
-*
-* Represents an Bond Model Object in the persistent layer.
 */
 
 
@@ -41,11 +37,10 @@ internal class ManagedBond: NSManagedObject {
 		}
 		return context
 	}
-	
+
 	/**
-	* init
-	* Initializes the Model Object with e a given type.
-	* @param        type: String!
+		init
+		Initializes the Model Object with e a given type.
 	*/
 	convenience internal init(type: String!) {
 		let g: Graph = Graph()
@@ -62,11 +57,8 @@ internal class ManagedBond: NSManagedObject {
 	}
 
 	/**
-    * properties[ ]
-    * Allows for Dictionary style coding, which maps to the internal properties Dictionary.
-    * @param        name: String!
-    * get           Returns the property name value.
-    * set           Value for the property name.
+		properties
+		Allows for Dictionary style coding, which maps to the internal properties Dictionary.
     */
 	internal subscript(name: String) -> AnyObject? {
 		get {
@@ -108,10 +100,8 @@ internal class ManagedBond: NSManagedObject {
 	}
 
     /**
-    * addGroup
-    * Adds a Group name to the list of Groups if it does not exist.
-    * @param        name: String!
-    * @return       Bool of the result, true if added, false otherwise.
+		addGroup
+		Adds a Group name to the list of Groups if it does not exist.
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
@@ -123,10 +113,8 @@ internal class ManagedBond: NSManagedObject {
     }
 
     /**
-    * hasGroup
-    * Checks whether the Node is a part of the Group name passed or not.
-    * @param        name: String!
-    * @return       Bool of the result, true if is a part, false otherwise.
+		hasGroup
+		Checks whether the Node is a part of the Group name passed or not.
     */
     internal func hasGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -139,10 +127,8 @@ internal class ManagedBond: NSManagedObject {
     }
 
     /**
-    * removeGroup
-    * Removes a Group name from the list of Groups if it exists.
-    * @param        name: String!
-    * @return       Bool of the result, true if exists, false otherwise.
+		removeGroup
+		Removes a Group name from the list of Groups if it exists.
     */
     internal func removeGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -156,10 +142,10 @@ internal class ManagedBond: NSManagedObject {
         }
         return false
     }
-	
+
 	/**
-	* delete
-	* Marks the Model Object to be deleted from the Graph.
+		delete
+		Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
 		worker?.deleteObject(self)
@@ -167,41 +153,37 @@ internal class ManagedBond: NSManagedObject {
 }
 
 extension ManagedBond {
-	
+
 	/**
-	* addPropertySetObject
-	* Adds the Property to the propertySet for the Bond.
-	* @param        value: BondProperty
+		addPropertySetObject
+		Adds the Property to the propertySet for the Bond.
 	*/
 	func addPropertySetObject(value: BondProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.addObject(value)
 	}
-	
+
 	/**
-	* removePropertySetObject
-	* Removes the Property to the propertySet for the Bond.
-	* @param        value: BondProperty
+		removePropertySetObject
+		Removes the Property to the propertySet for the Bond.
 	*/
 	func removePropertySetObject(value: BondProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.removeObject(value)
 	}
-	
+
 	/**
-	* addGroupSetObject
-	* Adds the Group to the groupSet for the Bond.
-	* @param        value: BondGroup
+		addGroupSetObject
+		Adds the Group to the groupSet for the Bond.
 	*/
 	func addGroupSetObject(value: BondGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.addObject(value)
 	}
-	
+
 	/**
-	* removeGroupSetObject
-	* Removes the Group to the groupSet for the Bond.
-	* @param        value: BondGroup
+		removeGroupSetObject
+		Removes the Group to the groupSet for the Bond.
 	*/
 	func removeGroupSetObject(value: BondGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
