@@ -22,7 +22,7 @@
 	while maintaining log(n) performance on all operations. Items in a MultiTree
 	may not be uniquely keyed.
 */
-public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
+public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	internal typealias TreeType = MultiTree<Key, Value>
 
 	/**
@@ -82,7 +82,7 @@ public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	}
 }
 
-public func +<Key: Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
+public func +<Key : Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
 	let t: MultiTree<Key, Value> = MultiTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
@@ -95,7 +95,7 @@ public func +<Key: Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree
 	return t
 }
 
-public func -<Key: Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
+public func -<Key : Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
 	let t: MultiTree<Key, Value> = MultiTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]

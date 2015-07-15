@@ -21,7 +21,7 @@
 	incoming data that may need to be temporarily cached and used in the order it
 	entered. The following Queue implementation is backed by a List data structure.
 */
-public class Queue<Element>: Printable, SequenceType {
+public class Queue<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 
 	/**

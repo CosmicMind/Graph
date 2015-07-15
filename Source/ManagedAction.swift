@@ -19,7 +19,7 @@
 import CoreData
 
 @objc(ManagedAction)
-internal class ManagedAction: NSManagedObject {
+internal class ManagedAction : NSManagedObject {
 	@NSManaged internal var nodeClass: String
 	@NSManaged internal var type: String
 	@NSManaged internal var createdDate: NSDate

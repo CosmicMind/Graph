@@ -33,7 +33,6 @@ function parseFile(file, callback) {
           var declaration = description.pop();
           declaration = declaration.split(' ');
           declaration.pop();
-
           for (var j = description.length - 1; 0 <= j; --j) {
               description[j] = description[j].replace(/^\s+|\s+$/g, '');
           }

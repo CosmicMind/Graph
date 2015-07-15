@@ -22,7 +22,7 @@
 	of elements to be placed at the back or front of the structure. The
 	following Deque implementation is backed by a List structure.
 */
-public class Deque<Element>: Printable, SequenceType {
+public class Deque<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 
 	/**

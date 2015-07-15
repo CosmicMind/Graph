@@ -16,7 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-internal class ListNode<Element>: Printable {
+internal class ListNode<Element> : Printable {
 	private typealias NodeType = ListNode<Element>
 
 	/**

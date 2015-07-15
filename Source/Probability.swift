@@ -30,29 +30,29 @@ internal protocol ProbabilityType {
 	func expectedValueOf(trials: Int, elements: Array<ElementType>) -> Double
 }
 
-public class Probability<Element: Comparable>: ProbabilityType {
+public class Probability<Element : Comparable> : ProbabilityType {
 	typealias ElementType = Element
-	
+
 	public internal(set) var count: Int = 0
-	
+
 	public func countOf(elements: Element...) -> Int { return 0 }
-	
+
 	public func countOf(elements: Array<Element>) -> Int { return 0 }
-	
+
 	public func probabilityOf(elements: Element...) -> Double {
 		return probabilityOf(elements)
 	}
-	
+
 	public func probabilityOf(elements: Array<Element>) -> Double {
 		let x: Double = Double(countOf(elements))
 		let y: Double = Double(count)
 		return 0 == y ? 0 : x / y
 	}
-	
+
 	public func expectedValueOf(trials: Int, elements: Element...) -> Double {
 		return expectedValueOf(trials, elements: elements)
 	}
-	
+
 	public func expectedValueOf(trials: Int, elements: Array<Element>) -> Double {
 		return Double(trials) * probabilityOf(elements)
 	}

@@ -19,7 +19,7 @@
 /**
 	Used internally by the RedBlackTree data structure to store pointers to nodes and satellite data.
 */
-internal class RedBlackNode<Key: Comparable, Value>: Comparable, Equatable, Printable {
+internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Printable {
 	internal typealias NodeType = RedBlackNode<Key, Value>
 
 	/**
@@ -98,22 +98,22 @@ internal class RedBlackNode<Key: Comparable, Value>: Comparable, Equatable, Prin
 	}
 }
 
-func ==<Key: Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
+func ==<Key : Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
 	return lhs.key == rhs.key
 }
 
-func <=<Key: Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
+func <=<Key : Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
 	return lhs.key <= rhs.key
 }
 
-func >=<Key: Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
+func >=<Key : Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
 	return lhs.key >= rhs.key
 }
 
-func ><Key: Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
+func ><Key : Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
 	return lhs.key > rhs.key
 }
 
-func <<Key: Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
+func <<Key : Comparable, Value>(lhs: RedBlackNode<Key, Value>, rhs: RedBlackNode<Key, Value>) -> Bool {
 	return lhs.key < rhs.key
 }
