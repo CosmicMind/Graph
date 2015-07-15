@@ -21,7 +21,7 @@
 	excellent data structure for working with the most current data coming
 	in. The following Stack implementation is backed by a List data structure.
 */
-public class Stack<Element>: Printable, SequenceType {
+public class Stack<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 
 	/**

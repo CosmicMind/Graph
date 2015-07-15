@@ -16,7 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class OrderedMultiSet<Element: Comparable>: Probability<Element>, CollectionType, Comparable, Equatable, Printable {
+public class OrderedMultiSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, Printable {
 	internal typealias TreeType = MultiTree<Element, Element>
 	internal typealias SetType = OrderedMultiSet<Element>
 	internal typealias Generator = GeneratorOf<Element>
@@ -433,26 +433,26 @@ public func ==<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedM
 	return true
 }
 
-public func +<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
+public func +<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 	return lhs.union(rhs)
 }
 
-public func -<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
+public func -<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 	return lhs.subtract(rhs)
 }
 
-public func <=<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+public func <=<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
 	return lhs.isSubsetOf(rhs)
 }
 
-public func >=<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+public func >=<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
 	return lhs.isSupersetOf(rhs)
 }
 
-public func ><Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+public func ><Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
 	return lhs.isStrictSupersetOf(rhs)
 }
 
-public func <<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+public func <<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
 	return lhs.isStrictSubsetOf(rhs)
 }

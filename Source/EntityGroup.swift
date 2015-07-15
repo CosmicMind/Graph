@@ -22,7 +22,7 @@ import CoreData
 	Stores a reference to the ManagedEntity Model Object.
 */
 @objc(EntityGroup)
-internal class EntityGroup: NSManagedObject {
+internal class EntityGroup : NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var node: ManagedEntity
 

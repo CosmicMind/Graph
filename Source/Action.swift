@@ -22,7 +22,7 @@ import Foundation
 	Represents Action Nodes, which are repetitive relationships between Entity Nodes.
 */
 @objc(Action)
-public class Action: NSObject {
+public class Action : NSObject {
 	internal let node: ManagedAction
 
 	/**
@@ -232,7 +232,7 @@ public class Action: NSObject {
     }
 }
 
-extension Action: Equatable, Printable {
+extension Action : Equatable, Printable {
 	override public var description: String {
 		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
 	}

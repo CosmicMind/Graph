@@ -22,7 +22,7 @@ import Foundation
 	Represents Bond Nodes, which are unique relationships between Entity Nodes.
 */
 @objc(Bond)
-public class Bond: NSObject {
+public class Bond : NSObject {
 	internal let node: ManagedBond
 
 	/**
@@ -172,7 +172,7 @@ public class Bond: NSObject {
     }
 }
 
-extension Bond: Equatable, Printable {
+extension Bond : Equatable, Printable {
 	override public var description: String {
 		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
 	}

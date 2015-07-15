@@ -22,7 +22,7 @@
 	in log(n) time, while maintaining order of the nodes as if in a sorted Array.
 	Also, it is possible to specifiy a unique keyed tree or non-unique keyed tree.
 */
-public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionType, Printable {
+public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, Printable {
 	private typealias TreeType = RedBlackTree<Key, Value>
 	internal typealias NodeType = RedBlackNode<Key, Value>
 	internal typealias Element = (key: Key, value: Value?)
@@ -634,7 +634,7 @@ public class RedBlackTree<Key: Comparable, Value>: Probability<Key>, CollectionT
 	}
 }
 
-public func +<Key: Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
+public func +<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
 	let t: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
@@ -647,7 +647,7 @@ public func +<Key: Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBla
 	return t
 }
 
-public func -<Key: Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
+public func -<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
 	let t: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]

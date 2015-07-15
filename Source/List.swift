@@ -16,7 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class List<Element>: Printable, SequenceType {
+public class List<Element> : Printable, SequenceType {
 	private typealias NodeType = ListNode<Element>
 	internal typealias Generator = GeneratorOf<Element?>
 
