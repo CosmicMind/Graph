@@ -18,11 +18,8 @@
 
 import CoreData
 
-/**
-	Stores a reference to the ManagedAction Model Object.
-*/
 @objc(ActionGroup)
-internal class ActionGroup: NSManagedObject {
+internal class ActionGroup : NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var node: ManagedAction
 

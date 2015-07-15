@@ -16,13 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-	A powerful data structure that is backed by a RedBlackTree using an order
-	statistic. This allows for manipulation and access of the data as if an array,
-	while maintaining log(n) performance on all operations. All items in a Tree
-	are uniquely keyed.
-*/
-public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
+public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	internal typealias TreeType = Tree<Key, Value>
 
 	/**
@@ -82,7 +76,7 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	}
 }
 
-public func +<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
+public func +<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
 	let t: Tree<Key, Value> = Tree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
@@ -95,7 +89,7 @@ public func +<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Valu
 	return t
 }
 
-public func -<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
+public func -<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
 	let t: Tree<Key, Value> = Tree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]

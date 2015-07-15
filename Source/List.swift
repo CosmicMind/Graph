@@ -16,7 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class List<Element>: Printable, SequenceType {
+public class List<Element> : Printable, SequenceType {
 	private typealias NodeType = ListNode<Element>
 	internal typealias Generator = GeneratorOf<Element?>
 
@@ -53,7 +53,7 @@ public class List<Element>: Printable, SequenceType {
 		var output: String = "("
 		var c: Int = 0
 		var x: NodeType? = head
-		while nil != x {
+		while nil !== x {
 			output += x!.description
 			if ++c != count {
 				output += ", "
@@ -133,7 +133,7 @@ public class List<Element>: Printable, SequenceType {
 		the back of the List.
 	*/
 	public var cursorAtBack: Bool {
-		return nil == current
+		return nil === current
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class List<Element>: Printable, SequenceType {
 		the front of the List.
 	*/
 	public var cursorAtFront: Bool {
-		return nil == current
+		return nil === current
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class List<Element>: Printable, SequenceType {
 		Insert a new element before the cursor position.
 	*/
 	public func insertBeforeCursor(element: Element?) {
-		if nil == current || head === current {
+		if nil === current || head === current {
 			insertAtFront(element)
 		} else {
 			let z: NodeType = NodeType(next: current, previous: current!.previous,  element: element)
@@ -297,7 +297,7 @@ public class List<Element>: Printable, SequenceType {
 		Insert a new element after the cursor position.
 	*/
 	public func insertAfterCursor(element: Element?) {
-		if nil == current || tail === current {
+		if nil === current || tail === current {
 			insertAtBack(element)
 		} else {
 			let z: NodeType = NodeType(next: current!.next, previous: current,  element: element)

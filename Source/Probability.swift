@@ -14,11 +14,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Probability
-* Probability algorithms are addaed to Probability struct.
 */
-
 
 internal protocol ProbabilityType {
 	typealias ElementType
@@ -30,29 +26,29 @@ internal protocol ProbabilityType {
 	func expectedValueOf(trials: Int, elements: Array<ElementType>) -> Double
 }
 
-public class Probability<Element: Comparable>: ProbabilityType {
+public class Probability<Element : Comparable> : ProbabilityType {
 	typealias ElementType = Element
-	
+
 	public internal(set) var count: Int = 0
-	
+
 	public func countOf(elements: Element...) -> Int { return 0 }
-	
+
 	public func countOf(elements: Array<Element>) -> Int { return 0 }
-	
+
 	public func probabilityOf(elements: Element...) -> Double {
 		return probabilityOf(elements)
 	}
-	
+
 	public func probabilityOf(elements: Array<Element>) -> Double {
 		let x: Double = Double(countOf(elements))
 		let y: Double = Double(count)
 		return 0 == y ? 0 : x / y
 	}
-	
+
 	public func expectedValueOf(trials: Int, elements: Element...) -> Double {
 		return expectedValueOf(trials, elements: elements)
 	}
-	
+
 	public func expectedValueOf(trials: Int, elements: Array<Element>) -> Double {
 		return Double(trials) * probabilityOf(elements)
 	}

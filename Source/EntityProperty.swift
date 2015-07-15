@@ -18,11 +18,8 @@
 
 import CoreData
 
-/**
-	Stores a reference to the ManagedEntity Model Object.
-*/
 @objc(EntityProperty)
-internal class EntityProperty: NSManagedObject {
+internal class EntityProperty : NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var value: AnyObject
 	@NSManaged internal var node: ManagedEntity
