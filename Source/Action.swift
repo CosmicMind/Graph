@@ -234,7 +234,7 @@ public class Action: NSObject {
 
 extension Action: Equatable, Printable {
 	override public var description: String {
-		return "{id: \((id)), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)}"
+		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
 	}
 }
 
