@@ -12,24 +12,23 @@ fs.readdir(process.argv[2] || DEFAULT_DIRECTORY, function(error, files) {
        for (var file in files) {
            file = files[file];
            if (/.swift$/.test(file)) {
-               parseFile(file);
+               parseFile(file, formatToMd);
            }
-           break;
        }
    }
 });
 
-function parseFile(file) {
+function parseFile(file, callback) {
     fs.readFile(DEFAULT_DIRECTORY + file, function (error, data) {
       if (error) { throw error; }
       data = data.toString();
-      var myArray = [];
+      var result = [];
       var comments = data.match(/(\/\*\*(?:(?!\*\/).|[\n\r])*\*\/)([\n\r])*(.*\{)/g);
       for (var i = comments.length - 1; 0 <= i; --i) {
           comments[i] = comments[i].replace(/(\/\*\*)/, '').replace(/(\*\/)/, '');
           var description = comments[i].replace(/^\s+|\s+$/g, '').split('\n');
-          var myObject = {};
-          myObject.title = description.shift();
+          var dataObject = {};
+          dataObject.title = description.shift();
 
           var declaration = description.pop();
           declaration = declaration.split(' ');
@@ -39,10 +38,18 @@ function parseFile(file) {
               description[j] = description[j].replace(/^\s+|\s+$/g, '');
           }
 
-          myObject.description = description.join(' ')
-          myObject.declaration = declaration.join(' ').replace(/^\s+|\s+$/g, '');
-          myArray.push(myObject);
+          dataObject.description = description.join(' ')
+          dataObject.declaration = declaration.join(' ').replace(/^\s+|\s+$/g, '');
+          result.push(dataObject);
       }
-      console.log(myArray);
+      callback(result);
     });
+}
+
+function formatToMd(array) {
+  for (var i = array.length -1; 0 <= i; --i) {
+    array[i].title = '### ' + array[i].title + '\n';
+    array[i].declaration = '\n```swift\n' + array[i].declaration + '\n```';
+  }
+  console.log(array);
 }
