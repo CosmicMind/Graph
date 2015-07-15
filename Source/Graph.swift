@@ -18,10 +18,6 @@
 
 import CoreData
 
-/**
-	Manages Nodes in the persistent layer, as well as, offers watchers to monitor
-	changes in the persistent layer.
-*/
 private struct GraphPersistentStoreCoordinator {
 	static var onceToken: dispatch_once_t = 0
 	static var persistentStoreCoordinator: NSPersistentStoreCoordinator?

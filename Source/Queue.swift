@@ -16,11 +16,6 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-	A Queue is a first-in, first-out (FIFO) data structure that is excellent for
-	incoming data that may need to be temporarily cached and used in the order it
-	entered. The following Queue implementation is backed by a List data structure.
-*/
 public class Queue<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 

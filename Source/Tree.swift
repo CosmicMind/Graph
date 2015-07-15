@@ -16,12 +16,6 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-	A powerful data structure that is backed by a RedBlackTree using an order
-	statistic. This allows for manipulation and access of the data as if an array,
-	while maintaining log(n) performance on all operations. All items in a Tree
-	are uniquely keyed.
-*/
 public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	internal typealias TreeType = Tree<Key, Value>
 

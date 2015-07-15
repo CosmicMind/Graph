@@ -16,12 +16,6 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-	The following is a RedBlackTree implementation with an Order Statistic.
-	The power of the Order Statistic allows the RedBlackTree to reliably operate
-	in log(n) time, while maintaining order of the nodes as if in a sorted Array.
-	Also, it is possible to specifiy a unique keyed tree or non-unique keyed tree.
-*/
 public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, Printable {
 	private typealias TreeType = RedBlackTree<Key, Value>
 	internal typealias NodeType = RedBlackNode<Key, Value>

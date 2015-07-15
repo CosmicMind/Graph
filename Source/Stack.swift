@@ -16,11 +16,6 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-	A Stack is a first-in, last-out (FILO) data structure. A Stack is an
-	excellent data structure for working with the most current data coming
-	in. The following Stack implementation is backed by a List data structure.
-*/
 public class Stack<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 

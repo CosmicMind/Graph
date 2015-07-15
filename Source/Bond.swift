@@ -18,9 +18,6 @@
 
 import Foundation
 
-/**
-	Represents Bond Nodes, which are unique relationships between Entity Nodes.
-*/
 @objc(Bond)
 public class Bond : NSObject {
 	internal let node: ManagedBond

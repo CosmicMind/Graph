@@ -18,9 +18,6 @@
 
 import CoreData
 
-/**
-	Stores a reference to the ManagedBond Model Object.
-*/
 @objc(BondProperty)
 internal class BondProperty : NSManagedObject {
 	@NSManaged internal var name: String

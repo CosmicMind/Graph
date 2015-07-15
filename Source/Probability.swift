@@ -14,11 +14,7 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program located at the root of the software package
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Probability
-* Probability algorithms are addaed to Probability struct.
 */
-
 
 internal protocol ProbabilityType {
 	typealias ElementType

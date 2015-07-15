@@ -16,12 +16,6 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-	A powerful data structure that is backed by a RedBlackTree using an order
-	statistic. This allows for manipulation and access of the data as if an array,
-	while maintaining log(n) performance on all operations. Items in a MultiTree
-	may not be uniquely keyed.
-*/
 public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	internal typealias TreeType = MultiTree<Key, Value>
 

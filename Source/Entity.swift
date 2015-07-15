@@ -18,9 +18,6 @@
 
 import Foundation
 
-/**
-	Represents Entity Nodes, which are person, places, or things -- nouns.
-*/
 @objc(Entity)
 public class Entity : NSObject {
 	internal let node: ManagedEntity

@@ -18,9 +18,6 @@
 
 import CoreData
 
-/**
-	Stores a reference to the ManagedAction Model Object.
-*/
 @objc(ActionProperty)
 internal class ActionProperty : NSManagedObject {
 	@NSManaged internal var name: String
