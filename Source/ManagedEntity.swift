@@ -19,7 +19,7 @@
 import CoreData
 
 @objc(ManagedEntity)
-internal class ManagedEntity: NSManagedObject {
+internal class ManagedEntity : NSManagedObject {
 	@NSManaged internal var nodeClass: String
 	@NSManaged internal var type: String
 	@NSManaged internal var createdDate: NSDate

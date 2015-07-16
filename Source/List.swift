@@ -16,27 +16,26 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class List<Element>: Printable, SequenceType {
-	private typealias NodeType = ListNode<Element>
+public class List<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 
 	/**
 		head
 		First node in the list.
 	*/
-	private var head: NodeType?
+	private var head: ListNode<Element>?
 
 	/**
 		tail
 		Last node in list.
 	*/
-	private var tail: NodeType?
+	private var tail: ListNode<Element>?
 
 	/**
 		current
 		Current cursor position when iterating.
 	*/
-	private var current: NodeType?
+	private var current: ListNode<Element>?
 
 	/**
 		count
@@ -52,8 +51,8 @@ public class List<Element>: Printable, SequenceType {
 	internal var internalDescription: String {
 		var output: String = "("
 		var c: Int = 0
-		var x: NodeType? = head
-		while nil != x {
+		var x: ListNode<Element>? = head
+		while nil !== x {
 			output += x!.description
 			if ++c != count {
 				output += ", "
@@ -128,21 +127,21 @@ public class List<Element>: Printable, SequenceType {
 	}
 
 	/**
-		cursorAtBack
+		isCursorAtBack
 		A boolean of whether the cursor has reached
 		the back of the List.
 	*/
-	public var cursorAtBack: Bool {
-		return nil == current
+	public var isCursorAtBack: Bool {
+		return nil === current
 	}
 
 	/**
-		cursorAtFront
+		isCursorAtFront
 		A boolean of whether the cursor has reached
 		the front of the List.
 	*/
-	public var cursorAtFront: Bool {
-		return nil == current
+	public var isCursorAtFront: Bool {
+		return nil === current
 	}
 
 	/**
@@ -162,7 +161,7 @@ public class List<Element>: Printable, SequenceType {
 	public func generate() -> Generator {
 		cursorToFront()
 		return GeneratorOf {
-			if !self.cursorAtBack {
+			if !self.isCursorAtBack {
 				var element: Element? = self.cursor
 				self.next
 				return element
@@ -187,12 +186,12 @@ public class List<Element>: Printable, SequenceType {
 		of the List.
 	*/
 	public func insertAtFront(element: Element?) {
-		var z: NodeType
+		var z: ListNode<Element>
 		if 0 == count {
-			z = NodeType(next: nil, previous: nil,  element: element)
+			z = ListNode<Element>(next: nil, previous: nil,  element: element)
 			tail = z
 		} else {
-			z = NodeType(next: head, previous: nil, element: element)
+			z = ListNode<Element>(next: head, previous: nil, element: element)
 			head!.previous = z
 		}
 		head = z
@@ -227,12 +226,12 @@ public class List<Element>: Printable, SequenceType {
 		of the List.
 	*/
 	public func insertAtBack(element: Element?) {
-		var z: NodeType
+		var z: ListNode<Element>
 		if 0 == count {
-			z = NodeType(next: nil, previous: nil,  element: element)
+			z = ListNode<Element>(next: nil, previous: nil,  element: element)
 			head = z
 		} else {
-			z = NodeType(next: nil, previous: tail, element: element)
+			z = ListNode<Element>(next: nil, previous: tail, element: element)
 			tail!.next = z
 		}
 		tail = z
@@ -282,10 +281,10 @@ public class List<Element>: Printable, SequenceType {
 		Insert a new element before the cursor position.
 	*/
 	public func insertBeforeCursor(element: Element?) {
-		if nil == current || head === current {
+		if nil === current || head === current {
 			insertAtFront(element)
 		} else {
-			let z: NodeType = NodeType(next: current, previous: current!.previous,  element: element)
+			let z: ListNode<Element> = ListNode<Element>(next: current, previous: current!.previous,  element: element)
 			current!.previous?.next = z
 			current!.previous = z
 			++count
@@ -297,10 +296,10 @@ public class List<Element>: Printable, SequenceType {
 		Insert a new element after the cursor position.
 	*/
 	public func insertAfterCursor(element: Element?) {
-		if nil == current || tail === current {
+		if nil === current || tail === current {
 			insertAtBack(element)
 		} else {
-			let z: NodeType = NodeType(next: current!.next, previous: current,  element: element)
+			let z: ListNode<Element> = ListNode<Element>(next: current!.next, previous: current,  element: element)
 			current!.next?.previous = z
 			current!.next = z
 			++count

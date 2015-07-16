@@ -16,13 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-	A Deque is a combination between a Stack and Queue. It allows for
-	access of the latest and oldest elements, as well as, allows insertion
-	of elements to be placed at the back or front of the structure. The
-	following Deque implementation is backed by a List structure.
-*/
-public class Deque<Element>: Printable, SequenceType {
+public class Deque<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 
 	/**

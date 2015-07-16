@@ -16,15 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-	A powerful data structure that is backed by a RedBlackTree using an order
-	statistic. This allows for manipulation and access of the data as if an array,
-	while maintaining log(n) performance on all operations. Items in a MultiTree
-	may not be uniquely keyed.
-*/
-public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
-	internal typealias TreeType = MultiTree<Key, Value>
-
+public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	/**
 		description
 		Conforms to the Printable Protocol. Outputs the
@@ -39,7 +31,7 @@ public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 		Constructor
 	*/
 	public override init() {
-		super.init(unique: false)
+		super.init(uniqueValues: false)
 	}
 
 	/**
@@ -48,7 +40,7 @@ public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(keys: Key...) -> TreeType {
+	public func search(keys: Key...) -> MultiTree<Key, Value> {
 		return search(keys)
 	}
 
@@ -58,8 +50,8 @@ public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(array: Array<Key>) -> TreeType {
-		var tree: TreeType = TreeType()
+	public func search(array: Array<Key>) -> MultiTree<Key, Value> {
+		var tree: MultiTree<Key, Value> = MultiTree<Key, Value>()
 		for key: Key in array {
 			subtree(key, node: root, tree: &tree)
 		}
@@ -71,7 +63,7 @@ public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 		Traverses the Tree and looking for a key value.
 		This is used for internal search.
 	*/
-	internal func subtree(key: Key, node: NodeType, inout tree: TreeType) {
+	internal func subtree(key: Key, node: RedBlackNode<Key, Value>, inout tree: MultiTree<Key, Value>) {
 		if node !== sentinel {
 			if key == node.key {
 				tree.insert(key, value: node.value)
@@ -82,7 +74,7 @@ public class MultiTree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	}
 }
 
-public func +<Key: Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
+public func +<Key : Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
 	let t: MultiTree<Key, Value> = MultiTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
@@ -95,7 +87,7 @@ public func +<Key: Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree
 	return t
 }
 
-public func -<Key: Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
+public func -<Key : Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
 	let t: MultiTree<Key, Value> = MultiTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]

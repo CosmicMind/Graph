@@ -16,15 +16,13 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class OrderedMultiSet<Element: Comparable>: Probability<Element>, CollectionType, Comparable, Equatable, Printable {
-	internal typealias TreeType = MultiTree<Element, Element>
-	internal typealias SetType = OrderedMultiSet<Element>
+public class OrderedMultiSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, Printable {
 	internal typealias Generator = GeneratorOf<Element>
 
 	/**
 		tree
 	*/
-	internal var tree: TreeType
+	internal var tree: MultiTree<Element, Element>
 
 	/**
 		description
@@ -91,7 +89,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		Constructor
 	*/
 	public override init() {
-		tree = TreeType()
+		tree = MultiTree<Element, Element>()
 	}
 
 	/**
@@ -140,7 +138,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 
 	/**
 		countOf
-		Conforms to _ProbabilityType protocol.
+		Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(members: Element...) -> Int {
 		return tree.countOf(members)
@@ -207,7 +205,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		isDisjointWith
 		Returns true if no members in the set are in a finite sequence of Sets.
 	*/
-	public func isDisjointWith(sets: SetType...) -> Bool {
+	public func isDisjointWith(sets: OrderedMultiSet<Element>...) -> Bool {
 		return isDisjointWith(sets)
 	}
 
@@ -215,7 +213,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		isDisjointWith
 		Returns true if no members in the set are in a finite sequence of Sets.
 	*/
-	public func isDisjointWith(sets: Array<SetType>) -> Bool {
+	public func isDisjointWith(sets: Array<OrderedMultiSet<Element>>) -> Bool {
 		return intersect(sets).isEmpty
 	}
 
@@ -223,7 +221,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		subtract
 		Return a new set with elements in this set that do not occur in a finite sequence of Sets.
 	*/
-	public func subtract(sets: SetType...) -> SetType {
+	public func subtract(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
 		return subtract(sets)
 	}
 
@@ -231,8 +229,8 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		subtract
 		Return a new set with elements in this set that do not occur in a finite sequence of Sets.
 	*/
-	public func subtract(sets: Array<SetType>) -> SetType {
-		let s: SetType = SetType()
+	public func subtract(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
+		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
 		let o: OrderedSet<Element> = OrderedSet<Element>()
 		for x in self {
 			o.insert(x)
@@ -258,7 +256,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		subtractInPlace
 		Remove all members in the set that occur in a finite sequence of Sets.
 	*/
-	public func subtractInPlace(sets: SetType...) {
+	public func subtractInPlace(sets: OrderedMultiSet<Element>...) {
 		return subtractInPlace(sets)
 	}
 
@@ -266,8 +264,8 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		subtractInPlace
 		Remove all members in the set that occur in a finite sequence of Sets.
 	*/
-	public func subtractInPlace(sets: Array<SetType>) {
-		let s: SetType = subtract(sets)
+	public func subtractInPlace(sets: Array<OrderedMultiSet<Element>>) {
+		let s: OrderedMultiSet<Element> = subtract(sets)
 		removeAll()
 		for x in s {
 			insert(x)
@@ -278,7 +276,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		intersect
 		Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
-	public func intersect(sets: SetType...) -> SetType {
+	public func intersect(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
 		return intersect(sets)
 	}
 
@@ -286,8 +284,8 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		intersect
 		Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
-	public func intersect(sets: Array<SetType>) -> SetType {
-		let s: SetType = SetType()
+	public func intersect(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
+		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
 		let o: OrderedSet<Element> = OrderedSet<Element>()
 		for x in self {
 			o.insert(x)
@@ -321,7 +319,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		intersectInPlace
 		Insert elements of a finite sequence of Sets.
 	*/
-	public func intersectInPlace(sets: SetType...) {
+	public func intersectInPlace(sets: OrderedMultiSet<Element>...) {
 		intersectInPlace(sets)
 	}
 
@@ -329,8 +327,8 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		intersectInPlace
 		Remove any members of this set that aren't also in a finite sequence of Sets.
 	*/
-	public func intersectInPlace(sets: Array<SetType>) {
-		let s: SetType = intersect(sets)
+	public func intersectInPlace(sets: Array<OrderedMultiSet<Element>>) {
+		let s: OrderedMultiSet<Element> = intersect(sets)
 		removeAll()
 		for x in s {
 			insert(x)
@@ -341,7 +339,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		union
 		Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
-	public func union(sets: SetType...) -> SetType {
+	public func union(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
 		return union(sets)
 	}
 
@@ -349,8 +347,8 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		union
 		Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
-	public func union(sets: Array<SetType>) -> SetType {
-		let s: SetType = SetType()
+	public func union(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
+		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
 		for u in sets {
 			for x in u {
 				s.insert(x)
@@ -366,7 +364,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		unionInPlace
 		Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
-	public func unionInPlace(sets: SetType...) {
+	public func unionInPlace(sets: OrderedMultiSet<Element>...) {
 		unionInPlace(sets)
 	}
 
@@ -374,8 +372,8 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		unionInPlace
 		Insert elements of a finite sequence of Sets.
 	*/
-	public func unionInPlace(sets: Array<SetType>) {
-		let s: SetType = union(sets)
+	public func unionInPlace(sets: Array<OrderedMultiSet<Element>>) {
+		let s: OrderedMultiSet<Element> = union(sets)
 		removeAll()
 		for x in s {
 			insert(x)
@@ -386,7 +384,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		isSubsetOf
 		Returns true if the set is a subset of a finite sequence as a Set.
 	*/
-	public func isSubsetOf(set: SetType) -> Bool {
+	public func isSubsetOf(set: OrderedMultiSet<Element>) -> Bool {
 		if count > set.count {
 			return false
 		}
@@ -397,7 +395,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		isSupersetOf
 		Returns true if the set is a superset of a finite sequence as a Set.
 	*/
-	public func isSupersetOf(set: SetType) -> Bool {
+	public func isSupersetOf(set: OrderedMultiSet<Element>) -> Bool {
 		if count < set.count {
 			return false
 		}
@@ -408,7 +406,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		isStrictSubsetOf
 		Returns true if the set is a subset of a finite sequence as a Set but not equal.
 	*/
-	public func isStrictSubsetOf(set: SetType) -> Bool {
+	public func isStrictSubsetOf(set: OrderedMultiSet<Element>) -> Bool {
 		return count < set.count && isSubsetOf(set)
 	}
 
@@ -416,7 +414,7 @@ public class OrderedMultiSet<Element: Comparable>: Probability<Element>, Collect
 		isStrictSupersetOf
 		Returns true if the set is a superset of a finite sequence as a Set but not equal.
 	*/
-	public func isStrictSupersetOf(set: SetType) -> Bool {
+	public func isStrictSupersetOf(set: OrderedMultiSet<Element>) -> Bool {
 		return count > set.count && isSupersetOf(set)
 	}
 }
@@ -433,26 +431,26 @@ public func ==<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedM
 	return true
 }
 
-public func +<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
+public func +<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 	return lhs.union(rhs)
 }
 
-public func -<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
+public func -<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 	return lhs.subtract(rhs)
 }
 
-public func <=<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+public func <=<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
 	return lhs.isSubsetOf(rhs)
 }
 
-public func >=<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+public func >=<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
 	return lhs.isSupersetOf(rhs)
 }
 
-public func ><Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+public func ><Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
 	return lhs.isStrictSupersetOf(rhs)
 }
 
-public func <<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+public func <<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
 	return lhs.isStrictSubsetOf(rhs)
 }

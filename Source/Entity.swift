@@ -18,11 +18,8 @@
 
 import Foundation
 
-/**
-	Represents Entity Nodes, which are person, places, or things -- nouns.
-*/
 @objc(Entity)
-public class Entity: NSObject {
+public class Entity : NSObject {
 	internal let node: ManagedEntity
 
 	/**
@@ -228,9 +225,9 @@ public class Entity: NSObject {
     }
 }
 
-extension Entity: Equatable, Printable {
+extension Entity : Equatable, Printable {
 	override public var description: String {
-		return "{id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)}"
+		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
 	}
 }
 

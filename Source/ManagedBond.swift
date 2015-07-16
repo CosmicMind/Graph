@@ -20,7 +20,7 @@
 import CoreData
 
 @objc(ManagedBond)
-internal class ManagedBond: NSManagedObject {
+internal class ManagedBond : NSManagedObject {
 	@NSManaged internal var nodeClass: String
 	@NSManaged internal var type: String
 	@NSManaged internal var createdDate: NSDate

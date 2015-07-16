@@ -16,15 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-	A powerful data structure that is backed by a RedBlackTree using an order
-	statistic. This allows for manipulation and access of the data as if an array,
-	while maintaining log(n) performance on all operations. All items in a Tree
-	are uniquely keyed.
-*/
-public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
-	internal typealias TreeType = Tree<Key, Value>
-
+public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	/**
 		description
 		Conforms to the Printable Protocol. Outputs the
@@ -39,7 +31,7 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 		Constructor
 	*/
 	public override init() {
-		super.init(unique: true)
+		super.init(uniqueValues: true)
 	}
 
 	/**
@@ -48,7 +40,7 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(keys: Key...) -> TreeType {
+	public func search(keys: Key...) -> Tree<Key, Value> {
 		return search(keys)
 	}
 
@@ -58,8 +50,8 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(array: Array<Key>) -> TreeType {
-		var tree: TreeType = TreeType()
+	public func search(array: Array<Key>) -> Tree<Key, Value> {
+		var tree: Tree<Key, Value> = Tree<Key, Value>()
 		for key: Key in array {
 			subtree(key, node: root, tree: &tree)
 		}
@@ -71,7 +63,7 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 		Traverses the Tree and looking for a key value.
 		This is used for internal search.
 	*/
-	internal func subtree(key: Key, node: NodeType, inout tree: TreeType) {
+	internal func subtree(key: Key, node: RedBlackNode<Key, Value>, inout tree: Tree<Key, Value>) {
 		if sentinel !== node {
 			if key == node.key {
 				tree.insert(key, value: node.value)
@@ -82,7 +74,7 @@ public class Tree<Key: Comparable, Value>: RedBlackTree<Key, Value> {
 	}
 }
 
-public func +<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
+public func +<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
 	let t: Tree<Key, Value> = Tree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
@@ -95,7 +87,7 @@ public func +<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Valu
 	return t
 }
 
-public func -<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
+public func -<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
 	let t: Tree<Key, Value> = Tree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
