@@ -32,7 +32,7 @@ class RedBlackTreeTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>(unique: true)
+		let s: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>(uniqueValues: true)
 		
 		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
 		
@@ -75,7 +75,7 @@ class RedBlackTreeTests: XCTestCase {
 	}
 	
 	func testString() {
-		let s: RedBlackTree<String, Array<Int>> = RedBlackTree<String, Array<Int>>(unique: false)
+		let s: RedBlackTree<String, Array<Int>> = RedBlackTree<String, Array<Int>>(uniqueValues: false)
 		s.insert("friends", value: [1, 2, 3])
 		s["menu"] = [11, 22, 33]
 		

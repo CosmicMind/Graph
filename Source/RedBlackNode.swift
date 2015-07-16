@@ -17,31 +17,29 @@
 */
 
 internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Printable {
-	internal typealias NodeType = RedBlackNode<Key, Value>
-
 	/**
 		parent
 		A reference to the parent node of a given node.
 	*/
-	internal var parent: NodeType!
+	internal var parent: RedBlackNode<Key, Value>!
 
 	/**
 		left
 		A reference to the left child node of a given node.
 	*/
-	internal var left: NodeType!
+	internal var left: RedBlackNode<Key, Value>!
 
 	/**
 		right
 		A reference to the right child node of a given node.
 	*/
-	internal var right: NodeType!
+	internal var right: RedBlackNode<Key, Value>!
 
 	/**
-		red
-		A boolean indicating whether te node is marked red or black.
+		isRed
+		A boolean indicating whether te node is marked isRed or black.
 	*/
-	internal var red: Bool
+	internal var isRed: Bool
 
 	/**
 		order
@@ -59,7 +57,7 @@ internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Pr
 
 	/**
 		value
-		Satellite data stored in the node.
+		Satellite data stoisRed in the node.
 	*/
 	internal var value: Value?
 
@@ -76,7 +74,7 @@ internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Pr
 		Constructor used for sentinel nodes.
 	*/
 	internal init() {
-		red = false
+		isRed = false
 		order = 0
 	}
 
@@ -84,13 +82,13 @@ internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Pr
 		init
 		Constructor used for nodes that store data.
 	*/
-	internal init(parent: NodeType, sentinel: NodeType, key: Key, value: Value?) {
+	internal init(parent: RedBlackNode<Key, Value>, sentinel: RedBlackNode<Key, Value>, key: Key, value: Value?) {
 		self.key = key
 		self.value = value
 		self.parent = parent
 		left = sentinel
 		right = sentinel
-		red = true
+		isRed = true
 		order = 1
 	}
 }

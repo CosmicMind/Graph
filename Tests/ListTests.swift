@@ -48,12 +48,12 @@ class ListTests: XCTestCase {
 		l.insertAtBack(7)
 		
 		l.cursorToFront()
-		while !l.cursorAtBack {
+		while !l.isCursorAtBack {
 			l.next
 		}
 
 		l.cursorToBack()
-		while !l.cursorAtFront {
+		while !l.isCursorAtFront {
 			l.previous
 		}
 
