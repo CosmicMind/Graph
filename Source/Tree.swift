@@ -17,8 +17,6 @@
 */
 
 public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
-	internal typealias TreeType = Tree<Key, Value>
-
 	/**
 		description
 		Conforms to the Printable Protocol. Outputs the
@@ -33,7 +31,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 		Constructor
 	*/
 	public override init() {
-		super.init(unique: true)
+		super.init(uniqueValues: true)
 	}
 
 	/**
@@ -42,7 +40,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(keys: Key...) -> TreeType {
+	public func search(keys: Key...) -> Tree<Key, Value> {
 		return search(keys)
 	}
 
@@ -52,8 +50,8 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(array: Array<Key>) -> TreeType {
-		var tree: TreeType = TreeType()
+	public func search(array: Array<Key>) -> Tree<Key, Value> {
+		var tree: Tree<Key, Value> = Tree<Key, Value>()
 		for key: Key in array {
 			subtree(key, node: root, tree: &tree)
 		}
@@ -65,7 +63,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 		Traverses the Tree and looking for a key value.
 		This is used for internal search.
 	*/
-	internal func subtree(key: Key, node: NodeType, inout tree: TreeType) {
+	internal func subtree(key: Key, node: RedBlackNode<Key, Value>, inout tree: Tree<Key, Value>) {
 		if sentinel !== node {
 			if key == node.key {
 				tree.insert(key, value: node.value)
