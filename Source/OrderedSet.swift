@@ -17,14 +17,12 @@
 */
 
 public class OrderedSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, Printable {
-	internal typealias TreeType = Tree<Element, Element>
-	internal typealias SetType = OrderedSet<Element>
 	internal typealias Generator = GeneratorOf<Element>
 
 	/**
 		tree
 	*/
-	internal var tree: TreeType
+	internal var tree: Tree<Element, Element>
 
 	/**
 		description
@@ -91,7 +89,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		Constructor
 	*/
 	public override init() {
-		tree = TreeType()
+		tree = Tree<Element, Element>()
 	}
 
 	/**
@@ -207,7 +205,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		isDisjointWith
 		Returns true if no members in the set are in a finite sequence of Sets.
 	*/
-	public func isDisjointWith(sets: SetType...) -> Bool {
+	public func isDisjointWith(sets: OrderedSet<Element>...) -> Bool {
 		return isDisjointWith(sets)
 	}
 
@@ -215,7 +213,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		isDisjointWith
 		Returns true if no members in the set are in a finite sequence of Sets.
 	*/
-	public func isDisjointWith(sets: Array<SetType>) -> Bool {
+	public func isDisjointWith(sets: Array<OrderedSet<Element>>) -> Bool {
 		return intersect(sets).isEmpty
 	}
 
@@ -223,7 +221,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		subtract
 		Return a new set with elements in this set that do not occur in a finite sequence of Sets.
 	*/
-	public func subtract(sets: SetType...) -> SetType {
+	public func subtract(sets: OrderedSet<Element>...) -> OrderedSet<Element> {
 		return subtract(sets)
 	}
 
@@ -231,8 +229,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		subtract
 		Return a new set with elements in this set that do not occur in a finite sequence of Sets.
 	*/
-	public func subtract(sets: Array<SetType>) -> SetType {
-		let s: SetType = SetType()
+	public func subtract(sets: Array<OrderedSet<Element>>) -> OrderedSet<Element> {
+		let s: OrderedSet<Element> = OrderedSet<Element>()
 		for x in self {
 			var toInsert: Bool = true
 			for u in sets {
@@ -252,7 +250,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		subtractInPlace
 		Remove all members in the set that occur in a finite sequence of Sets.
 	*/
-	public func subtractInPlace(sets: SetType...) {
+	public func subtractInPlace(sets: OrderedSet<Element>...) {
 		return subtractInPlace(sets)
 	}
 
@@ -260,8 +258,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		subtractInPlace
 		Remove all members in the set that occur in a finite sequence of Sets.
 	*/
-	public func subtractInPlace(sets: Array<SetType>) {
-		let s: SetType = subtract(sets)
+	public func subtractInPlace(sets: Array<OrderedSet<Element>>) {
+		let s: OrderedSet<Element> = subtract(sets)
 		removeAll()
 		for x in s {
 			insert(x)
@@ -272,7 +270,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		intersect
 		Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
-	public func intersect(sets: SetType...) -> SetType {
+	public func intersect(sets: OrderedSet<Element>...) -> OrderedSet<Element> {
 		return intersect(sets)
 	}
 
@@ -280,8 +278,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		intersect
 		Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
-	public func intersect(sets: Array<SetType>) -> SetType {
-		let s: SetType = SetType()
+	public func intersect(sets: Array<OrderedSet<Element>>) -> OrderedSet<Element> {
+		let s: OrderedSet<Element> = OrderedSet<Element>()
 		for x in self {
 			var toInsert: Bool = true
 			for u in sets {
@@ -301,7 +299,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		intersectInPlace
 		Insert elements of a finite sequence of Sets.
 	*/
-	public func intersectInPlace(sets: SetType...) {
+	public func intersectInPlace(sets: OrderedSet<Element>...) {
 		intersectInPlace(sets)
 	}
 
@@ -309,8 +307,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		intersectInPlace
 		Remove any members of this set that aren't also in a finite sequence of Sets.
 	*/
-	public func intersectInPlace(sets: Array<SetType>) {
-		let s: SetType = intersect(sets)
+	public func intersectInPlace(sets: Array<OrderedSet<Element>>) {
+		let s: OrderedSet<Element> = intersect(sets)
 		removeAll()
 		for x in s {
 			insert(x)
@@ -321,7 +319,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		union
 		Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
-	public func union(sets: SetType...) -> SetType {
+	public func union(sets: OrderedSet<Element>...) -> OrderedSet<Element> {
 		return union(sets)
 	}
 
@@ -329,8 +327,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		union
 		Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
-	public func union(sets: Array<SetType>) -> SetType {
-		let s: SetType = SetType()
+	public func union(sets: Array<OrderedSet<Element>>) -> OrderedSet<Element> {
+		let s: OrderedSet<Element> = OrderedSet<Element>()
 		for u in sets {
 			for x in u {
 				s.insert(x)
@@ -346,7 +344,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		unionInPlace
 		Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
-	public func unionInPlace(sets: SetType...) {
+	public func unionInPlace(sets: OrderedSet<Element>...) {
 		unionInPlace(sets)
 	}
 
@@ -354,8 +352,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		unionInPlace
 		Insert elements of a finite sequence of Sets.
 	*/
-	public func unionInPlace(sets: Array<SetType>) {
-		let s: SetType = union(sets)
+	public func unionInPlace(sets: Array<OrderedSet<Element>>) {
+		let s: OrderedSet<Element> = union(sets)
 		removeAll()
 		for x in s {
 			insert(x)
@@ -366,7 +364,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		isSubsetOf
 		Returns true if the set is a subset of a finite sequence as a Set.
 	*/
-	public func isSubsetOf(set: SetType) -> Bool {
+	public func isSubsetOf(set: OrderedSet<Element>) -> Bool {
 		if count > set.count {
 			return false
 		}
@@ -377,7 +375,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		isSupersetOf
 		Returns true if the set is a superset of a finite sequence as a Set.
 	*/
-	public func isSupersetOf(set: SetType) -> Bool {
+	public func isSupersetOf(set: OrderedSet<Element>) -> Bool {
 		if count < set.count {
 			return false
 		}
@@ -388,7 +386,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		isStrictSubsetOf
 		Returns true if the set is a subset of a finite sequence as a Set but not equal.
 	*/
-	public func isStrictSubsetOf(set: SetType) -> Bool {
+	public func isStrictSubsetOf(set: OrderedSet<Element>) -> Bool {
 		return count < set.count && isSubsetOf(set)
 	}
 
@@ -396,7 +394,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		isStrictSupersetOf
 		Returns true if the set is a superset of a finite sequence as a Set but not equal.
 	*/
-	public func isStrictSupersetOf(set: SetType) -> Bool {
+	public func isStrictSupersetOf(set: OrderedSet<Element>) -> Bool {
 		return count > set.count && isSupersetOf(set)
 	}
 }

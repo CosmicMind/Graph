@@ -17,8 +17,6 @@
 */
 
 public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, Printable {
-	private typealias TreeType = RedBlackTree<Key, Value>
-	internal typealias NodeType = RedBlackNode<Key, Value>
 	internal typealias Element = (key: Key, value: Value?)
 	internal typealias Generator = GeneratorOf<Element>
 
@@ -26,21 +24,21 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		sentinel
 		A node used to mark the end of a path in the tree.
 	*/
-	internal private(set) var sentinel: NodeType
+	internal private(set) var sentinel: RedBlackNode<Key, Value>
 
 	/**
 		root
 		The root of the tree data structure.
 	*/
-	internal private(set) var root: NodeType
+	internal private(set) var root: RedBlackNode<Key, Value>
 
 	/**
-		unique
+		isUnique
 		A boolean used to indicate whether to allow the
 		tree to store non-unique key values or only unique
 		key values.
 	*/
-	public private(set) var unique: Bool
+	public private(set) var isUnique: Bool
 
 	/**
 		internalDescription
@@ -117,8 +115,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		non-unique keys.
 	*/
 	public override init() {
-		unique = false
-		sentinel = NodeType()
+		isUnique = false
+		sentinel = RedBlackNode<Key, Value>()
 		root = sentinel
 	}
 
@@ -127,9 +125,9 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		Constructor where the tree is optionally allowed
 		to store uniqe or non-unique keys.
 	*/
-	public init(unique: Bool) {
-		self.unique = unique
-		sentinel = NodeType()
+	public init(uniqueValues: Bool) {
+		self.isUnique = uniqueValues
+		sentinel = RedBlackNode<Key, Value>()
 		root = sentinel
 	}
 
@@ -209,7 +207,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	*/
 	public func update(key: Key, value: Value?) -> Bool {
 		var updated: Bool = false
-		var x: NodeType = root
+		var x: RedBlackNode<Key, Value> = root
 		while x !== sentinel {
 			if key == x.key {
 				x.value = value
@@ -223,7 +221,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		find
 		Finds the first instance in a non-unique tree and only instance
-		in unique tree of a given keyed node.
+		in isUnique tree of a given keyed node.
 	*/
 	public func find(key: Key) -> Value? {
 		return internalFindByKey(key).value
@@ -234,12 +232,12 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		Allows array like access of the index.
 		Items are kept in order, so when iterating
 		through the items, they are returned in their
-		ordered form.
+		ordeisRed form.
 	*/
 	public subscript(index: Int) -> Element {
 		get {
 			if !isIndexValid(index) {
-				let x: NodeType = internalSelect(root, order: index + 1)
+				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
 				return (x.key, x.value)
 			} else {
 				assert(false, "[GraphKit Error: Index out of bounds.]")
@@ -247,7 +245,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		}
 		set(element) {
 			if !isIndexValid(index) {
-				let x: NodeType = internalSelect(root, order: index + 1)
+				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
 				if x.key != element.key {
 					assert(false, "[GraphKit Error: Key error.]")
 				}
@@ -269,7 +267,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			return internalFindByKey(name as! Key).value
 		}
 		set(value) {
-			let node: NodeType = internalFindByKey(name as! Key)
+			let node: RedBlackNode<Key, Value> = internalFindByKey(name as! Key)
 			if sentinel === node {
 				insert(name as! Key, value: value!)
 			} else {
@@ -282,7 +280,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		select
 		Searches for a node based on the order statistic value.
 	*/
-	internal func select(x: NodeType, order: Int) -> NodeType {
+	internal func select(x: RedBlackNode<Key, Value>, order: Int) -> RedBlackNode<Key, Value> {
 		return internalSelect(x, order: order)
 	}
 
@@ -290,13 +288,13 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		internalInsert
 		Insert a new node with the given key and value.
 	*/
-	private func internalInsert(key: Key, value: Value?) -> NodeType {
-		if unique && sentinel !== internalFindByKey(key) {
+	private func internalInsert(key: Key, value: Value?) -> RedBlackNode<Key, Value> {
+		if isUnique && sentinel !== internalFindByKey(key) {
 			return sentinel;
 		}
 
-		var y: NodeType = sentinel
-		var x: NodeType = root
+		var y: RedBlackNode<Key, Value> = sentinel
+		var x: RedBlackNode<Key, Value> = root
 
 		while x !== sentinel {
 			y = x
@@ -304,7 +302,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			x = key < x.key ? x.left : x.right
 		}
 
-		var z: NodeType = NodeType(parent: y, sentinel: sentinel, key: key, value: value)
+		var z: RedBlackNode<Key, Value> = RedBlackNode<Key, Value>(parent: y, sentinel: sentinel, key: key, value: value)
 
 		if y === sentinel {
 			root = z
@@ -323,50 +321,50 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		insertCleanUp
 		The clean up procedure needed to maintain the RedBlackTree balance.
 	*/
-	private func insertCleanUp(var z: NodeType) {
-		while z.parent.red {
+	private func insertCleanUp(var z: RedBlackNode<Key, Value>) {
+		while z.parent.isRed {
 			if z.parent === z.parent.parent.left {
-				var y: NodeType = z.parent.parent.right
-				// violation 1, parent child relationship re to red
-				if y.red {
-					z.parent.red = false
-					y.red = false
-					z.parent.parent.red = true
+				var y: RedBlackNode<Key, Value> = z.parent.parent.right
+				// violation 1, parent child relationship re to isRed
+				if y.isRed {
+					z.parent.isRed = false
+					y.isRed = false
+					z.parent.parent.isRed = true
 					z = z.parent.parent
 				} else {
-					// case 2, parent is red, uncle is black
+					// case 2, parent is isRed, uncle is black
 					if z === z.parent.right {
 						z = z.parent
 						leftRotate(z)
 					}
 					// case 3, balance colours
-					z.parent.red = false
-					z.parent.parent.red = true
+					z.parent.isRed = false
+					z.parent.parent.isRed = true
 					rightRotate(z.parent.parent)
 				}
 			} else {
 				// symetric
-				var y: NodeType = z.parent.parent.left
-				// violation 1, parent child relationship re to red
-				if y.red {
-					z.parent.red = false
-					y.red = false
-					z.parent.parent.red = true
+				var y: RedBlackNode<Key, Value> = z.parent.parent.left
+				// violation 1, parent child relationship re to isRed
+				if y.isRed {
+					z.parent.isRed = false
+					y.isRed = false
+					z.parent.parent.isRed = true
 					z = z.parent.parent
 				} else {
-					// case 2, parent is red, uncle is black
+					// case 2, parent is isRed, uncle is black
 					if z === z.parent.left {
 						z = z.parent
 						rightRotate(z)
 					}
 					// case 3, balance colours
-					z.parent.red = false
-					z.parent.parent.red = true
+					z.parent.isRed = false
+					z.parent.parent.isRed = true
 					leftRotate(z.parent.parent)
 				}
 			}
 		}
-		root.red = false
+		root.isRed = false
 	}
 
 	/**
@@ -374,14 +372,14 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		Removes a node with the given key value and returns that
 		node. If the value does not exist, the sentinel is returned.
 	*/
-	private func internalRemove(key: Key) -> NodeType {
-		var z: NodeType = internalFindByKey(key)
+	private func internalRemove(key: Key) -> RedBlackNode<Key, Value> {
+		var z: RedBlackNode<Key, Value> = internalFindByKey(key)
 		if z === sentinel {
 			return sentinel
 		}
 
 		if z !== root {
-			var t: NodeType = z.parent
+			var t: RedBlackNode<Key, Value> = z.parent
 			while t !== root {
 				--t.order
 				t = t.parent
@@ -390,9 +388,9 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		}
 
 
-		var x: NodeType!
-		var y: NodeType = z
-		var red: Bool = y.red
+		var x: RedBlackNode<Key, Value>!
+		var y: RedBlackNode<Key, Value> = z
+		var isRed: Bool = y.isRed
 
 		if z.left === sentinel {
 			x = z.right
@@ -402,7 +400,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			transplant(z, v: z.left)
 		} else {
 			y = minimum(z.right)
-			red = y.red
+			isRed = y.isRed
 			x = y.right
 			if y.parent === z {
 				x.parent = y
@@ -410,7 +408,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 				transplant(y, v: y.right)
 				y.right = z.right
 				y.right.parent = y
-				var t: NodeType = x.parent
+				var t: RedBlackNode<Key, Value> = x.parent
 				while t !== y {
 					--t.order
 					t = t.parent
@@ -420,10 +418,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			transplant(z, v: y)
 			y.left = z.left
 			y.left.parent = y
-			y.red = z.red
+			y.isRed = z.isRed
 			y.order = y.left.order + y.right.order + 1
 		}
-		if !red {
+		if !isRed {
 			removeCleanUp(x)
 		}
 		--count
@@ -435,67 +433,67 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		After a successful removal of a node, the RedBlackTree
 		is rebalanced by this method.
 	*/
-	private func removeCleanUp(var x: NodeType) {
-		while x !== root && !x.red {
+	private func removeCleanUp(var x: RedBlackNode<Key, Value>) {
+		while x !== root && !x.isRed {
 			if x === x.parent.left {
-				var y: NodeType = x.parent.right
-				if y.red {
-					y.red = false
-					x.parent.red = true
+				var y: RedBlackNode<Key, Value> = x.parent.right
+				if y.isRed {
+					y.isRed = false
+					x.parent.isRed = true
 					leftRotate(x.parent)
 					y = x.parent.right
 				}
-				if !y.left.red && !y.right.red {
-					y.red = true
+				if !y.left.isRed && !y.right.isRed {
+					y.isRed = true
 					x = x.parent
 				} else {
-					if !y.right.red {
-						y.left.red = false
-						y.red = true
+					if !y.right.isRed {
+						y.left.isRed = false
+						y.isRed = true
 						rightRotate(y)
 						y = x.parent.right
 					}
-					y.red = x.parent.red
-					x.parent.red = false
-					y.right.red = false
+					y.isRed = x.parent.isRed
+					x.parent.isRed = false
+					y.right.isRed = false
 					leftRotate(x.parent)
 					x = root
 				}
 			} else { // symetric left and right
-				var y: NodeType = x.parent.left
-				if y.red {
-					y.red = false
-					x.parent.red = true
+				var y: RedBlackNode<Key, Value> = x.parent.left
+				if y.isRed {
+					y.isRed = false
+					x.parent.isRed = true
 					rightRotate(x.parent)
 					y = x.parent.left
 				}
-				if !y.right.red && !y.left.red {
-					y.red = true
+				if !y.right.isRed && !y.left.isRed {
+					y.isRed = true
 					x = x.parent
 				} else {
-					if !y.left.red {
-						y.right.red = false
-						y.red = true
+					if !y.left.isRed {
+						y.right.isRed = false
+						y.isRed = true
 						leftRotate(y)
 						y = x.parent.left
 					}
-					y.red = x.parent.red
-					x.parent.red = false
-					y.left.red = false
+					y.isRed = x.parent.isRed
+					x.parent.isRed = false
+					y.left.isRed = false
 					rightRotate(x.parent)
 					x = root
 				}
 			}
 		}
-		x.red = false
+		x.isRed = false
 	}
 
 	/**
 		minimum
 		Finds the minimum keyed node.
 	*/
-	private func minimum(var x: NodeType) -> NodeType {
-		var y: NodeType = sentinel
+	private func minimum(var x: RedBlackNode<Key, Value>) -> RedBlackNode<Key, Value> {
+		var y: RedBlackNode<Key, Value> = sentinel
 		while x !== sentinel {
 			y = x
 			x = x.left
@@ -507,7 +505,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		transplant
 		Swaps two subtrees in the tree.
 	*/
-	private func transplant(u: NodeType, v: NodeType) {
+	private func transplant(u: RedBlackNode<Key, Value>, v: RedBlackNode<Key, Value>) {
 		if u.parent === sentinel {
 			root = v
 		} else if u === u.parent.left {
@@ -523,8 +521,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		Rotates the nodes to satisfy the RedBlackTree
 		balance property.
 	*/
-	private func leftRotate(x: NodeType) {
-		var y: NodeType = x.right
+	private func leftRotate(x: RedBlackNode<Key, Value>) {
+		var y: RedBlackNode<Key, Value> = x.right
 
 		x.right = y.left
 		if sentinel !== y.left {
@@ -552,8 +550,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		Rotates the nodes to satisfy the RedBlackTree
 		balance property.
 	*/
-	private func rightRotate(y: NodeType) {
-		var x: NodeType = y.left
+	private func rightRotate(y: RedBlackNode<Key, Value>) {
+		var x: RedBlackNode<Key, Value> = y.left
 
 		y.left = x.right
 		if sentinel !== x.right {
@@ -580,8 +578,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		internalFindByKey
 		Finds a node with a given key value.
 	*/
-	private func internalFindByKey(key: Key) -> NodeType {
-		var z: NodeType = root
+	private func internalFindByKey(key: Key) -> RedBlackNode<Key, Value> {
+		var z: RedBlackNode<Key, Value> = root
 		while z !== sentinel {
 			if key == z.key {
 				return z
@@ -595,7 +593,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		internalSelect
 		Internally searches for a node by the order statistic value.
 	*/
-	private func internalSelect(x: NodeType, order: Int) -> NodeType {
+	private func internalSelect(x: RedBlackNode<Key, Value>, order: Int) -> RedBlackNode<Key, Value> {
 		var r: Int = x.left.order + 1
 		if order == r {
 			return x
@@ -609,7 +607,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		internalCount
 		Traverses the Tree while counting number of times a key appears.
 	*/
-	private func internalCount(key: Key, node: NodeType, inout count: Int) {
+	private func internalCount(key: Key, node: RedBlackNode<Key, Value>, inout count: Int) {
 		if sentinel !== node {
 			if key == node.key {
 				++count

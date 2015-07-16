@@ -17,19 +17,17 @@
 */
 
 internal class ListNode<Element> : Printable {
-	private typealias NodeType = ListNode<Element>
-
 	/**
 		next
 		Points to the successor element in the List.
 	*/
-	internal var next: NodeType?
+	internal var next: ListNode<Element>?
 
 	/**
 		previous
 		points to the predacessor element in the List.
 	*/
-	internal var previous: NodeType?
+	internal var previous: ListNode<Element>?
 
 	/**
 		data
@@ -49,7 +47,7 @@ internal class ListNode<Element> : Printable {
 		init
 		Constructor.
 	*/
-	internal init(next: NodeType?, previous: NodeType?, element: Element?) {
+	internal init(next: ListNode<Element>?, previous: ListNode<Element>?, element: Element?) {
 		self.next = next
 		self.previous = previous
 		self.element = element
