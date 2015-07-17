@@ -39,8 +39,8 @@ internal class ManagedBond : NSManagedObject {
 	}
 
 	/**
-		init
-		Initializes the Model Object with e a given type.
+		:name:	init
+		:description:	Initializes the Model Object with e a given type.
 	*/
 	convenience internal init(type: String!) {
 		let g: Graph = Graph()
@@ -57,8 +57,8 @@ internal class ManagedBond : NSManagedObject {
 	}
 
 	/**
-		properties
-		Allows for Dictionary style coding, which maps to the internal properties Dictionary.
+		:name:	properties
+		:description:	Allows for Dictionary style coding, which maps to the internal properties Dictionary.
     */
 	internal subscript(name: String) -> AnyObject? {
 		get {
@@ -100,8 +100,8 @@ internal class ManagedBond : NSManagedObject {
 	}
 
     /**
-		addGroup
-		Adds a Group name to the list of Groups if it does not exist.
+		:name:	addGroup
+		:description:	Adds a Group name to the list of Groups if it does not exist.
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
@@ -113,8 +113,8 @@ internal class ManagedBond : NSManagedObject {
     }
 
     /**
-		hasGroup
-		Checks whether the Node is a part of the Group name passed or not.
+		:name:	hasGroup
+		:description:	Checks whether the Node is a part of the Group name passed or not.
     */
     internal func hasGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -127,8 +127,8 @@ internal class ManagedBond : NSManagedObject {
     }
 
     /**
-		removeGroup
-		Removes a Group name from the list of Groups if it exists.
+		:name:	removeGroup
+		:description:	Removes a Group name from the list of Groups if it exists.
     */
     internal func removeGroup(name: String!) -> Bool {
         for n in groupSet {
@@ -144,8 +144,8 @@ internal class ManagedBond : NSManagedObject {
     }
 
 	/**
-		delete
-		Marks the Model Object to be deleted from the Graph.
+		:name:	delete
+		:description:	Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
 		worker?.deleteObject(self)
@@ -155,8 +155,8 @@ internal class ManagedBond : NSManagedObject {
 extension ManagedBond {
 
 	/**
-		addPropertySetObject
-		Adds the Property to the propertySet for the Bond.
+		:name:	addPropertySetObject
+		:description:	Adds the Property to the propertySet for the Bond.
 	*/
 	func addPropertySetObject(value: BondProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
@@ -164,8 +164,8 @@ extension ManagedBond {
 	}
 
 	/**
-		removePropertySetObject
-		Removes the Property to the propertySet for the Bond.
+		:name:	removePropertySetObject
+		:description:	Removes the Property to the propertySet for the Bond.
 	*/
 	func removePropertySetObject(value: BondProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
@@ -173,8 +173,8 @@ extension ManagedBond {
 	}
 
 	/**
-		addGroupSetObject
-		Adds the Group to the groupSet for the Bond.
+		:name:	addGroupSetObject
+		:description:	Adds the Group to the groupSet for the Bond.
 	*/
 	func addGroupSetObject(value: BondGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
@@ -182,8 +182,8 @@ extension ManagedBond {
 	}
 
 	/**
-		removeGroupSetObject
-		Removes the Group to the groupSet for the Bond.
+		:name:	removeGroupSetObject
+		:description:	Removes the Group to the groupSet for the Bond.
 	*/
 	func removeGroupSetObject(value: BondGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet

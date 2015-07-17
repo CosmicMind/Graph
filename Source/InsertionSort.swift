@@ -18,7 +18,8 @@
 
 extension Sort {
 	/**
-		An implementation of the popular Insertion Sort algorithm.
+		:name: insertion
+		:description:	An implementation of the popular Insertion Sort algorithm.
 		An inplace sort that sorts small sized Arrays well in O(n^2) time.
 	*/
 	static public func insertion<Element : Comparable>(inout elements: Array<Element>) {

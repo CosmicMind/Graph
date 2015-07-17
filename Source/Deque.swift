@@ -20,22 +20,22 @@ public class Deque<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 
 	/**
-		list
-		Underlying element structure.
+		:name:	list
+		:description:	Underlying element structure.
 	*/
 	private var list: List<Element>
 
 	/**
-		count
-		Total number of items in the Deque.
+		:name:	count
+		:description:	Total number of items in the Deque.
 	*/
 	public var count: Int {
 		return list.count
 	}
 
 	/**
-		front
-		Get the element at the front of the Deque
+		:name:	front
+		:description:	Get the element at the front of the Deque
 		and do not remove it.
 	*/
 	public var front: Element? {
@@ -43,8 +43,8 @@ public class Deque<Element> : Printable, SequenceType {
 	}
 
 	/**
-		back
-		Get the element at the back of the Deque
+		:name:	back
+		:description:	Get the element at the back of the Deque
 		and do not remove it.
 	*/
 	public var back: Element? {
@@ -52,32 +52,32 @@ public class Deque<Element> : Printable, SequenceType {
 	}
 
 	/**
-		isEmpty
-		A boolean of whether the Deque is empty.
+		:name:	isEmpty
+		:description:	A boolean of whether the Deque is empty.
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
 	}
 
 	/**
-		description
-		Conforms to the Printable Protocol.
+		:name:	description
+		:description:	Conforms to the Printable Protocol.
 	*/
 	public var description: String {
 		return "Deque" + list.internalDescription
 	}
 
 	/**
-		init
-		Constructor.
+		:name:	init
+		:description:	Constructor.
 	*/
 	public init() {
 		list = List<Element>()
 	}
 
 	/**
-		generate
-		Conforms to the SequenceType Protocol. Returns
+		:name:	generate
+		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes.
 	*/
 	public func generate() -> Generator {
@@ -85,16 +85,16 @@ public class Deque<Element> : Printable, SequenceType {
 	}
 
 	/**
-		insertAtFront
-		Insert a new element at the front of the Deque.
+		:name:	insertAtFront
+		:description:	Insert a new element at the front of the Deque.
 	*/
 	public func insertAtFront(element: Element?) {
 		list.insertAtFront(element)
 	}
 
 	/**
-		removeAtFront
-		Get the element at the front of the Deque
+		:name:	removeAtFront
+		:description:	Get the element at the front of the Deque
 		and remove it.
 	*/
 	public func removeAtFront() -> Element? {
@@ -102,15 +102,16 @@ public class Deque<Element> : Printable, SequenceType {
 	}
 
 	/**
-		insertAtBack
-		Insert a new element at the back of the Deque.
+		:name:	insertAtBack
+		:description:	Insert a new element at the back of the Deque.
 	*/
 	public func insertAtBack(element: Element?) {
 		list.insertAtBack(element)
 	}
 
 	/**
-		Get the element at the back of the Deque
+		:name:	removeAtBack
+		:description:	Get the element at the back of the Deque
 		and remove it.
 	*/
 	public func removeAtBack() -> Element? {
@@ -118,8 +119,8 @@ public class Deque<Element> : Printable, SequenceType {
 	}
 
 	/**
-		removeAll
-		Remove all elements from the Deque.
+		:name:	removeAll
+		:description:	Remove all elements from the Deque.
 	*/
 	public func removeAll() {
 		list.removeAll()

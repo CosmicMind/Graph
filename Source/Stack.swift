@@ -20,22 +20,22 @@ public class Stack<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 
 	/**
-		list
-		Underlying data structure.
+		:name:	list
+		:description:	Underlying data structure.
 	*/
 	private var list: List<Element>
 
 	/**
-		count
-		Total number of items in the Stack.
+		:name:	count
+		:description:	Total number of items in the Stack.
 	*/
 	public var count: Int {
 		return list.count
 	}
 
 	/**
-		top
-		Get the latest element at the top
+		:name:	top
+		:description:	Get the latest element at the top
 		of the Stack and do not remove
 		it.
 	*/
@@ -44,32 +44,32 @@ public class Stack<Element> : Printable, SequenceType {
 	}
 
 	/**
-		isEmpty
-		A boolean of whether the Stack is empty.
+		:name:	isEmpty
+		:description:	A boolean of whether the Stack is empty.
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
 	}
 
 	/**
-		description
-		Conforms to the Printable Protocol.
+		:name:	description
+		:description:	Conforms to the Printable Protocol.
 	*/
 	public var description: String {
 		return "Stack" + list.internalDescription
 	}
 
 	/**
-		init
-		Constructor
+		:name:	init
+		:description:	Constructor.
 	*/
 	public init() {
 		list = List<Element>()
 	}
 
 	/**
-		generate
-		Conforms to the SequenceType Protocol. Returns
+		:name:	generate
+		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes.
 	*/
 	public func generate() -> Generator {
@@ -77,16 +77,16 @@ public class Stack<Element> : Printable, SequenceType {
 	}
 
 	/**
-		push
-		Insert a new element at the top of the Stack.
+		:name:	push
+		:description:	Insert a new element at the top of the Stack.
 	*/
 	public func push(element: Element?) {
 		list.insertAtFront(element)
 	}
 
 	/**
-		pop
-		Get the latest element at the top of
+		:name:	pop
+		:description:	Get the latest element at the top of
 		the Stack and remove it from the
 		Stack.
 	*/
@@ -95,8 +95,8 @@ public class Stack<Element> : Printable, SequenceType {
 	}
 
 	/**
-		removeAll
-		Remove all elements from the Stack.
+		:name:	removeAll
+		:description:	Remove all elements from the Stack.
 	*/
 	public func removeAll() {
 		list.removeAll()

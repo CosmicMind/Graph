@@ -18,60 +18,60 @@
 
 internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Printable {
 	/**
-		parent
-		A reference to the parent node of a given node.
+		:name:	parent
+		:description:	A reference to the parent node of a given node.
 	*/
 	internal var parent: RedBlackNode<Key, Value>!
 
 	/**
-		left
-		A reference to the left child node of a given node.
+		:name:	left
+		:description:	A reference to the left child node of a given node.
 	*/
 	internal var left: RedBlackNode<Key, Value>!
 
 	/**
-		right
-		A reference to the right child node of a given node.
+		:name:	right
+		:description:	A reference to the right child node of a given node.
 	*/
 	internal var right: RedBlackNode<Key, Value>!
 
 	/**
-		isRed
-		A boolean indicating whether te node is marked isRed or black.
+		:name:	isRed
+		:description:	A boolean indicating whether te node is marked isRed or black.
 	*/
 	internal var isRed: Bool
 
 	/**
-		order
-		Used to track the order statistic of a node, which maintains
+		:name:	order
+		:description:	Used to track the order statistic of a node, which maintains
 		key order in the tree.
 	*/
 	internal var order: Int
 
 	/**
-		key
-		A reference to the key value of the node, which is what organizes
+		:name:	key
+		:description:	A reference to the key value of the node, which is what organizes
 		a node in a given tree.
 	*/
 	internal var key: Key! = nil
 
 	/**
-		value
-		Satellite data stoisRed in the node.
+		:name:	value
+		:description:	Satellite data stoisRed in the node.
 	*/
 	internal var value: Value?
 
 	/**
-		description
-		Conforms to the Printable Protocol.
+		:name:	description
+		:description:	Conforms to the Printable Protocol.
 	*/
 	internal var description: String {
 		return "(\(key): \(value))"
 	}
 
 	/**
-		init
-		Constructor used for sentinel nodes.
+		:name:	init
+		:description:	Constructor used for sentinel nodes.
 	*/
 	internal init() {
 		isRed = false
@@ -79,8 +79,8 @@ internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Pr
 	}
 
 	/**
-		init
-		Constructor used for nodes that store data.
+		:name:	init
+		:description:	Constructor used for nodes that store data.
 	*/
 	internal init(parent: RedBlackNode<Key, Value>, sentinel: RedBlackNode<Key, Value>, key: Key, value: Value?) {
 		self.key = key

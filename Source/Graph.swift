@@ -105,8 +105,8 @@ public class Graph: NSObject {
 	public weak var delegate: GraphDelegate?
 
 	/**
-		init
-		Initializer for the Object.
+		:name:	init
+		:description:	Initializer for the Object.
 	*/
 	override public init() {
 		watching = Tree<String, Array<String>>()
@@ -114,24 +114,24 @@ public class Graph: NSObject {
 	}
 
 	/**
-		deinit
-		Deinitializes the Object, mainly removing itself as an observer for NSNotifications.
+		:name:	deinit
+		:description:	Deinitializes the Object, mainly removing itself as an observer for NSNotifications.
 	*/
 	deinit {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
 	}
 
 	/**
-		save
-		Updates the persistent layer by processing all the changes in the Graph.
+		:name:	save
+		:description:	Updates the persistent layer by processing all the changes in the Graph.
 	*/
 	public func save() {
 		save(nil)
 	}
 
 	/**
-		save
-		Updates the persistent layer by processing all the changes in the Graph.
+		:name:	save
+		:description:	Updates the persistent layer by processing all the changes in the Graph.
 	*/
 	public func save(completion: ((success: Bool, error: NSError?) -> ())?) {
 		var w: NSManagedObjectContext? = worker
@@ -148,80 +148,80 @@ public class Graph: NSObject {
 	}
 
 	/**
-		watch(Entity)
-		Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the spcified type.
+		:name:	watch(Entity)
+		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the spcified type.
 	*/
 	public func watch(Entity type: String!) {
 		addWatcher("type", value: type, index: GraphUtility.entityIndexName, entityDescriptionName: GraphUtility.entityDescriptionName, managedObjectClassName: GraphUtility.entityObjectClassName)
 	}
 
 	/**
-		watch(EntityGroup)
-		Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified group name.
+		:name:	watch(EntityGroup)
+		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified group name.
 	*/
 	public func watch(EntityGroup name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.entityGroupIndexName, entityDescriptionName: GraphUtility.entityGroupDescriptionName, managedObjectClassName: GraphUtility.entityGroupObjectClassName)
 	}
 
 	/**
-		watch(EntityProperty)
-		Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified property name.
+		:name:	watch(EntityProperty)
+		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified property name.
 	*/
 	public func watch(EntityProperty name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.entityPropertyIndexName, entityDescriptionName: GraphUtility.entityPropertyDescriptionName, managedObjectClassName: GraphUtility.entityPropertyObjectClassName)
 	}
 
 	/**
-		watch(Action)
-		Attaches the Graph instance to NotificationCenter in order to Observe changes for an Action with the spcified type.
+		:name:	watch(Action)
+		:description:	Attaches the Graph instance to NotificationCenter in order to Observe changes for an Action with the spcified type.
 	*/
 	public func watch(Action type: String!) {
 		addWatcher("type", value: type, index: GraphUtility.actionIndexName, entityDescriptionName: GraphUtility.actionDescriptionName, managedObjectClassName: GraphUtility.actionObjectClassName)
 	}
 
 	/**
-		watch(ActionGroup)
-		Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified group name.
+		:name:	watch(ActionGroup)
+		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified group name.
 	*/
 	public func watch(ActionGroup name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.actionGroupIndexName, entityDescriptionName: GraphUtility.actionGroupDescriptionName, managedObjectClassName: GraphUtility.actionGroupObjectClassName)
 	}
 
 	/**
-		watch(ActionProperty)
-		Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified property name.
+		:name:	watch(ActionProperty)
+		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified property name.
 	*/
 	public func watch(ActionProperty name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.actionPropertyIndexName, entityDescriptionName: GraphUtility.actionPropertyDescriptionName, managedObjectClassName: GraphUtility.actionPropertyObjectClassName)
 	}
 
 	/**
-		watch(Bond)
-		Attaches the Graph instance to NotificationCenter in order to Observe changes for an Bond with the spcified type.
+		:name:	watch(Bond)
+		:description:	Attaches the Graph instance to NotificationCenter in order to Observe changes for an Bond with the spcified type.
 	*/
 	public func watch(Bond type: String!) {
 		addWatcher("type", value: type, index: GraphUtility.bondIndexName, entityDescriptionName: GraphUtility.bondDescriptionName, managedObjectClassName: GraphUtility.bondObjectClassName)
 	}
 
 	/**
-		watch(BondGroup)
-		Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified group name.
+		:name:	watch(BondGroup)
+		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified group name.
 	*/
 	public func watch(BondGroup name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.bondGroupIndexName, entityDescriptionName: GraphUtility.bondGroupDescriptionName, managedObjectClassName: GraphUtility.bondGroupObjectClassName)
 	}
 
 	/**
-		watch(BondProperty)
-		Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified property name.
+		:name:	watch(BondProperty)
+		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified property name.
 	*/
 	public func watch(BondProperty name: String!) {
 		addWatcher("name", value: name, index: GraphUtility.bondPropertyIndexName, entityDescriptionName: GraphUtility.bondPropertyDescriptionName, managedObjectClassName: GraphUtility.bondPropertyObjectClassName)
 	}
 
 	/**
-		search(Entity)
-		Searches the Graph for Entity Objects with the following type LIKE ?.
+		:name:	search(Entity)
+		:description:	Searches the Graph for Entity Objects with the following type LIKE ?.
 	*/
 	public func search(Entity type: String) -> Tree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
@@ -234,8 +234,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(EntityGroup)
-		Searches the Graph for Entity Group Objects with the following name LIKE ?.
+		:name:	search(EntityGroup)
+		:description:	Searches the Graph for Entity Group Objects with the following name LIKE ?.
 	*/
 	public func search(EntityGroup name: String) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -248,8 +248,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(EntityGroupMap)
-		Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
+		:name:	search(EntityGroupMap)
+		:description:	Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
 	*/
 	public func search(EntityGroupMap name: String) -> Tree<String, MultiTree<String, Entity>> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -268,8 +268,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(EntityProperty)
-		Searches the Graph for Entity Property Objects with the following name LIKE ?.
+		:name:	search(EntityProperty)
+		:description:	Searches the Graph for Entity Property Objects with the following name LIKE ?.
 	*/
 	public func search(EntityProperty name: String) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -282,8 +282,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(EntityProperty)
-		Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
+		:name:	search(EntityProperty)
+		:description:	Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(EntityProperty name: String, value: String) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
@@ -296,8 +296,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(EntityProperty)
-		Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
+		:name:	search(EntityProperty)
+		:description:	Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(EntityProperty name: String, value: Int) -> MultiTree<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
@@ -310,8 +310,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(Action)
-		Searches the Graph for Action Objects with the following type LIKE ?.
+		:name:	search(Action)
+		:description:	Searches the Graph for Action Objects with the following type LIKE ?.
 	*/
 	public func search(Action type: String) -> Tree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
@@ -324,8 +324,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(ActionGroup)
-		Searches the Graph for Action Group Objects with the following name LIKE ?.
+		:name:	search(ActionGroup)
+		:description:	Searches the Graph for Action Group Objects with the following name LIKE ?.
 	*/
 	public func search(ActionGroup name: String) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -338,8 +338,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(ActionGroupMap)
-		Retrieves all the unique Group Names for Action Nodes with their Action Objects.
+		:name:	search(ActionGroupMap)
+		:description:	Retrieves all the unique Group Names for Action Nodes with their Action Objects.
 	*/
 	public func search(ActionGroupMap name: String) -> Tree<String, MultiTree<String, Action>> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -358,8 +358,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(ActionProperty)
-		Searches the Graph for Action Property Objects with the following name LIKE ?.
+		:name:	search(ActionProperty)
+		:description:	Searches the Graph for Action Property Objects with the following name LIKE ?.
 	*/
 	public func search(ActionProperty name: String) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -372,8 +372,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(ActionProperty)
-		Searches the Graph for Action Property Objects with the following name == ? and value == ?.
+		:name:	search(ActionProperty)
+		:description:	Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(ActionProperty name: String, value: String) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
@@ -386,8 +386,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(ActionProperty)
-		Searches the Graph for Action Property Objects with the following name == ? and value == ?.
+		:name:	search(ActionProperty)
+		:description:	Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(ActionProperty name: String, value: Int) -> MultiTree<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
@@ -400,8 +400,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(Bond)
-		Searches the Graph for Bond Objects with the following type LIKE ?.
+		:name:	search(Bond)
+		:description:	Searches the Graph for Bond Objects with the following type LIKE ?.
 	*/
 	public func search(Bond type: String) -> Tree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
@@ -414,8 +414,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(BondGroup)
-		Searches the Graph for Bond Group Objects with the following name LIKE ?.
+		:name:	search(BondGroup)
+		:description:	Searches the Graph for Bond Group Objects with the following name LIKE ?.
 	*/
 	public func search(BondGroup name: String) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -428,8 +428,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(BondGroupMap)
-		Retrieves all the unique Group Names for Bond Nodes with their Bond Objects.
+		:name:	search(BondGroupMap)
+		:description:	Retrieves all the unique Group Names for Bond Nodes with their Bond Objects.
 	*/
 	public func search(BondGroupMap name: String) -> Tree<String, MultiTree<String, Bond>> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -448,8 +448,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(BondProperty)
-		Searches the Graph for Bond Property Objects with the following name LIKE ?.
+		:name:	search(BondProperty)
+		:description:	Searches the Graph for Bond Property Objects with the following name LIKE ?.
 	*/
 	public func search(BondProperty name: String) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
@@ -462,8 +462,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(BondProperty)
-		Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
+		:name:	search(BondProperty)
+		:description:	Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(BondProperty name: String, value: String) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
@@ -476,8 +476,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search(BondProperty)
-		Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
+		:name:	search(BondProperty)
+		:description:	Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(BondProperty name: String, value: Int) -> MultiTree<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
@@ -490,8 +490,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		managedObjectContextDidSave
-		The callback that NotificationCenter uses when changes occur in the Graph.
+		:name:	managedObjectContextDidSave
+		:description:	The callback that NotificationCenter uses when changes occur in the Graph.
 	*/
 	public func managedObjectContextDidSave(notification: NSNotification) {
 		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as! NSManagedObjectContext
@@ -611,8 +611,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		worker
-		A NSManagedObjectContext that is configured to be thread safe
+		:name:	worker
+		:description:	A NSManagedObjectContext that is configured to be thread safe
 		for the NSManagedObjects calling on it.
 	*/
 	internal var worker: NSManagedObjectContext? {
@@ -935,8 +935,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		prepareForObservation
-		Ensures NotificationCenter is watching the callback selector for this Graph.
+		:name:	prepareForObservation
+		:description:	Ensures NotificationCenter is watching the callback selector for this Graph.
 	*/
 	private func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
@@ -944,8 +944,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		addPredicateToContextWatcher
-		Adds the given predicate to the master predicate, which holds all watchers for the Graph.
+		:name:	addPredicateToContextWatcher
+		:description:	Adds the given predicate to the master predicate, which holds all watchers for the Graph.
 	*/
 	private func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
 		var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
@@ -955,8 +955,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		ensureWatching
-		A sanity check if the Graph is already watching the specified index and key.
+		:name:	ensureWatching
+		:description:	A sanity check if the Graph is already watching the specified index and key.
 	*/
 	private func ensureWatching(key: String!, index: String!) -> Bool {
 		var watch: Array<String> = nil != watching[index] ? watching[index]! as Array<String> : Array<String>()
@@ -971,8 +971,8 @@ public class Graph: NSObject {
 	}
 
 	/**
-		addWatcher
-		Adds a watcher to the Graph.
+		:name:	addWatcher
+		:description:	Adds a watcher to the Graph.
 	*/
 	internal func addWatcher(key: String!, value: String!, index: String!, entityDescriptionName: String!, managedObjectClassName: String!) {
 		if true == ensureWatching(value, index: index) {
@@ -987,16 +987,16 @@ public class Graph: NSObject {
 	}
 
 	/**
-		search
-		Executes a search through CoreData.
+		:name:	search
+		:description:	Executes a search through CoreData.
 	*/
 	private func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject>! {
 		return search(entityDescriptorName, predicate: predicate, sort: nil)
 	}
 
 	/**
-		search
-		Executes a search through CoreData.
+		:name:	search
+		:description:	Executes a search through CoreData.
 	*/
 	private func search(entityDescriptorName: NSString!, predicate: NSPredicate!, sort: Array<NSSortDescriptor>?) -> Array<AnyObject>! {
 		let request: NSFetchRequest = NSFetchRequest()

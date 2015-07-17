@@ -21,28 +21,28 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	internal typealias Generator = GeneratorOf<Element>
 
 	/**
-		sentinel
-		A node used to mark the end of a path in the tree.
+		:name:	sentinel
+		:description:	A node used to mark the end of a path in the tree.
 	*/
 	internal private(set) var sentinel: RedBlackNode<Key, Value>
 
 	/**
-		root
-		The root of the tree data structure.
+		:name:	root
+		:description:	The root of the tree data structure.
 	*/
 	internal private(set) var root: RedBlackNode<Key, Value>
 
 	/**
-		isUnique
-		A boolean used to indicate whether to allow the
+		:name:	isUnique
+		:description:	A boolean used to indicate whether to allow the
 		tree to store non-unique key values or only unique
 		key values.
 	*/
 	public private(set) var isUnique: Bool
 
 	/**
-		internalDescription
-		Returns a String with only the node data for all
+		:name:	internalDescription
+		:description:	Returns a String with only the node data for all
 		nodes in the Tree.
 	*/
 	internal var internalDescription: String {
@@ -57,8 +57,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		description
-		Conforms to the Printable Protocol. Outputs the
+		:name:	description
+		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the Tree in a readable format.
 	*/
 	public var description: String {
@@ -66,8 +66,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		first
-		Get the first node value in the tree, this is
+		:name:	first
+		:description:	Get the first node value in the tree, this is
 		the first node based on the order of keys where
 		k1 <= k2 <= Key3 ... <= Keyn
 	*/
@@ -76,8 +76,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		last
-		Get the last node value in the tree, this is
+		:name:	last
+		:description:	Get the last node value in the tree, this is
 		the last node based on the order of keys where
 		k1 <= k2 <= Key3 ... <= Keyn
 	*/
@@ -86,32 +86,32 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		isEmpty
-		A boolean of whether the RedBlackTree is empty.
+		:name:	isEmpty
+		:description:	A boolean of whether the RedBlackTree is empty.
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
 	}
 
 	/**
-		startIndex
-		Conforms to the CollectionType Protocol.
+		:name:	startIndex
+		:description:	Conforms to the CollectionType Protocol.
 	*/
 	public var startIndex: Int {
 		return 0
 	}
 
 	/**
-		endIndex
-		Conforms to the CollectionType Protocol.
+		:name:	endIndex
+		:description:	Conforms to the CollectionType Protocol.
 	*/
 	public var endIndex: Int {
 		return count
 	}
 
 	/**
-		init
-		Constructor where the tree is guaranteed to store
+		:name:	init
+		:description:	Constructor where the tree is guaranteed to store
 		non-unique keys.
 	*/
 	public override init() {
@@ -121,8 +121,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		init
-		Constructor where the tree is optionally allowed
+		:name:	init
+		:description:	Constructor where the tree is optionally allowed
 		to store uniqe or non-unique keys.
 	*/
 	public init(uniqueValues: Bool) {
@@ -132,8 +132,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		generate
-		Conforms to the SequenceType Protocol. Returns
+		:name:	generate
+		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes using
 		index values [0...n-1].
 	*/
@@ -148,16 +148,16 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		countOf
-		Conforms to ProbabilityType protocol.
+		:name:	countOf
+		:description:	Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(keys: Key...) -> Int {
 		return countOf(keys)
 	}
 
 	/**
-		countOf
-		Conforms to ProbabilityType protocol.
+		:name:	countOf
+		:description:	Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {
 		var count: Int = 0
@@ -168,16 +168,16 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		insert
-		Insert a node in the tree.
+		:name:	insert
+		:description:	Insert a node in the tree.
 	*/
 	public func insert(key: Key, value: Value?) -> Bool {
 		return sentinel !== internalInsert(key, value: value)
 	}
 
 	/**
-		remove
-		Removes a node from the tree based on the key value given.
+		:name:	remove
+		:description:	Removes a node from the tree based on the key value given.
 		If the tree allows non-unique keys, then all keys matching
 		the given key value will be removed.
 	*/
@@ -190,8 +190,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		removeAll
-		Remove all nodes from the tree.
+		:name:	removeAll
+		:description:	Remove all nodes from the tree.
 	*/
 	public func removeAll() {
 		while sentinel !== root {
@@ -200,8 +200,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		update
-		Updates a node for the given key value.
+		:name:	update
+		:description:	Updates a node for the given key value.
 		If the tree allows non-unique keys, then all keys matching
 		the given key value will be updated.
 	*/
@@ -219,8 +219,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		find
-		Finds the first instance in a non-unique tree and only instance
+		:name:	find
+		:description:	Finds the first instance in a non-unique tree and only instance
 		in isUnique tree of a given keyed node.
 	*/
 	public func find(key: Key) -> Value? {
@@ -228,8 +228,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		operator [0...count - 1]
-		Allows array like access of the index.
+		:name:	operator [0...count - 1]
+		:description:	Allows array like access of the index.
 		Items are kept in order, so when iterating
 		through the items, they are returned in their
 		ordeisRed form.
@@ -257,8 +257,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		operator ["key 1"..."key 2"]
-		Property key mapping. If the key type is a
+		:name:	operator ["key 1"..."key 2"]
+		:description:	Property key mapping. If the key type is a
 		String, this feature allows access like a
 		Dictionary.
 	*/
@@ -277,16 +277,16 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		select
-		Searches for a node based on the order statistic value.
+		:name:	select
+		:description:	Searches for a node based on the order statistic value.
 	*/
 	internal func select(x: RedBlackNode<Key, Value>, order: Int) -> RedBlackNode<Key, Value> {
 		return internalSelect(x, order: order)
 	}
 
 	/**
-		internalInsert
-		Insert a new node with the given key and value.
+		:name:	internalInsert
+		:description:	Insert a new node with the given key and value.
 	*/
 	private func internalInsert(key: Key, value: Value?) -> RedBlackNode<Key, Value> {
 		if isUnique && sentinel !== internalFindByKey(key) {
@@ -318,8 +318,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		insertCleanUp
-		The clean up procedure needed to maintain the RedBlackTree balance.
+		:name:	insertCleanUp
+		:description:	The clean up procedure needed to maintain the RedBlackTree balance.
 	*/
 	private func insertCleanUp(var z: RedBlackNode<Key, Value>) {
 		while z.parent.isRed {
@@ -368,8 +368,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		internalRemove
-		Removes a node with the given key value and returns that
+		:name:	internalRemove
+		:description:	Removes a node with the given key value and returns that
 		node. If the value does not exist, the sentinel is returned.
 	*/
 	private func internalRemove(key: Key) -> RedBlackNode<Key, Value> {
@@ -429,8 +429,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		removeCleanUp
-		After a successful removal of a node, the RedBlackTree
+		:name:	removeCleanUp
+		:description:	After a successful removal of a node, the RedBlackTree
 		is rebalanced by this method.
 	*/
 	private func removeCleanUp(var x: RedBlackNode<Key, Value>) {
@@ -489,8 +489,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		minimum
-		Finds the minimum keyed node.
+		:name:	minimum
+		:description:	Finds the minimum keyed node.
 	*/
 	private func minimum(var x: RedBlackNode<Key, Value>) -> RedBlackNode<Key, Value> {
 		var y: RedBlackNode<Key, Value> = sentinel
@@ -502,8 +502,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		transplant
-		Swaps two subtrees in the tree.
+		:name:	transplant
+		:description:	Swaps two subtrees in the tree.
 	*/
 	private func transplant(u: RedBlackNode<Key, Value>, v: RedBlackNode<Key, Value>) {
 		if u.parent === sentinel {
@@ -517,8 +517,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		leftRotate
-		Rotates the nodes to satisfy the RedBlackTree
+		:name:	leftRotate
+		:description:	Rotates the nodes to satisfy the RedBlackTree
 		balance property.
 	*/
 	private func leftRotate(x: RedBlackNode<Key, Value>) {
@@ -546,8 +546,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		rightRotate
-		Rotates the nodes to satisfy the RedBlackTree
+		:name:	rightRotate
+		:description:	Rotates the nodes to satisfy the RedBlackTree
 		balance property.
 	*/
 	private func rightRotate(y: RedBlackNode<Key, Value>) {
@@ -575,8 +575,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		internalFindByKey
-		Finds a node with a given key value.
+		:name:	internalFindByKey
+		:description:	Finds a node with a given key value.
 	*/
 	private func internalFindByKey(key: Key) -> RedBlackNode<Key, Value> {
 		var z: RedBlackNode<Key, Value> = root
@@ -590,8 +590,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		internalSelect
-		Internally searches for a node by the order statistic value.
+		:name:	internalSelect
+		:description:	Internally searches for a node by the order statistic value.
 	*/
 	private func internalSelect(x: RedBlackNode<Key, Value>, order: Int) -> RedBlackNode<Key, Value> {
 		var r: Int = x.left.order + 1
@@ -604,8 +604,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		internalCount
-		Traverses the Tree while counting number of times a key appears.
+		:name:	internalCount
+		:description:	Traverses the Tree while counting number of times a key appears.
 	*/
 	private func internalCount(key: Key, node: RedBlackNode<Key, Value>, inout count: Int) {
 		if sentinel !== node {
@@ -618,8 +618,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		isIndexValid
-		Checks the validation of the index being within range of 0...n-1.
+		:name:	isIndexValid
+		:description:	Checks the validation of the index being within range of 0...n-1.
 	*/
 	private func isIndexValid(index: Int) -> Bool {
 		return index < startIndex || index >= endIndex

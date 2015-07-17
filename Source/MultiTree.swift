@@ -18,8 +18,8 @@
 
 public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	/**
-		description
-		Conforms to the Printable Protocol. Outputs the
+		:name:	description
+		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the MultiTree in a readable format.
 	*/
 	public override var description: String {
@@ -27,16 +27,16 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	}
 
 	/**
-		init
-		Constructor
+		:name:	init
+		:description:	Constructor
 	*/
 	public override init() {
 		super.init(uniqueValues: false)
 	}
 
 	/**
-		search
-		Accepts a paramter list of keys and returns a subset
+		:name:	search
+		:description:	Accepts a paramter list of keys and returns a subset
 		Tree with the indicated values if
 		they exist.
 	*/
@@ -45,8 +45,8 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	}
 
 	/**
-		search
-		Accepts an array of keys and returns a subset
+		:name:	search
+		:description:	Accepts an array of keys and returns a subset
 		Tree with the indicated values if
 		they exist.
 	*/
@@ -59,8 +59,8 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	}
 
 	/**
-		subtree
-		Traverses the Tree and looking for a key value.
+		:name:	subtree
+		:description:	Traverses the Tree and looking for a key value.
 		This is used for internal search.
 	*/
 	internal func subtree(key: Key, node: RedBlackNode<Key, Value>, inout tree: MultiTree<Key, Value>) {
