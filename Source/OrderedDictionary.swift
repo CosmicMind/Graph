@@ -16,12 +16,12 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Printable {
+public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, Printable {
 	internal typealias Generator = GeneratorOf<(key: Key, value: Value?)>
 	
 	/**
 		:name:	tree
-		:description:	Internal storage of members.
+		:description:	Internal storage of (key, value) pairs.
 		:returns:	Tree<Key, Value>
 	*/
 	internal var tree: Tree<Key, Value>
@@ -44,8 +44,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	
 	/**
 		:name:	first
-		:description:	Get the first node value in the tree, this is
-		the first node based on the order of keys where
+		:description:	Get the first (key, value) pair.
 		k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var first: (key: Key, value: Value?)? {
@@ -54,8 +53,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	
 	/**
 		:name:	last
-		:description:	Get the last node value in the tree, this is
-		the last node based on the order of keys where
+		:description:	Get the last (key, value) pair.
 		k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var last: (key: Key, value: Value?)? {
@@ -64,7 +62,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	
 	/**
 		:name:	isEmpty
-		:description:	A boolean of whether the RedBlackTree is empty.
+		:description:	A boolean of whether the OrderedDictionary is empty.
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
@@ -94,7 +92,21 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 		tree = Tree<Key, Value>()
 	}
 	
-	public convenience init(dictionaryLiteral elements: (Key, Value?)...) {
+	/**
+		:name:	init
+		:description:	Constructor.
+		:param:	elements	(Key, Value?)...	Initiates with a given list of elements.
+	*/
+	public convenience init(elements: (Key, Value?)...) {
+		self.init(elements: elements)
+	}
+	
+	/**
+		:name:	init
+		:description:	Constructor.
+		:param:	elements	Array<(Key, Value?)>	Initiates with a given array of elements.
+	*/
+	public convenience init(elements: Array<(Key, Value?)>) {
 		self.init()
 		insert(elements)
 	}
@@ -116,7 +128,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-		:name:	operator ["key1"..."keyN"]
+		:name:	operator [key 1...key n]
 		:description:	Property key mapping. If the key type is a
 		String, this feature allows access like a
 		Dictionary.
@@ -208,8 +220,6 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	/**
 		:name:	updateValue
 		:description:	Updates a node for the given key value.
-		If the tree allows non-unique keys, then all keys matching
-		the given key value will be updated.
 	*/
 	public func updateValue(value: Value?, forKey: Key) -> Bool {
 		return tree.updateValue(value, forKey: forKey)
@@ -227,9 +237,8 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	
 	/**
 		:name:	search
-		:description:	Accepts a paramter list of keys and returns a subset
-		Tree with the indicated values if
-		they exist.
+		:description:	Accepts a list of keys and returns a subset
+		OrderedDictionary with the given values if they exist.
 	*/
 	public func search(keys: Key...) -> OrderedDictionary<Key, Value> {
 		return search(keys)
@@ -238,29 +247,80 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	/**
 		:name:	search
 		:description:	Accepts an array of keys and returns a subset
-		Tree with the indicated values if
-		they exist.
+		OrderedDictionary with the given values if they exist.
 	*/
 	public func search(keys: Array<Key>) -> OrderedDictionary<Key, Value> {
 		var dict: OrderedDictionary<Key, Value> = OrderedDictionary<Key, Value>()
 		for key: Key in keys {
-			subtree(key, node: tree.root, dict: &dict)
+			subDictionary(key, node: tree.root, dict: &dict)
 		}
 		return dict
 	}
 	
 	/**
-		:name:	subtree
-		:description:	Traverses the Tree and looking for a key value.
-		This is used for internal search.
+		:name:	subDictionary
+		:description:	Traverses the OrderedDictionary, looking for a key match.
 	*/
-	internal func subtree(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedDictionary<Key, Value>) {
+	internal func subDictionary(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedDictionary<Key, Value>) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))
 			}
-			subtree(key, node: node.left, dict: &dict)
-			subtree(key, node: node.right, dict: &dict)
+			subDictionary(key, node: node.left, dict: &dict)
+			subDictionary(key, node: node.right, dict: &dict)
 		}
 	}
 }
+
+public func ==<Key: Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
+	if lhs.count != rhs.count {
+		return false
+	}
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		if lhs[i].key != rhs[i].key {
+			return false
+		}
+	}
+	return true
+}
+
+public func ==<Key: Comparable, Value: Comparable>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
+	if lhs.count != rhs.count {
+		return false
+	}
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		let l: (key: Key, value: Value?) = lhs[i]
+		let r: (key: Key, value: Value?) = rhs[i]
+		if l.key != r.key || l.value != r.value {
+			return false
+		}
+	}
+	return true
+}
+
+public func +<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> OrderedDictionary<Key, Value> {
+	let t: OrderedDictionary<Key, Value> = OrderedDictionary<Key, Value>()
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = lhs[i]
+		t.insert((n.key, n.value))
+	}
+	for var i: Int = rhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = rhs[i]
+		t.insert((n.key, n.value))
+	}
+	return t
+}
+
+public func -<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> OrderedDictionary<Key, Value> {
+	let t: OrderedDictionary<Key, Value> = OrderedDictionary<Key, Value>()
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = lhs[i]
+		t.insert((n.key, n.value))
+	}
+	for var i: Int = rhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = rhs[i]
+		t.insert((n.key, n.value))
+	}
+	return t
+}
+

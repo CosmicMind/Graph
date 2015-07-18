@@ -16,7 +16,7 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
+public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable {
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
@@ -53,25 +53,51 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	public func search(keys: Array<Key>) -> Tree<Key, Value> {
 		var tree: Tree<Key, Value> = Tree<Key, Value>()
 		for key: Key in keys {
-			subtree(key, node: root, tree: &tree)
+			subTree(key, node: root, tree: &tree)
 		}
 		return tree
 	}
 
 	/**
-		:name:	subtree
+		:name:	subTree
 		:description:	Traverses the Tree and looking for a key value.
 		This is used for internal search.
 	*/
-	internal func subtree(key: Key, node: RedBlackNode<Key, Value>, inout tree: Tree<Key, Value>) {
+	internal func subTree(key: Key, node: RedBlackNode<Key, Value>, inout tree: Tree<Key, Value>) {
 		if sentinel !== node {
 			if key == node.key {
 				tree.insert(key, value: node.value)
 			}
-			subtree(key, node: node.left, tree: &tree)
-			subtree(key, node: node.right, tree: &tree)
+			subTree(key, node: node.left, tree: &tree)
+			subTree(key, node: node.right, tree: &tree)
 		}
 	}
+}
+
+public func ==<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
+	if lhs.count != rhs.count {
+		return false
+	}
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		if lhs[i].key != rhs[i].key {
+			return false
+		}
+	}
+	return true
+}
+
+public func ==<Key: Comparable, Value: Comparable>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
+	if lhs.count != rhs.count {
+		return false
+	}
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		let l: (key: Key, value: Value?) = lhs[i]
+		let r: (key: Key, value: Value?) = rhs[i]
+		if l.key != r.key || l.value != r.value {
+			return false
+		}
+	}
+	return true
 }
 
 public func +<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
