@@ -20,16 +20,16 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	internal typealias Generator = GeneratorOf<(key: Key, value: Value?)>
 	
 	/**
-	:name:	tree
-	:description:	Internal storage of members.
-	:returns:	Tree<Key, Value>
+		:name:	tree
+		:description:	Internal storage of members.
+		:returns:	Tree<Key, Value>
 	*/
 	internal var tree: Tree<Key, Value>
 	
 	/**
-	:name:	description
-	:description:	Conforms to the Printable Protocol. Outputs the
-	data in the OrderedDictionary in a readable format.
+		:name:	description
+		:description:	Conforms to the Printable Protocol. Outputs the
+		data in the OrderedDictionary in a readable format.
 	*/
 	public var description: String {
 		var output: String = "OrderedDictionary("
@@ -43,52 +43,52 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-	:name:	first
-	:description:	Get the first node value in the tree, this is
-	the first node based on the order of keys where
-	k1 <= k2 <= K3 ... <= Kn
+		:name:	first
+		:description:	Get the first node value in the tree, this is
+		the first node based on the order of keys where
+		k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var first: (key: Key, value: Value?)? {
 		return tree.first
 	}
 	
 	/**
-	:name:	last
-	:description:	Get the last node value in the tree, this is
-	the last node based on the order of keys where
-	k1 <= k2 <= K3 ... <= Kn
+		:name:	last
+		:description:	Get the last node value in the tree, this is
+		the last node based on the order of keys where
+		k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var last: (key: Key, value: Value?)? {
 		return tree.last
 	}
 	
 	/**
-	:name:	isEmpty
-	:description:	A boolean of whether the RedBlackTree is empty.
+		:name:	isEmpty
+		:description:	A boolean of whether the RedBlackTree is empty.
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
 	}
 	
 	/**
-	:name:	startIndex
-	:description:	Conforms to the CollectionType Protocol.
+		:name:	startIndex
+		:description:	Conforms to the CollectionType Protocol.
 	*/
 	public var startIndex: Int {
 		return 0
 	}
 	
 	/**
-	:name:	endIndex
-	:description:	Conforms to the CollectionType Protocol.
+		:name:	endIndex
+		:description:	Conforms to the CollectionType Protocol.
 	*/
 	public var endIndex: Int {
 		return count
 	}
 	
 	/**
-	:name:	init
-	:description:	Constructor.
+		:name:	init
+		:description:	Constructor.
 	*/
 	public override init() {
 		tree = Tree<Key, Value>()
@@ -100,10 +100,10 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-	:name:	generate
-	:description:	Conforms to the SequenceType Protocol. Returns
-	the next value in the sequence of nodes using
-	index values [0...n-1].
+		:name:	generate
+		:description:	Conforms to the SequenceType Protocol. Returns
+		the next value in the sequence of nodes using
+		index values [0...n-1].
 	*/
 	public func generate() -> Generator {
 		var index = startIndex
@@ -116,10 +116,10 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-	:name:	operator ["key1"..."keyN"]
-	:description:	Property key mapping. If the key type is a
-	String, this feature allows access like a
-	Dictionary.
+		:name:	operator ["key1"..."keyN"]
+		:description:	Property key mapping. If the key type is a
+		String, this feature allows access like a
+		Dictionary.
 	*/
 	public subscript(name: String) -> Value? {
 		get {
@@ -131,11 +131,11 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-	:name:	operator [0...count - 1]
-	:description:	Allows array like access of the index.
-	Items are kept in order, so when iterating
-	through the items, they are returned in their
-	ordered form.
+		:name:	operator [0...count - 1]
+		:description:	Allows array like access of the index.
+		Items are kept in order, so when iterating
+		through the items, they are returned in their
+		ordered form.
 	*/
 	public subscript(index: Int) -> (key: Key, value: Value?) {
 		get {
@@ -147,34 +147,34 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-	:name:	countOf
-	:description:	Conforms to ProbabilityType protocol.
+		:name:	countOf
+		:description:	Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(keys: Key...) -> Int {
 		return tree.countOf(keys)
 	}
 	
 	/**
-	:name:	countOf
-	:description:	Conforms to ProbabilityType protocol.
+		:name:	countOf
+		:description:	Conforms to ProbabilityType protocol.
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {
 		return tree.countOf(keys)
 	}
 	
 	/**
-	:name:	insert
-	:description:	Inserts a list of (Key, Value?) pairs.
-	:param:	elements	(Key, Value?)...	Elements to insert.
+		:name:	insert
+		:description:	Inserts a list of (Key, Value?) pairs.
+		:param:	elements	(Key, Value?)...	Elements to insert.
 	*/
 	public func insert(elements: (Key, Value?)...) {
 		insert(elements)
 	}
 	
 	/**
-	:name:	insert
-	:description:	Inserts an array of (Key, Value?) pairs.
-	:param:	elements	Array<(Key, Value?)>	Elements to insert.
+		:name:	insert
+		:description:	Inserts an array of (Key, Value?) pairs.
+		:param:	elements	Array<(Key, Value?)>	Elements to insert.
 	*/
 	public func insert(elements: Array<(Key, Value?)>) {
 		for x in elements {
@@ -184,11 +184,11 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-	:name:	removeValueForKey
-	:description:	Removes a node from the tree based on the key value given.
-	If the tree allows non-unique keys, then all keys matching
-	the given key value will be removed.
-	:returns:	Value?
+		:name:	removeValueForKey
+		:description:	Removes a node from the tree based on the key value given.
+		If the tree allows non-unique keys, then all keys matching
+		the given key value will be removed.
+		:returns:	Value?
 	*/
 	public func removeValueForKey(key: Key) -> Value? {
 		var x: Value? = tree.removeValueForKey(key)
@@ -197,8 +197,8 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-	:name:	removeAll
-	:description:	Remove all nodes from the tree.
+		:name:	removeAll
+		:description:	Remove all nodes from the tree.
 	*/
 	public func removeAll() {
 		tree.removeAll()
@@ -206,40 +206,40 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-	:name:	updateValue
-	:description:	Updates a node for the given key value.
-	If the tree allows non-unique keys, then all keys matching
-	the given key value will be updated.
+		:name:	updateValue
+		:description:	Updates a node for the given key value.
+		If the tree allows non-unique keys, then all keys matching
+		the given key value will be updated.
 	*/
 	public func updateValue(value: Value?, forKey: Key) -> Bool {
 		return tree.updateValue(value, forKey: forKey)
 	}
 	
 	/**
-	:name:	findValueForKey
-	:description:	Finds the value for key passed.
-	:param:	key	Key	The key to find.
-	:returns:	Value?
+		:name:	findValueForKey
+		:description:	Finds the value for key passed.
+		:param:	key	Key	The key to find.
+		:returns:	Value?
 	*/
 	public func findValueForKey(key: Key) -> Value? {
 		return tree.findValueForKey(key)
 	}
 	
 	/**
-	:name:	search
-	:description:	Accepts a paramter list of keys and returns a subset
-	Tree with the indicated values if
-	they exist.
+		:name:	search
+		:description:	Accepts a paramter list of keys and returns a subset
+		Tree with the indicated values if
+		they exist.
 	*/
 	public func search(keys: Key...) -> OrderedDictionary<Key, Value> {
 		return search(keys)
 	}
 	
 	/**
-	:name:	search
-	:description:	Accepts an array of keys and returns a subset
-	Tree with the indicated values if
-	they exist.
+		:name:	search
+		:description:	Accepts an array of keys and returns a subset
+		Tree with the indicated values if
+		they exist.
 	*/
 	public func search(keys: Array<Key>) -> OrderedDictionary<Key, Value> {
 		var dict: OrderedDictionary<Key, Value> = OrderedDictionary<Key, Value>()
@@ -250,9 +250,9 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Prin
 	}
 	
 	/**
-	:name:	subtree
-	:description:	Traverses the Tree and looking for a key value.
-	This is used for internal search.
+		:name:	subtree
+		:description:	Traverses the Tree and looking for a key value.
+		This is used for internal search.
 	*/
 	internal func subtree(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedDictionary<Key, Value>) {
 		if tree.sentinel !== node {
