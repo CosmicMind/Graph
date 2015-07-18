@@ -253,22 +253,22 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	public func search(keys: Array<Key>) -> OrderedMultiDictionary<Key, Value> {
 		var dict: OrderedMultiDictionary<Key, Value> = OrderedMultiDictionary<Key, Value>()
 		for key: Key in keys {
-			subDictionary(key, node: tree.root, dict: &dict)
+			subOrderedMultiDictionary(key, node: tree.root, dict: &dict)
 		}
 		return dict
 	}
 	
 	/**
-		:name:	subDictionary
+		:name:	subOrderedMultiDictionary
 		:description:	Traverses the OrderedMultiDictionary, looking for a key match.
 	*/
-	internal func subDictionary(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedMultiDictionary<Key, Value>) {
+	internal func subOrderedMultiDictionary(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedMultiDictionary<Key, Value>) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))
 			}
-			subDictionary(key, node: node.left, dict: &dict)
-			subDictionary(key, node: node.right, dict: &dict)
+			subOrderedMultiDictionary(key, node: node.left, dict: &dict)
+			subOrderedMultiDictionary(key, node: node.right, dict: &dict)
 		}
 	}
 }

@@ -252,22 +252,22 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	public func search(keys: Array<Key>) -> OrderedDictionary<Key, Value> {
 		var dict: OrderedDictionary<Key, Value> = OrderedDictionary<Key, Value>()
 		for key: Key in keys {
-			subDictionary(key, node: tree.root, dict: &dict)
+			subOrderedDictionary(key, node: tree.root, dict: &dict)
 		}
 		return dict
 	}
 	
 	/**
-		:name:	subDictionary
+		:name:	subOrderedDictionary
 		:description:	Traverses the OrderedDictionary, looking for a key match.
 	*/
-	internal func subDictionary(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedDictionary<Key, Value>) {
+	internal func subOrderedDictionary(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedDictionary<Key, Value>) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))
 			}
-			subDictionary(key, node: node.left, dict: &dict)
-			subDictionary(key, node: node.right, dict: &dict)
+			subOrderedDictionary(key, node: node.left, dict: &dict)
+			subOrderedDictionary(key, node: node.right, dict: &dict)
 		}
 	}
 }

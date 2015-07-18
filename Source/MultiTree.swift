@@ -53,23 +53,23 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equa
 	public func search(keys: Array<Key>) -> MultiTree<Key, Value> {
 		var tree: MultiTree<Key, Value> = MultiTree<Key, Value>()
 		for key: Key in keys {
-			subTree(key, node: root, tree: &tree)
+			subMultiTree(key, node: root, tree: &tree)
 		}
 		return tree
 	}
 
 	/**
-		:name:	subTree
+		:name:	subMultiTree
 		:description:	Traverses the Tree and looking for a key value.
 		This is used for internal search.
 	*/
-	internal func subTree(key: Key, node: RedBlackNode<Key, Value>, inout tree: MultiTree<Key, Value>) {
+	internal func subMultiTree(key: Key, node: RedBlackNode<Key, Value>, inout tree: MultiTree<Key, Value>) {
 		if node !== sentinel {
 			if key == node.key {
 				tree.insert(key, value: node.value)
 			}
-			subTree(key, node: node.left, tree: &tree)
-			subTree(key, node: node.right, tree: &tree)
+			subMultiTree(key, node: node.left, tree: &tree)
+			subMultiTree(key, node: node.right, tree: &tree)
 		}
 	}
 }
