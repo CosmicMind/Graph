@@ -48,7 +48,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var first: Element? {
-		return tree.first
+		return tree.first?.value
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		k1 <= k2 <= K3 ... <= Kn
 	*/
 	public var last: Element? {
-		return tree.last
+		return tree.last?.value
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	*/
 	public func remove(members: Array<Element>) {
 		for x in members {
-			if tree.remove(x) {
+			if nil != tree.removeValueForKey(x) {
 				count = tree.count
 			}
 		}
@@ -294,7 +294,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		for x in o {
 			var toInsert: Bool = true
 			for u in sets {
-				if nil == u.tree.find(x) {
+				if nil == u.tree.findValueForKey(x) {
 					toInsert = false
 					break
 				}

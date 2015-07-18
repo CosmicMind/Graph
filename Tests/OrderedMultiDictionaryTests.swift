@@ -19,7 +19,7 @@
 import XCTest
 import GraphKit
 
-class MultiTreeTests: XCTestCase {
+class OrderedMultiDictionaryTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -32,14 +32,14 @@ class MultiTreeTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: MultiTree<Int, Int> = MultiTree<Int, Int>()
+		let s: OrderedMultiDictionary<Int, Int> = OrderedMultiDictionary<Int, Int>()
 		
 		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
-			s.insert(1, value: 1)
-			s.insert(2, value: 2)
-			s.insert(3, value: 3)
+			s.insert((1, 1))
+			s.insert((2, 2))
+			s.insert((3, 3))
 		}
 		
 		XCTAssert(3000 == s.count, "Test failed.")
@@ -55,19 +55,20 @@ class MultiTreeTests: XCTestCase {
 		XCTAssert(1000 == s.count, "Test failed.")
 		XCTAssert(nil != s.removeValueForKey(2), "Test failed.")
 		XCTAssert(nil == s.removeValueForKey(2), "Test failed.")
-		XCTAssert(true == s.insert(2, value: 10), "Test failed.")
+		
+		s.insert((2, 10))
 		XCTAssert(1 == s.count, "Test failed.")
 		XCTAssert(10 == s.findValueForKey(2), "Test failed.")
 		XCTAssert(10 == s[0].value!, "Test failed.")
 		XCTAssert(true == (nil != s.removeValueForKey(2) && 0 == s.count), "Test failed.")
 		
-		s.insert(1, value: 1)
-		s.insert(2, value: 2)
-		s.insert(3, value: 3)
-		s.insert(3, value: 3)
+		s.insert((1, 1))
+		s.insert((2, 2))
+		s.insert((3, 3))
+		s.insert((3, 3))
 		s.updateValue(5, forKey: 3)
 		
-		let subs: MultiTree<Int, Int> = s.search(3)
+		let subs: OrderedMultiDictionary<Int, Int> = s.search(3)
 		XCTAssert(2 == subs.count, "Test failed.")
 		
 		var generator = subs.generate()
@@ -82,64 +83,6 @@ class MultiTreeTests: XCTestCase {
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
-	}
-	
-	func testString() {
-		let s: MultiTree<String, Array<Int>> = MultiTree<String, Array<Int>>()
-		s.insert("friends", value: [1, 2, 3])
-		s["menu"] = [11, 22, 33]
-		
-		XCTAssert(s["friends"]! == s[0].value!, "Test failed.")
-		XCTAssert(s["menu"]! == s[1].value!, "Test failed.")
-		XCTAssert(s["empty"] == nil, "Test failed.")
-		s["menu"] = [22, 33, 44]
-		XCTAssert(s["menu"]! == [22, 33, 44], "Test failed.")
-		s["menu"] = nil
-		XCTAssert(2 == s.count, "Test failed.")
-	}
-	
-	func testMultisetSearch() {
-		let mt1: MultiTree<Int, Int> = MultiTree<Int, Int>()
-		XCTAssert(0 == mt1.count, "Test failed, got \(mt1.count).")
-		
-		for (var i: Int = 1000; i > 0; --i) {
-			mt1.insert(1, value: 1)
-			mt1.insert(2, value: 2)
-			mt1.insert(3, value: 3)
-		}
-		
-		XCTAssert(3000 == mt1.count, "Test failed.")
-		
-		let mt2: MultiTree<Int, Int> = mt1.search(1)
-		XCTAssert(1000 == mt2.count, "Test failed, got \(mt2.count).")
-		
-		let mt3: MultiTree<Int, Int> = mt1.search(2)
-		XCTAssert(1000 == mt3.count, "Test failed, got \(mt3.count).")
-		
-		let mt4: MultiTree<Int, Int> = mt1.search(3)
-		XCTAssert(1000 == mt4.count, "Test failed, got \(mt4.count).")
-	}
-	
-	func testConcat() {
-		let mt1: MultiTree<Int, Int> = MultiTree<Int, Int>()
-		mt1.insert(1, value: 1)
-		mt1.insert(2, value: 2)
-		mt1.insert(3, value: 3)
-		
-		let mt2: MultiTree<Int, Int> = MultiTree<Int, Int>()
-		mt2.insert(4, value: 4)
-		mt2.insert(5, value: 5)
-		mt2.insert(6, value: 6)
-		
-		let mt3: MultiTree<Int, Int> = mt1 + mt2
-		
-		for var i: Int = mt1.count - 1; i >= 0; --i {
-			XCTAssert(mt1[i].value == mt3.findValueForKey(mt1[i].value!), "Test failed.")
-		}
-		
-		for var i: Int = mt2.count - 1; i >= 0; --i {
-			XCTAssert(mt2[i].value == mt3.findValueForKey(mt2[i].value!), "Test failed.")
-		}
 	}
 	
 	func testPerformanceExample() {

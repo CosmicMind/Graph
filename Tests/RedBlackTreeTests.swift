@@ -32,7 +32,7 @@ class RedBlackTreeTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>(uniqueValues: true)
+		let s: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>(isUniqueValued: true)
 		
 		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
 		
@@ -48,18 +48,18 @@ class RedBlackTreeTests: XCTestCase {
 		XCTAssert(3 == s[2].value, "Test failed.")
 		
 		for (var i: Int = 500; i > 0; --i) {
-			s.remove(1)
-			s.remove(3)
+			s.removeValueForKey(1)
+			s.removeValueForKey(3)
 		}
 		
 		XCTAssert(1 == s.count, "Test failed.")
-		XCTAssert(true == s.remove(2), "Test failed.")
-		XCTAssert(false == s.remove(2), "Test failed.")
+		XCTAssert(nil != s.removeValueForKey(2), "Test failed.")
+		XCTAssert(nil == s.removeValueForKey(2), "Test failed.")
 		XCTAssert(true == s.insert(2, value: 10), "Test failed.")
 		XCTAssert(1 == s.count, "Test failed.")
-		XCTAssert(10 == s.find(2)!, "Test failed.")
+		XCTAssert(10 == s.findValueForKey(2), "Test failed.")
 		XCTAssert(10 == s[0].value, "Test failed.")
-		XCTAssert(true == (s.remove(2) && 0 == s.count), "Test failed.")
+		XCTAssert(true == (nil != s.removeValueForKey(2) && 0 == s.count), "Test failed.")
 		
 		s.insert(1, value: 1)
 		s.insert(2, value: 2)
@@ -75,7 +75,7 @@ class RedBlackTreeTests: XCTestCase {
 	}
 	
 	func testString() {
-		let s: RedBlackTree<String, Array<Int>> = RedBlackTree<String, Array<Int>>(uniqueValues: false)
+		let s: RedBlackTree<String, Array<Int>> = RedBlackTree<String, Array<Int>>(isUniqueValued: false)
 		s.insert("friends", value: [1, 2, 3])
 		s["menu"] = [11, 22, 33]
 		
@@ -102,11 +102,11 @@ class RedBlackTreeTests: XCTestCase {
 		let t3: RedBlackTree<Int, Int> = t1 + t2
 		
 		for var i: Int = t1.count - 1; i >= 0; --i {
-			XCTAssert(t1[i].value == t3.find(t1[i].value!), "Test failed.")
+			XCTAssert(t1[i].value == t3.findValueForKey(t1[i].value!), "Test failed.")
 		}
 		
 		for var i: Int = t2.count - 1; i >= 0; --i {
-			XCTAssert(t2[i].value == t3.find(t2[i].value!), "Test failed.")
+			XCTAssert(t2[i].value == t3.findValueForKey(t2[i].value!), "Test failed.")
 		}
 	}
 	

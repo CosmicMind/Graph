@@ -40,7 +40,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		var a1: Action = Action(type: "A")
 		a1["active"] = true
 		
-		var a2: Action? = graph?.search(ActionProperty: "active").last
+		var a2: Action? = graph?.search(ActionProperty: "active").last?.value
 		
 		XCTAssertTrue(a1 == a2, "Action: Search did not pass.")
 		
@@ -59,7 +59,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graph(graph: Graph, didInsertAction action: Action) {
-		var a2: Action? = graph.search(ActionProperty: "active").last
+		var a2: Action? = graph.search(ActionProperty: "active").last?.value
 		if action == a2 {
 			expectation?.fulfill()
 			
@@ -74,7 +74,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graph(graph: Graph, didDeleteAction action: Action) {
-		var a2: Action? = graph.search(ActionProperty: "active").last
+		var a2: Action? = graph.search(ActionProperty: "active").last?.value
 		if nil == a2 {
 			expectation?.fulfill()
 			XCTAssertTrue(0 == graph.search(ActionProperty: "active").count, "Action: Search did not pass.")
@@ -82,7 +82,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graph(graph: Graph,didUpdateAction action: Action,property: String,value: AnyObject){
-		var a2: Action? = graph.search(ActionProperty: "active").last
+		var a2: Action? = graph.search(ActionProperty: "active").last?.value
 		if value as! Bool == action["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
 			

@@ -31,7 +31,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 		:description:	Constructor.
 	*/
 	public override init() {
-		super.init(uniqueValues: true)
+		super.init(isUniqueValued: true)
 	}
 
 	/**
@@ -50,9 +50,9 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(array: Array<Key>) -> Tree<Key, Value> {
+	public func search(keys: Array<Key>) -> Tree<Key, Value> {
 		var tree: Tree<Key, Value> = Tree<Key, Value>()
-		for key: Key in array {
+		for key: Key in keys {
 			subtree(key, node: root, tree: &tree)
 		}
 		return tree
@@ -95,7 +95,7 @@ public func -<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Val
 	}
 	for var i: Int = rhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = rhs[i]
-		t.remove(n.key)
+		t.removeValueForKey(n.key)
 	}
 	return t
 }

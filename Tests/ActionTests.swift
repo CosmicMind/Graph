@@ -207,7 +207,7 @@ class ActionTests : XCTestCase, GraphDelegate {
         if "Holiday" == group {
             groupInsertExpectation?.fulfill()
             let n: MultiTree<String, Action> = graph.search(ActionGroup: group)
-            if action.id == n.first!.id {
+            if action.id == n.first?.value?.id {
                 groupSearchExpectation?.fulfill()
             }
         }
@@ -217,18 +217,18 @@ class ActionTests : XCTestCase, GraphDelegate {
         if "name" == property && "New Years" == value as! String {
             nameInsertExpectation?.fulfill()
             let n: MultiTree<String, Action> = graph.search(ActionProperty: property)
-            if n.first![property] as! String == value as! String {
+            if n.first?.value?[property] as! String == value as! String {
                 let m: MultiTree<String, Action> = graph.search(ActionProperty: property, value: value as! String)
-                if m.first![property] as! String == value as! String {
+                if m.first?.value?[property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
         } else if "session" == property && 123 == value as! Int {
             sessionInsertExpectation?.fulfill()
             let n: MultiTree<String, Action> = graph.search(ActionProperty: property)
-            if n.first![property] as! Int == value as! Int {
+            if n.first?.value?[property] as! Int == value as! Int {
                 let m: MultiTree<String, Action> = graph.search(ActionProperty: property, value: value as! Int)
-                if m.first![property] as! Int == value as! Int {
+                if m.first?.value?[property] as! Int == value as! Int {
                     sessionSearchExpectation?.fulfill()
                 }
             }
@@ -239,18 +239,18 @@ class ActionTests : XCTestCase, GraphDelegate {
         if "name" == property && "X-MASS" == value as! String {
             nameUpdateExpectation?.fulfill()
             let n: MultiTree<String, Action> = graph.search(ActionProperty: property)
-            if n.first![property] as! String == value as! String {
+            if n.first?.value?[property] as! String == value as! String {
                 let m: MultiTree<String, Action> = graph.search(ActionProperty: property, value: value as! String)
-                if m.first![property] as! String == value as! String {
+                if m.first?.value?[property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
         } else if "session" == property && 456 == value as! Int {
             sessionUpdateExpectation?.fulfill()
             let n: MultiTree<String, Action> = graph.search(ActionProperty: property)
-            if n.first![property] as! Int == value as! Int {
+            if n.first?.value?[property] as! Int == value as! Int {
                 let m: MultiTree<String, Action> = graph.search(ActionProperty: property, value: value as! Int)
-                if m.first![property] as! Int == value as! Int {
+                if m.first?.value?[property] as! Int == value as! Int {
                     sessionSearchExpectation?.fulfill()
                 }
             }

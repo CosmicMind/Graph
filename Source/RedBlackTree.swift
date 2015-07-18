@@ -17,8 +17,7 @@
 */
 
 public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, Printable {
-	internal typealias Element = (key: Key, value: Value?)
-	internal typealias Generator = GeneratorOf<Element>
+	internal typealias Generator = GeneratorOf<(key: Key, value: Value?)>
 
 	/**
 		:name:	sentinel
@@ -70,9 +69,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Get the first node value in the tree, this is
 		the first node based on the order of keys where
 		k1 <= k2 <= Key3 ... <= Keyn
+		:returns:	(key: Key, value: Value?)?
 	*/
-	public var first: Value? {
-		return internalSelect(root, order: 1).value
+	public var first: (key: Key, value: Value?)? {
+		return self[0]
 	}
 
 	/**
@@ -80,9 +80,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Get the last node value in the tree, this is
 		the last node based on the order of keys where
 		k1 <= k2 <= Key3 ... <= Keyn
+		:returns:	(key: Key, value: Value?)?
 	*/
-	public var last: Value? {
-		return isEmpty ? sentinel.value : internalSelect(root, order: count).value
+	public var last: (key: Key, value: Value?)? {
+		return isEmpty ? nil : self[count - 1]
 	}
 
 	/**
@@ -124,9 +125,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	init
 		:description:	Constructor where the tree is optionally allowed
 		to store uniqe or non-unique keys.
+		:param:	isUniquedValued	Bool	Set the keys to be unique.
 	*/
-	public init(uniqueValues: Bool) {
-		self.isUnique = uniqueValues
+	public init(isUniqueValued: Bool) {
+		isUnique = isUniqueValued
 		sentinel = RedBlackNode<Key, Value>()
 		root = sentinel
 	}
@@ -176,17 +178,20 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		:name:	remove
+		:name:	removeValueForKey
 		:description:	Removes a node from the tree based on the key value given.
 		If the tree allows non-unique keys, then all keys matching
 		the given key value will be removed.
+		:returns:	Value?
 	*/
-	public func remove(key: Key) -> Bool {
-		var removed: Bool = false
-		while sentinel !== internalRemove(key) {
-			removed = true
+	public func removeValueForKey(key: Key) -> Value? {
+		var removed: RedBlackNode<Key, Value>?
+		var x: RedBlackNode<Key, Value>?
+		while sentinel !== x {
+			removed = x
+			x = internalRemove(key)
 		}
-		return removed
+		return removed?.value
 	}
 
 	/**
@@ -200,30 +205,30 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		:name:	update
+		:name:	updateValue
 		:description:	Updates a node for the given key value.
 		If the tree allows non-unique keys, then all keys matching
 		the given key value will be updated.
 	*/
-	public func update(key: Key, value: Value?) -> Bool {
+	public func updateValue(value: Value?, forKey: Key) -> Bool {
 		var updated: Bool = false
 		var x: RedBlackNode<Key, Value> = root
 		while x !== sentinel {
-			if key == x.key {
+			if forKey == x.key {
 				x.value = value
 				updated = true
 			}
-			x = key < x.key ? x.left : x.right
+			x = forKey < x.key ? x.left : x.right
 		}
 		return updated
 	}
 
 	/**
-		:name:	find
+		:name:	findValueForKey
 		:description:	Finds the first instance in a non-unique tree and only instance
 		in isUnique tree of a given keyed node.
 	*/
-	public func find(key: Key) -> Value? {
+	public func findValueForKey(key: Key) -> Value? {
 		return internalFindByKey(key).value
 	}
 
@@ -234,7 +239,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		through the items, they are returned in their
 		ordeisRed form.
 	*/
-	public subscript(index: Int) -> Element {
+	public subscript(index: Int) -> (key: Key, value: Value?) {
 		get {
 			if !isIndexValid(index) {
 				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
@@ -257,7 +262,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		:name:	operator ["key 1"..."key 2"]
+		:name:	operator ["key1"..."keyN"]
 		:description:	Property key mapping. If the key type is a
 		String, this feature allows access like a
 		Dictionary.
@@ -647,7 +652,7 @@ public func -<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBl
 	}
 	for var i: Int = rhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = rhs[i]
-		t.remove(n.key)
+		t.removeValueForKey(n.key)
 	}
 	return t
 }

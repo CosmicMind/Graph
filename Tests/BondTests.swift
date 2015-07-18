@@ -173,7 +173,7 @@ class BondTests : XCTestCase, GraphDelegate {
         if "Close" == group {
             groupInsertExpectation?.fulfill()
             let n: MultiTree<String, Bond> = graph.search(BondGroup: group)
-            if bond.id == n.first!.id {
+            if bond.id == n.first?.value?.id {
                 groupSearchExpectation?.fulfill()
             }
         }
@@ -183,9 +183,9 @@ class BondTests : XCTestCase, GraphDelegate {
         if "permission" == property && "edit" == value as! String {
             permissionInsertExpectation?.fulfill()
             let n: MultiTree<String, Bond> = graph.search(BondProperty: property)
-            if n.first![property] as! String == value as! String {
+            if n.first?.value?[property] as! String == value as! String {
                 let m: MultiTree<String, Bond> = graph.search(BondProperty: property, value: value as! String)
-                if m.first![property] as! String == value as! String {
+                if m.first?.value?[property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
             }
@@ -193,9 +193,9 @@ class BondTests : XCTestCase, GraphDelegate {
         } else if "year" == property && 1998 == value as! Int {
             yearInsertExpectation?.fulfill()
             let n: MultiTree<String, Bond> = graph.search(BondProperty: property)
-            if n.first![property] as! Int == value as! Int {
+            if n.first?.value?[property] as! Int == value as! Int {
                 let m: MultiTree<String, Bond> = graph.search(BondProperty: property, value: value as! Int)
-                if m.first![property] as! Int == value as! Int {
+                if m.first?.value?[property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }
             }
@@ -206,18 +206,18 @@ class BondTests : XCTestCase, GraphDelegate {
         if "permission" == property && "read" == value as! String {
             permissionUpdateExpectation?.fulfill()
             let n: MultiTree<String, Bond> = graph.search(BondProperty: property)
-            if n.first![property] as! String == value as! String {
+            if n.first?.value?[property] as! String == value as! String {
                 let m: MultiTree<String, Bond> = graph.search(BondProperty: property, value: value as! String)
-                if m.first![property] as! String == value as! String {
+                if m.first?.value?[property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
             }
         } else if "year" == property && 2001 == value as! Int {
             yearUpdateExpectation?.fulfill()
             let n: MultiTree<String, Bond> = graph.search(BondProperty: property)
-            if n.first![property] as! Int == value as! Int {
+            if n.first?.value?[property] as! Int == value as! Int {
                 let m: MultiTree<String, Bond> = graph.search(BondProperty: property, value: value as! Int)
-                if m.first![property] as! Int == value as! Int {
+                if m.first?.value?[property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }
             }

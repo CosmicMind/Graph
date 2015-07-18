@@ -140,7 +140,7 @@ class EntityTests : XCTestCase, GraphDelegate {
         if "Female" == group {
             groupInsertExpectation?.fulfill()
             let nodes: MultiTree<String, Entity> = graph.search(EntityGroup: group)
-            if entity.id == nodes.first!.id {
+            if entity.id == nodes.first?.value?.id {
                 groupSearchExpectation?.fulfill()
             }
         }
@@ -150,9 +150,9 @@ class EntityTests : XCTestCase, GraphDelegate {
         if "name" == property && "Eve" == value as! String {
             nameInsertExpectation?.fulfill()
             let n: MultiTree<String, Entity> = graph.search(EntityProperty: property)
-			if n.first![property] as! String == value as! String {
+			if n.first?.value?[property] as! String == value as! String {
 				let m: MultiTree<String, Entity> = graph.search(EntityProperty: property, value: value as! String)
-				if m.first![property] as! String == value as! String {
+				if m.first?.value?[property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
@@ -160,9 +160,9 @@ class EntityTests : XCTestCase, GraphDelegate {
         } else if "age" == property && 26 == value as! Int {
             ageInsertExpectation?.fulfill()
             let n: MultiTree<String, Entity> = graph.search(EntityProperty: property)
-			if  n.first![property] as! Int == value as! Int {
+			if  n.first?.value?[property] as! Int == value as! Int {
 				let m: MultiTree<String, Entity> = graph.search(EntityProperty: property, value: value as! Int)
-				if m.first![property] as! Int == value as! Int {
+				if m.first?.value?[property] as! Int == value as! Int {
                     ageSearchExpectation?.fulfill()
                 }
             }
@@ -173,18 +173,18 @@ class EntityTests : XCTestCase, GraphDelegate {
         if "name" == property && "Daniel" == value as! String {
             nameUpdateExpectation?.fulfill()
 			let n: MultiTree<String, Entity> = graph.search(EntityProperty: property)
-			if n.first![property] as! String == value as! String {
+			if n.first?.value?[property] as! String == value as! String {
 				let m: MultiTree<String, Entity> = graph.search(EntityProperty: property, value: value as! String)
-				if m.first![property] as! String == value as! String {
+				if m.first?.value?[property] as! String == value as! String {
 					nameSearchExpectation?.fulfill()
 				}
 			}
         } else if "age" == property && 31 == value as! Int {
             ageUpdateExpectation?.fulfill()
 			let n: MultiTree<String, Entity> = graph.search(EntityProperty: property)
-			if n.first![property] as! Int == value as! Int {
+			if n.first?.value?[property] as! Int == value as! Int {
 				let m: MultiTree<String, Entity> = graph.search(EntityProperty: property, value: value as! Int)
-				if m.first![property] as! Int == value as! Int {
+				if m.first?.value?[property] as! Int == value as! Int {
 					ageSearchExpectation?.fulfill()
 				}
 			}
