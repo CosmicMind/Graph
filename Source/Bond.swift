@@ -126,10 +126,10 @@ public class Bond : NSObject {
 		:name:	properties
 		:description:	Retrieves the Properties the Node is a part of.
 	*/
-	public var properties: Tree<String, AnyObject> {
-		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
+	public var properties: OrderedDictionary<String, AnyObject> {
+		var properties: OrderedDictionary<String, AnyObject> = OrderedDictionary<String, AnyObject>()
 		for property in node.propertySet {
-			properties.insert(property.name, value: property.value)
+			properties.insert((property.name, property.value))
 		}
 		return properties
 	}
