@@ -18,34 +18,34 @@
 
 internal class ListNode<Element> : Printable {
 	/**
-		next
-		Points to the successor element in the List.
+		:name:	next
+		:description:	Points to the successor element in the List.
 	*/
 	internal var next: ListNode<Element>?
 
 	/**
-		previous
-		points to the predacessor element in the List.
+		:name:	previous
+		:description:	points to the predacessor element in the List.
 	*/
 	internal var previous: ListNode<Element>?
 
 	/**
-		data
-		Satellite data.
+		:name:	data
+		:description:	Satellite data.
 	*/
 	internal var element: Element?
 
 	/**
-		description
-		Conforms to the Printable Protocol.
+		:name:	description
+		:description:	Conforms to the Printable Protocol.
 	*/
 	internal var description: String {
 		return "\(element)"
 	}
 
 	/**
-		init
-		Constructor.
+		:name:	init
+		:description:	Constructor.
 	*/
 	internal init(next: ListNode<Element>?, previous: ListNode<Element>?, element: Element?) {
 		self.next = next

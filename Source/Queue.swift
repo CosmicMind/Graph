@@ -20,22 +20,22 @@ public class Queue<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 
 	/**
-		list
-		Underlying data structure.
+		:name:	list
+		:description:	Underlying data structure.
 	*/
 	private var list: List<Element>
 
 	/**
-		count
-		Total number of items in the Queue.
+		:name:	count
+		:description:	Total number of items in the Queue.
 	*/
 	public var count: Int {
 		return list.count
 	}
 
 	/**
-		peek
-		Get the element at the front of
+		:name:	peek
+		:description:	Get the element at the front of
 		the Queue, and do not remove it.
 	*/
 	public var peek: Element? {
@@ -43,32 +43,32 @@ public class Queue<Element> : Printable, SequenceType {
 	}
 
 	/**
-		isEmpty
-		A boolean of whether the Queue is empty.
+		:name:	isEmpty
+		:description:	A boolean of whether the Queue is empty.
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
 	}
 
 	/**
-		description
-		Conforms to the Printable Protocol.
+		:name:	description
+		:description:	Conforms to the Printable Protocol.
 	*/
 	public var description: String {
 		return "Queue" + list.internalDescription
 	}
 
 	/**
-		init
-		Constructor
+		:name:	init
+		:description:	Constructor.
 	*/
 	public init() {
 		list = List<Element>()
 	}
 
 	/**
-		generate
-		Conforms to the SequenceType Protocol. Returns
+		:name:	generate
+		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes.
 	*/
 	public func generate() -> Generator {
@@ -76,16 +76,16 @@ public class Queue<Element> : Printable, SequenceType {
 	}
 
 	/**
-		enqueue
-		Insert a new element at the back of the Queue.
+		:name:	enqueue
+		:description:	Insert a new element at the back of the Queue.
 	*/
 	public func enqueue(element: Element?) {
 		list.insertAtBack(element)
 	}
 
 	/**
-		dequeue
-		Get and remove the element at the front
+		:name:	dequeue
+		:description:	Get and remove the element at the front
 		of the Queue.
 	*/
 	public func dequeue() -> Element? {
@@ -93,8 +93,8 @@ public class Queue<Element> : Printable, SequenceType {
 	}
 
 	/**
-		removeAll
-		Remove all elements from the Queue.
+		:name:	removeAll
+		:description:	Remove all elements from the Queue.
 	*/
 	public func removeAll() {
 		list.removeAll()

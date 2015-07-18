@@ -23,40 +23,54 @@ public class Action : NSObject {
 	internal let node: ManagedAction
 
 	/**
-		init
-		Initializes Action with a given ManagedAction.
+		:name:	init
+		:description:	An initializer that accepts a given ManagedAction value. This
+		should only be used when specifying the ManagedAction that
+		will be wrapped internally in the Action instance.
+		:param:	action	ManagedAction	A ManagedAction reference in CoreData.
 	*/
 	internal init(action: ManagedAction!) {
 		node = action
 	}
 
 	/**
-		init
-		An initializer for the wrapped Model Object with a given type.
+		:name: init
+		:description:	An initializer that accepts a string value, which specifies
+		the type of Action instance. This is the public facing
+		constructor that should be used when creating new Action
+		instances.
+		:param:	type	String	The type value for the Action.
+		:param:	type1	String	The type value for the Action.
+		:param:	type2	String	The type value for the Action.
 	*/
 	public convenience init(type: String) {
 		self.init(action: ManagedAction(type: type))
 	}
 
 	/**
-		nodeClass
-		Retrieves the nodeClass for the Model Object that is wrapped internally.
+		:name: nodeClass
+		:description:	Specifies the Node Class the Action belongs too.
+		:returns:	String
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
 	}
 
 	/**
-		type
-		Retrieves the type for the Model Object that is wrapped internally.
+		:name:	type
+		:description:	Specifies the Type the Action belongs too.
+		:returns:	String
 	*/
 	public var type: String {
 		return node.type
 	}
 
 	/**
-		id
-		Retrieves the ID for the Model Object that is wrapped internally.
+		:name:	id
+		:description:	A unique identifier that is automatically
+		generated. The identifier represents the Action instance
+		globally amongst all data in Graph.
+		:returns:	String
 	*/
 	public var id: String {
 		let nodeURL: NSURL = node.objectID.URIRepresentation()
@@ -65,16 +79,18 @@ public class Action : NSObject {
 	}
 
 	/**
-		createdDate
-		Retrieves the date the Model Object was created.
+		:name:	createdDate
+		:description:	Retrieves the date the Model Object was created.
+		:returns:	NSDate
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
 	}
 
 	/**
-		groups
-		Retrieves the Groups the Action is a part of.
+		:name:	groups
+		:description:	Retrieves the Groups the Action is a part of.
+		:returns: OrderedSet<Srting>
 	*/
 	public var groups: OrderedSet<String> {
 		var groups: OrderedSet<String> = OrderedSet<String>()
@@ -86,44 +102,49 @@ public class Action : NSObject {
 	}
 
 	/**
-		addGroup
-		Adds a Group name to the list of Groups if it does not exist.
+		:name:	addGroup
+		:description:	Adds a Group name to the list of Groups if it does not exist.
+		:returns:	Bool
 	*/
 	public func addGroup(name: String) -> Bool {
 		return node.addGroup(name)
 	}
 
 	/**
-		hasGroup
-		Checks whether the Node is a part of the Group name passed or not.
+		:name:	hasGroup
+		:descriptions: Checks whether the Node is a part of the Group name passed or not.
+		:returns:	Bool
 	*/
 	public func hasGroup(name: String) -> Bool {
 		return node.hasGroup(name)
 	}
 
 	/**
-		removeGroup
-		Removes a Group name from the list of Groups if it exists.
+		:name:	removeGroup
+		:description:	Removes a Group name from the list of Groups if it exists.
+		:returns:	Bool
 	*/
 	public func removeGroup(name: String) -> Bool {
 		return node.removeGroup(name)
 	}
 
 	/**
-		properties
-		Retrieves the Properties the Node is a part of.
+		:name:	properties
+		:description:	Retrieves the Properties the Node is a part of.
+		:returns:	Tree<String, AnyObject>
 	*/
-	public var properties: Tree<String, AnyObject> {
-		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
+	public var properties: OrderedDictionary<String, AnyObject> {
+		var properties: OrderedDictionary<String, AnyObject> = OrderedDictionary<String, AnyObject>()
 		for property in node.propertySet {
-			properties.insert(property.name, value: property.value)
+			properties.insert((property.name, property.value))
 		}
 		return properties
 	}
 
 	/**
-		properties
-		Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
+		:name:	properties
+		:description:	Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
+		:returns:	AnyObject?
 	*/
 	public subscript(name: String) -> AnyObject? {
 		get {
@@ -135,9 +156,10 @@ public class Action : NSObject {
 	}
 
     /**
-    	subjects
-    	Retrieves a MultiTree of Entity Objects. Where the key is the type
+    	:name:	subjects
+    	:description:	Retrieves a MultiTree of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
+		:returns:	MultiTree<String, Entity>
     */
     public var subjects: MultiTree<String, Entity> {
 		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
@@ -149,9 +171,10 @@ public class Action : NSObject {
     }
 
     /**
-    	objects
-		Retrieves a MultiTree of Entity Objects. Where the key is the type
+    	:name:	objects
+		:description:	Retrieves a MultiTree of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
+		:returns:	MultiTree<String, Entity>
     */
     public var objects: MultiTree<String, Entity> {
 		let nodes: MultiTree<String, Entity> = MultiTree<String, Entity>()
@@ -163,24 +186,27 @@ public class Action : NSObject {
     }
 
     /**
-    	addSubject
-    	Adds a Entity Model Object to the Subject Set.
+    	:name:	addSubject
+    	:description:	Adds a Entity Model Object to the Subject Set.
+		:returns:	Bool
     */
     public func addSubject(entity: Entity!) -> Bool {
         return node.addSubject(entity.node)
 	}
 
     /**
-    	removeSubject
-    	Removes a Entity Model Object from the Subject Set.
+    	:name:	removeSubject
+    	:description:	Removes a Entity Model Object from the Subject Set.
+		:returns:	Bool
     */
     public func removeSubject(entity: Entity!) -> Bool {
 		return node.removeSubject(entity.node)
     }
 
 	/**
-		hasSubject
-		Checks if a Entity exists in the Subjects Set.
+		:name:	hasSubject
+		:description:	Checks if a Entity exists in the Subjects Set.
+		:returns:	Bool
 	*/
 	public func hasSubject(entity: Entity!) -> Bool {
 		for (_, e) in subjects.search(entity.type) {
@@ -192,24 +218,27 @@ public class Action : NSObject {
 	}
 
     /**
-    	addObject
-    	Adds a Entity Object to the Object Set.
+    	:name:	addObject
+    	:description:	Adds a Entity Object to the Object Set.
+		:returns:	Bool
     */
     public func addObject(entity: Entity!) -> Bool {
         return node.addObject(entity.node)
     }
 
     /**
-    	removeObject
-    	Removes a Entity Model Object from the Object Set.
+    	:name:	removeObject
+    	:description:	Removes a Entity Model Object from the Object Set.
+		:returns:	Bool
     */
     public func removeObject(entity: Entity!) -> Bool {
 		return node.removeObject(entity.node)
     }
 
 	/**
-		hasObject
-		Checks if a Entity exists in the Objects Set.
+		:name:	hasObject
+		:description:	Checks if a Entity exists in the Objects Set.
+		:returns:	Bool
 	*/
 	public func hasObject(entity: Entity!) -> Bool {
 		for (_, e) in objects.search(entity.type) {
@@ -221,8 +250,8 @@ public class Action : NSObject {
 	}
 
     /**
-    	delete
-    	Marks the Model Object to be deleted from the Graph.
+    	:name:	delete
+    	:description:	Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
 		node.delete()

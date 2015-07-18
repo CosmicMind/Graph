@@ -19,7 +19,7 @@
 import XCTest
 import GraphKit
 
-class TreeTests: XCTestCase {
+class OrderedDictionaryTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -32,17 +32,17 @@ class TreeTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: Tree<Int, Int> = Tree<Int, Int>()
+		let s: OrderedDictionary<Int, Int> = OrderedDictionary<Int, Int>()
 		
 		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
-			s.insert(1, value: 1)
-			s.insert(2, value: 2)
-			s.insert(3, value: 3)
+			s.insert((1, 1))
+			s.insert((2, 2))
+			s.insert((3, 3))
 		}
 		
-		XCTAssert(3 == s.count, "Test failed.\(s)")
+		XCTAssert(3 == s.count, "Test failed.")
 		XCTAssert(1 == s[0].value, "Test failed.")
 		XCTAssert(2 == s[1].value, "Test failed.")
 		XCTAssert(3 == s[2].value, "Test failed.")
@@ -55,18 +55,20 @@ class TreeTests: XCTestCase {
 		XCTAssert(1 == s.count, "Test failed.")
 		XCTAssert(nil != s.removeValueForKey(2), "Test failed.")
 		XCTAssert(nil == s.removeValueForKey(2), "Test failed.")
-		XCTAssert(true == s.insert(2, value: 10), "Test failed.")
+		
+		s.insert((2, 10))
 		XCTAssert(1 == s.count, "Test failed.")
-		XCTAssert(10 == s.findValueForKey(2)!, "Test failed.")
-		XCTAssert(10 == s[0].value, "Test failed.")
+		XCTAssert(10 == s.findValueForKey(2), "Test failed.")
+		XCTAssert(10 == s[0].value!, "Test failed.")
 		XCTAssert(true == (nil != s.removeValueForKey(2) && 0 == s.count), "Test failed.")
 		
-		s.insert(1, value: 1)
-		s.insert(2, value: 2)
-		s.insert(3, value: 3)
-		
+		s.insert((1, 1))
+		s.insert((2, 2))
+		s.insert((3, 3))
+		s.insert((3, 3))
 		s.updateValue(5, forKey: 3)
-		let subs: Tree<Int, Int> = s.search(3)
+		
+		let subs: OrderedDictionary<Int, Int> = s.search(3)
 		XCTAssert(1 == subs.count, "Test failed.")
 		
 		var generator = subs.generate()
@@ -81,64 +83,6 @@ class TreeTests: XCTestCase {
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
-	}
-	
-	func testString() {
-		let s: Tree<String, Array<Int>> = Tree<String, Array<Int>>()
-		s.insert("friends", value: [1, 2, 3])
-		s["menu"] = [11, 22, 33]
-		
-		XCTAssert(s["friends"]! == s[0].value!, "Test failed.")
-		XCTAssert(s["menu"]! == s[1].value!, "Test failed.")
-		XCTAssert(s["empty"] == nil, "Test failed.")
-		s["menu"] = [22, 33, 44]
-		XCTAssert(s["menu"]! == [22, 33, 44], "Test failed.")
-		s["menu"] = nil
-		XCTAssert(2 == s.count, "Test failed.")
-	}
-	
-	func testSearch() {
-		let t1: Tree<Int, Int> = Tree<Int, Int>()
-		XCTAssert(0 == t1.count, "Test failed, got \(t1.count).")
-		
-		for (var i: Int = 1000; i > 0; --i) {
-			t1.insert(1, value: 1)
-			t1.insert(2, value: 2)
-			t1.insert(3, value: 3)
-		}
-		
-		XCTAssert(3 == t1.count, "Test failed.")
-		
-		let t2: Tree<Int, Int> = t1.search(1)
-		XCTAssert(1 == t2.count, "Test failed, got \(t2.count).")
-		
-		let t3: Tree<Int, Int> = t1.search(2)
-		XCTAssert(1 == t3.count, "Test failed, got \(t3.count).")
-		
-		let t4: Tree<Int, Int> = t1.search(3)
-		XCTAssert(1 == t4.count, "Test failed, got \(t4.count).")
-	}
-	
-	func testConcat() {
-		let t1: Tree<Int, Int> = Tree<Int, Int>()
-		t1.insert(1, value: 1)
-		t1.insert(2, value: 2)
-		t1.insert(3, value: 3)
-		
-		let t2: Tree<Int, Int> = Tree<Int, Int>()
-		t2.insert(4, value: 4)
-		t2.insert(5, value: 5)
-		t2.insert(6, value: 6)
-		
-		let t3: Tree<Int, Int> = t1 + t2
-		
-		for var i: Int = t1.count - 1; i >= 0; --i {
-			XCTAssert(t1[i].value == t3.findValueForKey(t1[i].value!), "Test failed.")
-		}
-		
-		for var i: Int = t2.count - 1; i >= 0; --i {
-			XCTAssert(t2[i].value == t3.findValueForKey(t2[i].value!), "Test failed.")
-		}
 	}
 	
 	func testPerformanceExample() {
