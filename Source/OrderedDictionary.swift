@@ -272,7 +272,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	}
 }
 
-public func ==<Key: Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
+public func ==<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}
@@ -284,7 +284,7 @@ public func ==<Key: Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: 
 	return true
 }
 
-public func ==<Key: Comparable, Value: Comparable>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
+public func ==<Key : Comparable, Value: Comparable>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}

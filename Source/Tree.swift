@@ -74,7 +74,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable
 	}
 }
 
-public func ==<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
+public func ==<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}
@@ -86,7 +86,7 @@ public func ==<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Val
 	return true
 }
 
-public func ==<Key: Comparable, Value: Comparable>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
+public func ==<Key : Comparable, Value: Comparable>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}

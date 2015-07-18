@@ -631,26 +631,12 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 }
 
-public func ==<Key: Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> Bool {
+public func ==<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		if lhs[i].key != rhs[i].key {
-			return false
-		}
-	}
-	return true
-}
-
-public func ==<Key: Comparable, Value: Comparable>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> Bool {
-	if lhs.count != rhs.count {
-		return false
-	}
-	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		let l: (key: Key, value: Value?) = lhs[i]
-		let r: (key: Key, value: Value?) = rhs[i]
-		if l.key != r.key || l.value != r.value {
 			return false
 		}
 	}
