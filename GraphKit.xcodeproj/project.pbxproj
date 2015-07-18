@@ -301,43 +301,22 @@
 			name = Sort;
 			sourceTree = "<group>";
 		};
-		961243141B2B484700CD47E0 /* Action */ = {
-			isa = PBXGroup;
-			children = (
-				96C031B71AD72FD300EE4C63 /* Action.swift */,
-				96C031C11AD72FD300EE4C63 /* ManagedAction.swift */,
-				96C031B81AD72FD300EE4C63 /* ActionGroup.swift */,
-				96C031B91AD72FD300EE4C63 /* ActionProperty.swift */,
-			);
-			name = Action;
-			sourceTree = "<group>";
-		};
-		961243151B2B485800CD47E0 /* Bond */ = {
-			isa = PBXGroup;
-			children = (
-				96C031BA1AD72FD300EE4C63 /* Bond.swift */,
-				96C031C21AD72FD300EE4C63 /* ManagedBond.swift */,
-				96C031BB1AD72FD300EE4C63 /* BondGroup.swift */,
-				96C031BC1AD72FD300EE4C63 /* BondProperty.swift */,
-			);
-			name = Bond;
-			sourceTree = "<group>";
-		};
-		961243161B2B487200CD47E0 /* Entity */ = {
-			isa = PBXGroup;
-			children = (
-				96C031BD1AD72FD300EE4C63 /* Entity.swift */,
-				96C031C31AD72FD300EE4C63 /* ManagedEntity.swift */,
-				96C031BE1AD72FD300EE4C63 /* EntityGroup.swift */,
-				96C031BF1AD72FD300EE4C63 /* EntityProperty.swift */,
-			);
-			name = Entity;
-			sourceTree = "<group>";
-		};
 		961243171B2B488700CD47E0 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
 				96C031C01AD72FD300EE4C63 /* Graph.swift */,
+				96C031BD1AD72FD300EE4C63 /* Entity.swift */,
+				96C031C31AD72FD300EE4C63 /* ManagedEntity.swift */,
+				96C031BE1AD72FD300EE4C63 /* EntityGroup.swift */,
+				96C031BF1AD72FD300EE4C63 /* EntityProperty.swift */,
+				96C031BA1AD72FD300EE4C63 /* Bond.swift */,
+				96C031C21AD72FD300EE4C63 /* ManagedBond.swift */,
+				96C031BB1AD72FD300EE4C63 /* BondGroup.swift */,
+				96C031BC1AD72FD300EE4C63 /* BondProperty.swift */,
+				96C031B71AD72FD300EE4C63 /* Action.swift */,
+				96C031C11AD72FD300EE4C63 /* ManagedAction.swift */,
+				96C031B81AD72FD300EE4C63 /* ActionGroup.swift */,
+				96C031B91AD72FD300EE4C63 /* ActionProperty.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
@@ -370,9 +349,6 @@
 				969F6DA01B2DCAF300B573F8 /* List */,
 				961242D61B2B369C00CD47E0 /* Tree */,
 				961243171B2B488700CD47E0 /* Graph */,
-				961243161B2B487200CD47E0 /* Entity */,
-				961243151B2B485800CD47E0 /* Bond */,
-				961243141B2B484700CD47E0 /* Action */,
 				96C031E81AD72FEE00EE4C63 /* Supporting Files */,
 				96C031C51AD72FD300EE4C63 /* LICENSE */,
 			);
