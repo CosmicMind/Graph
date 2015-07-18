@@ -20,32 +20,32 @@ public class List<Element> : Printable, SequenceType {
 	internal typealias Generator = GeneratorOf<Element?>
 
 	/**
-		head
-		First node in the list.
+		:name:	head
+		:description:	First node in the list.
 	*/
 	private var head: ListNode<Element>?
 
 	/**
-		tail
-		Last node in list.
+		:name:	tail
+		:description:	Last node in list.
 	*/
 	private var tail: ListNode<Element>?
 
 	/**
-		current
-		Current cursor position when iterating.
+		:name:	current
+		:description:	Current cursor position when iterating.
 	*/
 	private var current: ListNode<Element>?
 
 	/**
-		count
-		Number of nodes in List.
+		:name:	count
+		:description:	Number of nodes in List.
 	*/
 	public private(set) var count: Int
 
 	/**
-		internalDescription
-		Returns a String with only the node data for all
+		:name:	internalDescription
+		:description:	Returns a String with only the node data for all
 		nodes in the List.
 	*/
 	internal var internalDescription: String {
@@ -64,32 +64,32 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		description
-		Conforms to Printable Protocol.
+		:name:	description
+		:description:	Conforms to Printable Protocol.
 	*/
 	public var description: String {
 		return "List" + internalDescription
 	}
 
 	/**
-		front
-		Retrieves the data at first node of the List.
+		:name:	front
+		:description:	Retrieves the data at first node of the List.
 	*/
 	public var front: Element? {
 		return head?.element
 	}
 
 	/**
-		back
-		Retrieves the element at the back node of teh List.
+		:name:	back
+		:description:	Retrieves the element at the back node of teh List.
 	*/
 	public var back: Element? {
 		return tail?.element
 	}
 
 	/**
-		cursor
-		Retrieves the element at the current iterator position
+		:name:	cursor
+		:description:	Retrieves the element at the current iterator position
 		in the List.
 	*/
 	public var cursor: Element? {
@@ -97,8 +97,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		next
-		Retrieves the element at the poistion after the
+		:name:	next
+		:description:	Retrieves the element at the poistion after the
 		current cursor poistion. Also moves the cursor
 		to that node.
 	*/
@@ -108,8 +108,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		previous
-		Retrieves the element at the poistion before the
+		:name:	previous
+		:description:	Retrieves the element at the poistion before the
 		current cursor poistion. Also moves the cursor
 		to that node.
 	*/
@@ -119,16 +119,16 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		isEmpty
-		A boolean of whether the List is empty.
+		:name:	isEmpty
+		:description:	A boolean of whether the List is empty.
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
 	}
 
 	/**
-		isCursorAtBack
-		A boolean of whether the cursor has reached
+		:name:	isCursorAtBack
+		:description:	A boolean of whether the cursor has reached
 		the back of the List.
 	*/
 	public var isCursorAtBack: Bool {
@@ -136,8 +136,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		isCursorAtFront
-		A boolean of whether the cursor has reached
+		:name:	isCursorAtFront
+		:description:	A boolean of whether the cursor has reached
 		the front of the List.
 	*/
 	public var isCursorAtFront: Bool {
@@ -145,8 +145,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		init
-		Constructor.
+		:name:	init
+		:description:	Constructor.
 	*/
 	public init() {
 		count = 0
@@ -154,8 +154,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		generate
-		Conforms to the SequenceType Protocol. Returns
+		:name:	generate
+		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes.
 	*/
 	public func generate() -> Generator {
@@ -171,8 +171,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		removeAll
-		Removes all nodes from the List.
+		:name:	removeAll
+		:description:	Removes all nodes from the List.
 	*/
 	public func removeAll() {
 		while !isEmpty {
@@ -181,8 +181,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		insertAtFront
-		Insert a new element at the front
+		:name:	insertAtFront
+		:description:	Insert a new element at the front
 		of the List.
 	*/
 	public func insertAtFront(element: Element?) {
@@ -203,8 +203,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		removeAtFront
-		Remove the element at the front of the List
+		:name:	removeAtFront
+		:description:	Remove the element at the front of the List
 		and return the element at the poistion.
 	*/
 	public func removeAtFront() -> Element? {
@@ -221,8 +221,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		insertAtBack
-		Insert a new element at the back
+		:name:	insertAtBack
+		:description:	Insert a new element at the back
 		of the List.
 	*/
 	public func insertAtBack(element: Element?) {
@@ -243,8 +243,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		removeAtBack
-		Remove the element at the back of the List
+		:name:	removeAtBack
+		:description:	Remove the element at the back of the List
 		and return the element at the poistion.
 	*/
 	public func removeAtBack() -> Element? {
@@ -261,24 +261,24 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		cursorToFront
-		Move the cursor to the front of the List.
+		:name:	cursorToFront
+		:description:	Move the cursor to the front of the List.
 	*/
 	public func cursorToFront() {
 		current = head
 	}
 
 	/**
-		cursorToBack
-		Move the cursor to the back of the List.
+		:name:	cursorToBack
+		:description:	Move the cursor to the back of the List.
 	*/
 	public func cursorToBack() {
 		current = tail
 	}
 
 	/**
-		insertBeforeCursor
-		Insert a new element before the cursor position.
+		:name:	insertBeforeCursor
+		:description:	Insert a new element before the cursor position.
 	*/
 	public func insertBeforeCursor(element: Element?) {
 		if nil === current || head === current {
@@ -292,8 +292,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		insertAfterCursor
-		Insert a new element after the cursor position.
+		:name:	insertAfterCursor
+		:description:	Insert a new element after the cursor position.
 	*/
 	public func insertAfterCursor(element: Element?) {
 		if nil === current || tail === current {
@@ -307,8 +307,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		removeAtCursor
-		Removes the element at the cursor position.
+		:name:	removeAtCursor
+		:description:	Removes the element at the cursor position.
 	*/
 	public func removeAtCursor() -> Element? {
 		if 1 >= count {
@@ -332,8 +332,8 @@ public class List<Element> : Printable, SequenceType {
 	}
 
 	/**
-		reset
-		Reinitializes pointers to sentinel value.
+		:name:	reset
+		:description:	Reinitializes pointers to sentinel value.
 	*/
 	private func reset() {
 		head = nil

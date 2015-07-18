@@ -23,40 +23,40 @@ public class Bond : NSObject {
 	internal let node: ManagedBond
 
 	/**
-		init
-		Initializes Bond with a given ManagedBond.
+		:name:	init
+		:description: Initializes Bond with a given ManagedBond.
 	*/
 	internal init(bond: ManagedBond!) {
 		node = bond
 	}
 
 	/**
-		init
-		An initializer for the wrapped Model Object with a given type.
+		:name:	init
+		:description:	An initializer for the wrapped Model Object with a given type.
 	*/
 	public convenience init(type: String) {
 		self.init(bond: ManagedBond(type: type))
 	}
 
 	/**
-		nodeClass
-		Retrieves the nodeClass for the Model Object that is wrapped internally.
+		:name:	nodeClass
+		:description:	Retrieves the nodeClass for the Model Object that is wrapped internally.
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
 	}
 
 	/**
-		type
-		Retrieves the type for the Model Object that is wrapped internally.
+		:name:	type
+		:description:	Retrieves the type for the Model Object that is wrapped internally.
 	*/
 	public var type: String {
 		return node.type
 	}
 
 	/**
-		id
-		Retrieves the ID for the Model Object that is wrapped internally.
+		:name:	id
+		:description:	Retrieves the ID for the Model Object that is wrapped internally.
 	*/
 	public var id: String {
 		let nodeURL: NSURL = node.objectID.URIRepresentation()
@@ -65,16 +65,16 @@ public class Bond : NSObject {
 	}
 
 	/**
-		createdDate
-		Retrieves the date the Model Object was created.
+		:name:	createdDate
+		:description:	Retrieves the date the Model Object was created.
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
 	}
 
 	/**
-		groups
-		Retrieves the Groups the Bond is a part of.
+		:name:	groups
+		:description:	Retrieves the Groups the Bond is a part of.
 	*/
 	public var groups: OrderedSet<String> {
 		var groups: OrderedSet<String> = OrderedSet<String>()
@@ -86,32 +86,32 @@ public class Bond : NSObject {
 	}
 
 	/**
-		addGroup
-		Adds a Group name to the list of Groups if it does not exist.
+		:name:	addGroup
+		:description:	Adds a Group name to the list of Groups if it does not exist.
 	*/
 	public func addGroup(name: String) -> Bool {
 		return node.addGroup(name)
 	}
 
 	/**
-		hasGroup
-		Checks whether the Node is a part of the Group name passed or not.
+		:name:	hasGroup
+		:description:	Checks whether the Node is a part of the Group name passed or not.
 	*/
 	public func hasGroup(name: String) -> Bool {
 		return node.hasGroup(name)
 	}
 
 	/**
-		removeGroup
-		Removes a Group name from the list of Groups if it exists.
+		:name:	removeGroup
+		:description:	Removes a Group name from the list of Groups if it exists.
 	*/
 	public func removeGroup(name: String) -> Bool {
 		return node.removeGroup(name)
 	}
 
 	/**
-		properties
-		Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
+		:name:	properties
+		:description:	Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
 	*/
 	public subscript(name: String) -> AnyObject? {
 		get {
@@ -123,20 +123,20 @@ public class Bond : NSObject {
 	}
 
 	/**
-		properties
-		Retrieves the Properties the Node is a part of.
+		:name:	properties
+		:description:	Retrieves the Properties the Node is a part of.
 	*/
-	public var properties: Tree<String, AnyObject> {
-		var properties: Tree<String, AnyObject> = Tree<String, AnyObject>()
+	public var properties: OrderedDictionary<String, AnyObject> {
+		var properties: OrderedDictionary<String, AnyObject> = OrderedDictionary<String, AnyObject>()
 		for property in node.propertySet {
-			properties.insert(property.name, value: property.value)
+			properties.insert((property.name, property.value))
 		}
 		return properties
 	}
 
     /**
-    	subject
-    	Retrieves an Entity Object.
+    	:name:	subject
+    	:description:	Retrieves an Entity Object.
     */
     public var subject: Entity? {
         get {
@@ -148,8 +148,8 @@ public class Bond : NSObject {
     }
 
     /**
-    	object
-    	Retrieves an Entity Object.
+    	:name:	object
+    	:description:	Retrieves an Entity Object.
     */
     public var object: Entity? {
 		get {
@@ -161,8 +161,8 @@ public class Bond : NSObject {
     }
 
     /**
-    	delete
-    	Marks the Model Object to be deleted from the Graph.
+    	:name:	delete
+    	:description:	Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
         node.delete()

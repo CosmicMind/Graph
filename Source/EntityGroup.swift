@@ -35,8 +35,8 @@ internal class EntityGroup : NSManagedObject {
 	}
 
 	/**
-		init
-		Initializer for the Model Object.
+		:name:	init
+		:description:	Initializer for the Model Object.
 	*/
 	convenience init(name: String!) {
 		let g: Graph = Graph()
@@ -47,8 +47,8 @@ internal class EntityGroup : NSManagedObject {
 	}
 
 	/**
-		delete
-		Deletes the Object Model.
+		:name:	delete
+		:description:	Deletes the Object Model.
 	*/
 	internal func delete() {
 		worker?.deleteObject(self)

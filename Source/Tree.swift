@@ -16,10 +16,10 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
+public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable {
 	/**
-		description
-		Conforms to the Printable Protocol. Outputs the
+		:name:	description
+		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the Tree in a readable format.
 	*/
 	public override var description: String {
@@ -27,16 +27,16 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	}
 
 	/**
-		init
-		Constructor
+		:name:	init
+		:description:	Constructor.
 	*/
 	public override init() {
-		super.init(uniqueValues: true)
+		super.init(isUniqueValued: true)
 	}
 
 	/**
-		search
-		Accepts a paramter list of keys and returns a subset
+		:name:	search
+		:description:	Accepts a paramter list of keys and returns a subset
 		Tree with the indicated values if
 		they exist.
 	*/
@@ -45,33 +45,59 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value> {
 	}
 
 	/**
-		search
-		Accepts an array of keys and returns a subset
+		:name:	search
+		:description:	Accepts an array of keys and returns a subset
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(array: Array<Key>) -> Tree<Key, Value> {
+	public func search(keys: Array<Key>) -> Tree<Key, Value> {
 		var tree: Tree<Key, Value> = Tree<Key, Value>()
-		for key: Key in array {
-			subtree(key, node: root, tree: &tree)
+		for key: Key in keys {
+			subTree(key, node: root, tree: &tree)
 		}
 		return tree
 	}
 
 	/**
-		subtree
-		Traverses the Tree and looking for a key value.
+		:name:	subTree
+		:description:	Traverses the Tree and looking for a key value.
 		This is used for internal search.
 	*/
-	internal func subtree(key: Key, node: RedBlackNode<Key, Value>, inout tree: Tree<Key, Value>) {
+	internal func subTree(key: Key, node: RedBlackNode<Key, Value>, inout tree: Tree<Key, Value>) {
 		if sentinel !== node {
 			if key == node.key {
 				tree.insert(key, value: node.value)
 			}
-			subtree(key, node: node.left, tree: &tree)
-			subtree(key, node: node.right, tree: &tree)
+			subTree(key, node: node.left, tree: &tree)
+			subTree(key, node: node.right, tree: &tree)
 		}
 	}
+}
+
+public func ==<Key: Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
+	if lhs.count != rhs.count {
+		return false
+	}
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		if lhs[i].key != rhs[i].key {
+			return false
+		}
+	}
+	return true
+}
+
+public func ==<Key: Comparable, Value: Comparable>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
+	if lhs.count != rhs.count {
+		return false
+	}
+	for var i: Int = lhs.count - 1; 0 <= i; --i {
+		let l: (key: Key, value: Value?) = lhs[i]
+		let r: (key: Key, value: Value?) = rhs[i]
+		if l.key != r.key || l.value != r.value {
+			return false
+		}
+	}
+	return true
 }
 
 public func +<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
@@ -95,7 +121,7 @@ public func -<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Val
 	}
 	for var i: Int = rhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = rhs[i]
-		t.remove(n.key)
+		t.removeValueForKey(n.key)
 	}
 	return t
 }

@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65B723F01B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; };
+		65B723F11B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; };
+		65B723F51B5AE5E50087E6A6 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */; };
+		65B723F61B5AE5E60087E6A6 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */; };
+		65B723F71B5AE60E0087E6A6 /* OrderedDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		65B723F81B5AE61D0087E6A6 /* OrderedDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		65B723FA1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */; };
+		65B723FB1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */; };
+		65B723FD1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */; };
+		65B723FE1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */; };
 		961242D91B2B36B800CD47E0 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; };
 		961242DA1B2B36B800CD47E0 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; };
 		961242DC1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */; };
@@ -179,7 +189,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		65C794911B54ADA8000FB68F /* parser.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = parser.js; sourceTree = "<group>"; };
+		65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
+		65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryTests.swift; sourceTree = "<group>"; };
+		65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiDictionary.swift; sourceTree = "<group>"; };
+		65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiDictionaryTests.swift; sourceTree = "<group>"; };
 		961242D81B2B36B800CD47E0 /* RedBlackTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackNode.swift; sourceTree = "<group>"; };
 		961242DE1B2B36D300CD47E0 /* InsertionSort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertionSort.swift; sourceTree = "<group>"; };
@@ -271,19 +284,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		65C794901B54ADA8000FB68F /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				65C794911B54ADA8000FB68F /* parser.js */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
 		961242D61B2B369C00CD47E0 /* Tree */ = {
 			isa = PBXGroup;
 			children = (
 				968C00991B51B0C800E3FA9E /* OrderedSet.swift */,
 				968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */,
+				65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */,
+				65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */,
 				961242E11B2B36DD00CD47E0 /* Tree.swift */,
 				961242E41B2B36E800CD47E0 /* MultiTree.swift */,
 				961242D81B2B36B800CD47E0 /* RedBlackTree.swift */,
@@ -301,43 +308,22 @@
 			name = Sort;
 			sourceTree = "<group>";
 		};
-		961243141B2B484700CD47E0 /* Action */ = {
-			isa = PBXGroup;
-			children = (
-				96C031B71AD72FD300EE4C63 /* Action.swift */,
-				96C031C11AD72FD300EE4C63 /* ManagedAction.swift */,
-				96C031B81AD72FD300EE4C63 /* ActionGroup.swift */,
-				96C031B91AD72FD300EE4C63 /* ActionProperty.swift */,
-			);
-			name = Action;
-			sourceTree = "<group>";
-		};
-		961243151B2B485800CD47E0 /* Bond */ = {
-			isa = PBXGroup;
-			children = (
-				96C031BA1AD72FD300EE4C63 /* Bond.swift */,
-				96C031C21AD72FD300EE4C63 /* ManagedBond.swift */,
-				96C031BB1AD72FD300EE4C63 /* BondGroup.swift */,
-				96C031BC1AD72FD300EE4C63 /* BondProperty.swift */,
-			);
-			name = Bond;
-			sourceTree = "<group>";
-		};
-		961243161B2B487200CD47E0 /* Entity */ = {
-			isa = PBXGroup;
-			children = (
-				96C031BD1AD72FD300EE4C63 /* Entity.swift */,
-				96C031C31AD72FD300EE4C63 /* ManagedEntity.swift */,
-				96C031BE1AD72FD300EE4C63 /* EntityGroup.swift */,
-				96C031BF1AD72FD300EE4C63 /* EntityProperty.swift */,
-			);
-			name = Entity;
-			sourceTree = "<group>";
-		};
 		961243171B2B488700CD47E0 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
 				96C031C01AD72FD300EE4C63 /* Graph.swift */,
+				96C031BD1AD72FD300EE4C63 /* Entity.swift */,
+				96C031C31AD72FD300EE4C63 /* ManagedEntity.swift */,
+				96C031BE1AD72FD300EE4C63 /* EntityGroup.swift */,
+				96C031BF1AD72FD300EE4C63 /* EntityProperty.swift */,
+				96C031BA1AD72FD300EE4C63 /* Bond.swift */,
+				96C031C21AD72FD300EE4C63 /* ManagedBond.swift */,
+				96C031BB1AD72FD300EE4C63 /* BondGroup.swift */,
+				96C031BC1AD72FD300EE4C63 /* BondProperty.swift */,
+				96C031B71AD72FD300EE4C63 /* Action.swift */,
+				96C031C11AD72FD300EE4C63 /* ManagedAction.swift */,
+				96C031B81AD72FD300EE4C63 /* ActionGroup.swift */,
+				96C031B91AD72FD300EE4C63 /* ActionProperty.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
@@ -370,9 +356,6 @@
 				969F6DA01B2DCAF300B573F8 /* List */,
 				961242D61B2B369C00CD47E0 /* Tree */,
 				961243171B2B488700CD47E0 /* Graph */,
-				961243161B2B487200CD47E0 /* Entity */,
-				961243151B2B485800CD47E0 /* Bond */,
-				961243141B2B484700CD47E0 /* Action */,
 				96C031E81AD72FEE00EE4C63 /* Supporting Files */,
 				96C031C51AD72FD300EE4C63 /* LICENSE */,
 			);
@@ -404,6 +387,8 @@
 				968C009F1B51B31B00E3FA9E /* OrderedSetTest.swift */,
 				96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */,
 				968C00AB1B51D76D00E3FA9E /* ProbabilityTests.swift */,
+				65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */,
+				65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -427,7 +412,6 @@
 		96DBB4A61A9D131D0087569F = {
 			isa = PBXGroup;
 			children = (
-				65C794901B54ADA8000FB68F /* Util */,
 				96C031B61AD72FD300EE4C63 /* Source */,
 				96C031D51AD72FE100EE4C63 /* Tests */,
 				96DBB4B11A9D131D0087569F /* Products */,
@@ -467,6 +451,7 @@
 				96CB07C51B52E8DA00EB4A58 /* OrderedMultiSet.swift in Headers */,
 				961242F21B2B38AB00CD47E0 /* RedBlackTree.swift in Headers */,
 				96CB07C31B52E8DA00EB4A58 /* Probability.swift in Headers */,
+				65B723F71B5AE60E0087E6A6 /* OrderedDictionary.swift in Headers */,
 				969F6DAD1B2DCCF000B573F8 /* ListNode.swift in Headers */,
 				961242F01B2B38AB00CD47E0 /* InsertionSort.swift in Headers */,
 				961242F11B2B38AB00CD47E0 /* RedBlackNode.swift in Headers */,
@@ -501,6 +486,7 @@
 				96CB07C81B52E8FA00EB4A58 /* OrderedMultiSet.swift in Headers */,
 				961243041B2B38E000CD47E0 /* RedBlackTree.swift in Headers */,
 				96CB07C61B52E8FA00EB4A58 /* Probability.swift in Headers */,
+				65B723F81B5AE61D0087E6A6 /* OrderedDictionary.swift in Headers */,
 				969F6DAA1B2DCCDA00B573F8 /* ListNode.swift in Headers */,
 				961243021B2B38E000CD47E0 /* InsertionSort.swift in Headers */,
 				961243031B2B38E000CD47E0 /* RedBlackNode.swift in Headers */,
@@ -683,11 +669,13 @@
 				961242DF1B2B36D300CD47E0 /* InsertionSort.swift in Sources */,
 				961242D91B2B36B800CD47E0 /* RedBlackTree.swift in Sources */,
 				961242DC1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */,
+				65B723F01B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */,
 				968F38B31AD7394300E963AB /* Graph.swift in Sources */,
 				968F38B41AD7394300E963AB /* ActionGroup.swift in Sources */,
 				968F38B51AD7394300E963AB /* ActionProperty.swift in Sources */,
 				968F38BB1AD7394300E963AB /* ManagedBond.swift in Sources */,
 				969F6DAF1B2DDE6500B573F8 /* Stack.swift in Sources */,
+				65B723FA1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */,
 				968C009D1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */,
 				969F6DBC1B2DEB6200B573F8 /* List.swift in Sources */,
 				968F38B21AD7394300E963AB /* Entity.swift in Sources */,
@@ -711,8 +699,10 @@
 				968F38AD1AD7393900E963AB /* EntityStressTests.swift in Sources */,
 				969F6DB21B2DE06200B573F8 /* StackTests.swift in Sources */,
 				96CB07CD1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
+				65B723F51B5AE5E50087E6A6 /* OrderedDictionaryTests.swift in Sources */,
 				961242EB1B2B378400CD47E0 /* MultiTreeTests.swift in Sources */,
 				968F38AC1AD7393900E963AB /* EntitySearchTests.swift in Sources */,
+				65B723FD1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */,
 				968F38AF1AD7393900E963AB /* Tests.swift in Sources */,
 				96CB07CA1B52F33900EB4A58 /* RedBlackTreeTests.swift in Sources */,
 				969F6DC11B2DECAA00B573F8 /* ListTests.swift in Sources */,
@@ -745,11 +735,13 @@
 				969F6DA61B2DCB3900B573F8 /* ListNode.swift in Sources */,
 				961242DA1B2B36B800CD47E0 /* RedBlackTree.swift in Sources */,
 				961242DD1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */,
+				65B723F11B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */,
 				96C0320B1AD730C200EE4C63 /* Graph.swift in Sources */,
 				96C0320C1AD730C200EE4C63 /* ActionGroup.swift in Sources */,
 				96C0320D1AD730C200EE4C63 /* ActionProperty.swift in Sources */,
 				96C032131AD730C200EE4C63 /* ManagedBond.swift in Sources */,
 				969F6DB01B2DDE6500B573F8 /* Stack.swift in Sources */,
+				65B723FB1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */,
 				968C009E1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */,
 				969F6DBD1B2DEB6200B573F8 /* List.swift in Sources */,
 				96C0320A1AD730C200EE4C63 /* Entity.swift in Sources */,
@@ -773,8 +765,10 @@
 				96C032161AD730CC00EE4C63 /* ActionTests.swift in Sources */,
 				969F6DB31B2DE06200B573F8 /* StackTests.swift in Sources */,
 				96CB07CE1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
+				65B723F61B5AE5E60087E6A6 /* OrderedDictionaryTests.swift in Sources */,
 				961242EC1B2B378400CD47E0 /* MultiTreeTests.swift in Sources */,
 				96C0321A1AD730CC00EE4C63 /* EntityStressTests.swift in Sources */,
+				65B723FE1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */,
 				96C0321C1AD730CC00EE4C63 /* Tests.swift in Sources */,
 				96CB07CB1B52F33900EB4A58 /* RedBlackTreeTests.swift in Sources */,
 				969F6DC21B2DECAA00B573F8 /* ListTests.swift in Sources */,

@@ -172,8 +172,8 @@ class BondTests : XCTestCase, GraphDelegate {
     func graph(graph: Graph, didInsertBond bond: Bond, group: String) {
         if "Close" == group {
             groupInsertExpectation?.fulfill()
-            let n: MultiTree<String, Bond> = graph.search(BondGroup: group)
-            if bond.id == n.first!.id {
+            let n: OrderedMultiDictionary<String, Bond> = graph.search(BondGroup: group)
+            if bond.id == n.first?.value?.id {
                 groupSearchExpectation?.fulfill()
             }
         }
@@ -182,20 +182,20 @@ class BondTests : XCTestCase, GraphDelegate {
     func graph(graph: Graph, didInsertBond bond: Bond, property: String, value: AnyObject){
         if "permission" == property && "edit" == value as! String {
             permissionInsertExpectation?.fulfill()
-            let n: MultiTree<String, Bond> = graph.search(BondProperty: property)
-            if n.first![property] as! String == value as! String {
-                let m: MultiTree<String, Bond> = graph.search(BondProperty: property, value: value as! String)
-                if m.first![property] as! String == value as! String {
+            let n: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property)
+            if n.first?.value?[property] as! String == value as! String {
+                let m: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property, value: value as! String)
+                if m.first?.value?[property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
             }
 
         } else if "year" == property && 1998 == value as! Int {
             yearInsertExpectation?.fulfill()
-            let n: MultiTree<String, Bond> = graph.search(BondProperty: property)
-            if n.first![property] as! Int == value as! Int {
-                let m: MultiTree<String, Bond> = graph.search(BondProperty: property, value: value as! Int)
-                if m.first![property] as! Int == value as! Int {
+            let n: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property)
+            if n.first?.value?[property] as! Int == value as! Int {
+                let m: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property, value: value as! Int)
+                if m.first?.value?[property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }
             }
@@ -205,19 +205,19 @@ class BondTests : XCTestCase, GraphDelegate {
     func graph(graph: Graph, didUpdateBond bond: Bond, property: String, value: AnyObject) {
         if "permission" == property && "read" == value as! String {
             permissionUpdateExpectation?.fulfill()
-            let n: MultiTree<String, Bond> = graph.search(BondProperty: property)
-            if n.first![property] as! String == value as! String {
-                let m: MultiTree<String, Bond> = graph.search(BondProperty: property, value: value as! String)
-                if m.first![property] as! String == value as! String {
+            let n: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property)
+            if n.first?.value?[property] as! String == value as! String {
+                let m: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property, value: value as! String)
+                if m.first?.value?[property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
             }
         } else if "year" == property && 2001 == value as! Int {
             yearUpdateExpectation?.fulfill()
-            let n: MultiTree<String, Bond> = graph.search(BondProperty: property)
-            if n.first![property] as! Int == value as! Int {
-                let m: MultiTree<String, Bond> = graph.search(BondProperty: property, value: value as! Int)
-                if m.first![property] as! Int == value as! Int {
+            let n: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property)
+            if n.first?.value?[property] as! Int == value as! Int {
+                let m: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property, value: value as! Int)
+                if m.first?.value?[property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }
             }
