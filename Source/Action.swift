@@ -24,33 +24,23 @@ public class Action : NSObject {
 
 	/**
 		:name:	init
-		:description:	An initializer that accepts a given ManagedAction value. This
-		should only be used when specifying the ManagedAction that
-		will be wrapped internally in the Action instance.
-		:param:	action	ManagedAction	A ManagedAction reference in CoreData.
+		:description: Initializes Action with a given ManagedAction.
 	*/
 	internal init(action: ManagedAction!) {
 		node = action
 	}
 
 	/**
-		:name: init
-		:description:	An initializer that accepts a string value, which specifies
-		the type of Action instance. This is the public facing
-		constructor that should be used when creating new Action
-		instances.
-		:param:	type	String	The type value for the Action.
-		:param:	type1	String	The type value for the Action.
-		:param:	type2	String	The type value for the Action.
+	:name:	init
+	:description:	An initializer for the wrapped Model Object with a given type.
 	*/
 	public convenience init(type: String) {
 		self.init(action: ManagedAction(type: type))
 	}
 
 	/**
-		:name: nodeClass
-		:description:	Specifies the Node Class the Action belongs too.
-		:returns:	String
+	:name:	nodeClass
+	:description:	Retrieves the nodeClass for the Model Object that is wrapped internally.
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
