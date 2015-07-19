@@ -32,12 +32,12 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	internal private(set) var root: RedBlackNode<Key, Value>
 
 	/**
-		:name:	isUnique
+		:name:	isUniquelyKeyed
 		:description:	A boolean used to indicate whether to allow the
 		tree to store non-unique key values or only unique
 		key values.
 	*/
-	public private(set) var isUnique: Bool
+	public private(set) var isUniquelyKeyed: Bool
 
 	/**
 		:name:	internalDescription
@@ -116,7 +116,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		non-unique keys.
 	*/
 	public override init() {
-		isUnique = false
+		isUniquelyKeyed = false
 		sentinel = RedBlackNode<Key, Value>()
 		root = sentinel
 	}
@@ -128,7 +128,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:param:	uniqueKeys	Bool	Set the keys to be unique.
 	*/
 	public init(uniqueKeys: Bool) {
-		isUnique = uniqueKeys
+		isUniquelyKeyed = uniqueKeys
 		sentinel = RedBlackNode<Key, Value>()
 		root = sentinel
 	}
@@ -226,7 +226,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	findValueForKey
 		:description:	Finds the first instance in a non-unique tree and only instance
-		in isUnique tree of a given keyed node.
+		in isUniquelyKeyed tree of a given keyed node.
 	*/
 	public func findValueForKey(key: Key) -> Value? {
 		return internalFindByKey(key).value
@@ -294,7 +294,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Insert a new node with the given key and value.
 	*/
 	private func internalInsert(key: Key, value: Value?) -> RedBlackNode<Key, Value> {
-		if isUnique && sentinel !== internalFindByKey(key) {
+		if isUniquelyKeyed && sentinel !== internalFindByKey(key) {
 			return sentinel;
 		}
 
