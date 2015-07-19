@@ -31,7 +31,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable
 		:description:	Constructor.
 	*/
 	public override init() {
-		super.init(isUniqueValued: true)
+		super.init(uniqueKeys: true)
 	}
 
 	/**

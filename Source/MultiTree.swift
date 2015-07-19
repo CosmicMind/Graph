@@ -31,7 +31,7 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equa
 		:description:	Constructor
 	*/
 	public override init() {
-		super.init(isUniqueValued: false)
+		super.init(uniqueKeys: false)
 	}
 
 	/**

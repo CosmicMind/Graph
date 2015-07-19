@@ -125,10 +125,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	init
 		:description:	Constructor where the tree is optionally allowed
 		to store uniqe or non-unique keys.
-		:param:	isUniquedValued	Bool	Set the keys to be unique.
+		:param:	uniqueKeys	Bool	Set the keys to be unique.
 	*/
-	public init(isUniqueValued: Bool) {
-		isUnique = isUniqueValued
+	public init(uniqueKeys: Bool) {
+		isUnique = uniqueKeys
 		sentinel = RedBlackNode<Key, Value>()
 		root = sentinel
 	}
