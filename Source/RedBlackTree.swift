@@ -183,6 +183,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		If the tree allows non-unique keys, then all keys matching
 		the given key value will be removed.
 		:returns:	Value?
+		:TODO:	Think about return callback. Not all removed values are returned in a 
+		Multi type structure.
 	*/
 	public func removeValueForKey(key: Key) -> Value? {
 		var removed: RedBlackNode<Key, Value>?
