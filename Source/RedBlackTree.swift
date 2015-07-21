@@ -191,7 +191,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		var x: RedBlackNode<Key, Value>?
 		while sentinel !== x {
 			removed = x
-			x = internalRemove(key)
+			x = internalRemoveValueForKey(key)
 		}
 		return removed?.value
 	}
@@ -202,7 +202,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	*/
 	public func removeAll() {
 		while sentinel !== root {
-			internalRemove(root.key)
+			internalRemoveValueForKey(root.key)
 		}
 	}
 
@@ -231,7 +231,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		in isUniquelyKeyed tree of a given keyed node.
 	*/
 	public func findValueForKey(key: Key) -> Value? {
-		return internalFindByKey(key).value
+		return internalFindValueForKey(key).value
 	}
 
 	/**
@@ -271,10 +271,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	*/
 	public subscript(name: String) -> Value? {
 		get {
-			return internalFindByKey(name as! Key).value
+			return internalFindValueForKey(name as! Key).value
 		}
 		set(value) {
-			let node: RedBlackNode<Key, Value> = internalFindByKey(name as! Key)
+			let node: RedBlackNode<Key, Value> = internalFindValueForKey(name as! Key)
 			if sentinel === node {
 				insert(name as! Key, value: value!)
 			} else {
@@ -296,7 +296,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Insert a new node with the given key and value.
 	*/
 	private func internalInsert(key: Key, value: Value?) -> RedBlackNode<Key, Value> {
-		if isUniquelyKeyed && sentinel !== internalFindByKey(key) {
+		if isUniquelyKeyed && sentinel !== internalFindValueForKey(key) {
 			return sentinel;
 		}
 
@@ -375,12 +375,12 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		:name:	internalRemove
+		:name:	internalRemoveValueForKey
 		:description:	Removes a node with the given key value and returns that
 		node. If the value does not exist, the sentinel is returned.
 	*/
-	private func internalRemove(key: Key) -> RedBlackNode<Key, Value> {
-		var z: RedBlackNode<Key, Value> = internalFindByKey(key)
+	private func internalRemoveValueForKey(key: Key) -> RedBlackNode<Key, Value> {
+		var z: RedBlackNode<Key, Value> = internalFindValueForKey(key)
 		if z === sentinel {
 			return sentinel
 		}
@@ -582,10 +582,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		:name:	internalFindByKey
+		:name:	internalFindValueForKey
 		:description:	Finds a node with a given key value.
 	*/
-	private func internalFindByKey(key: Key) -> RedBlackNode<Key, Value> {
+	private func internalFindValueForKey(key: Key) -> RedBlackNode<Key, Value> {
 		var z: RedBlackNode<Key, Value> = root
 		while z !== sentinel {
 			if key == z.key {
