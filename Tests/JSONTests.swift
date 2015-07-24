@@ -78,5 +78,4 @@ class JSONTests: XCTestCase {
 	func testPerformance() {
 		self.measureBlock() {}
 	}
-	
 }

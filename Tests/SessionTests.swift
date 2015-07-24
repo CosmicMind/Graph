@@ -32,10 +32,8 @@ class SessionTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testSession() {
+	func testGet() {
 		let session: Session = Session()
-		
-		expectation = expectationWithDescription("Test failed.")
 		
 		if let u1: NSURL = NSURL(string: "http://graph.sandbox.local:5000/key/1/graph/test") {
 			session.get(u1) { (json: JSON?, error: NSError?) in
@@ -44,6 +42,8 @@ class SessionTests: XCTestCase {
 				}
 			}
 		}
+		expectation = expectationWithDescription("Test failed.")
+		
 		waitForExpectationsWithTimeout(5, handler: nil)
 		
 		if let u1: NSURL = NSURL(string: "http://graph.sandbox.local:5000/key/1/graph") {
