@@ -32,7 +32,7 @@ class MultiTreeTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: MultiTree<Int, Int> = MultiTree<Int, Int>(elements: (1, 1), (2, 2), (3, 3))
+		let s: MultiTree<Int, Int> = MultiTree<Int, Int>(nodes: (1, 1), (2, 2), (3, 3))
 		
 		XCTAssert(3 == s.count, "Test failed, got \(s.count).")
 		

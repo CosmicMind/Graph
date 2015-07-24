@@ -32,7 +32,7 @@ class TreeTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: Tree<Int, Int> = Tree<Int, Int>(elements: (1, 1), (2, 2), (3, 3))
+		let s: Tree<Int, Int> = Tree<Int, Int>(nodes: (1, 1), (2, 2), (3, 3))
 		
 		XCTAssert(3 == s.count, "Test failed, got \(s.count).")
 		
