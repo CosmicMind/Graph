@@ -20,7 +20,7 @@ import XCTest
 import Foundation
 import GraphKit
 
-class NetworkTests: XCTestCase {
+class JSONTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -32,12 +32,17 @@ class NetworkTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testJSONParse() {
-//		var fileError, jsonError : NSError?
-//		var jsonData = NSData(contentsOfFile:NSBundle.mainBundle().pathForResource("Recipes", ofType:"json")!, options: nil, error: &fileError)
-//		if let err = fileError {
-//			println("Error: Could not load JSON file: \(fileError?.localizedDescription)")
-//		}
+	func testParse() {
+		var error: NSError?
+		
+		let dict: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
+		var data: NSData? = NSJSONSerialization.dataWithJSONObject(dict, options: nil, error: &error)
+		var json: JSON? = JSON.parse(data, error: &error)
+		
+		XCTAssert(nil != json, "Test failed.")
+		XCTAssert("username" == json?["user"]?.stringValue, "Test failed.")
+		XCTAssert("password" == json?["password"]?.stringValue, "Test failed.")
+		XCTAssert(123456789 == json?["token"]?.integerValue, "Test failed.")
 	}
 	
 	func testPerformanceExample() {

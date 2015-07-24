@@ -316,14 +316,14 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		String, this feature allows access like a
 		Dictionary.
 	*/
-	public subscript(name: String) -> Value? {
+	public subscript(key: Key) -> Value? {
 		get {
-			return internalFindValueForKey(name as! Key).value
+			return internalFindValueForKey(key).value
 		}
 		set(value) {
-			let node: RedBlackNode<Key, Value> = internalFindValueForKey(name as! Key)
+			let node: RedBlackNode<Key, Value> = internalFindValueForKey(key)
 			if sentinel === node {
-				insert(name as! Key, value: value!)
+				insert(key, value: value!)
 			} else {
 				node.value = value
 			}

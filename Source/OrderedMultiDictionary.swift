@@ -160,12 +160,12 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		String, this feature allows access like a
 		Dictionary.
 	*/
-	public subscript(name: String) -> Value? {
+	public subscript(key: Key) -> Value? {
 		get {
-			return tree[name]
+			return tree[key]
 		}
 		set(value) {
-			tree[name] = value
+			tree[key] = value
 		}
 	}
 	

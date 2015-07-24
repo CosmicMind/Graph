@@ -16,6 +16,8 @@
 * in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import Foundation
+
 public class Bridge {
 	/**
 		:name:	init
@@ -23,5 +25,14 @@ public class Bridge {
 	*/
 	public init() {
 	
+	}
+	
+	/**
+		:name:	parseJSON
+		:description:	Parsing a JSON block.
+	*/
+	public func parseJSON(data: NSData, var error: NSError?) -> AnyObject? {
+		var object: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error)
+		return object
 	}
 }

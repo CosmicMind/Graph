@@ -19,7 +19,7 @@
 import XCTest
 import GraphKit
 
-class InsertionSortTests: XCTestCase {
+class BridgeTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -29,18 +29,6 @@ class InsertionSortTests: XCTestCase {
 	override func tearDown() {
 		// Put teardown code here. This method is called after the invocation of each test method in the class.
 		super.tearDown()
-	}
-	
-	func testIntegerSorting() {
-		var integers: Array<Int> = [5, 4, 3, 2, 1, 6, 8, 7, 9]
-		Sort.insertion(&integers)
-		XCTAssert([1, 2, 3, 4, 5, 6, 7, 8, 9] == integers, "Test failed.")
-	}
-	
-	func testStringSorting() {
-		var strings: Array<String> = ["c", "d", "a", "b", "t", "r", "x", "aa", "gg"]
-		Sort.insertion(&strings)
-		XCTAssert(["a", "aa", "b", "c", "d", "gg", "r", "t", "x"] == strings, "Test failed.")
 	}
 	
 	func testPerformanceExample() {
