@@ -19,8 +19,6 @@
 import Foundation
 
 public class JSON {
-	public var error: NSError?
-	
 	private var parsedObject: AnyObject
 	
 	public var stringValue: String {
@@ -33,12 +31,40 @@ public class JSON {
 	
 	/**
 		:name:	parse
-		:description:	Parsing a JSON block.
+		:description:	Parse a JSON block.
 	*/
-	public class func parse(data: NSData!, inout error: NSError?) -> JSON? {
+	public class func parse(data: NSData, inout error: NSError?) -> JSON? {
 		var parsedObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error)
 		if nil != parsedObject {
 			return JSON(parsedObject: parsedObject)
+		}
+		return nil
+	}
+	
+	/**
+		:name:	parse
+		:description:	Parse a JSON block.
+	*/
+	public class func parse(json: String, inout error: NSError?) -> JSON? {
+		return nil
+	}
+	
+	/**
+		:name:	serialize
+		:description:	Serialize an object.
+	*/
+	public class func serialize(object: AnyObject, inout error: NSError?) -> NSData? {
+		return NSJSONSerialization.dataWithJSONObject(object, options: nil, error: &error)
+	}
+	
+	/**
+		:name:	stringify
+		:description:	Stringify an object.
+	*/
+	public class func stringify(object: AnyObject, inout error: NSError?) -> String? {
+		var data: NSData? = NSJSONSerialization.dataWithJSONObject(object, options: nil, error: &error)
+		if nil == error {
+			return NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
 		}
 		return nil
 	}

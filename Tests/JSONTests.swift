@@ -36,13 +36,22 @@ class JSONTests: XCTestCase {
 		var error: NSError?
 		
 		let dict: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
-		var data: NSData? = NSJSONSerialization.dataWithJSONObject(dict, options: nil, error: &error)
-		var json: JSON? = JSON.parse(data, error: &error)
+		
+		var data: NSData? = JSON.serialize(dict, error: &error)
+		XCTAssert(nil == error, "Test failed.")
+		
+		var json: JSON? = JSON.parse(data!, error: &error)
+		XCTAssert(nil == error, "Test failed.")
 		
 		XCTAssert(nil != json, "Test failed.")
-		XCTAssert("username" == json?["user"]?.stringValue, "Test failed.")
-		XCTAssert("password" == json?["password"]?.stringValue, "Test failed.")
-		XCTAssert(123456789 == json?["token"]?.integerValue, "Test failed.")
+		XCTAssert("username" == json!["user"]?.stringValue, "Test failed.")
+		XCTAssert("password" == json!["password"]?.stringValue, "Test failed.")
+		XCTAssert(123456789 == json!["token"]?.integerValue, "Test failed.")
+		
+		var stringified: String? = JSON.stringify(dict, error: &error)
+		XCTAssert(nil == error, "Test failed.")
+		
+		println(JSON.parse(stringified!, error: &error))
 	}
 	
 	func testPerformanceExample() {
