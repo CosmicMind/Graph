@@ -18,21 +18,34 @@
 
 import Foundation
 
-public class Bridge {
+public class Session {
 	/**
 		:name:	init
 		:description:	Constructor.
 	*/
-	public init() {
+	public init(){}
 	
+	
+	/**
+		:name:	get
+	*/
+	public func get(url: NSURL!) {
+		get(url, completion: nil)
 	}
 	
 	/**
-		:name:	parseJSON
-		:description:	Parsing a JSON block.
-	*/
-	public func parseJSON(data: NSData, var error: NSError?) -> AnyObject? {
-		var object: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error)
-		return object
+		:name:	get
+	t*/
+	public func get(url: NSURL!, completion: ((json: JSON?, error: NSError?) -> ())?) {
+		let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+			if nil == error {
+				var err: NSError?
+				var json: JSON? = JSON.parse(data, error: &err)
+				completion?(json: json, error: err)
+			} else {
+				completion?(json: nil, error: error)
+			}
+		}
+		task.resume()
 	}
 }

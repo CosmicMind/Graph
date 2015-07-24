@@ -145,10 +145,6 @@ class BondTests : XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
 
-    func testPerformanceExample() {
-        self.measureBlock() {}
-    }
-
     func graph(graph: Graph, didInsertEntity entity: Entity) {
         if "Eve" == entity["name"] as! String && 1 == entity.bondsWhenSubject.count {
             u1InsertExpectation?.fulfill()

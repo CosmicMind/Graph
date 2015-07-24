@@ -19,23 +19,44 @@
 import XCTest
 import GraphKit
 
-class BridgeTests: XCTestCase {
+class SessionTests: XCTestCase {
+	
+	var expectation: XCTestExpectation?
+	
 	
 	override func setUp() {
 		super.setUp()
-		// Put setup code here. This method is called before the invocation of each test method in the class.
 	}
 	
 	override func tearDown() {
-		// Put teardown code here. This method is called after the invocation of each test method in the class.
 		super.tearDown()
 	}
 	
-	func testPerformanceExample() {
-		// This is an example of a performance test case.
-		self.measureBlock() {
-			// Put the code you want to measure the time of here.
+	func testSession() {
+		let session: Session = Session()
+		
+		expectation = expectationWithDescription("Test failed.")
+		
+		if let u1: NSURL = NSURL(string: "http://graph.sandbox.local:5000/key/1/graph/test") {
+			session.get(u1) { (json: JSON?, error: NSError?) in
+				if nil != json && nil == error {
+					self.expectation?.fulfill()
+				}
+			}
 		}
+		waitForExpectationsWithTimeout(5, handler: nil)
+		
+		if let u1: NSURL = NSURL(string: "http://graph.sandbox.local:5000/key/1/graph") {
+			session.get(u1) { (json: JSON?, error: NSError?) in
+				if nil != error && nil == json {
+					self.expectation?.fulfill()
+				}
+			}
+		}
+		
+		expectation = expectationWithDescription("Test failed.")
+		
+		waitForExpectationsWithTimeout(5, handler: nil)
 	}
-	
+
 }

@@ -126,10 +126,6 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func testPerformanceExample() {
-		self.measureBlock() {}
-	}
-	
 	func graph(graph: Graph, didInsertAction action: Action) {
 		if 51 == action.groups.count && 51 == action.properties.count {
 			expectation?.fulfill()

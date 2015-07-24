@@ -64,10 +64,6 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func testPerformanceExample() {
-		self.measureBlock() {}
-	}
-	
 	func graph(graph: Graph, didInsertEntity entity: Entity) {
 		var e2: Entity? = graph.search(EntityProperty: "active").last?.value
 		if entity == e2 {

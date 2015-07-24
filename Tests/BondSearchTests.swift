@@ -55,10 +55,6 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func testPerformanceExample() {
-		self.measureBlock() {}
-	}
-	
 	func graph(graph: Graph, didInsertBond bond: Bond) {
 		var b2: Bond? = graph.search(BondProperty: "active").last?.value
 		if bond == b2 {

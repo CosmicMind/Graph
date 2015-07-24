@@ -161,10 +161,6 @@ class ActionTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
     }
 
-    func testPerformanceExample() {
-        self.measureBlock() {}
-    }
-
     func graph(graph: Graph, didInsertEntity entity: Entity) {
 		if "User" == entity.type && 1 == entity.actionsWhenSubject.count {
             userInsertExpectation?.fulfill()

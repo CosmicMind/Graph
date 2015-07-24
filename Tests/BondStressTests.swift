@@ -126,10 +126,6 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func testPerformanceExample() {
-		self.measureBlock() {}
-	}
-	
 	func graph(graph: Graph, didInsertBond bond: Bond) {
 		if 51 == bond.groups.count && 51 == bond.properties.count {
 			expectation?.fulfill()

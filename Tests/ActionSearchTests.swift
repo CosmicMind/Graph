@@ -54,10 +54,6 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func testPerformanceExample() {
-		self.measureBlock() {}
-	}
-	
 	func graph(graph: Graph, didInsertAction action: Action) {
 		var a2: Action? = graph.search(ActionProperty: "active").last?.value
 		if action == a2 {
