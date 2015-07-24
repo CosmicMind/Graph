@@ -17,7 +17,7 @@
 */
 
 public class List<Element> : Printable, SequenceType {
-	internal typealias Generator = GeneratorOf<Element?>
+	public typealias Generator = GeneratorOf<Element?>
 
 	/**
 		:name:	head

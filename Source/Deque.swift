@@ -17,7 +17,7 @@
 */
 
 public class Deque<Element> : Printable, SequenceType {
-	internal typealias Generator = GeneratorOf<Element?>
+	public typealias Generator = GeneratorOf<Element?>
 
 	/**
 		:name:	list

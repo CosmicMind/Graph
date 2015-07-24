@@ -17,7 +17,7 @@
 */
 
 public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, Printable {
-	internal typealias Generator = GeneratorOf<(key: Key, value: Value?)>
+	public typealias Generator = GeneratorOf<(key: Key, value: Value?)>
 
 	/**
 		:name:	sentinel

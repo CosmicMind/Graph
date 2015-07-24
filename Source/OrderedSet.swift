@@ -17,7 +17,7 @@
 */
 
 public class OrderedSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, Printable {
-	internal typealias Generator = GeneratorOf<Element>
+	public typealias Generator = GeneratorOf<Element>
 
 	/**
 		:name:	tree

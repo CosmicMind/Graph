@@ -18,25 +18,33 @@
 
 import Foundation
 
-public class JSON {
-	private var parsedObject: AnyObject
+public class JSON: Printable {
+	/**
+		:name:	value
+	*/
+	public private(set) var value: AnyObject?
 	
-	public var stringValue: String {
-		return parsedObject as! String
+	/**
+		:name:	value
+	*/
+	public var stringValue: String? {
+		return value as? String
 	}
 	
-	public var integerValue: Int {
-		return parsedObject as! Int
+	/**
+		:name:	value
+	*/
+	public var integerValue: Int? {
+		return value as? Int
 	}
 	
 	/**
 		:name:	parse
 		:description:	Parse a JSON block.
 	*/
-	public class func parse(data: NSData, inout error: NSError?) -> JSON? {
-		var parsedObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error)
-		if nil != parsedObject {
-			return JSON(parsedObject: parsedObject)
+	public class func parse(data: NSData!, inout error: NSError?) -> JSON? {
+		if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
+			return JSON(value: json)
 		}
 		return nil
 	}
@@ -45,7 +53,10 @@ public class JSON {
 		:name:	parse
 		:description:	Parse a JSON block.
 	*/
-	public class func parse(json: String, inout error: NSError?) -> JSON? {
+	public class func parse(json: String!, inout error: NSError?) -> JSON? {
+		if let data: NSData = NSString(string: json).dataUsingEncoding(NSUTF8StringEncoding) {
+			return parse(data, error: &error)
+		}
 		return nil
 	}
 	
@@ -53,7 +64,7 @@ public class JSON {
 		:name:	serialize
 		:description:	Serialize an object.
 	*/
-	public class func serialize(object: AnyObject, inout error: NSError?) -> NSData? {
+	public class func serialize(object: AnyObject!, inout error: NSError?) -> NSData? {
 		return NSJSONSerialization.dataWithJSONObject(object, options: nil, error: &error)
 	}
 	
@@ -61,31 +72,51 @@ public class JSON {
 		:name:	stringify
 		:description:	Stringify an object.
 	*/
-	public class func stringify(object: AnyObject, inout error: NSError?) -> String? {
-		var data: NSData? = NSJSONSerialization.dataWithJSONObject(object, options: nil, error: &error)
-		if nil == error {
-			return NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
+	public class func stringify(object: AnyObject!, inout error: NSError?) -> String? {
+		if let data: NSData = NSJSONSerialization.dataWithJSONObject(object, options: nil, error: &error) {
+			return NSString(data: data, encoding: NSUTF8StringEncoding) as? String
 		}
 		return nil
 	}
 	
-	public init(parsedObject: AnyObject!) {
-		self.parsedObject = parsedObject
+	public init(value: AnyObject!) {
+		self.value = value
+	}
+	
+	/**
+	:name:	description
+	:description:	Conforms to the Printable Protocol. Outputs the
+	data in the OrderedSet in a readable format.
+	*/
+	public var description: String {
+		var error: NSError?
+		var stringified: String? = JSON.stringify(value, error: &error)
+		return nil == error && nil != stringified ? stringified! : "{}"
 	}
 	
 	public subscript(index: Int) -> JSON? {
-		if let item: Array<AnyObject> = parsedObject as? Array<AnyObject> {
-			return JSON(parsedObject: item[index])
+		if let item: Array<AnyObject> = value as? Array<AnyObject> {
+			return JSON(value: item[index])
 		}
 		return nil
 	}
 	
 	public subscript(key: String) -> JSON? {
-		if let item: Dictionary<String, AnyObject> = parsedObject as? Dictionary<String, AnyObject> {
+		if let item: Dictionary<String, AnyObject> = value as? Dictionary<String, AnyObject> {
 			if nil != item[key] {
-				return JSON(parsedObject: item[key]!)
+				return JSON(value: item[key]!)
 			}
 		}
 		return nil
 	}
+}
+
+public func ==(lhs: JSON, rhs: JSON) -> Bool {
+	var error: NSError?
+	if let l: String? = JSON.stringify(lhs.value, error: &error) {
+		if let r: String? = JSON.stringify(rhs.value, error: &error) {
+			return l == r
+		}
+	}
+	return false
 }

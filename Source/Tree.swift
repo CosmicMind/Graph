@@ -105,20 +105,6 @@ public func ==<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Va
 	return true
 }
 
-public func ==<Key : Comparable, Value: Comparable>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
-	if lhs.count != rhs.count {
-		return false
-	}
-	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		let l: (key: Key, value: Value?) = lhs[i]
-		let r: (key: Key, value: Value?) = rhs[i]
-		if l.key != r.key || l.value != r.value {
-			return false
-		}
-	}
-	return true
-}
-
 public func +<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
 	let t: Tree<Key, Value> = Tree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {

@@ -17,7 +17,7 @@
 */
 
 public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, Printable {
-	internal typealias Generator = GeneratorOf<(key: Key, value: Value?)>
+	public typealias Generator = GeneratorOf<(key: Key, value: Value?)>
 	
 	/**
 		:name:	tree
