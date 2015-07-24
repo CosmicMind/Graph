@@ -22,7 +22,7 @@ public class JSON: Printable {
 	/**
 		:name:	value
 	*/
-	public private(set) var value: AnyObject?
+	public private(set) var value: AnyObject
 	
 	/**
 		:name:	value
@@ -115,8 +115,12 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
 	var error: NSError?
 	if let l: String? = JSON.stringify(lhs.value, error: &error) {
 		if let r: String? = JSON.stringify(rhs.value, error: &error) {
-			return l == r
+			return l == r ? true : false
 		}
 	}
 	return false
+}
+
+public func !=(lhs: JSON, rhs: JSON) -> Bool {
+	return !(lhs == rhs)
 }

@@ -63,6 +63,18 @@ class JSONTests: XCTestCase {
 		XCTAssert("{\"token\":123456789,\"user\":\"username\",\"password\":\"password\"}" == stringified, "Test failed. \(j1)")
 	}
 	
+	func testEquatable() {
+		let v1: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
+		let v2: Dictionary<String, AnyObject> = ["email": "email", "age": 21]
+		
+		var j1: JSON = JSON(value: v1)
+		var j2: JSON = JSON(value: v1)
+		var j3: JSON = JSON(value: v2)
+		
+		XCTAssert(j1 == j2, "Test failed.")
+		XCTAssert(j1 != j3, "Test failed.")
+	}
+	
 	func testPerformanceExample() {
 		// This is an example of a performance test case.
 		self.measureBlock() {
