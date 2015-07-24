@@ -140,4 +140,7 @@ class MultiTreeTests: XCTestCase {
 		}
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

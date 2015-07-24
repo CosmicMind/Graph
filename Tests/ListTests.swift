@@ -153,4 +153,7 @@ class ListTests: XCTestCase {
 		}
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

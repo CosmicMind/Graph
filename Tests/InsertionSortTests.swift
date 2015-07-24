@@ -43,4 +43,7 @@ class InsertionSortTests: XCTestCase {
 		XCTAssert(["a", "aa", "b", "c", "d", "gg", "r", "t", "x"] == strings, "Test failed.")
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

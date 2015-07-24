@@ -219,4 +219,8 @@ class BondTests : XCTestCase, GraphDelegate {
             }
         }
     }
+	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

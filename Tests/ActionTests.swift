@@ -252,4 +252,8 @@ class ActionTests : XCTestCase, GraphDelegate {
             }
         }
     }
+	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

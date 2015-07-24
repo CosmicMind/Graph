@@ -109,4 +109,8 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 			}
 		}
 	}
+	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

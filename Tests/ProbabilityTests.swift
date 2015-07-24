@@ -89,4 +89,7 @@ class ProbabilityTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

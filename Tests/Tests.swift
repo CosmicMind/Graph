@@ -92,5 +92,8 @@ class Tests : XCTestCase, GraphDelegate {
 		XCTAssertTrue(0 == graph?.search(Action: "Read").count, "Read: Not correctly deleted.")
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }
 

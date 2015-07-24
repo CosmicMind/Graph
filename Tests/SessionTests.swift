@@ -59,4 +59,7 @@ class SessionTests: XCTestCase {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

@@ -174,4 +174,7 @@ class OrderedMultiSetTests: XCTestCase {
 		XCTAssert(false == (s1 > s3), "Test failed.")
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

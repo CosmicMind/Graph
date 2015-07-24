@@ -97,4 +97,7 @@ class OrderedDictionaryTests: XCTestCase {
 		XCTAssert(values == s.values, "Test failed.")
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

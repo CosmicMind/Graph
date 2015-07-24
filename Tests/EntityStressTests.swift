@@ -134,4 +134,8 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 			expectation?.fulfill()
 		}
 	}
+	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

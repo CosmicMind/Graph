@@ -90,4 +90,7 @@ class DequeTests: XCTestCase {
 		}
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

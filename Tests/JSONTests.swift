@@ -75,4 +75,8 @@ class JSONTests: XCTestCase {
 		XCTAssert(j1 != j3, "Test failed.")
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
+	
 }

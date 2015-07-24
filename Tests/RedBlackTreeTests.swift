@@ -110,4 +110,7 @@ class RedBlackTreeTests: XCTestCase {
 		}
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

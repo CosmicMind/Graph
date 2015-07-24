@@ -99,5 +99,9 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 			}
 		}
 	}
+	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }
 

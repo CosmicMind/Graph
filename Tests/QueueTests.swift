@@ -89,4 +89,7 @@ class QueueTests: XCTestCase {
 		}
 	}
 
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

@@ -78,4 +78,7 @@ class StackTests: XCTestCase {
 		XCTAssert(6 == s3.count, "Concat incorrect.")
 	}
 	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

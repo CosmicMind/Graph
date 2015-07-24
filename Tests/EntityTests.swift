@@ -186,4 +186,8 @@ class EntityTests : XCTestCase, GraphDelegate {
 			}
         }
     }
+	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }

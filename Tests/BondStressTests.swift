@@ -137,4 +137,8 @@ class BondStressTests : XCTestCase, GraphDelegate {
 			expectation?.fulfill()
 		}
 	}
+	
+	func testPerformance() {
+		self.measureBlock() {}
+	}
 }
