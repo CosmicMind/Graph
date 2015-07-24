@@ -22,6 +22,11 @@
 		65B723FB1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */; };
 		65B723FD1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */; };
 		65B723FE1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */; };
+		65DF3F061B626F3B00197AD5 /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF3F051B626F3B00197AD5 /* Bridge.swift */; };
+		65DF3F071B626F3B00197AD5 /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF3F051B626F3B00197AD5 /* Bridge.swift */; };
+		65DF3F081B626F7B00197AD5 /* Bridge.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65DF3F051B626F3B00197AD5 /* Bridge.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		65DF3F091B626F7B00197AD5 /* OrderedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		65DF3F0A1B626F8C00197AD5 /* Bridge.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65DF3F051B626F3B00197AD5 /* Bridge.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961242D91B2B36B800CD47E0 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; };
 		961242DA1B2B36B800CD47E0 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; };
 		961242DC1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */; };
@@ -200,6 +205,7 @@
 		65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryTests.swift; sourceTree = "<group>"; };
 		65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiDictionary.swift; sourceTree = "<group>"; };
 		65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiDictionaryTests.swift; sourceTree = "<group>"; };
+		65DF3F051B626F3B00197AD5 /* Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
 		961242D81B2B36B800CD47E0 /* RedBlackTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackNode.swift; sourceTree = "<group>"; };
 		961242DE1B2B36D300CD47E0 /* InsertionSort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertionSort.swift; sourceTree = "<group>"; };
@@ -299,6 +305,14 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		65DF3F041B626F2600197AD5 /* Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				65DF3F051B626F3B00197AD5 /* Bridge.swift */,
+			);
+			name = Bridge;
+			sourceTree = "<group>";
+		};
 		961242D61B2B369C00CD47E0 /* Tree */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +380,7 @@
 		96C031B61AD72FD300EE4C63 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				65DF3F041B626F2600197AD5 /* Bridge */,
 				961242D71B2B36A400CD47E0 /* Sort */,
 				968C00A41B51BF7F00E3FA9E /* Probability */,
 				969F6DA01B2DCAF300B573F8 /* List */,
@@ -469,6 +484,8 @@
 				961242F21B2B38AB00CD47E0 /* RedBlackTree.swift in Headers */,
 				96CB07C31B52E8DA00EB4A58 /* Probability.swift in Headers */,
 				65B723F71B5AE60E0087E6A6 /* OrderedDictionary.swift in Headers */,
+				65DF3F081B626F7B00197AD5 /* Bridge.swift in Headers */,
+				65DF3F091B626F7B00197AD5 /* OrderedMultiDictionary.swift in Headers */,
 				969F6DAD1B2DCCF000B573F8 /* ListNode.swift in Headers */,
 				961242F01B2B38AB00CD47E0 /* InsertionSort.swift in Headers */,
 				961242F11B2B38AB00CD47E0 /* RedBlackNode.swift in Headers */,
@@ -505,6 +522,7 @@
 				96CB07C61B52E8FA00EB4A58 /* Probability.swift in Headers */,
 				65B723F81B5AE61D0087E6A6 /* OrderedDictionary.swift in Headers */,
 				65569EED1B61E9650019B13E /* OrderedMultiDictionary.swift in Headers */,
+				65DF3F0A1B626F8C00197AD5 /* Bridge.swift in Headers */,
 				969F6DAA1B2DCCDA00B573F8 /* ListNode.swift in Headers */,
 				961243021B2B38E000CD47E0 /* InsertionSort.swift in Headers */,
 				961243031B2B38E000CD47E0 /* RedBlackNode.swift in Headers */,
@@ -696,6 +714,7 @@
 				968F38BB1AD7394300E963AB /* ManagedBond.swift in Sources */,
 				969F6DAF1B2DDE6500B573F8 /* Stack.swift in Sources */,
 				65B723FA1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */,
+				65DF3F061B626F3B00197AD5 /* Bridge.swift in Sources */,
 				968C009D1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */,
 				969F6DBC1B2DEB6200B573F8 /* List.swift in Sources */,
 				968F38B21AD7394300E963AB /* Entity.swift in Sources */,
@@ -763,6 +782,7 @@
 				96C032131AD730C200EE4C63 /* ManagedBond.swift in Sources */,
 				969F6DB01B2DDE6500B573F8 /* Stack.swift in Sources */,
 				65B723FB1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */,
+				65DF3F071B626F3B00197AD5 /* Bridge.swift in Sources */,
 				968C009E1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */,
 				969F6DBD1B2DEB6200B573F8 /* List.swift in Sources */,
 				96C0320A1AD730C200EE4C63 /* Entity.swift in Sources */,
