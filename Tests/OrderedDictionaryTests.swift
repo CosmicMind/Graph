@@ -85,6 +85,18 @@ class OrderedDictionaryTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
+	func testKeys() {
+		let s: OrderedDictionary<String, Int> = OrderedDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
+		let keys: Array<String> = ["adam", "daniel", "mike", "natalie"]
+		XCTAssert(keys == s.keys, "Test failed.")
+	}
+	
+	func testValues() {
+		let s: OrderedDictionary<String, Int> = OrderedDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
+		let values: Array<Int> = [1, 2, 3, 4]
+		XCTAssert(values == s.values, "Test failed.")
+	}
+	
 	func testPerformanceExample() {
 		// This is an example of a performance test case.
 		self.measureBlock() {

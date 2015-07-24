@@ -33,6 +33,25 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable
 	public override init() {
 		super.init(uniqueKeys: true)
 	}
+	
+	/**
+		:name:	init
+		:description:	Constructor.
+		:param:	nodes	(Key, Value?)...	Initiates with a given list of nodes.
+	*/
+	public convenience init(nodes: (Key, Value?)...) {
+		self.init(nodes: nodes)
+	}
+	
+	/**
+		:name:	init
+		:description:	Constructor.
+		:param:	nodes	Array<(Key, Value?)>	Initiates with a given array of nodes.
+	*/
+	public convenience init(nodes: Array<(Key, Value?)>) {
+		self.init()
+		insert(nodes)
+	}
 
 	/**
 		:name:	search

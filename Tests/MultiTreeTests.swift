@@ -32,17 +32,15 @@ class MultiTreeTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: MultiTree<Int, Int> = MultiTree<Int, Int>()
+		let s: MultiTree<Int, Int> = MultiTree<Int, Int>(elements: (1, 1), (2, 2), (3, 3))
 		
-		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
+		XCTAssert(3 == s.count, "Test failed, got \(s.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
-			s.insert(1, value: 1)
-			s.insert(2, value: 2)
-			s.insert(3, value: 3)
+			s.insert((1, 1), (2, 2), (3, 3))
 		}
 		
-		XCTAssert(3000 == s.count, "Test failed.")
+		XCTAssert(3003 == s.count, "Test failed.")
 		XCTAssert(1 == s[0].value, "Test failed.")
 		XCTAssert(1 == s[1].value, "Test failed.")
 		XCTAssert(1 == s[2].value, "Test failed.")
@@ -52,7 +50,7 @@ class MultiTreeTests: XCTestCase {
 			s.removeValueForKey(3)
 		}
 		
-		XCTAssert(1000 == s.count, "Test failed.")
+		XCTAssert(1001 == s.count, "Test failed.")
 		XCTAssert(nil != s.removeValueForKey(2), "Test failed.")
 		XCTAssert(nil == s.removeValueForKey(2), "Test failed.")
 		XCTAssert(true == s.insert(2, value: 10), "Test failed.")

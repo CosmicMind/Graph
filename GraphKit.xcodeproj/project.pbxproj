@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65569EED1B61E9650019B13E /* OrderedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		65B723F01B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; };
 		65B723F11B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; };
 		65B723F51B5AE5E50087E6A6 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */; };
@@ -487,6 +488,7 @@
 				961243041B2B38E000CD47E0 /* RedBlackTree.swift in Headers */,
 				96CB07C61B52E8FA00EB4A58 /* Probability.swift in Headers */,
 				65B723F81B5AE61D0087E6A6 /* OrderedDictionary.swift in Headers */,
+				65569EED1B61E9650019B13E /* OrderedMultiDictionary.swift in Headers */,
 				969F6DAA1B2DCCDA00B573F8 /* ListNode.swift in Headers */,
 				961243021B2B38E000CD47E0 /* InsertionSort.swift in Headers */,
 				961243031B2B38E000CD47E0 /* RedBlackNode.swift in Headers */,

@@ -32,14 +32,12 @@ class TreeTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: Tree<Int, Int> = Tree<Int, Int>()
+		let s: Tree<Int, Int> = Tree<Int, Int>(elements: (1, 1), (2, 2), (3, 3))
 		
-		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
+		XCTAssert(3 == s.count, "Test failed, got \(s.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
-			s.insert(1, value: 1)
-			s.insert(2, value: 2)
-			s.insert(3, value: 3)
+			s.insert((1, 1), (2, 2), (3, 3))
 		}
 		
 		XCTAssert(3 == s.count, "Test failed.\(s)")

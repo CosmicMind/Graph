@@ -85,6 +85,33 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	}
 	
 	/**
+		:name:	keys
+		:description:	Returns an array of the key values in ordered.
+		:returns:	Array	Key
+	*/
+	public var keys: Array<Key> {
+		var s: Array<Key> = Array<Key>()
+		for x in self {
+			s.append(x.key)
+		}
+		return s
+	}
+	
+	/**
+		:name:	values
+		:description:	Returns an array of the values that are ordered based
+		on the key ordering.
+		:returns:	Array	Value
+	*/
+	public var values: Array<Value> {
+		var s: Array<Value> = Array<Value>()
+		for x in self {
+			s.append(x.value!)
+		}
+		return s
+	}
+	
+	/**
 		:name:	init
 		:description:	Constructor.
 	*/
@@ -189,10 +216,8 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:param:	elements	Array<(Key, Value?)>	Elements to insert.
 	*/
 	public func insert(elements: Array<(Key, Value?)>) {
-		for x in elements {
-			tree.insert(x.0, value: x.1)
-			count = tree.count
-		}
+		tree.insert(elements)
+		count = tree.count
 	}
 	
 	/**

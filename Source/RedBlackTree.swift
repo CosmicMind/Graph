@@ -109,6 +109,33 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	public var endIndex: Int {
 		return count
 	}
+	
+	/**
+		:name:	keys
+		:description:	Returns an array of the key values in ordered.
+		:returns:	Array	Key
+	*/
+	public var keys: Array<Key> {
+		var s: Array<Key> = Array<Key>()
+		for x in self {
+			s.append(x.key)
+		}
+		return s
+	}
+	
+	/**
+		:name:	values
+		:description:	Returns an array of the values that are ordered based
+		on the key ordering.
+		:returns:	Array	Value
+	*/
+	public var values: Array<Value> {
+		var s: Array<Value> = Array<Value>()
+		for x in self {
+			s.append(x.value!)
+		}
+		return s
+	}
 
 	/**
 		:name:	init
@@ -175,6 +202,26 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	*/
 	public func insert(key: Key, value: Value?) -> Bool {
 		return sentinel !== internalInsert(key, value: value)
+	}
+	
+	/**
+		:name:	insert
+		:description:	Inserts a list of (Key, Value?) pairs.
+		:param:	nodes	(Key, Value?)...	Elements to insert.
+	*/
+	public func insert(nodes: (Key, Value?)...) {
+		insert(nodes)
+	}
+	
+	/**
+		:name:	insert
+		:description:	Inserts an array of (Key, Value?) pairs.
+		:param:	nodes	Array<(Key, Value?)>	Elements to insert.
+	*/
+	public func insert(nodes: Array<(Key, Value?)>) {
+		for x in nodes {
+			insert(x.0, value: x.1)
+		}
 	}
 
 	/**
@@ -243,7 +290,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	*/
 	public subscript(index: Int) -> (key: Key, value: Value?) {
 		get {
-			if !isIndexValid(index) {
+			if isIndexValid(index) {
 				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
 				return (x.key, x.value)
 			} else {
@@ -251,7 +298,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			}
 		}
 		set(element) {
-			if !isIndexValid(index) {
+			if isIndexValid(index) {
 				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
 				if x.key != element.key {
 					assert(false, "[GraphKit Error: Key error.]")
@@ -282,7 +329,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			}
 		}
 	}
-
+	
 	/**
 		:name:	select
 		:description:	Searches for a node based on the order statistic value.
@@ -629,7 +676,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Checks the validation of the index being within range of 0...n-1.
 	*/
 	private func isIndexValid(index: Int) -> Bool {
-		return index < startIndex || index >= endIndex
+		return index >= startIndex || index < endIndex
 	}
 }
 
