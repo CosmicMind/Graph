@@ -64,7 +64,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func graph(graph: Graph, didInsertEntity entity: Entity) {
+	func graphDidInsertEntity(graph: Graph, entity: Entity) {
 		var e2: Entity? = graph.search(EntityProperty: "active").last?.value
 		if entity == e2 {
 			expectation?.fulfill()
@@ -79,7 +79,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		}
 	}
 	
-	func graph(graph: Graph, didDeleteEntity entity: Entity) {
+	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
 		var e2: Entity? = graph.search(EntityProperty: "active").last?.value
 		if nil == e2 {
 			expectation?.fulfill()
@@ -87,7 +87,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		}
 	}
 	
-	func graph(graph: Graph, didUpdateEntity entity: Entity, property: String, value: AnyObject) {
+	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
 		var e2: Entity? = graph.search(EntityProperty: "active").last?.value
 		if value as! Bool == entity["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()

@@ -18,7 +18,16 @@
 
 import Foundation
 
+@objc(SessionDelegate)
+public protocol SessionDelegate {
+	optional func sessionDidReceiveGetResponse(session: Session, json: JSON?, error: NSError?)
+	optional func sessionDidReceivePOSTResponse(session: Session, json: JSON?, error: NSError?)
+}
+
+@objc(Session)
 public class Session {
+	public weak var delegate: SessionDelegate?
+	
 	/**
 		:name:	init
 		:description:	Constructor.
@@ -37,16 +46,20 @@ public class Session {
 		:name:	get
 	*/
 	public func get(url: NSURL!, completion: ((json: JSON?, error: NSError?) -> ())?) {
-		let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+		var request = NSMutableURLRequest(URL: url)
+		request.HTTPMethod = "GET"
+		
+		NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) in
 			if nil == error {
 				var err: NSError?
 				var json: JSON? = JSON.parse(data, error: &err)
 				completion?(json: json, error: err)
+				self.delegate?.sessionDidReceiveGetResponse?(self, json: json, error: err)
 			} else {
 				completion?(json: nil, error: error)
+				self.delegate?.sessionDidReceiveGetResponse?(self, json: nil, error: error)
 			}
-		}
-		task.resume()
+		}).resume()
 	}
 	
 	/**
@@ -60,7 +73,7 @@ public class Session {
 		:name:	post
 	*/
 	public func post(url: NSURL!, json: JSON?, completion: ((json: JSON?, error: NSError?) -> ())?) {
-		var request = NSMutableURLRequest(URL: NSURL(string: "http://graph.sandbox.local:5000/index")!)
+		var request = NSMutableURLRequest(URL: url)
 		request.HTTPMethod = "POST"
 		
 		var error: NSError?
@@ -68,16 +81,17 @@ public class Session {
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")
 		
-		var task = NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) in
+		NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) in
+			var json: JSON?
 			if nil == error {
 				var err: NSError?
-				var json: JSON? = JSON.parse(data, error: &err)
+				json = JSON.parse(data, error: &err)
 				completion?(json: json, error: err)
+				self.delegate?.sessionDidReceivePOSTResponse?(self, json: json, error: err)
 			} else {
 				completion?(json: nil, error: error)
+				self.delegate?.sessionDidReceivePOSTResponse?(self, json: nil, error: error)
 			}
-		})
-		
-		task.resume()
+		}).resume()
 	}
 }

@@ -126,13 +126,13 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func graph(graph: Graph, didInsertAction action: Action) {
+	func graphDidInsertAction(graph: Graph, action: Action) {
 		if 51 == action.groups.count && 51 == action.properties.count {
 			expectation?.fulfill()
 		}
 	}
 	
-	func graph(graph: Graph, didDeleteAction action: Action) {
+	func graphDidDeleteAction(graph: Graph, action: Action) {
 		if 0 == action.groups.count && 0 == action.properties.count {
 			expectation?.fulfill()
 		}

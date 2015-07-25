@@ -74,24 +74,24 @@ internal struct GraphUtility {
 
 @objc(GraphDelegate)
 public protocol GraphDelegate {
-	optional func graph(graph: Graph, didInsertEntity entity: Entity)
-	optional func graph(graph: Graph, didDeleteEntity entity: Entity)
-	optional func graph(graph: Graph, didInsertEntity entity: Entity, group: String!)
-	optional func graph(graph: Graph, didInsertEntity entity: Entity, property: String, value: AnyObject)
-	optional func graph(graph: Graph, didUpdateEntity entity: Entity, property: String, value: AnyObject)
+	optional func graphDidInsertEntity(graph: Graph, entity: Entity)
+	optional func graphDidDeleteEntity(graph: Graph, entity: Entity)
+	optional func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String)
+	optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+	optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
 
-	optional func graph(graph: Graph, didInsertAction action: Action)
-	optional func graph(graph: Graph, didUpdateAction action: Action)
-	optional func graph(graph: Graph, didDeleteAction action: Action)
-	optional func graph(graph: Graph, didInsertAction action: Action, group: String)
-	optional func graph(graph: Graph, didInsertAction entity: Action, property: String, value: AnyObject)
-	optional func graph(graph: Graph, didUpdateAction entity: Action, property: String, value: AnyObject)
+	optional func graphDidInsertAction(graph: Graph, action: Action)
+	optional func graphDidUpdateAction(graph: Graph, action: Action)
+	optional func graphDidDeleteAction(graph: Graph, action: Action)
+	optional func graphDidInsertActionGroup(graph: Graph, action: Action, group: String)
+	optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+	optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
 
-	optional func graph(graph: Graph, didInsertBond bond: Bond)
-	optional func graph(graph: Graph, didDeleteBond bond: Bond)
-	optional func graph(graph: Graph, didInsertBond bond: Bond, group: String)
-	optional func graph(graph: Graph, didInsertBond entity: Bond, property: String, value: AnyObject)
-	optional func graph(graph: Graph, didUpdateBond entity: Bond, property: String, value: AnyObject)
+	optional func graphDidInsertBond(graph: Graph, bond: Bond)
+	optional func graphDidDeleteBond(graph: Graph, bond: Bond)
+	optional func graphDidInsertBondGroup(graph: Graph, bond: Bond, group: String)
+	optional func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
+	optional func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
 }
 
 @objc(Graph)
@@ -510,37 +510,37 @@ public class Graph: NSObject {
 				let className = String.fromCString(object_getClassName(node))
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
-					delegate?.graph?(self, didInsertEntity: Entity(entity: node as! ManagedEntity))
+					delegate?.graphDidInsertEntity?(self, entity: Entity(entity: node as! ManagedEntity))
 					break
 				case "EntityGroup_EntityGroup_":
 					let group: EntityGroup = node as! EntityGroup
-					delegate?.graph?(self, didInsertEntity: Entity(entity: group.node), group: group.name)
+					delegate?.graphDidInsertEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
 					break
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
-					delegate?.graph?(self, didInsertEntity: Entity(entity: property.node), property: property.name, value: property.value)
+					delegate?.graphDidInsertEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.value)
 					break
 				case "ManagedAction_ManagedAction_":
-					delegate?.graph?(self, didInsertAction: Action(action: node as! ManagedAction))
+					delegate?.graphDidInsertAction?(self, action: Action(action: node as! ManagedAction))
 					break
 				case "ActionGroup_ActionGroup_":
 					let group: ActionGroup = node as! ActionGroup
-					delegate?.graph?(self, didInsertAction: Action(action: group.node), group: group.name)
+					delegate?.graphDidInsertActionGroup?(self, action: Action(action: group.node), group: group.name)
 					break
 				case "ActionProperty_ActionProperty_":
 					let property: ActionProperty = node as! ActionProperty
-					delegate?.graph?(self, didInsertAction: Action(action: property.node), property: property.name, value: property.value)
+					delegate?.graphDidInsertActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.value)
 					break
 				case "ManagedBond_ManagedBond_":
-					delegate?.graph?(self, didInsertBond: Bond(bond: node as! ManagedBond))
+					delegate?.graphDidInsertBond?(self, bond: Bond(bond: node as! ManagedBond))
 					break
 				case "BondGroup_BondGroup_":
 					let group: BondGroup = node as! BondGroup
-					delegate?.graph?(self, didInsertBond: Bond(bond: group.node), group: group.name)
+					delegate?.graphDidInsertBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
 					break
 				case "BondProperty_BondProperty_":
 					let property: BondProperty = node as! BondProperty
-					delegate?.graph?(self, didInsertBond: Bond(bond: property.node), property: property.name, value: property.value)
+					delegate?.graphDidInsertBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.value)
 					break
 				default:
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
@@ -560,18 +560,18 @@ public class Graph: NSObject {
 				switch(className!) {
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
-					delegate?.graph?(self, didUpdateEntity: Entity(entity: property.node), property: property.name, value: property.value)
+					delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.value)
 					break
 				case "ActionProperty_ActionProperty_":
 					let property: ActionProperty = node as! ActionProperty
-					delegate?.graph?(self, didUpdateAction: Action(action: property.node), property: property.name, value: property.value)
+					delegate?.graphDidUpdateActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.value)
 					break
 				case "BondProperty_BondProperty_":
 					let property: BondProperty = node as! BondProperty
-					delegate?.graph?(self, didUpdateBond: Bond(bond: property.node), property: property.name, value: property.value)
+					delegate?.graphDidUpdateBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.value)
 					break
 				case "ManagedAction_ManagedAction_":
-					delegate?.graph?(self, didUpdateAction: Action(action: node as! ManagedAction))
+					delegate?.graphDidUpdateAction?(self, action: Action(action: node as! ManagedAction))
 					break
 				default:
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
@@ -596,13 +596,13 @@ public class Graph: NSObject {
 				let className = String.fromCString(object_getClassName(node))
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
-					delegate?.graph?(self, didDeleteEntity: Entity(entity: node as! ManagedEntity))
+					delegate?.graphDidDeleteEntity?(self, entity: Entity(entity: node as! ManagedEntity))
 					break
 				case "ManagedAction_ManagedAction_":
-					delegate?.graph?(self, didDeleteAction: Action(action: node as! ManagedAction))
+					delegate?.graphDidDeleteAction?(self, action: Action(action: node as! ManagedAction))
 					break
 				case "ManagedBond_ManagedBond_":
-					delegate?.graph?(self, didDeleteBond: Bond(bond: node as! ManagedBond))
+					delegate?.graphDidDeleteBond?(self, bond: Bond(bond: node as! ManagedBond))
 					break
 				default:break
 				}

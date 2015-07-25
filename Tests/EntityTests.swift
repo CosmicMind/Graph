@@ -120,19 +120,19 @@ class EntityTests : XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
 
-    func graph(graph: Graph, didInsertEntity entity: Entity) {
+    func graphDidInsertEntity(graph: Graph, entity: Entity) {
         if "User" == entity.type {
             userInsertExpectation?.fulfill()
 		}
     }
 
-    func graph(graph: Graph, didDeleteEntity entity: Entity) {
+    func graphDidDeleteEntity(graph: Graph, entity: Entity) {
         if "User" == entity.type {
             userDeleteExpectation?.fulfill()
         }
     }
 
-    func graph(graph: Graph, didInsertEntity entity: Entity, group: String) {
+    func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
         if "Female" == group {
             groupInsertExpectation?.fulfill()
             let nodes: OrderedMultiDictionary<String, Entity> = graph.search(EntityGroup: group)
@@ -142,7 +142,7 @@ class EntityTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graph(graph: Graph, didInsertEntity entity: Entity, property: String, value: AnyObject) {
+    func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         if "name" == property && "Eve" == value as! String {
             nameInsertExpectation?.fulfill()
             let n: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property)
@@ -165,7 +165,7 @@ class EntityTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graph(graph: Graph, didUpdateEntity entity: Entity, property: String, value: AnyObject) {
+    func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         if "name" == property && "Daniel" == value as! String {
             nameUpdateExpectation?.fulfill()
 			let n: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property)

@@ -18,6 +18,7 @@
 
 import Foundation
 
+@objc(JSON)
 public class JSON: Equatable, Printable {
 	/**
 		:name:	value

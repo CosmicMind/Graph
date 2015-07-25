@@ -145,7 +145,7 @@ class BondTests : XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
 
-    func graph(graph: Graph, didInsertEntity entity: Entity) {
+    func graphDidInsertEntity(graph: Graph, entity: Entity) {
         if "Eve" == entity["name"] as! String && 1 == entity.bondsWhenSubject.count {
             u1InsertExpectation?.fulfill()
         } else if "Daniel" == entity["name"] as! String && 1 == entity.bondsWhenObject.count {
@@ -153,19 +153,19 @@ class BondTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graph(graph: Graph, didInsertBond bond: Bond) {
+    func graphDidInsertBond(graph: Graph, bond: Bond) {
         if "Friend" == bond.type && "User" == bond.subject?.type && "User" == bond.object?.type {
             friendInsertExpectation?.fulfill()
 		}
     }
 
-    func graph(graph: Graph, didDeleteBond bond: Bond){
+    func graphDidDeleteBond(graph: Graph, bond: Bond){
         if "Friend" == bond.type && nil == bond.subject && nil == bond.object {
             friendDeleteExpectation?.fulfill()
         }
     }
 
-    func graph(graph: Graph, didInsertBond bond: Bond, group: String) {
+    func graphDidInsertBondGroup(graph: Graph, bond: Bond, group: String) {
         if "Close" == group {
             groupInsertExpectation?.fulfill()
             let n: OrderedMultiDictionary<String, Bond> = graph.search(BondGroup: group)
@@ -175,7 +175,7 @@ class BondTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graph(graph: Graph, didInsertBond bond: Bond, property: String, value: AnyObject){
+    func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject){
         if "permission" == property && "edit" == value as! String {
             permissionInsertExpectation?.fulfill()
             let n: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property)
@@ -198,7 +198,7 @@ class BondTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graph(graph: Graph, didUpdateBond bond: Bond, property: String, value: AnyObject) {
+    func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
         if "permission" == property && "read" == value as! String {
             permissionUpdateExpectation?.fulfill()
             let n: OrderedMultiDictionary<String, Bond> = graph.search(BondProperty: property)

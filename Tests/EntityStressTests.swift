@@ -123,13 +123,13 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func graph(graph: Graph, didInsertEntity entity: Entity) {
+	func graphDidInsertEntity(graph: Graph, entity: Entity) {
 		if 51 == entity.groups.count && 51 == entity.properties.count {
 			expectation?.fulfill()
 		}
 	}
 	
-	func graph(graph: Graph, didDeleteEntity entity: Entity) {
+	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
 		if 0 == entity.groups.count && 0 == entity.properties.count {
 			expectation?.fulfill()
 		}

@@ -35,14 +35,14 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		graph?.watch(Action: "A")
 		graph?.watch(ActionProperty: "active")
 		
-		XCTAssertTrue(0 == graph?.search(ActionProperty: "active").count, "Action: Search did not pass.")
+		XCTAssertTrue(0 == graph?.search(ActionProperty: "active").count, "Test failed.")
 		
 		var a1: Action = Action(type: "A")
 		a1["active"] = true
 		
 		var a2: Action? = graph?.search(ActionProperty: "active").last?.value
 		
-		XCTAssertTrue(a1 == a2, "Action: Search did not pass.")
+		XCTAssertTrue(a1 == a2, "Test failed.")
 		
 		expectation = expectationWithDescription("Action: Insert did not pass.")
 		
@@ -54,14 +54,14 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func graph(graph: Graph, didInsertAction action: Action) {
+	func graphDidInsertAction(graph: Graph, action: Action) {
 		var a2: Action? = graph.search(ActionProperty: "active").last?.value
 		if action == a2 {
 			expectation?.fulfill()
 			
 			a2?["active"] = false
 			
-			expectation = expectationWithDescription("Action: Property Update did not pass.")
+			expectation = expectationWithDescription("Test failed.")
 			
 			graph.save{ (success: Bool, error: NSError?) in
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
@@ -69,15 +69,15 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		}
 	}
 	
-	func graph(graph: Graph, didDeleteAction action: Action) {
+	func graphDidDeleteAction(graph: Graph, action: Action) {
 		var a2: Action? = graph.search(ActionProperty: "active").last?.value
 		if nil == a2 {
 			expectation?.fulfill()
-			XCTAssertTrue(0 == graph.search(ActionProperty: "active").count, "Action: Search did not pass.")
+			XCTAssertTrue(0 == graph.search(ActionProperty: "active").count, "Test failed.")
 		}
 	}
 	
-	func graph(graph: Graph,didUpdateAction action: Action,property: String,value: AnyObject){
+	func graphDidUpdateActionProperty(graph: Graph, action: Action,property: String,value: AnyObject){
 		var a2: Action? = graph.search(ActionProperty: "active").last?.value
 		if value as! Bool == action["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
@@ -88,7 +88,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			}
 			
-			XCTAssertTrue(0 == graph.search(ActionProperty: "active").count, "Action: Search did not pass.")
+			XCTAssertTrue(0 == graph.search(ActionProperty: "active").count, "Test failed.")
 			
 			expectation = expectationWithDescription("Action: Delete did not pass.")
 			

@@ -19,61 +19,72 @@
 import XCTest
 import GraphKit
 
-class SessionTests: XCTestCase {
+class SessionTests: XCTestCase, SessionDelegate {
 	
-	var expectation: XCTestExpectation?
+	lazy var session: Session = Session()
 	
+	var callbackExpectation: XCTestExpectation?
+	var delegateExpectation: XCTestExpectation?
 	
 	override func setUp() {
 		super.setUp()
+		session.delegate = self
 	}
 	
 	override func tearDown() {
+		session.delegate = nil
 		super.tearDown()
 	}
 	
 	func testGet() {
-		let session: Session = Session()
-		
 		if let u1: NSURL = NSURL(string: "http://graph.sandbox.local:5000/key/1/graph/test") {
 			session.get(u1) { (json: JSON?, error: NSError?) in
 				if nil != json && nil == error {
-					self.expectation?.fulfill()
+					self.callbackExpectation?.fulfill()
 				}
 			}
 		}
-		expectation = expectationWithDescription("Test failed.")
+		callbackExpectation = expectationWithDescription("Test failed.")
+		delegateExpectation = expectationWithDescription("Test failed.")
 		
 		waitForExpectationsWithTimeout(5, handler: nil)
 		
 		if let u1: NSURL = NSURL(string: "http://graph.sandbox.local:5000/key/1/graph") {
 			session.get(u1) { (json: JSON?, error: NSError?) in
 				if nil != error && nil == json {
-					self.expectation?.fulfill()
+					self.callbackExpectation?.fulfill()
 				}
 			}
 		}
 		
-		expectation = expectationWithDescription("Test failed.")
+		callbackExpectation = expectationWithDescription("Test failed.")
+		delegateExpectation = expectationWithDescription("Test failed.")
 		
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
 	func testPost() {
-		let session: Session = Session()
-		
 		if let u1: NSURL = NSURL(string: "http://graph.sandbox.local:5000/index") {
 			session.post(u1, json: JSON(value: [["type": "User", "nodeClass": 1]])) { (json: JSON?, error: NSError?) in
 				if nil != json && nil == error {
-					self.expectation?.fulfill()
+					self.callbackExpectation?.fulfill()
 				}
 			}
 		}
-		expectation = expectationWithDescription("Test failed.")
+		callbackExpectation = expectationWithDescription("Test failed.")
+		delegateExpectation = expectationWithDescription("Test failed.")
 		
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 
+	func sessionDidReceiveGetResponse(session: Session, json: JSON?, error: NSError?) {
+		delegateExpectation?.fulfill()
+	}
+	
+	func sessionDidReceivePOSTResponse(session: Session, json: JSON?, error: NSError?) {
+		delegateExpectation?.fulfill()
+	}
+	
 	func testPerformance() {
 		self.measureBlock() {}
 	}

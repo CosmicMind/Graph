@@ -36,7 +36,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		graph?.watch(Bond: "B")
 		graph?.watch(BondProperty: "active")
 		
-		XCTAssertTrue(0 == graph?.search(BondProperty: "active").count, "Bond: Search did not pass.")
+		XCTAssertTrue(0 == graph?.search(BondProperty: "active").count, "Test failed.")
 		
 		var b1: Bond = Bond(type: "B")
 		b1["active"] = true
@@ -55,14 +55,14 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
 	
-	func graph(graph: Graph, didInsertBond bond: Bond) {
+	func graphDidInsertBond(graph: Graph, bond: Bond) {
 		var b2: Bond? = graph.search(BondProperty: "active").last?.value
 		if bond == b2 {
 			expectation?.fulfill()
 			
 			b2?["active"] = false
 			
-			expectation = expectationWithDescription("Bond: Property Update did not pass.")
+			expectation = expectationWithDescription("Test failed.")
 			
 			graph.save{ (success: Bool, error: NSError?) in
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
@@ -70,15 +70,15 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		}
 	}
 	
-	func graph(graph: Graph, didDeleteBond bond: Bond) {
+	func graphDidDeleteBond(graph: Graph, bond: Bond) {
 		var b2: Bond? = graph.search(BondProperty: "active").last?.value
 		if nil == b2 {
 			expectation?.fulfill()
-			XCTAssertTrue(0 == graph.search(BondProperty: "active").count, "Bond: Search did not pass.")
+			XCTAssertTrue(0 == graph.search(BondProperty: "active").count, "Test failed.")
 		}
 	}
 	
-	func graph(graph: Graph, didUpdateBond bond: Bond, property: String, value: AnyObject) {
+	func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
 		var b2: Bond? = graph.search(BondProperty: "active").last?.value
 		if value as! Bool == bond["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
@@ -89,7 +89,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			}
 			
-			XCTAssertTrue(0 == graph.search(BondProperty: "active").count, "Bond: Search did not pass.")
+			XCTAssertTrue(0 == graph.search(BondProperty: "active").count, "Test failed.")
 			
 			expectation = expectationWithDescription("Bond: Delete did not pass.")
 			

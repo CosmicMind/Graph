@@ -161,7 +161,7 @@ class ActionTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(5, handler: nil)
     }
 
-    func graph(graph: Graph, didInsertEntity entity: Entity) {
+    func graphDidInsertEntity(graph: Graph, entity: Entity) {
 		if "User" == entity.type && 1 == entity.actionsWhenSubject.count {
             userInsertExpectation?.fulfill()
         } else if "Book" == entity.type && 1 == entity.actionsWhenObject.count {
@@ -171,7 +171,7 @@ class ActionTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graph(graph: Graph, didDeleteEntity entity: Entity) {
+    func graphDidDeleteEntity(graph: Graph, entity: Entity) {
         if "User" == entity.type {
             userDeleteExpectation?.fulfill()
         } else if "Book" == entity.type {
@@ -181,25 +181,25 @@ class ActionTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graph(graph: Graph, didInsertAction action: Action) {
+    func graphDidInsertAction(graph: Graph, action: Action) {
         if "Read" == action.type && 1 == action.subjects.count && 2 == action.objects.count {
             readInsertExpectation?.fulfill()
         }
     }
 
-	func graph(graph: Graph, didUpdateAction action: Action) {
+	func graphDidUpdateAction(graph: Graph, action: Action) {
 		if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
 			readUpdateExpectation?.fulfill()
 		}
 	}
 	
-    func graph(graph: Graph,didDeleteAction action: Action){
+    func graphDidDeleteAction(graph: Graph, action: Action){
 		if "Read" == action.type && 0 == action.subjects.count && 0 == action.objects.count {
             readDeleteExpectation?.fulfill()
         }
     }
 
-    func graph(graph: Graph, didInsertAction action: Action, group: String) {
+    func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
         if "Holiday" == group {
             groupInsertExpectation?.fulfill()
             let n: OrderedMultiDictionary<String, Action> = graph.search(ActionGroup: group)
@@ -209,7 +209,7 @@ class ActionTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graph(graph: Graph, didInsertAction action: Action, property: String, value: AnyObject) {
+    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         if "name" == property && "New Years" == value as! String {
             nameInsertExpectation?.fulfill()
             let n: OrderedMultiDictionary<String, Action> = graph.search(ActionProperty: property)
@@ -231,7 +231,7 @@ class ActionTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graph(graph: Graph, didUpdateAction action: Action, property: String, value: AnyObject) {
+    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         if "name" == property && "X-MASS" == value as! String {
             nameUpdateExpectation?.fulfill()
             let n: OrderedMultiDictionary<String, Action> = graph.search(ActionProperty: property)
