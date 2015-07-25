@@ -123,12 +123,8 @@ public func ==(lhs: JSON, rhs: JSON) -> Bool {
 	var error: NSError?
 	if let l: String? = JSON.stringify(lhs.value, error: &error) {
 		if let r: String? = JSON.stringify(rhs.value, error: &error) {
-			return l == r ? true : false
+			return l == r
 		}
 	}
 	return false
-}
-
-public func !=(lhs: JSON, rhs: JSON) -> Bool {
-	return !(lhs == rhs)
 }
