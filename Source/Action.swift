@@ -19,7 +19,7 @@
 import Foundation
 
 @objc(Action)
-public class Action : NSObject {
+public class Action : NSObject, Comparable {
 	internal let node: ManagedAction
 
 	/**
@@ -256,4 +256,20 @@ extension Action : Equatable, Printable {
 
 public func ==(lhs: Action, rhs: Action) -> Bool {
 	return lhs.id == rhs.id
+}
+
+public func <=(lhs: Action, rhs: Action) -> Bool {
+	return lhs.id <= rhs.id
+}
+
+public func >=(lhs: Action, rhs: Action) -> Bool {
+	return lhs.id >= rhs.id
+}
+
+public func >(lhs: Action, rhs: Action) -> Bool {
+	return lhs.id > rhs.id
+}
+
+public func <(lhs: Action, rhs: Action) -> Bool {
+	return lhs.id < rhs.id
 }

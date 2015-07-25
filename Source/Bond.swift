@@ -19,7 +19,7 @@
 import Foundation
 
 @objc(Bond)
-public class Bond : NSObject {
+public class Bond : NSObject, Comparable {
 	internal let node: ManagedBond
 
 	/**
@@ -177,4 +177,20 @@ extension Bond : Equatable, Printable {
 
 public func ==(lhs: Bond, rhs: Bond) -> Bool {
 	return lhs.id == rhs.id
+}
+
+public func <=(lhs: Bond, rhs: Bond) -> Bool {
+	return lhs.id <= rhs.id
+}
+
+public func >=(lhs: Bond, rhs: Bond) -> Bool {
+	return lhs.id >= rhs.id
+}
+
+public func >(lhs: Bond, rhs: Bond) -> Bool {
+	return lhs.id > rhs.id
+}
+
+public func <(lhs: Bond, rhs: Bond) -> Bool {
+	return lhs.id < rhs.id
 }

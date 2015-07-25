@@ -19,7 +19,7 @@
 import Foundation
 
 @objc(Entity)
-public class Entity : NSObject {
+public class Entity : NSObject, Comparable {
 	internal let node: ManagedEntity
 
 	/**
@@ -234,3 +234,20 @@ extension Entity : Equatable, Printable {
 public func ==(lhs: Entity, rhs: Entity) -> Bool {
 	return lhs.id == rhs.id
 }
+
+public func <=(lhs: Entity, rhs: Entity) -> Bool {
+	return lhs.id <= rhs.id
+}
+
+public func >=(lhs: Entity, rhs: Entity) -> Bool {
+	return lhs.id >= rhs.id
+}
+
+public func >(lhs: Entity, rhs: Entity) -> Bool {
+	return lhs.id > rhs.id
+}
+
+public func <(lhs: Entity, rhs: Entity) -> Bool {
+	return lhs.id < rhs.id
+}
+
