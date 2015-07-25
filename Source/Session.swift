@@ -35,7 +35,7 @@ public class Session {
 	
 	/**
 		:name:	get
-	t*/
+	*/
 	public func get(url: NSURL!, completion: ((json: JSON?, error: NSError?) -> ())?) {
 		let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
 			if nil == error {
@@ -46,6 +46,38 @@ public class Session {
 				completion?(json: nil, error: error)
 			}
 		}
+		task.resume()
+	}
+	
+	/**
+		:name:	post
+	*/
+	public func post(url: NSURL!, json: JSON?) {
+		post(url, json: json, completion: nil)
+	}
+	
+	/**
+		:name:	post
+	*/
+	public func post(url: NSURL!, json: JSON?, completion: ((json: JSON?, error: NSError?) -> ())?) {
+		var request = NSMutableURLRequest(URL: NSURL(string: "http://graph.sandbox.local:5000/index")!)
+		request.HTTPMethod = "POST"
+		
+		var error: NSError?
+		request.HTTPBody = json?.dataValue
+		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+		request.addValue("application/json", forHTTPHeaderField: "Accept")
+		
+		var task = NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) in
+			if nil == error {
+				var err: NSError?
+				var json: JSON? = JSON.parse(data, error: &err)
+				completion?(json: json, error: err)
+			} else {
+				completion?(json: nil, error: error)
+			}
+		})
+		
 		task.resume()
 	}
 }

@@ -300,13 +300,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		65DF3F041B626F2600197AD5 /* Bridge */ = {
+		65DF3F041B626F2600197AD5 /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				65DF3F051B626F3B00197AD5 /* Session.swift */,
 				65DF3F0B1B6272C000197AD5 /* JSON.swift */,
 			);
-			name = Bridge;
+			name = Network;
 			sourceTree = "<group>";
 		};
 		961242D61B2B369C00CD47E0 /* Tree */ = {
@@ -376,7 +376,7 @@
 		96C031B61AD72FD300EE4C63 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				65DF3F041B626F2600197AD5 /* Bridge */,
+				65DF3F041B626F2600197AD5 /* Network */,
 				961242D71B2B36A400CD47E0 /* Sort */,
 				968C00A41B51BF7F00E3FA9E /* Probability */,
 				969F6DA01B2DCAF300B573F8 /* List */,

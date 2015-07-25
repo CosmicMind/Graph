@@ -58,6 +58,22 @@ class SessionTests: XCTestCase {
 		
 		waitForExpectationsWithTimeout(5, handler: nil)
 	}
+	
+	func testPost() {
+		let session: Session = Session()
+		
+		if let u1: NSURL = NSURL(string: "http://graph.sandbox.local:5000/index") {
+			session.post(u1, json: JSON(value: [["type": "User", "nodeClass": 1]])) { (json: JSON?, error: NSError?) in
+				if nil != json && nil == error {
+					self.expectation?.fulfill()
+				}
+				println(json)
+			}
+		}
+		expectation = expectationWithDescription("Test failed.")
+		
+		waitForExpectationsWithTimeout(5, handler: nil)
+	}
 
 	func testPerformance() {
 		self.measureBlock() {}

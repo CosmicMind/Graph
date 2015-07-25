@@ -25,17 +25,25 @@ public class JSON: Printable {
 	public private(set) var value: AnyObject
 	
 	/**
-		:name:	value
+		:name:	stringValue
 	*/
 	public var stringValue: String? {
 		return value as? String
 	}
 	
 	/**
-		:name:	value
+		:name:	integerValue
 	*/
 	public var integerValue: Int? {
 		return value as? Int
+	}
+	
+	/**
+		:name:	integerValue
+	*/
+	public var dataValue: NSData? {
+		var error: NSError?
+		return JSON.serialize(value, error: &error)!
 	}
 	
 	/**
@@ -73,7 +81,7 @@ public class JSON: Printable {
 		:description:	Stringify an object.
 	*/
 	public class func stringify(object: AnyObject!, inout error: NSError?) -> String? {
-		if let data: NSData = NSJSONSerialization.dataWithJSONObject(object, options: nil, error: &error) {
+		if let data: NSData = JSON.serialize(object, error: &error) {
 			return NSString(data: data, encoding: NSUTF8StringEncoding) as? String
 		}
 		return nil
