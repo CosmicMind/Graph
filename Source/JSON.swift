@@ -18,7 +18,7 @@
 
 import Foundation
 
-public class JSON: Printable {
+public class JSON: Equatable, Printable {
 	/**
 		:name:	value
 	*/
