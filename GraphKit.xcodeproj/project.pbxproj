@@ -29,6 +29,10 @@
 		65DF3F0D1B6272C000197AD5 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF3F0B1B6272C000197AD5 /* JSON.swift */; };
 		65DF3F121B62759100197AD5 /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF3F111B62759100197AD5 /* JSONTests.swift */; };
 		65DF3F131B62759100197AD5 /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF3F111B62759100197AD5 /* JSONTests.swift */; };
+		65EC73181B641E1A0089280C /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EC73171B641E1A0089280C /* Reachability.swift */; };
+		65EC73191B641E1A0089280C /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EC73171B641E1A0089280C /* Reachability.swift */; };
+		65EC731B1B641E2A0089280C /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EC731A1B641E2A0089280C /* ReachabilityTests.swift */; };
+		65EC731C1B641E2A0089280C /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EC731A1B641E2A0089280C /* ReachabilityTests.swift */; };
 		961242D91B2B36B800CD47E0 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; };
 		961242DA1B2B36B800CD47E0 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; };
 		961242DC1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */; };
@@ -209,6 +213,8 @@
 		65DF3F051B626F3B00197AD5 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		65DF3F0B1B6272C000197AD5 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		65DF3F111B62759100197AD5 /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTests.swift; sourceTree = "<group>"; };
+		65EC73171B641E1A0089280C /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		65EC731A1B641E2A0089280C /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
 		961242D81B2B36B800CD47E0 /* RedBlackTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackNode.swift; sourceTree = "<group>"; };
 		961242DE1B2B36D300CD47E0 /* InsertionSort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertionSort.swift; sourceTree = "<group>"; };
@@ -303,6 +309,7 @@
 		65DF3F041B626F2600197AD5 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				65EC73171B641E1A0089280C /* Reachability.swift */,
 				65DF3F051B626F3B00197AD5 /* Session.swift */,
 				65DF3F0B1B6272C000197AD5 /* JSON.swift */,
 			);
@@ -417,6 +424,7 @@
 				65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */,
 				65569EF21B61F55E0019B13E /* SessionTests.swift */,
 				65DF3F111B62759100197AD5 /* JSONTests.swift */,
+				65EC731A1B641E2A0089280C /* ReachabilityTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -718,6 +726,7 @@
 				969F6DA21B2DCB0200B573F8 /* Deque.swift in Sources */,
 				968F38BC1AD7394300E963AB /* ManagedEntity.swift in Sources */,
 				969F6DB51B2DE23500B573F8 /* Queue.swift in Sources */,
+				65EC73181B641E1A0089280C /* Reachability.swift in Sources */,
 				968C00A61B51BF9900E3FA9E /* Probability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -732,6 +741,7 @@
 				968F38A61AD7393900E963AB /* ActionSearchTests.swift in Sources */,
 				968F38AD1AD7393900E963AB /* EntityStressTests.swift in Sources */,
 				969F6DB21B2DE06200B573F8 /* StackTests.swift in Sources */,
+				65EC731B1B641E2A0089280C /* ReachabilityTests.swift in Sources */,
 				96CB07CD1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
 				65B723F51B5AE5E50087E6A6 /* OrderedDictionaryTests.swift in Sources */,
 				961242EB1B2B378400CD47E0 /* MultiTreeTests.swift in Sources */,
@@ -788,6 +798,7 @@
 				969F6DA31B2DCB0200B573F8 /* Deque.swift in Sources */,
 				96C032141AD730C200EE4C63 /* ManagedEntity.swift in Sources */,
 				969F6DB61B2DE23500B573F8 /* Queue.swift in Sources */,
+				65EC73191B641E1A0089280C /* Reachability.swift in Sources */,
 				968C00A71B51BF9900E3FA9E /* Probability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -802,6 +813,7 @@
 				96C032151AD730CC00EE4C63 /* ActionStressTests.swift in Sources */,
 				96C032161AD730CC00EE4C63 /* ActionTests.swift in Sources */,
 				969F6DB31B2DE06200B573F8 /* StackTests.swift in Sources */,
+				65EC731C1B641E2A0089280C /* ReachabilityTests.swift in Sources */,
 				96CB07CE1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
 				65B723F61B5AE5E60087E6A6 /* OrderedDictionaryTests.swift in Sources */,
 				961242EC1B2B378400CD47E0 /* MultiTreeTests.swift in Sources */,
