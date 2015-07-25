@@ -67,7 +67,6 @@ class SessionTests: XCTestCase {
 				if nil != json && nil == error {
 					self.expectation?.fulfill()
 				}
-				println(json)
 			}
 		}
 		expectation = expectationWithDescription("Test failed.")
