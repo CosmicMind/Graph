@@ -93,9 +93,9 @@ public class JSON: Equatable, Printable {
 	}
 	
 	/**
-	:name:	description
-	:description:	Conforms to the Printable Protocol. Outputs the
-	data in the OrderedSet in a readable format.
+		:name:	description
+		:description:	Conforms to the Printable Protocol. Outputs the
+		data in the OrderedSet in a readable format.
 	*/
 	public var description: String {
 		var error: NSError?
