@@ -46,7 +46,7 @@ public class Reachability {
 	}()
 	
 	public private(set) var status: ReachabilityStatus
-	public var onStatusChange: ((previous: ReachabilityStatus, current: ReachabilityStatus) -> ())?
+	public var onStatusChange: ((reachability: Reachability) -> ())?
 	
 	public var isReachableOnWWAN: Bool
 	public var isRunningOnDevice: Bool = {
@@ -113,7 +113,7 @@ public class Reachability {
 				let s: ReachabilityStatus = self.status
 				self.statusDidChange(flags)
 				self.previousFlags = flags
-				self.onStatusChange?(previous: s, current: self.status)
+				self.onStatusChange?(reachability: self)
 			})
 		}
 	}

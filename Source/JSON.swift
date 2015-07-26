@@ -22,11 +22,17 @@ import Foundation
 public class JSON: Equatable, Printable {
 	/**
 		:name:	value
+		:description:	The internal value for
+		the JSON obejct.
+		:returns:	AnyObject
 	*/
 	public private(set) var value: AnyObject
 	
 	/**
 		:name:	stringValue
+		:description:	A string representation of
+		the JSON value.
+		:returns:	String?
 	*/
 	public var stringValue: String? {
 		return value as? String
@@ -34,17 +40,23 @@ public class JSON: Equatable, Printable {
 	
 	/**
 		:name:	integerValue
+		:description:	An integer prepresentation
+		of the JSON value.
+		:returns:	Int?
 	*/
 	public var integerValue: Int? {
 		return value as? Int
 	}
 	
 	/**
-		:name:	integerValue
+		:name:	dataValue
+		:description:	A serialized version of the
+		JSON value.
+		:returns:	NSData?
 	*/
 	public var dataValue: NSData? {
 		var error: NSError?
-		return JSON.serialize(value, error: &error)!
+		return JSON.serialize(value, error: &error)
 	}
 	
 	/**
@@ -88,6 +100,10 @@ public class JSON: Equatable, Printable {
 		return nil
 	}
 	
+	/**
+		:name:	init
+		:description:	Constructor.
+	*/
 	public init(value: AnyObject!) {
 		self.value = value
 	}
@@ -103,6 +119,11 @@ public class JSON: Equatable, Printable {
 		return nil == error && nil != stringified ? stringified! : "{}"
 	}
 	
+	/**
+		:name:	operator [0...count - 1]
+		:description:	Allows array like access of the index.
+		:returns:	JSON?
+	*/
 	public subscript(index: Int) -> JSON? {
 		if let item: Array<AnyObject> = value as? Array<AnyObject> {
 			return JSON(value: item[index])
@@ -110,6 +131,13 @@ public class JSON: Equatable, Printable {
 		return nil
 	}
 	
+	/**
+		:name:	operator [key 1...key n]
+		:description:	Property key mapping. If the key type is a
+		String, this feature allows access like a
+		Dictionary.
+		:returns:	JSON?
+	*/
 	public subscript(key: String) -> JSON? {
 		if let item: Dictionary<String, AnyObject> = value as? Dictionary<String, AnyObject> {
 			if nil != item[key] {

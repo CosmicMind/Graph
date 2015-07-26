@@ -37,7 +37,7 @@ class ReachabilityTests: XCTestCase, ReachabilityDelegate {
 	func testConnectivity() {
 		reachability = Reachability.reachabilityForInternetConnection()
 		reachability?.delegate = self
-		reachability?.onStatusChange = { (previous: ReachabilityStatus, current: ReachabilityStatus) in
+		reachability?.onStatusChange = { (reachability: Reachability) in
 			self.callbackExpectation?.fulfill()
 		}
 		

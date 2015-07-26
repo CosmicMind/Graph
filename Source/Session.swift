@@ -32,47 +32,39 @@ public class Session {
 		:name:	init
 		:description:	Constructor.
 	*/
-	public init(){}
-	
-	
-	/**
-		:name:	get
-	*/
-	public func get(url: NSURL!) {
-		get(url, completion: nil)
-	}
+	public init() {}
 	
 	/**
 		:name:	get
+		:description:	Sends a GET request.
+		:param:	url	NSURL	URL destination.
+		:param:	completion	(json: JSON?, error: NSError?) -> ()	An Optional callback.
 	*/
-	public func get(url: NSURL!, completion: ((json: JSON?, error: NSError?) -> ())?) {
+	public func get(url: NSURL, completion: (json: JSON?, error: NSError?) -> ()) {
 		var request = NSMutableURLRequest(URL: url)
 		request.HTTPMethod = "GET"
 		
 		NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) in
+			var json: JSON?
+			var err: NSError?
 			if nil == error {
-				var err: NSError?
-				var json: JSON? = JSON.parse(data, error: &err)
-				completion?(json: json, error: err)
-				self.delegate?.sessionDidReceiveGetResponse?(self, json: json, error: err)
+				json = JSON.parse(data, error: &err)
 			} else {
-				completion?(json: nil, error: error)
-				self.delegate?.sessionDidReceiveGetResponse?(self, json: nil, error: error)
+				err = error
 			}
+			completion(json: json, error: err)
+			self.delegate?.sessionDidReceiveGetResponse?(self, json: json, error: err)
 		}).resume()
 	}
 	
 	/**
 		:name:	post
+		:description:	Sends a POST request.
+		:param:	url	NSURL	URL destination.
+		:param:	json	JSON?	An Optional JSON block to send.
+		:param:	completion	(json: JSON?, error: NSError?) -> ()	An Optional callback.
 	*/
-	public func post(url: NSURL!, json: JSON?) {
-		post(url, json: json, completion: nil)
-	}
-	
-	/**
-		:name:	post
-	*/
-	public func post(url: NSURL!, json: JSON?, completion: ((json: JSON?, error: NSError?) -> ())?) {
+	public func post(url: NSURL, json: JSON?, completion: (json: JSON?, error: NSError?) -> ()) {
 		var request = NSMutableURLRequest(URL: url)
 		request.HTTPMethod = "POST"
 		
@@ -83,15 +75,14 @@ public class Session {
 		
 		NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) in
 			var json: JSON?
+			var err: NSError?
 			if nil == error {
-				var err: NSError?
 				json = JSON.parse(data, error: &err)
-				completion?(json: json, error: err)
-				self.delegate?.sessionDidReceivePOSTResponse?(self, json: json, error: err)
 			} else {
-				completion?(json: nil, error: error)
-				self.delegate?.sessionDidReceivePOSTResponse?(self, json: nil, error: error)
+				err = error
 			}
+			completion(json: json, error: err)
+			self.delegate?.sessionDidReceivePOSTResponse?(self, json: json, error: err)
 		}).resume()
 	}
 }
