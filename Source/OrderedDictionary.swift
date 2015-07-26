@@ -32,14 +32,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		data in the OrderedDictionary in a readable format.
 	*/
 	public var description: String {
-		var output: String = "OrderedDictionary("
-		for var i: Int = 0; i < count; ++i {
-			output += "\(tree[i].value!)"
-			if i + 1 != count {
-				output += ", "
-			}
-		}
-		return output + ")"
+		return tree.internalDescription
 	}
 	
 	/**

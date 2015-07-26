@@ -23,7 +23,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable
 		data in the Tree in a readable format.
 	*/
 	public override var description: String {
-		return "Tree" + internalDescription
+		return internalDescription
 	}
 
 	/**

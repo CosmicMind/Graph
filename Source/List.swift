@@ -53,7 +53,7 @@ public class List<Element> : Printable, SequenceType {
 		var c: Int = 0
 		var x: ListNode<Element>? = head
 		while nil !== x {
-			output += x!.description
+			output += "\(x)"
 			if ++c != count {
 				output += ", "
 			}

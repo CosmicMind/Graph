@@ -31,14 +31,14 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		data in the OrderedMultiSet in a readable format.
 	*/
 	public var description: String {
-		var output: String = "OrderedMultiSet("
-		for var i: Int = 0; i < count; ++i {
-			output += "\(tree[i].value!)"
-			if i + 1 != count {
+		var output: String = "["
+		for var i: Int = 0, l = count - 1; i <= l; ++i {
+			output += "\(self[i])"
+			if i != l {
 				output += ", "
 			}
 		}
-		return output + ")"
+		return output + "]"
 	}
 
 	/**

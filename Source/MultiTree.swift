@@ -23,7 +23,7 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equa
 		data in the MultiTree in a readable format.
 	*/
 	public override var description: String {
-		return "MultiTree" + internalDescription
+		return internalDescription
 	}
 
 	/**

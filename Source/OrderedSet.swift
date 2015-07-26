@@ -31,14 +31,14 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		data in the OrderedSet in a readable format.
 	*/
 	public var description: String {
-		var output: String = "OrderedSet("
-		for var i: Int = 0; i < count; ++i {
-			output += "\(tree[i].value!)"
-			if i + 1 != count {
+		var output: String = "["
+		for var i: Int = 0, l = count - 1; i <= l; ++i {
+			output += "\(self[i])"
+			if i != l {
 				output += ", "
 			}
 		}
-		return output + ")"
+		return output + "]"
 	}
 
 	/**

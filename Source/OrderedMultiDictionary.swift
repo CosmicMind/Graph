@@ -32,14 +32,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		data in the OrderedMultiDictionary in a readable format.
 	*/
 	public var description: String {
-		var output: String = "OrderedMultiDictionary("
-		for var i: Int = 0; i < count; ++i {
-			output += "\(tree[i].value!)"
-			if i + 1 != count {
-				output += ", "
-			}
-		}
-		return output + ")"
+		return tree.internalDescription
 	}
 	
 	/**

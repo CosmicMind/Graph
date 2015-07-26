@@ -37,14 +37,14 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		nodes in the Tree.
 	*/
 	internal var internalDescription: String {
-		var output: String = "("
-		for var i: Int = 1; i <= count; ++i {
-			output += internalSelect(root, order: i).description
-			if i != count {
+		var output: String = "["
+		for var i: Int = 0, l = count - 1; i <= l; ++i {
+			output += "\(self[i])"
+			if i != l {
 				output += ", "
 			}
 		}
-		return output + ")"
+		return output + "]"
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		data in the Tree in a readable format.
 	*/
 	public var description: String {
-		return "RedBlackTree" + internalDescription
+		return internalDescription
 	}
 
 	/**
