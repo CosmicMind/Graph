@@ -72,7 +72,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:returns:	(key: Key, value: Value?)?
 	*/
 	public var first: (key: Key, value: Value?)? {
-		return self[0]
+		return isEmpty ? nil : self[0]
 	}
 
 	/**
