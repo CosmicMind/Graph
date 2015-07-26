@@ -33,6 +33,10 @@
 		65EC73191B641E1A0089280C /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EC73171B641E1A0089280C /* Reachability.swift */; };
 		65EC731B1B641E2A0089280C /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EC731A1B641E2A0089280C /* ReachabilityTests.swift */; };
 		65EC731C1B641E2A0089280C /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EC731A1B641E2A0089280C /* ReachabilityTests.swift */; };
+		65EC73311B6558FC0089280C /* Reachability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65EC73171B641E1A0089280C /* Reachability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		65EC73321B6558FC0089280C /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65DF3F0B1B6272C000197AD5 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		65EC73331B65590F0089280C /* Reachability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65EC73171B641E1A0089280C /* Reachability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		65EC73341B65590F0089280C /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65DF3F0B1B6272C000197AD5 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961242D91B2B36B800CD47E0 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; };
 		961242DA1B2B36B800CD47E0 /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; };
 		961242DC1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */; };
@@ -490,6 +494,8 @@
 				65B723F71B5AE60E0087E6A6 /* OrderedDictionary.swift in Headers */,
 				65DF3F081B626F7B00197AD5 /* Session.swift in Headers */,
 				65DF3F091B626F7B00197AD5 /* OrderedMultiDictionary.swift in Headers */,
+				65EC73331B65590F0089280C /* Reachability.swift in Headers */,
+				65EC73341B65590F0089280C /* JSON.swift in Headers */,
 				969F6DAD1B2DCCF000B573F8 /* ListNode.swift in Headers */,
 				961242F01B2B38AB00CD47E0 /* InsertionSort.swift in Headers */,
 				961242F11B2B38AB00CD47E0 /* RedBlackNode.swift in Headers */,
@@ -527,6 +533,8 @@
 				65B723F81B5AE61D0087E6A6 /* OrderedDictionary.swift in Headers */,
 				65569EED1B61E9650019B13E /* OrderedMultiDictionary.swift in Headers */,
 				65DF3F0A1B626F8C00197AD5 /* Session.swift in Headers */,
+				65EC73311B6558FC0089280C /* Reachability.swift in Headers */,
+				65EC73321B6558FC0089280C /* JSON.swift in Headers */,
 				969F6DAA1B2DCCDA00B573F8 /* ListNode.swift in Headers */,
 				961243021B2B38E000CD47E0 /* InsertionSort.swift in Headers */,
 				961243031B2B38E000CD47E0 /* RedBlackNode.swift in Headers */,
