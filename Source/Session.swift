@@ -20,12 +20,27 @@ import Foundation
 
 @objc(SessionDelegate)
 public protocol SessionDelegate {
+	/**
+		:name:	sessionDidReceiveGetResponse
+		:description:	An optional Delegate that is called when GET requests are completed.
+	*/
 	optional func sessionDidReceiveGetResponse(session: Session, json: JSON?, error: NSError?)
+	
+	/**
+		:name:	sessionDidReceivePOSTResponse
+		:description:	An optional Delegate that is called when POST requests are completed.
+	*/
 	optional func sessionDidReceivePOSTResponse(session: Session, json: JSON?, error: NSError?)
 }
 
 @objc(Session)
 public class Session {
+	/**
+		:name:	delegate
+		:description:	An Optional delegate to set
+		for Session GET/POST requests.
+		:returns:	SessionDelegate?
+	*/
 	public weak var delegate: SessionDelegate?
 	
 	/**

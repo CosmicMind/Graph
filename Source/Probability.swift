@@ -18,11 +18,55 @@
 
 internal protocol ProbabilityType {
 	typealias ElementType
+	
+	/**
+		:name:	countOf
+		:description:	The instance count of elements.
+		:param:	elements	ElementType...	The element values to count.
+		:returns:	Int
+	*/
 	func countOf(elements: ElementType...) -> Int
+	
+	/**
+		:name:	countOf
+		:description:	The instance count of elements.
+		:param:	elements	Array<ElementType>	An array of element values to count.
+		:returns:	Int
+	*/
 	func countOf(elements: Array<ElementType>) -> Int
+	
+	/**
+		:name:	probabilityOf
+		:description:	The probability of elements.
+		:param:	elements	ElementType...	The element values to determine the probability of.
+		:returns:	Double
+	*/
 	func probabilityOf(elements: ElementType...) -> Double
+	
+	/**
+		:name:	probabilityOf
+		:description:	The probability of elements.
+		:param:	elements	Array<ElementType>	An array of element values to determine the probability of.
+		:returns:	Double
+	*/
 	func probabilityOf(elements: Array<ElementType>) -> Double
+	
+	/**
+		:name:	expectedValueOf
+		:description:	The expected value of elements.
+		:param:	trials	Int	The number of trials to execute.
+		:param:	elements	ElementType...	The element values to determine the expected value of.
+		:returns:	Double
+	*/
 	func expectedValueOf(trials: Int, elements: ElementType...) -> Double
+	
+	/**
+		:name:	expectedValueOf
+		:description:	The expected value of elements.
+		:param:	trials	Int	The number of trials to execute.
+		:param:	elements	Array<ElementType>	An array of element values to determine the expected value of.
+		:returns:	Double
+	*/
 	func expectedValueOf(trials: Int, elements: Array<ElementType>) -> Double
 }
 
@@ -31,24 +75,62 @@ public class Probability<Element : Comparable> : ProbabilityType {
 
 	public internal(set) var count: Int = 0
 
+	/**
+		:name:	countOf
+		:description:	The instance count of elements.
+		:param:	elements	ElementType...	The element values to count.
+		:returns:	Int
+	*/
 	public func countOf(elements: Element...) -> Int { return 0 }
 
+	/**
+		:name:	countOf
+		:description:	The instance count of elements.
+		:param:	elements	Array<ElementType>	An array of element values to count.
+		:returns:	Int
+	*/
 	public func countOf(elements: Array<Element>) -> Int { return 0 }
 
+	/**
+		:name:	probabilityOf
+		:description:	The probability of elements.
+		:param:	elements	ElementType...	The element values to determine the probability of.
+		:returns:	Double
+	*/
 	public func probabilityOf(elements: Element...) -> Double {
 		return probabilityOf(elements)
 	}
-
+	
+	/**
+		:name:	probabilityOf
+		:description:	The probability of elements.
+		:param:	elements	Array<ElementType>	An array of element values to determine the probability of.
+		:returns:	Double
+	*/
 	public func probabilityOf(elements: Array<Element>) -> Double {
 		let x: Double = Double(countOf(elements))
 		let y: Double = Double(count)
 		return 0 == y ? 0 : x / y
 	}
 
+	/**
+		:name:	expectedValueOf
+		:description:	The expected value of elements.
+		:param:	trials	Int	The number of trials to execute.
+		:param:	elements	ElementType...	The element values to determine the expected value of.
+		:returns:	Double
+	*/
 	public func expectedValueOf(trials: Int, elements: Element...) -> Double {
 		return expectedValueOf(trials, elements: elements)
 	}
 
+	/**
+		:name:	expectedValueOf
+		:description:	The expected value of elements.
+		:param:	trials	Int	The number of trials to execute.
+		:param:	elements	Array<ElementType>	An array of element values to determine the expected value of.
+		:returns:	Double
+	*/
 	public func expectedValueOf(trials: Int, elements: Array<Element>) -> Double {
 		return Double(trials) * probabilityOf(elements)
 	}

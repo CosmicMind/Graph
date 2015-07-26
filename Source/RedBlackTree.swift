@@ -32,14 +32,6 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	internal private(set) var root: RedBlackNode<Key, Value>
 
 	/**
-		:name:	isUniquelyKeyed
-		:description:	A boolean used to indicate whether to allow the
-		tree to store non-unique key values or only unique
-		key values.
-	*/
-	public private(set) var isUniquelyKeyed: Bool
-
-	/**
 		:name:	internalDescription
 		:description:	Returns a String with only the node data for all
 		nodes in the Tree.
@@ -55,6 +47,14 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		return output + ")"
 	}
 
+	/**
+		:name:	isUniquelyKeyed
+		:description:	A boolean used to indicate whether to allow the
+		tree to store non-unique key values or only unique
+		key values.
+	*/
+	public private(set) var isUniquelyKeyed: Bool
+	
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
