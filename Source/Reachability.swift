@@ -106,7 +106,7 @@ public class Reachability {
 		:returns:	dispatch_queue_t?
 	*/
 	private lazy var queue: dispatch_queue_t = {
-		return dispatch_queue_create("io.graphkit.reachability", nil)
+		return dispatch_queue_create("io.graphkit.Reachability", nil)
 	}()
 	
 	/**
