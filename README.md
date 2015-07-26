@@ -40,11 +40,24 @@ Welcome to the core of GraphKit -- Graph. This is where the magic happens and if
 * [Bond](https://github.com/GraphKit/GraphKit/wiki/Bond)
 * [Action](https://github.com/GraphKit/GraphKit/wiki/Action)
 
-### License 
+### Network Connectivity and Messaging
 
-[AGPLv3](http://choosealicense.com/licenses/agpl-3.0/) 
+Data coming in and out of any application is fundamental. GraphKit offers a light-weight tool set to manage the connectivity of your network, sending and receiving data, and manipulating JSON values. 
 
-### Contributors 
+* [JSON](https://github.com/GraphKit/GraphKit/wiki/JSON)
+* [Reachability](https://github.com/GraphKit/GraphKit/wiki/Reachability)
+* [Session](https://github.com/GraphKit/GraphKit/wiki/Session)
 
-[Daniel Dahan](https://github.com/danieldahan)  
+### License
+
+
+[AGPLv3](http://choosealicense.com/licenses/agpl-3.0/)
+
+
+### Contributors
+
+
+[Daniel Dahan](https://github.com/danieldahan)
+
+
 
