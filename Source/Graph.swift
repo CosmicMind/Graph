@@ -242,7 +242,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
 		for group: EntityGroup in entries as! Array<EntityGroup> {
 			let node: Entity = Entity(entity: group.node)
-			nodes.insert((node.type, node))
+			nodes.insert((group.name, node))
 		}
 		return nodes
 	}
@@ -276,7 +276,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
-			nodes.insert((node.type, node))
+			nodes.insert((property.name, node))
 		}
 		return nodes
 	}
@@ -290,7 +290,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
-			nodes.insert((node.type, node))
+			nodes.insert((property.name, node))
 		}
 		return nodes
 	}
@@ -304,7 +304,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
-			nodes.insert((node.type, node))
+			nodes.insert((property.name, node))
 		}
 		return nodes
 	}
@@ -332,7 +332,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
 		for group: ActionGroup in entries as! Array<ActionGroup> {
 			let node: Action = Action(action: group.node)
-			nodes.insert((node.type, node))
+			nodes.insert((group.name, node))
 		}
 		return nodes
 	}
@@ -366,7 +366,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
-			nodes.insert((node.type, node))
+			nodes.insert((property.name, node))
 		}
 		return nodes
 	}
@@ -380,7 +380,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
-			nodes.insert((node.type, node))
+			nodes.insert((property.name, node))
 		}
 		return nodes
 	}
@@ -394,7 +394,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
-			nodes.insert((node.type, node))
+			nodes.insert((property.name, node))
 		}
 		return nodes
 	}
@@ -422,7 +422,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
 		for group: BondGroup in entries as! Array<BondGroup> {
 			let node: Bond = Bond(bond: group.node)
-			nodes.insert((node.type, node))
+			nodes.insert((group.name, node))
 		}
 		return nodes
 	}
@@ -456,7 +456,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
-			nodes.insert((node.type, node))
+			nodes.insert((property.name, node))
 		}
 		return nodes
 	}
@@ -470,7 +470,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
-			nodes.insert((node.type, node))
+			nodes.insert((property.name, node))
 		}
 		return nodes
 	}
@@ -484,7 +484,7 @@ public class Graph: NSObject {
 		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
-			nodes.insert((node.type, node))
+			nodes.insert((property.name, node))
 		}
 		return nodes
 	}
