@@ -108,9 +108,7 @@ public class Probability<Element : Comparable> : ProbabilityType {
 		:returns:	Double
 	*/
 	public func probabilityOf(elements: Array<Element>) -> Double {
-		let x: Double = Double(countOf(elements))
-		let y: Double = Double(count)
-		return 0 == y ? 0 : x / y
+		return 0 == count ? 0 : Double(countOf(elements)) / Double(count)
 	}
 
 	/**
