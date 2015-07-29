@@ -87,6 +87,12 @@ class QueueTests: XCTestCase {
 		for x in q2 {
 			XCTAssert(x == q3.dequeue(), "Concat incorrect.")
 		}
+		
+		q3.removeAll()
+		let q4: Queue<Int> = q1 + q2 + q3
+		for x in q4 {
+			XCTAssert(x == q4.dequeue(), "Concat incorrect.")
+		}
 	}
 
 	func testPerformance() {

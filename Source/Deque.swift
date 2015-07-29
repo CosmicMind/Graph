@@ -88,7 +88,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	insertAtFront
 		:description:	Insert a new element at the front of the Deque.
 	*/
-	public func insertAtFront(element: Element?) {
+	public func insertAtFront(element: Element) {
 		list.insertAtFront(element)
 	}
 
@@ -105,7 +105,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	insertAtBack
 		:description:	Insert a new element at the back of the Deque.
 	*/
-	public func insertAtBack(element: Element?) {
+	public func insertAtBack(element: Element) {
 		list.insertAtBack(element)
 	}
 
@@ -130,10 +130,10 @@ public class Deque<Element> : Printable, SequenceType {
 public func +<Element>(lhs: Deque<Element>, rhs: Deque<Element>) -> Deque<Element> {
 	let d: Deque<Element> = Deque<Element>()
 	for x in lhs {
-		d.insertAtBack(x)
+		d.insertAtBack(x!)
 	}
 	for x in rhs {
-		d.insertAtBack(x)
+		d.insertAtBack(x!)
 	}
 	return d
 }

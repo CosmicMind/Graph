@@ -185,7 +185,7 @@ public class List<Element> : Printable, SequenceType {
 		:description:	Insert a new element at the front
 		of the List.
 	*/
-	public func insertAtFront(element: Element?) {
+	public func insertAtFront(element: Element) {
 		var z: ListNode<Element>
 		if 0 == count {
 			z = ListNode<Element>(next: nil, previous: nil,  element: element)
@@ -225,7 +225,7 @@ public class List<Element> : Printable, SequenceType {
 		:description:	Insert a new element at the back
 		of the List.
 	*/
-	public func insertAtBack(element: Element?) {
+	public func insertAtBack(element: Element) {
 		var z: ListNode<Element>
 		if 0 == count {
 			z = ListNode<Element>(next: nil, previous: nil,  element: element)
@@ -280,7 +280,7 @@ public class List<Element> : Printable, SequenceType {
 		:name:	insertBeforeCursor
 		:description:	Insert a new element before the cursor position.
 	*/
-	public func insertBeforeCursor(element: Element?) {
+	public func insertBeforeCursor(element: Element) {
 		if nil === current || head === current {
 			insertAtFront(element)
 		} else {
@@ -295,7 +295,7 @@ public class List<Element> : Printable, SequenceType {
 		:name:	insertAfterCursor
 		:description:	Insert a new element after the cursor position.
 	*/
-	public func insertAfterCursor(element: Element?) {
+	public func insertAfterCursor(element: Element) {
 		if nil === current || tail === current {
 			insertAtBack(element)
 		} else {
@@ -345,10 +345,10 @@ public class List<Element> : Printable, SequenceType {
 public func +<Element>(lhs: List<Element>, rhs: List<Element>) -> List<Element> {
 	let l: List<Element> = List<Element>()
 	for x in lhs {
-		l.insertAtBack(x)
+		l.insertAtBack(x!)
 	}
 	for x in rhs {
-		l.insertAtBack(x)
+		l.insertAtBack(x!)
 	}
 	return l
 }

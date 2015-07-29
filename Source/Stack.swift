@@ -80,7 +80,7 @@ public class Stack<Element> : Printable, SequenceType {
 		:name:	push
 		:description:	Insert a new element at the top of the Stack.
 	*/
-	public func push(element: Element?) {
+	public func push(element: Element) {
 		list.insertAtFront(element)
 	}
 
@@ -106,10 +106,10 @@ public class Stack<Element> : Printable, SequenceType {
 public func +<Element>(lhs: Stack<Element>, rhs: Stack<Element>) -> Stack<Element> {
 	let s: Stack<Element> = Stack<Element>()
 	for x in lhs {
-		s.push(x)
+		s.push(x!)
 	}
 	for x in rhs {
-		s.push(x)
+		s.push(x!)
 	}
 	return s
 }

@@ -79,7 +79,7 @@ public class Queue<Element> : Printable, SequenceType {
 		:name:	enqueue
 		:description:	Insert a new element at the back of the Queue.
 	*/
-	public func enqueue(element: Element?) {
+	public func enqueue(element: Element) {
 		list.insertAtBack(element)
 	}
 
@@ -104,10 +104,10 @@ public class Queue<Element> : Printable, SequenceType {
 public func +<Element>(lhs: Queue<Element>, rhs: Queue<Element>) -> Queue<Element> {
 	let q: Queue<Element> = Queue<Element>()
 	for x in lhs {
-		q.enqueue(x)
+		q.enqueue(x!)
 	}
 	for x in rhs {
-		q.enqueue(x)
+		q.enqueue(x!)
 	}
 	return q
 }
