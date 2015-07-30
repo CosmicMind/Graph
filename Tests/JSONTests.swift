@@ -60,7 +60,7 @@ class JSONTests: XCTestCase {
 		XCTAssert("password" == j1!["password"]?.stringValue, "Test failed.")
 		XCTAssert(123456789 == j1!["token"]?.integerValue, "Test failed.")
 		
-		XCTAssert("{\"token\":123456789,\"user\":\"username\",\"password\":\"password\"}" == stringified, "Test failed. \(j1)")
+		XCTAssert("{\"token\":123456789,\"user\":\"username\",\"password\":\"password\"}" == stringified, "Test failed.")
 	}
 	
 	func testEquatable() {
