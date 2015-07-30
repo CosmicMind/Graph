@@ -39,7 +39,7 @@ class JSONTests: XCTestCase {
 		var data: NSData? = JSON.serialize(dict, error: &error)
 		XCTAssert(nil == error, "Test failed.")
 		
-		var j1: JSON? = JSON.parse(data, error: &error)
+		var j1: JSON? = JSON.parse(data!, error: &error)
 		XCTAssert(nil == error, "Test failed.")
 		
 		XCTAssert(nil != j1, "Test failed.")
@@ -53,7 +53,7 @@ class JSONTests: XCTestCase {
 		let dict: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
 		var stringified: String? = JSON.stringify(dict, error: &error)
 		
-		var j1: JSON? = JSON.parse(stringified, error: &error)
+		var j1: JSON? = JSON.parse(stringified!, error: &error)
 		XCTAssert(nil == error, "Test failed.")
 		XCTAssert(nil != j1, "Test failed.")
 		XCTAssert("username" == j1!["user"]?.stringValue, "Test failed.")

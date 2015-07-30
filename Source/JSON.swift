@@ -63,7 +63,7 @@ public class JSON: Equatable, Printable {
 		:name:	parse
 		:description:	Parse a JSON block.
 	*/
-	public class func parse(data: NSData!, inout error: NSError?) -> JSON? {
+	public class func parse(data: NSData, inout error: NSError?) -> JSON? {
 		if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
 			return JSON(value: json)
 		}
@@ -74,7 +74,7 @@ public class JSON: Equatable, Printable {
 		:name:	parse
 		:description:	Parse a JSON block.
 	*/
-	public class func parse(json: String!, inout error: NSError?) -> JSON? {
+	public class func parse(json: String, inout error: NSError?) -> JSON? {
 		if let data: NSData = NSString(string: json).dataUsingEncoding(NSUTF8StringEncoding) {
 			return parse(data, error: &error)
 		}
@@ -85,7 +85,7 @@ public class JSON: Equatable, Printable {
 		:name:	serialize
 		:description:	Serialize an object.
 	*/
-	public class func serialize(object: AnyObject!, inout error: NSError?) -> NSData? {
+	public class func serialize(object: AnyObject, inout error: NSError?) -> NSData? {
 		return NSJSONSerialization.dataWithJSONObject(object, options: nil, error: &error)
 	}
 	
@@ -93,7 +93,7 @@ public class JSON: Equatable, Printable {
 		:name:	stringify
 		:description:	Stringify an object.
 	*/
-	public class func stringify(object: AnyObject!, inout error: NSError?) -> String? {
+	public class func stringify(object: AnyObject, inout error: NSError?) -> String? {
 		if let data: NSData = JSON.serialize(object, error: &error) {
 			return NSString(data: data, encoding: NSUTF8StringEncoding) as? String
 		}
@@ -104,7 +104,7 @@ public class JSON: Equatable, Printable {
 		:name:	init
 		:description:	Constructor.
 	*/
-	public init(value: AnyObject!) {
+	public init(value: AnyObject) {
 		self.value = value
 	}
 	
