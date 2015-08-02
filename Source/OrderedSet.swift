@@ -380,10 +380,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Insert elements of a finite sequence of Sets.
 	*/
 	public func unionInPlace(sets: Array<OrderedSet<Element>>) {
-		let s: OrderedSet<Element> = union(sets)
-		removeAll()
-		for x in s {
-			insert(x)
+		for u in sets {
+			for x in u {
+				insert(x)
+			}
 		}
 	}
 

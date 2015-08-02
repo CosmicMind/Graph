@@ -400,10 +400,10 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Insert elements of a finite sequence of Sets.
 	*/
 	public func unionInPlace(sets: Array<OrderedMultiSet<Element>>) {
-		let s: OrderedMultiSet<Element> = union(sets)
-		removeAll()
-		for x in s {
-			insert(x)
+		for u in sets {
+			for x in u {
+				insert(x)
+			}
 		}
 	}
 
