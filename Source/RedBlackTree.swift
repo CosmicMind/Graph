@@ -290,7 +290,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	*/
 	public subscript(index: Int) -> (key: Key, value: Value?) {
 		get {
-			if isIndexValid(index) {
+			if validateIndex(index) {
 				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
 				return (x.key, x.value)
 			} else {
@@ -298,7 +298,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			}
 		}
 		set(element) {
-			if isIndexValid(index) {
+			if validateIndex(index) {
 				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
 				if x.key != element.key {
 					assert(false, "[GraphKit Error: Key error.]")
@@ -672,10 +672,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		:name:	isIndexValid
+		:name:	validateIndex
 		:description:	Checks the validation of the index being within range of 0...n-1.
 	*/
-	private func isIndexValid(index: Int) -> Bool {
+	private func validateIndex(index: Int) -> Bool {
 		return index >= startIndex || index < endIndex
 	}
 }

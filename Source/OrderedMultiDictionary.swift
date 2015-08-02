@@ -80,12 +80,12 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	keys
 		:description:	Returns an array of the key values in ordered.
-		:returns:	Array	Key
+		:returns:	OrderedMultiSet<Key>
 	*/
-	public var keys: Array<Key> {
-		var s: Array<Key> = Array<Key>()
+	public var keys: OrderedMultiSet<Key> {
+		let s: OrderedMultiSet<Key> = OrderedMultiSet<Key>()
 		for x in self {
-			s.append(x.key)
+			s.insert(x.key)
 		}
 		return s
 	}
@@ -94,7 +94,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	values
 		:description:	Returns an array of the values that are ordered based
 		on the key ordering.
-		:returns:	Array	Value
+		:returns:	Array<Value>
 	*/
 	public var values: Array<Value> {
 		var s: Array<Value> = Array<Value>()

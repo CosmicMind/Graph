@@ -85,6 +85,18 @@ class OrderedMultiDictionaryTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
+	func testKeys() {
+		let s: OrderedMultiDictionary<String, Int> = OrderedMultiDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
+		let keys: OrderedMultiSet<String> = OrderedMultiSet<String>(members: "adam", "daniel", "mike", "natalie")
+		XCTAssert(keys == s.keys, "Test failed.")
+	}
+	
+	func testValues() {
+		let s: OrderedMultiDictionary<String, Int> = OrderedMultiDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
+		let values: Array<Int> = [1, 2, 3, 4]
+		XCTAssert(values == s.values, "Test failed.")
+	}
+	
 	func testPerformance() {
 		self.measureBlock() {}
 	}

@@ -23,11 +23,9 @@ class OrderedSetTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
-		// Put setup code here. This method is called before the invocation of each test method in the class.
 	}
 	
 	override func tearDown() {
-		// Put teardown code here. This method is called after the invocation of each test method in the class.
 		super.tearDown()
 	}
 	
@@ -96,8 +94,8 @@ class OrderedSetTests: XCTestCase {
 		let s2: OrderedSet<Int> = OrderedSet<Int>(members: 3, 4, 5)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 5, 6, 7)
 		
-		XCTAssert(false == s1.isDisjointWith(s2), "Test failed.")
-		XCTAssert(true == s1.isDisjointWith(s3), "Test failed.")
+		XCTAssertFalse(s1.isDisjointWith(s2), "Test failed.")
+		XCTAssert(s1.isDisjointWith(s3), "Test failed.")
 	}
 	
 	func testSubtract() {
@@ -106,7 +104,7 @@ class OrderedSetTests: XCTestCase {
 		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 7, 8, 9)
 		let s4: OrderedSet<Int> = s1.subtract(s2, s3)
 		
-		XCTAssert(false == s1.isDisjointWith(s4), "Test failed.")
+		XCTAssertFalse(s1.isDisjointWith(s4), "Test failed.")
 	}
 	
 	func testSubtractInPlace() {
@@ -143,7 +141,7 @@ class OrderedSetTests: XCTestCase {
 		
 		XCTAssert(s1 <= s1, "Test failed.")
 		XCTAssert(s1 <= s2, "Test failed.")
-		XCTAssert(false == (s1 <= s3), "Test failed.")
+		XCTAssertFalse(s1 <= s3, "Test failed.")
 	}
 	
 	func testIsSupersetOf() {
@@ -153,7 +151,7 @@ class OrderedSetTests: XCTestCase {
 		
 		XCTAssert(s1 >= s1, "Test failed.")
 		XCTAssert(s1 >= s2, "Test failed.")
-		XCTAssert(false == (s1 >= s3), "Test failed.")
+		XCTAssertFalse(s1 >= s3, "Test failed.")
 	}
 	
 	func testIsStrictSubsetOf() {
@@ -162,7 +160,7 @@ class OrderedSetTests: XCTestCase {
 		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 2, 3, 4, 5)
 		
 		XCTAssert(s1 < s2, "Test failed.")
-		XCTAssert(false == (s1 < s3), "Test failed.")
+		XCTAssertFalse(s1 < s3, "Test failed.")
 	}
 	
 	func testIsStrictSupersetOf() {
@@ -171,7 +169,13 @@ class OrderedSetTests: XCTestCase {
 		let s3: OrderedSet<Int> = OrderedSet<Int>(members: 5, 6, 7, 8)
 		
 		XCTAssert(s1 > s2, "Test failed.")
-		XCTAssert(false == (s1 > s3), "Test failed.")
+		XCTAssertFalse(s1 > s3, "Test failed.")
+	}
+	
+	func testContains() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>(members: 1, 2, 3, 4, 5, 6, 7)
+		XCTAssert(s1.contains(1, 2, 3), "Test failed.")
+		XCTAssertFalse(s1.contains(1, 2, 3, 10), "Test failed.")
 	}
 	
 	func testPerformance() {

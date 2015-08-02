@@ -138,6 +138,32 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	}
 
 	/**
+		:name:	contains
+		:description:	A boolean check if values exists
+		in the set.
+	*/
+	public func contains(members: Element...) -> Bool {
+		return contains(members)
+	}
+	
+	/**
+		:name:	contains
+		:description:	A boolean check if an array of values exist
+		in the set.
+	*/
+	public func contains(members: Array<Element>) -> Bool {
+		if 0 == members.count {
+			return false
+		}
+		for x in members {
+			if 0 == tree.countOf(x) {
+				return false
+			}
+		}
+		return true
+	}
+	
+	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
 	*/
