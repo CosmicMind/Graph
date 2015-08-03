@@ -412,10 +412,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Returns true if the set is a subset of a finite sequence as a Set.
 	*/
 	public func isSubsetOf(set: OrderedMultiSet<Element>) -> Bool {
-		if count > set.count {
-			return false
-		}
-		return count == intersect(set).count
+		return count <= set.count && count == intersect(set).count
 	}
 
 	/**
@@ -423,10 +420,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Returns true if the set is a superset of a finite sequence as a Set.
 	*/
 	public func isSupersetOf(set: OrderedMultiSet<Element>) -> Bool {
-		if count < set.count {
-			return false
-		}
-		return set.count == intersect(set).count
+		return count >= set.count && set.count == intersect(set).count
 	}
 
 	/**
