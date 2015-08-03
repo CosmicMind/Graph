@@ -229,77 +229,6 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	}
 
 	/**
-		:name:	isDisjointWith
-		:description:	Returns true if no members in the set are in a finite sequence of Sets.
-	*/
-	public func isDisjointWith(sets: OrderedMultiSet<Element>...) -> Bool {
-		return isDisjointWith(sets)
-	}
-
-	/**
-		:name:	isDisjointWith
-		:description:	Returns true if no members in the set are in a finite sequence of Sets.
-	*/
-	public func isDisjointWith(sets: Array<OrderedMultiSet<Element>>) -> Bool {
-		return intersect(sets).isEmpty
-	}
-
-	/**
-		:name:	subtract
-		:description:	Return a new set with elements in this set that do not occur in a finite sequence of Sets.
-	*/
-	public func subtract(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
-		return subtract(sets)
-	}
-
-	/**
-		:name:	subtract
-		:description:	Return a new set with elements in this set that do not occur in a finite sequence of Sets.
-	*/
-	public func subtract(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
-		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		let o: OrderedSet<Element> = OrderedSet<Element>()
-		for x in self {
-			o.insert(x)
-		}
-		for x in o {
-			var n: Int = countOf(x)
-			var m: Int = n
-			for u in sets {
-				var p: Int = abs(u.countOf(x) - n)
-				if p < m {
-					m = p
-				}
-			}
-			while 0 != m {
-				s.insert(x)
-				--m
-			}
-		}
-		return s
-	}
-
-	/**
-		:name:	subtractInPlace
-		:description:	Remove all members in the set that occur in a finite sequence of Sets.
-	*/
-	public func subtractInPlace(sets: OrderedMultiSet<Element>...) {
-		return subtractInPlace(sets)
-	}
-
-	/**
-		:name:	subtractInPlace
-		:description:	Remove all members in the set that occur in a finite sequence of Sets.
-	*/
-	public func subtractInPlace(sets: Array<OrderedMultiSet<Element>>) {
-		let s: OrderedMultiSet<Element> = subtract(sets)
-		removeAll()
-		for x in s {
-			insert(x)
-		}
-	}
-
-	/**
 		:name:	intersect
 		:description:	Return a new set with elements common to this set and a finite sequence of Sets.
 	*/
@@ -408,19 +337,83 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	}
 
 	/**
+		:name:	subtract
+		:description:	Return a new set with elements in this set that do not occur in a finite sequence of Sets.
+	*/
+	public func subtract(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
+		return subtract(sets)
+	}
+	
+	/**
+		:name:	subtract
+		:description:	Return a new set with elements in this set that do not occur in a finite sequence of Sets.
+	*/
+	public func subtract(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
+		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
+		let o: OrderedSet<Element> = OrderedSet<Element>()
+		for x in self {
+			o.insert(x)
+		}
+		for x in o {
+			var n: Int = countOf(x)
+			var m: Int = n
+			for u in sets {
+				var p: Int = abs(u.countOf(x) - n)
+				if p < m {
+					m = p
+				}
+			}
+			while 0 != m {
+				s.insert(x)
+				--m
+			}
+		}
+		return s
+	}
+	
+	/**
+		:name:	subtractInPlace
+		:description:	Remove all members in the set that occur in a finite sequence of Sets.
+	*/
+	public func subtractInPlace(sets: OrderedMultiSet<Element>...) {
+		return subtractInPlace(sets)
+	}
+	
+	/**
+		:name:	subtractInPlace
+		:description:	Remove all members in the set that occur in a finite sequence of Sets.
+	*/
+	public func subtractInPlace(sets: Array<OrderedMultiSet<Element>>) {
+		let s: OrderedMultiSet<Element> = subtract(sets)
+		removeAll()
+		for x in s {
+			insert(x)
+		}
+	}
+	
+	/**
+		:name:	isDisjointWith
+		:description:	Returns true if no members in the set are in a finite sequence of Sets.
+	*/
+	public func isDisjointWith(sets: OrderedMultiSet<Element>...) -> Bool {
+		return isDisjointWith(sets)
+	}
+	
+	/**
+		:name:	isDisjointWith
+		:description:	Returns true if no members in the set are in a finite sequence of Sets.
+	*/
+	public func isDisjointWith(sets: Array<OrderedMultiSet<Element>>) -> Bool {
+		return intersect(sets).isEmpty
+	}
+	
+	
+	/**
 		:name:	isSubsetOf
 		:description:	Returns true if the set is a subset of a finite sequence as a Set.
 	*/
 	public func isSubsetOf(set: OrderedMultiSet<Element>) -> Bool {
 		return count <= set.count && count == intersect(set).count
-	}
-
-	/**
-		:name:	isSupersetOf
-		:description:	Returns true if the set is a superset of a finite sequence as a Set.
-	*/
-	public func isSupersetOf(set: OrderedMultiSet<Element>) -> Bool {
-		return count >= set.count && set.count == intersect(set).count
 	}
 
 	/**
@@ -430,7 +423,15 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	public func isStrictSubsetOf(set: OrderedMultiSet<Element>) -> Bool {
 		return count < set.count && isSubsetOf(set)
 	}
-
+	
+	/**
+		:name:	isSupersetOf
+		:description:	Returns true if the set is a superset of a finite sequence as a Set.
+	*/
+	public func isSupersetOf(set: OrderedMultiSet<Element>) -> Bool {
+		return count >= set.count && set.count == intersect(set).count
+	}
+	
 	/**
 		:name:	isStrictSupersetOf
 		:description:	Returns true if the set is a superset of a finite sequence as a Set but not equal.
