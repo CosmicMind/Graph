@@ -139,7 +139,7 @@ public class Reachability {
 		:returns:	Bool
 	*/
 	public var isRunningOnDevice: Bool = {
-		#if os(iOS) && (arch(i386) || arch(x86_64))
+		#if TARGET_IPHONE_SIMULATOR
 			return false
 		#else
 			return true
