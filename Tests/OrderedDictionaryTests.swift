@@ -87,7 +87,7 @@ class OrderedDictionaryTests: XCTestCase {
 	
 	func testKeys() {
 		let s: OrderedDictionary<String, Int> = OrderedDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let keys: OrderedSet<String> = OrderedSet<String>(members: "adam", "daniel", "mike", "natalie")
+		let keys: OrderedSet<String> = OrderedSet<String>(elements: "adam", "daniel", "mike", "natalie")
 		XCTAssert(keys == s.keys, "Test failed.")
 	}
 	

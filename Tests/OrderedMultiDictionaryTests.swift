@@ -87,7 +87,7 @@ class OrderedMultiDictionaryTests: XCTestCase {
 	
 	func testKeys() {
 		let s: OrderedMultiDictionary<String, Int> = OrderedMultiDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let keys: OrderedMultiSet<String> = OrderedMultiSet<String>(members: "adam", "daniel", "mike", "natalie")
+		let keys: OrderedMultiSet<String> = OrderedMultiSet<String>(elements: "adam", "daniel", "mike", "natalie")
 		XCTAssert(keys == s.keys, "Test failed.")
 	}
 	

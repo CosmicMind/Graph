@@ -21,7 +21,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 
 	/**
 		:name:	tree
-		:description:	Internal storage of members.
+		:description:	Internal storage of elements.
 	*/
 	internal var tree: MultiTree<Element, Element>
 
@@ -97,17 +97,17 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	init
 		:description:	Constructor
 	*/
-	public convenience init(members: Element...) {
-		self.init(members: members)
+	public convenience init(elements: Element...) {
+		self.init(elements: elements)
 	}
 
 	/**
 		:name:	init
 		:description:	Constructor
 	*/
-	public convenience init(members: Array<Element>) {
+	public convenience init(elements: Array<Element>) {
 		self.init()
-		insert(members)
+		insert(elements)
 	}
 
 	/**
@@ -142,8 +142,8 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	A boolean check if values exists
 		in the set.
 	*/
-	public func contains(members: Element...) -> Bool {
-		return contains(members)
+	public func contains(elements: Element...) -> Bool {
+		return contains(elements)
 	}
 	
 	/**
@@ -151,11 +151,11 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	A boolean check if an array of values exist
 		in the set.
 	*/
-	public func contains(members: Array<Element>) -> Bool {
-		if 0 == members.count {
+	public func contains(elements: Array<Element>) -> Bool {
+		if 0 == elements.count {
 			return false
 		}
-		for x in members {
+		for x in elements {
 			if nil == tree.findValueForKey(x) {
 				return false
 			}
@@ -167,32 +167,32 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
 	*/
-	public override func countOf(members: Element...) -> Int {
-		return tree.countOf(members)
+	public override func countOf(elements: Element...) -> Int {
+		return tree.countOf(elements)
 	}
 
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
 	*/
-	public override func countOf(members: Array<Element>) -> Int {
-		return tree.countOf(members)
+	public override func countOf(elements: Array<Element>) -> Int {
+		return tree.countOf(elements)
 	}
 
 	/**
 		:name:	insert
-		:description:	Inserts new members into the OrderedMultiSet.
+		:description:	Inserts new elements into the OrderedMultiSet.
 	*/
-	public func insert(members: Element...) {
-		insert(members)
+	public func insert(elements: Element...) {
+		insert(elements)
 	}
 
 	/**
 		:name:	insert
-		:description:	Inserts new members into the OrderedMultiSet.
+		:description:	Inserts new elements into the OrderedMultiSet.
 	*/
-	public func insert(members: Array<Element>) {
-		for x in members {
+	public func insert(elements: Array<Element>) {
+		for x in elements {
 			if tree.insert(x, value: x) {
 				count = tree.count
 			}
@@ -201,18 +201,18 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 
 	/**
 		:name:	remove
-		:description:	Removes members from the OrderedMultiSet.
+		:description:	Removes elements from the OrderedMultiSet.
 	*/
-	public func remove(members: Element...) {
-		remove(members)
+	public func remove(elements: Element...) {
+		remove(elements)
 	}
 
 	/**
 		:name:	remove
-		:description:	Removes members from the OrderedMultiSet.
+		:description:	Removes elements from the OrderedMultiSet.
 	*/
-	public func remove(members: Array<Element>) {
-		for x in members {
+	public func remove(elements: Array<Element>) {
+		for x in elements {
 			if nil != tree.removeValueForKey(x) {
 				count = tree.count
 			}
@@ -281,7 +281,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 
 	/**
 		:name:	intersectInPlace
-		:description:	Remove any members of this set that aren't also in a finite sequence of Sets.
+		:description:	Remove any elements of this set that aren't also in a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: Array<OrderedMultiSet<Element>>) {
 		let s: OrderedMultiSet<Element> = intersect(sets)
@@ -373,7 +373,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	
 	/**
 		:name:	subtractInPlace
-		:description:	Remove all members in the set that occur in a finite sequence of Sets.
+		:description:	Remove all elements in the set that occur in a finite sequence of Sets.
 	*/
 	public func subtractInPlace(sets: OrderedMultiSet<Element>...) {
 		subtractInPlace(sets)
@@ -381,7 +381,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	
 	/**
 		:name:	subtractInPlace
-		:description:	Remove all members in the set that occur in a finite sequence of Sets.
+		:description:	Remove all elements in the set that occur in a finite sequence of Sets.
 	*/
 	public func subtractInPlace(sets: Array<OrderedMultiSet<Element>>) {
 		let s: OrderedMultiSet<Element> = subtract(sets)
@@ -451,7 +451,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	
 	/**
 		:name:	isDisjointWith
-		:description:	Returns true if no members in the set are in a finite sequence of Sets.
+		:description:	Returns true if no elements in the set are in a finite sequence of Sets.
 	*/
 	public func isDisjointWith(sets: OrderedMultiSet<Element>...) -> Bool {
 		return isDisjointWith(sets)
@@ -459,7 +459,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	
 	/**
 		:name:	isDisjointWith
-		:description:	Returns true if no members in the set are in a finite sequence of Sets.
+		:description:	Returns true if no elements in the set are in a finite sequence of Sets.
 	*/
 	public func isDisjointWith(var sets: Array<OrderedMultiSet<Element>>) -> Bool {
 		var a: OrderedMultiSet<Element> = self
