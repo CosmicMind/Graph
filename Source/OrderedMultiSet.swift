@@ -156,7 +156,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 			return false
 		}
 		for x in members {
-			if 0 == tree.countOf(x) {
+			if nil == tree.findValueForKey(x) {
 				return false
 			}
 		}
@@ -413,7 +413,15 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Returns true if the set is a subset of a finite sequence as a Set.
 	*/
 	public func isSubsetOf(set: OrderedMultiSet<Element>) -> Bool {
-		return count <= set.count && count == intersect(set).count
+		if count > set.count {
+			return false
+		}
+		for x in self {
+			if !set.contains(x) {
+				return false
+			}
+		}
+		return true
 	}
 
 	/**
@@ -429,7 +437,15 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Returns true if the set is a superset of a finite sequence as a Set.
 	*/
 	public func isSupersetOf(set: OrderedMultiSet<Element>) -> Bool {
-		return count >= set.count && set.count == intersect(set).count
+		if count < set.count {
+			return false
+		}
+		for x in set {
+			if !contains(x) {
+				return false
+			}
+		}
+		return true
 	}
 	
 	/**
