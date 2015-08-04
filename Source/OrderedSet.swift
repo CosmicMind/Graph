@@ -421,7 +421,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		common element, otherwise add it to the set. Repeated elements of the sequence will be 
 		ignored.
 	*/
-	public func exclusiveOrInPlace(var sets: Array<OrderedSet<Element>>) {
+	public func exclusiveOrInPlace(sets: Array<OrderedSet<Element>>) {
 		let s: OrderedSet<Element> = exclusiveOr(sets)
 		removeAll()
 		for x in s {

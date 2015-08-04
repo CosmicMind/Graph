@@ -179,6 +179,38 @@ class OrderedMultiSetTests: XCTestCase {
 		XCTAssertFalse(s1.contains(1, 2, 3, 10), "Test failed.")
 	}
 	
+	func testExclusiveOr() {
+		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(members: 1, 2, 3, 4, 5, 6, 7)
+		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(members: 1, 2, 3, 4, 5)
+		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(members: 5, 6, 7, 8)
+		
+		XCTAssert(OrderedMultiSet<Int>(members: 6, 7) == s1.exclusiveOr(s2), "Test failed.")
+		XCTAssert(OrderedMultiSet<Int>(members: 1, 2, 3, 4, 8) == s1.exclusiveOr(s3), "Test failed.")
+		XCTAssert(OrderedMultiSet<Int>(members: 1, 2, 3, 4, 6, 7, 8) == s2.exclusiveOr(s3), "Test failed.")
+		XCTAssert(OrderedMultiSet<Int>(members: 8) == s1.exclusiveOr(s2, s3), "Test failed.")
+	}
+	
+	func testExclusiveOrInPlace() {
+		var s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(members: 1, 2, 3, 4, 5, 6, 7)
+		var s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(members: 1, 2, 3, 4, 5)
+		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(members: 5, 6, 7, 8)
+		
+		s1.exclusiveOrInPlace(s2)
+		XCTAssert(OrderedMultiSet<Int>(members: 6, 7) == s1, "Test failed.")
+		
+		s1 = OrderedMultiSet<Int>(members: 1, 2, 3, 4, 5, 6, 7)
+		s1.exclusiveOrInPlace(s3)
+		XCTAssert(OrderedMultiSet<Int>(members: 1, 2, 3, 4, 8) == s1, "Test failed.")
+		
+		s2.exclusiveOrInPlace(s3)
+		XCTAssert(OrderedMultiSet<Int>(members: 1, 2, 3, 4, 6, 7, 8) == s2, "Test failed.")
+		
+		s1 = OrderedMultiSet<Int>(members: 1, 2, 3, 4, 5, 6, 7)
+		s2 = OrderedMultiSet<Int>(members: 1, 2, 3, 4, 5)
+		s1.exclusiveOrInPlace(s2, s3)
+		XCTAssert(OrderedMultiSet<Int>(members: 8) == s1, "Test failed.")
+	}
+	
 	func testPerformance() {
 		self.measureBlock() {}
 	}

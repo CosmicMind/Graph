@@ -392,6 +392,64 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	}
 	
 	/**
+		:name:	exclusiveOr
+		:description:	Return a new set with elements that are either in the set or a finite sequence but do not occur in both.
+	*/
+	public func exclusiveOr(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
+		return exclusiveOr(sets)
+	}
+	
+	/**
+		:name:	exclusiveOr
+		:description:	Return a new set with elements that are either in the set or a finite sequence but do not occur in both.
+	*/
+	public func exclusiveOr(var sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
+		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
+		sets.append(self)
+		for var i: Int = sets.count - 1; 0 <= i; --i {
+			for (_, x) in sets[i].tree {
+				var toInsert: Bool = true
+				for var j: Int = sets.count - 1; 0 <= j; --j {
+					if i != j {
+						if nil != sets[j].tree.findValueForKey(x!) {
+							toInsert = false
+							break
+						}
+					}
+				}
+				if toInsert {
+					s.insert(x!)
+				}
+			}
+		}
+		return s
+	}
+	
+	/**
+		:name:	exclusiveOrInPlace
+		:description:	For each element of a finite sequence, remove it from the set if it is a
+		common element, otherwise add it to the set. Repeated elements of the sequence will be
+		ignored.
+	*/
+	public func exclusiveOrInPlace(sets: OrderedMultiSet<Element>...) {
+		exclusiveOrInPlace(sets)
+	}
+	
+	/**
+		:name:	exclusiveOrInPlace
+		:description:	For each element of a finite sequence, remove it from the set if it is a
+		common element, otherwise add it to the set. Repeated elements of the sequence will be
+		ignored.
+	*/
+	public func exclusiveOrInPlace(sets: Array<OrderedMultiSet<Element>>) {
+		let s: OrderedMultiSet<Element> = exclusiveOr(sets)
+		removeAll()
+		for x in s {
+			insert(x)
+		}
+	}
+	
+	/**
 		:name:	isDisjointWith
 		:description:	Returns true if no members in the set are in a finite sequence of Sets.
 	*/
