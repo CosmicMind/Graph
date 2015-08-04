@@ -96,6 +96,7 @@ class OrderedMultiSetTests: XCTestCase {
 		
 		XCTAssertFalse(s1.isDisjointWith(s2), "Test failed.")
 		XCTAssert(s1.isDisjointWith(s3), "Test failed.")
+		XCTAssertFalse(s2.isDisjointWith(s3), "Test failed.")
 	}
 	
 	func testSubtract() {
