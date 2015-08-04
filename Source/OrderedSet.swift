@@ -384,7 +384,20 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Returns true if no members in the set are in a finite sequence of Sets.
 	*/
 	public func isDisjointWith(sets: Array<OrderedSet<Element>>) -> Bool {
-		return intersect(sets).isEmpty
+		var a: OrderedSet<Element> = self
+		for u in sets {
+			if u.count < a.count {
+				a = u
+			}
+		}
+		for x in a {
+			for u in sets {
+				if u.contains(x) {
+					return false
+				}
+			}
+		}
+		return true
 	}
 	
 	/**
