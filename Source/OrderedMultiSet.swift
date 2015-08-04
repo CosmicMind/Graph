@@ -376,7 +376,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Remove all members in the set that occur in a finite sequence of Sets.
 	*/
 	public func subtractInPlace(sets: OrderedMultiSet<Element>...) {
-		return subtractInPlace(sets)
+		subtractInPlace(sets)
 	}
 	
 	/**
