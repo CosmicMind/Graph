@@ -274,7 +274,7 @@ public class Reachability {
 		:returns:	Bool
 	*/
 	private func isWWAN(flags: SCNetworkReachabilityFlags) -> Bool {
-		#if os(iOS) && (arch(i386) || arch(x86_64))
+		#if os(iOS)
 			return 0 != flags & SCNetworkReachabilityFlags(kSCNetworkReachabilityFlagsIsWWAN)
 		#else
 			return false
