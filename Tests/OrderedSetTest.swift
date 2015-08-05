@@ -83,10 +83,9 @@ class OrderedSetTests: XCTestCase {
 		let s1: OrderedSet<Int> = OrderedSet<Int>(elements: 22, 23, 1, 2, 3, 4, 5)
 		let s2: OrderedSet<Int> = OrderedSet<Int>(elements: 22, 23, 5, 6, 7, 8, 9, 10)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 22, 23, 10, 11, 12, 13, 14, 15)
-		let s4: OrderedSet<Int> = OrderedSet<Int>(elements: 22, 23)
 		
 		s1.intersectInPlace(s2, s3)
-		XCTAssert(s4 == s1, "Test failed.")
+		XCTAssert(OrderedSet<Int>(elements: 22, 23) == s1, "Test failed. \(s1)")
 	}
 	
 	func testIsDisjointWith() {
@@ -94,13 +93,13 @@ class OrderedSetTests: XCTestCase {
 		let s2: OrderedSet<Int> = OrderedSet<Int>(elements: 3, 4, 5)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 5, 6, 7)
 		
-		XCTAssertFalse(s1.isDisjointWith(s2), "Test failed.")
+		XCTAssertFalse(s1.isDisjointWith(s2), "Test failed. \(s1.isDisjointWith(s2))")
 		XCTAssert(s1.isDisjointWith(s3), "Test failed.")
 		XCTAssertFalse(s2.isDisjointWith(s3), "Test failed.")
 	}
 	
 	func testSubtract() {
-		let s1: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 7, 8, 9 , 10)
+		let s1: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 7, 8, 9, 10)
 		let s2: OrderedSet<Int> = OrderedSet<Int>(elements: 4, 5, 6, 7)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 7, 8, 9)
 		let s4: OrderedSet<Int> = s1.subtract(s2, s3)
@@ -109,13 +108,13 @@ class OrderedSetTests: XCTestCase {
 	}
 	
 	func testSubtractInPlace() {
-		let s1: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 7, 8, 9 , 10)
+		let s1: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 7, 8, 9, 10)
 		let s2: OrderedSet<Int> = OrderedSet<Int>(elements: 4, 5, 6, 7)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 7, 8, 9)
 		let s4: OrderedSet<Int> = s1.subtract(s2, s3)
 		
 		s1.subtractInPlace(s2, s3)
-		XCTAssert(s4 == s1, "Test failed.")
+		XCTAssert(s4 == s1, "Test failed. \(s4) \(s1)")
 	}
 	
 	func testUnion() {
@@ -184,7 +183,7 @@ class OrderedSetTests: XCTestCase {
 		let s2: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 5, 6, 7, 8)
 		
-		XCTAssert(OrderedSet<Int>(elements: 6, 7) == s1.exclusiveOr(s2), "Test failed.")
+		XCTAssert(OrderedSet<Int>(elements: 6, 7) == s1.exclusiveOr(s2), "Test failed. \(s1.exclusiveOr(s2))")
 		XCTAssert(OrderedSet<Int>(elements: 1, 2, 3, 4, 8) == s1.exclusiveOr(s3), "Test failed.")
 		XCTAssert(OrderedSet<Int>(elements: 1, 2, 3, 4, 6, 7, 8) == s2.exclusiveOr(s3), "Test failed.")
 		XCTAssert(OrderedSet<Int>(elements: 8) == s1.exclusiveOr(s2, s3), "Test failed.")
@@ -196,19 +195,19 @@ class OrderedSetTests: XCTestCase {
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 5, 6, 7, 8)
 		
 		s1.exclusiveOrInPlace(s2)
-		XCTAssert(OrderedSet<Int>(elements: 6, 7) == s1, "Test failed.")
+		XCTAssert(OrderedSet<Int>(elements: 6, 7) == s1, "Test failed. \(s1)")
 		
 		s1 = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 6, 7)
 		s1.exclusiveOrInPlace(s3)
-		XCTAssert(OrderedSet<Int>(elements: 1, 2, 3, 4, 8) == s1, "Test failed.")
+		XCTAssert(OrderedSet<Int>(elements: 1, 2, 3, 4, 8) == s1, "Test failed. \(s1)")
 		
 		s2.exclusiveOrInPlace(s3)
-		XCTAssert(OrderedSet<Int>(elements: 1, 2, 3, 4, 6, 7, 8) == s2, "Test failed.")
+		XCTAssert(OrderedSet<Int>(elements: 1, 2, 3, 4, 6, 7, 8) == s2, "Test failed. \(s2)")
 		
 		s1 = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 6, 7)
 		s2 = OrderedSet<Int>(elements: 1, 2, 3, 4, 5)
 		s1.exclusiveOrInPlace(s2, s3)
-		XCTAssert(OrderedSet<Int>(elements: 8) == s1, "Test failed.")
+		XCTAssert(OrderedSet<Int>(elements: 8) == s1, "Test failed. \(s1)")
 	}
 	
 	func testPerformance() {

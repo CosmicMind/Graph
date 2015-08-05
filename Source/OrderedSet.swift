@@ -84,7 +84,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	public var endIndex: Int {
 		return count
 	}
-
+	
 	/**
 		:name:	init
 		:description:	Constructor.
@@ -193,9 +193,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	*/
 	public func insert(elements: Array<Element>) {
 		for x in elements {
-			if tree.insert(x, value: x) {
-				count = tree.count
-			}
+			tree.insert(x, value: x)
+		}
+		if count != tree.count {
+			count = tree.count
 		}
 	}
 
@@ -203,20 +204,23 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:name:	remove
 		:description:	Removes elements from the OrderedSet.
 	*/
-	public func remove(elements: Element...) {
-		remove(elements)
+	public func remove(elements: Element...) -> OrderedSet<Element> {
+		return remove(elements)
 	}
 
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedSet.
 	*/
-	public func remove(elements: Array<Element>) {
+	public func remove(elements: Array<Element>) -> OrderedSet<Element> {
+		let s: OrderedSet<Element> = OrderedSet<Element>()
 		for x in elements {
 			if nil != tree.removeValueForKey(x) {
 				count = tree.count
+				s.insert(x)
 			}
 		}
+		return s
 	}
 
 	/**
@@ -242,7 +246,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	*/
 	public func intersect(sets: Array<OrderedSet<Element>>) -> OrderedSet<Element> {
 		let s: OrderedSet<Element> = OrderedSet<Element>()
-		for x in self {
+		for (x, _) in tree {
 			var toInsert: Bool = true
 			for u in sets {
 				if nil == u.tree.findValueForKey(x) {
@@ -270,10 +274,15 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Remove any elements of this set that aren't also in a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: Array<OrderedSet<Element>>) {
-		let s: OrderedSet<Element> = intersect(sets)
-		removeAll()
-		for x in s {
-			insert(x)
+		for var i: Int = tree.count - 1; 0 <= i; --i {
+			let x: Element = tree[i].key
+			for u in sets {
+				if nil == u.tree.findValueForKey(x) {
+					tree.removeValueForKey(x)
+					count = tree.count
+					break
+				}
+			}
 		}
 	}
 
@@ -292,11 +301,11 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	public func union(sets: Array<OrderedSet<Element>>) -> OrderedSet<Element> {
 		let s: OrderedSet<Element> = OrderedSet<Element>()
 		for u in sets {
-			for x in u {
+			for (x, _) in u.tree {
 				s.insert(x)
 			}
 		}
-		for x in self {
+		for (x, _) in tree {
 			s.insert(x)
 		}
 		return s
@@ -316,7 +325,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	*/
 	public func unionInPlace(sets: Array<OrderedSet<Element>>) {
 		for u in sets {
-			for x in u {
+			for (x, _) in u.tree {
 				insert(x)
 			}
 		}
@@ -364,10 +373,12 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Remove all elements in the set that occur in a finite sequence of Sets.
 	*/
 	public func subtractInPlace(sets: Array<OrderedSet<Element>>) {
-		let s: OrderedSet<Element> = subtract(sets)
-		removeAll()
-		for x in s {
-			insert(x)
+		for u in sets {
+			for (x, _) in u.tree {
+				if nil != tree.removeValueForKey(x) {
+					count = tree.count
+				}
+			}
 		}
 	}
 	
@@ -386,19 +397,20 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	public func exclusiveOr(var sets: Array<OrderedSet<Element>>) -> OrderedSet<Element> {
 		let s: OrderedSet<Element> = OrderedSet<Element>()
 		sets.append(self)
-		for var i: Int = sets.count - 1; 0 <= i; --i {
-			for (_, x) in sets[i].tree {
+		let size: Int = sets.count - 1
+		for var i: Int = size; 0 <= i; --i {
+			for (x, _) in sets[i].tree {
 				var toInsert: Bool = true
-				for var j: Int = sets.count - 1; 0 <= j; --j {
+				for var j: Int = size; 0 <= j; --j {
 					if i != j {
-						if nil != sets[j].tree.findValueForKey(x!) {
+						if nil != sets[j].tree.findValueForKey(x) {
 							toInsert = false
 							break
 						}
 					}
 				}
 				if toInsert {
-					s.insert(x!)
+					s.insert(x)
 				}
 			}
 		}
@@ -422,10 +434,24 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		ignored.
 	*/
 	public func exclusiveOrInPlace(sets: Array<OrderedSet<Element>>) {
-		let s: OrderedSet<Element> = exclusiveOr(sets)
-		removeAll()
-		for x in s {
-			insert(x)
+		let size: Int = sets.count - 1
+		for var i: Int = size; 0 <= i; --i {
+			for (x, _) in sets[i].tree {
+				var toInsert: Bool = true
+				for var j: Int = size; 0 <= j; --j {
+					if i != j {
+						if nil != sets[j].tree.findValueForKey(x) {
+							toInsert = false
+							break
+						}
+					}
+				}
+				if toInsert && nil == tree.findValueForKey(x) {
+					insert(x)
+				} else if nil != tree.removeValueForKey(x) {
+					count = tree.count
+				}
+			}
 		}
 	}
 	
@@ -442,22 +468,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:name:	isDisjointWith
 		:description:	Returns true if no elements in the set are in a finite sequence of Sets.
 	*/
-	public func isDisjointWith(var sets: Array<OrderedSet<Element>>) -> Bool {
-		var a: OrderedSet<Element> = self
-		var index: Int?
-		for var i: Int = sets.count - 1; 0 <= i; --i {
-			if sets[i].count < a.count {
-				a = sets[i]
-				index = i
-			}
-		}
-		if nil != index {
-			sets.removeAtIndex(index!)
-			sets.append(self)
-		}
-		for x in a {
+	public func isDisjointWith(sets: Array<OrderedSet<Element>>) -> Bool {
+		for (x, _) in tree {
 			for u in sets {
-				if u.contains(x) {
+				if nil != u.tree.findValueForKey(x) {
 					return false
 				}
 			}
@@ -474,7 +488,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 			return false
 		}
 		for x in self {
-			if !set.contains(x) {
+			if nil == set.tree.findValueForKey(x) {
 				return false
 			}
 		}
@@ -498,7 +512,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 			return false
 		}
 		for x in set {
-			if !contains(x) {
+			if nil == tree.findValueForKey(x) {
 				return false
 			}
 		}
