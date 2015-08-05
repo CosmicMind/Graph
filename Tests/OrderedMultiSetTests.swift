@@ -70,6 +70,11 @@ class OrderedMultiSetTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
+	func testRemove() {
+		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9)
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 5, 5) == s1.remove(1, 2, 3, 5), "Test failed.")
+	}
+	
 	func testIntersect() {
 		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 3, 4, 5)
 		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 6, 7, 8, 9, 10)

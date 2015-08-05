@@ -395,13 +395,13 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Return a new set with elements that are either in the set or a finite sequence but do not occur in both.
 	*/
 	public func exclusiveOr(var sets: Array<OrderedSet<Element>>) -> OrderedSet<Element> {
-		let s: OrderedSet<Element> = OrderedSet<Element>()
 		sets.append(self)
-		let size: Int = sets.count - 1
-		for var i: Int = size; 0 <= i; --i {
+		let s: OrderedSet<Element> = OrderedSet<Element>()
+		let n: Int = sets.count - 1
+		for var i: Int = n; 0 <= i; --i {
 			for (x, _) in sets[i].tree {
 				var toInsert: Bool = true
-				for var j: Int = size; 0 <= j; --j {
+				for var j: Int = n; 0 <= j; --j {
 					if i != j {
 						if nil != sets[j].tree.findValueForKey(x) {
 							toInsert = false
@@ -434,11 +434,11 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		ignored.
 	*/
 	public func exclusiveOrInPlace(sets: Array<OrderedSet<Element>>) {
-		let size: Int = sets.count - 1
-		for var i: Int = size; 0 <= i; --i {
+		let n: Int = sets.count - 1
+		for var i: Int = n; 0 <= i; --i {
 			for (x, _) in sets[i].tree {
 				var toInsert: Bool = true
-				for var j: Int = size; 0 <= j; --j {
+				for var j: Int = n; 0 <= j; --j {
 					if i != j {
 						if nil != sets[j].tree.findValueForKey(x) {
 							toInsert = false

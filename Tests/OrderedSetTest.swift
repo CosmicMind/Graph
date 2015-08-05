@@ -51,23 +51,28 @@ class OrderedSetTests: XCTestCase {
 		}
 		
 		XCTAssert(1 == s.count, "Test failed.")
-		s.remove(2)
-		s.remove(2)
+		XCTAssert(OrderedSet<Int>(elements: 2) == s.remove(2), "Test failed.")
+		XCTAssert(OrderedSet<Int>() == s.remove(2), "Test failed.")
 		s.insert(10)
 		XCTAssert(1 == s.count, "Test failed.")
 		
-		s.remove(10)
+		XCTAssert(OrderedSet<Int>(elements: 10) == s.remove(10), "Test failed.")
 		XCTAssert(0 == s.count, "Test failed.")
 		
 		s.insert(1)
 		s.insert(2)
 		s.insert(3)
 		
-		s.remove(1, 2)
+		XCTAssert(OrderedSet<Int>(elements: 1, 2) == s.remove(1, 2), "Test failed.")
 		XCTAssert(1 == s.count, "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
+	}
+	
+	func testRemove() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>(elements: 22, 23, 1, 2, 3, 4, 5)
+		XCTAssert(OrderedSet<Int>(elements: 1, 2, 3) == s1.remove(1, 2, 3), "Test failed.")
 	}
 	
 	func testIntersect() {

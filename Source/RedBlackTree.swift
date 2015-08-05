@@ -219,8 +219,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:param:	nodes	Array<(Key, Value?)>	Elements to insert.
 	*/
 	public func insert(nodes: Array<(Key, Value?)>) {
-		for x in nodes {
-			insert(x.0, value: x.1)
+		for (k, v) in nodes {
+			insert(k, value: v)
 		}
 	}
 

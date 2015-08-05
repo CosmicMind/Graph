@@ -193,9 +193,10 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	*/
 	public func insert(elements: Array<Element>) {
 		for x in elements {
-			if tree.insert(x, value: x) {
-				count = tree.count
-			}
+			tree.insert(x, value: x)
+		}
+		if count != tree.count {
+			count = tree.count
 		}
 	}
 
@@ -203,20 +204,27 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	remove
 		:description:	Removes elements from the OrderedMultiSet.
 	*/
-	public func remove(elements: Element...) {
-		remove(elements)
+	public func remove(elements: Element...) -> OrderedMultiSet<Element> {
+		return remove(elements)
 	}
 
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedMultiSet.
 	*/
-	public func remove(elements: Array<Element>) {
+	public func remove(elements: Array<Element>) -> OrderedMultiSet<Element> {
+		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
 		for x in elements {
-			if nil != tree.removeValueForKey(x) {
+			let n: Int = tree.countOf(x)
+			if 0 < n {
+				tree.removeValueForKey(x)
 				count = tree.count
+				for i in 0..<n {
+					s.insert(x)
+				}
 			}
 		}
+		return s
 	}
 
 	/**
@@ -242,29 +250,26 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	*/
 	public func intersect(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		let o: OrderedSet<Element> = OrderedSet<Element>()
-		for x in self {
-			o.insert(x)
-		}
-		for x in o {
-			var toInsert: Bool = true
-			for u in sets {
-				if nil == u.tree.findValueForKey(x) {
-					toInsert = false
-					break
-				}
-			}
-			if toInsert {
-				var n: Int = countOf(x)
+		for (x, _) in tree {
+			if nil == s.tree.findValueForKey(x) {
+				var toInsert: Bool = true
 				for u in sets {
-					var m: Int = u.countOf(x)
-					if m < n {
-						n = m
+					if nil == u.tree.findValueForKey(x) {
+						toInsert = false
+						break
 					}
 				}
-				while 0 != n {
-					s.insert(x)
-					--n
+				if toInsert {
+					var n: Int = tree.countOf(x)
+					for u in sets {
+						let m: Int = u.tree.countOf(x)
+						if m < n {
+							n = m
+						}
+					}
+					for i in 0..<n {
+						s.insert(x)
+					}
 				}
 			}
 		}
