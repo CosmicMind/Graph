@@ -195,9 +195,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		for x in elements {
 			tree.insert(x, value: x)
 		}
-		if count != tree.count {
-			count = tree.count
-		}
+		count = tree.count
 	}
 
 	/**
@@ -267,7 +265,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 							n = m
 						}
 					}
-					for i in 0..<n {
+					while 0 < n-- {
 						s.insert(x)
 					}
 				}
@@ -289,11 +287,37 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Remove any elements of this set that aren't also in a finite sequence of Sets.
 	*/
 	public func intersectInPlace(sets: Array<OrderedMultiSet<Element>>) {
-		let s: OrderedMultiSet<Element> = intersect(sets)
-		removeAll()
-		for x in s {
-			insert(x)
+		for var i: Int = tree.count - 1; 0 <= i; --i {
+			let x: Element = tree[i].key
+			var toRemove: Bool = false
+			for u in sets {
+				if nil == u.tree.findValueForKey(x) {
+					toRemove = true
+					break
+				}
+			}
+			var q: Int = tree.countOf(x)
+			if toRemove {
+				tree.removeValueForKey(x)
+				i -= --q
+			} else {
+				var n: Int = q
+				for u in sets {
+					let m: Int = u.tree.countOf(x)
+					if m < n {
+						n = m
+					}
+				}
+				if q != n {
+					tree.removeValueForKey(x)
+					i -= q - n - 1
+					while 0 < n-- {
+						insert(x)
+					}
+				}
+			}
 		}
+		count = tree.count
 	}
 
 	/**

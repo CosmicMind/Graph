@@ -195,9 +195,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		for x in elements {
 			tree.insert(x, value: x)
 		}
-		if count != tree.count {
-			count = tree.count
-		}
+		count = tree.count
 	}
 
 	/**

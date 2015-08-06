@@ -85,13 +85,19 @@ class OrderedMultiSetTests: XCTestCase {
 	}
 	
 	func testIntersectInPlace() {
-		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 3, 4, 5)
-		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 6, 7, 8, 9, 10)
-		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 10, 11, 12, 13, 14, 15)
-		let s4: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2)
+		var s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 3, 4, 5)
+		var s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 6, 7, 8, 9, 10)
+		var s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 10, 11, 12, 13, 14, 15)
 		
 		s1.intersectInPlace(s2, s3)
-		XCTAssert(s4 == s1, "Test failed.")
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 1, 2) == s1, "Test failed. \(s1)")
+		
+		s1.insert(3, 4, 5, 5, 5)
+		s2.insert(5)
+		s3.insert(5, 5)
+		
+		s1.intersectInPlace(s2, s3)
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 5) == s1, "Test failed. \(s1)")
 	}
 	
 	func testIsDisjointWith() {
