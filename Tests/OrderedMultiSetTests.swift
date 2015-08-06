@@ -79,9 +79,8 @@ class OrderedMultiSetTests: XCTestCase {
 		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 3, 4, 5)
 		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 6, 7, 8, 9, 10)
 		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 10, 11, 12, 13, 14, 15)
-		let s4: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2)
 		
-		XCTAssert(s4 == s1.intersect(s2, s3), "Test failed. \(s1.intersect(s2, s3))")
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 1, 2) == s1.intersect(s2, s3), "Test failed. \(s1.intersect(s2, s3))")
 	}
 	
 	func testIntersectInPlace() {
@@ -111,12 +110,11 @@ class OrderedMultiSetTests: XCTestCase {
 	}
 	
 	func testSubtract() {
-		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 4, 5, 7, 8, 9, 9, 10)
-		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 4, 5, 6, 7, 9)
-		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 7, 8, 9)
-		let s4: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 9, 10)
-
-		XCTAssert(s4 == s1.subtract(s2, s3), "Test failed. \(s4) \(s1.subtract(s2, s3))")
+		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 4, 5)
+		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 4)
+		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 5)
+		
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 3) == s1.subtract(s2, s3), "Test failed. \(s1.subtract(s2, s3))")
 	}
 	
 	func testSubtractInPlace() {

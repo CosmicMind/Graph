@@ -214,10 +214,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		let s: OrderedSet<Element> = OrderedSet<Element>()
 		for x in elements {
 			if nil != tree.removeValueForKey(x) {
-				count = tree.count
 				s.insert(x)
 			}
 		}
+		count = tree.count
 		return s
 	}
 

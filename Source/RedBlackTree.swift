@@ -331,14 +331,6 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 	
 	/**
-		:name:	select
-		:description:	Searches for a node based on the order statistic value.
-	*/
-	internal func select(x: RedBlackNode<Key, Value>, order: Int) -> RedBlackNode<Key, Value> {
-		return internalSelect(x, order: order)
-	}
-
-	/**
 		:name:	internalInsert
 		:description:	Insert a new node with the given key and value.
 	*/

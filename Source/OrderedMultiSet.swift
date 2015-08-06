@@ -216,12 +216,12 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 			let n: Int = tree.countOf(x)
 			if 0 < n {
 				tree.removeValueForKey(x)
-				count = tree.count
 				for i in 0..<n {
 					s.insert(x)
 				}
 			}
 		}
+		count = tree.count
 		return s
 	}
 
@@ -248,26 +248,27 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	*/
 	public func intersect(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		for (x, _) in tree {
-			if nil == s.tree.findValueForKey(x) {
-				var toInsert: Bool = true
+		for var i: Int = tree.count - 1; 0 <= i; --i {
+			let x: Element = tree[i].key
+			var toInsert: Bool = true
+			for u in sets {
+				if nil == u.tree.findValueForKey(x) {
+					toInsert = false
+					break
+				}
+			}
+			if toInsert {
+				let q: Int = tree.countOf(x)
+				var n: Int = q
 				for u in sets {
-					if nil == u.tree.findValueForKey(x) {
-						toInsert = false
-						break
+					let m: Int = u.tree.countOf(x)
+					if m < n {
+						n = m
 					}
 				}
-				if toInsert {
-					var n: Int = tree.countOf(x)
-					for u in sets {
-						let m: Int = u.tree.countOf(x)
-						if m < n {
-							n = m
-						}
-					}
-					while 0 < n-- {
-						s.insert(x)
-					}
+				i -= q - 1
+				while 0 < n-- {
+					s.insert(x)
 				}
 			}
 		}
@@ -436,18 +437,18 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
 		sets.append(self)
 		for var i: Int = sets.count - 1; 0 <= i; --i {
-			for (_, x) in sets[i].tree {
+			for (x, _) in sets[i].tree {
 				var toInsert: Bool = true
 				for var j: Int = sets.count - 1; 0 <= j; --j {
 					if i != j {
-						if nil != sets[j].tree.findValueForKey(x!) {
+						if nil != sets[j].tree.findValueForKey(x) {
 							toInsert = false
 							break
 						}
 					}
 				}
 				if toInsert {
-					s.insert(x!)
+					s.insert(x)
 				}
 			}
 		}
