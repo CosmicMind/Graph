@@ -277,11 +277,11 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 			for u in sets {
 				if nil == u.tree.findValueForKey(x) {
 					tree.removeValueForKey(x)
-					count = tree.count
 					break
 				}
 			}
 		}
+		count = tree.count
 	}
 
 	/**
@@ -343,7 +343,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	*/
 	public func subtract(sets: Array<OrderedSet<Element>>) -> OrderedSet<Element> {
 		let s: OrderedSet<Element> = OrderedSet<Element>()
-		for x in self {
+		for (x, _) in tree {
 			var toInsert: Bool = true
 			for u in sets {
 				if nil != u.tree.findValueForKey(x) {
@@ -373,11 +373,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	public func subtractInPlace(sets: Array<OrderedSet<Element>>) {
 		for u in sets {
 			for (x, _) in u.tree {
-				if nil != tree.removeValueForKey(x) {
-					count = tree.count
-				}
+				tree.removeValueForKey(x)
 			}
 		}
+		count = tree.count
 	}
 	
 	/**
@@ -446,11 +445,12 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 				}
 				if toInsert && nil == tree.findValueForKey(x) {
 					insert(x)
-				} else if nil != tree.removeValueForKey(x) {
-					count = tree.count
+				} else {
+					tree.removeValueForKey(x)
 				}
 			}
 		}
+		count = tree.count
 	}
 	
 	

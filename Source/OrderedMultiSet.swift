@@ -310,10 +310,10 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 					}
 				}
 				if q != n {
-					tree.removeValueForKey(x)
+					n = q - n
 					i -= q - n - 1
 					while 0 < n-- {
-						insert(x)
+						tree.removeInstanceOfValueForKey(x)
 					}
 				}
 			}
@@ -380,22 +380,19 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	*/
 	public func subtract(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		let o: OrderedSet<Element> = OrderedSet<Element>()
-		for x in self {
-			o.insert(x)
-		}
-		for x in o {
-			var n: Int = countOf(x)
-			var m: Int = n
+		for var i: Int = tree.count - 1; 0 <= i; --i {
+			let x: Element = tree[i].key
 			for u in sets {
-				var p: Int = abs(u.countOf(x) - n)
-				if p < m {
-					m = p
+				if nil != u.tree.findValueForKey(x) {
+					var n: Int = tree.countOf(x)
+					if 1 < n {
+						i -= (n - 1)
+					}
+					while 0 < n-- {
+						s.insert(x)
+					}
+					break
 				}
-			}
-			while 0 != m {
-				s.insert(x)
-				--m
 			}
 		}
 		return s
@@ -414,11 +411,18 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Remove all elements in the set that occur in a finite sequence of Sets.
 	*/
 	public func subtractInPlace(sets: Array<OrderedMultiSet<Element>>) {
-		let s: OrderedMultiSet<Element> = subtract(sets)
-		removeAll()
-		for x in s {
-			insert(x)
+		for var i: Int = tree.count - 1; 0 <= i; --i {
+			let x: Element = tree[i].key
+			for u in sets {
+				if nil != u.tree.findValueForKey(x) {
+					let n: Int = tree.countOf(x)
+					tree.removeValueForKey(x)
+					i -= (n - 1)
+					break
+				}
+			}
 		}
+		count = tree.count
 	}
 	
 	/**

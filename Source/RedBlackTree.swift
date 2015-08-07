@@ -244,6 +244,17 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
+		:name:	removeInstanceOfValueForKey
+		:description:	Removes a single instance of a value for a key. This is
+		important when using non-unique keys. One a single instance of the key
+		is removed reather than all.
+		:returns:	Value?
+	*/
+	public func removeInstanceOfValueForKey(key: Key) -> Value? {
+		return internalRemoveValueForKey(key).value
+	}
+	
+	/**
 		:name:	removeAll
 		:description:	Remove all nodes from the tree.
 	*/
@@ -330,6 +341,14 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		}
 	}
 	
+	/**
+		:name:	select
+		:description:	Searches for a node based on the order statistic value.
+	*/
+	internal func select(x: RedBlackNode<Key, Value>, order: Int) -> RedBlackNode<Key, Value> {
+		return internalSelect(x, order: order)
+	}
+
 	/**
 		:name:	internalInsert
 		:description:	Insert a new node with the given key and value.

@@ -108,7 +108,7 @@ class OrderedSetTests: XCTestCase {
 		let s2: OrderedSet<Int> = OrderedSet<Int>(elements: 4, 5, 6, 7)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 7, 8, 9)
 		let s4: OrderedSet<Int> = s1.subtract(s2, s3)
-		
+		println("S4 \(s4)")
 		XCTAssertFalse(s1.isDisjointWith(s4), "Test failed.")
 	}
 	
