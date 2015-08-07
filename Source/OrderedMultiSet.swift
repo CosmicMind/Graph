@@ -417,7 +417,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				if nil != u.tree.findValueForKey(x) {
 					let n: Int = tree.countOf(x)
 					tree.removeValueForKey(x)
-					i -= (n - 1)
+					i -= n - 1
 					break
 				}
 			}
@@ -441,7 +441,9 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
 		sets.append(self)
 		for var i: Int = sets.count - 1; 0 <= i; --i {
-			for (x, _) in sets[i].tree {
+			let t: RedBlackTree<Element, Element> = sets[i].tree
+			for var k: Int = t.count - 1; 0 <= k; --k {
+				let x: Element = t[k].key
 				var toInsert: Bool = true
 				for var j: Int = sets.count - 1; 0 <= j; --j {
 					if i != j {
@@ -452,7 +454,11 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 					}
 				}
 				if toInsert {
-					s.insert(x)
+					var n: Int = t.countOf(x)
+					k -= n - 1
+					while 0 < n-- {
+						s.insert(x)
+					}
 				}
 			}
 		}
@@ -476,11 +482,32 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		ignored.
 	*/
 	public func exclusiveOrInPlace(sets: Array<OrderedMultiSet<Element>>) {
-		let s: OrderedMultiSet<Element> = exclusiveOr(sets)
-		removeAll()
-		for x in s {
-			insert(x)
+		let n: Int = sets.count - 1
+		for var i: Int = n; 0 <= i; --i {
+			let t: RedBlackTree<Element, Element> = sets[i].tree
+			for var k: Int = t.count - 1; 0 <= k; --k {
+				let x: Element = t[k].key
+				var toInsert: Bool = true
+				for var j: Int = n; 0 <= j; --j {
+					if i != j {
+						if nil != sets[j].tree.findValueForKey(x) {
+							toInsert = false
+							break
+						}
+					}
+				}
+				if toInsert && nil == tree.findValueForKey(x) {
+					var n: Int = t.countOf(x)
+					k -= n - 1
+					while 0 < n-- {
+						insert(x)
+					}
+				} else {
+					tree.removeValueForKey(x)
+				}
+			}
 		}
+		count = tree.count
 	}
 	
 	/**
@@ -496,23 +523,16 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Returns true if no elements in the set are in a finite sequence of Sets.
 	*/
 	public func isDisjointWith(var sets: Array<OrderedMultiSet<Element>>) -> Bool {
-		var a: OrderedMultiSet<Element> = self
-		var index: Int?
-		for var i: Int = sets.count - 1; 0 <= i; --i {
-			if sets[i].count < a.count {
-				a = sets[i]
-				index = i
-			}
-		}
-		if nil != index {
-			sets.removeAtIndex(index!)
-			sets.append(self)
-		}
-		for x in a {
+		for var i: Int = tree.count - 1; 0 <= i; --i {
+			let x: Element = tree[i].key
 			for u in sets {
-				if u.contains(x) {
+				if nil != u.tree.findValueForKey(x) {
 					return false
 				}
+			}
+			let n: Int = tree.countOf(x)
+			if 1 < n {
+				i -= n - 1
 			}
 		}
 		return true
@@ -527,8 +547,8 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		if count > set.count {
 			return false
 		}
-		for x in self {
-			if !set.contains(x) {
+		for (x, _) in tree {
+			if nil == set.tree.findValueForKey(x) {
 				return false
 			}
 		}
@@ -551,8 +571,8 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		if count < set.count {
 			return false
 		}
-		for x in set {
-			if !contains(x) {
+		for (x, _) in set.tree {
+			if nil == tree.findValueForKey(x) {
 				return false
 			}
 		}
