@@ -23,7 +23,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:name:	tree
 		:description:	Internal storage of elements.
 	*/
-	internal var tree: OrderedTree<Element, Element>
+	internal var tree: RedBlackTree<Element, Element>
 
 	/**
 		:name:	description
@@ -90,7 +90,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Constructor.
 	*/
 	public override init() {
-		tree = OrderedTree<Element, Element>()
+		tree = RedBlackTree<Element, Element>(uniqueKeys: true)
 	}
 
 	/**

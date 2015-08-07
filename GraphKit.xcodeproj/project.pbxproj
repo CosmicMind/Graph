@@ -7,23 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		65569EED1B61E9650019B13E /* OrderedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		65569EF31B61F55E0019B13E /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65569EF21B61F55E0019B13E /* SessionTests.swift */; };
 		65569EF41B61F55E0019B13E /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65569EF21B61F55E0019B13E /* SessionTests.swift */; };
+		658E13AF1B7473E40021957F /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658E13AE1B7473E40021957F /* OrderedMultiDictionary.swift */; };
+		658E13B01B7473E40021957F /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658E13AE1B7473E40021957F /* OrderedMultiDictionary.swift */; };
 		65B723F01B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; };
 		65B723F11B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; };
 		65B723F51B5AE5E50087E6A6 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */; };
 		65B723F61B5AE5E60087E6A6 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */; };
 		65B723F71B5AE60E0087E6A6 /* OrderedDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		65B723F81B5AE61D0087E6A6 /* OrderedDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		65B723FA1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */; };
-		65B723FB1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */; };
 		65B723FD1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */; };
 		65B723FE1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */; };
 		65DF3F061B626F3B00197AD5 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF3F051B626F3B00197AD5 /* Session.swift */; };
 		65DF3F071B626F3B00197AD5 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF3F051B626F3B00197AD5 /* Session.swift */; };
 		65DF3F081B626F7B00197AD5 /* Session.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65DF3F051B626F3B00197AD5 /* Session.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		65DF3F091B626F7B00197AD5 /* OrderedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		65DF3F0A1B626F8C00197AD5 /* Session.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65DF3F051B626F3B00197AD5 /* Session.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		65DF3F0C1B6272C000197AD5 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF3F0B1B6272C000197AD5 /* JSON.swift */; };
 		65DF3F0D1B6272C000197AD5 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF3F0B1B6272C000197AD5 /* JSON.swift */; };
@@ -43,21 +41,11 @@
 		961242DD1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */; };
 		961242DF1B2B36D300CD47E0 /* InsertionSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242DE1B2B36D300CD47E0 /* InsertionSort.swift */; };
 		961242E01B2B36D300CD47E0 /* InsertionSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242DE1B2B36D300CD47E0 /* InsertionSort.swift */; };
-		961242E21B2B36DD00CD47E0 /* OrderedTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242E11B2B36DD00CD47E0 /* OrderedTree.swift */; };
-		961242E31B2B36DD00CD47E0 /* OrderedTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242E11B2B36DD00CD47E0 /* OrderedTree.swift */; };
-		961242E51B2B36E800CD47E0 /* OrderedMultiTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242E41B2B36E800CD47E0 /* OrderedMultiTree.swift */; };
-		961242E61B2B36E800CD47E0 /* OrderedMultiTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242E41B2B36E800CD47E0 /* OrderedMultiTree.swift */; };
-		961242E81B2B376800CD47E0 /* OrderedTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242E71B2B376800CD47E0 /* OrderedTreeTests.swift */; };
-		961242E91B2B376800CD47E0 /* OrderedTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242E71B2B376800CD47E0 /* OrderedTreeTests.swift */; };
-		961242EB1B2B378400CD47E0 /* OrderedMultiTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242EA1B2B378400CD47E0 /* OrderedMultiTreeTests.swift */; };
-		961242EC1B2B378400CD47E0 /* OrderedMultiTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242EA1B2B378400CD47E0 /* OrderedMultiTreeTests.swift */; };
 		961242EE1B2B37A500CD47E0 /* InsertionSortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242ED1B2B37A500CD47E0 /* InsertionSortTests.swift */; };
 		961242EF1B2B37A500CD47E0 /* InsertionSortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961242ED1B2B37A500CD47E0 /* InsertionSortTests.swift */; };
 		961242F01B2B38AB00CD47E0 /* InsertionSort.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242DE1B2B36D300CD47E0 /* InsertionSort.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961242F11B2B38AB00CD47E0 /* RedBlackNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961242F21B2B38AB00CD47E0 /* RedBlackTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		961242F31B2B38AB00CD47E0 /* OrderedTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242E11B2B36DD00CD47E0 /* OrderedTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		961242F41B2B38AB00CD47E0 /* OrderedMultiTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242E41B2B36E800CD47E0 /* OrderedMultiTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961242F51B2B38AB00CD47E0 /* ActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031B81AD72FD300EE4C63 /* ActionGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961242F61B2B38AB00CD47E0 /* ActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031B91AD72FD300EE4C63 /* ActionProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961242F71B2B38AB00CD47E0 /* BondGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031BB1AD72FD300EE4C63 /* BondGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -74,8 +62,6 @@
 		961243021B2B38E000CD47E0 /* InsertionSort.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242DE1B2B36D300CD47E0 /* InsertionSort.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961243031B2B38E000CD47E0 /* RedBlackNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961243041B2B38E000CD47E0 /* RedBlackTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242D81B2B36B800CD47E0 /* RedBlackTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		961243051B2B38E000CD47E0 /* OrderedTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242E11B2B36DD00CD47E0 /* OrderedTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		961243061B2B38E000CD47E0 /* OrderedMultiTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961242E41B2B36E800CD47E0 /* OrderedMultiTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		961243071B2B38E000CD47E0 /* ActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031B81AD72FD300EE4C63 /* ActionGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961243081B2B38E000CD47E0 /* ActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031B91AD72FD300EE4C63 /* ActionProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		961243091B2B38E000CD47E0 /* BondGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96C031BB1AD72FD300EE4C63 /* BondGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -210,9 +196,9 @@
 
 /* Begin PBXFileReference section */
 		65569EF21B61F55E0019B13E /* SessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
+		658E13AE1B7473E40021957F /* OrderedMultiDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiDictionary.swift; sourceTree = "<group>"; };
 		65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 		65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryTests.swift; sourceTree = "<group>"; };
-		65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiDictionary.swift; sourceTree = "<group>"; };
 		65B723FC1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiDictionaryTests.swift; sourceTree = "<group>"; };
 		65DF3F051B626F3B00197AD5 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		65DF3F0B1B6272C000197AD5 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
@@ -222,10 +208,6 @@
 		961242D81B2B36B800CD47E0 /* RedBlackTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTree.swift; sourceTree = "<group>"; };
 		961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackNode.swift; sourceTree = "<group>"; };
 		961242DE1B2B36D300CD47E0 /* InsertionSort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertionSort.swift; sourceTree = "<group>"; };
-		961242E11B2B36DD00CD47E0 /* OrderedTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedTree.swift; sourceTree = "<group>"; };
-		961242E41B2B36E800CD47E0 /* OrderedMultiTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiTree.swift; sourceTree = "<group>"; };
-		961242E71B2B376800CD47E0 /* OrderedTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedTreeTests.swift; sourceTree = "<group>"; };
-		961242EA1B2B378400CD47E0 /* OrderedMultiTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiTreeTests.swift; sourceTree = "<group>"; };
 		961242ED1B2B37A500CD47E0 /* InsertionSortTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertionSortTests.swift; sourceTree = "<group>"; };
 		968C00991B51B0C800E3FA9E /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiSet.swift; sourceTree = "<group>"; };
@@ -326,9 +308,7 @@
 				968C00991B51B0C800E3FA9E /* OrderedSet.swift */,
 				968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */,
 				65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */,
-				65B723F91B5AEBF60087E6A6 /* OrderedMultiDictionary.swift */,
-				961242E11B2B36DD00CD47E0 /* OrderedTree.swift */,
-				961242E41B2B36E800CD47E0 /* OrderedMultiTree.swift */,
+				658E13AE1B7473E40021957F /* OrderedMultiDictionary.swift */,
 				961242D81B2B36B800CD47E0 /* RedBlackTree.swift */,
 				961242DB1B2B36C500CD47E0 /* RedBlackNode.swift */,
 			);
@@ -414,8 +394,6 @@
 				96C031DC1AD72FE100EE4C63 /* EntityTests.swift */,
 				96C031DD1AD72FE100EE4C63 /* Tests.swift */,
 				96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */,
-				961242E71B2B376800CD47E0 /* OrderedTreeTests.swift */,
-				961242EA1B2B378400CD47E0 /* OrderedMultiTreeTests.swift */,
 				961242ED1B2B37A500CD47E0 /* InsertionSortTests.swift */,
 				969F6D8C1B2CC76E00B573F8 /* QueueTests.swift */,
 				969F6DA71B2DCC9700B573F8 /* DequeTests.swift */,
@@ -476,8 +454,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				961242F31B2B38AB00CD47E0 /* OrderedTree.swift in Headers */,
-				961242F41B2B38AB00CD47E0 /* OrderedMultiTree.swift in Headers */,
 				961242FE1B2B38AB00CD47E0 /* Action.swift in Headers */,
 				961242FF1B2B38AB00CD47E0 /* Bond.swift in Headers */,
 				961243001B2B38AB00CD47E0 /* Entity.swift in Headers */,
@@ -493,7 +469,6 @@
 				96CB07C31B52E8DA00EB4A58 /* Probability.swift in Headers */,
 				65B723F71B5AE60E0087E6A6 /* OrderedDictionary.swift in Headers */,
 				65DF3F081B626F7B00197AD5 /* Session.swift in Headers */,
-				65DF3F091B626F7B00197AD5 /* OrderedMultiDictionary.swift in Headers */,
 				65EC73331B65590F0089280C /* Reachability.swift in Headers */,
 				65EC73341B65590F0089280C /* JSON.swift in Headers */,
 				969F6DAD1B2DCCF000B573F8 /* ListNode.swift in Headers */,
@@ -515,8 +490,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				961243051B2B38E000CD47E0 /* OrderedTree.swift in Headers */,
-				961243061B2B38E000CD47E0 /* OrderedMultiTree.swift in Headers */,
 				961243101B2B38E000CD47E0 /* Action.swift in Headers */,
 				961243111B2B38E000CD47E0 /* Bond.swift in Headers */,
 				961243121B2B38E000CD47E0 /* Entity.swift in Headers */,
@@ -531,7 +504,6 @@
 				961243041B2B38E000CD47E0 /* RedBlackTree.swift in Headers */,
 				96CB07C61B52E8FA00EB4A58 /* Probability.swift in Headers */,
 				65B723F81B5AE61D0087E6A6 /* OrderedDictionary.swift in Headers */,
-				65569EED1B61E9650019B13E /* OrderedMultiDictionary.swift in Headers */,
 				65DF3F0A1B626F8C00197AD5 /* Session.swift in Headers */,
 				65EC73311B6558FC0089280C /* Reachability.swift in Headers */,
 				65EC73321B6558FC0089280C /* JSON.swift in Headers */,
@@ -706,11 +678,9 @@
 			files = (
 				968F38BA1AD7394300E963AB /* ManagedAction.swift in Sources */,
 				968F38B61AD7394300E963AB /* BondGroup.swift in Sources */,
-				961242E51B2B36E800CD47E0 /* OrderedMultiTree.swift in Sources */,
 				968F38B91AD7394300E963AB /* EntityProperty.swift in Sources */,
 				969F6D9C1B2DC81900B573F8 /* Sort.swift in Sources */,
 				968F38B71AD7394300E963AB /* BondProperty.swift in Sources */,
-				961242E21B2B36DD00CD47E0 /* OrderedTree.swift in Sources */,
 				968F38B81AD7394300E963AB /* EntityGroup.swift in Sources */,
 				65DF3F0C1B6272C000197AD5 /* JSON.swift in Sources */,
 				969F6DA51B2DCB3900B573F8 /* ListNode.swift in Sources */,
@@ -718,13 +688,13 @@
 				961242DF1B2B36D300CD47E0 /* InsertionSort.swift in Sources */,
 				961242D91B2B36B800CD47E0 /* RedBlackTree.swift in Sources */,
 				961242DC1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */,
+				658E13AF1B7473E40021957F /* OrderedMultiDictionary.swift in Sources */,
 				65B723F01B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */,
 				968F38B31AD7394300E963AB /* Graph.swift in Sources */,
 				968F38B41AD7394300E963AB /* ActionGroup.swift in Sources */,
 				968F38B51AD7394300E963AB /* ActionProperty.swift in Sources */,
 				968F38BB1AD7394300E963AB /* ManagedBond.swift in Sources */,
 				969F6DAF1B2DDE6500B573F8 /* Stack.swift in Sources */,
-				65B723FA1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */,
 				65DF3F061B626F3B00197AD5 /* Session.swift in Sources */,
 				968C009D1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */,
 				969F6DBC1B2DEB6200B573F8 /* List.swift in Sources */,
@@ -752,7 +722,6 @@
 				65EC731B1B641E2A0089280C /* ReachabilityTests.swift in Sources */,
 				96CB07CD1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
 				65B723F51B5AE5E50087E6A6 /* OrderedDictionaryTests.swift in Sources */,
-				961242EB1B2B378400CD47E0 /* OrderedMultiTreeTests.swift in Sources */,
 				968F38AC1AD7393900E963AB /* EntitySearchTests.swift in Sources */,
 				65B723FD1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */,
 				968F38AF1AD7393900E963AB /* Tests.swift in Sources */,
@@ -760,7 +729,6 @@
 				969F6DC11B2DECAA00B573F8 /* ListTests.swift in Sources */,
 				961242EE1B2B37A500CD47E0 /* InsertionSortTests.swift in Sources */,
 				969F6DA81B2DCC9700B573F8 /* DequeTests.swift in Sources */,
-				961242E81B2B376800CD47E0 /* OrderedTreeTests.swift in Sources */,
 				65DF3F121B62759100197AD5 /* JSONTests.swift in Sources */,
 				968F38AB1AD7393900E963AB /* BondTests.swift in Sources */,
 				65569EF31B61F55E0019B13E /* SessionTests.swift in Sources */,
@@ -778,11 +746,9 @@
 			files = (
 				96C032121AD730C200EE4C63 /* ManagedAction.swift in Sources */,
 				96C0320E1AD730C200EE4C63 /* BondGroup.swift in Sources */,
-				961242E61B2B36E800CD47E0 /* OrderedMultiTree.swift in Sources */,
 				96C032111AD730C200EE4C63 /* EntityProperty.swift in Sources */,
 				96C0320F1AD730C200EE4C63 /* BondProperty.swift in Sources */,
 				969F6D9D1B2DC81900B573F8 /* Sort.swift in Sources */,
-				961242E31B2B36DD00CD47E0 /* OrderedTree.swift in Sources */,
 				96C032101AD730C200EE4C63 /* EntityGroup.swift in Sources */,
 				65DF3F0D1B6272C000197AD5 /* JSON.swift in Sources */,
 				961242E01B2B36D300CD47E0 /* InsertionSort.swift in Sources */,
@@ -790,13 +756,13 @@
 				969F6DA61B2DCB3900B573F8 /* ListNode.swift in Sources */,
 				961242DA1B2B36B800CD47E0 /* RedBlackTree.swift in Sources */,
 				961242DD1B2B36C500CD47E0 /* RedBlackNode.swift in Sources */,
+				658E13B01B7473E40021957F /* OrderedMultiDictionary.swift in Sources */,
 				65B723F11B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */,
 				96C0320B1AD730C200EE4C63 /* Graph.swift in Sources */,
 				96C0320C1AD730C200EE4C63 /* ActionGroup.swift in Sources */,
 				96C0320D1AD730C200EE4C63 /* ActionProperty.swift in Sources */,
 				96C032131AD730C200EE4C63 /* ManagedBond.swift in Sources */,
 				969F6DB01B2DDE6500B573F8 /* Stack.swift in Sources */,
-				65B723FB1B5AEBF60087E6A6 /* OrderedMultiDictionary.swift in Sources */,
 				65DF3F071B626F3B00197AD5 /* Session.swift in Sources */,
 				968C009E1B51B0E100E3FA9E /* OrderedMultiSet.swift in Sources */,
 				969F6DBD1B2DEB6200B573F8 /* List.swift in Sources */,
@@ -824,7 +790,6 @@
 				65EC731C1B641E2A0089280C /* ReachabilityTests.swift in Sources */,
 				96CB07CE1B5310F900EB4A58 /* OrderedMultiSetTests.swift in Sources */,
 				65B723F61B5AE5E60087E6A6 /* OrderedDictionaryTests.swift in Sources */,
-				961242EC1B2B378400CD47E0 /* OrderedMultiTreeTests.swift in Sources */,
 				96C0321A1AD730CC00EE4C63 /* EntityStressTests.swift in Sources */,
 				65B723FE1B5AEC5B0087E6A6 /* OrderedMultiDictionaryTests.swift in Sources */,
 				96C0321C1AD730CC00EE4C63 /* Tests.swift in Sources */,
@@ -832,7 +797,6 @@
 				969F6DC21B2DECAA00B573F8 /* ListTests.swift in Sources */,
 				961242EF1B2B37A500CD47E0 /* InsertionSortTests.swift in Sources */,
 				969F6DA91B2DCC9700B573F8 /* DequeTests.swift in Sources */,
-				961242E91B2B376800CD47E0 /* OrderedTreeTests.swift in Sources */,
 				65DF3F131B62759100197AD5 /* JSONTests.swift in Sources */,
 				96C032171AD730CC00EE4C63 /* BondStressTests.swift in Sources */,
 				65569EF41B61F55E0019B13E /* SessionTests.swift in Sources */,

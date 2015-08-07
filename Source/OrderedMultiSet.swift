@@ -23,7 +23,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	tree
 		:description:	Internal storage of elements.
 	*/
-	internal var tree: OrderedMultiTree<Element, Element>
+	internal var tree: RedBlackTree<Element, Element>
 
 	/**
 		:name:	description
@@ -90,7 +90,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Constructor
 	*/
 	public override init() {
-		tree = OrderedMultiTree<Element, Element>()
+		tree = RedBlackTree<Element, Element>(uniqueKeys: false)
 	}
 
 	/**

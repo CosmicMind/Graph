@@ -24,8 +24,6 @@ GraphKit is a robust data framework and to get you started the following are som
 Advanced data structures introduces the core flow of information in GraphKit. MultiTrees and Trees are used extensively in Graph, primarily to expand search and movement of information that create the foundation for predictive analytics, machine learning, and robust data models. 
 
 * [RedBlackTree](https://github.com/GraphKit/GraphKit/wiki/RedBlackTree)
-* [Tree](https://github.com/GraphKit/GraphKit/wiki/Tree)
-* [MultiTree](https://github.com/GraphKit/GraphKit/wiki/MultiTree)
 * [OrderedSet](https://github.com/GraphKit/GraphKit/wiki/OrderedSet)
 * [OrderedMultiSet](https://github.com/GraphKit/GraphKit/wiki/OrderedMultiSet)
 * [OrderedDictionary](https://github.com/GraphKit/GraphKit/wiki/OrderedDictionary)

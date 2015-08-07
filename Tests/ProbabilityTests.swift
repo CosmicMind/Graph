@@ -55,13 +55,13 @@ class ProbabilityTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testOrderedTreeInt() {
-		let s: OrderedTree<Int, Int> = OrderedTree<Int, Int>()
+	func testOrderedDictionaryInt() {
+		let s: OrderedDictionary<Int, Int> = OrderedDictionary<Int, Int>()
 		
-		s.insert(1, value: 1)
-		s.insert(2, value: 2)
-		s.insert(3, value: 3)
-		s.insert(3, value: 3)
+		s.insert((1, 1))
+		s.insert((2, 2))
+		s.insert((3, 3))
+		s.insert((3, 3))
 		
 		var ev: Double = 16 * s.probabilityOf(2, 3)
 		
@@ -71,13 +71,13 @@ class ProbabilityTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testOrderedMultiTreeInt() {
-		let s: OrderedMultiTree<Int, Int> = OrderedMultiTree<Int, Int>()
+	func testOrderedMultiDictionaryInt() {
+		let s: OrderedMultiDictionary<Int, Int> = OrderedMultiDictionary<Int, Int>()
 		
-		s.insert(1, value: 1)
-		s.insert(2, value: 2)
-		s.insert(3, value: 3)
-		s.insert(3, value: 3)
+		s.insert((1, 1))
+		s.insert((2, 2))
+		s.insert((3, 3))
+		s.insert((3, 3))
 		
 		var ev: Double = 16 * s.probabilityOf(2, 3)
 		

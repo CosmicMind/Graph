@@ -121,7 +121,7 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	properties
 		:description:	Retrieves the Properties the Node is a part of.
-		:returns:	OrderedTree<String, AnyObject>
+		:returns:	OrderedDictionary<String, AnyObject>
 	*/
 	public var properties: OrderedDictionary<String, AnyObject> {
 		var properties: OrderedDictionary<String, AnyObject> = OrderedDictionary<String, AnyObject>()
@@ -147,30 +147,30 @@ public class Action : NSObject, Comparable {
 
     /**
     	:name:	subjects
-    	:description:	Retrieves an OrderedMultiTree of Entity Objects. Where the key is the type
+    	:description:	Retrieves an OrderedMultiDictionary of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
-		:returns:	OrderedMultiTree<String, Entity>
+		:returns:	OrderedMultiDictionary<String, Entity>
     */
-    public var subjects: OrderedMultiTree<String, Entity> {
-		let nodes: OrderedMultiTree<String, Entity> = OrderedMultiTree<String, Entity>()
+    public var subjects: OrderedMultiDictionary<String, Entity> {
+		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
 		for entry in node.subjectSet {
 			let entity: Entity = Entity(entity: entry as! ManagedEntity)
-			nodes.insert(entity.type, value: entity)
+			nodes.insert((entity.type, entity))
 		}
 		return nodes
     }
 
     /**
     	:name:	objects
-		:description:	Retrieves an OrderedMultiTree of Entity Objects. Where the key is the type
+		:description:	Retrieves an OrderedMultiDictionary of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
-		:returns:	OrderedMultiTree<String, Entity>
+		:returns:	OrderedMultiDictionary<String, Entity>
     */
-    public var objects: OrderedMultiTree<String, Entity> {
-		let nodes: OrderedMultiTree<String, Entity> = OrderedMultiTree<String, Entity>()
+    public var objects: OrderedMultiDictionary<String, Entity> {
+		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
 		for entry in node.objectSet {
 			let entity: Entity = Entity(entity: entry as! ManagedEntity)
-			nodes.insert(entity.type, value: entity)
+			nodes.insert((entity.type, entity))
 		}
 		return nodes
     }

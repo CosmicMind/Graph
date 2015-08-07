@@ -22,9 +22,9 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	tree
 		:description:	Internal storage of (key, value) pairs.
-		:returns:	OrderedTree<Key, Value>
+		:returns:	RedBlackTree<Key, Value>
 	*/
-	internal var tree: OrderedTree<Key, Value>
+	internal var tree: RedBlackTree<Key, Value>
 	
 	/**
 		:name:	description
@@ -109,7 +109,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:description:	Constructor.
 	*/
 	public override init() {
-		tree = OrderedTree<Key, Value>()
+		tree = RedBlackTree<Key, Value>(uniqueKeys: true)
 	}
 	
 	/**
@@ -270,22 +270,22 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	public func search(keys: Array<Key>) -> OrderedDictionary<Key, Value> {
 		var dict: OrderedDictionary<Key, Value> = OrderedDictionary<Key, Value>()
 		for key: Key in keys {
-			subOrderedDictionary(key, node: tree.root, dict: &dict)
+			traverse(key, node: tree.root, dict: &dict)
 		}
 		return dict
 	}
 	
 	/**
-		:name:	subOrderedDictionary
+		:name:	traverse
 		:description:	Traverses the OrderedDictionary, looking for a key match.
 	*/
-	internal func subOrderedDictionary(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedDictionary<Key, Value>) {
+	internal func traverse(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedDictionary<Key, Value>) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))
 			}
-			subOrderedDictionary(key, node: node.left, dict: &dict)
-			subOrderedDictionary(key, node: node.right, dict: &dict)
+			traverse(key, node: node.left, dict: &dict)
+			traverse(key, node: node.right, dict: &dict)
 		}
 	}
 }

@@ -22,9 +22,9 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	tree
 		:description:	Internal storage of (key, value) pairs.
-		:returns:	OrderedMultiTree<Key, Value>
+		:returns:	RedBlackTree<Key, Value>
 	*/
-	internal var tree: OrderedMultiTree<Key, Value>
+	internal var tree: RedBlackTree<Key, Value>
 	
 	/**
 		:name:	description
@@ -109,7 +109,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:description:	Constructor.
 	*/
 	public override init() {
-		tree = OrderedMultiTree<Key, Value>()
+		tree = RedBlackTree<Key, Value>(uniqueKeys: false)
 	}
 	
 	/**
@@ -271,22 +271,22 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	public func search(keys: Array<Key>) -> OrderedMultiDictionary<Key, Value> {
 		var dict: OrderedMultiDictionary<Key, Value> = OrderedMultiDictionary<Key, Value>()
 		for key: Key in keys {
-			subOrderedMultiDictionary(key, node: tree.root, dict: &dict)
+			traverse(key, node: tree.root, dict: &dict)
 		}
 		return dict
 	}
 	
 	/**
-		:name:	subOrderedMultiDictionary
+		:name:	traverse
 		:description:	Traverses the OrderedMultiDictionary, looking for a key match.
 	*/
-	internal func subOrderedMultiDictionary(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedMultiDictionary<Key, Value>) {
+	internal func traverse(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedMultiDictionary<Key, Value>) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))
 			}
-			subOrderedMultiDictionary(key, node: node.left, dict: &dict)
-			subOrderedMultiDictionary(key, node: node.right, dict: &dict)
+			traverse(key, node: node.left, dict: &dict)
+			traverse(key, node: node.right, dict: &dict)
 		}
 	}
 }

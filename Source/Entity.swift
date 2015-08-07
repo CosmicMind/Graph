@@ -136,82 +136,82 @@ public class Entity : NSObject, Comparable {
 
 	/**
     	:name:	actions
-    	:description:	Retrieves an OrderedMultiTree of Action objects. Where the key
+    	:description:	Retrieves an OrderedMultiDictionary of Action objects. Where the key
 		is the type of Action and the value is the Action instance.
     */
-    public var actions: OrderedMultiTree<String, Action> {
+    public var actions: OrderedMultiDictionary<String, Action> {
         return actionsWhenSubject + actionsWhenObject
     }
 
     /**
     	:name:	actionsWhenSubject
-		:description:	Retrieves an OrderedMultiTree of Action objects. Where the key
+		:description:	Retrieves an OrderedMultiDictionary of Action objects. Where the key
 		is the type of Action and the value is the Action instance.
 		The Actions included are those when the Entity is the subject of
 		the Action.
     */
-    public var actionsWhenSubject: OrderedMultiTree<String, Action> {
-		let nodes: OrderedMultiTree<String, Action> = OrderedMultiTree<String, Action>()
+    public var actionsWhenSubject: OrderedMultiDictionary<String, Action> {
+		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
 		for entry in node.actionSubjectSet {
 			let action: Action = Action(action: entry as! ManagedAction)
-			nodes.insert(action.type, value: action)
+			nodes.insert((action.type, action))
 		}
 		return nodes
     }
 
     /**
     	:name:	actionsWhenObject
-		:description:	Retrieves an OrderedMultiTree of Action objects. Where the key
+		:description:	Retrieves an OrderedMultiDictionary of Action objects. Where the key
 		is the type of Action and the value is the Action instance.
 		The Actions included are those when the Entity is the object of
 		the Action.
 	*/
-    public var actionsWhenObject: OrderedMultiTree<String, Action> {
-        let nodes: OrderedMultiTree<String, Action> = OrderedMultiTree<String, Action>()
+    public var actionsWhenObject: OrderedMultiDictionary<String, Action> {
+        let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
 		for entry in node.actionObjectSet {
 			let action: Action = Action(action: entry as! ManagedAction)
-			nodes.insert(action.type, value: action)
+			nodes.insert((action.type, action))
 		}
 		return nodes
     }
 
     /**
     	:name:	bonds
-		:description:	Retrieves an OrderedMultiTree of Bond objects. Where the key
+		:description:	Retrieves an OrderedMultiDictionary of Bond objects. Where the key
 		is the type of Bond and the value is the Bond instance.
 	*/
-    public var bonds: OrderedMultiTree<String, Bond> {
+    public var bonds: OrderedMultiDictionary<String, Bond> {
         return bondsWhenSubject + bondsWhenObject
     }
 
     /**
     	:name:	bondsWhenSubject
-		:description:	Retrieves a MultiTree of Bond objects. Where the key
+		:description:	Retrieves a MultiDictionary of Bond objects. Where the key
 		is the type of Bond and the value is the Bond instance.
 		The Bonds included are those when the Entity is the subject of
 		the Bond.
 	*/
-    public var bondsWhenSubject: OrderedMultiTree<String, Bond> {
-		let nodes: OrderedMultiTree<String, Bond> = OrderedMultiTree<String, Bond>()
+    public var bondsWhenSubject: OrderedMultiDictionary<String, Bond> {
+		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
 		for entry in node.bondSubjectSet {
 			let bond: Bond = Bond(bond: entry as! ManagedBond)
-			nodes.insert(bond.type, value: bond)
+			nodes.insert((bond.type, bond))
 		}
 		return nodes
     }
 
     /**
     	:name:	bondsWhenObject
-		:description:	Retrieves an OrderedMultiTree of Bond objects. Where the key
+		:description:	Retrieves an OrderedMultiDictionary of Bond objects. Where the key
 		is the type of Bond and the value is the Bond instance.
 		The Bonds included are those when the Entity is the object of
 		the Bond.
 	*/
-    public var bondsWhenObject: OrderedMultiTree<String, Bond> {
-		let nodes: OrderedMultiTree<String, Bond> = OrderedMultiTree<String, Bond>()
+    public var bondsWhenObject: OrderedMultiDictionary<String, Bond> {
+		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
 		for entry in node.bondObjectSet {
 			let bond: Bond = Bond(bond: entry as! ManagedBond)
-			nodes.insert(bond.type, value: bond)
+			nodes.insert((bond.type, bond))
 		}
 		return nodes
     }
