@@ -22,9 +22,9 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	tree
 		:description:	Internal storage of (key, value) pairs.
-		:returns:	Tree<Key, Value>
+		:returns:	OrderedTree<Key, Value>
 	*/
-	internal var tree: Tree<Key, Value>
+	internal var tree: OrderedTree<Key, Value>
 	
 	/**
 		:name:	description
@@ -109,7 +109,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:description:	Constructor.
 	*/
 	public override init() {
-		tree = Tree<Key, Value>()
+		tree = OrderedTree<Key, Value>()
 	}
 	
 	/**

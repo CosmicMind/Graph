@@ -136,22 +136,22 @@ public class Entity : NSObject, Comparable {
 
 	/**
     	:name:	actions
-    	:description:	Retrieves a MultiTree of Action objects. Where the key
+    	:description:	Retrieves an OrderedMultiTree of Action objects. Where the key
 		is the type of Action and the value is the Action instance.
     */
-    public var actions: MultiTree<String, Action> {
+    public var actions: OrderedMultiTree<String, Action> {
         return actionsWhenSubject + actionsWhenObject
     }
 
     /**
     	:name:	actionsWhenSubject
-		:description:	Retrieves a MultiTree of Action objects. Where the key
+		:description:	Retrieves an OrderedMultiTree of Action objects. Where the key
 		is the type of Action and the value is the Action instance.
 		The Actions included are those when the Entity is the subject of
 		the Action.
     */
-    public var actionsWhenSubject: MultiTree<String, Action> {
-		let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
+    public var actionsWhenSubject: OrderedMultiTree<String, Action> {
+		let nodes: OrderedMultiTree<String, Action> = OrderedMultiTree<String, Action>()
 		for entry in node.actionSubjectSet {
 			let action: Action = Action(action: entry as! ManagedAction)
 			nodes.insert(action.type, value: action)
@@ -161,13 +161,13 @@ public class Entity : NSObject, Comparable {
 
     /**
     	:name:	actionsWhenObject
-		:description:	Retrieves a MultiTree of Action objects. Where the key
+		:description:	Retrieves an OrderedMultiTree of Action objects. Where the key
 		is the type of Action and the value is the Action instance.
 		The Actions included are those when the Entity is the object of
 		the Action.
 	*/
-    public var actionsWhenObject: MultiTree<String, Action> {
-        let nodes: MultiTree<String, Action> = MultiTree<String, Action>()
+    public var actionsWhenObject: OrderedMultiTree<String, Action> {
+        let nodes: OrderedMultiTree<String, Action> = OrderedMultiTree<String, Action>()
 		for entry in node.actionObjectSet {
 			let action: Action = Action(action: entry as! ManagedAction)
 			nodes.insert(action.type, value: action)
@@ -177,10 +177,10 @@ public class Entity : NSObject, Comparable {
 
     /**
     	:name:	bonds
-		:description:	Retrieves a MultiTree of Bond objects. Where the key
+		:description:	Retrieves an OrderedMultiTree of Bond objects. Where the key
 		is the type of Bond and the value is the Bond instance.
 	*/
-    public var bonds: MultiTree<String, Bond> {
+    public var bonds: OrderedMultiTree<String, Bond> {
         return bondsWhenSubject + bondsWhenObject
     }
 
@@ -191,8 +191,8 @@ public class Entity : NSObject, Comparable {
 		The Bonds included are those when the Entity is the subject of
 		the Bond.
 	*/
-    public var bondsWhenSubject: MultiTree<String, Bond> {
-		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
+    public var bondsWhenSubject: OrderedMultiTree<String, Bond> {
+		let nodes: OrderedMultiTree<String, Bond> = OrderedMultiTree<String, Bond>()
 		for entry in node.bondSubjectSet {
 			let bond: Bond = Bond(bond: entry as! ManagedBond)
 			nodes.insert(bond.type, value: bond)
@@ -202,13 +202,13 @@ public class Entity : NSObject, Comparable {
 
     /**
     	:name:	bondsWhenObject
-		:description:	Retrieves a MultiTree of Bond objects. Where the key
+		:description:	Retrieves an OrderedMultiTree of Bond objects. Where the key
 		is the type of Bond and the value is the Bond instance.
 		The Bonds included are those when the Entity is the object of
 		the Bond.
 	*/
-    public var bondsWhenObject: MultiTree<String, Bond> {
-		let nodes: MultiTree<String, Bond> = MultiTree<String, Bond>()
+    public var bondsWhenObject: OrderedMultiTree<String, Bond> {
+		let nodes: OrderedMultiTree<String, Bond> = OrderedMultiTree<String, Bond>()
 		for entry in node.bondObjectSet {
 			let bond: Bond = Bond(bond: entry as! ManagedBond)
 			nodes.insert(bond.type, value: bond)

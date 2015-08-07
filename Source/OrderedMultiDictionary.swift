@@ -22,9 +22,9 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	tree
 		:description:	Internal storage of (key, value) pairs.
-		:returns:	MultiTree<Key, Value>
+		:returns:	OrderedMultiTree<Key, Value>
 	*/
-	internal var tree: MultiTree<Key, Value>
+	internal var tree: OrderedMultiTree<Key, Value>
 	
 	/**
 		:name:	description
@@ -109,7 +109,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:description:	Constructor.
 	*/
 	public override init() {
-		tree = MultiTree<Key, Value>()
+		tree = OrderedMultiTree<Key, Value>()
 	}
 	
 	/**

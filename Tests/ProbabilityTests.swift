@@ -57,8 +57,8 @@ class ProbabilityTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testTreeInt() {
-		let s: Tree<Int, Int> = Tree<Int, Int>()
+	func testOrderedTreeInt() {
+		let s: OrderedTree<Int, Int> = OrderedTree<Int, Int>()
 		
 		s.insert(1, value: 1)
 		s.insert(2, value: 2)
@@ -73,8 +73,8 @@ class ProbabilityTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testMultiTreeInt() {
-		let s: MultiTree<Int, Int> = MultiTree<Int, Int>()
+	func testOrderedMultiTreeInt() {
+		let s: OrderedMultiTree<Int, Int> = OrderedMultiTree<Int, Int>()
 		
 		s.insert(1, value: 1)
 		s.insert(2, value: 2)

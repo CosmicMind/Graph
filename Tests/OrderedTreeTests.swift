@@ -19,7 +19,7 @@
 import XCTest
 import GraphKit
 
-class TreeTests: XCTestCase {
+class OrderedTreeTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -32,7 +32,7 @@ class TreeTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: Tree<Int, Int> = Tree<Int, Int>(nodes: (1, 1), (2, 2), (3, 3))
+		let s: OrderedTree<Int, Int> = OrderedTree<Int, Int>(nodes: (1, 1), (2, 2), (3, 3))
 		
 		XCTAssert(3 == s.count, "Test failed, got \(s.count).")
 		
@@ -64,7 +64,7 @@ class TreeTests: XCTestCase {
 		s.insert(3, value: 3)
 		
 		s.updateValue(5, forKey: 3)
-		let subs: Tree<Int, Int> = s.search(3)
+		let subs: OrderedTree<Int, Int> = s.search(3)
 		XCTAssert(1 == subs.count, "Test failed.")
 		
 		var generator = subs.generate()
@@ -82,7 +82,7 @@ class TreeTests: XCTestCase {
 	}
 	
 	func testString() {
-		let s: Tree<String, Array<Int>> = Tree<String, Array<Int>>()
+		let s: OrderedTree<String, Array<Int>> = OrderedTree<String, Array<Int>>()
 		s.insert("friends", value: [1, 2, 3])
 		s["menu"] = [11, 22, 33]
 		
@@ -96,7 +96,7 @@ class TreeTests: XCTestCase {
 	}
 	
 	func testSearch() {
-		let t1: Tree<Int, Int> = Tree<Int, Int>()
+		let t1: OrderedTree<Int, Int> = OrderedTree<Int, Int>()
 		XCTAssert(0 == t1.count, "Test failed, got \(t1.count).")
 		
 		for (var i: Int = 1000; i > 0; --i) {
@@ -107,28 +107,28 @@ class TreeTests: XCTestCase {
 		
 		XCTAssert(3 == t1.count, "Test failed.")
 		
-		let t2: Tree<Int, Int> = t1.search(1)
+		let t2: OrderedTree<Int, Int> = t1.search(1)
 		XCTAssert(1 == t2.count, "Test failed, got \(t2.count).")
 		
-		let t3: Tree<Int, Int> = t1.search(2)
+		let t3: OrderedTree<Int, Int> = t1.search(2)
 		XCTAssert(1 == t3.count, "Test failed, got \(t3.count).")
 		
-		let t4: Tree<Int, Int> = t1.search(3)
+		let t4: OrderedTree<Int, Int> = t1.search(3)
 		XCTAssert(1 == t4.count, "Test failed, got \(t4.count).")
 	}
 	
 	func testConcat() {
-		let t1: Tree<Int, Int> = Tree<Int, Int>()
+		let t1: OrderedTree<Int, Int> = OrderedTree<Int, Int>()
 		t1.insert(1, value: 1)
 		t1.insert(2, value: 2)
 		t1.insert(3, value: 3)
 		
-		let t2: Tree<Int, Int> = Tree<Int, Int>()
+		let t2: OrderedTree<Int, Int> = OrderedTree<Int, Int>()
 		t2.insert(4, value: 4)
 		t2.insert(5, value: 5)
 		t2.insert(6, value: 6)
 		
-		let t3: Tree<Int, Int> = t1 + t2
+		let t3: OrderedTree<Int, Int> = t1 + t2
 		
 		for var i: Int = t1.count - 1; i >= 0; --i {
 			XCTAssert(t1[i].value == t3.findValueForKey(t1[i].value!), "Test failed.")

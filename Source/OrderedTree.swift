@@ -16,7 +16,7 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable {
+public class OrderedTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable {
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
@@ -59,7 +59,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(keys: Key...) -> Tree<Key, Value> {
+	public func search(keys: Key...) -> OrderedTree<Key, Value> {
 		return search(keys)
 	}
 
@@ -69,8 +69,8 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(keys: Array<Key>) -> Tree<Key, Value> {
-		var tree: Tree<Key, Value> = Tree<Key, Value>()
+	public func search(keys: Array<Key>) -> OrderedTree<Key, Value> {
+		var tree: OrderedTree<Key, Value> = OrderedTree<Key, Value>()
 		for key: Key in keys {
 			subTree(key, node: root, tree: &tree)
 		}
@@ -82,7 +82,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable
 		:description:	Traverses the Tree and looking for a key value.
 		This is used for internal search.
 	*/
-	internal func subTree(key: Key, node: RedBlackNode<Key, Value>, inout tree: Tree<Key, Value>) {
+	internal func subTree(key: Key, node: RedBlackNode<Key, Value>, inout tree: OrderedTree<Key, Value>) {
 		if sentinel !== node {
 			if key == node.key {
 				tree.insert(key, value: node.value)
@@ -93,7 +93,7 @@ public class Tree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable
 	}
 }
 
-public func ==<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Bool {
+public func ==<Key : Comparable, Value>(lhs: OrderedTree<Key, Value>, rhs: OrderedTree<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}
@@ -105,8 +105,8 @@ public func ==<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Va
 	return true
 }
 
-public func +<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
-	let t: Tree<Key, Value> = Tree<Key, Value>()
+public func +<Key : Comparable, Value>(lhs: OrderedTree<Key, Value>, rhs: OrderedTree<Key, Value>) -> OrderedTree<Key, Value> {
+	let t: OrderedTree<Key, Value> = OrderedTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
 		t.insert(n.key, value: n.value)
@@ -118,8 +118,8 @@ public func +<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Val
 	return t
 }
 
-public func -<Key : Comparable, Value>(lhs: Tree<Key, Value>, rhs: Tree<Key, Value>) -> Tree<Key, Value> {
-	let t: Tree<Key, Value> = Tree<Key, Value>()
+public func -<Key : Comparable, Value>(lhs: OrderedTree<Key, Value>, rhs: OrderedTree<Key, Value>) -> OrderedTree<Key, Value> {
+	let t: OrderedTree<Key, Value> = OrderedTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
 		t.insert(n.key, value: n.value)

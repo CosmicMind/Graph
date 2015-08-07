@@ -16,11 +16,11 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable {
+public class OrderedMultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equatable {
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
-		data in the MultiTree in a readable format.
+		data in the OrderedMultiTree in a readable format.
 	*/
 	public override var description: String {
 		return internalDescription
@@ -59,7 +59,7 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equa
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(keys: Key...) -> MultiTree<Key, Value> {
+	public func search(keys: Key...) -> OrderedMultiTree<Key, Value> {
 		return search(keys)
 	}
 
@@ -69,8 +69,8 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equa
 		Tree with the indicated values if
 		they exist.
 	*/
-	public func search(keys: Array<Key>) -> MultiTree<Key, Value> {
-		var tree: MultiTree<Key, Value> = MultiTree<Key, Value>()
+	public func search(keys: Array<Key>) -> OrderedMultiTree<Key, Value> {
+		var tree: OrderedMultiTree<Key, Value> = OrderedMultiTree<Key, Value>()
 		for key: Key in keys {
 			subMultiTree(key, node: root, tree: &tree)
 		}
@@ -82,7 +82,7 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equa
 		:description:	Traverses the Tree and looking for a key value.
 		This is used for internal search.
 	*/
-	internal func subMultiTree(key: Key, node: RedBlackNode<Key, Value>, inout tree: MultiTree<Key, Value>) {
+	internal func subMultiTree(key: Key, node: RedBlackNode<Key, Value>, inout tree: OrderedMultiTree<Key, Value>) {
 		if node !== sentinel {
 			if key == node.key {
 				tree.insert(key, value: node.value)
@@ -93,7 +93,7 @@ public class MultiTree<Key : Comparable, Value> : RedBlackTree<Key, Value>, Equa
 	}
 }
 
-public func ==<Key : Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> Bool {
+public func ==<Key : Comparable, Value>(lhs: OrderedMultiTree<Key, Value>, rhs: OrderedMultiTree<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}
@@ -105,8 +105,8 @@ public func ==<Key : Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTr
 	return true
 }
 
-public func +<Key : Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
-	let t: MultiTree<Key, Value> = MultiTree<Key, Value>()
+public func +<Key : Comparable, Value>(lhs: OrderedMultiTree<Key, Value>, rhs: OrderedMultiTree<Key, Value>) -> OrderedMultiTree<Key, Value> {
+	let t: OrderedMultiTree<Key, Value> = OrderedMultiTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
 		t.insert(n.key, value: n.value)
@@ -118,8 +118,8 @@ public func +<Key : Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTre
 	return t
 }
 
-public func -<Key : Comparable, Value>(lhs: MultiTree<Key, Value>, rhs: MultiTree<Key, Value>) -> MultiTree<Key, Value> {
-	let t: MultiTree<Key, Value> = MultiTree<Key, Value>()
+public func -<Key : Comparable, Value>(lhs: OrderedMultiTree<Key, Value>, rhs: OrderedMultiTree<Key, Value>) -> OrderedMultiTree<Key, Value> {
+	let t: OrderedMultiTree<Key, Value> = OrderedMultiTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = lhs[i]
 		t.insert(n.key, value: n.value)
