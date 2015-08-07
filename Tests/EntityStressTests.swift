@@ -23,7 +23,6 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 	
 	var expectation: XCTestExpectation?
 	
-	// queue for drawing images
 	private var queue1: dispatch_queue_t = {
 		return dispatch_queue_create(("io.graphkit.EntityStressTests.1" as NSString).UTF8String, nil)
 	}()

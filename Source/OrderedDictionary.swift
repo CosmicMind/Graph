@@ -239,8 +239,8 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:name:	updateValue
 		:description:	Updates a node for the given key value.
 	*/
-	public func updateValue(value: Value?, forKey: Key) -> Bool {
-		return tree.updateValue(value, forKey: forKey)
+	public func updateValue(value: Value?, forKey: Key) {
+		tree.updateValue(value, forKey: forKey)
 	}
 	
 	/**

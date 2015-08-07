@@ -23,11 +23,9 @@ class OrderedMultiTreeTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
-		// Put setup code here. This method is called before the invocation of each test method in the class.
 	}
 	
 	override func tearDown() {
-		// Put teardown code here. This method is called after the invocation of each test method in the class.
 		super.tearDown()
 	}
 	
@@ -88,6 +86,8 @@ class OrderedMultiTreeTests: XCTestCase {
 		s["menu"] = [11, 22, 33]
 		
 		XCTAssert(s["friends"]! == s[0].value!, "Test failed.")
+		println(s["menu"])
+		println(s)
 		XCTAssert(s["menu"]! == s[1].value!, "Test failed.")
 		XCTAssert(s["empty"] == nil, "Test failed.")
 		s["menu"] = [22, 33, 44]

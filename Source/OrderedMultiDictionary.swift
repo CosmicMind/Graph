@@ -240,8 +240,8 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:description:	Updates a node for the given key value.
 		All keys matching the given key value will be updated.
 	*/
-	public func updateValue(value: Value?, forKey: Key) -> Bool {
-		return tree.updateValue(value, forKey: forKey)
+	public func updateValue(value: Value?, forKey: Key) {
+		tree.updateValue(value, forKey: forKey)
 	}
 	
 	/**

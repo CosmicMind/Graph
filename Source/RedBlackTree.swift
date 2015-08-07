@@ -270,17 +270,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		If the tree allows non-unique keys, then all keys matching
 		the given key value will be updated.
 	*/
-	public func updateValue(value: Value?, forKey: Key) -> Bool {
-		var updated: Bool = false
-		var x: RedBlackNode<Key, Value> = root
-		while x !== sentinel {
-			if forKey == x.key {
-				x.value = value
-				updated = true
-			}
-			x = forKey < x.key ? x.left : x.right
-		}
-		return updated
+	public func updateValue(value: Value?, forKey: Key) {
+		internalUpdateValue(value, forKey: forKey, node: root)
 	}
 
 	/**
@@ -311,10 +302,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		set(element) {
 			if validateIndex(index) {
 				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
-				if x.key != element.key {
-					assert(false, "[GraphKit Error: Key error.]")
-				}
-				x.value = element.value
+				internalUpdateValue(element.value, forKey: element.key, node: root)
 			} else {
 				assert(false, "[GraphKit Error: Index out of bounds.]")
 			}
@@ -332,23 +320,14 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			return internalFindValueForKey(key).value
 		}
 		set(value) {
-			let node: RedBlackNode<Key, Value> = internalFindValueForKey(key)
-			if sentinel === node {
-				insert(key, value: value!)
+			if sentinel === internalFindValueForKey(key) {
+				internalInsert(key, value: value)
 			} else {
-				node.value = value
+				updateValue(value, forKey: key)
 			}
 		}
 	}
 	
-	/**
-		:name:	select
-		:description:	Searches for a node based on the order statistic value.
-	*/
-	internal func select(x: RedBlackNode<Key, Value>, order: Int) -> RedBlackNode<Key, Value> {
-		return internalSelect(x, order: order)
-	}
-
 	/**
 		:name:	internalInsert
 		:description:	Insert a new node with the given key and value.
@@ -679,6 +658,20 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			}
 			internalCount(key, node: node.left, count: &count)
 			internalCount(key, node: node.right, count: &count)
+		}
+	}
+	
+	/**
+		:name:	internalUpdateValue
+		:description:	Traverses the Tree and updates all the values that match the key.
+	*/
+	internal func internalUpdateValue(value: Value?, forKey: Key, node: RedBlackNode<Key, Value>) {
+		if node !== sentinel {
+			if forKey == node.key {
+				node.value = value
+			}
+			internalUpdateValue(value, forKey: forKey, node: node.left)
+			internalUpdateValue(value, forKey: forKey, node: node.right)
 		}
 	}
 
