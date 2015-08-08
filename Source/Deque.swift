@@ -22,12 +22,14 @@ public class Deque<Element> : Printable, SequenceType {
 	/**
 		:name:	list
 		:description:	Underlying element structure.
+		:returns:	List<Element>
 	*/
 	private var list: List<Element>
 
 	/**
 		:name:	count
 		:description:	Total number of items in the Deque.
+		:returns:	Int
 	*/
 	public var count: Int {
 		return list.count
@@ -37,6 +39,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	front
 		:description:	Get the element at the front of the Deque
 		and do not remove it.
+		:returns:	Element?
 	*/
 	public var front: Element? {
 		return list.front
@@ -46,6 +49,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	back
 		:description:	Get the element at the back of the Deque
 		and do not remove it.
+		:returns:	Element?
 	*/
 	public var back: Element? {
 		return list.back
@@ -54,6 +58,7 @@ public class Deque<Element> : Printable, SequenceType {
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the Deque is empty.
+		:returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
@@ -62,6 +67,7 @@ public class Deque<Element> : Printable, SequenceType {
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol.
+		:returns:	String
 	*/
 	public var description: String {
 		return "Deque" + list.internalDescription
@@ -79,6 +85,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	generate
 		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes.
+		:returns:	Deque.Generator
 	*/
 	public func generate() -> Deque.Generator {
 		return list.generate()
@@ -96,6 +103,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	removeAtFront
 		:description:	Get the element at the front of the Deque
 		and remove it.
+		:returns:	Element?
 	*/
 	public func removeAtFront() -> Element? {
 		return list.removeAtFront()
@@ -113,6 +121,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	removeAtBack
 		:description:	Get the element at the back of the Deque
 		and remove it.
+		:returns:	Element?
 	*/
 	public func removeAtBack() -> Element? {
 		return list.removeAtBack()

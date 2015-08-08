@@ -62,6 +62,7 @@ public class JSON: Equatable, Printable {
 	/**
 		:name:	parse
 		:description:	Parse a JSON block.
+		:returns:	JSON?
 	*/
 	public class func parse(data: NSData, inout error: NSError?) -> JSON? {
 		if let json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &error) {
@@ -73,6 +74,7 @@ public class JSON: Equatable, Printable {
 	/**
 		:name:	parse
 		:description:	Parse a JSON block.
+		:returns:	JSON?
 	*/
 	public class func parse(json: String, inout error: NSError?) -> JSON? {
 		if let data: NSData = NSString(string: json).dataUsingEncoding(NSUTF8StringEncoding) {
@@ -84,6 +86,7 @@ public class JSON: Equatable, Printable {
 	/**
 		:name:	serialize
 		:description:	Serialize an object.
+		:returns:	NSData?
 	*/
 	public class func serialize(object: AnyObject, inout error: NSError?) -> NSData? {
 		return NSJSONSerialization.dataWithJSONObject(object, options: nil, error: &error)
@@ -92,6 +95,7 @@ public class JSON: Equatable, Printable {
 	/**
 		:name:	stringify
 		:description:	Stringify an object.
+		:Returns:	String?
 	*/
 	public class func stringify(object: AnyObject, inout error: NSError?) -> String? {
 		if let data: NSData = JSON.serialize(object, error: &error) {
@@ -112,6 +116,7 @@ public class JSON: Equatable, Printable {
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the OrderedSet in a readable format.
+		:returns:	String
 	*/
 	public var description: String {
 		var error: NSError?

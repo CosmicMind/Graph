@@ -166,6 +166,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes using
 		index values [0...n-1].
+		:returns:	RedBlackTree.Generator
 	*/
 	public func generate() -> RedBlackTree.Generator {
 		var index = startIndex

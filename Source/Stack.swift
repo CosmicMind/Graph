@@ -22,12 +22,14 @@ public class Stack<Element> : Printable, SequenceType {
 	/**
 		:name:	list
 		:description:	Underlying data structure.
+		:returns:	List<Element>
 	*/
 	private var list: List<Element>
 
 	/**
 		:name:	count
 		:description:	Total number of items in the Stack.
+		:returns:	Int
 	*/
 	public var count: Int {
 		return list.count
@@ -38,6 +40,7 @@ public class Stack<Element> : Printable, SequenceType {
 		:description:	Get the latest element at the top
 		of the Stack and do not remove
 		it.
+		:returns:	Element?
 	*/
 	public var top: Element? {
 		return list.front
@@ -46,6 +49,7 @@ public class Stack<Element> : Printable, SequenceType {
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the Stack is empty.
+		:returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
@@ -54,6 +58,7 @@ public class Stack<Element> : Printable, SequenceType {
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol.
+		:returns:	String
 	*/
 	public var description: String {
 		return "Stack" + list.internalDescription
@@ -71,6 +76,7 @@ public class Stack<Element> : Printable, SequenceType {
 		:name:	generate
 		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes.
+		:returns:	Stack.Generator
 	*/
 	public func generate() -> Stack.Generator {
 		return list.generate()
@@ -89,6 +95,7 @@ public class Stack<Element> : Printable, SequenceType {
 		:description:	Get the latest element at the top of
 		the Stack and remove it from the
 		Stack.
+		:returns:	Element?
 	*/
 	public func pop() -> Element? {
 		return list.removeAtFront()

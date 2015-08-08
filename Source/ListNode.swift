@@ -20,24 +20,28 @@ internal class ListNode<Element> : Printable {
 	/**
 		:name:	next
 		:description:	Points to the successor element in the List.
+		:returns:	ListNode<Element>?
 	*/
 	internal var next: ListNode<Element>?
 
 	/**
 		:name:	previous
 		:description:	points to the predacessor element in the List.
+		:returns:	ListNode<Element>?
 	*/
 	internal var previous: ListNode<Element>?
 
 	/**
 		:name:	data
 		:description:	Satellite data.
+		:returns:	Element?
 	*/
 	internal var element: Element?
 
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol.
+		:returns:	String
 	*/
 	internal var description: String {
 		return "\(element)"

@@ -22,24 +22,28 @@ public class List<Element> : Printable, SequenceType {
 	/**
 		:name:	head
 		:description:	First node in the list.
+		:returns:	ListNode<Element>?
 	*/
 	private var head: ListNode<Element>?
 
 	/**
 		:name:	tail
 		:description:	Last node in list.
+		:returns:	ListNode<Element>?
 	*/
 	private var tail: ListNode<Element>?
 
 	/**
 		:name:	current
 		:description:	Current cursor position when iterating.
+		:returns:	ListNode<Element>?
 	*/
 	private var current: ListNode<Element>?
 
 	/**
 		:name:	count
 		:description:	Number of nodes in List.
+		:returns:	Int
 	*/
 	public private(set) var count: Int
 
@@ -47,6 +51,7 @@ public class List<Element> : Printable, SequenceType {
 		:name:	internalDescription
 		:description:	Returns a String with only the node data for all
 		nodes in the List.
+		:returns:	String
 	*/
 	internal var internalDescription: String {
 		var output: String = "("
@@ -66,6 +71,7 @@ public class List<Element> : Printable, SequenceType {
 	/**
 		:name:	description
 		:description:	Conforms to Printable Protocol.
+		:returns:	String
 	*/
 	public var description: String {
 		return "List" + internalDescription
@@ -74,6 +80,7 @@ public class List<Element> : Printable, SequenceType {
 	/**
 		:name:	front
 		:description:	Retrieves the data at first node of the List.
+		:returns:	Element?
 	*/
 	public var front: Element? {
 		return head?.element
@@ -82,6 +89,7 @@ public class List<Element> : Printable, SequenceType {
 	/**
 		:name:	back
 		:description:	Retrieves the element at the back node of teh List.
+		:returns:	Element?
 	*/
 	public var back: Element? {
 		return tail?.element
@@ -91,6 +99,7 @@ public class List<Element> : Printable, SequenceType {
 		:name:	cursor
 		:description:	Retrieves the element at the current iterator position
 		in the List.
+		:returns:	Element?
 	*/
 	public var cursor: Element? {
 		return current?.element
@@ -101,6 +110,7 @@ public class List<Element> : Printable, SequenceType {
 		:description:	Retrieves the element at the poistion after the
 		current cursor poistion. Also moves the cursor
 		to that node.
+		:returns:	Element?
 	*/
 	public var next: Element? {
 		current = current?.next
@@ -112,6 +122,7 @@ public class List<Element> : Printable, SequenceType {
 		:description:	Retrieves the element at the poistion before the
 		current cursor poistion. Also moves the cursor
 		to that node.
+		:returns:	Element?
 	*/
 	public var previous: Element? {
 		current = current?.previous
@@ -121,6 +132,7 @@ public class List<Element> : Printable, SequenceType {
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the List is empty.
+		:returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
@@ -130,6 +142,7 @@ public class List<Element> : Printable, SequenceType {
 		:name:	isCursorAtBack
 		:description:	A boolean of whether the cursor has reached
 		the back of the List.
+		:returns:	Bool
 	*/
 	public var isCursorAtBack: Bool {
 		return nil === current
@@ -139,6 +152,7 @@ public class List<Element> : Printable, SequenceType {
 		:name:	isCursorAtFront
 		:description:	A boolean of whether the cursor has reached
 		the front of the List.
+		:returns:	Bool
 	*/
 	public var isCursorAtFront: Bool {
 		return nil === current
@@ -157,6 +171,7 @@ public class List<Element> : Printable, SequenceType {
 		:name:	generate
 		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes.
+		:returns:	List.Generator
 	*/
 	public func generate() -> List.Generator {
 		cursorToFront()
@@ -206,6 +221,7 @@ public class List<Element> : Printable, SequenceType {
 		:name:	removeAtFront
 		:description:	Remove the element at the front of the List
 		and return the element at the poistion.
+		:returns:	Element?
 	*/
 	public func removeAtFront() -> Element? {
 		if 0 == count {
@@ -246,6 +262,7 @@ public class List<Element> : Printable, SequenceType {
 		:name:	removeAtBack
 		:description:	Remove the element at the back of the List
 		and return the element at the poistion.
+		:returns:	Element?
 	*/
 	public func removeAtBack() -> Element? {
 		if 0 == count {
@@ -309,6 +326,7 @@ public class List<Element> : Printable, SequenceType {
 	/**
 		:name:	removeAtCursor
 		:description:	Removes the element at the cursor position.
+		:returns:	Element?
 	*/
 	public func removeAtCursor() -> Element? {
 		if 1 >= count {

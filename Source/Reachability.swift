@@ -86,7 +86,7 @@ public class Reachability {
 		:name:	currentFlags
 		:description:	Holds the current SCNetworkReachabilityFlags value
 		when the network connectivity changes.
-		:returns:	SCNetworkReachabilityFlags?
+		:returns:	SCNetworkReachabilityFlags
 	*/
 	private var currentFlags: SCNetworkReachabilityFlags {
 		var flags: SCNetworkReachabilityFlags = 0
@@ -103,7 +103,7 @@ public class Reachability {
 	/**
 		:name:	queue
 		:description:	Internal dispatch queue for connectivity watching.
-		:returns:	dispatch_queue_t?
+		:returns:	dispatch_queue_t
 	*/
 	private lazy var queue: dispatch_queue_t = {
 		return dispatch_queue_create("io.graphkit.Reachability", nil)
@@ -194,6 +194,7 @@ public class Reachability {
 	/**
 		:name:	startWatcher
 		:description:	Start watching for network changes.
+		:returns:	Bool
 	*/
 	public func startWatcher() -> Bool {
 		timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
