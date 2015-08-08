@@ -35,6 +35,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the OrderedMultiDictionary in a readable format.
+		:returns:	String
 	*/
 	public var description: String {
 		return tree.internalDescription
@@ -44,6 +45,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	first
 		:description:	Get the first (key, value) pair.
 		k1 <= k2 <= K3 ... <= Kn
+		:returns:	(key: Key, value: Value?)?
 	*/
 	public var first: (key: Key, value: Value?)? {
 		return tree.first
@@ -53,6 +55,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	last
 		:description:	Get the last (key, value) pair.
 		k1 <= k2 <= K3 ... <= Kn
+		:returns:	(key: Key, value: Value?)?
 	*/
 	public var last: (key: Key, value: Value?)? {
 		return tree.last
@@ -61,6 +64,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the OrderedMultiDictionary is empty.
+		:returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
@@ -69,6 +73,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	startIndex
 		:description:	Conforms to the CollectionType Protocol.
+		:returns:	Int
 	*/
 	public var startIndex: Int {
 		return 0
@@ -77,6 +82,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	endIndex
 		:description:	Conforms to the CollectionType Protocol.
+		:returns:	Int
 	*/
 	public var endIndex: Int {
 		return count
@@ -141,6 +147,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes using
 		index values [0...n-1].
+		:returns:	OrderedMultiDictionary.Generator
 	*/
 	public func generate() -> OrderedMultiDictionary.Generator {
 		var index = startIndex
@@ -157,6 +164,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:description:	Property key mapping. If the key type is a
 		String, this feature allows access like a
 		Dictionary.
+		:returns:	Value?
 	*/
 	public subscript(key: Key) -> Value? {
 		get {
@@ -173,6 +181,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		Items are kept in order, so when iterating
 		through the items, they are returned in their
 		ordered form.
+		:returns:	(key: Key, value: Value?)
 	*/
 	public subscript(index: Int) -> (key: Key, value: Value?) {
 		get {
@@ -186,6 +195,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+		:returns:	OrderedMultiDictionary.OrderedIndex
 	*/
 	public func indexOf(keys: Key...) -> OrderedMultiDictionary.OrderedIndex {
 		return indexOf(keys)
@@ -194,6 +204,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+		:returns:	OrderedMultiDictionary.OrderedIndex
 	*/
 	public func indexOf(keys: Array<Key>) -> OrderedMultiDictionary.OrderedIndex {
 		return tree.indexOf(keys)
@@ -202,6 +213,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
+		:returns:	Int
 	*/
 	public override func countOf(keys: Key...) -> Int {
 		return tree.countOf(keys)
@@ -210,6 +222,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
+		:returns:	Int
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {
 		return tree.countOf(keys)
@@ -218,6 +231,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	insert
 		:description:	Insert a key / value pair.
+		:returns:	Bool
 	*/
 	public func insert(key: Key, value: Value?) -> Bool {
 		let result: Bool = tree.insert(key, value: value)
@@ -289,6 +303,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	search
 		:description:	Accepts a list of keys and returns a subset
 		OrderedMultiDictionary with the given values if they exist.
+		:returns:	OrderedMultiDictionary.OrderedSearch
 	*/
 	public func search(keys: Key...) -> OrderedMultiDictionary.OrderedSearch {
 		return search(keys)
@@ -298,6 +313,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	search
 		:description:	Accepts an array of keys and returns a subset
 		OrderedMultiDictionary with the given values if they exist.
+		:returns:	OrderedMultiDictionary.OrderedSearch
 	*/
 	public func search(keys: Array<Key>) -> OrderedMultiDictionary.OrderedSearch {
 		var dict: OrderedSearch = OrderedSearch()

@@ -11,6 +11,8 @@
 		65569EF41B61F55E0019B13E /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65569EF21B61F55E0019B13E /* SessionTests.swift */; };
 		658E13AF1B7473E40021957F /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658E13AE1B7473E40021957F /* OrderedMultiDictionary.swift */; };
 		658E13B01B7473E40021957F /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658E13AE1B7473E40021957F /* OrderedMultiDictionary.swift */; };
+		658E13B41B769E890021957F /* OrderedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 658E13AE1B7473E40021957F /* OrderedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		658E13B51B769E9B0021957F /* OrderedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 658E13AE1B7473E40021957F /* OrderedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		65B723F01B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; };
 		65B723F11B5ADA640087E6A6 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723EF1B5ADA640087E6A6 /* OrderedDictionary.swift */; };
 		65B723F51B5AE5E50087E6A6 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B723F21B5AE5690087E6A6 /* OrderedDictionaryTests.swift */; };
@@ -468,6 +470,7 @@
 				961242F21B2B38AB00CD47E0 /* RedBlackTree.swift in Headers */,
 				96CB07C31B52E8DA00EB4A58 /* Probability.swift in Headers */,
 				65B723F71B5AE60E0087E6A6 /* OrderedDictionary.swift in Headers */,
+				658E13B41B769E890021957F /* OrderedMultiDictionary.swift in Headers */,
 				65DF3F081B626F7B00197AD5 /* Session.swift in Headers */,
 				65EC73331B65590F0089280C /* Reachability.swift in Headers */,
 				65EC73341B65590F0089280C /* JSON.swift in Headers */,
@@ -504,6 +507,7 @@
 				961243041B2B38E000CD47E0 /* RedBlackTree.swift in Headers */,
 				96CB07C61B52E8FA00EB4A58 /* Probability.swift in Headers */,
 				65B723F81B5AE61D0087E6A6 /* OrderedDictionary.swift in Headers */,
+				658E13B51B769E9B0021957F /* OrderedMultiDictionary.swift in Headers */,
 				65DF3F0A1B626F8C00197AD5 /* Session.swift in Headers */,
 				65EC73311B6558FC0089280C /* Reachability.swift in Headers */,
 				65EC73321B6558FC0089280C /* JSON.swift in Headers */,
