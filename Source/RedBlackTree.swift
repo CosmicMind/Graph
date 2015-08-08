@@ -18,7 +18,8 @@
 
 public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, Printable {
 	public typealias Generator = GeneratorOf<(key: Key, value: Value?)>
-
+	public typealias OrderedIndex = RedBlackTree<Key, Int>
+	
 	/**
 		:name:	sentinel
 		:description:	A node used to mark the end of a path in the tree.
@@ -313,7 +314,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
 	*/
-	public func indexOf(keys: Key...) -> RedBlackTree<Key, Int> {
+	public func indexOf(keys: Key...) -> OrderedIndex {
 		return indexOf(keys)
 	}
 	
@@ -321,8 +322,8 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
 	*/
-	public func indexOf(keys: Array<Key>) -> RedBlackTree<Key, Int> {
-		var tree: RedBlackTree<Key, Int> = RedBlackTree<Key, Int>(uniqueKeys: isUniquelyKeyed)
+	public func indexOf(keys: Array<Key>) -> OrderedIndex {
+		var tree: OrderedIndex = OrderedIndex(uniqueKeys: isUniquelyKeyed)
 		for k in keys {
 			let x: RedBlackNode<Key, Value> = internalFindNodeForKey(k)
 			if sentinel === x {
