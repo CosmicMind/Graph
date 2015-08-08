@@ -198,7 +198,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 
 	/**
 		:name:	insert
-		:description:	Insert a node in the tree.
+		:description:	Insert a key / value pair.
 	*/
 	public func insert(key: Key, value: Value?) -> Bool {
 		return sentinel !== internalInsert(key, value: value)
@@ -280,7 +280,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		in isUniquelyKeyed tree of a given keyed node.
 	*/
 	public func findValueForKey(key: Key) -> Value? {
-		return internalFindValueForKey(key).value
+		return internalFindNodeForKey(key).value
 	}
 
 	/**
@@ -308,6 +308,31 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			}
 		}
 	}
+	
+	/**
+		:name:	indexOf
+		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+	*/
+	public func indexOf(keys: Key...) -> RedBlackTree<Key, Int> {
+		return indexOf(keys)
+	}
+	
+	/**
+		:name:	indexOf
+		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+	*/
+	public func indexOf(keys: Array<Key>) -> RedBlackTree<Key, Int> {
+		var tree: RedBlackTree<Key, Int> = RedBlackTree<Key, Int>(uniqueKeys: isUniquelyKeyed)
+		for k in keys {
+			let x: RedBlackNode<Key, Value> = internalFindNodeForKey(k)
+			if sentinel === x {
+				tree.insert(k, value: nil)
+			} else {
+				traverseOrder(k, node: x, tree: &tree)
+			}
+		}
+		return tree
+	}
 
 	/**
 		:name:	operator ["key1"..."keyN"]
@@ -317,10 +342,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	*/
 	public subscript(key: Key) -> Value? {
 		get {
-			return internalFindValueForKey(key).value
+			return internalFindNodeForKey(key).value
 		}
 		set(value) {
-			if sentinel === internalFindValueForKey(key) {
+			if sentinel === internalFindNodeForKey(key) {
 				internalInsert(key, value: value)
 			} else {
 				updateValue(value, forKey: key)
@@ -333,7 +358,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Insert a new node with the given key and value.
 	*/
 	private func internalInsert(key: Key, value: Value?) -> RedBlackNode<Key, Value> {
-		if isUniquelyKeyed && sentinel !== internalFindValueForKey(key) {
+		if isUniquelyKeyed && sentinel !== internalFindNodeForKey(key) {
 			return sentinel;
 		}
 
@@ -417,7 +442,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		node. If the value does not exist, the sentinel is returned.
 	*/
 	private func internalRemoveValueForKey(key: Key) -> RedBlackNode<Key, Value> {
-		var z: RedBlackNode<Key, Value> = internalFindValueForKey(key)
+		var z: RedBlackNode<Key, Value> = internalFindNodeForKey(key)
 		if z === sentinel {
 			return sentinel
 		}
@@ -619,10 +644,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		:name:	internalFindValueForKey
+		:name:	internalFindNodeForKey
 		:description:	Finds a node with a given key value.
 	*/
-	private func internalFindValueForKey(key: Key) -> RedBlackNode<Key, Value> {
+	private func internalFindNodeForKey(key: Key) -> RedBlackNode<Key, Value> {
 		var z: RedBlackNode<Key, Value> = root
 		while z !== sentinel {
 			if key == z.key {
@@ -665,13 +690,42 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	internalUpdateValue
 		:description:	Traverses the Tree and updates all the values that match the key.
 	*/
-	internal func internalUpdateValue(value: Value?, forKey: Key, node: RedBlackNode<Key, Value>) {
+	private func internalUpdateValue(value: Value?, forKey: Key, node: RedBlackNode<Key, Value>) {
 		if node !== sentinel {
 			if forKey == node.key {
 				node.value = value
 			}
 			internalUpdateValue(value, forKey: forKey, node: node.left)
 			internalUpdateValue(value, forKey: forKey, node: node.right)
+		}
+	}
+	
+	/**
+		:name:	internalOrder
+		:description:	Traverses the Tree for the internal order statistic of a key.
+	*/
+	private func internalOrder(var x: RedBlackNode<Key, Value>) -> Int {
+		var r: Int = x.left.order + 1
+		while root !== x {
+			if x.parent.right === x {
+				r += x.parent.left.order + 1
+			}
+			x = x.parent
+		}
+		return r
+	}
+	
+	/**
+		:name:	traverseOrder
+		:description:	Traverses the Tree, looking for a key match of order values.
+	*/
+	private func traverseOrder(key: Key, node: RedBlackNode<Key, Value>, inout tree: RedBlackTree<Key, Int>) {
+		if sentinel !== node {
+			if key == node.key {
+				tree.insert(key, value: internalOrder(node) - 1)
+			}
+			traverseOrder(key, node: node.left, tree: &tree)
+			traverseOrder(key, node: node.right, tree: &tree)
 		}
 	}
 

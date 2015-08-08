@@ -18,7 +18,8 @@
 
 public class OrderedMultiSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, Printable {
 	public typealias Generator = GeneratorOf<Element>
-
+	public typealias OrderedIndex = RedBlackTree<Element, Int>
+	
 	/**
 		:name:	tree
 		:description:	Internal storage of elements.
@@ -134,9 +135,25 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		ordered form.
 	*/
 	public subscript(index: Int) -> Element {
-		return tree[index].value!
+		return tree[index].key
 	}
 
+	/**
+		:name:	indexOf
+		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+	*/
+	public func indexOf(elements: Element...) -> OrderedIndex {
+		return indexOf(elements)
+	}
+	
+	/**
+		:name:	indexOf
+		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+	*/
+	public func indexOf(elements: Array<Element>) -> OrderedIndex {
+		return tree.indexOf(elements)
+	}
+	
 	/**
 		:name:	contains
 		:description:	A boolean check if values exists
@@ -593,7 +610,7 @@ public func ==<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedM
 		return false
 	}
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		if lhs[i] != rhs[i] {
+		if lhs.tree[i].key != rhs.tree[i].key {
 			return false
 		}
 	}

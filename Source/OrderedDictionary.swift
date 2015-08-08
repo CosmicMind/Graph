@@ -18,6 +18,9 @@
 
 public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, Printable {
 	public typealias Generator = GeneratorOf<(key: Key, value: Value?)>
+	public typealias OrderedKey = OrderedSet<Key>
+	public typealias OrderedValue = Array<Value>
+	public typealias OrderedIndex = RedBlackTree<Key, Int>
 	
 	/**
 		:name:	tree
@@ -82,8 +85,8 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:description:	Returns an array of the key values in ordered.
 		:returns:	OrderedSet<Key>
 	*/
-	public var keys: OrderedSet<Key> {
-		let s: OrderedSet<Key> = OrderedSet<Key>()
+	public var keys: OrderedKey {
+		let s: OrderedKey = OrderedKey()
 		for x in self {
 			s.insert(x.key)
 		}
@@ -96,8 +99,8 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		on the key ordering.
 		:returns:	Array<Value>
 	*/
-	public var values: Array<Value> {
-		var s: Array<Value> = Array<Value>()
+	public var values: OrderedValue {
+		var s: OrderedValue = OrderedValue()
 		for x in self {
 			s.append(x.value!)
 		}
@@ -179,6 +182,22 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	}
 	
 	/**
+		:name:	indexOf
+		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+	*/
+	public func indexOf(keys: Key...) -> OrderedIndex {
+		return indexOf(keys)
+	}
+	
+	/**
+		:name:	indexOf
+		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+	*/
+	public func indexOf(keys: Array<Key>) -> OrderedIndex {
+		return tree.indexOf(keys)
+	}
+	
+	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
 	*/
@@ -192,6 +211,16 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {
 		return tree.countOf(keys)
+	}
+	
+	/**
+		:name:	insert
+		:description:	Insert a key / value pair.
+	*/
+	public func insert(key: Key, value: Value?) -> Bool {
+		let result: Bool = tree.insert(key, value: value)
+		count = tree.count
+		return result
 	}
 	
 	/**
@@ -295,7 +324,7 @@ public func ==<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs:
 		return false
 	}
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		if lhs[i].key != rhs[i].key {
+		if lhs.tree[i].key != rhs.tree[i].key {
 			return false
 		}
 	}

@@ -72,7 +72,7 @@ class RedBlackTreeTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testString() {
+	func testPropertyKey() {
 		let s: RedBlackTree<String, Array<Int>> = RedBlackTree<String, Array<Int>>(uniqueKeys: false)
 		s.insert("friends", value: [1, 2, 3])
 		s["menu"] = [11, 22, 33]
@@ -86,7 +86,7 @@ class RedBlackTreeTests: XCTestCase {
 		XCTAssert(2 == s.count, "Test failed.")
 	}
 	
-	func testConcat() {
+	func testValue() {
 		let t1: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>()
 		t1.insert(1, value: 1)
 		t1.insert(2, value: 2)
@@ -99,13 +99,51 @@ class RedBlackTreeTests: XCTestCase {
 		
 		let t3: RedBlackTree<Int, Int> = t1 + t2
 		
-		for var i: Int = t1.count - 1; i >= 0; --i {
+		for var i: Int = t1.count - 1; 0 <= i; --i {
 			XCTAssert(t1[i].value == t3.findValueForKey(t1[i].value!), "Test failed.")
 		}
 		
-		for var i: Int = t2.count - 1; i >= 0; --i {
+		for var i: Int = t2.count - 1; 0 <= i; --i {
 			XCTAssert(t2[i].value == t3.findValueForKey(t2[i].value!), "Test failed.")
 		}
+	}
+	
+	func testIndexOf() {
+		let t1: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>()
+		t1.insert(1, value: 1)
+		t1.insert(2, value: 2)
+		t1.insert(3, value: 3)
+		t1.insert(4, value: 4)
+		t1.insert(5, value: 5)
+		t1.insert(5, value: 5)
+		t1.insert(6, value: 6)
+		
+		let o1: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>()
+		o1.insert(1, value: 0)
+		o1.insert(3, value: 2)
+		o1.insert(5, value: 5)
+		o1.insert(5, value: 4)
+		o1.insert(10, value: nil)
+		o1.insert(11, value: nil)
+
+		XCTAssert(o1 == t1.indexOf(1, 11, 3, 5, 10), "Test failed.")
+		
+		t1.insert(11, value: 11)
+		t1.insert(10, value: 10)
+		
+		o1.updateValue(11, forKey: 11)
+		o1.updateValue(10, forKey: 10)
+		
+		XCTAssert(o1 == t1.indexOf(1, 11, 3, 5, 10), "Test failed.")
+		
+		var n: Int = 1000
+		while 0 < n-- {
+			o1.insert(7, value: n)
+			t1.insert(7, value: n)
+			o1.insert(3, value: n)
+			t1.insert(3, value: n)
+		}
+		XCTAssert(o1 == t1.indexOf(1, 11, 3, 5, 10, 7), "Test failed.")
 	}
 	
 	func testPerformance() {

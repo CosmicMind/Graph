@@ -215,6 +215,38 @@ class OrderedSetTests: XCTestCase {
 		XCTAssert(OrderedSet<Int>(elements: 8) == s1, "Test failed. \(s1)")
 	}
 	
+	func testIndexOf() {
+		let s1: OrderedSet<Int> = OrderedSet<Int>()
+		s1.insert(1, 2, 3, 4, 5, 6, 7)
+		
+		let o1: OrderedSet<Int>.OrderedIndex = RedBlackTree<Int, Int>(uniqueKeys: true)
+		o1.insert(1, value: 0)
+		o1.insert(3, value: 2)
+		o1.insert(5, value: 5)
+		o1.insert(5, value: 4)
+		o1.insert(10, value: nil)
+		o1.insert(11, value: nil)
+		
+		XCTAssert(o1 == s1.indexOf(1, 11, 3, 5, 10), "Test failed.")
+		
+		s1.insert(11)
+		s1.insert(10)
+		
+		o1.updateValue(11, forKey: 11)
+		o1.updateValue(10, forKey: 10)
+		
+		XCTAssert(o1 == s1.indexOf(1, 11, 3, 5, 10), "Test failed.")
+		
+		var n: Int = 1000
+		while 0 < n-- {
+			o1.insert(7, value: n)
+			s1.insert(7)
+			o1.insert(3, value: n)
+			s1.insert(3)
+		}
+		XCTAssert(o1 == s1.indexOf(1, 11, 3, 5, 10, 7), "Test failed.")
+	}
+	
 	func testPerformance() {
 		self.measureBlock() {}
 	}
