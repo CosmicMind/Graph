@@ -117,7 +117,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		the next value in the sequence of nodes using
 		index values [0...n-1].
 	*/
-	public func generate() -> Generator {
+	public func generate() -> OrderedMultiSet.Generator {
 		var index = startIndex
 		return GeneratorOf {
 			if index < self.endIndex {
@@ -142,7 +142,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
 	*/
-	public func indexOf(elements: Element...) -> OrderedIndex {
+	public func indexOf(elements: Element...) -> OrderedMultiSet.OrderedIndex {
 		return indexOf(elements)
 	}
 	
@@ -150,7 +150,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
 	*/
-	public func indexOf(elements: Array<Element>) -> OrderedIndex {
+	public func indexOf(elements: Array<Element>) -> OrderedMultiSet.OrderedIndex {
 		return tree.indexOf(elements)
 	}
 	

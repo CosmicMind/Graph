@@ -21,6 +21,8 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	public typealias OrderedKey = OrderedMultiSet<Key>
 	public typealias OrderedValue = Array<Value>
 	public typealias OrderedIndex = RedBlackTree<Key, Int>
+	public typealias OrderedSearch = OrderedMultiDictionary<Key, Value>
+	internal typealias OrderedNode = RedBlackNode<Key, Value>
 	
 	/**
 		:name:	tree
@@ -83,9 +85,9 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	keys
 		:description:	Returns an array of the key values in ordered.
-		:returns:	OrderedMultiSet<Key>
+		:returns:	OrderedMultiDictionary.OrderedKey
 	*/
-	public var keys: OrderedKey {
+	public var keys: OrderedMultiDictionary.OrderedKey {
 		let s: OrderedKey = OrderedKey()
 		for x in self {
 			s.insert(x.key)
@@ -97,9 +99,9 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	values
 		:description:	Returns an array of the values that are ordered based
 		on the key ordering.
-		:returns:	Array<Value>
+		:returns:	OrderedMultiDictionary.OrderedValue
 	*/
-	public var values: OrderedValue {
+	public var values: OrderedMultiDictionary.OrderedValue {
 		var s: OrderedValue = OrderedValue()
 		for x in self {
 			s.append(x.value!)
@@ -140,7 +142,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		the next value in the sequence of nodes using
 		index values [0...n-1].
 	*/
-	public func generate() -> Generator {
+	public func generate() -> OrderedMultiDictionary.Generator {
 		var index = startIndex
 		return GeneratorOf {
 			if index < self.endIndex {
@@ -185,7 +187,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
 	*/
-	public func indexOf(keys: Key...) -> OrderedIndex {
+	public func indexOf(keys: Key...) -> OrderedMultiDictionary.OrderedIndex {
 		return indexOf(keys)
 	}
 	
@@ -193,7 +195,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
 	*/
-	public func indexOf(keys: Array<Key>) -> OrderedIndex {
+	public func indexOf(keys: Array<Key>) -> OrderedMultiDictionary.OrderedIndex {
 		return tree.indexOf(keys)
 	}
 	
@@ -288,7 +290,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:description:	Accepts a list of keys and returns a subset
 		OrderedMultiDictionary with the given values if they exist.
 	*/
-	public func search(keys: Key...) -> OrderedMultiDictionary<Key, Value> {
+	public func search(keys: Key...) -> OrderedMultiDictionary.OrderedSearch {
 		return search(keys)
 	}
 	
@@ -297,8 +299,8 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:description:	Accepts an array of keys and returns a subset
 		OrderedMultiDictionary with the given values if they exist.
 	*/
-	public func search(keys: Array<Key>) -> OrderedMultiDictionary<Key, Value> {
-		var dict: OrderedMultiDictionary<Key, Value> = OrderedMultiDictionary<Key, Value>()
+	public func search(keys: Array<Key>) -> OrderedMultiDictionary.OrderedSearch {
+		var dict: OrderedSearch = OrderedSearch()
 		for key: Key in keys {
 			traverse(key, node: tree.root, dict: &dict)
 		}
@@ -309,7 +311,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	traverse
 		:description:	Traverses the OrderedMultiDictionary, looking for a key match.
 	*/
-	internal func traverse(key: Key, node: RedBlackNode<Key, Value>, inout dict: OrderedMultiDictionary<Key, Value>) {
+	internal func traverse(key: Key, node: OrderedMultiDictionary.OrderedNode, inout dict: OrderedMultiDictionary.OrderedSearch) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))

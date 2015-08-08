@@ -66,10 +66,10 @@ class OrderedDictionaryTests: XCTestCase {
 		s.insert((3, 3))
 		s.updateValue(5, forKey: 3)
 		
-		let subs: OrderedDictionary<Int, Int> = s.search(3)
+		let subs: OrderedDictionary<Int, Int>.OrderedSearch = s.search(3)
 		XCTAssert(1 == subs.count, "Test failed.")
 		
-		var generator = subs.generate()
+		var generator: OrderedDictionary<Int, Int>.Generator = subs.generate()
 		while let x = generator.next() {
 			XCTAssert(5 == x.value, "Test failed.")
 		}

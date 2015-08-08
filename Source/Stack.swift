@@ -72,7 +72,7 @@ public class Stack<Element> : Printable, SequenceType {
 		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes.
 	*/
-	public func generate() -> Generator {
+	public func generate() -> Stack.Generator {
 		return list.generate()
 	}
 

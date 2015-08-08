@@ -167,7 +167,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		the next value in the sequence of nodes using
 		index values [0...n-1].
 	*/
-	public func generate() -> Generator {
+	public func generate() -> RedBlackTree.Generator {
 		var index = startIndex
 		return GeneratorOf {
 			if index < self.endIndex {
@@ -313,16 +313,18 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+		:returns:	RedBlackTree.OrderedIndex
 	*/
-	public func indexOf(keys: Key...) -> OrderedIndex {
+	public func indexOf(keys: Key...) -> RedBlackTree.OrderedIndex {
 		return indexOf(keys)
 	}
 	
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
+		:returns:	RedBlackTree.OrderedIndex
 	*/
-	public func indexOf(keys: Array<Key>) -> OrderedIndex {
+	public func indexOf(keys: Array<Key>) -> RedBlackTree.OrderedIndex {
 		var tree: OrderedIndex = OrderedIndex(uniqueKeys: isUniquelyKeyed)
 		for k in keys {
 			let x: RedBlackNode<Key, Value> = internalFindNodeForKey(k)

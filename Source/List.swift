@@ -158,7 +158,7 @@ public class List<Element> : Printable, SequenceType {
 		:description:	Conforms to the SequenceType Protocol. Returns
 		the next value in the sequence of nodes.
 	*/
-	public func generate() -> Generator {
+	public func generate() -> List.Generator {
 		cursorToFront()
 		return GeneratorOf {
 			if !self.isCursorAtBack {
