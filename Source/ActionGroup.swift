@@ -36,7 +36,7 @@ internal class ActionGroup : NSManagedObject {
 		:name:	init
 		:description:	Initializer for the Model Object.
 	*/
-	convenience init(name: String!) {
+	convenience init(name: String) {
 		let g: Graph = Graph()
 		var w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)

@@ -91,7 +91,7 @@ internal class ManagedBond : NSManagedObject {
 					}
 				}
 				if false == hasProperty {
-					var property: BondProperty = BondProperty(name: name, value: value)
+					var property: BondProperty = BondProperty(name: name, value: value!)
 					property.node = self
 				}
 			}

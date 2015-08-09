@@ -26,7 +26,7 @@ public class Bond : NSObject, Comparable {
 		:name:	init
 		:description: Initializes Bond with a given ManagedBond.
 	*/
-	internal init(bond: ManagedBond!) {
+	internal init(bond: ManagedBond) {
 		node = bond
 	}
 
@@ -140,7 +140,7 @@ public class Bond : NSObject, Comparable {
     */
     public var subject: Entity? {
         get {
-			return nil == node.subject ? nil : Entity(entity: node.subject)
+			return nil == node.subject ? nil : Entity(entity: node.subject!)
         }
         set(entity) {
             node.subject = entity?.node
@@ -153,7 +153,7 @@ public class Bond : NSObject, Comparable {
     */
     public var object: Entity? {
 		get {
-			return nil == node.object ? nil : Entity(entity: node.object)
+			return nil == node.object ? nil : Entity(entity: node.object!)
 		}
 		set(entity) {
 			node.object = entity?.node

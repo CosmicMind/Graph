@@ -29,8 +29,7 @@ extension Sort {
 		for (i = 1; i < n; ++i) {
 			j = i
 			while (0 < j && elements[j] < elements[j - 1]) {
-				swap(&elements[j], &elements[j - 1])
-				--j
+				swap(&elements[j], &elements[--j])
 			}
 		}
 	}

@@ -26,7 +26,7 @@ public class Action : NSObject, Comparable {
 		:name:	init
 		:description: Initializes Action with a given ManagedAction.
 	*/
-	internal init(action: ManagedAction!) {
+	internal init(action: ManagedAction) {
 		node = action
 	}
 

@@ -217,8 +217,8 @@ public class Entity : NSObject, Comparable {
     }
 
     /**
-    	:name:	delete
-    	:description:	Marks the Model Object to be deleted from the Graph.
+		:name:	delete
+		:description:	Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
 		node.delete()

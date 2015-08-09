@@ -95,7 +95,7 @@ internal class ManagedEntity : NSManagedObject {
 					}
 				}
 				if false == hasProperty {
-					var property: EntityProperty = EntityProperty(name: name, value: value)
+					var property: EntityProperty = EntityProperty(name: name, value: value!)
 					property.node = self
 				}
 			}

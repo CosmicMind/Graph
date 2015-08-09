@@ -37,7 +37,7 @@ internal class EntityProperty : NSManagedObject {
 		:name:	init
 		:description:	Initializer for the Model Object.
 	*/
-	convenience init(name: String!, value: AnyObject!) {
+	convenience init(name: String, value: AnyObject) {
 		let g: Graph = Graph()
 		var w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)

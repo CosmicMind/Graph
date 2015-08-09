@@ -91,7 +91,7 @@ internal class ManagedAction : NSManagedObject {
 					}
 				}
 				if false == hasProperty {
-					var property: ActionProperty = ActionProperty(name: name, value: value)
+					var property: ActionProperty = ActionProperty(name: name, value: value!)
 					property.node = self
 				}
 			}
