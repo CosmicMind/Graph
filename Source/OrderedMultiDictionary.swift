@@ -259,16 +259,29 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	}
 	
 	/**
-		:name:	removeValueForKey
-		:description:	Removes a node from the tree based on the key value given.
-		If the tree allows non-unique keys, then all keys matching
-		the given key value will be removed.
-		:returns:	Value?
+		:name:	removeValueForKeys
+		:description:	Removes key / value pairs based on the key value given.
+		:returns:	OrderedMultiDictionary<Key, Value>?
 	*/
-	public func removeValueForKey(key: Key) -> Value? {
-		var x: Value? = tree.removeValueForKey(key)
-		count = tree.count
-		return x
+	public func removeValueForKeys(keys: Key...) -> OrderedMultiDictionary<Key, Value>? {
+		return removeValueForKeys(keys)
+	}
+	
+	/**
+		:name:	removeValueForKeys
+		:description:	Removes key / value pairs based on the key value given.
+		:returns:	OrderedMultiDictionary<Key, Value>?
+	*/
+	public func removeValueForKeys(keys: Array<Key>) -> OrderedMultiDictionary<Key, Value>? {
+		if let r: RedBlackTree<Key, Value> = tree.removeValueForKeys(keys) {
+			let d: OrderedMultiDictionary<Key, Value> = OrderedMultiDictionary<Key, Value>()
+			for (k, v) in r {
+				d.insert(k, value: v)
+			}
+			count = tree.count
+			return d
+		}
+		return nil
 	}
 	
 	/**

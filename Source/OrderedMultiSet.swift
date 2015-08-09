@@ -233,30 +233,27 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedMultiSet.
-		:returns:	OrderedMultiSet<Element>
+		:returns:	OrderedMultiSet<Element>?
 	*/
-	public func remove(elements: Element...) -> OrderedMultiSet<Element> {
+	public func remove(elements: Element...) -> OrderedMultiSet<Element>? {
 		return remove(elements)
 	}
 
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedMultiSet.
-		:returns:	OrderedMultiSet<Element>
+		:returns:	OrderedMultiSet<Element>?
 	*/
-	public func remove(elements: Array<Element>) -> OrderedMultiSet<Element> {
-		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		for x in elements {
-			let n: Int = tree.countOf(x)
-			if 0 < n {
-				tree.removeValueForKey(x)
-				for i in 0..<n {
-					s.insert(x)
-				}
+	public func remove(elements: Array<Element>) -> OrderedMultiSet<Element>? {
+		if let r: RedBlackTree<Element, Element> = tree.removeValueForKeys(elements) {
+			let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
+			for (k, v) in r {
+				s.insert(k)
 			}
+			count = tree.count
+			return s
 		}
-		count = tree.count
-		return s
+		return nil
 	}
 
 	/**
@@ -335,7 +332,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 			}
 			var q: Int = tree.countOf(x)
 			if toRemove {
-				tree.removeValueForKey(x)
+				tree.removeValueForKeys(x)
 				i -= --q
 			} else {
 				var n: Int = q
@@ -456,7 +453,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 			for u in sets {
 				if nil != u.tree.findValueForKey(x) {
 					let n: Int = tree.countOf(x)
-					tree.removeValueForKey(x)
+					tree.removeValueForKeys(x)
 					i -= n - 1
 					break
 				}
@@ -545,7 +542,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 						insert(x)
 					}
 				} else {
-					tree.removeValueForKey(x)
+					tree.removeValueForKeys(x)
 				}
 			}
 		}

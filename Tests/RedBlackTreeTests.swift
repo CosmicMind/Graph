@@ -46,18 +46,18 @@ class RedBlackTreeTests: XCTestCase {
 		XCTAssert(3 == s[2].value, "Test failed.")
 		
 		for (var i: Int = 500; i > 0; --i) {
-			s.removeValueForKey(1)
-			s.removeValueForKey(3)
+			s.removeValueForKeys(1)
+			s.removeValueForKeys(3)
 		}
 		
 		XCTAssert(1 == s.count, "Test failed.")
-		XCTAssert(nil != s.removeValueForKey(2), "Test failed.")
-		XCTAssert(nil == s.removeValueForKey(2), "Test failed.")
+		XCTAssert(nil != s.removeValueForKeys(2), "Test failed.")
+		XCTAssert(nil == s.removeValueForKeys(2), "Test failed.")
 		XCTAssert(true == s.insert(2, value: 10), "Test failed.")
 		XCTAssert(1 == s.count, "Test failed.")
 		XCTAssert(10 == s.findValueForKey(2), "Test failed.")
 		XCTAssert(10 == s[0].value, "Test failed.")
-		XCTAssert(true == (nil != s.removeValueForKey(2) && 0 == s.count), "Test failed.")
+		XCTAssert(true == (nil != s.removeValueForKeys(2) && 0 == s.count), "Test failed.")
 		
 		s.insert(1, value: 1)
 		s.insert(2, value: 2)

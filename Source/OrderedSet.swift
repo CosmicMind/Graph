@@ -233,26 +233,27 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedSet.
-		:returns:	OrderedSet<Element>
+		:returns:	OrderedSet<Element>?
 	*/
-	public func remove(elements: Element...) -> OrderedSet<Element> {
+	public func remove(elements: Element...) -> OrderedSet<Element>? {
 		return remove(elements)
 	}
 
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedSet.
-		:returns:	OrderedSet<Element>
+		:returns:	OrderedSet<Element>?
 	*/
-	public func remove(elements: Array<Element>) -> OrderedSet<Element> {
-		let s: OrderedSet<Element> = OrderedSet<Element>()
-		for x in elements {
-			if nil != tree.removeValueForKey(x) {
-				s.insert(x)
+	public func remove(elements: Array<Element>) -> OrderedSet<Element>? {
+		if let r: RedBlackTree<Element, Element> = tree.removeValueForKeys(elements) {
+			let s: OrderedSet<Element> = OrderedSet<Element>()
+			for (k, v) in r {
+				s.insert(k)
 			}
+			count = tree.count
+			return s
 		}
-		count = tree.count
-		return s
+		return nil
 	}
 
 	/**
@@ -312,7 +313,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 			let x: Element = tree[i].key
 			for u in sets {
 				if nil == u.tree.findValueForKey(x) {
-					tree.removeValueForKey(x)
+					tree.removeValueForKeys(x)
 					break
 				}
 			}
@@ -413,7 +414,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	public func subtractInPlace(sets: Array<OrderedSet<Element>>) {
 		for u in sets {
 			for (x, _) in u.tree {
-				tree.removeValueForKey(x)
+				tree.removeValueForKeys(x)
 			}
 		}
 		count = tree.count
@@ -488,7 +489,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 				if toInsert && nil == tree.findValueForKey(x) {
 					insert(x)
 				} else {
-					tree.removeValueForKey(x)
+					tree.removeValueForKeys(x)
 				}
 			}
 		}

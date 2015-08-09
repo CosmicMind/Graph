@@ -211,20 +211,33 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		:name:	removeValueForKey
+		:name:	removeValueForKeys
 		:description:	Removes a node from the tree based on the key value given.
 		If the tree allows non-unique keys, then all keys matching
 		the given key value will be removed.
-		:returns:	Value?
+		:returns:	RedBlackTree<Key, Value>?
 	*/
-	public func removeValueForKey(key: Key) -> Value? {
-		var removed: RedBlackNode<Key, Value>?
-		var x: RedBlackNode<Key, Value>?
-		while sentinel !== x {
-			removed = x
-			x = internalRemoveValueForKey(key)
+	public func removeValueForKeys(keys: Key...) -> RedBlackTree<Key, Value>? {
+		return removeValueForKeys(keys)
+	}
+	
+	/**
+		:name:	removeValueForKeys
+		:description:	Removes a key / value pairs from the tree based on the key given.
+		If the tree allows non-unique keys, then all keys matching
+		the given key will be removed.
+		:returns:	RedBlackTree<Key, Value>?
+	*/
+	public func removeValueForKeys(keys: Array<Key>) -> RedBlackTree<Key, Value>? {
+		var r: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>(uniqueKeys: isUniquelyKeyed)
+		for x in keys {
+			var z: RedBlackNode<Key, Value> = internalRemoveValueForKey(x)
+			while sentinel !== z {
+				r.insert(z.key, value: z.value)
+				z = internalRemoveValueForKey(x)
+			}
 		}
-		return removed?.value
+		return 0 == r.count ? nil : r
 	}
 
 	/**
@@ -768,7 +781,7 @@ public func -<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBl
 	}
 	for var i: Int = rhs.count - 1; 0 <= i; --i {
 		let n: (key: Key, value: Value?) = rhs[i]
-		t.removeValueForKey(n.key)
+		t.removeValueForKeys(n.key)
 	}
 	return t
 }

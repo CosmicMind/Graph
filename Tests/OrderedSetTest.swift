@@ -52,7 +52,7 @@ class OrderedSetTests: XCTestCase {
 		
 		XCTAssert(1 == s.count, "Test failed.")
 		XCTAssert(OrderedSet<Int>(elements: 2) == s.remove(2), "Test failed.")
-		XCTAssert(OrderedSet<Int>() == s.remove(2), "Test failed.")
+		XCTAssert(nil == s.remove(2), "Test failed.")
 		s.insert(10)
 		XCTAssert(1 == s.count, "Test failed.")
 		
