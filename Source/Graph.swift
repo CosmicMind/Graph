@@ -113,10 +113,6 @@ public class Graph: NSObject {
 		super.init()
 	}
 
-	/**
-		:name:	deinit
-		:description:	Deinitializes the Object, mainly removing itself as an observer for NSNotifications.
-	*/
 	deinit {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
 	}
