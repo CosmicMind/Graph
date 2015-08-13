@@ -16,4 +16,6 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+//#internal
+
 public struct Sort {}
