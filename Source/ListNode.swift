@@ -16,6 +16,8 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+// #internal
+
 internal class ListNode<Element> : Printable {
 	/**
 		:name:	next
