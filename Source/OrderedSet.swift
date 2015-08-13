@@ -312,9 +312,6 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 				++j
 			}
 		}
-		while count != i {
-			remove(self[i])
-		}
 	}
 	
 	/**
@@ -488,8 +485,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		if count > set.count {
 			return false
 		}
-		for (x, _) in tree {
-			if nil == set.tree.findValueForKey(x) {
+		for x in self {
+			if !set.contains(x) {
 				return false
 			}
 		}
@@ -514,8 +511,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		if count < set.count {
 			return false
 		}
-		for (x, _) in set.tree {
-			if nil == tree.findValueForKey(x) {
+		for x in set {
+			if !contains(x) {
 				return false
 			}
 		}

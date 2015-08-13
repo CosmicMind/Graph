@@ -285,8 +285,8 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				++j
 			} else {
 				s.insert(x)
-				++i
-				++j
+				i += countOf(x)
+				j += set.countOf(y)
 			}
 		}
 		return s
@@ -308,13 +308,10 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 			} else if y < x {
 				++j
 			} else {
-				++i
-				++j
+				i += countOf(x)
+				j += set.countOf(y)
 			}
 		}
-//		while count != i {
-//			remove(self[i])
-//		}
 	}
 	
 	/**
@@ -366,8 +363,8 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 			} else if y < x {
 				++j
 			} else {
-				++i
-				++j
+				i += countOf(x)
+				j += set.countOf(y)
 			}
 		}
 		return s
@@ -390,7 +387,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				++j
 			} else {
 				remove(x)
-				++j
+				j += set.countOf(y)
 			}
 		}
 	}
@@ -449,7 +446,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				++j
 			} else {
 				remove(x)
-				++j
+				j += set.countOf(y)
 			}
 		}
 		while l != j {
@@ -488,8 +485,8 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		if count > set.count {
 			return false
 		}
-		for (x, _) in tree {
-			if nil == set.tree.findValueForKey(x) {
+		for x in self {
+			if !set.contains(x) {
 				return false
 			}
 		}
@@ -514,8 +511,8 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		if count < set.count {
 			return false
 		}
-		for (x, _) in set.tree {
-			if nil == tree.findValueForKey(x) {
+		for x in set {
+			if !contains(x) {
 				return false
 			}
 		}
