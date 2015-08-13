@@ -270,144 +270,80 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Return a new set with elements common to this set and a finite sequence of Sets.
 		:returns:	OrderedMultiSet<Element>
 	*/
-	public func intersect(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
-		return intersect(sets)
-	}
-
-	/**
-		:name:	intersect
-		:description:	Return a new set with elements common to this set and a finite sequence of Sets.
-		:returns:	OrderedMultiSet<Element>
-	*/
-	public func intersect(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
+	public func intersect(set: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		for var i: Int = tree.count - 1; 0 <= i; --i {
-			let x: Element = tree[i].key
-			var toInsert: Bool = true
-			for u in sets {
-				if nil == u.tree.findValueForKey(x) {
-					toInsert = false
-					break
-				}
-			}
-			if toInsert {
-				let q: Int = tree.countOf(x)
-				var n: Int = q
-				for u in sets {
-					let m: Int = u.tree.countOf(x)
-					if m < n {
-						n = m
-					}
-				}
-				i -= q - 1
-				while 0 < n-- {
-					s.insert(x)
-				}
-			}
-		}
-		return s
-	}
-
-	/**
-		:name:	intersectInPlace
-		:description:	Insert elements of a finite sequence of Sets.
-	*/
-	public func intersectInPlace(sets: OrderedMultiSet<Element>...) {
-		intersectInPlace(sets)
-	}
-
-	/**
-		:name:	intersectInPlace
-		:description:	Remove any elements of this set that aren't also in a finite sequence of Sets.
-	*/
-	public func intersectInPlace(sets: Array<OrderedMultiSet<Element>>) {
-		for var i: Int = tree.count - 1; 0 <= i; --i {
-			let x: Element = tree[i].key
-			var toRemove: Bool = false
-			for u in sets {
-				if nil == u.tree.findValueForKey(x) {
-					toRemove = true
-					break
-				}
-			}
-			var q: Int = tree.countOf(x)
-			if toRemove {
-				tree.removeValueForKeys(x)
-				i -= --q
+		var i: Int = 0
+		var j: Int = 0
+		let k: Int = count
+		let l: Int = set.count
+		while k > i && l > j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				++i
+			} else if y < x {
+				++j
 			} else {
-				var n: Int = q
-				for u in sets {
-					let m: Int = u.tree.countOf(x)
-					if m < n {
-						n = m
-					}
-				}
-				if q != n {
-					n = q - n
-					i -= q - n - 1
-					while 0 < n-- {
-						tree.removeInstanceOfValueForKey(x)
-					}
-				}
-			}
-		}
-		count = tree.count
-	}
-
-	/**
-		:name:	union
-		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
-		:returns:	OrderedMultiSet<Element>
-	*/
-	public func union(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
-		return union(sets)
-	}
-
-	/**
-		:name:	union
-		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
-		:returns:	OrderedMultiSet<Element>
-	*/
-	public func union(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
-		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		for u in sets {
-			for x in u {
 				s.insert(x)
+				++i
+				++j
 			}
-		}
-		for x in self {
-			s.insert(x)
 		}
 		return s
 	}
-
+	
 	/**
-		:name:	unionInPlace
-		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
-	*/
-	public func unionInPlace(sets: OrderedMultiSet<Element>...) {
-		unionInPlace(sets)
-	}
-
-	/**
-		:name:	unionInPlace
+		:name:	intersectInPlace
 		:description:	Insert elements of a finite sequence of Sets.
 	*/
-	public func unionInPlace(sets: Array<OrderedMultiSet<Element>>) {
-		for u in sets {
-			for x in u {
-				insert(x)
+	public func intersectInPlace(set: OrderedMultiSet<Element>) {
+		var i: Int = 0
+		var j: Int = 0
+		let l: Int = set.count
+		while count > i && l > j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				remove(x)
+			} else if y < x {
+				++j
+			} else {
+				++i
+				++j
 			}
 		}
+//		while count != i {
+//			remove(self[i])
+//		}
 	}
-
+	
 	/**
-		:name:	subtract
-		:description:	Return a new set with elements in this set that do not occur in a finite sequence of Sets.
+		:name:	union
+		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
 		:returns:	OrderedMultiSet<Element>
 	*/
-	public func subtract(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
-		return subtract(sets)
+	public func union(set: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
+		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
+		var i: Int = count
+		while 0 < i {
+			s.insert(self[--i])
+		}
+		i = set.count
+		while 0 < i {
+			s.insert(set[--i])
+		}
+		return s
+	}
+	
+	/**
+		:name:	unionInPlace
+		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
+	*/
+	public func unionInPlace(set: OrderedMultiSet<Element>) {
+		var i: Int = set.count
+		while 0 < i {
+			insert(set[--i])
+		}
 	}
 	
 	/**
@@ -415,21 +351,23 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Return a new set with elements in this set that do not occur in a finite sequence of Sets.
 		:returns:	OrderedMultiSet<Element>
 	*/
-	public func subtract(sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
+	public func subtract(set: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		for var i: Int = tree.count - 1; 0 <= i; --i {
-			let x: Element = tree[i].key
-			for u in sets {
-				if nil != u.tree.findValueForKey(x) {
-					var n: Int = tree.countOf(x)
-					if 1 < n {
-						i -= (n - 1)
-					}
-					while 0 < n-- {
-						s.insert(x)
-					}
-					break
-				}
+		var i: Int = 0
+		var j: Int = 0
+		let k: Int = count
+		let l: Int = set.count
+		while k > i && l > j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				s.insert(x)
+				++i
+			} else if y < x {
+				++j
+			} else {
+				++i
+				++j
 			}
 		}
 		return s
@@ -439,27 +377,22 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	subtractInPlace
 		:description:	Remove all elements in the set that occur in a finite sequence of Sets.
 	*/
-	public func subtractInPlace(sets: OrderedMultiSet<Element>...) {
-		subtractInPlace(sets)
-	}
-	
-	/**
-		:name:	subtractInPlace
-		:description:	Remove all elements in the set that occur in a finite sequence of Sets.
-	*/
-	public func subtractInPlace(sets: Array<OrderedMultiSet<Element>>) {
-		for var i: Int = tree.count - 1; 0 <= i; --i {
-			let x: Element = tree[i].key
-			for u in sets {
-				if nil != u.tree.findValueForKey(x) {
-					let n: Int = tree.countOf(x)
-					tree.removeValueForKeys(x)
-					i -= n - 1
-					break
-				}
+	public func subtractInPlace(set: OrderedMultiSet<Element>) {
+		var i: Int = 0
+		var j: Int = 0
+		let l: Int = set.count
+		while count > i && l > j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				++i
+			} else if y < x {
+				++j
+			} else {
+				remove(x)
+				++j
 			}
 		}
-		count = tree.count
 	}
 	
 	/**
@@ -467,39 +400,31 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Return a new set with elements that are either in the set or a finite sequence but do not occur in both.
 		:returns:	OrderedMultiSet<Element>
 	*/
-	public func exclusiveOr(sets: OrderedMultiSet<Element>...) -> OrderedMultiSet<Element> {
-		return exclusiveOr(sets)
-	}
-	
-	/**
-		:name:	exclusiveOr
-		:description:	Return a new set with elements that are either in the set or a finite sequence but do not occur in both.
-		:returns:	OrderedMultiSet<Element>
-	*/
-	public func exclusiveOr(var sets: Array<OrderedMultiSet<Element>>) -> OrderedMultiSet<Element> {
+	public func exclusiveOr(set: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		sets.append(self)
-		for var i: Int = sets.count - 1; 0 <= i; --i {
-			let t: RedBlackTree<Element, Element> = sets[i].tree
-			for var k: Int = t.count - 1; 0 <= k; --k {
-				let x: Element = t[k].key
-				var toInsert: Bool = true
-				for var j: Int = sets.count - 1; 0 <= j; --j {
-					if i != j {
-						if nil != sets[j].tree.findValueForKey(x) {
-							toInsert = false
-							break
-						}
-					}
-				}
-				if toInsert {
-					var n: Int = t.countOf(x)
-					k -= n - 1
-					while 0 < n-- {
-						s.insert(x)
-					}
-				}
+		var i: Int = 0
+		var j: Int = 0
+		let k: Int = count
+		let l: Int = set.count
+		while k > i && l > j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				s.insert(x)
+				++i;
+			} else if y < x {
+				s.insert(y)
+				++j
+			} else {
+				i += countOf(x)
+				j += set.countOf(y)
 			}
+		}
+		while l != j {
+			s.insert(set[j++])
+		}
+		while k != i {
+			s.insert(self[i++])
 		}
 		return s
 	}
@@ -510,43 +435,26 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		common element, otherwise add it to the set. Repeated elements of the sequence will be
 		ignored.
 	*/
-	public func exclusiveOrInPlace(sets: OrderedMultiSet<Element>...) {
-		exclusiveOrInPlace(sets)
-	}
-	
-	/**
-		:name:	exclusiveOrInPlace
-		:description:	For each element of a finite sequence, remove it from the set if it is a
-		common element, otherwise add it to the set. Repeated elements of the sequence will be
-		ignored.
-	*/
-	public func exclusiveOrInPlace(sets: Array<OrderedMultiSet<Element>>) {
-		let n: Int = sets.count - 1
-		for var i: Int = n; 0 <= i; --i {
-			let t: RedBlackTree<Element, Element> = sets[i].tree
-			for var k: Int = t.count - 1; 0 <= k; --k {
-				let x: Element = t[k].key
-				var toInsert: Bool = true
-				for var j: Int = n; 0 <= j; --j {
-					if i != j {
-						if nil != sets[j].tree.findValueForKey(x) {
-							toInsert = false
-							break
-						}
-					}
-				}
-				if toInsert && nil == tree.findValueForKey(x) {
-					var n: Int = t.countOf(x)
-					k -= n - 1
-					while 0 < n-- {
-						insert(x)
-					}
-				} else {
-					tree.removeValueForKeys(x)
-				}
+	public func exclusiveOrInPlace(set: OrderedMultiSet<Element>) {
+		var i: Int = 0
+		var j: Int = 0
+		let l: Int = set.count
+		while count > i && l > j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				++i
+			} else if y < x {
+				insert(y)
+				++j
+			} else {
+				remove(x)
+				++j
 			}
 		}
-		count = tree.count
+		while l != j {
+			insert(set[j++])
+		}
 	}
 	
 	/**
@@ -554,31 +462,22 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Returns true if no elements in the set are in a finite sequence of Sets.
 		:returns:	Bool
 	*/
-	public func isDisjointWith(sets: OrderedMultiSet<Element>...) -> Bool {
-		return isDisjointWith(sets)
-	}
-	
-	/**
-		:name:	isDisjointWith
-		:description:	Returns true if no elements in the set are in a finite sequence of Sets.
-		:returns:	Bool
-	*/
-	public func isDisjointWith(var sets: Array<OrderedMultiSet<Element>>) -> Bool {
-		for var i: Int = tree.count - 1; 0 <= i; --i {
-			let x: Element = tree[i].key
-			for u in sets {
-				if nil != u.tree.findValueForKey(x) {
-					return false
-				}
-			}
-			let n: Int = tree.countOf(x)
-			if 1 < n {
-				i -= n - 1
+	public func isDisjointWith(set: OrderedMultiSet<Element>) -> Bool {
+		var i: Int = count - 1
+		var j: Int = set.count - 1
+		while 0 <= i && 0 <= j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				--j
+			} else if y < x {
+				--i
+			} else {
+				return false
 			}
 		}
 		return true
 	}
-	
 	
 	/**
 		:name:	isSubsetOf
@@ -596,7 +495,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		}
 		return true
 	}
-
+	
 	/**
 		:name:	isStrictSubsetOf
 		:description:	Returns true if the set is a subset of a finite sequence as a Set but not equal.
