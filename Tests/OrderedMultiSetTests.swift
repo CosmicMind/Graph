@@ -76,12 +76,12 @@ class OrderedMultiSetTests: XCTestCase {
 	}
 	
 	func testIntersect() {
-		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 3, 4, 5)
+		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 3, 4, 5, 5)
 		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 6, 7, 8, 9, 10)
-		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 10, 11, 12, 13, 14, 15)
+		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 5, 10, 11, 12, 13, 14, 15)
 		
-		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 5) == s1.intersect(s2), "Test failed. \(s1.intersect(s2))")
-		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2) == s1.intersect(s3), "Test failed. \(s1.intersect(s3))")
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 1, 2, 5) == s1.intersect(s2), "Test failed. \(s1.intersect(s2))")
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 5) == s1.intersect(s3), "Test failed. \(s1.intersect(s3))")
 	}
 	
 	func testIntersectInPlace() {
@@ -95,7 +95,7 @@ class OrderedMultiSetTests: XCTestCase {
 		s2.insert(5)
 		
 		s1.intersectInPlace(s2)
-		XCTAssert(OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 5, 5, 5) == s1, "Test failed. \(s1)")
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 5) == s1, "Test failed. \(s1)")
 	}
 	
 	func testIsDisjointWith() {
@@ -109,37 +109,38 @@ class OrderedMultiSetTests: XCTestCase {
 	}
 	
 	func testSubtract() {
-		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 4, 5)
-		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 4, 5)
-		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 3, 5)
+		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 3, 4, 5)
+		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 4, 5, -1)
+		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 3, 5, 0, -7)
 		
-		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 3, 3) == s1.subtract(s2), "Test failed. \(s1.subtract(s2))")
-		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 4) == s1.subtract(s3), "Test failed. \(s1.subtract(s3))")
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 3) == s1.subtract(s2), "Test failed. \(s1.subtract(s2))")
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 4) == s1.subtract(s3), "Test failed. \(s1.subtract(s3))")
 	}
 	
 	func testSubtractInPlace() {
-		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 4, 5, 7, 8, 9, 9, 10)
-		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 4, 5, 6, 7, 9)
+		var s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 3, 4, 5)
+		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 4, 5, -1)
+		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 3, 5, 0, -7)
 		
 		s1.subtractInPlace(s2)
-		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 3, 8, 10) == s1, "Test failed. \(s1)")
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 3) == s1, "Test failed. \(s1)")
+		s1 = OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 3, 4, 5)
+		s1.subtractInPlace(s3)
+		XCTAssert(OrderedMultiSet<Int>(elements: 1, 2, 3, 3, 4) == s1, "Test failed. \(s1)")
 	}
 	
 	func testUnion() {
-		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 4, 5)
-		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 5, 6, 7, 8, 9, 9)
-		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 9)
-		
-		XCTAssert(s3 == s1.union(s2), "Test failed. \(s3) \(s1.union(s2))")
+		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 0, 0, 1, 2, 3, 4, 7, 7, 5)
+		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 5, -1, 6, 8, 7, 9, 9)
+
+		XCTAssert(OrderedMultiSet<Int>(elements: -1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 9) == s1.union(s2), "Test failed. \(s1.union(s2))")
 	}
 	
 	func testUnionInPlace() {
-		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 4, 5)
-		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 5, 6, 7, 8, 9, 9)
-		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 9)
-		
+		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 0, 0, 1, 2, 3, 4, 7, 7, 5)
+		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 5, -1, 0, 6, 8, 7, 9, 9)
 		s1.unionInPlace(s2)
-		XCTAssert(s3 == s1, "Test failed.")
+		XCTAssert(OrderedMultiSet<Int>(elements: -1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 9) == s1, "Test failed. \(s1)")
 	}
 	
 	func testIsSubsetOf() {

@@ -80,6 +80,10 @@ class OrderedSetTests: XCTestCase {
 		let s2: OrderedSet<Int> = OrderedSet<Int>(elements: 22, 23, 5, 6, 7, 8, 9, 10)
 
 		XCTAssert(OrderedSet<Int>(elements: 22, 23, 5) == s1.intersect(s2), "Test failed. \(s1.intersect(s2))")
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9)
+		let s4: OrderedSet<Int> = OrderedSet<Int>(elements: 11, 9, 7, 3, 8, 100, 99, 88, 77)
+		XCTAssert(OrderedSet<Int>(elements: 9, 3, 7, 8) == s3.intersect(s4), "Test failed.")
 	}
 	
 	func testIntersectInPlace() {
@@ -88,13 +92,22 @@ class OrderedSetTests: XCTestCase {
 		
 		s1.intersectInPlace(s2)
 		XCTAssert(OrderedSet<Int>(elements: 22, 23, 5) == s1, "Test failed. \(s1)")
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9)
+		let s4: OrderedSet<Int> = OrderedSet<Int>(elements: 11, 9, 7, 3, 8, 100, 99, 88, 77)
+		s3.intersectInPlace(s4)
+		XCTAssert(OrderedSet<Int>(elements: 9, 3, 7, 8) == s3, "Test failed.")
 	}
 	
 	func testSubtract() {
 		let s1: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 7, 8, 9, 10)
 		let s2: OrderedSet<Int> = OrderedSet<Int>(elements: 4, 5, 6, 7)
 		
-		XCTAssertFalse(OrderedSet<Int>(elements: 1, 2, 3, 8, 9, 10) == s1.subtract(s2), "Test failed.")
+		XCTAssert(OrderedSet<Int>(elements: 1, 2, 3, 8, 9, 10) == s1.subtract(s2), "Test failed. \(s1.subtract(s2))")
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 0, -1, -2, -7, 99, 100)
+		let s4: OrderedSet<Int> = OrderedSet<Int>(elements: -3, -5, -7, 99)
+		XCTAssert(OrderedSet<Int>(elements: 0, -1, -2, 100) == s3.subtract(s4), "Test failed. \(s3.subtract(s4))")
 	}
 	
 	func testSubtractInPlace() {
@@ -103,6 +116,11 @@ class OrderedSetTests: XCTestCase {
 		
 		s1.subtractInPlace(s2)
 		XCTAssert(OrderedSet<Int>(elements: 1, 2, 3, 8, 9, 10) == s1, "Test failed. \(s1)")
+		
+		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 0, -1, -2, -7, 99, 100)
+		let s4: OrderedSet<Int> = OrderedSet<Int>(elements: -3, -5, -7, 99)
+		s3.subtractInPlace(s4)
+		XCTAssert(OrderedSet<Int>(elements: 0, -1, -2, 100) == s3, "Test failed. \(s3)")
 	}
 	
 	func testUnion() {

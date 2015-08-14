@@ -321,13 +321,30 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	*/
 	public func union(set: OrderedSet<Element>) -> OrderedSet<Element> {
 		let s: OrderedSet<Element> = OrderedSet<Element>()
-		var i: Int = count
-		while 0 < i {
-			s.insert(self[--i])
+		var i: Int = 0
+		var j: Int = 0
+		let k: Int = count
+		let l: Int = set.count
+		while k != i && l != j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				s.insert(x)
+				++i
+			} else if y < x {
+				s.insert(y)
+				++j
+			} else {
+				s.insert(x)
+				++i
+				++j
+			}
 		}
-		i = set.count
-		while 0 < i {
-			s.insert(set[--i])
+		while k != i {
+			s.insert(self[i++])
+		}
+		while l != j {
+			s.insert(set[j++])
 		}
 		return s
 	}
@@ -337,9 +354,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
 	public func unionInPlace(set: OrderedSet<Element>) {
-		var i: Int = set.count
-		while 0 < i {
-			insert(set[--i])
+		var j: Int = 0
+		let l = set.count
+		while l != j {
+			insert(set[j++])
 		}
 	}
 	
@@ -366,6 +384,9 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 				++i
 				++j
 			}
+		}
+		while count != i {
+			s.insert(self[i++])
 		}
 		return s
 	}
@@ -534,7 +555,7 @@ public func ==<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<El
 		return false
 	}
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		if lhs.tree[i].key != rhs.tree[i].key {
+		if lhs[i] != rhs[i] {
 			return false
 		}
 	}

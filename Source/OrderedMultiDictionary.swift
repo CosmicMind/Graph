@@ -356,7 +356,7 @@ public func ==<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>,
 		return false
 	}
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		if lhs.tree[i].key != rhs.tree[i].key {
+		if lhs[i].key != rhs[i].key {
 			return false
 		}
 	}

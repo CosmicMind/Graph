@@ -285,8 +285,8 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				++j
 			} else {
 				s.insert(x)
-				i += countOf(x)
-				j += set.countOf(y)
+				++i
+				++j
 			}
 		}
 		return s
@@ -300,16 +300,17 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		var i: Int = 0
 		var j: Int = 0
 		let l: Int = set.count
-		while count > i && l > j {
+		while count != i && l != j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
-				remove(x)
+				tree.removeInstanceOfValueForKey(x)
+				count = tree.count
 			} else if y < x {
 				++j
 			} else {
-				i += countOf(x)
-				j += set.countOf(y)
+				++i
+				++j
 			}
 		}
 	}
@@ -321,13 +322,30 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	*/
 	public func union(set: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-		var i: Int = count
-		while 0 < i {
-			s.insert(self[--i])
+		var i: Int = 0
+		var j: Int = 0
+		let k: Int = count
+		let l: Int = set.count
+		while k != i && l != j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				s.insert(x)
+				++i
+			} else if y < x {
+				s.insert(y)
+				++j
+			} else {
+				s.insert(x)
+				++i
+				++j
+			}
 		}
-		i = set.count
-		while 0 < i {
-			s.insert(set[--i])
+		while k != i {
+			s.insert(self[i++])
+		}
+		while l != j {
+			s.insert(set[j++])
 		}
 		return s
 	}
@@ -337,9 +355,24 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
 	public func unionInPlace(set: OrderedMultiSet<Element>) {
-		var i: Int = set.count
-		while 0 < i {
-			insert(set[--i])
+		var i: Int = 0
+		var j: Int = 0
+		let l: Int = set.count
+		while count != i && l != j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				++i
+			} else if y < x {
+				insert(y)
+				++j
+			} else {
+				++i
+				++j
+			}
+		}
+		while l != j {
+			insert(set[j++])
 		}
 	}
 	
@@ -354,7 +387,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		var j: Int = 0
 		let k: Int = count
 		let l: Int = set.count
-		while k > i && l > j {
+		while k != i && l != j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -363,9 +396,12 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 			} else if y < x {
 				++j
 			} else {
-				i += countOf(x)
-				j += set.countOf(y)
+				++i
+				++j
 			}
+		}
+		while count != i {
+			s.insert(self[i++])
 		}
 		return s
 	}
@@ -386,8 +422,9 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 			} else if y < x {
 				++j
 			} else {
-				remove(x)
-				j += set.countOf(y)
+				tree.removeInstanceOfValueForKey(x)
+				count = tree.count
+				++j
 			}
 		}
 	}
@@ -446,7 +483,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				++j
 			} else {
 				remove(x)
-				j += set.countOf(y)
+				++j
 			}
 		}
 		while l != j {
@@ -534,7 +571,7 @@ public func ==<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedM
 		return false
 	}
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		if lhs.tree[i].key != rhs.tree[i].key {
+		if lhs[i] != rhs[i] {
 			return false
 		}
 	}
