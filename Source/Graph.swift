@@ -485,10 +485,10 @@ public class Graph: NSObject {
 		return nodes
 	}
 
-	/**
-		:name:	managedObjectContextDidSave
-		:description:	The callback that NotificationCenter uses when changes occur in the Graph.
-	*/
+	//
+	//	:name:	managedObjectContextDidSave
+	//	:description:	The callback that NotificationCenter uses when changes occur in the Graph.
+	//
 	public func managedObjectContextDidSave(notification: NSNotification) {
 		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as! NSManagedObjectContext
 		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
