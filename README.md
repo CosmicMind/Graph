@@ -1,6 +1,6 @@
 # Build Intelligent Software
 ### A powerful iOS / OSX framework for data-driven design.
-[Get Started](http://developer.graphkit.io')
+[Get Started](http://developer.graphkit.io)
 
 ### Unbelievable Persistence
 Developers are limited by their efficiency to model simple and complex data. Without any configuration or schemas, GraphKit can model any scenario with a few lines of code. Take advantage of fast prototyping that is ready for production when you are.
@@ -100,28 +100,29 @@ As data moves through your application, the state of information may be observed
 let graph = Graph()
 graph.delegate = self
 graph.watch(Action: "Clicked")
-                        |
+
 let user = Entity(type: "User")
 let click = Action(type: "Clicked")
 let button = Entity(type: "Button")
-                        |
+
 action.addSubject(user)
 action.addObject(button)
-                        |
+
 graph.save()
-                        |
+
 // delegate method
 internal func graphDidInsertAction(graph: Graph, action: Action) {
-  switch(action.tyoe) {
-  case "Clicked":
+    switch(action.tyoe) {
+    case "Clicked":
       println(action.subjects.first.type) // User
       println(action.objects.first.type) // Button
       break
-  case "Swiped":
+    case "Swiped":
       // handle swipe
      break
-  default:
+    default:
       break
+    }
  }
 ```
 
