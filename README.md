@@ -111,7 +111,7 @@ action.addObject(button)
 graph.save()
 
 // delegate method
-internal func graphDidInsertAction(graph: Graph, action: Action) {
+func graphDidInsertAction(graph: Graph, action: Action) {
     switch(action.tyoe) {
     case "Clicked":
       println(action.subjects.first.type) // User
