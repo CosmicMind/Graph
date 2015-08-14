@@ -1,50 +1,130 @@
-## GraphKit
+# Build Intelligent Software
+### A powerful iOS / OSX framework for data-driven design.
+[Get Started](http://developer.graphkit.io')
 
-GraphKit is a framework for data completely written in Swift that allows you to take advantage of powerful data manipulation in a fraction of the time. GraphKit data structures may be used on their own, or combined with the power of Graph, which is a Graph data store built on CoreData. 
+### Unbelievable Persistence
+Developers are limited by their efficiency to model simple and complex data. Without any configuration or schemas, GraphKit can model any scenario with a few lines of code. Take advantage of fast prototyping that is ready for production when you are.
 
-As GraphKit grows, many articles and tutorials will be written to aid in learning how to use this framework efficiently and effectively. 
+### Flexible Data Structures
 
-Some of the immediate **benefits to using GraphKit** are: 
+Juggle data around with ease and comfort. A library of flexible data structures are at your fingertips.
 
-* Time saved from setting up simple and complex CoreData models
-* The ability to quickly prototype very complex data relationships
-* GraphKit can store practically anything
+### Built in Probability Theory
 
-### Elementary Data Structures
+An interwoven probability framework is built in. Bring your application to life based on user engagement and predictive analytics without making a single network request.
 
-GraphKit is a robust data framework and to get you started the following are some introductory data structures. These structures pack a punch when used effectively on their own, and when combined with the Graph persistence layer, they take on a whole new form. Graph is not discussed in the following sections, so if you are interested in jumping ahead, take a look at **Introduction to Persistence with Graph**. 
+### A Simple Model
 
-* [Stack](https://github.com/GraphKit/GraphKit/wiki/Stack)
-* [Queue](https://github.com/GraphKit/GraphKit/wiki/Queue)
-* [Deque](https://github.com/GraphKit/GraphKit/wiki/Deque)
-* [List](https://github.com/GraphKit/GraphKit/wiki/List)
+GraphKit model objects vary based on usage. An Entity is representative of a person place or thing. Below is an example of creating a User Entity and saving it to the Graph.
 
-### Advanced Data Structures
+```swift
+let graph = Graph()
 
-Advanced data structures introduces the core flow of information in GraphKit. MultiTrees and Trees are used extensively in Graph, primarily to expand search and movement of information that create the foundation for predictive analytics, machine learning, and robust data models. 
+let user = Entity(type: "User")
+user["name"] = "Eve"
+user["age"] = 27
 
-* [RedBlackTree](https://github.com/GraphKit/GraphKit/wiki/RedBlackTree)
-* [OrderedSet](https://github.com/GraphKit/GraphKit/wiki/OrderedSet)
-* [OrderedMultiSet](https://github.com/GraphKit/GraphKit/wiki/OrderedMultiSet)
-* [OrderedDictionary](https://github.com/GraphKit/GraphKit/wiki/OrderedDictionary)
-* [OrderedMultiDictionary](https://github.com/GraphKit/GraphKit/wiki/OrderedMultiDictionary)
+graph.save()
+```
 
-### Introduction to Persistence with Graph
+### Relationships Between Models
 
-Welcome to the core of GraphKit -- Graph. This is where the magic happens and if you read the initial sections you are in for a treat. If you jumped strait to this section, then welcome to an explosive persistence layer built on Apple's CoreData. In this section you will find a primer to the awesome power of GraphKit. 
+Relationships between Model objects is done using sentence structures. A Bond object forms the connection between two Entity objects using its subject and object property. Below is an example of a relationship between a User Entity and a Book Entity where the User is the Author of the Book.
 
-* [Graph](https://github.com/GraphKit/GraphKit/wiki/Graph)
-* [Entity](https://github.com/GraphKit/GraphKit/wiki/Entity)
-* [Bond](https://github.com/GraphKit/GraphKit/wiki/Bond)
-* [Action](https://github.com/GraphKit/GraphKit/wiki/Action)
+```swift
+let graph = Graph()
 
-### Network Connectivity and Messaging
+let user = Entity(type: "User")
+user["name"] = "Michael Talbot"
 
-Data coming in and out of any application is fundamental. GraphKit offers a light-weight tool set to manage the connectivity of your network, sending and receiving data, and manipulating JSON values. 
+let book = Entity(type: "Book")
+book["title"] = "The Holographic Universe"
+book.addGroup("Physics")
 
-* [JSON](https://github.com/GraphKit/GraphKit/wiki/JSON)
-* [Reachability](https://github.com/GraphKit/GraphKit/wiki/Reachability)
-* [Session](https://github.com/GraphKit/GraphKit/wiki/Session)
+let bond = Bond(type: "AuthorOf")
+bond["written"] = "May 6th 1992"
+bond.subject = user
+bond.object = book
+
+graph.save()
+```
+
+### Real-Time Analytics
+
+Engagement drives the user experience. GraphKit captures engagement through Action objects that form a relationship between many subjects and many objects. Below is an example of a User Entity purchasing many books in a single transaction.
+
+```swift
+let graph = Graph()
+
+let user = graph.search(Entity: "User").last!.value
+let books = graph.search(EntityGroup: "Popular")
+
+let purchased = Action(type: "Purchased")
+purchased.addSubject(user)
+
+for (_, book) in books {
+    purchased.addObject(book)  
+}
+
+graph.save()
+```
+
+### Recommendations Based on Probability
+
+As the user engages your application, GraphKit offers a probability interface to give a truely unique experience. Below is an example of recommending a book that is in the physics genre.
+
+```swift
+let graph = Graph()
+
+let purchases = graph.search(Action: "Purchased")
+let set = OrderedMultiSet&ltString>()
+
+for (_, purchase) in purchases {
+     for (_, book) in purchase!.objects.search("Book") {
+        set.insert(book!["genre"] as! String)
+    }
+}
+
+if set.probabilityOf("Physics") > 0.5 {
+     // offer physics books
+} else {
+     // offer other books
+}
+```
+
+### Data-Driven Design
+
+As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching Clicked Actions on a button.
+
+```swift
+let graph = Graph()
+graph.delegate = self
+graph.watch(Action: "Clicked")
+                        |
+let user = Entity(type: "User")
+let click = Action(type: "Clicked")
+let button = Entity(type: "Button")
+                        |
+action.addSubject(user)
+action.addObject(button)
+                        |
+graph.save()
+                        |
+// delegate method
+internal func graphDidInsertAction(graph: Graph, action: Action) {
+  switch(action.tyoe) {
+  case "Clicked":
+      println(action.subjects.first.type) // User
+      println(action.objects.first.type) // Button
+      break
+  case "Swiped":
+      // handle swipe
+     break
+  default:
+      break
+ }
+```
+
 
 ### License
 
@@ -56,6 +136,3 @@ Data coming in and out of any application is fundamental. GraphKit offers a ligh
 
 
 [Daniel Dahan](https://github.com/danieldahan)
-
-
-

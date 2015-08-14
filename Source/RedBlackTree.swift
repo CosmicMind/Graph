@@ -142,13 +142,13 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		root = sentinel
 	}
 
-	/**
-		:name:	generate
-		:description:	Conforms to the SequenceType Protocol. Returns
-		the next value in the sequence of nodes using
-		index values [0...n-1].
-		:returns:	RedBlackTree.Generator
-	*/
+	//
+	//	:name:	generate
+	//	:description:	Conforms to the SequenceType Protocol. Returns
+	//	the next value in the sequence of nodes using
+	//	index values [0...n-1].
+	//	:returns:	RedBlackTree.Generator
+	//
 	public func generate() -> RedBlackTree.Generator {
 		var index = startIndex
 		return GeneratorOf {
@@ -309,6 +309,26 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 	
 	/**
+		:name:	operator ["key1"..."keyN"]
+		:description:	Property key mapping. If the key type is a
+		String, this feature allows access like a
+		Dictionary.
+		:returns:	Value?
+	*/
+	public subscript(key: Key) -> Value? {
+		get {
+			return internalFindNodeForKey(key).value
+		}
+		set(value) {
+			if sentinel === internalFindNodeForKey(key) {
+				internalInsert(key, value: value)
+			} else {
+				updateValue(value, forKey: key)
+			}
+		}
+	}
+	
+	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
 		:returns:	RedBlackTree.OrderedIndex
@@ -333,26 +353,6 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			}
 		}
 		return tree
-	}
-
-	/**
-		:name:	operator ["key1"..."keyN"]
-		:description:	Property key mapping. If the key type is a
-		String, this feature allows access like a
-		Dictionary.
-		:returns:	Value?
-	*/
-	public subscript(key: Key) -> Value? {
-		get {
-			return internalFindNodeForKey(key).value
-		}
-		set(value) {
-			if sentinel === internalFindNodeForKey(key) {
-				internalInsert(key, value: value)
-			} else {
-				updateValue(value, forKey: key)
-			}
-		}
 	}
 	
 	/**
