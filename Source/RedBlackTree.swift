@@ -243,8 +243,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	removeInstanceOfValueForKey
 		:description:	Removes a single instance of a value for a key. This is
-		important when using non-unique keys. One a single instance of the key
-		is removed reather than all.
+		important when using non-unique keys.
 		:returns:	Value?
 	*/
 	public func removeInstanceOfValueForKey(key: Key) -> Value? {

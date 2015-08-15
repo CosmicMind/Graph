@@ -118,13 +118,13 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		insert(elements)
 	}
 
-	/**
-		:name:	generate
-		:description:	Conforms to the SequenceType Protocol. Returns
-		the next value in the sequence of nodes using
-		index values [0...n-1].
-		:returns:	OrderedMultiSet.Generator
-	*/
+	//
+	//	:name:	generate
+	//	:description:	Conforms to the SequenceType Protocol. Returns
+	//	the next value in the sequence of nodes using
+	//	index values [0...n-1].
+	//	:returns:	OrderedMultiSet.Generator
+	//	
 	public func generate() -> OrderedMultiSet.Generator {
 		var index = startIndex
 		return GeneratorOf {
@@ -300,7 +300,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		var i: Int = 0
 		var j: Int = 0
 		let l: Int = set.count
-		while count != i && l != j {
+		while count > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -326,7 +326,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		var j: Int = 0
 		let k: Int = count
 		let l: Int = set.count
-		while k != i && l != j {
+		while k > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -341,10 +341,10 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				++j
 			}
 		}
-		while k != i {
+		while k > i {
 			s.insert(self[i++])
 		}
-		while l != j {
+		while l > j {
 			s.insert(set[j++])
 		}
 		return s
@@ -358,7 +358,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		var i: Int = 0
 		var j: Int = 0
 		let l: Int = set.count
-		while count != i && l != j {
+		while count > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -371,7 +371,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				++j
 			}
 		}
-		while l != j {
+		while l > j {
 			insert(set[j++])
 		}
 	}
@@ -387,7 +387,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		var j: Int = 0
 		let k: Int = count
 		let l: Int = set.count
-		while k != i && l != j {
+		while k > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -400,7 +400,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				++j
 			}
 		}
-		while count != i {
+		while k > i {
 			s.insert(self[i++])
 		}
 		return s
@@ -454,11 +454,11 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				j += set.countOf(y)
 			}
 		}
-		while l != j {
-			s.insert(set[j++])
-		}
-		while k != i {
+		while k > i {
 			s.insert(self[i++])
+		}
+		while l > j {
+			s.insert(set[j++])
 		}
 		return s
 	}
@@ -486,7 +486,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 				++j
 			}
 		}
-		while l != j {
+		while l > j {
 			insert(set[j++])
 		}
 	}

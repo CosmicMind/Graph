@@ -118,13 +118,13 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		insert(elements)
 	}
 
-	/**
-		:name:	generate
-		:description:	Conforms to the SequenceType Protocol. Returns
-		the next value in the sequence of nodes using
-		index values [0...n-1].
-		:returns:	OrderedSet.Generator
-	*/
+	//
+	//	:name:	generate
+	//	:description:	Conforms to the SequenceType Protocol. Returns
+	//	the next value in the sequence of nodes using
+	//	index values [0...n-1].
+	//	:returns:	OrderedSet.Generator
+	//
 	public func generate() -> OrderedSet.Generator {
 		var index = startIndex
 		return GeneratorOf {
@@ -276,7 +276,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		var j: Int = 0
 		let k: Int = count
 		let l: Int = set.count
-		while k != i && l != j {
+		while k > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -300,7 +300,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		var i: Int = 0
 		var j: Int = 0
 		let l: Int = set.count
-		while count != i && l != j {
+		while count > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -325,7 +325,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		var j: Int = 0
 		let k: Int = count
 		let l: Int = set.count
-		while k != i && l != j {
+		while k > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -340,10 +340,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 				++j
 			}
 		}
-		while k != i {
+		while k > i {
 			s.insert(self[i++])
 		}
-		while l != j {
+		while l > j {
 			s.insert(set[j++])
 		}
 		return s
@@ -354,10 +354,9 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
 	public func unionInPlace(set: OrderedSet<Element>) {
-		var j: Int = 0
-		let l = set.count
-		while l != j {
-			insert(set[j++])
+		var j: Int = set.count
+		while 0 != j {
+			insert(set[--j])
 		}
 	}
 	
@@ -372,7 +371,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		var j: Int = 0
 		let k: Int = count
 		let l: Int = set.count
-		while k != i && l != j {
+		while k > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -385,7 +384,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 				++j
 			}
 		}
-		while count != i {
+		while k > i {
 			s.insert(self[i++])
 		}
 		return s
@@ -399,7 +398,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		var i: Int = 0
 		var j: Int = 0
 		let l: Int = set.count
-		while count != i && l != j {
+		while count > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -424,7 +423,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		var j: Int = 0
 		let k: Int = count
 		let l: Int = set.count
-		while k != i && l != j {
+		while k > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -438,11 +437,11 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 				++j
 			}
 		}
-		while l != j {
-			s.insert(set[j++])
-		}
-		while k != i {
+		while k > i {
 			s.insert(self[i++])
+		}
+		while l > j {
+			s.insert(set[j++])
 		}
 		return s
 	}
@@ -457,7 +456,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		var i: Int = 0
 		var j: Int = 0
 		let l: Int = set.count
-		while count != i && l != j {
+		while count > i && l > j {
 			let x: Element = self[i]
 			let y: Element = set[j]
 			if x < y {
@@ -470,7 +469,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 				++j
 			}
 		}
-		while l != j {
+		while l > j {
 			insert(set[j++])
 		}
 	}

@@ -139,6 +139,7 @@ class OrderedMultiSetTests: XCTestCase {
 	func testUnionInPlace() {
 		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 0, 0, 1, 2, 3, 4, 7, 7, 5)
 		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 5, -1, 0, 6, 8, 7, 9, 9)
+		
 		s1.unionInPlace(s2)
 		XCTAssert(OrderedMultiSet<Int>(elements: -1, 0, 0, 1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 9) == s1, "Test failed. \(s1)")
 	}
