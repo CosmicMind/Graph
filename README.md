@@ -121,7 +121,7 @@ func graphDidInsertAction(graph: Graph, action: Action) {
       // handle swipe
      break
     default:
-      break
+     break
     }
  }
 ```

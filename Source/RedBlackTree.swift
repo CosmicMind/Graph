@@ -290,20 +290,12 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	*/
 	public subscript(index: Int) -> (key: Key, value: Value?) {
 		get {
-			if validateIndex(index) {
-				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
-				return (x.key, x.value)
-			} else {
-				assert(false, "[GraphKit Error: Index out of bounds.]")
-			}
+			let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
+			return (x.key, x.value)
 		}
 		set(element) {
-			if validateIndex(index) {
-				let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
-				internalUpdateValue(element.value, forKey: element.key, node: root)
-			} else {
-				assert(false, "[GraphKit Error: Index out of bounds.]")
-			}
+			let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
+			internalUpdateValue(element.value, forKey: element.key, node: root)
 		}
 	}
 	
@@ -670,6 +662,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:returns:	RedBlackNode<Key, Value>
 	*/
 	private func internalSelect(x: RedBlackNode<Key, Value>, order: Int) -> RedBlackNode<Key, Value> {
+		validateOrder(order)
 		var r: Int = x.left.order + 1
 		if order == r {
 			return x
@@ -738,12 +731,11 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	}
 
 	/**
-		:name:	validateIndex
-		:description:	Checks the validation of the index being within range of 0...n-1.
-		:returns:	Bool
+		:name:	validateOrder
+		:description:	Validates the order statistic being within range of 1...n.
 	*/
-	private func validateIndex(index: Int) -> Bool {
-		return index >= startIndex || index < endIndex
+	private func validateOrder(order: Int) {
+		assert(order >= startIndex || order < endIndex, "[GraphKit Error: Order out of bounds.]")
 	}
 }
 
