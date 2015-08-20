@@ -1,6 +1,8 @@
 # Build Intelligent Software
 ### A powerful iOS / OSX framework for data-driven design.
-[Get Started](http://graphkit.io)
+
+* [Get Started](http://graphkit.io)
+* [Installation Guide](http://www.graphkit.io/tutorials/workspace)
 
 ### Unbelievable Persistence
 Developers are limited by their efficiency to model simple and complex data. Without any configuration or schemas, GraphKit can model any scenario with a few lines of code. Take advantage of fast prototyping that is ready for production when you are.
