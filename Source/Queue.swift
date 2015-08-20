@@ -71,12 +71,12 @@ public class Queue<Element> : Printable, SequenceType {
 		list = List<Element>()
 	}
 
-	/**
-		:name:	generate
-		:description:	Conforms to the SequenceType Protocol. Returns
-		the next value in the sequence of nodes.
-		:returns:	Queue.Generator
-	*/
+	//
+	//	:name:	generate
+	//	:description:	Conforms to the SequenceType Protocol. Returns
+	//	the next value in the sequence of nodes.
+	//	:returns:	Queue.Generator
+	//
 	public func generate() -> Queue.Generator {
 		return list.generate()
 	}

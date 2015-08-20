@@ -142,13 +142,13 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		insert(elements)
 	}
 	
-	/**
-		:name:	generate
-		:description:	Conforms to the SequenceType Protocol. Returns
-		the next value in the sequence of nodes using
-		index values [0...n-1].
-		:returns:	OrderedDictionary.Generator
-	*/
+	//
+	//	:name:	generate
+	//	:description:	Conforms to the SequenceType Protocol. Returns
+	//	the next value in the sequence of nodes using
+	//	index values [0...n-1].
+	//	:returns:	OrderedDictionary.Generator
+	//
 	public func generate() -> OrderedDictionary.Generator {
 		var index = startIndex
 		return GeneratorOf {

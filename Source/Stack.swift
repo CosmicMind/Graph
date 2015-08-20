@@ -72,12 +72,12 @@ public class Stack<Element> : Printable, SequenceType {
 		list = List<Element>()
 	}
 
-	/**
-		:name:	generate
-		:description:	Conforms to the SequenceType Protocol. Returns
-		the next value in the sequence of nodes.
-		:returns:	Stack.Generator
-	*/
+	//
+	//	:name:	generate
+	//	:description:	Conforms to the SequenceType Protocol. Returns
+	//	the next value in the sequence of nodes.
+	//	:returns:	Stack.Generator
+	//
 	public func generate() -> Stack.Generator {
 		return list.generate()
 	}
