@@ -81,12 +81,12 @@ public class Deque<Element> : Printable, SequenceType {
 		list = List<Element>()
 	}
 
-	/**
-		:name:	generate
-		:description:	Conforms to the SequenceType Protocol. Returns
-		the next value in the sequence of nodes.
-		:returns:	Deque.Generator
-	*/
+	//
+	//	:name:	generate
+	//	:description:	Conforms to the SequenceType Protocol. Returns
+	//	the next value in the sequence of nodes.
+	//	:returns:	Deque.Generator
+	//
 	public func generate() -> Deque.Generator {
 		return list.generate()
 	}
