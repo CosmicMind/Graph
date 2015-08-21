@@ -104,11 +104,11 @@ graph.delegate = self
 graph.watch(Action: "Clicked")
 
 let user = Entity(type: "User")
-let click = Action(type: "Clicked")
+let clicked = Action(type: "Clicked")
 let button = Entity(type: "Button")
 
-action.addSubject(user)
-action.addObject(button)
+clicked.addSubject(user)
+clicked.addObject(button)
 
 graph.save()
 
