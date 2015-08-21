@@ -167,12 +167,12 @@ public class List<Element> : Printable, SequenceType {
 		reset()
 	}
 
-	/**
-		:name:	generate
-		:description:	Conforms to the SequenceType Protocol. Returns
-		the next value in the sequence of nodes.
-		:returns:	List.Generator
-	*/
+	//		
+	//	:name:	generate
+	//	:description:	Conforms to the SequenceType Protocol. Returns
+	//	the next value in the sequence of nodes.
+	//	:returns:	List.Generator
+	//
 	public func generate() -> List.Generator {
 		cursorToFront()
 		return GeneratorOf {
