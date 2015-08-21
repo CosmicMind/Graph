@@ -1,0 +1,19 @@
+{
+  "name": "GK",
+  "version": "3.14.0",
+  "summary": "A powerful iOS / OSX framework for data-driven design.",
+  "homepage": "http://graphkit.io",
+  "license": "AGPLv3",
+  "authors": {
+    "Daniel Dahan": "daniel@graphkit.io"
+  },
+  "source": {
+    "git": "https://github.com/GraphKit/GraphKit.git",
+    "tag": "3.14.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "Source/*.swift",
+  "requires_arc": true
+}
