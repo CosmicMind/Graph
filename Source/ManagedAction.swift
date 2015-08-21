@@ -66,13 +66,13 @@ internal class ManagedAction : NSManagedObject {
 			for n in propertySet {
 				let property: ActionProperty = n as! ActionProperty
 				if name == property.name {
-					return property.value
+					return property.object
 				}
 			}
 			return nil
 		}
-		set(value) {
-			if nil == value {
+		set(object) {
+			if nil == object {
 				for n in propertySet {
 					let property: ActionProperty = n as! ActionProperty
 					if name == property.name {
@@ -88,12 +88,12 @@ internal class ManagedAction : NSManagedObject {
 					let property: ActionProperty = n as! ActionProperty
 					if name == property.name {
 						hasProperty = true
-						property.value = value!
+						property.object = object!
 						break
 					}
 				}
 				if false == hasProperty {
-					var property: ActionProperty = ActionProperty(name: name, value: value!)
+					var property: ActionProperty = ActionProperty(name: name, object: object!)
 					property.node = self
 				}
 			}

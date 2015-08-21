@@ -87,7 +87,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		}
 	}
 	
-	func graphDidUpdateActionProperty(graph: Graph, action: Action,property: String,value: AnyObject){
+	func graphDidUpdateActionProperty(graph: Graph, action: Action,property: String, value: AnyObject){
 		var a2: Action? = graph.search(ActionProperty: "active").last?.value
 		if value as! Bool == action["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()

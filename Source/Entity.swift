@@ -129,7 +129,7 @@ public class Entity : NSObject, Comparable {
 	public var properties: OrderedDictionary<String, AnyObject> {
 		var properties: OrderedDictionary<String, AnyObject> = OrderedDictionary<String, AnyObject>()
 		for property in node.propertySet {
-			properties.insert((property.name, property.value))
+			properties.insert((property.name, property.object))
 		}
 		return properties
 	}
