@@ -282,7 +282,7 @@ public class Graph: NSObject {
 		:description:	Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(EntityProperty name: String, value: String) -> OrderedMultiDictionary<String, Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
+		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
 		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
@@ -296,7 +296,7 @@ public class Graph: NSObject {
 		:description:	Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(EntityProperty name: String, value: Int) -> OrderedMultiDictionary<String, Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
+		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
 		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			let node: Entity = Entity(entity: property.node)
@@ -372,7 +372,7 @@ public class Graph: NSObject {
 		:description:	Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(ActionProperty name: String, value: String) -> OrderedMultiDictionary<String, Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
+		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
 		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
@@ -386,7 +386,7 @@ public class Graph: NSObject {
 		:description:	Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(ActionProperty name: String, value: Int) -> OrderedMultiDictionary<String, Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
+		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
 		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			let node: Action = Action(action: property.node)
@@ -462,7 +462,7 @@ public class Graph: NSObject {
 		:description:	Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(BondProperty name: String, value: String) -> OrderedMultiDictionary<String, Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSString))
+		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
 		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
@@ -476,7 +476,7 @@ public class Graph: NSObject {
 		:description:	Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	*/
 	public func search(BondProperty name: String, value: Int) -> OrderedMultiDictionary<String, Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (value == %@)", name as NSString, value as NSNumber))
+		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
 		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			let node: Bond = Bond(bond: property.node)
@@ -514,7 +514,7 @@ public class Graph: NSObject {
 					break
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
-					delegate?.graphDidInsertEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.value)
+					delegate?.graphDidInsertEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedAction_ManagedAction_":
 					delegate?.graphDidInsertAction?(self, action: Action(action: node as! ManagedAction))
@@ -525,7 +525,7 @@ public class Graph: NSObject {
 					break
 				case "ActionProperty_ActionProperty_":
 					let property: ActionProperty = node as! ActionProperty
-					delegate?.graphDidInsertActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.value)
+					delegate?.graphDidInsertActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedBond_ManagedBond_":
 					delegate?.graphDidInsertBond?(self, bond: Bond(bond: node as! ManagedBond))
@@ -536,7 +536,7 @@ public class Graph: NSObject {
 					break
 				case "BondProperty_BondProperty_":
 					let property: BondProperty = node as! BondProperty
-					delegate?.graphDidInsertBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.value)
+					delegate?.graphDidInsertBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
 					break
 				default:
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
@@ -556,15 +556,15 @@ public class Graph: NSObject {
 				switch(className!) {
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
-					delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.value)
+					delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
 					break
 				case "ActionProperty_ActionProperty_":
 					let property: ActionProperty = node as! ActionProperty
-					delegate?.graphDidUpdateActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.value)
+					delegate?.graphDidUpdateActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
 					break
 				case "BondProperty_BondProperty_":
 					let property: BondProperty = node as! BondProperty
-					delegate?.graphDidUpdateBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.value)
+					delegate?.graphDidUpdateBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedAction_ManagedAction_":
 					delegate?.graphDidUpdateAction?(self, action: Action(action: node as! ManagedAction))
@@ -710,7 +710,7 @@ public class Graph: NSObject {
 			bondPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
 
 			var propertyValue: NSAttributeDescription = NSAttributeDescription()
-			propertyValue.name = "value"
+			propertyValue.name = "object"
 			propertyValue.attributeType = .TransformableAttributeType
 			propertyValue.attributeValueClassName = "AnyObject"
 			propertyValue.optional = false

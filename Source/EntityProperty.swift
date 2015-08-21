@@ -23,7 +23,7 @@ import CoreData
 @objc(EntityProperty)
 internal class EntityProperty : NSManagedObject {
 	@NSManaged internal var name: String
-	@NSManaged internal var value: AnyObject
+	@NSManaged internal var object: AnyObject
 	@NSManaged internal var node: ManagedEntity
 
 	private var context: NSManagedObjectContext?
@@ -39,12 +39,12 @@ internal class EntityProperty : NSManagedObject {
 		:name:	init
 		:description:	Initializer for the Model Object.
 	*/
-	convenience init(name: String, value: AnyObject) {
+	convenience init(name: String, object: AnyObject) {
 		let g: Graph = Graph()
 		var w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
-		self.value = value
+		self.object = object
 		context = w
 	}
 
