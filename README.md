@@ -1,3 +1,5 @@
+![Material Kit iOS](https://github.com/GraphKit/MaterialKit/blob/development/MaterialKitLogo.png)
+
 # Build Intelligent Software
 ### A powerful iOS / OSX framework for data-driven design.
 
