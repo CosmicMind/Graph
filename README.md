@@ -85,7 +85,7 @@ As the user engages your application, GraphKit offers a probability interface to
 let graph = Graph()
 
 let purchases = graph.search(Action: "Purchased")
-let set = OrderedMultiSet&ltString>()
+let set = OrderedMultiSet<String>()
 
 for (_, purchase) in purchases {
      for (_, book) in purchase!.objects.search("Book") {
