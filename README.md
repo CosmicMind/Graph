@@ -1,4 +1,4 @@
-![GraphKit iOS](https://github.com/GraphKit/GraphKit/blob/development/GraphKitLogo.png)
+![GraphKit iOS](http://graphkit.io/GraphKitLogo.png)
 
 # Build Intelligent Software
 ### A powerful iOS / OSX framework for data-driven design.
