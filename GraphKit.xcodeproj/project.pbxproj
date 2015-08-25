@@ -369,8 +369,8 @@
 		96C031B61AD72FD300EE4C63 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				96C031E81AD72FEE00EE4C63 /* Supporting Files */,
 				96C031C51AD72FD300EE4C63 /* LICENSE */,
+				96C031E81AD72FEE00EE4C63 /* Supporting Files */,
 				65DF3F041B626F2600197AD5 /* Network */,
 				961242D71B2B36A400CD47E0 /* Sort */,
 				968C00A41B51BF7F00E3FA9E /* Probability */,
