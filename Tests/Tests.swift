@@ -44,8 +44,8 @@ class Tests : XCTestCase, GraphDelegate {
 		var book2: Entity? = Entity(type: "Book")
 		
 		read!.addSubject(user)
-		read!.addObject(book1)
-		read!.addObject(book2)
+		read!.addObject(book1!)
+		read!.addObject(book2!)
 		author!.subject = user
 		author!.object = book1
 		
@@ -62,8 +62,8 @@ class Tests : XCTestCase, GraphDelegate {
 		XCTAssertTrue(0 == user!.bondsWhenObject.count, "User: should not have access to Author when Object.")
 		XCTAssertTrue(user == author!.subject && book1 == author!.object, "Author: Not correctly mapped.")
 		XCTAssertTrue(read!.hasSubject(user), "Read: Not correctly mapped.")
-		XCTAssertTrue(read!.hasObject(book1), "Read: Not correctly mapped.")
-		XCTAssertTrue(read!.hasObject(book2), "Read: Not correctly mapped.")
+		XCTAssertTrue(read!.hasObject(book1!), "Read: Not correctly mapped.")
+		XCTAssertTrue(read!.hasObject(book2!), "Read: Not correctly mapped.")
 		
 		book1!.delete()
 		

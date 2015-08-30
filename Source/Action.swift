@@ -212,7 +212,7 @@ public class Action : NSObject, Comparable {
     	:description:	Adds a Entity Object to the Object Set.
 		:returns:	Bool
     */
-    public func addObject(entity: Entity!) -> Bool {
+    public func addObject(entity: Entity) -> Bool {
         return node.addObject(entity.node)
     }
 
@@ -221,7 +221,7 @@ public class Action : NSObject, Comparable {
     	:description:	Removes a Entity Model Object from the Object Set.
 		:returns:	Bool
     */
-    public func removeObject(entity: Entity!) -> Bool {
+    public func removeObject(entity: Entity) -> Bool {
 		return node.removeObject(entity.node)
     }
 
@@ -230,7 +230,7 @@ public class Action : NSObject, Comparable {
 		:description:	Checks if a Entity exists in the Objects Set.
 		:returns:	Bool
 	*/
-	public func hasObject(entity: Entity!) -> Bool {
+	public func hasObject(entity: Entity) -> Bool {
 		for (_, e) in objects.search(entity.type) {
 			if e!.id == entity.id {
 				return true

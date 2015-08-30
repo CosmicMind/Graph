@@ -19,57 +19,57 @@
 import CoreData
 
 private struct GraphPersistentStoreCoordinator {
-	static var onceToken: dispatch_once_t = 0
-	static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
+	private static var onceToken: dispatch_once_t = 0
+	private static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
 }
 
 private struct GraphMainManagedObjectContext {
-	static var onceToken: dispatch_once_t = 0
-	static var managedObjectContext: NSManagedObjectContext?
+	private static var onceToken: dispatch_once_t = 0
+	private static var managedObjectContext: NSManagedObjectContext?
 }
 
 private struct GraphPrivateManagedObjectContext {
-	static var onceToken: dispatch_once_t = 0
-	static var managedObjectContext: NSManagedObjectContext?
+	private static var onceToken: dispatch_once_t = 0
+	private static var managedObjectContext: NSManagedObjectContext?
 }
 
 private struct GraphManagedObjectModel {
-	static var onceToken: dispatch_once_t = 0
-	static var managedObjectModel: NSManagedObjectModel?
+	private static var onceToken: dispatch_once_t = 0
+	private static var managedObjectModel: NSManagedObjectModel?
 }
 
 internal struct GraphUtility {
-	static let storeName: String = "GraphKit.sqlite"
+	internal static let storeName: String = "GraphKit.sqlite"
 
-	static let entityIndexName: String = "ManagedEntity"
-	static let entityDescriptionName: String = "ManagedEntity"
-	static let entityObjectClassName: String = "ManagedEntity"
-	static let entityGroupIndexName: String = "EntityGroup"
-	static let entityGroupObjectClassName: String = "EntityGroup"
-	static let entityGroupDescriptionName: String = "EntityGroup"
-	static let entityPropertyIndexName: String = "EntityProperty"
-	static let entityPropertyObjectClassName: String = "EntityProperty"
-	static let entityPropertyDescriptionName: String = "EntityProperty"
+	internal static let entityIndexName: String = "ManagedEntity"
+	internal static let entityDescriptionName: String = entityIndexName
+	internal static let entityObjectClassName: String = entityIndexName
+	internal static let entityGroupIndexName: String = "EntityGroup"
+	internal static let entityGroupObjectClassName: String = entityGroupIndexName
+	internal static let entityGroupDescriptionName: String = entityGroupIndexName
+	internal static let entityPropertyIndexName: String = "EntityProperty"
+	internal static let entityPropertyObjectClassName: String = entityPropertyIndexName
+	internal static let entityPropertyDescriptionName: String = entityPropertyIndexName
 
-	static let actionIndexName: String = "ManagedAction"
-	static let actionDescriptionName: String = "ManagedAction"
-	static let actionObjectClassName: String = "ManagedAction"
-	static let actionGroupIndexName: String = "ActionGroup"
-	static let actionGroupObjectClassName: String = "ActionGroup"
-	static let actionGroupDescriptionName: String = "ActionGroup"
-	static let actionPropertyIndexName: String = "ActionProperty"
-	static let actionPropertyObjectClassName: String = "ActionProperty"
-	static let actionPropertyDescriptionName: String = "ActionProperty"
+	internal static let actionIndexName: String = "ManagedAction"
+	internal static let actionDescriptionName: String = actionIndexName
+	internal static let actionObjectClassName: String = actionIndexName
+	internal static let actionGroupIndexName: String = "ActionGroup"
+	internal static let actionGroupObjectClassName: String = actionGroupIndexName
+	internal static let actionGroupDescriptionName: String = actionGroupIndexName
+	internal static let actionPropertyIndexName: String = "ActionProperty"
+	internal static let actionPropertyObjectClassName: String = actionPropertyIndexName
+	internal static let actionPropertyDescriptionName: String = actionPropertyIndexName
 
-	static let bondIndexName: String = "ManagedBond"
-	static let bondDescriptionName: String = "ManagedBond"
-	static let bondObjectClassName: String = "ManagedBond"
-	static let bondGroupIndexName: String = "BondGroup"
-	static let bondGroupObjectClassName: String = "BondGroup"
-	static let bondGroupDescriptionName: String = "BondGroup"
-	static let bondPropertyIndexName: String = "BondProperty"
-	static let bondPropertyObjectClassName: String = "BondProperty"
-	static let bondPropertyDescriptionName: String = "BondProperty"
+	internal static let bondIndexName: String = "ManagedBond"
+	internal static let bondDescriptionName: String = bondIndexName
+	internal static let bondObjectClassName: String = bondIndexName
+	internal static let bondGroupIndexName: String = "BondGroup"
+	internal static let bondGroupObjectClassName: String = bondGroupIndexName
+	internal static let bondGroupDescriptionName: String = bondGroupIndexName
+	internal static let bondPropertyIndexName: String = "BondProperty"
+	internal static let bondPropertyObjectClassName: String = bondPropertyIndexName
+	internal static let bondPropertyDescriptionName: String = bondPropertyIndexName
 }
 
 @objc(GraphDelegate)
@@ -113,6 +113,9 @@ public class Graph: NSObject {
 		super.init()
 	}
 
+	//
+	//	:name:	deinit
+	//
 	deinit {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
 	}
