@@ -86,6 +86,42 @@ class ProbabilityTests: XCTestCase {
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
 	}
+	
+	func testEntity() {
+		let graph: Graph = Graph()
+		let target: Entity = Entity(type: "ProbTest")
+		for i in 0..<99 {
+			let e: Entity = Entity(type: "ProbTest")
+		}
+		graph.save()
+		
+		let entities: OrderedSet<Entity> = graph.search(Entity: "ProbTest")
+		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
+		
+		for e in entities {
+			e.delete()
+		}
+		graph.save()
+	}
+	
+	func testAction() {
+		let graph = Graph()
+		let books = OrderedMultiSet<String>()
+		
+		for purchase in graph.search(Action: "Purchased") {
+			for object in purchase.objects {
+				if "Book" == object.type {
+					books.insert(object["genre"] as! String)
+				}
+			}
+		}
+		
+		if books.probabilityOf("Physics") > 0.5 {
+			// offer physics books
+		} else {
+			// offer other books
+		}
+	}
 
 	func testPerformance() {
 		self.measureBlock() {}

@@ -64,14 +64,14 @@ Engagement drives the user experience. GraphKit captures engagement through Acti
 ```swift
 let graph = Graph()
 
-let user = graph.search(Entity: "User").last!.value
+let user = Entity(type: "User")
 let books = graph.search(EntityGroup: "Popular")
 
 let purchased = Action(type: "Purchased")
 purchased.addSubject(user)
 
 for book in books {
-    purchased.addObject(book)  
+	purchased.addObject(book)
 }
 
 graph.save()
@@ -83,20 +83,20 @@ As the user engages your application, GraphKit offers a probability interface to
 
 ```swift
 let graph = Graph()
+let books = OrderedMultiSet<String>()
 
-let purchases = graph.search(Action: "Purchased")
-let set = OrderedMultiSet<String>()
-
-for purchase in purchases {
-     for book in purchase!.objects.search("Book") {
-        set.insert(book!["genre"] as! String)
-    }
+for purchase in graph.search(Action: "Purchased") {
+	for object in purchase.objects {
+		if "Book" == object.type {
+			books.insert(object["genre"] as! String)
+		}
+	}
 }
 
-if set.probabilityOf("Physics") > 0.5 {
-     // offer physics books
+if books.probabilityOf("Physics") > 0.5 {
+	// offer physics books
 } else {
-     // offer other books
+	// offer other books
 }
 ```
 
@@ -122,8 +122,8 @@ graph.save()
 func graphDidInsertAction(graph: Graph, action: Action) {
     switch(action.type) {
     case "Clicked":
-      println(action.subjects.first.type) // User
-      println(action.objects.first.type) // Button
+      println(action.subjects.first?.type) // User
+      println(action.objects.first?.type) // Button
       break
     case "Swiped":
       // handle swipe

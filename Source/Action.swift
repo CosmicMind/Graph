@@ -177,7 +177,7 @@ public class Action : NSObject, Comparable {
     	:description:	Adds a Entity Model Object to the Subject Set.
 		:returns:	Bool
     */
-    public func addSubject(entity: Entity!) -> Bool {
+    public func addSubject(entity: Entity) -> Bool {
         return node.addSubject(entity.node)
 	}
 
@@ -186,7 +186,7 @@ public class Action : NSObject, Comparable {
     	:description:	Removes a Entity Model Object from the Subject Set.
 		:returns:	Bool
     */
-    public func removeSubject(entity: Entity!) -> Bool {
+    public func removeSubject(entity: Entity) -> Bool {
 		return node.removeSubject(entity.node)
     }
 
@@ -195,7 +195,7 @@ public class Action : NSObject, Comparable {
 		:description:	Checks if a Entity exists in the Subjects Set.
 		:returns:	Bool
 	*/
-	public func hasSubject(entity: Entity!) -> Bool {
+	public func hasSubject(entity: Entity) -> Bool {
 		return subjects.contains(entity)
 	}
 

@@ -222,12 +222,11 @@ public class Graph: NSObject {
 		:name:	search(Entity)
 		:description:	Searches the Graph for Entity Objects with the following type LIKE ?.
 	*/
-	public func search(Entity type: String) -> Dictionary<String, Entity> {
+	public func search(Entity type: String) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: Dictionary<String, Entity> = Dictionary<String, Entity>()
+		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for entity: ManagedEntity in entries as! Array<ManagedEntity> {
-			let node: Entity = Entity(entity: entity)
-			nodes[node.id] = node
+			nodes.insert(Entity(entity: entity))
 		}
 		return nodes
 	}
@@ -304,12 +303,11 @@ public class Graph: NSObject {
 		:name:	search(Action)
 		:description:	Searches the Graph for Action Objects with the following type LIKE ?.
 	*/
-	public func search(Action type: String) -> Dictionary<String, Action> {
+	public func search(Action type: String) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: Dictionary<String, Action> = Dictionary<String, Action>()
+		var nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for action: ManagedAction in entries as! Array<ManagedAction> {
-			let node: Action = Action(action: action)
-			nodes[node.id] = node
+			nodes.insert(Action(action: action))
 		}
 		return nodes
 	}
@@ -386,12 +384,11 @@ public class Graph: NSObject {
 		:name:	search(Bond)
 		:description:	Searches the Graph for Bond Objects with the following type LIKE ?.
 	*/
-	public func search(Bond type: String) -> Dictionary<String, Bond> {
+	public func search(Bond type: String) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: Dictionary<String, Bond> = Dictionary<String, Bond>()
+		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for bond: ManagedBond in entries as! Array<ManagedBond> {
-			let node: Bond = Bond(bond: bond)
-			nodes[node.id] = node
+			nodes.insert(Bond(bond: bond))
 		}
 		return nodes
 	}
