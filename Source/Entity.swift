@@ -126,92 +126,88 @@ public class Entity : NSObject, Comparable {
 		:name:	properties
 		:description:	Retrieves the Properties the Node is a part of.
 	*/
-	public var properties: OrderedDictionary<String, AnyObject> {
-		var properties: OrderedDictionary<String, AnyObject> = OrderedDictionary<String, AnyObject>()
+	public var properties: Dictionary<String, AnyObject> {
+		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
 		for property in node.propertySet {
-			properties.insert((property.name, property.object))
+			properties[property.name] = property.object
 		}
 		return properties
 	}
 
 	/**
     	:name:	actions
-    	:description:	Retrieves an OrderedMultiDictionary of Action objects. Where the key
+    	:description:	Retrieves an OrderedSet<Action> of Action objects. Where the key
 		is the type of Action and the value is the Action instance.
     */
-    public var actions: OrderedMultiDictionary<String, Action> {
-        return actionsWhenSubject + actionsWhenObject
+    public var actions: OrderedSet<Action> {
+		return actionsWhenSubject + actionsWhenObject
     }
 
     /**
     	:name:	actionsWhenSubject
-		:description:	Retrieves an OrderedMultiDictionary of Action objects. Where the key
+		:description:	Retrieves an OrderedSet<Action> of Action objects. Where the key
 		is the type of Action and the value is the Action instance.
 		The Actions included are those when the Entity is the subject of
 		the Action.
     */
-    public var actionsWhenSubject: OrderedMultiDictionary<String, Action> {
-		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
+    public var actionsWhenSubject: OrderedSet<Action> {
+		var nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for entry in node.actionSubjectSet {
-			let action: Action = Action(action: entry as! ManagedAction)
-			nodes.insert((action.type, action))
+			nodes.insert(Action(action: entry as! ManagedAction))
 		}
 		return nodes
     }
 
     /**
     	:name:	actionsWhenObject
-		:description:	Retrieves an OrderedMultiDictionary of Action objects. Where the key
+		:description:	Retrieves an OrderedSet<Action> of Action objects. Where the key
 		is the type of Action and the value is the Action instance.
 		The Actions included are those when the Entity is the object of
 		the Action.
 	*/
-    public var actionsWhenObject: OrderedMultiDictionary<String, Action> {
-        let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
+    public var actionsWhenObject: OrderedSet<Action> {
+        var nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for entry in node.actionObjectSet {
-			let action: Action = Action(action: entry as! ManagedAction)
-			nodes.insert((action.type, action))
+			nodes.insert(Action(action: entry as! ManagedAction))
 		}
 		return nodes
     }
 
     /**
     	:name:	bonds
-		:description:	Retrieves an OrderedMultiDictionary of Bond objects. Where the key
+		:description:	Retrieves an OrderedSet<Bond> of Bond objects. Where the key
 		is the type of Bond and the value is the Bond instance.
 	*/
-    public var bonds: OrderedMultiDictionary<String, Bond> {
-        return bondsWhenSubject + bondsWhenObject
+    public var bonds: OrderedSet<Bond> {
+		return bondsWhenSubject + bondsWhenObject
     }
 
     /**
     	:name:	bondsWhenSubject
-		:description:	Retrieves a MultiDictionary of Bond objects. Where the key
+		:description:	Retrieves a OrderedSet<Bond> of Bond objects. Where the key
 		is the type of Bond and the value is the Bond instance.
 		The Bonds included are those when the Entity is the subject of
 		the Bond.
 	*/
-    public var bondsWhenSubject: OrderedMultiDictionary<String, Bond> {
-		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
+    public var bondsWhenSubject: OrderedSet<Bond> {
+		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for entry in node.bondSubjectSet {
-			let bond: Bond = Bond(bond: entry as! ManagedBond)
-			nodes.insert((bond.type, bond))
+			nodes.insert(Bond(bond: entry as! ManagedBond))
 		}
 		return nodes
     }
 
     /**
     	:name:	bondsWhenObject
-		:description:	Retrieves an OrderedMultiDictionary of Bond objects. Where the key
+		:description:	Retrieves an OrderedSet<Bond> of Bond objects. Where the key
 		is the type of Bond and the value is the Bond instance.
 		The Bonds included are those when the Entity is the object of
 		the Bond.
 	*/
-    public var bondsWhenObject: OrderedMultiDictionary<String, Bond> {
-		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
+    public var bondsWhenObject: OrderedSet<Bond> {
+		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for entry in node.bondObjectSet {
-			let bond: Bond = Bond(bond: entry as! ManagedBond)
-			nodes.insert((bond.type, bond))
+			nodes.insert(Bond(bond: entry as! ManagedBond))
 		}
 		return nodes
     }

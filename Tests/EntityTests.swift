@@ -135,8 +135,8 @@ class EntityTests : XCTestCase, GraphDelegate {
     func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
         if "Female" == group {
             groupInsertExpectation?.fulfill()
-            let nodes: OrderedMultiDictionary<String, Entity> = graph.search(EntityGroup: group)
-            if entity.id == nodes.first?.value?.id {
+            let nodes: OrderedSet<Entity> = graph.search(EntityGroup: group)
+            if entity.id == nodes.first?.id {
                 groupSearchExpectation?.fulfill()
             }
         }
@@ -145,20 +145,20 @@ class EntityTests : XCTestCase, GraphDelegate {
     func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         if "name" == property && "Eve" == value as! String {
             nameInsertExpectation?.fulfill()
-            let n: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property)
-			if n.first?.value?[property] as! String == value as! String {
-				let m: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property, value: value as! String)
-				if m.first?.value?[property] as! String == value as! String {
+            let n: OrderedSet<Entity> = graph.search(EntityProperty: property)
+			if n.first?[property] as! String == value as! String {
+				let m: OrderedSet<Entity> = graph.search(EntityProperty: property, value: value as! String)
+				if m.first?[property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
 
         } else if "age" == property && 26 == value as! Int {
             ageInsertExpectation?.fulfill()
-            let n: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property)
-			if  n.first?.value?[property] as! Int == value as! Int {
-				let m: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property, value: value as! Int)
-				if m.first?.value?[property] as! Int == value as! Int {
+            let n: OrderedSet<Entity> = graph.search(EntityProperty: property)
+			if  n.first?[property] as! Int == value as! Int {
+				let m: OrderedSet<Entity> = graph.search(EntityProperty: property, value: value as! Int)
+				if m.first?[property] as! Int == value as! Int {
                     ageSearchExpectation?.fulfill()
                 }
             }
@@ -168,19 +168,19 @@ class EntityTests : XCTestCase, GraphDelegate {
     func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         if "name" == property && "Daniel" == value as! String {
             nameUpdateExpectation?.fulfill()
-			let n: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property)
-			if n.first?.value?[property] as! String == value as! String {
-				let m: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property, value: value as! String)
-				if m.first?.value?[property] as! String == value as! String {
+			let n: OrderedSet<Entity> = graph.search(EntityProperty: property)
+			if n.first?[property] as! String == value as! String {
+				let m: OrderedSet<Entity> = graph.search(EntityProperty: property, value: value as! String)
+				if m.first?[property] as! String == value as! String {
 					nameSearchExpectation?.fulfill()
 				}
 			}
         } else if "age" == property && 31 == value as! Int {
             ageUpdateExpectation?.fulfill()
-			let n: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property)
-			if n.first?.value?[property] as! Int == value as! Int {
-				let m: OrderedMultiDictionary<String, Entity> = graph.search(EntityProperty: property, value: value as! Int)
-				if m.first?.value?[property] as! Int == value as! Int {
+			let n: OrderedSet<Entity> = graph.search(EntityProperty: property)
+			if n.first?[property] as! Int == value as! Int {
+				let m: OrderedSet<Entity> = graph.search(EntityProperty: property, value: value as! Int)
+				if m.first?[property] as! Int == value as! Int {
 					ageSearchExpectation?.fulfill()
 				}
 			}

@@ -50,7 +50,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		var e1: Entity = Entity(type: "E")
 		e1["active"] = true
 		
-		var e2: Entity? = graph?.search(EntityProperty: "active").last?.value
+		var e2: Entity? = graph?.search(EntityProperty: "active").last
 		
 		XCTAssertTrue(e1 == e2, "Entity: Search did not pass.")
 		
@@ -65,7 +65,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertEntity(graph: Graph, entity: Entity) {
-		var e2: Entity? = graph.search(EntityProperty: "active").last?.value
+		var e2: Entity? = graph.search(EntityProperty: "active").last
 		if entity == e2 {
 			expectation?.fulfill()
 			
@@ -80,7 +80,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
-		var e2: Entity? = graph.search(EntityProperty: "active").last?.value
+		var e2: Entity? = graph.search(EntityProperty: "active").last
 		if nil == e2 {
 			expectation?.fulfill()
 			XCTAssertTrue(0 == graph.search(EntityProperty: "active").count, "Entity: Search did not pass.")
@@ -88,7 +88,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-		var e2: Entity? = graph.search(EntityProperty: "active").last?.value
+		var e2: Entity? = graph.search(EntityProperty: "active").last
 		if value as! Bool == entity["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
 			

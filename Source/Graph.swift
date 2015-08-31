@@ -19,57 +19,57 @@
 import CoreData
 
 private struct GraphPersistentStoreCoordinator {
-	static var onceToken: dispatch_once_t = 0
-	static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
+	private static var onceToken: dispatch_once_t = 0
+	private static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
 }
 
 private struct GraphMainManagedObjectContext {
-	static var onceToken: dispatch_once_t = 0
-	static var managedObjectContext: NSManagedObjectContext?
+	private static var onceToken: dispatch_once_t = 0
+	private static var managedObjectContext: NSManagedObjectContext?
 }
 
 private struct GraphPrivateManagedObjectContext {
-	static var onceToken: dispatch_once_t = 0
-	static var managedObjectContext: NSManagedObjectContext?
+	private static var onceToken: dispatch_once_t = 0
+	private static var managedObjectContext: NSManagedObjectContext?
 }
 
 private struct GraphManagedObjectModel {
-	static var onceToken: dispatch_once_t = 0
-	static var managedObjectModel: NSManagedObjectModel?
+	private static var onceToken: dispatch_once_t = 0
+	private static var managedObjectModel: NSManagedObjectModel?
 }
 
 internal struct GraphUtility {
-	static let storeName: String = "GraphKit.sqlite"
+	internal static let storeName: String = "GraphKit.sqlite"
 
-	static let entityIndexName: String = "ManagedEntity"
-	static let entityDescriptionName: String = "ManagedEntity"
-	static let entityObjectClassName: String = "ManagedEntity"
-	static let entityGroupIndexName: String = "EntityGroup"
-	static let entityGroupObjectClassName: String = "EntityGroup"
-	static let entityGroupDescriptionName: String = "EntityGroup"
-	static let entityPropertyIndexName: String = "EntityProperty"
-	static let entityPropertyObjectClassName: String = "EntityProperty"
-	static let entityPropertyDescriptionName: String = "EntityProperty"
+	internal static let entityIndexName: String = "ManagedEntity"
+	internal static let entityDescriptionName: String = entityIndexName
+	internal static let entityObjectClassName: String = entityIndexName
+	internal static let entityGroupIndexName: String = "EntityGroup"
+	internal static let entityGroupObjectClassName: String = entityGroupIndexName
+	internal static let entityGroupDescriptionName: String = entityGroupIndexName
+	internal static let entityPropertyIndexName: String = "EntityProperty"
+	internal static let entityPropertyObjectClassName: String = entityPropertyIndexName
+	internal static let entityPropertyDescriptionName: String = entityPropertyIndexName
 
-	static let actionIndexName: String = "ManagedAction"
-	static let actionDescriptionName: String = "ManagedAction"
-	static let actionObjectClassName: String = "ManagedAction"
-	static let actionGroupIndexName: String = "ActionGroup"
-	static let actionGroupObjectClassName: String = "ActionGroup"
-	static let actionGroupDescriptionName: String = "ActionGroup"
-	static let actionPropertyIndexName: String = "ActionProperty"
-	static let actionPropertyObjectClassName: String = "ActionProperty"
-	static let actionPropertyDescriptionName: String = "ActionProperty"
+	internal static let actionIndexName: String = "ManagedAction"
+	internal static let actionDescriptionName: String = actionIndexName
+	internal static let actionObjectClassName: String = actionIndexName
+	internal static let actionGroupIndexName: String = "ActionGroup"
+	internal static let actionGroupObjectClassName: String = actionGroupIndexName
+	internal static let actionGroupDescriptionName: String = actionGroupIndexName
+	internal static let actionPropertyIndexName: String = "ActionProperty"
+	internal static let actionPropertyObjectClassName: String = actionPropertyIndexName
+	internal static let actionPropertyDescriptionName: String = actionPropertyIndexName
 
-	static let bondIndexName: String = "ManagedBond"
-	static let bondDescriptionName: String = "ManagedBond"
-	static let bondObjectClassName: String = "ManagedBond"
-	static let bondGroupIndexName: String = "BondGroup"
-	static let bondGroupObjectClassName: String = "BondGroup"
-	static let bondGroupDescriptionName: String = "BondGroup"
-	static let bondPropertyIndexName: String = "BondProperty"
-	static let bondPropertyObjectClassName: String = "BondProperty"
-	static let bondPropertyDescriptionName: String = "BondProperty"
+	internal static let bondIndexName: String = "ManagedBond"
+	internal static let bondDescriptionName: String = bondIndexName
+	internal static let bondObjectClassName: String = bondIndexName
+	internal static let bondGroupIndexName: String = "BondGroup"
+	internal static let bondGroupObjectClassName: String = bondGroupIndexName
+	internal static let bondGroupDescriptionName: String = bondGroupIndexName
+	internal static let bondPropertyIndexName: String = "BondProperty"
+	internal static let bondPropertyObjectClassName: String = bondPropertyIndexName
+	internal static let bondPropertyDescriptionName: String = bondPropertyIndexName
 }
 
 @objc(GraphDelegate)
@@ -113,6 +113,9 @@ public class Graph: NSObject {
 		super.init()
 	}
 
+	//
+	//	:name:	deinit
+	//
 	deinit {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
 	}
@@ -219,12 +222,12 @@ public class Graph: NSObject {
 		:name:	search(Entity)
 		:description:	Searches the Graph for Entity Objects with the following type LIKE ?.
 	*/
-	public func search(Entity type: String) -> OrderedDictionary<String, Entity> {
+	public func search(Entity type: String) -> Dictionary<String, Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedDictionary<String, Entity> = OrderedDictionary<String, Entity>()
+		var nodes: Dictionary<String, Entity> = Dictionary<String, Entity>()
 		for entity: ManagedEntity in entries as! Array<ManagedEntity> {
 			let node: Entity = Entity(entity: entity)
-			nodes.insert((node.id, node))
+			nodes[node.id] = node
 		}
 		return nodes
 	}
@@ -233,12 +236,11 @@ public class Graph: NSObject {
 		:name:	search(EntityGroup)
 		:description:	Searches the Graph for Entity Group Objects with the following name LIKE ?.
 	*/
-	public func search(EntityGroup name: String) -> OrderedMultiDictionary<String, Entity> {
+	public func search(EntityGroup name: String) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
+		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for group: EntityGroup in entries as! Array<EntityGroup> {
-			let node: Entity = Entity(entity: group.node)
-			nodes.insert((group.name, node))
+			nodes.insert(Entity(entity: group.node))
 		}
 		return nodes
 	}
@@ -247,32 +249,27 @@ public class Graph: NSObject {
 		:name:	search(EntityGroupMap)
 		:description:	Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
 	*/
-	public func search(EntityGroupMap name: String) -> OrderedDictionary<String, OrderedMultiDictionary<String, Entity>> {
+	public func search(EntityGroupMap name: String) -> Dictionary<String, OrderedSet<Entity>> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedDictionary<String, OrderedMultiDictionary<String, Entity>> = OrderedDictionary<String, OrderedMultiDictionary<String, Entity>>()
+		var dict: Dictionary<String, OrderedSet<Entity>> = Dictionary<String, OrderedSet<Entity>>()
 		for group: EntityGroup in entries as! Array<EntityGroup> {
-			let node: Entity = Entity(entity: group.node)
-			if (nil == nodes[group.name]) {
-				let set: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
-				set.insert((node.type, node))
-				nodes.insert((group.name, set))
-			} else {
-				nodes[group.name]!.insert((node.type, node))
+			if nil == dict[group.name] {
+				dict[group.name] = OrderedSet<Entity>()
 			}
+			dict[group.name]!.insert(Entity(entity: group.node))
 		}
-		return nodes
+		return dict
 	}
 
 	/**
 		:name:	search(EntityProperty)
 		:description:	Searches the Graph for Entity Property Objects with the following name LIKE ?.
 	*/
-	public func search(EntityProperty name: String) -> OrderedMultiDictionary<String, Entity> {
+	public func search(EntityProperty name: String) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
+		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
-			let node: Entity = Entity(entity: property.node)
-			nodes.insert((property.name, node))
+			nodes.insert(Entity(entity: property.node))
 		}
 		return nodes
 	}
@@ -281,26 +278,24 @@ public class Graph: NSObject {
 		:name:	search(EntityProperty)
 		:description:	Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	*/
-	public func search(EntityProperty name: String, value: String) -> OrderedMultiDictionary<String, Entity> {
+	public func search(EntityProperty name: String, value: String) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
+		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
-			let node: Entity = Entity(entity: property.node)
-			nodes.insert((property.name, node))
+			nodes.insert(Entity(entity: property.node))
 		}
 		return nodes
 	}
-
+	
 	/**
 		:name:	search(EntityProperty)
 		:description:	Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
 	*/
-	public func search(EntityProperty name: String, value: Int) -> OrderedMultiDictionary<String, Entity> {
+	public func search(EntityProperty name: String, value: Int) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
+		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
-			let node: Entity = Entity(entity: property.node)
-			nodes.insert((property.name, node))
+			nodes.insert(Entity(entity: property.node))
 		}
 		return nodes
 	}
@@ -309,12 +304,12 @@ public class Graph: NSObject {
 		:name:	search(Action)
 		:description:	Searches the Graph for Action Objects with the following type LIKE ?.
 	*/
-	public func search(Action type: String) -> OrderedDictionary<String, Action> {
+	public func search(Action type: String) -> Dictionary<String, Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedDictionary<String, Action> = OrderedDictionary<String, Action>()
+		var nodes: Dictionary<String, Action> = Dictionary<String, Action>()
 		for action: ManagedAction in entries as! Array<ManagedAction> {
 			let node: Action = Action(action: action)
-			nodes.insert((node.id, node))
+			nodes[node.id] = node
 		}
 		return nodes
 	}
@@ -323,12 +318,11 @@ public class Graph: NSObject {
 		:name:	search(ActionGroup)
 		:description:	Searches the Graph for Action Group Objects with the following name LIKE ?.
 	*/
-	public func search(ActionGroup name: String) -> OrderedMultiDictionary<String, Action> {
+	public func search(ActionGroup name: String) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
+		var nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for group: ActionGroup in entries as! Array<ActionGroup> {
-			let node: Action = Action(action: group.node)
-			nodes.insert((group.name, node))
+			nodes.insert(Action(action: group.node))
 		}
 		return nodes
 	}
@@ -337,32 +331,27 @@ public class Graph: NSObject {
 		:name:	search(ActionGroupMap)
 		:description:	Retrieves all the unique Group Names for Action Nodes with their Action Objects.
 	*/
-	public func search(ActionGroupMap name: String) -> OrderedDictionary<String, OrderedMultiDictionary<String, Action>> {
+	public func search(ActionGroupMap name: String) -> Dictionary<String, OrderedSet<Action>> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedDictionary<String, OrderedMultiDictionary<String, Action>> = OrderedDictionary<String, OrderedMultiDictionary<String, Action>>()
+		var dict: Dictionary<String, OrderedSet<Action>> = Dictionary<String, OrderedSet<Action>>()
 		for group: ActionGroup in entries as! Array<ActionGroup> {
-			let node: Action = Action(action: group.node)
-			if (nil == nodes[group.name]) {
-				let set: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
-				set.insert((node.type, node))
-				nodes.insert((group.name, set))
-			} else {
-				nodes[group.name]!.insert((node.type, node))
+			if nil == dict[group.name] {
+				dict[group.name] = OrderedSet<Action>()
 			}
+			dict[group.name]!.insert(Action(action: group.node))
 		}
-		return nodes
+		return dict
 	}
 
 	/**
 		:name:	search(ActionProperty)
 		:description:	Searches the Graph for Action Property Objects with the following name LIKE ?.
 	*/
-	public func search(ActionProperty name: String) -> OrderedMultiDictionary<String, Action> {
+	public func search(ActionProperty name: String) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
+		var nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
-			let node: Action = Action(action: property.node)
-			nodes.insert((property.name, node))
+			nodes.insert(Action(action: property.node))
 		}
 		return nodes
 	}
@@ -371,26 +360,24 @@ public class Graph: NSObject {
 		:name:	search(ActionProperty)
 		:description:	Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	*/
-	public func search(ActionProperty name: String, value: String) -> OrderedMultiDictionary<String, Action> {
+	public func search(ActionProperty name: String, value: String) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
+		var nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
-			let node: Action = Action(action: property.node)
-			nodes.insert((property.name, node))
+			nodes.insert(Action(action: property.node))
 		}
 		return nodes
 	}
-
+	
 	/**
 		:name:	search(ActionProperty)
 		:description:	Searches the Graph for Action Property Objects with the following name == ? and value == ?.
 	*/
-	public func search(ActionProperty name: String, value: Int) -> OrderedMultiDictionary<String, Action> {
+	public func search(ActionProperty name: String, value: Int) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		let nodes: OrderedMultiDictionary<String, Action> = OrderedMultiDictionary<String, Action>()
+		var nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
-			let node: Action = Action(action: property.node)
-			nodes.insert((property.name, node))
+			nodes.insert(Action(action: property.node))
 		}
 		return nodes
 	}
@@ -399,12 +386,12 @@ public class Graph: NSObject {
 		:name:	search(Bond)
 		:description:	Searches the Graph for Bond Objects with the following type LIKE ?.
 	*/
-	public func search(Bond type: String) -> OrderedDictionary<String, Bond> {
+	public func search(Bond type: String) -> Dictionary<String, Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedDictionary<String, Bond> = OrderedDictionary<String, Bond>()
+		var nodes: Dictionary<String, Bond> = Dictionary<String, Bond>()
 		for bond: ManagedBond in entries as! Array<ManagedBond> {
 			let node: Bond = Bond(bond: bond)
-			nodes.insert((node.id, node))
+			nodes[node.id] = node
 		}
 		return nodes
 	}
@@ -413,12 +400,11 @@ public class Graph: NSObject {
 		:name:	search(BondGroup)
 		:description:	Searches the Graph for Bond Group Objects with the following name LIKE ?.
 	*/
-	public func search(BondGroup name: String) -> OrderedMultiDictionary<String, Bond> {
+	public func search(BondGroup name: String) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
+		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for group: BondGroup in entries as! Array<BondGroup> {
-			let node: Bond = Bond(bond: group.node)
-			nodes.insert((group.name, node))
+			nodes.insert(Bond(bond: group.node))
 		}
 		return nodes
 	}
@@ -427,32 +413,27 @@ public class Graph: NSObject {
 		:name:	search(BondGroupMap)
 		:description:	Retrieves all the unique Group Names for Bond Nodes with their Bond Objects.
 	*/
-	public func search(BondGroupMap name: String) -> OrderedDictionary<String, OrderedMultiDictionary<String, Bond>> {
+	public func search(BondGroupMap name: String) -> Dictionary<String, OrderedSet<Bond>> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedDictionary<String, OrderedMultiDictionary<String, Bond>> = OrderedDictionary<String, OrderedMultiDictionary<String, Bond>>()
+		var dict: Dictionary<String, OrderedSet<Bond>> = Dictionary<String, OrderedSet<Bond>>()
 		for group: BondGroup in entries as! Array<BondGroup> {
-			let node: Bond = Bond(bond: group.node)
-			if (nil == nodes[group.name]) {
-				let set: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
-				set.insert((node.type, node))
-				nodes.insert((group.name, set))
-			} else {
-				nodes[group.name]!.insert((node.type, node))
+			if nil == dict[group.name] {
+				dict[group.name] = OrderedSet<Bond>()
 			}
+			dict[group.name]!.insert(Bond(bond: group.node))
 		}
-		return nodes
+		return dict
 	}
 
 	/**
 		:name:	search(BondProperty)
 		:description:	Searches the Graph for Bond Property Objects with the following name LIKE ?.
 	*/
-	public func search(BondProperty name: String) -> OrderedMultiDictionary<String, Bond> {
+	public func search(BondProperty name: String) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
+		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
-			let node: Bond = Bond(bond: property.node)
-			nodes.insert((property.name, node))
+			nodes.insert(Bond(bond: property.node))
 		}
 		return nodes
 	}
@@ -461,26 +442,24 @@ public class Graph: NSObject {
 		:name:	search(BondProperty)
 		:description:	Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	*/
-	public func search(BondProperty name: String, value: String) -> OrderedMultiDictionary<String, Bond> {
+	public func search(BondProperty name: String, value: String) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
+		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
-			let node: Bond = Bond(bond: property.node)
-			nodes.insert((property.name, node))
+			nodes.insert(Bond(bond: property.node))
 		}
 		return nodes
 	}
-
+	
 	/**
 		:name:	search(BondProperty)
 		:description:	Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
 	*/
-	public func search(BondProperty name: String, value: Int) -> OrderedMultiDictionary<String, Bond> {
+	public func search(BondProperty name: String, value: Int) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		let nodes: OrderedMultiDictionary<String, Bond> = OrderedMultiDictionary<String, Bond>()
+		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
-			let node: Bond = Bond(bond: property.node)
-			nodes.insert((property.name, node))
+			nodes.insert(Bond(bond: property.node))
 		}
 		return nodes
 	}

@@ -70,7 +70,7 @@ let books = graph.search(EntityGroup: "Popular")
 let purchased = Action(type: "Purchased")
 purchased.addSubject(user)
 
-for (_, book) in books {
+for book in books {
     purchased.addObject(book)  
 }
 
@@ -87,8 +87,8 @@ let graph = Graph()
 let purchases = graph.search(Action: "Purchased")
 let set = OrderedMultiSet<String>()
 
-for (_, purchase) in purchases {
-     for (_, book) in purchase!.objects.search("Book") {
+for purchase in purchases {
+     for book in purchase!.objects.search("Book") {
         set.insert(book!["genre"] as! String)
     }
 }
@@ -145,3 +145,4 @@ func graphDidInsertAction(graph: Graph, action: Action) {
 
 
 [Daniel Dahan](https://github.com/danieldahan)
+[Adam Dahan](https://github.com/adamdahan)

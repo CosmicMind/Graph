@@ -126,10 +126,10 @@ public class Bond : NSObject, Comparable {
 		:name:	properties
 		:description:	Retrieves the Properties the Node is a part of.
 	*/
-	public var properties: OrderedDictionary<String, AnyObject> {
-		var properties: OrderedDictionary<String, AnyObject> = OrderedDictionary<String, AnyObject>()
+	public var properties: Dictionary<String, AnyObject> {
+		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
 		for property in node.propertySet {
-			properties.insert((property.name, property.object))
+			properties[property.name] = property.object
 		}
 		return properties
 	}

@@ -121,12 +121,11 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	properties
 		:description:	Retrieves the Properties the Node is a part of.
-		:returns:	OrderedDictionary<String, AnyObject>
 	*/
-	public var properties: OrderedDictionary<String, AnyObject> {
-		var properties: OrderedDictionary<String, AnyObject> = OrderedDictionary<String, AnyObject>()
+	public var properties: Dictionary<String, AnyObject> {
+		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
 		for property in node.propertySet {
-			properties.insert((property.name, property.object))
+			properties[property.name] = property.object
 		}
 		return properties
 	}
@@ -149,13 +148,13 @@ public class Action : NSObject, Comparable {
     	:name:	subjects
     	:description:	Retrieves an OrderedMultiDictionary of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
-		:returns:	OrderedMultiDictionary<String, Entity>
+		:returns:	Dictionary<String, Entity>
     */
-    public var subjects: OrderedMultiDictionary<String, Entity> {
-		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
+    public var subjects: Dictionary<String, Entity> {
+		var nodes: Dictionary<String, Entity> = Dictionary<String, Entity>()
 		for entry in node.subjectSet {
 			let entity: Entity = Entity(entity: entry as! ManagedEntity)
-			nodes.insert((entity.type, entity))
+			nodes[entity.id] = entity
 		}
 		return nodes
     }
@@ -164,13 +163,13 @@ public class Action : NSObject, Comparable {
     	:name:	objects
 		:description:	Retrieves an OrderedMultiDictionary of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
-		:returns:	OrderedMultiDictionary<String, Entity>
+		:returns:	Dictionary<String, Entity>
     */
-    public var objects: OrderedMultiDictionary<String, Entity> {
-		let nodes: OrderedMultiDictionary<String, Entity> = OrderedMultiDictionary<String, Entity>()
+    public var objects: Dictionary<String, Entity> {
+		var nodes: Dictionary<String, Entity> = Dictionary<String, Entity>()
 		for entry in node.objectSet {
 			let entity: Entity = Entity(entity: entry as! ManagedEntity)
-			nodes.insert((entity.type, entity))
+			nodes[entity.id] = entity
 		}
 		return nodes
     }
@@ -199,12 +198,7 @@ public class Action : NSObject, Comparable {
 		:returns:	Bool
 	*/
 	public func hasSubject(entity: Entity!) -> Bool {
-		for (_, e) in subjects.search(entity.type) {
-			if e!.id == entity.id {
-				return true
-			}
-		}
-		return false
+		return nil != subjects[entity.id]
 	}
 
     /**
@@ -212,7 +206,7 @@ public class Action : NSObject, Comparable {
     	:description:	Adds a Entity Object to the Object Set.
 		:returns:	Bool
     */
-    public func addObject(entity: Entity!) -> Bool {
+    public func addObject(entity: Entity) -> Bool {
         return node.addObject(entity.node)
     }
 
@@ -221,7 +215,7 @@ public class Action : NSObject, Comparable {
     	:description:	Removes a Entity Model Object from the Object Set.
 		:returns:	Bool
     */
-    public func removeObject(entity: Entity!) -> Bool {
+    public func removeObject(entity: Entity) -> Bool {
 		return node.removeObject(entity.node)
     }
 
@@ -230,13 +224,8 @@ public class Action : NSObject, Comparable {
 		:description:	Checks if a Entity exists in the Objects Set.
 		:returns:	Bool
 	*/
-	public func hasObject(entity: Entity!) -> Bool {
-		for (_, e) in objects.search(entity.type) {
-			if e!.id == entity.id {
-				return true
-			}
-		}
-		return false
+	public func hasObject(entity: Entity) -> Bool {
+		return nil != objects[entity.id]
 	}
 
     /**
