@@ -148,13 +148,12 @@ public class Action : NSObject, Comparable {
     	:name:	subjects
     	:description:	Retrieves an OrderedMultiDictionary of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
-		:returns:	Dictionary<String, Entity>
+		:returns:	OrderedSet<Entity>
     */
-    public var subjects: Dictionary<String, Entity> {
-		var nodes: Dictionary<String, Entity> = Dictionary<String, Entity>()
+    public var subjects: OrderedSet<Entity> {
+		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for entry in node.subjectSet {
-			let entity: Entity = Entity(entity: entry as! ManagedEntity)
-			nodes[entity.id] = entity
+			nodes.insert(Entity(entity: entry as! ManagedEntity))
 		}
 		return nodes
     }
@@ -163,13 +162,12 @@ public class Action : NSObject, Comparable {
     	:name:	objects
 		:description:	Retrieves an OrderedMultiDictionary of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
-		:returns:	Dictionary<String, Entity>
+		:returns:	OrderedSet<Entity>
     */
-    public var objects: Dictionary<String, Entity> {
-		var nodes: Dictionary<String, Entity> = Dictionary<String, Entity>()
+    public var objects: OrderedSet<Entity> {
+		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for entry in node.objectSet {
-			let entity: Entity = Entity(entity: entry as! ManagedEntity)
-			nodes[entity.id] = entity
+			nodes.insert(Entity(entity: entry as! ManagedEntity))
 		}
 		return nodes
     }
@@ -198,7 +196,7 @@ public class Action : NSObject, Comparable {
 		:returns:	Bool
 	*/
 	public func hasSubject(entity: Entity!) -> Bool {
-		return nil != subjects[entity.id]
+		return subjects.contains(entity)
 	}
 
     /**
@@ -225,7 +223,7 @@ public class Action : NSObject, Comparable {
 		:returns:	Bool
 	*/
 	public func hasObject(entity: Entity) -> Bool {
-		return nil != objects[entity.id]
+		return objects.contains(entity)
 	}
 
     /**
