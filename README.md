@@ -144,5 +144,5 @@ func graphDidInsertAction(graph: Graph, action: Action) {
 ### Contributors
 
 
-[Daniel Dahan](https://github.com/danieldahan)
-[Adam Dahan](https://github.com/adamdahan)
+* [Daniel Dahan](https://github.com/danieldahan)
+* [Adam Dahan](https://github.com/adamdahan)
