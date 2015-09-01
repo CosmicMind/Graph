@@ -927,19 +927,19 @@ public class Graph: NSObject {
 	}
 
 	/**
-		:name:	ensureWatching
+		:name:	isWatching
 		:description:	A sanity check if the Graph is already watching the specified index and key.
 	*/
-	private func ensureWatching(key: String, index: String) -> Bool {
-		if nil != watching[key]?.contains(index) {
-			return true
-		}
+	private func isWatching(key: String, index: String) -> Bool {
 		if nil == watching[key] {
 			watching[key] = OrderedSet<String>(elements: index)
-		} else {
-			watching[key]!.insert(index)
+			return false
 		}
-		return false
+		if !watching[key]!.contains(index) {
+			watching[key]!.insert(index)
+			return false
+		}
+		return true
 	}
 
 	/**
@@ -947,15 +947,14 @@ public class Graph: NSObject {
 		:description:	Adds a watcher to the Graph.
 	*/
 	internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
-		if ensureWatching(value, index: index) {
-			return
+		if !isWatching(value, index: index) {
+			var entityDescription: NSEntityDescription = NSEntityDescription()
+			entityDescription.name = entityDescriptionName
+			entityDescription.managedObjectClassName = managedObjectClassName
+			var predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
+			addPredicateToContextWatcher(entityDescription, predicate: predicate)
+			prepareForObservation()
 		}
-		var entityDescription: NSEntityDescription = NSEntityDescription()
-		entityDescription.name = entityDescriptionName
-		entityDescription.managedObjectClassName = managedObjectClassName
-		var predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
-		addPredicateToContextWatcher(entityDescription, predicate: predicate)
-		prepareForObservation()
 	}
 
 	/**
