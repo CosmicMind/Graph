@@ -172,6 +172,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		}
 		set(value) {
 			tree[key] = value
+			count = tree.count
 		}
 	}
 	
@@ -189,6 +190,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		}
 		set(value) {
 			tree[index] = value
+			count = tree.count
 		}
 	}
 	

@@ -167,6 +167,8 @@
 		96C0321A1AD730CC00EE4C63 /* EntityStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C031DB1AD72FE100EE4C63 /* EntityStressTests.swift */; };
 		96C0321B1AD730CC00EE4C63 /* EntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C031DC1AD72FE100EE4C63 /* EntityTests.swift */; };
 		96C0321C1AD730CC00EE4C63 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C031DD1AD72FE100EE4C63 /* Tests.swift */; };
+		96C910E91B94FD1100E7CE5C /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C910E81B94FD1100E7CE5C /* GroupTests.swift */; };
+		96C910EA1B94FD1100E7CE5C /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C910E81B94FD1100E7CE5C /* GroupTests.swift */; };
 		96CB07C31B52E8DA00EB4A58 /* Probability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C00A51B51BF9900E3FA9E /* Probability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96CB07C41B52E8DA00EB4A58 /* OrderedSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C00991B51B0C800E3FA9E /* OrderedSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96CB07C51B52E8DA00EB4A58 /* OrderedMultiSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968C009C1B51B0E100E3FA9E /* OrderedMultiSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -256,6 +258,7 @@
 		96C031DE1AD72FE100EE4C63 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96C031EF1AD7306200EE4C63 /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96C031F91AD7306200EE4C63 /* GraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96C910E81B94FD1100E7CE5C /* GroupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTests.swift; sourceTree = "<group>"; };
 		96CB07C91B52F33900EB4A58 /* RedBlackTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTreeTests.swift; sourceTree = "<group>"; };
 		96CB07CC1B5310F900EB4A58 /* OrderedMultiSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiSetTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -409,6 +412,7 @@
 				65569EF21B61F55E0019B13E /* SessionTests.swift */,
 				65DF3F111B62759100197AD5 /* JSONTests.swift */,
 				65EC731A1B641E2A0089280C /* ReachabilityTests.swift */,
+				96C910E81B94FD1100E7CE5C /* GroupTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -721,6 +725,7 @@
 				968F38AA1AD7393900E963AB /* BondStressTests.swift in Sources */,
 				968C00A21B51B4DC00E3FA9E /* OrderedSetTest.swift in Sources */,
 				968F38A61AD7393900E963AB /* ActionSearchTests.swift in Sources */,
+				96C910E91B94FD1100E7CE5C /* GroupTests.swift in Sources */,
 				968F38AD1AD7393900E963AB /* EntityStressTests.swift in Sources */,
 				969F6DB21B2DE06200B573F8 /* StackTests.swift in Sources */,
 				65EC731B1B641E2A0089280C /* ReachabilityTests.swift in Sources */,
@@ -789,6 +794,7 @@
 				96C032191AD730CC00EE4C63 /* EntitySearchTests.swift in Sources */,
 				968C00A31B51B4DD00E3FA9E /* OrderedSetTest.swift in Sources */,
 				96C032151AD730CC00EE4C63 /* ActionStressTests.swift in Sources */,
+				96C910EA1B94FD1100E7CE5C /* GroupTests.swift in Sources */,
 				96C032161AD730CC00EE4C63 /* ActionTests.swift in Sources */,
 				969F6DB31B2DE06200B573F8 /* StackTests.swift in Sources */,
 				65EC731C1B641E2A0089280C /* ReachabilityTests.swift in Sources */,

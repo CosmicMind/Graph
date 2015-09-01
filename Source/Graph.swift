@@ -150,7 +150,7 @@ public class Graph: NSObject {
 		:name:	watch(Entity)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the spcified type.
 	*/
-	public func watch(Entity type: String!) {
+	public func watch(Entity type: String) {
 		addWatcher("type", value: type, index: GraphUtility.entityIndexName, entityDescriptionName: GraphUtility.entityDescriptionName, managedObjectClassName: GraphUtility.entityObjectClassName)
 	}
 
@@ -158,7 +158,7 @@ public class Graph: NSObject {
 		:name:	watch(EntityGroup)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified group name.
 	*/
-	public func watch(EntityGroup name: String!) {
+	public func watch(EntityGroup name: String) {
 		addWatcher("name", value: name, index: GraphUtility.entityGroupIndexName, entityDescriptionName: GraphUtility.entityGroupDescriptionName, managedObjectClassName: GraphUtility.entityGroupObjectClassName)
 	}
 
@@ -166,7 +166,7 @@ public class Graph: NSObject {
 		:name:	watch(EntityProperty)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified property name.
 	*/
-	public func watch(EntityProperty name: String!) {
+	public func watch(EntityProperty name: String) {
 		addWatcher("name", value: name, index: GraphUtility.entityPropertyIndexName, entityDescriptionName: GraphUtility.entityPropertyDescriptionName, managedObjectClassName: GraphUtility.entityPropertyObjectClassName)
 	}
 
@@ -174,7 +174,7 @@ public class Graph: NSObject {
 		:name:	watch(Action)
 		:description:	Attaches the Graph instance to NotificationCenter in order to Observe changes for an Action with the spcified type.
 	*/
-	public func watch(Action type: String!) {
+	public func watch(Action type: String) {
 		addWatcher("type", value: type, index: GraphUtility.actionIndexName, entityDescriptionName: GraphUtility.actionDescriptionName, managedObjectClassName: GraphUtility.actionObjectClassName)
 	}
 
@@ -182,7 +182,7 @@ public class Graph: NSObject {
 		:name:	watch(ActionGroup)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified group name.
 	*/
-	public func watch(ActionGroup name: String!) {
+	public func watch(ActionGroup name: String) {
 		addWatcher("name", value: name, index: GraphUtility.actionGroupIndexName, entityDescriptionName: GraphUtility.actionGroupDescriptionName, managedObjectClassName: GraphUtility.actionGroupObjectClassName)
 	}
 
@@ -190,7 +190,7 @@ public class Graph: NSObject {
 		:name:	watch(ActionProperty)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified property name.
 	*/
-	public func watch(ActionProperty name: String!) {
+	public func watch(ActionProperty name: String) {
 		addWatcher("name", value: name, index: GraphUtility.actionPropertyIndexName, entityDescriptionName: GraphUtility.actionPropertyDescriptionName, managedObjectClassName: GraphUtility.actionPropertyObjectClassName)
 	}
 
@@ -198,7 +198,7 @@ public class Graph: NSObject {
 		:name:	watch(Bond)
 		:description:	Attaches the Graph instance to NotificationCenter in order to Observe changes for an Bond with the spcified type.
 	*/
-	public func watch(Bond type: String!) {
+	public func watch(Bond type: String) {
 		addWatcher("type", value: type, index: GraphUtility.bondIndexName, entityDescriptionName: GraphUtility.bondDescriptionName, managedObjectClassName: GraphUtility.bondObjectClassName)
 	}
 
@@ -206,7 +206,7 @@ public class Graph: NSObject {
 		:name:	watch(BondGroup)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified group name.
 	*/
-	public func watch(BondGroup name: String!) {
+	public func watch(BondGroup name: String) {
 		addWatcher("name", value: name, index: GraphUtility.bondGroupIndexName, entityDescriptionName: GraphUtility.bondGroupDescriptionName, managedObjectClassName: GraphUtility.bondGroupObjectClassName)
 	}
 
@@ -214,7 +214,7 @@ public class Graph: NSObject {
 		:name:	watch(BondProperty)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified property name.
 	*/
-	public func watch(BondProperty name: String!) {
+	public func watch(BondProperty name: String) {
 		addWatcher("name", value: name, index: GraphUtility.bondPropertyIndexName, entityDescriptionName: GraphUtility.bondPropertyDescriptionName, managedObjectClassName: GraphUtility.bondPropertyObjectClassName)
 	}
 
@@ -248,9 +248,9 @@ public class Graph: NSObject {
 		:name:	search(EntityGroupMap)
 		:description:	Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
 	*/
-	public func search(EntityGroupMap name: String) -> Dictionary<String, OrderedSet<Entity>> {
+	public func search(EntityGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Entity>> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var dict: Dictionary<String, OrderedSet<Entity>> = Dictionary<String, OrderedSet<Entity>>()
+		var dict: OrderedDictionary<String, OrderedSet<Entity>> = OrderedDictionary<String, OrderedSet<Entity>>()
 		for group: EntityGroup in entries as! Array<EntityGroup> {
 			if nil == dict[group.name] {
 				dict[group.name] = OrderedSet<Entity>()
@@ -329,9 +329,9 @@ public class Graph: NSObject {
 		:name:	search(ActionGroupMap)
 		:description:	Retrieves all the unique Group Names for Action Nodes with their Action Objects.
 	*/
-	public func search(ActionGroupMap name: String) -> Dictionary<String, OrderedSet<Action>> {
+	public func search(ActionGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Action>> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var dict: Dictionary<String, OrderedSet<Action>> = Dictionary<String, OrderedSet<Action>>()
+		var dict: OrderedDictionary<String, OrderedSet<Action>> = OrderedDictionary<String, OrderedSet<Action>>()
 		for group: ActionGroup in entries as! Array<ActionGroup> {
 			if nil == dict[group.name] {
 				dict[group.name] = OrderedSet<Action>()
@@ -410,9 +410,9 @@ public class Graph: NSObject {
 		:name:	search(BondGroupMap)
 		:description:	Retrieves all the unique Group Names for Bond Nodes with their Bond Objects.
 	*/
-	public func search(BondGroupMap name: String) -> Dictionary<String, OrderedSet<Bond>> {
+	public func search(BondGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Bond>> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var dict: Dictionary<String, OrderedSet<Bond>> = Dictionary<String, OrderedSet<Bond>>()
+		var dict: OrderedDictionary<String, OrderedSet<Bond>> = OrderedDictionary<String, OrderedSet<Bond>>()
 		for group: BondGroup in entries as! Array<BondGroup> {
 			if nil == dict[group.name] {
 				dict[group.name] = OrderedSet<Bond>()
@@ -919,7 +919,7 @@ public class Graph: NSObject {
 		:name:	addPredicateToContextWatcher
 		:description:	Adds the given predicate to the master predicate, which holds all watchers for the Graph.
 	*/
-	private func addPredicateToContextWatcher(entityDescription: NSEntityDescription!, predicate: NSPredicate!) {
+	private func addPredicateToContextWatcher(entityDescription: NSEntityDescription, predicate: NSPredicate) {
 		var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
 		var predicates: Array<NSPredicate> = [entityPredicate, predicate]
 		let finalPredicate: NSPredicate = NSCompoundPredicate.andPredicateWithSubpredicates(predicates)
@@ -930,7 +930,7 @@ public class Graph: NSObject {
 		:name:	ensureWatching
 		:description:	A sanity check if the Graph is already watching the specified index and key.
 	*/
-	private func ensureWatching(key: String!, index: String!) -> Bool {
+	private func ensureWatching(key: String, index: String) -> Bool {
 		var watch: Array<String> = nil != watching[index] ? watching[index]! as Array<String> : Array<String>()
 		for entry: String in watch {
 			if entry == key {
@@ -946,7 +946,7 @@ public class Graph: NSObject {
 		:name:	addWatcher
 		:description:	Adds a watcher to the Graph.
 	*/
-	internal func addWatcher(key: String!, value: String!, index: String!, entityDescriptionName: String!, managedObjectClassName: String!) {
+	internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
 		if true == ensureWatching(value, index: index) {
 			return
 		}
@@ -962,7 +962,7 @@ public class Graph: NSObject {
 		:name:	search
 		:description:	Executes a search through CoreData.
 	*/
-	private func search(entityDescriptorName: NSString!, predicate: NSPredicate!) -> Array<AnyObject>! {
+	private func search(entityDescriptorName: NSString, predicate: NSPredicate) -> Array<AnyObject> {
 		return search(entityDescriptorName, predicate: predicate, sort: nil)
 	}
 
@@ -970,7 +970,7 @@ public class Graph: NSObject {
 		:name:	search
 		:description:	Executes a search through CoreData.
 	*/
-	private func search(entityDescriptorName: NSString!, predicate: NSPredicate!, sort: Array<NSSortDescriptor>?) -> Array<AnyObject>! {
+	private func search(entityDescriptorName: NSString, predicate: NSPredicate, sort: Array<NSSortDescriptor>?) -> Array<AnyObject> {
 		let request: NSFetchRequest = NSFetchRequest()
 		let entity: NSEntityDescription = managedObjectModel?.entitiesByName[entityDescriptorName] as! NSEntityDescription
 		request.entity = entity

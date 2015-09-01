@@ -172,6 +172,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		}
 		set(value) {
 			tree[key] = value
+			count = tree.count
 		}
 	}
 	
@@ -189,6 +190,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		}
 		set(value) {
 			tree[index] = value
+			count = tree.count
 		}
 	}
 	
