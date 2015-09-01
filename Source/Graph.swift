@@ -99,7 +99,7 @@ public class Graph: NSObject {
 	public var batchSize: Int = 20
 	public var batchOffset: Int = 0
 
-	internal var watching: OrderedDictionary<String, Array<String>>
+	internal var watching: OrderedDictionary<String, OrderedSet<String>>
 	internal var masterPredicate: NSPredicate?
 
 	public weak var delegate: GraphDelegate?
@@ -109,7 +109,7 @@ public class Graph: NSObject {
 		:description:	Initializer for the Object.
 	*/
 	override public init() {
-		watching = OrderedDictionary<String, Array<String>>()
+		watching = OrderedDictionary<String, OrderedSet<String>>()
 		super.init()
 	}
 
@@ -524,7 +524,7 @@ public class Graph: NSObject {
 		let updatedSet: NSSet = userInfo?[NSUpdatedObjectsKey] as! NSSet
 		let	updated: NSMutableSet = updatedSet.mutableCopy() as! NSMutableSet
 		updated.filterUsingPredicate(masterPredicate!)
-
+		
 		if 0 < updated.count {
 			let nodes: Array<NSManagedObject> = updated.allObjects as! [NSManagedObject]
 			for node: NSManagedObject in nodes {
@@ -931,14 +931,14 @@ public class Graph: NSObject {
 		:description:	A sanity check if the Graph is already watching the specified index and key.
 	*/
 	private func ensureWatching(key: String, index: String) -> Bool {
-		var watch: Array<String> = nil != watching[index] ? watching[index]! as Array<String> : Array<String>()
-		for entry: String in watch {
-			if entry == key {
-				return true
-			}
+		if nil != watching[key]?.contains(index) {
+			return true
 		}
-		watch.append(key)
-		watching[index] = watch
+		if nil == watching[key] {
+			watching[key] = OrderedSet<String>(elements: index)
+		} else {
+			watching[key]!.insert(index)
+		}
 		return false
 	}
 
@@ -947,7 +947,7 @@ public class Graph: NSObject {
 		:description:	Adds a watcher to the Graph.
 	*/
 	internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
-		if true == ensureWatching(value, index: index) {
+		if ensureWatching(value, index: index) {
 			return
 		}
 		var entityDescription: NSEntityDescription = NSEntityDescription()
