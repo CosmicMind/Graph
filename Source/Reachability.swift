@@ -16,6 +16,7 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+import Foundation
 import SystemConfiguration
 
 public enum ReachabilityStatus {
