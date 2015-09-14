@@ -126,7 +126,8 @@ public extension GraphDelegate {
 	func graphDidDeleteBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {}
 }
 
-public class Graph {
+@objc(Graph)
+public class Graph : NSObject {
 	public var batchSize: Int = 20
 	public var batchOffset: Int = 0
 
@@ -139,8 +140,9 @@ public class Graph {
 		:name:	init
 		:description:	Initializer for the Object.
 	*/
-	public init() {
+	public override init() {
 		watching = OrderedDictionary<String, OrderedSet<String>>()
+		super.init()
 	}
 
 	//
@@ -511,7 +513,7 @@ public class Graph {
 	//	:name:	managedObjectContextDidSave
 	//	:description:	The callback that NotificationCenter uses when changes occur in the Graph.
 	//
-	public func managedObjectContextDidSave(notification: NSNotification) {
+	internal func managedObjectContextDidSave(notification: NSNotification) {
 		let userInfo = notification.userInfo
 
 		// inserts
@@ -969,9 +971,8 @@ public class Graph {
 			let storeURL = self.applicatioDirectory.URLByAppendingPathComponent(GraphUtility.storeName)
 			var error: NSError?
 			GraphPersistentStoreCoordinator.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
-			let options: Dictionary = [NSReadOnlyPersistentStoreOption: false, NSSQLitePragmasOption: ["journal_mode": "DELETE"]];
 			do {
-				try GraphPersistentStoreCoordinator.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options as [NSObject : AnyObject])
+				try GraphPersistentStoreCoordinator.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
 			} catch let e as NSError {
 				error = e
 				assert(nil != error, "[GraphKit Error: Saving to internal context.]")
@@ -987,7 +988,7 @@ public class Graph {
 	//
 	private var applicatioDirectory: NSURL {
 		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-		return urls[urls.endIndex - 1] 
+		return urls[urls.count-1]
 	}
 
 	//
