@@ -18,7 +18,6 @@
 
 public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, Printable {
 	public typealias Generator = GeneratorOf<(key: Key, value: Value?)>
-	public typealias OrderedIndex = RedBlackTree<Key, Int>
 	
 	/**
 		:name:	sentinel
@@ -322,28 +321,11 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
-		:returns:	RedBlackTree.OrderedIndex
+		:returns:	Int
 	*/
-	public func indexOf(keys: Key...) -> RedBlackTree.OrderedIndex {
-		return indexOf(keys)
-	}
-	
-	/**
-		:name:	indexOf
-		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
-		:returns:	RedBlackTree.OrderedIndex
-	*/
-	public func indexOf(keys: Array<Key>) -> RedBlackTree.OrderedIndex {
-		var tree: OrderedIndex = OrderedIndex(uniqueKeys: isUniquelyKeyed)
-		for k in keys {
-			let x: RedBlackNode<Key, Value> = internalFindNodeForKey(k)
-			if sentinel === x {
-				tree.insert(k, value: nil)
-			} else {
-				traverseOrder(k, node: x, tree: &tree)
-			}
-		}
-		return tree
+	public func indexOf(key: Key) -> Int {
+		let x: RedBlackNode<Key, Value> = internalFindNodeForKey(key)
+		return sentinel === x ? -1 : internalOrder(x) - 1
 	}
 	
 	/**
@@ -714,20 +696,6 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			x = x.parent
 		}
 		return r
-	}
-	
-	/**
-		:name:	traverseOrder
-		:description:	Traverses the Tree, looking for a key match of order values.
-	*/
-	private func traverseOrder(key: Key, node: RedBlackNode<Key, Value>, inout tree: RedBlackTree<Key, Int>) {
-		if sentinel !== node {
-			if key == node.key {
-				tree.insert(key, value: internalOrder(node) - 1)
-			}
-			traverseOrder(key, node: node.left, tree: &tree)
-			traverseOrder(key, node: node.right, tree: &tree)
-		}
 	}
 
 	/**

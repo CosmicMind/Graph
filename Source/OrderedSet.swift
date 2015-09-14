@@ -18,7 +18,6 @@
 
 public class OrderedSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, Printable {
 	public typealias Generator = GeneratorOf<Element>
-	public typealias OrderedIndex = RedBlackTree<Element, Int>
 	
 	/**
 		:name:	tree
@@ -149,22 +148,13 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	
 	/**
 		:name:	indexOf
-		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
-		:returns:	OrderedSet.OrderedIndex
+		:description:	Returns the Index of a given member, or -1 if the member is not present in the set.
+		:returns:	Int
 	*/
-	public func indexOf(elements: Element...) -> OrderedSet.OrderedIndex {
-		return indexOf(elements)
+	public func indexOf(element: Element) -> Int {
+		return tree.indexOf(element)
 	}
 	
-	/**
-		:name:	indexOf
-		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
-		:returns:	OrderedSet.OrderedIndex
-	*/
-	public func indexOf(elements: Array<Element>) -> OrderedSet.OrderedIndex {
-		return tree.indexOf(elements)
-	}
-
 	/**
 		:name:	contains
 		:description:	A boolean check if values exists

@@ -118,32 +118,9 @@ class RedBlackTreeTests: XCTestCase {
 		t1.insert(5, value: 5)
 		t1.insert(6, value: 6)
 		
-		let o1: RedBlackTree<Int, Int>.OrderedIndex = RedBlackTree<Int, Int>(uniqueKeys: true)
-		o1.insert(1, value: 0)
-		o1.insert(3, value: 2)
-		o1.insert(5, value: 5)
-		o1.insert(5, value: 4)
-		o1.insert(10, value: nil)
-		o1.insert(11, value: nil)
-		
-		XCTAssert(o1 == t1.indexOf(1, 11, 3, 5, 10), "Test failed.")
-		
-		t1.insert(11, value: 11)
-		t1.insert(10, value: 10)
-		
-		o1.updateValue(11, forKey: 11)
-		o1.updateValue(10, forKey: 10)
-		
-		XCTAssert(o1 == t1.indexOf(1, 11, 3, 5, 10), "Test failed.")
-		
-		var n: Int = 1000
-		while 0 < n-- {
-			o1.insert(7, value: n)
-			t1.insert(7, value: n)
-			o1.insert(3, value: n)
-			t1.insert(3, value: n)
-		}
-		XCTAssert(o1 == t1.indexOf(1, 11, 3, 5, 10, 7), "Test failed.")
+		XCTAssert(0 == t1.indexOf(1), "Test failed.")
+		XCTAssert(5 == t1.indexOf(6), "Test failed.")
+		XCTAssert(-1 == t1.indexOf(100), "Test failed.")
 	}
 
 	func testIndexOfNonUniqueKeys() {
@@ -156,32 +133,9 @@ class RedBlackTreeTests: XCTestCase {
 		t1.insert(5, value: 5)
 		t1.insert(6, value: 6)
 		
-		let o1: RedBlackTree<Int, Int>.OrderedIndex = RedBlackTree<Int, Int>(uniqueKeys: false)
-		o1.insert(1, value: 0)
-		o1.insert(3, value: 2)
-		o1.insert(5, value: 5)
-		o1.insert(5, value: 4)
-		o1.insert(10, value: nil)
-		o1.insert(11, value: nil)
-		
-		XCTAssert(o1 == t1.indexOf(1, 11, 3, 5, 10), "Test failed.")
-		
-		t1.insert(11, value: 11)
-		t1.insert(10, value: 10)
-		
-		o1.updateValue(11, forKey: 11)
-		o1.updateValue(10, forKey: 10)
-		
-		XCTAssert(o1 == t1.indexOf(1, 11, 3, 5, 10), "Test failed.")
-		
-		var n: Int = 1000
-		while 0 < n-- {
-			o1.insert(7, value: n)
-			t1.insert(7, value: n)
-			o1.insert(3, value: n)
-			t1.insert(3, value: n)
-		}
-		XCTAssert(o1 == t1.indexOf(1, 11, 3, 5, 10, 7), "Test failed.")
+		XCTAssert(0 == t1.indexOf(1), "Test failed.")
+		XCTAssert(5 == t1.indexOf(6), "Test failed.")
+		XCTAssert(-1 == t1.indexOf(100), "Test failed.")
 	}
 
 	func testPerformance() {

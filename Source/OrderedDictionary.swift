@@ -20,7 +20,6 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	public typealias Generator = GeneratorOf<(key: Key, value: Value?)>
 	public typealias OrderedKey = OrderedSet<Key>
 	public typealias OrderedValue = Array<Value>
-	public typealias OrderedIndex = RedBlackTree<Key, Int>
 	public typealias OrderedSearch = OrderedDictionary<Key, Value>
 	internal typealias OrderedNode = RedBlackNode<Key, Value>
 	
@@ -196,20 +195,11 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	
 	/**
 		:name:	indexOf
-		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
-		:returns:	OrderedDictionary.OrderedIndex
+		:description:	Returns the Index of a given member, or -1 if the member is not present in the set.
+		:returns:	Int
 	*/
-	public func indexOf(keys: Key...) -> OrderedDictionary.OrderedIndex {
-		return indexOf(keys)
-	}
-	
-	/**
-		:name:	indexOf
-		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
-		:returns:	OrderedDictionary.OrderedIndex
-	*/
-	public func indexOf(keys: Array<Key>) -> OrderedDictionary.OrderedIndex {
-		return tree.indexOf(keys)
+	public func indexOf(key: Key) -> Int {
+		return tree.indexOf(key)
 	}
 	
 	/**

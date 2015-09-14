@@ -20,7 +20,6 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	public typealias Generator = GeneratorOf<(key: Key, value: Value?)>
 	public typealias OrderedKey = OrderedMultiSet<Key>
 	public typealias OrderedValue = Array<Value>
-	public typealias OrderedIndex = RedBlackTree<Key, Int>
 	public typealias OrderedSearch = OrderedMultiDictionary<Key, Value>
 	internal typealias OrderedNode = RedBlackNode<Key, Value>
 	
@@ -196,20 +195,11 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	
 	/**
 		:name:	indexOf
-		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
-		:returns:	OrderedMultiDictionary.OrderedIndex
+		:description:	Returns the Index of a given member, or -1 if the member is not present in the set.
+		:returns:	Int
 	*/
-	public func indexOf(keys: Key...) -> OrderedMultiDictionary.OrderedIndex {
-		return indexOf(keys)
-	}
-	
-	/**
-		:name:	indexOf
-		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
-		:returns:	OrderedMultiDictionary.OrderedIndex
-	*/
-	public func indexOf(keys: Array<Key>) -> OrderedMultiDictionary.OrderedIndex {
-		return tree.indexOf(keys)
+	public func indexOf(key: Key) -> Int {
+		return tree.indexOf(key)
 	}
 	
 	/**
