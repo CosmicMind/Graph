@@ -18,13 +18,14 @@
 
 import Foundation
 
-public class Action : Equatable, CustomStringConvertible, Comparable {
+@objc(Action)
+public class Action : NSObject, Comparable {
 	internal let node: ManagedAction
 	
 	/**
 		:name:	description
 	*/
-	public var description: String {
+	public override var description: String {
 		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
 	}
 	
@@ -152,6 +153,16 @@ public class Action : Equatable, CustomStringConvertible, Comparable {
 	}
 	
 	/**
+		:name:	isEqual
+	*/
+	public override func isEqual(object: AnyObject?) -> Bool {
+		if let rhs = object as? Action {
+			return id == rhs.id
+		}
+		return false
+	}
+	
+	/**
 		:name:	addGroup
 		:description:	Adds a Group name to the list of Groups if it does not exist.
 		- returns:	Bool
@@ -239,10 +250,6 @@ public class Action : Equatable, CustomStringConvertible, Comparable {
     public func delete() {
 		node.delete()
     }
-}
-
-public func ==(lhs: Action, rhs: Action) -> Bool {
-	return lhs.id == rhs.id
 }
 
 public func <=(lhs: Action, rhs: Action) -> Bool {

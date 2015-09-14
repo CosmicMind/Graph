@@ -18,13 +18,14 @@
 
 import Foundation
 
-public class Entity : Equatable, CustomStringConvertible, Comparable {
+@objc(Entity)
+public class Entity : NSObject, Comparable {
 	internal let node: ManagedEntity
 	
 	/**
 		:name:	description
 	*/
-	public var description: String {
+	public override var description: String {
 		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
 	}
 	
@@ -195,6 +196,16 @@ public class Entity : Equatable, CustomStringConvertible, Comparable {
 	}
 	
 	/**
+		:name:	isEqual
+	*/
+	public override func isEqual(object: AnyObject?) -> Bool {
+		if let rhs = object as? Entity {
+			return id == rhs.id
+		}
+		return false
+	}
+	
+	/**
 		:name:	addGroup
 		:description:	Adds a Group name to the list of Groups if it does not exist.
 	*/
@@ -225,10 +236,6 @@ public class Entity : Equatable, CustomStringConvertible, Comparable {
     public func delete() {
 		node.delete()
     }
-}
-
-public func ==(lhs: Entity, rhs: Entity) -> Bool {
-	return lhs.id == rhs.id
 }
 
 public func <=(lhs: Entity, rhs: Entity) -> Bool {

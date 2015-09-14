@@ -18,13 +18,14 @@
 
 import Foundation
 
-public class Bond : Equatable, CustomStringConvertible, Comparable {
+@objc(Bond)
+public class Bond : NSObject, Comparable {
 	internal let node: ManagedBond
 
 	/**
 		:name:	description
 	*/
-	public var description: String {
+	public override var description: String {
 		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
 	}
 	
@@ -128,8 +129,17 @@ public class Bond : Equatable, CustomStringConvertible, Comparable {
 	public convenience init(type: String) {
 		self.init(bond: ManagedBond(type: type))
 	}
-
-
+	
+	/**
+		:name:	isEqual
+	*/
+	public override func isEqual(object: AnyObject?) -> Bool {
+		if let rhs = object as? Bond {
+			return id == rhs.id
+		}
+		return false
+	}
+	
 	/**
 		:name:	addGroup
 		:description:	Adds a Group name to the list of Groups if it does not exist.
@@ -174,10 +184,6 @@ public class Bond : Equatable, CustomStringConvertible, Comparable {
     public func delete() {
         node.delete()
     }
-}
-
-public func ==(lhs: Bond, rhs: Bond) -> Bool {
-	return lhs.id == rhs.id
 }
 
 public func <=(lhs: Bond, rhs: Bond) -> Bool {

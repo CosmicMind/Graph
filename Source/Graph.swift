@@ -72,58 +72,32 @@ internal struct GraphUtility {
 	internal static let bondPropertyDescriptionName: String = bondPropertyIndexName
 }
 
+@objc(GraphDelegate)
 public protocol GraphDelegate {
-	func graphDidInsertEntity(graph: Graph, entity: Entity)
-	func graphDidDeleteEntity(graph: Graph, entity: Entity)
-	func graphDidInsertManagedEntityGroup(graph: Graph, entity: Entity, group: String)
-	func graphDidDeleteManagedEntityGroup(graph: Graph, entity: Entity, group: String)
-	func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-	func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+	optional func graphDidInsertEntity(graph: Graph, entity: Entity)
+	optional func graphDidDeleteEntity(graph: Graph, entity: Entity)
+	optional func graphDidInsertManagedEntityGroup(graph: Graph, entity: Entity, group: String)
+	optional func graphDidDeleteManagedEntityGroup(graph: Graph, entity: Entity, group: String)
+	optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+	optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+	optional func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
 
-	func graphDidInsertAction(graph: Graph, action: Action)
-	func graphDidUpdateAction(graph: Graph, action: Action)
-	func graphDidDeleteAction(graph: Graph, action: Action)
-	func graphDidInsertManagedActionGroup(graph: Graph, action: Action, group: String)
-	func graphDidDeleteManagedActionGroup(graph: Graph, action: Action, group: String)
-	func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-	func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-	func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+	optional func graphDidInsertAction(graph: Graph, action: Action)
+	optional func graphDidUpdateAction(graph: Graph, action: Action)
+	optional func graphDidDeleteAction(graph: Graph, action: Action)
+	optional func graphDidInsertManagedActionGroup(graph: Graph, action: Action, group: String)
+	optional func graphDidDeleteManagedActionGroup(graph: Graph, action: Action, group: String)
+	optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+	optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+	optional func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
 
-	func graphDidInsertBond(graph: Graph, bond: Bond)
-	func graphDidDeleteBond(graph: Graph, bond: Bond)
-	func graphDidInsertManagedBondGroup(graph: Graph, bond: Bond, group: String)
-	func graphDidDeleteManagedBondGroup(graph: Graph, bond: Bond, group: String)
-	func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
-	func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
-	func graphDidDeleteBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
-}
-
-public extension GraphDelegate {
-	func graphDidInsertEntity(graph: Graph, entity: Entity) {}
-	func graphDidDeleteEntity(graph: Graph, entity: Entity) {}
-	func graphDidInsertManagedEntityGroup(graph: Graph, entity: Entity, group: String) {}
-	func graphDidDeleteManagedEntityGroup(graph: Graph, entity: Entity, group: String) {}
-	func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {}
-	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {}
-	func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {}
-	
-	func graphDidInsertAction(graph: Graph, action: Action) {}
-	func graphDidUpdateAction(graph: Graph, action: Action) {}
-	func graphDidDeleteAction(graph: Graph, action: Action) {}
-	func graphDidInsertManagedActionGroup(graph: Graph, action: Action, group: String) {}
-	func graphDidDeleteManagedActionGroup(graph: Graph, action: Action, group: String) {}
-	func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {}
-	func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {}
-	func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {}
-	
-	func graphDidInsertBond(graph: Graph, bond: Bond) {}
-	func graphDidDeleteBond(graph: Graph, bond: Bond) {}
-	func graphDidInsertManagedBondGroup(graph: Graph, bond: Bond, group: String) {}
-	func graphDidDeleteManagedBondGroup(graph: Graph, bond: Bond, group: String) {}
-	func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {}
-	func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {}
-	func graphDidDeleteBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {}
+	optional func graphDidInsertBond(graph: Graph, bond: Bond)
+	optional func graphDidDeleteBond(graph: Graph, bond: Bond)
+	optional func graphDidInsertManagedBondGroup(graph: Graph, bond: Bond, group: String)
+	optional func graphDidDeleteManagedBondGroup(graph: Graph, bond: Bond, group: String)
+	optional func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
+	optional func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
+	optional func graphDidDeleteBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
 }
 
 @objc(Graph)
@@ -134,7 +108,7 @@ public class Graph : NSObject {
 	internal var watching: OrderedDictionary<String, OrderedSet<String>>
 	internal var masterPredicate: NSPredicate?
 
-	public var delegate: GraphDelegate?
+	public weak var delegate: GraphDelegate?
 
 	/**
 		:name:	init
@@ -528,37 +502,37 @@ public class Graph : NSObject {
 				let className = String.fromCString(object_getClassName(node))
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
-					delegate?.graphDidInsertEntity(self, entity: Entity(entity: node as! ManagedEntity))
+					delegate?.graphDidInsertEntity?(self, entity: Entity(entity: node as! ManagedEntity))
 					break
 				case "ManagedEntityGroup_ManagedEntityGroup_":
 					let group: ManagedEntityGroup = node as! ManagedEntityGroup
-					delegate?.graphDidInsertManagedEntityGroup(self, entity: Entity(entity: group.node), group: group.name)
+					delegate?.graphDidInsertManagedEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
 					break
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
-					delegate?.graphDidInsertEntityProperty(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
+					delegate?.graphDidInsertEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedAction_ManagedAction_":
-					delegate?.graphDidInsertAction(self, action: Action(action: node as! ManagedAction))
+					delegate?.graphDidInsertAction?(self, action: Action(action: node as! ManagedAction))
 					break
 				case "ManagedActionGroup_ManagedActionGroup_":
 					let group: ManagedActionGroup = node as! ManagedActionGroup
-					delegate?.graphDidInsertManagedActionGroup(self, action: Action(action: group.node), group: group.name)
+					delegate?.graphDidInsertManagedActionGroup?(self, action: Action(action: group.node), group: group.name)
 					break
 				case "ActionProperty_ActionProperty_":
 					let property: ActionProperty = node as! ActionProperty
-					delegate?.graphDidInsertActionProperty(self, action: Action(action: property.node), property: property.name, value: property.object)
+					delegate?.graphDidInsertActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedBond_ManagedBond_":
-					delegate?.graphDidInsertBond(self, bond: Bond(bond: node as! ManagedBond))
+					delegate?.graphDidInsertBond?(self, bond: Bond(bond: node as! ManagedBond))
 					break
 				case "ManagedBondGroup_ManagedBondGroup_":
 					let group: ManagedBondGroup = node as! ManagedBondGroup
-					delegate?.graphDidInsertManagedBondGroup(self, bond: Bond(bond: group.node), group: group.name)
+					delegate?.graphDidInsertManagedBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
 					break
 				case "BondProperty_BondProperty_":
 					let property: BondProperty = node as! BondProperty
-					delegate?.graphDidInsertBondProperty(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
+					delegate?.graphDidInsertBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
 					break
 				default:
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
@@ -578,18 +552,18 @@ public class Graph : NSObject {
 				switch(className!) {
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
-					delegate?.graphDidUpdateEntityProperty(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
+					delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
 					break
 				case "ActionProperty_ActionProperty_":
 					let property: ActionProperty = node as! ActionProperty
-					delegate?.graphDidUpdateActionProperty(self, action: Action(action: property.node), property: property.name, value: property.object)
+					delegate?.graphDidUpdateActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
 					break
 				case "BondProperty_BondProperty_":
 					let property: BondProperty = node as! BondProperty
-					delegate?.graphDidUpdateBondProperty(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
+					delegate?.graphDidUpdateBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedAction_ManagedAction_":
-					delegate?.graphDidUpdateAction(self, action: Action(action: node as! ManagedAction))
+					delegate?.graphDidUpdateAction?(self, action: Action(action: node as! ManagedAction))
 					break
 				default:
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
@@ -614,37 +588,37 @@ public class Graph : NSObject {
 				let className = String.fromCString(object_getClassName(node))
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
-					delegate?.graphDidDeleteEntity(self, entity: Entity(entity: node as! ManagedEntity))
+					delegate?.graphDidDeleteEntity?(self, entity: Entity(entity: node as! ManagedEntity))
 					break
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
-					delegate?.graphDidDeleteEntityProperty(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
+					delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedEntityGroup_ManagedEntityGroup_":
 					let group: ManagedEntityGroup = node as! ManagedEntityGroup
-					delegate?.graphDidDeleteManagedEntityGroup(self, entity: Entity(entity: group.node), group: group.name)
+					delegate?.graphDidDeleteManagedEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
 					break
 				case "ManagedAction_ManagedAction_":
-					delegate?.graphDidDeleteAction(self, action: Action(action: node as! ManagedAction))
+					delegate?.graphDidDeleteAction?(self, action: Action(action: node as! ManagedAction))
 					break
 				case "ActionProperty_ActionProperty_":
 					let property: ActionProperty = node as! ActionProperty
-					delegate?.graphDidDeleteActionProperty(self, action: Action(action: property.node), property: property.name, value: property.object)
+					delegate?.graphDidDeleteActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedActionGroup_ManagedActionGroup_":
 					let group: ManagedActionGroup = node as! ManagedActionGroup
-					delegate?.graphDidDeleteManagedActionGroup(self, action: Action(action: group.node), group: group.name)
+					delegate?.graphDidDeleteManagedActionGroup?(self, action: Action(action: group.node), group: group.name)
 					break
 				case "ManagedBond_ManagedBond_":
-					delegate?.graphDidDeleteBond(self, bond: Bond(bond: node as! ManagedBond))
+					delegate?.graphDidDeleteBond?(self, bond: Bond(bond: node as! ManagedBond))
 					break
 				case "BondProperty_BondProperty_":
 					let property: BondProperty = node as! BondProperty
-					delegate?.graphDidDeleteBondProperty(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
+					delegate?.graphDidDeleteBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedBondGroup_ManagedBondGroup_":
 					let group: ManagedBondGroup = node as! ManagedBondGroup
-					delegate?.graphDidDeleteManagedBondGroup(self, bond: Bond(bond: group.node), group: group.name)
+					delegate?.graphDidDeleteManagedBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
 					break
 				default:break
 				}

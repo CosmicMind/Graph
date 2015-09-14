@@ -51,7 +51,8 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		a1["active"] = true
 		
 		let a2: Action? = graph?.search(ActionProperty: "active").last
-		
+		print(a1)
+		print(a2)
 		XCTAssertTrue(a1 == a2, "Test failed.")
 		
 		expectation = expectationWithDescription("Action: Insert did not pass.")
