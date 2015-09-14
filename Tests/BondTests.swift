@@ -70,7 +70,7 @@ class BondTests : XCTestCase, GraphDelegate {
 
         // Let's watch the changes in the Graph for the following Bond values.
         graph.watch(Bond: "Friend")
-        graph.watch(BondGroup: "Close")
+        graph.watch(ManagedBondGroup: "Close")
         graph.watch(BondProperty: "permission")
         graph.watch(BondProperty: "year")
 
@@ -165,10 +165,10 @@ class BondTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidInsertBondGroup(graph: Graph, bond: Bond, group: String) {
+    func graphDidInsertManagedBondGroup(graph: Graph, bond: Bond, group: String) {
         if "Close" == group {
             groupInsertExpectation?.fulfill()
-            let n: OrderedSet<Bond> = graph.search(BondGroup: group)
+            let n: OrderedSet<Bond> = graph.search(ManagedBondGroup: group)
             if bond.id == n.first?.id {
                 groupSearchExpectation?.fulfill()
             }

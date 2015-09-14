@@ -16,20 +16,20 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class Deque<Element> : Printable, SequenceType {
-	public typealias Generator = GeneratorOf<Element?>
+public class Deque<Element> : CustomStringConvertible, SequenceType {
+	public typealias Generator = AnyGenerator<Element?>
 
 	/**
 		:name:	list
 		:description:	Underlying element structure.
-		:returns:	List<Element>
+		- returns:	List<Element>
 	*/
 	private var list: List<Element>
 
 	/**
 		:name:	count
 		:description:	Total number of items in the Deque.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var count: Int {
 		return list.count
@@ -39,7 +39,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	front
 		:description:	Get the element at the front of the Deque
 		and do not remove it.
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public var front: Element? {
 		return list.front
@@ -49,7 +49,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	back
 		:description:	Get the element at the back of the Deque
 		and do not remove it.
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public var back: Element? {
 		return list.back
@@ -58,7 +58,7 @@ public class Deque<Element> : Printable, SequenceType {
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the Deque is empty.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
@@ -67,7 +67,7 @@ public class Deque<Element> : Printable, SequenceType {
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol.
-		:returns:	String
+		- returns:	String
 	*/
 	public var description: String {
 		return "Deque" + list.internalDescription
@@ -103,7 +103,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	removeAtFront
 		:description:	Get the element at the front of the Deque
 		and remove it.
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public func removeAtFront() -> Element? {
 		return list.removeAtFront()
@@ -121,7 +121,7 @@ public class Deque<Element> : Printable, SequenceType {
 		:name:	removeAtBack
 		:description:	Get the element at the back of the Deque
 		and remove it.
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public func removeAtBack() -> Element? {
 		return list.removeAtBack()

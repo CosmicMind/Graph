@@ -16,20 +16,20 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, Printable {
-	public typealias Generator = GeneratorOf<(key: Key, value: Value?)>
+public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, CustomStringConvertible {
+	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
 	
 	/**
 		:name:	sentinel
 		:description:	A node used to mark the end of a path in the tree.
-		:returns:	RedBlackNode<Key, Value>
+		- returns:	RedBlackNode<Key, Value>
 	*/
 	internal private(set) var sentinel: RedBlackNode<Key, Value>
 
 	/**
 		:name:	root
 		:description:	The root of the tree data structure.
-		:returns:	RedBlackNode<Key, Value>
+		- returns:	RedBlackNode<Key, Value>
 	*/
 	internal private(set) var root: RedBlackNode<Key, Value>
 
@@ -37,7 +37,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	internalDescription
 		:description:	Returns a String with only the node data for all
 		nodes in the Tree.
-		:returns:	String
+		- returns:	String
 	*/
 	internal var internalDescription: String {
 		var output: String = "["
@@ -55,7 +55,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	A boolean used to indicate whether to allow the
 		tree to store non-unique key values or only unique
 		key values.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public private(set) var isUniquelyKeyed: Bool
 	
@@ -63,7 +63,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the Tree in a readable format.
-		:returns:	String
+		- returns:	String
 	*/
 	public var description: String {
 		return internalDescription
@@ -74,7 +74,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Get the first node value in the tree, this is
 		the first node based on the order of keys where
 		k1 <= k2 <= Key3 ... <= Keyn
-		:returns:	(key: Key, value: Value?)?
+		- returns:	(key: Key, value: Value?)?
 	*/
 	public var first: (key: Key, value: Value?)? {
 		return isEmpty ? nil : self[0]
@@ -85,7 +85,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Get the last node value in the tree, this is
 		the last node based on the order of keys where
 		k1 <= k2 <= Key3 ... <= Keyn
-		:returns:	(key: Key, value: Value?)?
+		- returns:	(key: Key, value: Value?)?
 	*/
 	public var last: (key: Key, value: Value?)? {
 		return isEmpty ? nil : self[count - 1]
@@ -94,7 +94,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the RedBlackTree is empty.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
@@ -103,7 +103,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	startIndex
 		:description:	Conforms to the CollectionType Protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var startIndex: Int {
 		return 0
@@ -112,7 +112,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	endIndex
 		:description:	Conforms to the CollectionType Protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var endIndex: Int {
 		return count
@@ -133,7 +133,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	init
 		:description:	Constructor where the tree is optionally allowed
 		to store uniqe or non-unique keys.
-		:param:	uniqueKeys	Bool	Set the keys to be unique.
+		- parameter	uniqueKeys:	Bool	Set the keys to be unique.
 	*/
 	public init(uniqueKeys: Bool) {
 		isUniquelyKeyed = uniqueKeys
@@ -150,7 +150,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	//
 	public func generate() -> RedBlackTree.Generator {
 		var index = startIndex
-		return GeneratorOf {
+		return anyGenerator {
 			if index < self.endIndex {
 				return self[index++]
 			}
@@ -161,7 +161,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public override func countOf(keys: Key...) -> Int {
 		return countOf(keys)
@@ -170,7 +170,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {
 		var count: Int = 0
@@ -183,7 +183,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	insert
 		:description:	Insert a key / value pair.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func insert(key: Key, value: Value?) -> Bool {
 		return sentinel !== internalInsert(key, value: value)
@@ -192,7 +192,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	insert
 		:description:	Inserts a list of (Key, Value?) pairs.
-		:param:	nodes	(Key, Value?)...	Elements to insert.
+		- parameter	nodes:	(Key, Value?)...	Elements to insert.
 	*/
 	public func insert(nodes: (Key, Value?)...) {
 		insert(nodes)
@@ -201,7 +201,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	insert
 		:description:	Inserts an array of (Key, Value?) pairs.
-		:param:	nodes	Array<(Key, Value?)>	Elements to insert.
+		- parameter	nodes:	Array<(Key, Value?)>	Elements to insert.
 	*/
 	public func insert(nodes: Array<(Key, Value?)>) {
 		for (k, v) in nodes {
@@ -214,7 +214,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Removes a node from the tree based on the key value given.
 		If the tree allows non-unique keys, then all keys matching
 		the given key value will be removed.
-		:returns:	RedBlackTree<Key, Value>?
+		- returns:	RedBlackTree<Key, Value>?
 	*/
 	public func removeValueForKeys(keys: Key...) -> RedBlackTree<Key, Value>? {
 		return removeValueForKeys(keys)
@@ -225,10 +225,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Removes a key / value pairs from the tree based on the key given.
 		If the tree allows non-unique keys, then all keys matching
 		the given key will be removed.
-		:returns:	RedBlackTree<Key, Value>?
+		- returns:	RedBlackTree<Key, Value>?
 	*/
 	public func removeValueForKeys(keys: Array<Key>) -> RedBlackTree<Key, Value>? {
-		var r: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>(uniqueKeys: isUniquelyKeyed)
+		let r: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>(uniqueKeys: isUniquelyKeyed)
 		for x in keys {
 			var z: RedBlackNode<Key, Value> = internalRemoveValueForKey(x)
 			while sentinel !== z {
@@ -243,7 +243,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	removeInstanceOfValueForKey
 		:description:	Removes a single instance of a value for a key. This is
 		important when using non-unique keys.
-		:returns:	Value?
+		- returns:	Value?
 	*/
 	public func removeInstanceOfValueForKey(key: Key) -> Value? {
 		return internalRemoveValueForKey(key).value
@@ -273,7 +273,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	findValueForKey
 		:description:	Finds the first instance in a non-unique tree and only instance
 		in isUniquelyKeyed tree of a given keyed node.
-		:returns:	Value?
+		- returns:	Value?
 	*/
 	public func findValueForKey(key: Key) -> Value? {
 		return internalFindNodeForKey(key).value
@@ -285,7 +285,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		Items are kept in order, so when iterating
 		through the items, they are returned in their
 		ordeisRed form.
-		:returns:	(key: Key, value: Value?)
+		- returns:	(key: Key, value: Value?)
 	*/
 	public subscript(index: Int) -> (key: Key, value: Value?) {
 		get {
@@ -293,7 +293,6 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			return (x.key, x.value)
 		}
 		set(element) {
-			let x: RedBlackNode<Key, Value> = internalSelect(root, order: index + 1)
 			internalUpdateValue(element.value, forKey: element.key, node: root)
 		}
 	}
@@ -303,7 +302,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:description:	Property key mapping. If the key type is a
 		String, this feature allows access like a
 		Dictionary.
-		:returns:	Value?
+		- returns:	Value?
 	*/
 	public subscript(key: Key) -> Value? {
 		get {
@@ -321,7 +320,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or nil if the member is not present in the set.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public func indexOf(key: Key) -> Int {
 		let x: RedBlackNode<Key, Value> = internalFindNodeForKey(key)
@@ -331,7 +330,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	internalInsert
 		:description:	Insert a new node with the given key and value.
-		:returns:	RedBlackNode<Key, Value>
+		- returns:	RedBlackNode<Key, Value>
 	*/
 	private func internalInsert(key: Key, value: Value?) -> RedBlackNode<Key, Value> {
 		if isUniquelyKeyed && sentinel !== internalFindNodeForKey(key) {
@@ -347,7 +346,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 			x = key < x.key ? x.left : x.right
 		}
 
-		var z: RedBlackNode<Key, Value> = RedBlackNode<Key, Value>(parent: y, sentinel: sentinel, key: key, value: value)
+		let z: RedBlackNode<Key, Value> = RedBlackNode<Key, Value>(parent: y, sentinel: sentinel, key: key, value: value)
 
 		if y === sentinel {
 			root = z
@@ -365,12 +364,12 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	insertCleanUp
 		:description:	The clean up procedure needed to maintain the RedBlackTree balance.
-		:returns:	RedBlackNode<Key, Value>
+		- returns:	RedBlackNode<Key, Value>
 	*/
 	private func insertCleanUp(var z: RedBlackNode<Key, Value>) {
 		while z.parent.isRed {
 			if z.parent === z.parent.parent.left {
-				var y: RedBlackNode<Key, Value> = z.parent.parent.right
+				let y: RedBlackNode<Key, Value> = z.parent.parent.right
 				// violation 1, parent child relationship re to isRed
 				if y.isRed {
 					z.parent.isRed = false
@@ -390,7 +389,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 				}
 			} else {
 				// symetric
-				var y: RedBlackNode<Key, Value> = z.parent.parent.left
+				let y: RedBlackNode<Key, Value> = z.parent.parent.left
 				// violation 1, parent child relationship re to isRed
 				if y.isRed {
 					z.parent.isRed = false
@@ -417,10 +416,10 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		:name:	internalRemoveValueForKey
 		:description:	Removes a node with the given key value and returns that
 		node. If the value does not exist, the sentinel is returned.
-		:returns:	RedBlackNode<Key, Value>
+		- returns:	RedBlackNode<Key, Value>
 	*/
 	private func internalRemoveValueForKey(key: Key) -> RedBlackNode<Key, Value> {
-		var z: RedBlackNode<Key, Value> = internalFindNodeForKey(key)
+		let z: RedBlackNode<Key, Value> = internalFindNodeForKey(key)
 		if z === sentinel {
 			return sentinel
 		}
@@ -538,7 +537,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	minimum
 		:description:	Finds the minimum keyed node.
-		:returns:	RedBlackNode<Key, Value>
+		- returns:	RedBlackNode<Key, Value>
 	*/
 	private func minimum(var x: RedBlackNode<Key, Value>) -> RedBlackNode<Key, Value> {
 		var y: RedBlackNode<Key, Value> = sentinel
@@ -570,7 +569,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		balance property.
 	*/
 	private func leftRotate(x: RedBlackNode<Key, Value>) {
-		var y: RedBlackNode<Key, Value> = x.right
+		let y: RedBlackNode<Key, Value> = x.right
 
 		x.right = y.left
 		if sentinel !== y.left {
@@ -599,7 +598,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		balance property.
 	*/
 	private func rightRotate(y: RedBlackNode<Key, Value>) {
-		var x: RedBlackNode<Key, Value> = y.left
+		let x: RedBlackNode<Key, Value> = y.left
 
 		y.left = x.right
 		if sentinel !== x.right {
@@ -625,7 +624,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	internalFindNodeForKey
 		:description:	Finds a node with a given key value.
-		:returns:	RedBlackNode<Key, Value>
+		- returns:	RedBlackNode<Key, Value>
 	*/
 	private func internalFindNodeForKey(key: Key) -> RedBlackNode<Key, Value> {
 		var z: RedBlackNode<Key, Value> = root
@@ -641,11 +640,11 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	internalSelect
 		:description:	Internally searches for a node by the order statistic value.
-		:returns:	RedBlackNode<Key, Value>
+		- returns:	RedBlackNode<Key, Value>
 	*/
 	private func internalSelect(x: RedBlackNode<Key, Value>, order: Int) -> RedBlackNode<Key, Value> {
 		validateOrder(order)
-		var r: Int = x.left.order + 1
+		let r: Int = x.left.order + 1
 		if order == r {
 			return x
 		} else if order < r {
@@ -685,7 +684,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 	/**
 		:name:	internalOrder
 		:description:	Traverses the Tree for the internal order statistic of a key.
-		:returns:	Int
+		- returns:	Int
 	*/
 	private func internalOrder(var x: RedBlackNode<Key, Value>) -> Int {
 		var r: Int = x.left.order + 1

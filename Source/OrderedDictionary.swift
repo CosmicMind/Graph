@@ -16,8 +16,8 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, Printable {
-	public typealias Generator = GeneratorOf<(key: Key, value: Value?)>
+public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
+	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
 	public typealias OrderedKey = OrderedSet<Key>
 	public typealias OrderedValue = Array<Value>
 	public typealias OrderedSearch = OrderedDictionary<Key, Value>
@@ -26,7 +26,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	tree
 		:description:	Internal storage of (key, value) pairs.
-		:returns:	RedBlackTree<Key, Value>
+		- returns:	RedBlackTree<Key, Value>
 	*/
 	internal var tree: RedBlackTree<Key, Value>
 	
@@ -34,7 +34,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the OrderedDictionary in a readable format.
-		:returns:	String
+		- returns:	String
 	*/
 	public var description: String {
 		return tree.internalDescription
@@ -44,7 +44,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:name:	first
 		:description:	Get the first (key, value) pair.
 		k1 <= k2 <= K3 ... <= Kn
-		:returns:	(key: Key, value: Value?)?
+		- returns:	(key: Key, value: Value?)?
 	*/
 	public var first: (key: Key, value: Value?)? {
 		return tree.first
@@ -54,7 +54,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:name:	last
 		:description:	Get the last (key, value) pair.
 		k1 <= k2 <= K3 ... <= Kn
-		:returns:	(key: Key, value: Value?)?
+		- returns:	(key: Key, value: Value?)?
 	*/
 	public var last: (key: Key, value: Value?)? {
 		return tree.last
@@ -63,7 +63,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the OrderedDictionary is empty.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
@@ -72,7 +72,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	startIndex
 		:description:	Conforms to the CollectionType Protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var startIndex: Int {
 		return 0
@@ -81,7 +81,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	endIndex
 		:description:	Conforms to the CollectionType Protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var endIndex: Int {
 		return count
@@ -90,7 +90,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	keys
 		:description:	Returns an array of the key values in ordered.
-		:returns:	OrderedDictionary.OrderedKey
+		- returns:	OrderedDictionary.OrderedKey
 	*/
 	public var keys: OrderedDictionary.OrderedKey {
 		let s: OrderedKey = OrderedKey()
@@ -104,7 +104,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:name:	values
 		:description:	Returns an array of the values that are ordered based
 		on the key ordering.
-		:returns:	OrderedDictionary.OrderedValue
+		- returns:	OrderedDictionary.OrderedValue
 	*/
 	public var values: OrderedDictionary.OrderedValue {
 		var s: OrderedValue = OrderedValue()
@@ -125,7 +125,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	init
 		:description:	Constructor.
-		:param:	elements	(Key, Value?)...	Initiates with a given list of elements.
+		- parameter	elements:	(Key, Value?)...	Initiates with a given list of elements.
 	*/
 	public convenience init(elements: (Key, Value?)...) {
 		self.init(elements: elements)
@@ -134,7 +134,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	init
 		:description:	Constructor.
-		:param:	elements	Array<(Key, Value?)>	Initiates with a given array of elements.
+		- parameter	elements:	Array<(Key, Value?)>	Initiates with a given array of elements.
 	*/
 	public convenience init(elements: Array<(Key, Value?)>) {
 		self.init()
@@ -150,7 +150,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	//
 	public func generate() -> OrderedDictionary.Generator {
 		var index = startIndex
-		return GeneratorOf {
+		return anyGenerator {
 			if index < self.endIndex {
 				return self[index++]
 			}
@@ -163,7 +163,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:description:	Property key mapping. If the key type is a
 		String, this feature allows access like a
 		Dictionary.
-		:returns:	Value?
+		- returns:	Value?
 	*/
 	public subscript(key: Key) -> Value? {
 		get {
@@ -181,7 +181,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		Items are kept in order, so when iterating
 		through the items, they are returned in their
 		ordered form.
-		:returns:	(key: Key, value: Value?)
+		- returns:	(key: Key, value: Value?)
 	*/
 	public subscript(index: Int) -> (key: Key, value: Value?) {
 		get {
@@ -196,7 +196,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or -1 if the member is not present in the set.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public func indexOf(key: Key) -> Int {
 		return tree.indexOf(key)
@@ -205,7 +205,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public override func countOf(keys: Key...) -> Int {
 		return tree.countOf(keys)
@@ -214,7 +214,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {
 		return tree.countOf(keys)
@@ -223,7 +223,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	insert
 		:description:	Insert a key / value pair.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func insert(key: Key, value: Value?) -> Bool {
 		let result: Bool = tree.insert(key, value: value)
@@ -234,7 +234,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	insert
 		:description:	Inserts a list of (Key, Value?) pairs.
-		:param:	elements	(Key, Value?)...	Elements to insert.
+		- parameter	elements:	(Key, Value?)...	Elements to insert.
 	*/
 	public func insert(elements: (Key, Value?)...) {
 		insert(elements)
@@ -243,7 +243,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	insert
 		:description:	Inserts an array of (Key, Value?) pairs.
-		:param:	elements	Array<(Key, Value?)>	Elements to insert.
+		- parameter	elements:	Array<(Key, Value?)>	Elements to insert.
 	*/
 	public func insert(elements: Array<(Key, Value?)>) {
 		tree.insert(elements)
@@ -253,7 +253,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	removeValueForKeys
 		:description:	Removes key / value pairs based on the key value given.
-		:returns:	OrderedDictionary<Key, Value>?
+		- returns:	OrderedDictionary<Key, Value>?
 	*/
 	public func removeValueForKeys(keys: Key...) -> OrderedDictionary<Key, Value>? {
 		return removeValueForKeys(keys)
@@ -262,7 +262,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	removeValueForKeys
 		:description:	Removes key / value pairs based on the key value given.
-		:returns:	OrderedDictionary<Key, Value>?
+		- returns:	OrderedDictionary<Key, Value>?
 	*/
 	public func removeValueForKeys(keys: Array<Key>) -> OrderedDictionary<Key, Value>? {
 		if let r: RedBlackTree<Key, Value> = tree.removeValueForKeys(keys) {
@@ -296,8 +296,8 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	findValueForKey
 		:description:	Finds the value for key passed.
-		:param:	key	Key	The key to find.
-		:returns:	Value?
+		- parameter	key:	Key	The key to find.
+		- returns:	Value?
 	*/
 	public func findValueForKey(key: Key) -> Value? {
 		return tree.findValueForKey(key)
@@ -307,7 +307,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:name:	search
 		:description:	Accepts a list of keys and returns a subset
 		OrderedDictionary with the given values if they exist.
-		:returns:	OrderedDictionary.OrderedSearch
+		- returns:	OrderedDictionary.OrderedSearch
 	*/
 	public func search(keys: Key...) -> OrderedDictionary.OrderedSearch {
 		return search(keys)
@@ -317,7 +317,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 		:name:	search
 		:description:	Accepts an array of keys and returns a subset
 		OrderedDictionary with the given values if they exist.
-		:returns:	OrderedDictionary.OrderedSearch
+		- returns:	OrderedDictionary.OrderedSearch
 	*/
 	public func search(keys: Array<Key>) -> OrderedDictionary.OrderedSearch {
 		var dict: OrderedSearch = OrderedSearch()

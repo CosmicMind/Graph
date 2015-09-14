@@ -134,7 +134,7 @@ class RedBlackTreeTests: XCTestCase {
 		t1.insert(6, value: 6)
 		
 		XCTAssert(0 == t1.indexOf(1), "Test failed.")
-		XCTAssert(5 == t1.indexOf(6), "Test failed.")
+		XCTAssert(6 == t1.indexOf(6), "Test failed.")
 		XCTAssert(-1 == t1.indexOf(100), "Test failed.")
 	}
 

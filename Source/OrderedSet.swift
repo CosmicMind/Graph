@@ -16,13 +16,13 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class OrderedSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, Printable {
-	public typealias Generator = GeneratorOf<Element>
+public class OrderedSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, CustomStringConvertible {
+	public typealias Generator = AnyGenerator<Element>
 	
 	/**
 		:name:	tree
 		:description:	Internal storage of elements.
-		:returns:	RedBlckTree<Element, Element>
+		- returns:	RedBlckTree<Element, Element>
 	*/
 	internal var tree: RedBlackTree<Element, Element>
 
@@ -30,7 +30,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the OrderedSet in a readable format.
-		:returns:	String
+		- returns:	String
 	*/
 	public var description: String {
 		var output: String = "["
@@ -48,7 +48,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Get the first node value in the tree, this is
 		the first node based on the order of keys where
 		k1 <= k2 <= K3 ... <= Kn
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public var first: Element? {
 		return tree.first?.value
@@ -59,7 +59,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Get the last node value in the tree, this is
 		the last node based on the order of keys where
 		k1 <= k2 <= K3 ... <= Kn
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public var last: Element? {
 		return tree.last?.value
@@ -68,7 +68,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the RedBlackTree is empty.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
@@ -77,7 +77,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	startIndex
 		:description:	Conforms to the CollectionType Protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var startIndex: Int {
 		return 0
@@ -86,7 +86,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	endIndex
 		:description:	Conforms to the CollectionType Protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var endIndex: Int {
 		return count
@@ -126,7 +126,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	//
 	public func generate() -> OrderedSet.Generator {
 		var index = startIndex
-		return GeneratorOf {
+		return anyGenerator {
 			if index < self.endIndex {
 				return self[index++]
 			}
@@ -140,7 +140,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		Items are kept in order, so when iterating
 		through the items, they are returned in their
 		ordered form.
-		:returns:	Element
+		- returns:	Element
 	*/
 	public subscript(index: Int) -> Element {
 		return tree[index].key
@@ -149,7 +149,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or -1 if the member is not present in the set.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public func indexOf(element: Element) -> Int {
 		return tree.indexOf(element)
@@ -159,7 +159,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:name:	contains
 		:description:	A boolean check if values exists
 		 in the set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func contains(elements: Element...) -> Bool {
 		return contains(elements)
@@ -169,7 +169,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:name:	contains
 		:description:	A boolean check if an array of values exist
 		 in the set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func contains(elements: Array<Element>) -> Bool {
 		if 0 == elements.count {
@@ -186,7 +186,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public override func countOf(elements: Element...) -> Int {
 		return tree.countOf(elements)
@@ -195,7 +195,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public override func countOf(elements: Array<Element>) -> Int {
 		return tree.countOf(elements)
@@ -223,7 +223,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedSet.
-		:returns:	OrderedSet<Element>?
+		- returns:	OrderedSet<Element>?
 	*/
 	public func remove(elements: Element...) -> OrderedSet<Element>? {
 		return remove(elements)
@@ -232,12 +232,12 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedSet.
-		:returns:	OrderedSet<Element>?
+		- returns:	OrderedSet<Element>?
 	*/
 	public func remove(elements: Array<Element>) -> OrderedSet<Element>? {
 		if let r: RedBlackTree<Element, Element> = tree.removeValueForKeys(elements) {
 			let s: OrderedSet<Element> = OrderedSet<Element>()
-			for (k, v) in r {
+			for (k, _) in r {
 				s.insert(k)
 			}
 			count = tree.count
@@ -258,7 +258,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	intersect
 		:description:	Return a new set with elements common to this set and a finite sequence of Sets.
-		:returns:	OrderedSet<Element>
+		- returns:	OrderedSet<Element>
 	*/
 	public func intersect(set: OrderedSet<Element>) -> OrderedSet<Element> {
 		let s: OrderedSet<Element> = OrderedSet<Element>()
@@ -307,7 +307,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	union
 		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
-		:returns:	OrderedSet<Element>
+		- returns:	OrderedSet<Element>
 	*/
 	public func union(set: OrderedSet<Element>) -> OrderedSet<Element> {
 		let s: OrderedSet<Element> = OrderedSet<Element>()
@@ -353,7 +353,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	subtract
 		:description:	Return a new set with elements in this set that do not occur in a finite sequence of Sets.
-		:returns:	OrderedSet<Element>
+		- returns:	OrderedSet<Element>
 	*/
 	public func subtract(set: OrderedSet<Element>) -> OrderedSet<Element> {
 		let s: OrderedSet<Element> = OrderedSet<Element>()
@@ -405,7 +405,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	exclusiveOr
 		:description:	Return a new set with elements that are either in the set or a finite sequence but do not occur in both.
-		:returns:	OrderedSet<Element>
+		- returns:	OrderedSet<Element>
 	*/
 	public func exclusiveOr(set: OrderedSet<Element>) -> OrderedSet<Element> {
 		let s: OrderedSet<Element> = OrderedSet<Element>()
@@ -467,7 +467,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	isDisjointWith
 		:description:	Returns true if no elements in the set are in a finite sequence of Sets.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isDisjointWith(set: OrderedSet<Element>) -> Bool {
 		var i: Int = count - 1
@@ -489,7 +489,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	isSubsetOf
 		:description:	Returns true if the set is a subset of a finite sequence as a Set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isSubsetOf(set: OrderedSet<Element>) -> Bool {
 		if count > set.count {
@@ -506,7 +506,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	isStrictSubsetOf
 		:description:	Returns true if the set is a subset of a finite sequence as a Set but not equal.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isStrictSubsetOf(set: OrderedSet<Element>) -> Bool {
 		return count < set.count && isSubsetOf(set)
@@ -515,7 +515,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	isSupersetOf
 		:description:	Returns true if the set is a superset of a finite sequence as a Set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isSupersetOf(set: OrderedSet<Element>) -> Bool {
 		if count < set.count {
@@ -532,7 +532,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	isStrictSupersetOf
 		:description:	Returns true if the set is a superset of a finite sequence as a Set but not equal.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isStrictSupersetOf(set: OrderedSet<Element>) -> Bool {
 		return count > set.count && isSupersetOf(set)

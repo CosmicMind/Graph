@@ -47,7 +47,7 @@ internal class ManagedEntity : NSManagedObject {
 	*/
 	convenience internal init(type: String!) {
 		let g: Graph = Graph()
-		var w: NSManagedObjectContext? = g.worker
+		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		nodeClass = "1"
 		self.type = type
@@ -97,7 +97,7 @@ internal class ManagedEntity : NSManagedObject {
 					}
 				}
 				if false == hasProperty {
-					var property: EntityProperty = EntityProperty(name: name, object: object!)
+					let property: EntityProperty = EntityProperty(name: name, object: object!)
 					property.node = self
 				}
 			}
@@ -110,7 +110,7 @@ internal class ManagedEntity : NSManagedObject {
 	*/
 	internal func addGroup(name: String!) -> Bool {
 		if !hasGroup(name) {
-			var group: EntityGroup = EntityGroup(name: name)
+			let group: ManagedEntityGroup = ManagedEntityGroup(name: name)
 			group.node = self
 			return true
 		}
@@ -123,7 +123,7 @@ internal class ManagedEntity : NSManagedObject {
 	*/
 	internal func hasGroup(name: String!) -> Bool {
 		for n in groupSet {
-			var group: EntityGroup = n as! EntityGroup
+			let group: ManagedEntityGroup = n as! ManagedEntityGroup
 			if name == group.name {
 				return true
 			}
@@ -137,7 +137,7 @@ internal class ManagedEntity : NSManagedObject {
 	*/
 	internal func removeGroup(name: String!) -> Bool {
 		for n in groupSet {
-			let group: EntityGroup = n as! EntityGroup
+			let group: ManagedEntityGroup = n as! ManagedEntityGroup
 			if name == group.name {
 				group.delete()
 				let set: NSMutableSet = groupSet as! NSMutableSet
@@ -253,7 +253,7 @@ extension ManagedEntity {
 		:name:	addGroupSetObject
 		:description:	Adds the Group to the groupSet for the Entity.
 	*/
-	func addGroupSetObject(value: EntityGroup) {
+	func addGroupSetObject(value: ManagedEntityGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.addObject(value)
 	}
@@ -262,7 +262,7 @@ extension ManagedEntity {
 		:name:	removeGroupSetObject
 		:description:	Removes the Group to the groupSet for the Entity.
 	*/
-	func removeGroupSetObject(value: EntityGroup) {
+	func removeGroupSetObject(value: ManagedEntityGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.removeObject(value)
 	}

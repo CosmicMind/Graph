@@ -34,7 +34,7 @@ class ProbabilityTests: XCTestCase {
 		
 		s.insert(1, 2, 3, 3)
 		
-		var ev: Double = 16 * s.probabilityOf(2, 3)
+		let ev: Double = 16 * s.probabilityOf(2, 3)
 		
 		XCTAssert(ev == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
@@ -47,7 +47,7 @@ class ProbabilityTests: XCTestCase {
 		
 		s.insert(1, 2, 3, 3)
 		
-		var ev: Double = 16 * s.probabilityOf(2, 3)
+		let ev: Double = 16 * s.probabilityOf(2, 3)
 		
 		XCTAssert(ev == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
@@ -63,7 +63,7 @@ class ProbabilityTests: XCTestCase {
 		s.insert((3, 3))
 		s.insert((3, 3))
 		
-		var ev: Double = 16 * s.probabilityOf(2, 3)
+		let ev: Double = 16 * s.probabilityOf(2, 3)
 		
 		XCTAssert(ev == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
@@ -79,7 +79,7 @@ class ProbabilityTests: XCTestCase {
 		s.insert((3, 3))
 		s.insert((3, 3))
 		
-		var ev: Double = 16 * s.probabilityOf(2, 3)
+		let ev: Double = 16 * s.probabilityOf(2, 3)
 		
 		XCTAssert(ev == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
@@ -90,8 +90,8 @@ class ProbabilityTests: XCTestCase {
 	func testEntity() {
 		let graph: Graph = Graph()
 		let target: Entity = Entity(type: "ProbTest")
-		for i in 0..<99 {
-			let e: Entity = Entity(type: "ProbTest")
+		for _ in 0..<99 {
+			let _: Entity = Entity(type: "ProbTest")
 		}
 		graph.save()
 		

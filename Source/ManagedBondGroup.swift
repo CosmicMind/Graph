@@ -20,10 +20,9 @@
 
 import CoreData
 
-@objc(BondProperty)
-internal class BondProperty : NSManagedObject {
+@objc(ManagedBondGroup)
+internal class ManagedBondGroup : NSManagedObject {
 	@NSManaged internal var name: String
-	@NSManaged internal var object: AnyObject
 	@NSManaged internal var node: ManagedBond
 
 	private var context: NSManagedObjectContext?
@@ -39,12 +38,11 @@ internal class BondProperty : NSManagedObject {
 		:name:	init
 		:description:	Initializer for the Model Object.
 	*/
-	convenience init(name: String, object: AnyObject) {
+	convenience init(name: String) {
 		let g: Graph = Graph()
-		var w: NSManagedObjectContext? = g.worker
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.bondPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
+		let w: NSManagedObjectContext? = g.worker
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.bondGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
-		self.object = object
 		context = w
 	}
 

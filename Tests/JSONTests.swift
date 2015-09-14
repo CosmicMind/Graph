@@ -31,14 +31,19 @@ class JSONTests: XCTestCase {
 	}
 	
 	func testParse() {
-		var error: NSError?
 		let dict: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
 		
-		var data: NSData? = JSON.serialize(dict, error: &error)
-		XCTAssert(nil == error, "Test failed.")
+		var data: NSData?
+		do {
+			 data = try JSON.serialize(dict)
+		} catch {}
+		XCTAssert(nil != data, "Test failed.")
 		
-		var j1: JSON? = JSON.parse(data!, error: &error)
-		XCTAssert(nil == error, "Test failed.")
+		var j1: JSON?
+		do {
+			j1 = try JSON.parse(data!)
+		} catch {}
+		XCTAssert(nil != j1, "Test failed.")
 		
 		XCTAssert(nil != j1, "Test failed.")
 		XCTAssert("username" == j1!["user"]?.stringValue, "Test failed.")
@@ -47,12 +52,20 @@ class JSONTests: XCTestCase {
 	}
 	
 	func testStringify() {
-		var error: NSError?
 		let dict: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
-		var stringified: String? = JSON.stringify(dict, error: &error)
 		
-		var j1: JSON? = JSON.parse(stringified!, error: &error)
-		XCTAssert(nil == error, "Test failed.")
+		var stringified: String?
+		do {
+			stringified = try JSON.stringify(dict)
+		} catch {
+			XCTAssert(false, "Test failed.")
+		}
+		
+		var j1: JSON?
+		do {
+			j1 = try JSON.parse(stringified!)
+		} catch {}
+		
 		XCTAssert(nil != j1, "Test failed.")
 		XCTAssert("username" == j1!["user"]?.stringValue, "Test failed.")
 		XCTAssert("password" == j1!["password"]?.stringValue, "Test failed.")
@@ -65,9 +78,9 @@ class JSONTests: XCTestCase {
 		let v1: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
 		let v2: Dictionary<String, AnyObject> = ["email": "email", "age": 21]
 		
-		var j1: JSON = JSON(value: v1)
-		var j2: JSON = JSON(value: v1)
-		var j3: JSON = JSON(value: v2)
+		let j1: JSON = JSON(value: v1)
+		let j2: JSON = JSON(value: v1)
+		let j3: JSON = JSON(value: v2)
 		
 		XCTAssert(j1 == j2, "Test failed.")
 		XCTAssert(j1 != j3, "Test failed.")

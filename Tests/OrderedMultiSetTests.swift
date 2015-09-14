@@ -85,8 +85,8 @@ class OrderedMultiSetTests: XCTestCase {
 	}
 	
 	func testIntersectInPlace() {
-		var s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 3, 4, 5)
-		var s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 6, 7, 8, 9, 10)
+		let s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 3, 4, 5)
+		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 1, 2, 5, 6, 7, 8, 9, 10)
 		
 		s1.intersectInPlace(s2)
 		XCTAssert(OrderedMultiSet<Int>(elements: 1, 1, 2, 5) == s1, "Test failed. \(s1)")
@@ -200,7 +200,7 @@ class OrderedMultiSetTests: XCTestCase {
 	
 	func testExclusiveOrInPlace() {
 		var s1: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 2, 3, 4, 5, 6, 7)
-		var s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 4, 5)
+		let s2: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 1, 2, 3, 4, 5)
 		let s3: OrderedMultiSet<Int> = OrderedMultiSet<Int>(elements: 5, 6, 7, 8)
 		
 		s1.exclusiveOrInPlace(s2)

@@ -37,11 +37,11 @@ class Tests : XCTestCase, GraphDelegate {
 		// Set the XCTest Class as the delegate.
 		graph?.delegate = self
 		
-		var user: Entity? = Entity(type: "User")
-		var author: Bond? = Bond(type: "Author")
-		var read: Action? = Action(type: "Read")
-		var book1: Entity? = Entity(type: "Book")
-		var book2: Entity? = Entity(type: "Book")
+		let user: Entity? = Entity(type: "User")
+		let author: Bond? = Bond(type: "Author")
+		let read: Action? = Action(type: "Read")
+		let book1: Entity? = Entity(type: "Book")
+		let book2: Entity? = Entity(type: "Book")
 		
 		read!.addSubject(user!)
 		read!.addObject(book1!)

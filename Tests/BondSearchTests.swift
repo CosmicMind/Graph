@@ -48,10 +48,10 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		
 		XCTAssertTrue(0 == graph?.search(BondProperty: "active").count, "Test failed.")
 		
-		var b1: Bond = Bond(type: "B")
+		let b1: Bond = Bond(type: "B")
 		b1["active"] = true
 		
-		var b2: Bond? = graph?.search(BondProperty: "active").last
+		let b2: Bond? = graph?.search(BondProperty: "active").last
 		
 		XCTAssertTrue(b1 == b2, "Bond: Search did not pass.")
 		
@@ -66,7 +66,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertBond(graph: Graph, bond: Bond) {
-		var b2: Bond? = graph.search(BondProperty: "active").last
+		let b2: Bond? = graph.search(BondProperty: "active").last
 		if bond == b2 {
 			expectation?.fulfill()
 			
@@ -81,7 +81,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidDeleteBond(graph: Graph, bond: Bond) {
-		var b2: Bond? = graph.search(BondProperty: "active").last
+		let b2: Bond? = graph.search(BondProperty: "active").last
 		if nil == b2 {
 			expectation?.fulfill()
 			XCTAssertTrue(0 == graph.search(BondProperty: "active").count, "Test failed.")
@@ -89,7 +89,6 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
-		var b2: Bond? = graph.search(BondProperty: "active").last
 		if value as! Bool == bond["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
 			

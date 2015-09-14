@@ -152,7 +152,7 @@ class OrderedSetTests: XCTestCase {
 	
 	func testExclusiveOrInPlace() {
 		var s1: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 6, 7)
-		var s2: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5)
+		let s2: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5)
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 5, 6, 7, 8)
 		
 		s1.exclusiveOrInPlace(s2)

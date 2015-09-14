@@ -69,7 +69,7 @@ class OrderedMultiDictionaryTests: XCTestCase {
 		let subs: OrderedMultiDictionary<Int, Int>.OrderedSearch = s.search(3)
 		XCTAssert(2 == subs.count, "Test failed.")
 		
-		var generator: OrderedMultiDictionary<Int, Int>.Generator = subs.generate()
+		let generator: OrderedMultiDictionary<Int, Int>.Generator = subs.generate()
 		while let x = generator.next() {
 			XCTAssert(5 == x.value, "Test failed.")
 		}

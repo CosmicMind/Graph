@@ -18,32 +18,32 @@
 
 // #internal
 
-internal class ListNode<Element> : Printable {
+internal class ListNode<Element> : CustomStringConvertible {
 	/**
 		:name:	next
 		:description:	Points to the successor element in the List.
-		:returns:	ListNode<Element>?
+		- returns:	ListNode<Element>?
 	*/
 	internal var next: ListNode<Element>?
 
 	/**
 		:name:	previous
 		:description:	points to the predacessor element in the List.
-		:returns:	ListNode<Element>?
+		- returns:	ListNode<Element>?
 	*/
 	internal var previous: ListNode<Element>?
 
 	/**
 		:name:	data
 		:description:	Satellite data.
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	internal var element: Element?
 
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol.
-		:returns:	String
+		- returns:	String
 	*/
 	internal var description: String {
 		return "\(element)"

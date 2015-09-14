@@ -18,72 +18,80 @@
 
 import Foundation
 
-@objc(SessionDelegate)
 public protocol SessionDelegate {
 	/**
 		:name:	sessionDidReceiveGetResponse
 		:description:	An optional Delegate that is called when GET requests are completed.
 	*/
-	optional func sessionDidReceiveGetResponse(session: Session, json: JSON?, error: NSError?)
+	func sessionDidReceiveGetResponse(session: Session, json: JSON?, error: NSError?)
 	
 	/**
 		:name:	sessionDidReceivePOSTResponse
 		:description:	An optional Delegate that is called when POST requests are completed.
 	*/
-	optional func sessionDidReceivePOSTResponse(session: Session, json: JSON?, error: NSError?)
+	func sessionDidReceivePOSTResponse(session: Session, json: JSON?, error: NSError?)
 }
 
-@objc(Session)
-public class Session {
+public extension SessionDelegate {
+	func sessionDidReceiveGetResponse(session: Session, json: JSON?, error: NSError?) {}
+	func sessionDidReceivePOSTResponse(session: Session, json: JSON?, error: NSError?) {}
+}
+
+public class Session : NSObject {
 	/**
 		:name:	delegate
 		:description:	An Optional delegate to set
 		for Session GET/POST requests.
-		:returns:	SessionDelegate?
+		- returns:	SessionDelegate?
 	*/
-	public weak var delegate: SessionDelegate?
+	public var delegate: SessionDelegate?
 	
 	/**
 		:name:	init
 		:description:	Constructor.
 	*/
-	public init() {}
+	public override init() {
+		super.init()
+	}
 	
 	/**
 		:name:	get
 		:description:	Sends a GET request.
-		:param:	url	NSURL	URL destination.
-		:param:	completion	(json: JSON?, error: NSError?) -> ()	An Optional callback.
+		- parameter	url:	NSURL	URL destination.
+		- parameter	completion:	(json: JSON?, error: NSError?) -> ()	An Optional callback.
 	*/
 	public func get(url: NSURL, completion: (json: JSON?, error: NSError?) -> ()) {
-		var request = NSMutableURLRequest(URL: url)
+		let request = NSMutableURLRequest(URL: url)
 		request.HTTPMethod = "GET"
 		
 		NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) in
 			var json: JSON?
 			var err: NSError?
 			if nil == error {
-				json = JSON.parse(data, error: &err)
+				do {
+					json = try JSON.parse(data!)
+				} catch let e as NSError {
+					err = e
+					json = nil
+				}
 			} else {
 				err = error
 			}
 			completion(json: json, error: err)
-			self.delegate?.sessionDidReceiveGetResponse?(self, json: json, error: err)
+			self.delegate?.sessionDidReceiveGetResponse(self, json: json, error: err)
 		}).resume()
 	}
 	
 	/**
 		:name:	post
 		:description:	Sends a POST request.
-		:param:	url	NSURL	URL destination.
-		:param:	json	JSON?	An Optional JSON block to send.
-		:param:	completion	(json: JSON?, error: NSError?) -> ()	An Optional callback.
+		- parameter	url:	NSURL	URL destination.
+		- parameter	json:	JSON?	An Optional JSON block to send.
+		- parameter	completion:	(json: JSON?, error: NSError?) -> ()	An Optional callback.
 	*/
 	public func post(url: NSURL, json: JSON?, completion: (json: JSON?, error: NSError?) -> ()) {
-		var request = NSMutableURLRequest(URL: url)
+		let request = NSMutableURLRequest(URL: url)
 		request.HTTPMethod = "POST"
-		
-		var error: NSError?
 		request.HTTPBody = json?.dataValue
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -92,12 +100,19 @@ public class Session {
 			var json: JSON?
 			var err: NSError?
 			if nil == error {
-				json = JSON.parse(data, error: &err)
+				do {
+					json = try JSON.parse(data!)
+				} catch let error as NSError {
+					err = error
+					json = nil
+				} catch {
+					fatalError()
+				}
 			} else {
 				err = error
 			}
 			completion(json: json, error: err)
-			self.delegate?.sessionDidReceivePOSTResponse?(self, json: json, error: err)
+			self.delegate?.sessionDidReceivePOSTResponse(self, json: json, error: err)
 		}).resume()
 	}
 }

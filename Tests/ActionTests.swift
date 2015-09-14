@@ -80,7 +80,7 @@ class ActionTests : XCTestCase, GraphDelegate {
 
         // Let's watch the changes in the Graph for the following Action values.
         graph!.watch(Action: "Read")
-        graph!.watch(ActionGroup: "Holiday")
+        graph!.watch(ManagedActionGroup: "Holiday")
         graph!.watch(ActionProperty: "name")
         graph!.watch(ActionProperty: "session")
 
@@ -199,10 +199,10 @@ class ActionTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
+    func graphDidInsertManagedActionGroup(graph: Graph, action: Action, group: String) {
         if "Holiday" == group {
             groupInsertExpectation?.fulfill()
-            let n: OrderedSet<Action> = graph.search(ActionGroup: group)
+            let n: OrderedSet<Action> = graph.search(ManagedActionGroup: group)
             if action.id == n.first?.id {
                 groupSearchExpectation?.fulfill()
             }

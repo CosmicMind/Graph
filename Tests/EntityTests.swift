@@ -62,7 +62,7 @@ class EntityTests : XCTestCase, GraphDelegate {
 
         // Let's watch the changes in the Graph for the following Entity values.
         graph!.watch(Entity: "User")
-        graph!.watch(EntityGroup: "Female")
+        graph!.watch(ManagedEntityGroup: "Female")
         graph!.watch(EntityProperty: "name")
         graph!.watch(EntityProperty: "age")
 
@@ -132,10 +132,10 @@ class EntityTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
+    func graphDidInsertManagedEntityGroup(graph: Graph, entity: Entity, group: String) {
         if "Female" == group {
             groupInsertExpectation?.fulfill()
-            let nodes: OrderedSet<Entity> = graph.search(EntityGroup: group)
+            let nodes: OrderedSet<Entity> = graph.search(ManagedEntityGroup: group)
             if entity.id == nodes.first?.id {
                 groupSearchExpectation?.fulfill()
             }

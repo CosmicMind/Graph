@@ -16,13 +16,13 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class OrderedMultiSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, Printable {
-	public typealias Generator = GeneratorOf<Element>
+public class OrderedMultiSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, CustomStringConvertible {
+	public typealias Generator = AnyGenerator<Element>
 	
 	/**
 		:name:	tree
 		:description:	Internal storage of elements.
-		:returns:	RedBlackTree<Element, Element>
+		- returns:	RedBlackTree<Element, Element>
 	*/
 	internal var tree: RedBlackTree<Element, Element>
 
@@ -30,7 +30,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the OrderedMultiSet in a readable format.
-		:returns:	String
+		- returns:	String
 	*/
 	public var description: String {
 		var output: String = "["
@@ -48,7 +48,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Get the first node value in the tree, this is
 		the first node based on the order of keys where
 		k1 <= k2 <= K3 ... <= Kn
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public var first: Element? {
 		return tree.first?.value
@@ -59,7 +59,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:description:	Get the last node value in the tree, this is
 		the last node based on the order of keys where
 		k1 <= k2 <= K3 ... <= Kn
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public var last: Element? {
 		return tree.last?.value
@@ -68,7 +68,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the RedBlackTree is empty.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return 0 == count
@@ -77,7 +77,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	startIndex
 		:description:	Conforms to the CollectionType Protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var startIndex: Int {
 		return 0
@@ -86,7 +86,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	endIndex
 		:description:	Conforms to the CollectionType Protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var endIndex: Int {
 		return count
@@ -126,7 +126,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	//	
 	public func generate() -> OrderedMultiSet.Generator {
 		var index = startIndex
-		return GeneratorOf {
+		return anyGenerator {
 			if index < self.endIndex {
 				return self[index++]
 			}
@@ -140,7 +140,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		Items are kept in order, so when iterating
 		through the items, they are returned in their
 		ordered form.
-		:returns:	Element
+		- returns:	Element
 	*/
 	public subscript(index: Int) -> Element {
 		return tree[index].key
@@ -149,7 +149,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or -1 if the member is not present in the set.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public func indexOf(element: Element) -> Int {
 		return tree.indexOf(element)
@@ -159,7 +159,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	contains
 		:description:	A boolean check if values exists
 		in the set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func contains(elements: Element...) -> Bool {
 		return contains(elements)
@@ -169,7 +169,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		:name:	contains
 		:description:	A boolean check if an array of values exist
 		in the set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func contains(elements: Array<Element>) -> Bool {
 		if 0 == elements.count {
@@ -186,7 +186,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public override func countOf(elements: Element...) -> Int {
 		return tree.countOf(elements)
@@ -195,7 +195,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	countOf
 		:description:	Conforms to ProbabilityType protocol.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public override func countOf(elements: Array<Element>) -> Int {
 		return tree.countOf(elements)
@@ -223,7 +223,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedMultiSet.
-		:returns:	OrderedMultiSet<Element>?
+		- returns:	OrderedMultiSet<Element>?
 	*/
 	public func remove(elements: Element...) -> OrderedMultiSet<Element>? {
 		return remove(elements)
@@ -232,12 +232,12 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	remove
 		:description:	Removes elements from the OrderedMultiSet.
-		:returns:	OrderedMultiSet<Element>?
+		- returns:	OrderedMultiSet<Element>?
 	*/
 	public func remove(elements: Array<Element>) -> OrderedMultiSet<Element>? {
 		if let r: RedBlackTree<Element, Element> = tree.removeValueForKeys(elements) {
 			let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
-			for (k, v) in r {
+			for (k, _) in r {
 				s.insert(k)
 			}
 			count = tree.count
@@ -258,7 +258,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	intersect
 		:description:	Return a new set with elements common to this set and a finite sequence of Sets.
-		:returns:	OrderedMultiSet<Element>
+		- returns:	OrderedMultiSet<Element>
 	*/
 	public func intersect(set: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
@@ -308,7 +308,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	union
 		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
-		:returns:	OrderedMultiSet<Element>
+		- returns:	OrderedMultiSet<Element>
 	*/
 	public func union(set: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
@@ -369,7 +369,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	subtract
 		:description:	Return a new set with elements in this set that do not occur in a finite sequence of Sets.
-		:returns:	OrderedMultiSet<Element>
+		- returns:	OrderedMultiSet<Element>
 	*/
 	public func subtract(set: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
@@ -422,7 +422,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	exclusiveOr
 		:description:	Return a new set with elements that are either in the set or a finite sequence but do not occur in both.
-		:returns:	OrderedMultiSet<Element>
+		- returns:	OrderedMultiSet<Element>
 	*/
 	public func exclusiveOr(set: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 		let s: OrderedMultiSet<Element> = OrderedMultiSet<Element>()
@@ -484,7 +484,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	isDisjointWith
 		:description:	Returns true if no elements in the set are in a finite sequence of Sets.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isDisjointWith(set: OrderedMultiSet<Element>) -> Bool {
 		var i: Int = count - 1
@@ -506,7 +506,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	isSubsetOf
 		:description:	Returns true if the set is a subset of a finite sequence as a Set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isSubsetOf(set: OrderedMultiSet<Element>) -> Bool {
 		if count > set.count {
@@ -523,7 +523,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	isStrictSubsetOf
 		:description:	Returns true if the set is a subset of a finite sequence as a Set but not equal.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isStrictSubsetOf(set: OrderedMultiSet<Element>) -> Bool {
 		return count < set.count && isSubsetOf(set)
@@ -532,7 +532,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	isSupersetOf
 		:description:	Returns true if the set is a superset of a finite sequence as a Set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isSupersetOf(set: OrderedMultiSet<Element>) -> Bool {
 		if count < set.count {
@@ -549,7 +549,7 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	/**
 		:name:	isStrictSupersetOf
 		:description:	Returns true if the set is a superset of a finite sequence as a Set but not equal.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func isStrictSupersetOf(set: OrderedMultiSet<Element>) -> Bool {
 		return count > set.count && isSupersetOf(set)

@@ -18,26 +18,16 @@
 
 import Foundation
 
-@objc(Entity)
-public class Entity : NSObject, Comparable {
+public class Entity : Equatable, CustomStringConvertible, Comparable {
 	internal let node: ManagedEntity
-
+	
 	/**
-		:name:	init
-		:description:	Initializes Entity with a given ManagedEntity.
+		:name:	description
 	*/
-	internal init(entity: ManagedEntity!) {
-		node = entity
+	public var description: String {
+		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
 	}
-
-	/**
-		:name:	init
-		:description:	An initializer for the wrapped Model Object with a given type.
-	*/
-	public convenience init(type: String) {
-		self.init(entity: ManagedEntity(type: type))
-	}
-
+	
 	/**
 		:name:	nodeClass
 		:description:	Retrieves the nodeClass for the Model Object that is wrapped internally.
@@ -77,38 +67,14 @@ public class Entity : NSObject, Comparable {
 		:description:	Retrieves the Groups the Entity is a part of.
 	*/
 	public var groups: OrderedSet<String> {
-		var groups: OrderedSet<String> = OrderedSet<String>()
+		let groups: OrderedSet<String> = OrderedSet<String>()
 		for group in node.groupSet {
 			let name: String = group.name
 			groups.insert(name)
 		}
 		return groups
 	}
-
-	/**
-		:name:	addGroup
-		:description:	Adds a Group name to the list of Groups if it does not exist.
-	*/
-	public func addGroup(name: String) -> Bool {
-		return node.addGroup(name)
-	}
-
-	/**
-		:name:	hasGroup
-		:description:	Checks whether the Node is a part of the Group name passed or not.
-	*/
-	public func hasGroup(name: String) -> Bool {
-		return node.hasGroup(name)
-	}
-
-	/**
-		:name:	removeGroup
-		:description:	Removes a Group name from the list of Groups if it exists.
-	*/
-	public func removeGroup(name: String) -> Bool {
-		return node.removeGroup(name)
-	}
-
+	
 	/**
 		:name:	properties
 		:description:	Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
@@ -151,7 +117,7 @@ public class Entity : NSObject, Comparable {
 		the Action.
     */
     public var actionsWhenSubject: OrderedSet<Action> {
-		var nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for entry in node.actionSubjectSet {
 			nodes.insert(Action(action: entry as! ManagedAction))
 		}
@@ -166,7 +132,7 @@ public class Entity : NSObject, Comparable {
 		the Action.
 	*/
     public var actionsWhenObject: OrderedSet<Action> {
-        var nodes: OrderedSet<Action> = OrderedSet<Action>()
+        let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for entry in node.actionObjectSet {
 			nodes.insert(Action(action: entry as! ManagedAction))
 		}
@@ -190,7 +156,7 @@ public class Entity : NSObject, Comparable {
 		the Bond.
 	*/
     public var bondsWhenSubject: OrderedSet<Bond> {
-		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for entry in node.bondSubjectSet {
 			nodes.insert(Bond(bond: entry as! ManagedBond))
 		}
@@ -205,13 +171,53 @@ public class Entity : NSObject, Comparable {
 		the Bond.
 	*/
     public var bondsWhenObject: OrderedSet<Bond> {
-		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for entry in node.bondObjectSet {
 			nodes.insert(Bond(bond: entry as! ManagedBond))
 		}
 		return nodes
     }
-
+	
+	/**
+		:name:	init
+		:description:	Initializes Entity with a given ManagedEntity.
+	*/
+	internal init(entity: ManagedEntity) {
+		node = entity
+	}
+	
+	/**
+		:name:	init
+		:description:	An initializer for the wrapped Model Object with a given type.
+	*/
+	public convenience init(type: String) {
+		self.init(entity: ManagedEntity(type: type))
+	}
+	
+	/**
+		:name:	addGroup
+		:description:	Adds a Group name to the list of Groups if it does not exist.
+	*/
+	public func addGroup(name: String) -> Bool {
+		return node.addGroup(name)
+	}
+	
+	/**
+		:name:	hasGroup
+		:description:	Checks whether the Node is a part of the Group name passed or not.
+	*/
+	public func hasGroup(name: String) -> Bool {
+		return node.hasGroup(name)
+	}
+	
+	/**
+		:name:	removeGroup
+		:description:	Removes a Group name from the list of Groups if it exists.
+	*/
+	public func removeGroup(name: String) -> Bool {
+		return node.removeGroup(name)
+	}
+	
     /**
 		:name:	delete
 		:description:	Marks the Model Object to be deleted from the Graph.
@@ -219,12 +225,6 @@ public class Entity : NSObject, Comparable {
     public func delete() {
 		node.delete()
     }
-}
-
-extension Entity : Equatable, Printable {
-	override public var description: String {
-		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
-	}
 }
 
 public func ==(lhs: Entity, rhs: Entity) -> Bool {

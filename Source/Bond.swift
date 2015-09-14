@@ -18,26 +18,16 @@
 
 import Foundation
 
-@objc(Bond)
-public class Bond : NSObject, Comparable {
+public class Bond : Equatable, CustomStringConvertible, Comparable {
 	internal let node: ManagedBond
 
 	/**
-		:name:	init
-		:description: Initializes Bond with a given ManagedBond.
+		:name:	description
 	*/
-	internal init(bond: ManagedBond) {
-		node = bond
+	public var description: String {
+		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
 	}
-
-	/**
-		:name:	init
-		:description:	An initializer for the wrapped Model Object with a given type.
-	*/
-	public convenience init(type: String) {
-		self.init(bond: ManagedBond(type: type))
-	}
-
+	
 	/**
 		:name:	nodeClass
 		:description:	Retrieves the nodeClass for the Model Object that is wrapped internally.
@@ -77,13 +67,68 @@ public class Bond : NSObject, Comparable {
 		:description:	Retrieves the Groups the Bond is a part of.
 	*/
 	public var groups: OrderedSet<String> {
-		var groups: OrderedSet<String> = OrderedSet<String>()
+		let groups: OrderedSet<String> = OrderedSet<String>()
 		for group in node.groupSet {
 			let name: String = group.name
 			groups.insert(name)
 		}
 		return groups
 	}
+	
+	/**
+		:name:	properties
+		:description:	Retrieves the Properties the Node is a part of.
+	*/
+	public var properties: Dictionary<String, AnyObject> {
+		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+		for property in node.propertySet {
+			properties[property.name] = property.object
+		}
+		return properties
+	}
+	
+	/**
+		:name:	subject
+		:description:	Retrieves an Entity Object.
+	*/
+	public var subject: Entity? {
+		get {
+			return nil == node.subject ? nil : Entity(entity: node.subject!)
+		}
+		set(entity) {
+			node.subject = entity?.node
+		}
+	}
+	
+	/**
+		:name:	object
+		:description:	Retrieves an Entity Object.
+	*/
+	public var object: Entity? {
+		get {
+			return nil == node.object ? nil : Entity(entity: node.object!)
+		}
+		set(entity) {
+			node.object = entity?.node
+		}
+	}
+	
+	/**
+		:name:	init
+		:description: Initializes Bond with a given ManagedBond.
+	*/
+	internal init(bond: ManagedBond) {
+		node = bond
+	}
+	
+	/**
+		:name:	init
+		:description:	An initializer for the wrapped Model Object with a given type.
+	*/
+	public convenience init(type: String) {
+		self.init(bond: ManagedBond(type: type))
+	}
+
 
 	/**
 		:name:	addGroup
@@ -123,56 +168,12 @@ public class Bond : NSObject, Comparable {
 	}
 
 	/**
-		:name:	properties
-		:description:	Retrieves the Properties the Node is a part of.
-	*/
-	public var properties: Dictionary<String, AnyObject> {
-		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-		for property in node.propertySet {
-			properties[property.name] = property.object
-		}
-		return properties
-	}
-
-    /**
-    	:name:	subject
-    	:description:	Retrieves an Entity Object.
-    */
-    public var subject: Entity? {
-        get {
-			return nil == node.subject ? nil : Entity(entity: node.subject!)
-        }
-        set(entity) {
-            node.subject = entity?.node
-        }
-    }
-
-    /**
-    	:name:	object
-    	:description:	Retrieves an Entity Object.
-    */
-    public var object: Entity? {
-		get {
-			return nil == node.object ? nil : Entity(entity: node.object!)
-		}
-		set(entity) {
-			node.object = entity?.node
-		}
-    }
-
-    /**
     	:name:	delete
     	:description:	Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
         node.delete()
     }
-}
-
-extension Bond : Equatable, Printable {
-	override public var description: String {
-		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
-	}
 }
 
 public func ==(lhs: Bond, rhs: Bond) -> Bool {

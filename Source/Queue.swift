@@ -16,20 +16,20 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class Queue<Element> : Printable, SequenceType {
-	public typealias Generator = GeneratorOf<Element?>
+public class Queue<Element> : CustomStringConvertible, SequenceType {
+	public typealias Generator = AnyGenerator<Element?>
 
 	/**
 		:name:	list
 		:description:	Underlying data structure.
-		:returns:	List<Element>
+		- returns:	List<Element>
 	*/
 	private var list: List<Element>
 
 	/**
 		:name:	count
 		:description:	Total number of items in the Queue.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var count: Int {
 		return list.count
@@ -39,7 +39,7 @@ public class Queue<Element> : Printable, SequenceType {
 		:name:	peek
 		:description:	Get the element at the front of
 		the Queue, and do not remove it.
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public var peek: Element? {
 		return list.front
@@ -48,7 +48,7 @@ public class Queue<Element> : Printable, SequenceType {
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the Queue is empty.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
@@ -57,7 +57,7 @@ public class Queue<Element> : Printable, SequenceType {
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol.
-		:returns:	String
+		- returns:	String
 	*/
 	public var description: String {
 		return "Queue" + list.internalDescription
@@ -93,7 +93,7 @@ public class Queue<Element> : Printable, SequenceType {
 		:name:	dequeue
 		:description:	Get and remove the element at the front
 		of the Queue.
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public func dequeue() -> Element? {
 		return list.removeAtFront()

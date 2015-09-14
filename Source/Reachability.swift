@@ -44,7 +44,7 @@ public protocol ReachabilityDelegate {
 		:name:	reachabilityDidChangeStatus
 		:description:	An optional Delegate that is called when the Network
 		ReachabilityStatus changes.
-		:param:	reachability	Reachability	The calling Reachability instance.
+		- parameter	reachability:	Reachability	The calling Reachability instance.
 	*/
 	optional func reachabilityDidChangeStatus(reachability: Reachability)
 	
@@ -52,7 +52,7 @@ public protocol ReachabilityDelegate {
 		:name:	reachabilityDidBecomeReachable
 		:description:	An optional Delegate that is called when the Network
 		ReachabilityStatus is available.
-		:param:	reachability	Reachability	The calling Reachability instance.
+		- parameter	reachability:	Reachability	The calling Reachability instance.
 	*/
 	optional func reachabilityDidBecomeReachable(reachability: Reachability)
 	
@@ -60,17 +60,17 @@ public protocol ReachabilityDelegate {
 		:name:	reachabilityDidBecomeUnreachable
 		:description:	An optional Delegate that is called when the Network
 		ReachabilityStatus is no longer available.
-		:param:	reachability	Reachability	The calling Reachability instance.
+		- parameter	reachability:	Reachability	The calling Reachability instance.
 	*/
 	optional func reachabilityDidBecomeUnreachable(reachability: Reachability)
 }
 
 @objc(Reachability)
-public class Reachability {
+public class Reachability : NSObject {
 	/**
 		:name: reachability
 		:description:	Internal SCNetworkReachability value.
-		:returns:	SCNetworkReachability?
+		- returns:	SCNetworkReachability?
 	*/
 	private var reachability: SCNetworkReachability?
 	
@@ -78,7 +78,7 @@ public class Reachability {
 		:name:	previousFlags
 		:description:	Holds the previous SCNetworkReachabilityFlags value
 		when the network connectivity changes.
-		:returns:	SCNetworkReachabilityFlags?
+		- returns:	SCNetworkReachabilityFlags?
 	*/
 	private var previousFlags: SCNetworkReachabilityFlags?
 	
@@ -86,24 +86,24 @@ public class Reachability {
 		:name:	currentFlags
 		:description:	Holds the current SCNetworkReachabilityFlags value
 		when the network connectivity changes.
-		:returns:	SCNetworkReachabilityFlags
+		- returns:	SCNetworkReachabilityFlags
 	*/
 	private var currentFlags: SCNetworkReachabilityFlags {
-		var flags: SCNetworkReachabilityFlags = 0
-		return 0 == SCNetworkReachabilityGetFlags(reachability, &flags) ? 0 : flags
+		var flags: SCNetworkReachabilityFlags = []
+		return SCNetworkReachabilityGetFlags(reachability!, &flags) ? [] : flags
 	}
 	
 	/**
 		:name:	timer
 		:description:	Internal dispatch timer for connectivity watching.
-		:returns:	dispatch_source_t?
+		- returns:	dispatch_source_t?
 	*/
 	private var timer: dispatch_source_t?
 	
 	/**
 		:name:	queue
 		:description:	Internal dispatch queue for connectivity watching.
-		:returns:	dispatch_queue_t
+		- returns:	dispatch_queue_t
 	*/
 	private lazy var queue: dispatch_queue_t = {
 		return dispatch_queue_create("io.graphkit.Reachability", nil)
@@ -112,7 +112,7 @@ public class Reachability {
 	/**
 		:name:	status
 		:description:	Current ReachabilityStatus value.
-		:returns:	ReachabilityStatus
+		- returns:	ReachabilityStatus
 	*/
 	public private(set) var status: ReachabilityStatus
 	
@@ -120,7 +120,7 @@ public class Reachability {
 		:name:	onStatusChange
 		:description:	An Optional callback to set when network
 		availability changes.
-		:returns:	((reachability: Reachability) -> ())?
+		- returns:	((reachability: Reachability) -> ())?
 	*/
 	public var onStatusChange: ((reachability: Reachability) -> ())?
 	
@@ -128,7 +128,7 @@ public class Reachability {
 		:name:	isReachableOnWWAN
 		:description:	A boolean flag that allows Reachability to 
 		be detected when on WWAN.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public var isReachableOnWWAN: Bool
 	
@@ -136,7 +136,7 @@ public class Reachability {
 		:name:	isRunningOnDevice
 		:description:	A boolean flag that indicates the user
 		is using a mobile device or not.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public var isRunningOnDevice: Bool = {
 		#if TARGET_IPHONE_SIMULATOR
@@ -150,35 +150,36 @@ public class Reachability {
 		:name:	delegate
 		:description:	An optional Delegate to set that is called
 		when Reachability settings change.
-		:returns:	ReachabilityDelegate?
+		- returns:	ReachabilityDelegate?
 	*/
-	public weak var delegate: ReachabilityDelegate?
+	public var delegate: ReachabilityDelegate?
 	
 	/**
 		:name: reachabilityForInternetConnection
 		:description:	A Class level method that returns a Reachability
 		instance that detects network connectivity changes.
-		:returns:	Reachability
+		- returns:	Reachability
 	*/
 	public class func reachabilityForInternetConnection() -> Reachability {
 		var addr: sockaddr_in = sockaddr_in(sin_len: __uint8_t(0), sin_family: sa_family_t(0), sin_port: in_port_t(0), sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
 		addr.sin_len = UInt8(sizeofValue(addr))
 		addr.sin_family = sa_family_t(AF_INET)
 		return Reachability(reachability: withUnsafePointer(&addr) {
-			SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, UnsafePointer($0)).takeRetainedValue()
+			SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, UnsafePointer($0))!
 		})
 	}
 	
-	private init() {
+	private override init() {
 		status = .NotReachable
 		isReachableOnWWAN = true
+		super.init()
 	}
 	
 	/**
 		:name:	init
 		:description:	A Constructor that allows for the SCNetworkReachability
 		reference to be set externally.
-		:param:	reachability	SCNetworkReachability	An external SCNetworkReachability
+		- parameter	reachability:	SCNetworkReachability	An external SCNetworkReachability
 		reference.
 	*/
 	public convenience init(reachability: SCNetworkReachability) {
@@ -194,7 +195,7 @@ public class Reachability {
 	/**
 		:name:	startWatcher
 		:description:	Start watching for network changes.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func startWatcher() -> Bool {
 		timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
@@ -231,7 +232,6 @@ public class Reachability {
 		let flags: SCNetworkReachabilityFlags = currentFlags
 		if flags != previousFlags {
 			dispatch_async(dispatch_get_main_queue(), { _ in
-				let s: ReachabilityStatus = self.status
 				self.statusDidChange(flags)
 				self.previousFlags = flags
 			})
@@ -242,7 +242,7 @@ public class Reachability {
 		:name:	statusDidChange
 		:description:	When the status changes, this method calls the
 		Delegate handles.
-		:param:	flags	SCNetworkReachabilityFlags Flags that determine
+		- parameter	flags:	SCNetworkReachabilityFlags Flags that determine
 		the changed state.
 	*/
 	private func statusDidChange(flags: SCNetworkReachabilityFlags) {
@@ -261,22 +261,22 @@ public class Reachability {
 	/**
 		:name:	isRaachable
 		:description:	Determines whether the network is reachable or not.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	private func isReachable(flags: SCNetworkReachabilityFlags) -> Bool {
-		return	!(!(0 != flags & SCNetworkReachabilityFlags(kSCNetworkReachabilityFlagsReachable)) ||
-			(0 != flags & SCNetworkReachabilityFlags(kSCNetworkReachabilityFlagsTransientConnection | kSCNetworkReachabilityFlagsConnectionRequired)) ||
+		return	!(!([] != flags.intersect(SCNetworkReachabilityFlags.Reachable)) ||
+			([] != flags.intersect(SCNetworkReachabilityFlags.TransientConnection.union(SCNetworkReachabilityFlags.ConnectionRequired))) ||
 			(isRunningOnDevice && isWWAN(flags) && !isReachableOnWWAN))
 	}
 	
 	/**
 		:name:	isWWAN
 		:description:	Determines whether the network is WWAN.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	private func isWWAN(flags: SCNetworkReachabilityFlags) -> Bool {
 		#if os(iOS)
-			return 0 != flags & SCNetworkReachabilityFlags(kSCNetworkReachabilityFlagsIsWWAN)
+			return [] != flags.intersect(SCNetworkReachabilityFlags.IsWWAN)
 		#else
 			return false
 		#endif

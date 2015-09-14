@@ -18,29 +18,19 @@
 
 import Foundation
 
-@objc(Action)
-public class Action : NSObject, Comparable {
+public class Action : Equatable, CustomStringConvertible, Comparable {
 	internal let node: ManagedAction
-
+	
 	/**
-		:name:	init
-		:description: Initializes Action with a given ManagedAction.
+		:name:	description
 	*/
-	internal init(action: ManagedAction) {
-		node = action
+	public var description: String {
+		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
 	}
-
+	
 	/**
-	:name:	init
-	:description:	An initializer for the wrapped Model Object with a given type.
-	*/
-	public convenience init(type: String) {
-		self.init(action: ManagedAction(type: type))
-	}
-
-	/**
-	:name:	nodeClass
-	:description:	Retrieves the nodeClass for the Model Object that is wrapped internally.
+		:name:	nodeClass
+		:description:	Retrieves the nodeClass for the Model Object that is wrapped internally.
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
@@ -49,7 +39,7 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	type
 		:description:	Specifies the Type the Action belongs too.
-		:returns:	String
+		- returns:	String
 	*/
 	public var type: String {
 		return node.type
@@ -60,7 +50,7 @@ public class Action : NSObject, Comparable {
 		:description:	A unique identifier that is automatically
 		generated. The identifier represents the Action instance
 		globally amongst all data in Graph.
-		:returns:	String
+		- returns:	String
 	*/
 	public var id: String {
 		let nodeURL: NSURL = node.objectID.URIRepresentation()
@@ -71,7 +61,7 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	createdDate
 		:description:	Retrieves the date the Model Object was created.
-		:returns:	NSDate
+		- returns:	NSDate
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
@@ -80,42 +70,15 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	groups
 		:description:	Retrieves the Groups the Action is a part of.
-		:returns: OrderedSet<Srting>
+		- returns: OrderedSet<Srting>
 	*/
 	public var groups: OrderedSet<String> {
-		var groups: OrderedSet<String> = OrderedSet<String>()
+		let groups: OrderedSet<String> = OrderedSet<String>()
 		for group in node.groupSet {
 			let name: String = group.name
 			groups.insert(name)
 		}
 		return groups
-	}
-
-	/**
-		:name:	addGroup
-		:description:	Adds a Group name to the list of Groups if it does not exist.
-		:returns:	Bool
-	*/
-	public func addGroup(name: String) -> Bool {
-		return node.addGroup(name)
-	}
-
-	/**
-		:name:	hasGroup
-		:descriptions: Checks whether the Node is a part of the Group name passed or not.
-		:returns:	Bool
-	*/
-	public func hasGroup(name: String) -> Bool {
-		return node.hasGroup(name)
-	}
-
-	/**
-		:name:	removeGroup
-		:description:	Removes a Group name from the list of Groups if it exists.
-		:returns:	Bool
-	*/
-	public func removeGroup(name: String) -> Bool {
-		return node.removeGroup(name)
 	}
 
 	/**
@@ -133,7 +96,7 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	properties
 		:description:	Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
-		:returns:	AnyObject?
+		- returns:	AnyObject?
 	*/
 	public subscript(name: String) -> AnyObject? {
 		get {
@@ -148,10 +111,10 @@ public class Action : NSObject, Comparable {
     	:name:	subjects
     	:description:	Retrieves an OrderedMultiDictionary of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
-		:returns:	OrderedSet<Entity>
+		- returns:	OrderedSet<Entity>
     */
     public var subjects: OrderedSet<Entity> {
-		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for entry in node.subjectSet {
 			nodes.insert(Entity(entity: entry as! ManagedEntity))
 		}
@@ -162,20 +125,63 @@ public class Action : NSObject, Comparable {
     	:name:	objects
 		:description:	Retrieves an OrderedMultiDictionary of Entity Objects. Where the key is the type
 		of Entity, and the value is the Entity instance.
-		:returns:	OrderedSet<Entity>
+		- returns:	OrderedSet<Entity>
     */
     public var objects: OrderedSet<Entity> {
-		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for entry in node.objectSet {
 			nodes.insert(Entity(entity: entry as! ManagedEntity))
 		}
 		return nodes
     }
-
+	
+	/**
+		:name:	init
+		:description: Initializes Action with a given ManagedAction.
+	*/
+	internal init(action: ManagedAction) {
+		node = action
+	}
+	
+	/**
+		:name:	init
+		:description:	An initializer for the wrapped Model Object with a given type.
+	*/
+	public convenience init(type: String) {
+		self.init(action: ManagedAction(type: type))
+	}
+	
+	/**
+		:name:	addGroup
+		:description:	Adds a Group name to the list of Groups if it does not exist.
+		- returns:	Bool
+	*/
+	public func addGroup(name: String) -> Bool {
+		return node.addGroup(name)
+	}
+	
+	/**
+		:name:	hasGroup
+		:descriptions: Checks whether the Node is a part of the Group name passed or not.
+		- returns:	Bool
+	*/
+	public func hasGroup(name: String) -> Bool {
+		return node.hasGroup(name)
+	}
+	
+	/**
+		:name:	removeGroup
+		:description:	Removes a Group name from the list of Groups if it exists.
+		- returns:	Bool
+	*/
+	public func removeGroup(name: String) -> Bool {
+		return node.removeGroup(name)
+	}
+	
     /**
     	:name:	addSubject
     	:description:	Adds a Entity Model Object to the Subject Set.
-		:returns:	Bool
+		- returns:	Bool
     */
     public func addSubject(entity: Entity) -> Bool {
         return node.addSubject(entity.node)
@@ -184,7 +190,7 @@ public class Action : NSObject, Comparable {
     /**
     	:name:	removeSubject
     	:description:	Removes a Entity Model Object from the Subject Set.
-		:returns:	Bool
+		- returns:	Bool
     */
     public func removeSubject(entity: Entity) -> Bool {
 		return node.removeSubject(entity.node)
@@ -193,7 +199,7 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	hasSubject
 		:description:	Checks if a Entity exists in the Subjects Set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func hasSubject(entity: Entity) -> Bool {
 		return subjects.contains(entity)
@@ -202,7 +208,7 @@ public class Action : NSObject, Comparable {
     /**
     	:name:	addObject
     	:description:	Adds a Entity Object to the Object Set.
-		:returns:	Bool
+		- returns:	Bool
     */
     public func addObject(entity: Entity) -> Bool {
         return node.addObject(entity.node)
@@ -211,7 +217,7 @@ public class Action : NSObject, Comparable {
     /**
     	:name:	removeObject
     	:description:	Removes a Entity Model Object from the Object Set.
-		:returns:	Bool
+		- returns:	Bool
     */
     public func removeObject(entity: Entity) -> Bool {
 		return node.removeObject(entity.node)
@@ -220,7 +226,7 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	hasObject
 		:description:	Checks if a Entity exists in the Objects Set.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public func hasObject(entity: Entity) -> Bool {
 		return objects.contains(entity)
@@ -233,12 +239,6 @@ public class Action : NSObject, Comparable {
     public func delete() {
 		node.delete()
     }
-}
-
-extension Action : Equatable, Printable {
-	override public var description: String {
-		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
-	}
 }
 
 public func ==(lhs: Action, rhs: Action) -> Bool {

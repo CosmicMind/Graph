@@ -44,7 +44,7 @@ internal struct GraphUtility {
 	internal static let entityIndexName: String = "ManagedEntity"
 	internal static let entityDescriptionName: String = entityIndexName
 	internal static let entityObjectClassName: String = entityIndexName
-	internal static let entityGroupIndexName: String = "EntityGroup"
+	internal static let entityGroupIndexName: String = "ManagedEntityGroup"
 	internal static let entityGroupObjectClassName: String = entityGroupIndexName
 	internal static let entityGroupDescriptionName: String = entityGroupIndexName
 	internal static let entityPropertyIndexName: String = "EntityProperty"
@@ -54,7 +54,7 @@ internal struct GraphUtility {
 	internal static let actionIndexName: String = "ManagedAction"
 	internal static let actionDescriptionName: String = actionIndexName
 	internal static let actionObjectClassName: String = actionIndexName
-	internal static let actionGroupIndexName: String = "ActionGroup"
+	internal static let actionGroupIndexName: String = "ManagedActionGroup"
 	internal static let actionGroupObjectClassName: String = actionGroupIndexName
 	internal static let actionGroupDescriptionName: String = actionGroupIndexName
 	internal static let actionPropertyIndexName: String = "ActionProperty"
@@ -64,7 +64,7 @@ internal struct GraphUtility {
 	internal static let bondIndexName: String = "ManagedBond"
 	internal static let bondDescriptionName: String = bondIndexName
 	internal static let bondObjectClassName: String = bondIndexName
-	internal static let bondGroupIndexName: String = "BondGroup"
+	internal static let bondGroupIndexName: String = "ManagedBondGroup"
 	internal static let bondGroupObjectClassName: String = bondGroupIndexName
 	internal static let bondGroupDescriptionName: String = bondGroupIndexName
 	internal static let bondPropertyIndexName: String = "BondProperty"
@@ -72,45 +72,75 @@ internal struct GraphUtility {
 	internal static let bondPropertyDescriptionName: String = bondPropertyIndexName
 }
 
-@objc(GraphDelegate)
 public protocol GraphDelegate {
-	optional func graphDidInsertEntity(graph: Graph, entity: Entity)
-	optional func graphDidDeleteEntity(graph: Graph, entity: Entity)
-	optional func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String)
-	optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-	optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+	func graphDidInsertEntity(graph: Graph, entity: Entity)
+	func graphDidDeleteEntity(graph: Graph, entity: Entity)
+	func graphDidInsertManagedEntityGroup(graph: Graph, entity: Entity, group: String)
+	func graphDidDeleteManagedEntityGroup(graph: Graph, entity: Entity, group: String)
+	func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+	func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
 
-	optional func graphDidInsertAction(graph: Graph, action: Action)
-	optional func graphDidUpdateAction(graph: Graph, action: Action)
-	optional func graphDidDeleteAction(graph: Graph, action: Action)
-	optional func graphDidInsertActionGroup(graph: Graph, action: Action, group: String)
-	optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-	optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+	func graphDidInsertAction(graph: Graph, action: Action)
+	func graphDidUpdateAction(graph: Graph, action: Action)
+	func graphDidDeleteAction(graph: Graph, action: Action)
+	func graphDidInsertManagedActionGroup(graph: Graph, action: Action, group: String)
+	func graphDidDeleteManagedActionGroup(graph: Graph, action: Action, group: String)
+	func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+	func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+	func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
 
-	optional func graphDidInsertBond(graph: Graph, bond: Bond)
-	optional func graphDidDeleteBond(graph: Graph, bond: Bond)
-	optional func graphDidInsertBondGroup(graph: Graph, bond: Bond, group: String)
-	optional func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
-	optional func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
+	func graphDidInsertBond(graph: Graph, bond: Bond)
+	func graphDidDeleteBond(graph: Graph, bond: Bond)
+	func graphDidInsertManagedBondGroup(graph: Graph, bond: Bond, group: String)
+	func graphDidDeleteManagedBondGroup(graph: Graph, bond: Bond, group: String)
+	func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
+	func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
+	func graphDidDeleteBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
 }
 
-@objc(Graph)
-public class Graph: NSObject {
+public extension GraphDelegate {
+	func graphDidInsertEntity(graph: Graph, entity: Entity) {}
+	func graphDidDeleteEntity(graph: Graph, entity: Entity) {}
+	func graphDidInsertManagedEntityGroup(graph: Graph, entity: Entity, group: String) {}
+	func graphDidDeleteManagedEntityGroup(graph: Graph, entity: Entity, group: String) {}
+	func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {}
+	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {}
+	func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {}
+	
+	func graphDidInsertAction(graph: Graph, action: Action) {}
+	func graphDidUpdateAction(graph: Graph, action: Action) {}
+	func graphDidDeleteAction(graph: Graph, action: Action) {}
+	func graphDidInsertManagedActionGroup(graph: Graph, action: Action, group: String) {}
+	func graphDidDeleteManagedActionGroup(graph: Graph, action: Action, group: String) {}
+	func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {}
+	func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {}
+	func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {}
+	
+	func graphDidInsertBond(graph: Graph, bond: Bond) {}
+	func graphDidDeleteBond(graph: Graph, bond: Bond) {}
+	func graphDidInsertManagedBondGroup(graph: Graph, bond: Bond, group: String) {}
+	func graphDidDeleteManagedBondGroup(graph: Graph, bond: Bond, group: String) {}
+	func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {}
+	func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {}
+	func graphDidDeleteBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {}
+}
+
+public class Graph {
 	public var batchSize: Int = 20
 	public var batchOffset: Int = 0
 
 	internal var watching: OrderedDictionary<String, OrderedSet<String>>
 	internal var masterPredicate: NSPredicate?
 
-	public weak var delegate: GraphDelegate?
+	public var delegate: GraphDelegate?
 
 	/**
 		:name:	init
 		:description:	Initializer for the Object.
 	*/
-	override public init() {
+	public init() {
 		watching = OrderedDictionary<String, OrderedSet<String>>()
-		super.init()
 	}
 
 	//
@@ -133,14 +163,30 @@ public class Graph: NSObject {
 		:description:	Updates the persistent layer by processing all the changes in the Graph.
 	*/
 	public func save(completion: ((success: Bool, error: NSError?) -> ())?) {
-		var w: NSManagedObjectContext? = worker
-		var p: NSManagedObjectContext? = privateContext
+		let w: NSManagedObjectContext? = worker
+		let p: NSManagedObjectContext? = privateContext
 		if nil != w && nil != p {
 			w!.performBlockAndWait {
 				var error: NSError?
-				let result: Bool = w!.save(&error)
+				var result: Bool?
+				do {
+					try w!.save()
+					result = true
+				} catch let e as NSError {
+					error = e
+					result = false
+				}
 				dispatch_async(dispatch_get_main_queue()) {
-					completion?(success: result ? p!.save(&error) : false, error: error)
+					if false == result {
+						completion?(success: false, error: error)
+					} else {
+						do {
+							try p!.save()
+							completion?(success: true, error: nil)
+						} catch let e as NSError {
+							completion?(success: false, error: e)
+						}
+					}
 				}
 			}
 		}
@@ -155,10 +201,10 @@ public class Graph: NSObject {
 	}
 
 	/**
-		:name:	watch(EntityGroup)
+		:name:	watch(ManagedEntityGroup)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified group name.
 	*/
-	public func watch(EntityGroup name: String) {
+	public func watch(ManagedEntityGroup name: String) {
 		addWatcher("name", value: name, index: GraphUtility.entityGroupIndexName, entityDescriptionName: GraphUtility.entityGroupDescriptionName, managedObjectClassName: GraphUtility.entityGroupObjectClassName)
 	}
 
@@ -179,10 +225,10 @@ public class Graph: NSObject {
 	}
 
 	/**
-		:name:	watch(ActionGroup)
+		:name:	watch(ManagedActionGroup)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified group name.
 	*/
-	public func watch(ActionGroup name: String) {
+	public func watch(ManagedActionGroup name: String) {
 		addWatcher("name", value: name, index: GraphUtility.actionGroupIndexName, entityDescriptionName: GraphUtility.actionGroupDescriptionName, managedObjectClassName: GraphUtility.actionGroupObjectClassName)
 	}
 
@@ -203,10 +249,10 @@ public class Graph: NSObject {
 	}
 
 	/**
-		:name:	watch(BondGroup)
+		:name:	watch(ManagedBondGroup)
 		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified group name.
 	*/
-	public func watch(BondGroup name: String) {
+	public func watch(ManagedBondGroup name: String) {
 		addWatcher("name", value: name, index: GraphUtility.bondGroupIndexName, entityDescriptionName: GraphUtility.bondGroupDescriptionName, managedObjectClassName: GraphUtility.bondGroupObjectClassName)
 	}
 
@@ -224,7 +270,7 @@ public class Graph: NSObject {
 	*/
 	public func search(Entity type: String) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for entity: ManagedEntity in entries as! Array<ManagedEntity> {
 			nodes.insert(Entity(entity: entity))
 		}
@@ -232,26 +278,26 @@ public class Graph: NSObject {
 	}
 
 	/**
-		:name:	search(EntityGroup)
+		:name:	search(ManagedEntityGroup)
 		:description:	Searches the Graph for Entity Group Objects with the following name LIKE ?.
 	*/
-	public func search(EntityGroup name: String) -> OrderedSet<Entity> {
+	public func search(ManagedEntityGroup name: String) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for group: EntityGroup in entries as! Array<EntityGroup> {
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		for group: ManagedEntityGroup in entries as! Array<ManagedEntityGroup> {
 			nodes.insert(Entity(entity: group.node))
 		}
 		return nodes
 	}
 
 	/**
-		:name:	search(EntityGroupMap)
+		:name:	search(ManagedEntityGroupMap)
 		:description:	Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
 	*/
-	public func search(EntityGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Entity>> {
+	public func search(ManagedEntityGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Entity>> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var dict: OrderedDictionary<String, OrderedSet<Entity>> = OrderedDictionary<String, OrderedSet<Entity>>()
-		for group: EntityGroup in entries as! Array<EntityGroup> {
+		let dict: OrderedDictionary<String, OrderedSet<Entity>> = OrderedDictionary<String, OrderedSet<Entity>>()
+		for group: ManagedEntityGroup in entries as! Array<ManagedEntityGroup> {
 			if nil == dict[group.name] {
 				dict[group.name] = OrderedSet<Entity>()
 			}
@@ -266,7 +312,7 @@ public class Graph: NSObject {
 	*/
 	public func search(EntityProperty name: String) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			nodes.insert(Entity(entity: property.node))
 		}
@@ -279,7 +325,7 @@ public class Graph: NSObject {
 	*/
 	public func search(EntityProperty name: String, value: String) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			nodes.insert(Entity(entity: property.node))
 		}
@@ -292,7 +338,7 @@ public class Graph: NSObject {
 	*/
 	public func search(EntityProperty name: String, value: Int) -> OrderedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		var nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for property: EntityProperty in entries as! Array<EntityProperty> {
 			nodes.insert(Entity(entity: property.node))
 		}
@@ -305,7 +351,7 @@ public class Graph: NSObject {
 	*/
 	public func search(Action type: String) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for action: ManagedAction in entries as! Array<ManagedAction> {
 			nodes.insert(Action(action: action))
 		}
@@ -313,26 +359,26 @@ public class Graph: NSObject {
 	}
 
 	/**
-		:name:	search(ActionGroup)
+		:name:	search(ManagedActionGroup)
 		:description:	Searches the Graph for Action Group Objects with the following name LIKE ?.
 	*/
-	public func search(ActionGroup name: String) -> OrderedSet<Action> {
+	public func search(ManagedActionGroup name: String) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: OrderedSet<Action> = OrderedSet<Action>()
-		for group: ActionGroup in entries as! Array<ActionGroup> {
+		let nodes: OrderedSet<Action> = OrderedSet<Action>()
+		for group: ManagedActionGroup in entries as! Array<ManagedActionGroup> {
 			nodes.insert(Action(action: group.node))
 		}
 		return nodes
 	}
 
 	/**
-		:name:	search(ActionGroupMap)
+		:name:	search(ManagedActionGroupMap)
 		:description:	Retrieves all the unique Group Names for Action Nodes with their Action Objects.
 	*/
-	public func search(ActionGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Action>> {
+	public func search(ManagedActionGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Action>> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var dict: OrderedDictionary<String, OrderedSet<Action>> = OrderedDictionary<String, OrderedSet<Action>>()
-		for group: ActionGroup in entries as! Array<ActionGroup> {
+		let dict: OrderedDictionary<String, OrderedSet<Action>> = OrderedDictionary<String, OrderedSet<Action>>()
+		for group: ManagedActionGroup in entries as! Array<ManagedActionGroup> {
 			if nil == dict[group.name] {
 				dict[group.name] = OrderedSet<Action>()
 			}
@@ -347,7 +393,7 @@ public class Graph: NSObject {
 	*/
 	public func search(ActionProperty name: String) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			nodes.insert(Action(action: property.node))
 		}
@@ -360,7 +406,7 @@ public class Graph: NSObject {
 	*/
 	public func search(ActionProperty name: String, value: String) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		var nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			nodes.insert(Action(action: property.node))
 		}
@@ -373,7 +419,7 @@ public class Graph: NSObject {
 	*/
 	public func search(ActionProperty name: String, value: Int) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		var nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for property: ActionProperty in entries as! Array<ActionProperty> {
 			nodes.insert(Action(action: property.node))
 		}
@@ -386,7 +432,7 @@ public class Graph: NSObject {
 	*/
 	public func search(Bond type: String) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for bond: ManagedBond in entries as! Array<ManagedBond> {
 			nodes.insert(Bond(bond: bond))
 		}
@@ -394,26 +440,26 @@ public class Graph: NSObject {
 	}
 
 	/**
-		:name:	search(BondGroup)
+		:name:	search(ManagedBondGroup)
 		:description:	Searches the Graph for Bond Group Objects with the following name LIKE ?.
 	*/
-	public func search(BondGroup name: String) -> OrderedSet<Bond> {
+	public func search(ManagedBondGroup name: String) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
-		for group: BondGroup in entries as! Array<BondGroup> {
+		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		for group: ManagedBondGroup in entries as! Array<ManagedBondGroup> {
 			nodes.insert(Bond(bond: group.node))
 		}
 		return nodes
 	}
 
 	/**
-		:name:	search(BondGroupMap)
+		:name:	search(ManagedBondGroupMap)
 		:description:	Retrieves all the unique Group Names for Bond Nodes with their Bond Objects.
 	*/
-	public func search(BondGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Bond>> {
+	public func search(ManagedBondGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Bond>> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var dict: OrderedDictionary<String, OrderedSet<Bond>> = OrderedDictionary<String, OrderedSet<Bond>>()
-		for group: BondGroup in entries as! Array<BondGroup> {
+		let dict: OrderedDictionary<String, OrderedSet<Bond>> = OrderedDictionary<String, OrderedSet<Bond>>()
+		for group: ManagedBondGroup in entries as! Array<ManagedBondGroup> {
 			if nil == dict[group.name] {
 				dict[group.name] = OrderedSet<Bond>()
 			}
@@ -428,7 +474,7 @@ public class Graph: NSObject {
 	*/
 	public func search(BondProperty name: String) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			nodes.insert(Bond(bond: property.node))
 		}
@@ -441,7 +487,7 @@ public class Graph: NSObject {
 	*/
 	public func search(BondProperty name: String, value: String) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			nodes.insert(Bond(bond: property.node))
 		}
@@ -454,7 +500,7 @@ public class Graph: NSObject {
 	*/
 	public func search(BondProperty name: String, value: Int) -> OrderedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		var nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for property: BondProperty in entries as! Array<BondProperty> {
 			nodes.insert(Bond(bond: property.node))
 		}
@@ -466,8 +512,6 @@ public class Graph: NSObject {
 	//	:description:	The callback that NotificationCenter uses when changes occur in the Graph.
 	//
 	public func managedObjectContextDidSave(notification: NSNotification) {
-		let incomingManagedObjectContext: NSManagedObjectContext = notification.object as! NSManagedObjectContext
-		let incomingPersistentStoreCoordinator: NSPersistentStoreCoordinator = incomingManagedObjectContext.persistentStoreCoordinator!
 		let userInfo = notification.userInfo
 
 		// inserts
@@ -482,37 +526,37 @@ public class Graph: NSObject {
 				let className = String.fromCString(object_getClassName(node))
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
-					delegate?.graphDidInsertEntity?(self, entity: Entity(entity: node as! ManagedEntity))
+					delegate?.graphDidInsertEntity(self, entity: Entity(entity: node as! ManagedEntity))
 					break
-				case "EntityGroup_EntityGroup_":
-					let group: EntityGroup = node as! EntityGroup
-					delegate?.graphDidInsertEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
+				case "ManagedEntityGroup_ManagedEntityGroup_":
+					let group: ManagedEntityGroup = node as! ManagedEntityGroup
+					delegate?.graphDidInsertManagedEntityGroup(self, entity: Entity(entity: group.node), group: group.name)
 					break
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
-					delegate?.graphDidInsertEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
+					delegate?.graphDidInsertEntityProperty(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedAction_ManagedAction_":
-					delegate?.graphDidInsertAction?(self, action: Action(action: node as! ManagedAction))
+					delegate?.graphDidInsertAction(self, action: Action(action: node as! ManagedAction))
 					break
-				case "ActionGroup_ActionGroup_":
-					let group: ActionGroup = node as! ActionGroup
-					delegate?.graphDidInsertActionGroup?(self, action: Action(action: group.node), group: group.name)
+				case "ManagedActionGroup_ManagedActionGroup_":
+					let group: ManagedActionGroup = node as! ManagedActionGroup
+					delegate?.graphDidInsertManagedActionGroup(self, action: Action(action: group.node), group: group.name)
 					break
 				case "ActionProperty_ActionProperty_":
 					let property: ActionProperty = node as! ActionProperty
-					delegate?.graphDidInsertActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
+					delegate?.graphDidInsertActionProperty(self, action: Action(action: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedBond_ManagedBond_":
-					delegate?.graphDidInsertBond?(self, bond: Bond(bond: node as! ManagedBond))
+					delegate?.graphDidInsertBond(self, bond: Bond(bond: node as! ManagedBond))
 					break
-				case "BondGroup_BondGroup_":
-					let group: BondGroup = node as! BondGroup
-					delegate?.graphDidInsertBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
+				case "ManagedBondGroup_ManagedBondGroup_":
+					let group: ManagedBondGroup = node as! ManagedBondGroup
+					delegate?.graphDidInsertManagedBondGroup(self, bond: Bond(bond: group.node), group: group.name)
 					break
 				case "BondProperty_BondProperty_":
 					let property: BondProperty = node as! BondProperty
-					delegate?.graphDidInsertBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
+					delegate?.graphDidInsertBondProperty(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
 					break
 				default:
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
@@ -532,18 +576,18 @@ public class Graph: NSObject {
 				switch(className!) {
 				case "EntityProperty_EntityProperty_":
 					let property: EntityProperty = node as! EntityProperty
-					delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
+					delegate?.graphDidUpdateEntityProperty(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
 					break
 				case "ActionProperty_ActionProperty_":
 					let property: ActionProperty = node as! ActionProperty
-					delegate?.graphDidUpdateActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
+					delegate?.graphDidUpdateActionProperty(self, action: Action(action: property.node), property: property.name, value: property.object)
 					break
 				case "BondProperty_BondProperty_":
 					let property: BondProperty = node as! BondProperty
-					delegate?.graphDidUpdateBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
+					delegate?.graphDidUpdateBondProperty(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
 					break
 				case "ManagedAction_ManagedAction_":
-					delegate?.graphDidUpdateAction?(self, action: Action(action: node as! ManagedAction))
+					delegate?.graphDidUpdateAction(self, action: Action(action: node as! ManagedAction))
 					break
 				default:
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
@@ -553,13 +597,13 @@ public class Graph: NSObject {
 		}
 
 		// deletes
-		var deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
+		let deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
 
 		if nil == deletedSet {
 			return
 		}
 
-		var	deleted: NSMutableSet = deletedSet!.mutableCopy() as! NSMutableSet
+		let	deleted: NSMutableSet = deletedSet!.mutableCopy() as! NSMutableSet
 		deleted.filterUsingPredicate(masterPredicate!)
 
 		if 0 < deleted.count {
@@ -568,13 +612,37 @@ public class Graph: NSObject {
 				let className = String.fromCString(object_getClassName(node))
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
-					delegate?.graphDidDeleteEntity?(self, entity: Entity(entity: node as! ManagedEntity))
+					delegate?.graphDidDeleteEntity(self, entity: Entity(entity: node as! ManagedEntity))
+					break
+				case "EntityProperty_EntityProperty_":
+					let property: EntityProperty = node as! EntityProperty
+					delegate?.graphDidDeleteEntityProperty(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
+					break
+				case "ManagedEntityGroup_ManagedEntityGroup_":
+					let group: ManagedEntityGroup = node as! ManagedEntityGroup
+					delegate?.graphDidDeleteManagedEntityGroup(self, entity: Entity(entity: group.node), group: group.name)
 					break
 				case "ManagedAction_ManagedAction_":
-					delegate?.graphDidDeleteAction?(self, action: Action(action: node as! ManagedAction))
+					delegate?.graphDidDeleteAction(self, action: Action(action: node as! ManagedAction))
+					break
+				case "ActionProperty_ActionProperty_":
+					let property: ActionProperty = node as! ActionProperty
+					delegate?.graphDidDeleteActionProperty(self, action: Action(action: property.node), property: property.name, value: property.object)
+					break
+				case "ManagedActionGroup_ManagedActionGroup_":
+					let group: ManagedActionGroup = node as! ManagedActionGroup
+					delegate?.graphDidDeleteManagedActionGroup(self, action: Action(action: group.node), group: group.name)
 					break
 				case "ManagedBond_ManagedBond_":
-					delegate?.graphDidDeleteBond?(self, bond: Bond(bond: node as! ManagedBond))
+					delegate?.graphDidDeleteBond(self, bond: Bond(bond: node as! ManagedBond))
+					break
+				case "BondProperty_BondProperty_":
+					let property: BondProperty = node as! BondProperty
+					delegate?.graphDidDeleteBondProperty(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
+					break
+				case "ManagedBondGroup_ManagedBondGroup_":
+					let group: ManagedBondGroup = node as! ManagedBondGroup
+					delegate?.graphDidDeleteManagedBondGroup(self, bond: Bond(bond: group.node), group: group.name)
 					break
 				default:break
 				}
@@ -595,7 +663,9 @@ public class Graph: NSObject {
 		return GraphPrivateManagedObjectContext.managedObjectContext
 	}
 
-	// make thread safe by creating this asynchronously
+	//
+	//	:name:	privateContext
+	//
 	private var privateContext: NSManagedObjectContext? {
 		dispatch_once(&GraphPrivateManagedObjectContext.onceToken) {
 			GraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
@@ -604,88 +674,91 @@ public class Graph: NSObject {
 		return GraphPrivateManagedObjectContext.managedObjectContext
 	}
 
+	//
+	//	:name:	managedObjectModel
+	//
 	private var managedObjectModel: NSManagedObjectModel? {
 		dispatch_once(&GraphManagedObjectModel.onceToken) {
 			GraphManagedObjectModel.managedObjectModel = NSManagedObjectModel()
-
-			var entityDescription: NSEntityDescription = NSEntityDescription()
+			
+			let entityDescription: NSEntityDescription = NSEntityDescription()
 			var entityProperties: Array<AnyObject> = Array<AnyObject>()
 			entityDescription.name = GraphUtility.entityDescriptionName
 			entityDescription.managedObjectClassName = GraphUtility.entityObjectClassName
-
-			var actionDescription: NSEntityDescription = NSEntityDescription()
+			
+			let actionDescription: NSEntityDescription = NSEntityDescription()
 			var actionProperties: Array<AnyObject> = Array<AnyObject>()
 			actionDescription.name = GraphUtility.actionDescriptionName
 			actionDescription.managedObjectClassName = GraphUtility.actionObjectClassName
-
-			var bondDescription: NSEntityDescription = NSEntityDescription()
+			
+			let bondDescription: NSEntityDescription = NSEntityDescription()
 			var bondProperties: Array<AnyObject> = Array<AnyObject>()
 			bondDescription.name = GraphUtility.bondDescriptionName
 			bondDescription.managedObjectClassName = GraphUtility.bondObjectClassName
-
-			var entityPropertyDescription: NSEntityDescription = NSEntityDescription()
+			
+			let entityPropertyDescription: NSEntityDescription = NSEntityDescription()
 			var entityPropertyProperties: Array<AnyObject> = Array<AnyObject>()
 			entityPropertyDescription.name = GraphUtility.entityPropertyDescriptionName
 			entityPropertyDescription.managedObjectClassName = GraphUtility.entityPropertyObjectClassName
-
-			var actionPropertyDescription: NSEntityDescription = NSEntityDescription()
+			
+			let actionPropertyDescription: NSEntityDescription = NSEntityDescription()
 			var actionPropertyProperties: Array<AnyObject> = Array<AnyObject>()
 			actionPropertyDescription.name = GraphUtility.actionPropertyDescriptionName
 			actionPropertyDescription.managedObjectClassName = GraphUtility.actionPropertyObjectClassName
-
-			var bondPropertyDescription: NSEntityDescription = NSEntityDescription()
+			
+			let bondPropertyDescription: NSEntityDescription = NSEntityDescription()
 			var bondPropertyProperties: Array<AnyObject> = Array<AnyObject>()
 			bondPropertyDescription.name = GraphUtility.bondPropertyDescriptionName
 			bondPropertyDescription.managedObjectClassName = GraphUtility.bondPropertyObjectClassName
-
-			var entityGroupDescription: NSEntityDescription = NSEntityDescription()
+			
+			let entityGroupDescription: NSEntityDescription = NSEntityDescription()
 			var entityGroupProperties: Array<AnyObject> = Array<AnyObject>()
 			entityGroupDescription.name = GraphUtility.entityGroupDescriptionName
 			entityGroupDescription.managedObjectClassName = GraphUtility.entityGroupObjectClassName
-
-			var actionGroupDescription: NSEntityDescription = NSEntityDescription()
+			
+			let actionGroupDescription: NSEntityDescription = NSEntityDescription()
 			var actionGroupProperties: Array<AnyObject> = Array<AnyObject>()
 			actionGroupDescription.name = GraphUtility.actionGroupDescriptionName
 			actionGroupDescription.managedObjectClassName = GraphUtility.actionGroupObjectClassName
-
-			var bondGroupDescription: NSEntityDescription = NSEntityDescription()
+			
+			let bondGroupDescription: NSEntityDescription = NSEntityDescription()
 			var bondGroupProperties: Array<AnyObject> = Array<AnyObject>()
 			bondGroupDescription.name = GraphUtility.bondGroupDescriptionName
 			bondGroupDescription.managedObjectClassName = GraphUtility.bondGroupObjectClassName
-
-			var nodeClass: NSAttributeDescription = NSAttributeDescription()
+			
+			let nodeClass: NSAttributeDescription = NSAttributeDescription()
 			nodeClass.name = "nodeClass"
 			nodeClass.attributeType = .StringAttributeType
 			nodeClass.optional = false
 			entityProperties.append(nodeClass.copy() as! NSAttributeDescription)
 			actionProperties.append(nodeClass.copy() as! NSAttributeDescription)
 			bondProperties.append(nodeClass.copy() as! NSAttributeDescription)
-
-			var type: NSAttributeDescription = NSAttributeDescription()
+			
+			let type: NSAttributeDescription = NSAttributeDescription()
 			type.name = "type"
 			type.attributeType = .StringAttributeType
 			type.optional = false
 			entityProperties.append(type.copy() as! NSAttributeDescription)
 			actionProperties.append(type.copy() as! NSAttributeDescription)
 			bondProperties.append(type.copy() as! NSAttributeDescription)
-
-			var createdDate: NSAttributeDescription = NSAttributeDescription()
+			
+			let createdDate: NSAttributeDescription = NSAttributeDescription()
 			createdDate.name = "createdDate"
 			createdDate.attributeType = .DateAttributeType
 			createdDate.optional = false
 			entityProperties.append(createdDate.copy() as! NSAttributeDescription)
 			actionProperties.append(createdDate.copy() as! NSAttributeDescription)
 			bondProperties.append(createdDate.copy() as! NSAttributeDescription)
-
-			var propertyName: NSAttributeDescription = NSAttributeDescription()
+			
+			let propertyName: NSAttributeDescription = NSAttributeDescription()
 			propertyName.name = "name"
 			propertyName.attributeType = .StringAttributeType
 			propertyName.optional = false
 			entityPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
 			actionPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
 			bondPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
-
-			var propertyValue: NSAttributeDescription = NSAttributeDescription()
+			
+			let propertyValue: NSAttributeDescription = NSAttributeDescription()
 			propertyValue.name = "object"
 			propertyValue.attributeType = .TransformableAttributeType
 			propertyValue.attributeValueClassName = "AnyObject"
@@ -694,15 +767,15 @@ public class Graph: NSObject {
 			entityPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
 			actionPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
 			bondPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
-
-			var propertyRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			
+			let propertyRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertyRelationship.name = "node"
 			propertyRelationship.minCount = 1
 			propertyRelationship.maxCount = 1
 			propertyRelationship.optional = false
-			propertyRelationship.deleteRule = .NullifyDeleteRule
-
-			var propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			propertyRelationship.deleteRule = .NoActionDeleteRule
+			
+			let propertySetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertySetRelationship.name = "propertySet"
 			propertySetRelationship.minCount = 0
 			propertySetRelationship.maxCount = 0
@@ -710,38 +783,38 @@ public class Graph: NSObject {
 			propertySetRelationship.deleteRule = .CascadeDeleteRule
 			propertyRelationship.inverseRelationship = propertySetRelationship
 			propertySetRelationship.inverseRelationship = propertyRelationship
-
+			
 			propertyRelationship.destinationEntity = entityDescription
 			propertySetRelationship.destinationEntity = entityPropertyDescription
 			entityPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
 			entityProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
-
+			
 			propertyRelationship.destinationEntity = actionDescription
 			propertySetRelationship.destinationEntity = actionPropertyDescription
 			actionPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
-
+			
 			propertyRelationship.destinationEntity = bondDescription
 			propertySetRelationship.destinationEntity = bondPropertyDescription
 			bondPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
 			bondProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
-
-			var group: NSAttributeDescription = NSAttributeDescription()
+			
+			let group: NSAttributeDescription = NSAttributeDescription()
 			group.name = "name"
 			group.attributeType = .StringAttributeType
 			group.optional = false
 			entityGroupProperties.append(group.copy() as! NSAttributeDescription)
 			actionGroupProperties.append(group.copy() as! NSAttributeDescription)
 			bondGroupProperties.append(group.copy() as! NSAttributeDescription)
-
-			var groupRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			
+			let groupRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupRelationship.name = "node"
 			groupRelationship.minCount = 1
 			groupRelationship.maxCount = 1
 			groupRelationship.optional = false
-			groupRelationship.deleteRule = .NullifyDeleteRule
-
-			var groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			groupRelationship.deleteRule = .NoActionDeleteRule
+			
+			let groupSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupSetRelationship.name = "groupSet"
 			groupSetRelationship.minCount = 0
 			groupSetRelationship.maxCount = 0
@@ -749,56 +822,56 @@ public class Graph: NSObject {
 			groupSetRelationship.deleteRule = .CascadeDeleteRule
 			groupRelationship.inverseRelationship = groupSetRelationship
 			groupSetRelationship.inverseRelationship = groupRelationship
-
+			
 			groupRelationship.destinationEntity = entityDescription
 			groupSetRelationship.destinationEntity = entityGroupDescription
 			entityGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
 			entityProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
-
+			
 			groupRelationship.destinationEntity = actionDescription
 			groupSetRelationship.destinationEntity = actionGroupDescription
 			actionGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
-
+			
 			groupRelationship.destinationEntity = bondDescription
 			groupSetRelationship.destinationEntity = bondGroupDescription
 			bondGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
 			bondProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
-
+			
 			// Inverse relationship for Subjects -- B.
-			var actionSubjectSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			let actionSubjectSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionSubjectSetRelationship.name = "subjectSet"
 			actionSubjectSetRelationship.minCount = 0
 			actionSubjectSetRelationship.maxCount = 0
 			actionSubjectSetRelationship.optional = false
 			actionSubjectSetRelationship.deleteRule = .NullifyDeleteRule
 			actionSubjectSetRelationship.destinationEntity = entityDescription
-
-			var actionSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			
+			let actionSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionSubjectRelationship.name = "actionSubjectSet"
 			actionSubjectRelationship.minCount = 0
 			actionSubjectRelationship.maxCount = 0
 			actionSubjectRelationship.optional = false
 			actionSubjectRelationship.deleteRule = .CascadeDeleteRule
 			actionSubjectRelationship.destinationEntity = actionDescription
-
+			
 			actionSubjectRelationship.inverseRelationship = actionSubjectSetRelationship
 			actionSubjectSetRelationship.inverseRelationship = actionSubjectRelationship
-
+			
 			entityProperties.append(actionSubjectRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(actionSubjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Subjects -- E.
-
+			
 			// Inverse relationship for Objects -- B.
-			var actionObjectSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			let actionObjectSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionObjectSetRelationship.name = "objectSet"
 			actionObjectSetRelationship.minCount = 0
 			actionObjectSetRelationship.maxCount = 0
 			actionObjectSetRelationship.optional = false
 			actionObjectSetRelationship.deleteRule = .NullifyDeleteRule
 			actionObjectSetRelationship.destinationEntity = entityDescription
-
-			var actionObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			
+			let actionObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			actionObjectRelationship.name = "actionObjectSet"
 			actionObjectRelationship.minCount = 0
 			actionObjectRelationship.maxCount = 0
@@ -807,45 +880,45 @@ public class Graph: NSObject {
 			actionObjectRelationship.destinationEntity = actionDescription
 			actionObjectRelationship.inverseRelationship = actionObjectSetRelationship
 			actionObjectSetRelationship.inverseRelationship = actionObjectRelationship
-
+			
 			entityProperties.append(actionObjectRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(actionObjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Objects -- E.
-
+			
 			// Inverse relationship for Subjects -- B.
-			var bondSubjectSetRelationship = NSRelationshipDescription()
+			let bondSubjectSetRelationship = NSRelationshipDescription()
 			bondSubjectSetRelationship.name = "subject"
 			bondSubjectSetRelationship.minCount = 1
 			bondSubjectSetRelationship.maxCount = 1
 			bondSubjectSetRelationship.optional = true
 			bondSubjectSetRelationship.deleteRule = .NullifyDeleteRule
 			bondSubjectSetRelationship.destinationEntity = entityDescription
-
-			var bondSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			
+			let bondSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			bondSubjectRelationship.name = "bondSubjectSet"
 			bondSubjectRelationship.minCount = 0
 			bondSubjectRelationship.maxCount = 0
 			bondSubjectRelationship.optional = false
 			bondSubjectRelationship.deleteRule = .CascadeDeleteRule
 			bondSubjectRelationship.destinationEntity = bondDescription
-
+			
 			bondSubjectRelationship.inverseRelationship = bondSubjectSetRelationship
 			bondSubjectSetRelationship.inverseRelationship = bondSubjectRelationship
-
+			
 			entityProperties.append(bondSubjectRelationship.copy() as! NSRelationshipDescription)
 			bondProperties.append(bondSubjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Subjects -- E.
-
+			
 			// Inverse relationship for Objects -- B.
-			var bondObjectSetRelationship = NSRelationshipDescription()
+			let bondObjectSetRelationship = NSRelationshipDescription()
 			bondObjectSetRelationship.name = "object"
 			bondObjectSetRelationship.minCount = 1
 			bondObjectSetRelationship.maxCount = 1
 			bondObjectSetRelationship.optional = true
 			bondObjectSetRelationship.deleteRule = .NullifyDeleteRule
 			bondObjectSetRelationship.destinationEntity = entityDescription
-
-			var bondObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			
+			let bondObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			bondObjectRelationship.name = "bondObjectSet"
 			bondObjectRelationship.minCount = 0
 			bondObjectRelationship.maxCount = 0
@@ -854,32 +927,32 @@ public class Graph: NSObject {
 			bondObjectRelationship.destinationEntity = bondDescription
 			bondObjectRelationship.inverseRelationship = bondObjectSetRelationship
 			bondObjectSetRelationship.inverseRelationship = bondObjectRelationship
-
+			
 			entityProperties.append(bondObjectRelationship.copy() as! NSRelationshipDescription)
 			bondProperties.append(bondObjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Objects -- E.
-
-			entityDescription.properties = entityProperties
-			entityGroupDescription.properties = entityGroupProperties
-			entityPropertyDescription.properties = entityPropertyProperties
-
-			actionDescription.properties = actionProperties
-			actionGroupDescription.properties = actionGroupProperties
-			actionPropertyDescription.properties = actionPropertyProperties
-
-			bondDescription.properties = bondProperties
-			bondGroupDescription.properties = bondGroupProperties
-			bondPropertyDescription.properties = bondPropertyProperties
-
+			
+			entityDescription.properties = entityProperties as! [NSPropertyDescription]
+			entityGroupDescription.properties = entityGroupProperties as! [NSPropertyDescription]
+			entityPropertyDescription.properties = entityPropertyProperties as! [NSPropertyDescription]
+			
+			actionDescription.properties = actionProperties as! [NSPropertyDescription]
+			actionGroupDescription.properties = actionGroupProperties as! [NSPropertyDescription]
+			actionPropertyDescription.properties = actionPropertyProperties as! [NSPropertyDescription]
+			
+			bondDescription.properties = bondProperties as! [NSPropertyDescription]
+			bondGroupDescription.properties = bondGroupProperties as! [NSPropertyDescription]
+			bondPropertyDescription.properties = bondPropertyProperties as! [NSPropertyDescription]
+			
 			GraphManagedObjectModel.managedObjectModel?.entities = [
 				entityDescription,
 				entityGroupDescription,
 				entityPropertyDescription,
-
+				
 				actionDescription,
 				actionGroupDescription,
 				actionPropertyDescription,
-
+				
 				bondDescription,
 				bondGroupDescription,
 				bondPropertyDescription
@@ -888,48 +961,59 @@ public class Graph: NSObject {
 		return GraphManagedObjectModel.managedObjectModel
 	}
 
+	//
+	//	:name:	persistentStoreCoordinator
+	//
 	private var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
 		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) {
-			let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent(GraphUtility.storeName)
+			let storeURL = self.applicatioDirectory.URLByAppendingPathComponent(GraphUtility.storeName)
 			var error: NSError?
 			GraphPersistentStoreCoordinator.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
-			var options: Dictionary = [NSReadOnlyPersistentStoreOption: false, NSSQLitePragmasOption: ["journal_mode": "DELETE"]];
-			if nil == GraphPersistentStoreCoordinator.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options as [NSObject : AnyObject], error: &error) {
-				assert(nil == error, "[GraphKit Error: Saving to internal context.]")
+			let options: Dictionary = [NSReadOnlyPersistentStoreOption: false, NSSQLitePragmasOption: ["journal_mode": "DELETE"]];
+			do {
+				try GraphPersistentStoreCoordinator.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options as [NSObject : AnyObject])
+			} catch let e as NSError {
+				error = e
+				assert(nil != error, "[GraphKit Error: Saving to internal context.]")
+			} catch {
+				fatalError()
 			}
 		}
 		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
 	}
 
-	private var applicationDocumentsDirectory: NSURL {
+	//
+	//	:name:	applicatioDirectory
+	//
+	private var applicatioDirectory: NSURL {
 		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-		return urls[urls.endIndex - 1] as! NSURL
+		return urls[urls.endIndex - 1] 
 	}
 
-	/**
-		:name:	prepareForObservation
-		:description:	Ensures NotificationCenter is watching the callback selector for this Graph.
-	*/
+	//
+	//	:name:	prepareForObservation
+	//	:description:	Ensures NotificationCenter is watching the callback selector for this Graph.
+	//
 	private func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: privateContext)
 	}
 
-	/**
-		:name:	addPredicateToContextWatcher
-		:description:	Adds the given predicate to the master predicate, which holds all watchers for the Graph.
-	*/
+	//
+	//	:name:	addPredicateToContextWatcher
+	//	:description:	Adds the given predicate to the master predicate, which holds all watchers for the Graph.
+	//
 	private func addPredicateToContextWatcher(entityDescription: NSEntityDescription, predicate: NSPredicate) {
-		var entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
-		var predicates: Array<NSPredicate> = [entityPredicate, predicate]
-		let finalPredicate: NSPredicate = NSCompoundPredicate.andPredicateWithSubpredicates(predicates)
-		masterPredicate = nil != masterPredicate ? NSCompoundPredicate.orPredicateWithSubpredicates([masterPredicate!, finalPredicate]) : finalPredicate
+		let entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
+		let predicates: Array<NSPredicate> = [entityPredicate, predicate]
+		let finalPredicate: NSPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+		masterPredicate = nil != masterPredicate ? NSCompoundPredicate(orPredicateWithSubpredicates: [masterPredicate!, finalPredicate]) : finalPredicate
 	}
 
-	/**
-		:name:	isWatching
-		:description:	A sanity check if the Graph is already watching the specified index and key.
-	*/
+	//
+	//	:name:	isWatching
+	//	:description:	A sanity check if the Graph is already watching the specified index and key.
+	//
 	private func isWatching(key: String, index: String) -> Bool {
 		if nil == watching[key] {
 			watching[key] = OrderedSet<String>(elements: index)
@@ -942,52 +1026,51 @@ public class Graph: NSObject {
 		return true
 	}
 
-	/**
-		:name:	addWatcher
-		:description:	Adds a watcher to the Graph.
-	*/
-	internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
+	//
+	//	:name:	addWatcher
+	//	:description:	Adds a watcher to the Graph.
+	//
+	private func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
 		if !isWatching(value, index: index) {
-			var entityDescription: NSEntityDescription = NSEntityDescription()
+			let entityDescription: NSEntityDescription = NSEntityDescription()
 			entityDescription.name = entityDescriptionName
 			entityDescription.managedObjectClassName = managedObjectClassName
-			var predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
+			let predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
 			addPredicateToContextWatcher(entityDescription, predicate: predicate)
 			prepareForObservation()
 		}
 	}
 
-	/**
-		:name:	search
-		:description:	Executes a search through CoreData.
-	*/
+	//
+	//	:name:	search
+	//	:description:	Executes a search through CoreData.
+	//
 	private func search(entityDescriptorName: NSString, predicate: NSPredicate) -> Array<AnyObject> {
 		return search(entityDescriptorName, predicate: predicate, sort: nil)
 	}
 
-	/**
-		:name:	search
-		:description:	Executes a search through CoreData.
-	*/
+	//
+	//	:name:	search
+	//	:description:	Executes a search through CoreData.
+	//
 	private func search(entityDescriptorName: NSString, predicate: NSPredicate, sort: Array<NSSortDescriptor>?) -> Array<AnyObject> {
 		let request: NSFetchRequest = NSFetchRequest()
-		let entity: NSEntityDescription = managedObjectModel?.entitiesByName[entityDescriptorName] as! NSEntityDescription
+		let entity: NSEntityDescription = managedObjectModel!.entitiesByName[entityDescriptorName as String]!
 		request.entity = entity
 		request.predicate = predicate
 		request.fetchBatchSize = batchSize
 		request.fetchOffset = batchOffset
 		request.sortDescriptors = sort
 
-		var error: NSError?
 		var nodes: Array<AnyObject> = Array<AnyObject>()
 
-		var moc: NSManagedObjectContext? = worker
-		if let result: Array<AnyObject> = moc?.executeFetchRequest(request, error: &error) {
-			assert(nil == error, "[GraphKit Error: Fecthing nodes.]")
+		let moc: NSManagedObjectContext? = worker
+		do {
+			let result: Array<AnyObject> = try moc!.executeFetchRequest(request)
 			for item: AnyObject in result {
 				nodes.append(item)
 			}
-		}
+		} catch _ {}
 		return nodes
 	}
 }

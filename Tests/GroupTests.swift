@@ -34,13 +34,10 @@ class GroupTests: XCTestCase {
 	
 	func testSimple() {
 		
-		var active: Entity?
-		
 		for i in 0..<100 {
-			var item: Entity = Entity(type: "Item")
+			let item: Entity = Entity(type: "Item")
 			if i == 5 {
 				item.addGroup("Action")
-				active = item
 			}
 			if 0 == i % 5 {
 				item.addGroup("#target")
@@ -50,11 +47,11 @@ class GroupTests: XCTestCase {
 		}
 		graph!.save()
 		
-		var items = graph!.search(EntityGroup: "#*")
+		let items = graph!.search(ManagedEntityGroup: "#*")
 		
 		XCTAssert(100 == items.count, "Test failed.")
 		
-		var pofx: Double = items.probabilityOf(items.first!)
+		let pofx: Double = items.probabilityOf(items.first!)
 		XCTAssert(0.01 == pofx, "Test failed. \(pofx)")
 		
 		for x in items {
@@ -68,13 +65,10 @@ class GroupTests: XCTestCase {
 	
 	func testMap() {
 		
-		var active: Entity?
-		
 		for i in 0..<100 {
-			var item: Entity = Entity(type: "Item")
+			let item: Entity = Entity(type: "Item")
 			if i == 5 {
 				item.addGroup("Action")
-				active = item
 			}
 			if 0 == i % 5 {
 				item.addGroup("#target")
@@ -84,10 +78,10 @@ class GroupTests: XCTestCase {
 		}
 		graph!.save()
 		
-		var items = graph!.search(EntityGroupMap: "#*")
+		let items = graph!.search(ManagedEntityGroupMap: "#*")
 		XCTAssert(2 == items.count , "Test failed.\(items.count)")
 		
-		for (key, set) in items {
+		for (_, set) in items {
 			for y in set! {
 				y.delete()
 			}

@@ -16,20 +16,20 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class Stack<Element> : Printable, SequenceType {
-	public typealias Generator = GeneratorOf<Element?>
+public class Stack<Element> : CustomStringConvertible, SequenceType {
+	public typealias Generator = AnyGenerator<Element?>
 
 	/**
 		:name:	list
 		:description:	Underlying data structure.
-		:returns:	List<Element>
+		- returns:	List<Element>
 	*/
 	private var list: List<Element>
 
 	/**
 		:name:	count
 		:description:	Total number of items in the Stack.
-		:returns:	Int
+		- returns:	Int
 	*/
 	public var count: Int {
 		return list.count
@@ -40,7 +40,7 @@ public class Stack<Element> : Printable, SequenceType {
 		:description:	Get the latest element at the top
 		of the Stack and do not remove
 		it.
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public var top: Element? {
 		return list.front
@@ -49,7 +49,7 @@ public class Stack<Element> : Printable, SequenceType {
 	/**
 		:name:	isEmpty
 		:description:	A boolean of whether the Stack is empty.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
 		return list.isEmpty
@@ -58,7 +58,7 @@ public class Stack<Element> : Printable, SequenceType {
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol.
-		:returns:	String
+		- returns:	String
 	*/
 	public var description: String {
 		return "Stack" + list.internalDescription
@@ -95,7 +95,7 @@ public class Stack<Element> : Printable, SequenceType {
 		:description:	Get the latest element at the top of
 		the Stack and remove it from the
 		Stack.
-		:returns:	Element?
+		- returns:	Element?
 	*/
 	public func pop() -> Element? {
 		return list.removeAtFront()

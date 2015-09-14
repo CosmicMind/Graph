@@ -18,32 +18,32 @@
 
 // #internal
 
-internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Printable {
+internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, CustomStringConvertible {
 	/**
 		:name:	parent
 		:description:	A reference to the parent node of a given node.
-		:returns:	RedBlackNode<Key, Value>!
+		- returns:	RedBlackNode<Key, Value>!
 	*/
 	internal var parent: RedBlackNode<Key, Value>!
 
 	/**
 		:name:	left
 		:description:	A reference to the left child node of a given node.
-		:returns:	RedBlackNode<Key, Value>!
+		- returns:	RedBlackNode<Key, Value>!
 	*/
 	internal var left: RedBlackNode<Key, Value>!
 
 	/**
 		:name:	right
 		:description:	A reference to the right child node of a given node.
-		:returns:	RedBlackNode<Key, Value>!
+		- returns:	RedBlackNode<Key, Value>!
 	*/
 	internal var right: RedBlackNode<Key, Value>!
 
 	/**
 		:name:	isRed
 		:description:	A boolean indicating whether te node is marked isRed or black.
-		:returns:	Bool
+		- returns:	Bool
 	*/
 	internal var isRed: Bool
 
@@ -51,7 +51,7 @@ internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Pr
 		:name:	order
 		:description:	Used to track the order statistic of a node, which maintains
 		key order in the tree.
-		:returns:	Int
+		- returns:	Int
 	*/
 	internal var order: Int
 
@@ -59,21 +59,21 @@ internal class RedBlackNode<Key : Comparable, Value> : Comparable, Equatable, Pr
 		:name:	key
 		:description:	A reference to the key value of the node, which is what organizes
 		a node in a given tree.
-		:returns:	Key!
+		- returns:	Key!
 	*/
 	internal var key: Key!
 
 	/**
 		:name:	value
 		:description:	Satellite data stoisRed in the node.
-		:returns:	Value?
+		- returns:	Value?
 	*/
 	internal var value: Value?
 
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol.
-		:returns:	String
+		- returns:	String
 	*/
 	internal var description: String {
 		return "(\(key), \(value))"

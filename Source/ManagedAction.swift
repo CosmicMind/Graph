@@ -45,7 +45,7 @@ internal class ManagedAction : NSManagedObject {
 	*/
 	convenience internal init(type: String!) {
 		let g: Graph = Graph()
-		var w: NSManagedObjectContext? = g.worker
+		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		nodeClass = "2"
         self.type = type
@@ -93,7 +93,7 @@ internal class ManagedAction : NSManagedObject {
 					}
 				}
 				if false == hasProperty {
-					var property: ActionProperty = ActionProperty(name: name, object: object!)
+					let property: ActionProperty = ActionProperty(name: name, object: object!)
 					property.node = self
 				}
 			}
@@ -106,7 +106,7 @@ internal class ManagedAction : NSManagedObject {
     */
     internal func addGroup(name: String!) -> Bool {
         if !hasGroup(name) {
-			var group: ActionGroup = ActionGroup(name: name)
+			let group: ManagedActionGroup = ManagedActionGroup(name: name)
             group.node = self
             return true
         }
@@ -119,7 +119,7 @@ internal class ManagedAction : NSManagedObject {
     */
     internal func hasGroup(name: String!) -> Bool {
         for n in groupSet {
-            let group: ActionGroup = n as! ActionGroup
+            let group: ManagedActionGroup = n as! ManagedActionGroup
             if name == group.name {
                 return true
             }
@@ -133,7 +133,7 @@ internal class ManagedAction : NSManagedObject {
     */
     internal func removeGroup(name: String!) -> Bool {
         for n in groupSet {
-            let group: ActionGroup = n as! ActionGroup
+            let group: ManagedActionGroup = n as! ManagedActionGroup
             if name == group.name {
 				group.delete()
 				let set: NSMutableSet = groupSet as! NSMutableSet
@@ -217,7 +217,7 @@ extension ManagedAction {
 		:name:	addGroupSetObject
 		:description:	Adds the Group to the groupSet for the Action.
 	*/
-	func addGroupSetObject(value: ActionGroup) {
+	func addGroupSetObject(value: ManagedActionGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.addObject(value)
 	}
@@ -226,7 +226,7 @@ extension ManagedAction {
 		:name:	removeGroupSetObject
 		:description:	Removes the Group to the groupSet for the Action.
 	*/
-	func removeGroupSetObject(value: ActionGroup) {
+	func removeGroupSetObject(value: ManagedActionGroup) {
 		let nodes: NSMutableSet = groupSet as! NSMutableSet
 		nodes.removeObject(value)
 	}

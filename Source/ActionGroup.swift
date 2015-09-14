@@ -20,8 +20,8 @@
 
 import CoreData
 
-@objc(ActionGroup)
-internal class ActionGroup : NSManagedObject {
+@objc(ManagedActionGroup)
+internal class ManagedActionGroup : NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var node: ManagedAction
 
@@ -40,7 +40,7 @@ internal class ActionGroup : NSManagedObject {
 	*/
 	convenience init(name: String) {
 		let g: Graph = Graph()
-		var w: NSManagedObjectContext? = g.worker
+		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
 		context = w
