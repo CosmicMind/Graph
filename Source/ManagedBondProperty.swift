@@ -22,8 +22,6 @@ import CoreData
 
 @objc(ManagedBondProperty)
 internal class ManagedBondProperty : ManagedNodeProperty {
-	@NSManaged internal var name: String
-	@NSManaged internal var object: AnyObject
 	@NSManaged internal var node: ManagedBond
 
 	/**

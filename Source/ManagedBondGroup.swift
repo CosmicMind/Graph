@@ -22,7 +22,6 @@ import CoreData
 
 @objc(ManagedBondGroup)
 internal class ManagedBondGroup : ManagedNodeGroup {
-	@NSManaged internal var name: String
 	@NSManaged internal var node: ManagedBond
 
 	/**

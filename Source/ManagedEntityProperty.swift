@@ -22,8 +22,6 @@ import CoreData
 
 @objc(ManagedEntityProperty)
 internal class ManagedEntityProperty : ManagedNodeProperty {
-	@NSManaged internal var name: String
-	@NSManaged internal var object: AnyObject
 	@NSManaged internal var node: ManagedEntity
 
 	/**

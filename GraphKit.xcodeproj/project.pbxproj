@@ -189,6 +189,8 @@
 		96E22D4F1BA8D0650050BB5F /* ManagedNodeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D4D1BA8D0650050BB5F /* ManagedNodeProperty.swift */; };
 		96E22D511BA8D2A30050BB5F /* ManagedNodeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */; };
 		96E22D521BA8D2A30050BB5F /* ManagedNodeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */; };
+		96E22D541BA8DE590050BB5F /* GraphObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D531BA8DE590050BB5F /* GraphObject.swift */; };
+		96E22D551BA8DE590050BB5F /* GraphObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D531BA8DE590050BB5F /* GraphObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -276,6 +278,7 @@
 		96E22D4A1BA8CC7E0050BB5F /* ManagedNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNode.swift; sourceTree = "<group>"; };
 		96E22D4D1BA8D0650050BB5F /* ManagedNodeProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNodeProperty.swift; sourceTree = "<group>"; };
 		96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNodeGroup.swift; sourceTree = "<group>"; };
+		96E22D531BA8DE590050BB5F /* GraphObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				96D4E4FB1BA76FC400672E38 /* Graph.swift */,
+				96E22D531BA8DE590050BB5F /* GraphObject.swift */,
 				96E22D471BA8CC290050BB5F /* Node.swift */,
 				96E22D4A1BA8CC7E0050BB5F /* ManagedNode.swift */,
 				96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */,
@@ -706,6 +710,7 @@
 				9677B5051BA78E1500C82BBB /* OrderedSet.swift in Sources */,
 				9677B5061BA78E1500C82BBB /* OrderedMultiSet.swift in Sources */,
 				9677B5071BA78E1500C82BBB /* OrderedDictionary.swift in Sources */,
+				96E22D551BA8DE590050BB5F /* GraphObject.swift in Sources */,
 				9677B5081BA78E1500C82BBB /* OrderedMultiDictionary.swift in Sources */,
 				96E22D4F1BA8D0650050BB5F /* ManagedNodeProperty.swift in Sources */,
 				9677B5091BA78E1500C82BBB /* Sort.swift in Sources */,
@@ -780,6 +785,7 @@
 				9677B4E71BA78DEF00C82BBB /* OrderedSet.swift in Sources */,
 				9677B4E81BA78DEF00C82BBB /* OrderedMultiSet.swift in Sources */,
 				9677B4E91BA78DEF00C82BBB /* OrderedDictionary.swift in Sources */,
+				96E22D541BA8DE590050BB5F /* GraphObject.swift in Sources */,
 				9677B4EA1BA78DEF00C82BBB /* OrderedMultiDictionary.swift in Sources */,
 				96E22D4E1BA8D0650050BB5F /* ManagedNodeProperty.swift in Sources */,
 				9677B4EB1BA78DEF00C82BBB /* Sort.swift in Sources */,

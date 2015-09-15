@@ -20,35 +20,10 @@
 
 import CoreData
 
-internal class ManagedNode : NSManagedObject {
+internal class ManagedNode : GraphObject {
 	@NSManaged internal var nodeClass: String
 	@NSManaged internal var type: String
 	@NSManaged internal var createdDate: NSDate
 	@NSManaged internal var propertySet: NSSet
 	@NSManaged internal var groupSet: NSSet
-	
-	//
-	//	:name:	context
-	//
-	internal var context: NSManagedObjectContext?
-	
-	//
-	//	:name:	worker
-	//
-	internal var worker: NSManagedObjectContext? {
-		if nil == context {
-			let graph: Graph = Graph()
-			context = graph.worker
-		}
-		return context
-	}
-	
-	/**
-		:name:	delete
-		:description:	Marks the Model Object to be deleted from the Graph.
-	*/
-	internal func delete() {
-		worker?.deleteObject(self)
-	}
 }
-

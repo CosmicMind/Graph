@@ -22,7 +22,6 @@ import CoreData
 
 @objc(ManagedEntityGroup)
 internal class ManagedEntityGroup : ManagedNodeGroup {
-	@NSManaged internal var name: String
 	@NSManaged internal var node: ManagedEntity
 
 	/**

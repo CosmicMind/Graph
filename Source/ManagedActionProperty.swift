@@ -22,8 +22,6 @@ import CoreData
 
 @objc(ManagedActionProperty)
 internal class ManagedActionProperty : ManagedNodeProperty {
-	@NSManaged internal var name: String
-	@NSManaged internal var object: AnyObject
 	@NSManaged internal var node: ManagedAction
 
 	/**
