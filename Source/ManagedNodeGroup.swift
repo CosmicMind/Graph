@@ -20,20 +20,28 @@
 
 import CoreData
 
-@objc(ManagedEntityGroup)
-internal class ManagedEntityGroup : ManagedNodeGroup {
-	@NSManaged internal var name: String
-	@NSManaged internal var node: ManagedEntity
-
+public class ManagedNodeGroup : NSManagedObject {
+	//
+	//	:name:	context
+	//
+	internal var context: NSManagedObjectContext?
+	
+	//
+	//	:name:	worker
+	//
+	internal var worker: NSManagedObjectContext? {
+		if nil == context {
+			let graph: Graph = Graph()
+			context = graph.worker
+		}
+		return context
+	}
+	
 	/**
-		:name:	init
-		:description:	Initializer for the Model Object.
+		:name:	delete
+		:description:	Deletes the Object Model.
 	*/
-	internal convenience init(name: String) {
-		let g: Graph = Graph()
-		let w: NSManagedObjectContext? = g.worker
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
-		self.name = name
-		context = w
+	internal func delete() {
+		worker?.deleteObject(self)
 	}
 }

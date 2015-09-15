@@ -21,38 +21,21 @@
 import CoreData
 
 @objc(ManagedActionProperty)
-internal class ManagedActionProperty : NSManagedObject {
+internal class ManagedActionProperty : ManagedNodeProperty {
 	@NSManaged internal var name: String
 	@NSManaged internal var object: AnyObject
 	@NSManaged internal var node: ManagedAction
-
-	private var context: NSManagedObjectContext?
-	internal var worker: NSManagedObjectContext? {
-		if nil == context {
-			let graph: Graph = Graph()
-			context = graph.worker
-		}
-		return context
-	}
 
 	/**
 		:name:	init
 		:description:	Initializer for the Model Object.
 	*/
-	convenience init(name: String, object: AnyObject) {
+	internal convenience init(name: String, object: AnyObject) {
 		let g: Graph = Graph()
 		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
 		self.object = object
 		context = w
-	}
-
-	/**
-		:name:	delete
-		:description:	Deletes the Object Model.
-	*/
-	internal func delete() {
-		worker?.deleteObject(self)
 	}
 }

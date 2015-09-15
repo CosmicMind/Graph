@@ -21,29 +21,15 @@
 import CoreData
 
 @objc(ManagedAction)
-internal class ManagedAction : NSManagedObject {
-	@NSManaged internal var nodeClass: String
-	@NSManaged internal var type: String
-	@NSManaged internal var createdDate: NSDate
-	@NSManaged internal var propertySet: NSSet
-	@NSManaged internal var groupSet: NSSet
+internal class ManagedAction : ManagedNode {
 	@NSManaged internal var subjectSet: NSSet
     @NSManaged internal var objectSet: NSSet
-
-	private var context: NSManagedObjectContext?
-	internal var worker: NSManagedObjectContext? {
-		if nil == context {
-			let graph: Graph = Graph()
-			context = graph.worker
-		}
-		return context
-	}
 
 	/**
 		:name:	init
 		:description:	Initializes the Model Object with e a given type.
 	*/
-	convenience internal init(type: String!) {
+	internal convenience init(type: String!) {
 		let g: Graph = Graph()
 		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
@@ -183,14 +169,6 @@ internal class ManagedAction : NSManagedObject {
 		mutableSetValueForKey("objectSet").removeObject(entity)
 		return count != objectSet.count
     }
-
-	/**
-		:name:	delete
-		:description:	Marks the Model Object to be deleted from the Graph.
-	*/
-	internal func delete() {
-		worker?.deleteObject(self)
-	}
 }
 
 extension ManagedAction {

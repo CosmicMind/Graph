@@ -21,23 +21,9 @@
 import CoreData
 
 @objc(ManagedBond)
-internal class ManagedBond : NSManagedObject {
-	@NSManaged internal var nodeClass: String
-	@NSManaged internal var type: String
-	@NSManaged internal var createdDate: NSDate
-	@NSManaged internal var propertySet: NSSet
-	@NSManaged internal var groupSet: NSSet
+internal class ManagedBond : ManagedNode {
 	@NSManaged internal var subject: ManagedEntity?
     @NSManaged internal var object: ManagedEntity?
-
-	private var context: NSManagedObjectContext?
-	internal var worker: NSManagedObjectContext? {
-		if nil == context {
-			let graph: Graph = Graph()
-			context = graph.worker
-		}
-		return context
-	}
 
 	/**
 		:name:	init
@@ -143,14 +129,6 @@ internal class ManagedBond : NSManagedObject {
         }
         return false
     }
-
-	/**
-		:name:	delete
-		:description:	Marks the Model Object to be deleted from the Graph.
-	*/
-	internal func delete() {
-		worker?.deleteObject(self)
-	}
 }
 
 extension ManagedBond {

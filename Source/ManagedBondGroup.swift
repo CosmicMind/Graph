@@ -21,36 +21,19 @@
 import CoreData
 
 @objc(ManagedBondGroup)
-internal class ManagedBondGroup : NSManagedObject {
+internal class ManagedBondGroup : ManagedNodeGroup {
 	@NSManaged internal var name: String
 	@NSManaged internal var node: ManagedBond
-
-	private var context: NSManagedObjectContext?
-	internal var worker: NSManagedObjectContext? {
-		if nil == context {
-			let graph: Graph = Graph()
-			context = graph.worker
-		}
-		return context
-	}
 
 	/**
 		:name:	init
 		:description:	Initializer for the Model Object.
 	*/
-	convenience init(name: String) {
+	internal convenience init(name: String) {
 		let g: Graph = Graph()
 		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.bondGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
 		context = w
-	}
-
-	/**
-		:name:	delete
-		:description:	Deletes the Object Model.
-	*/
-	internal func delete() {
-		worker?.deleteObject(self)
 	}
 }

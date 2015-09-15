@@ -181,6 +181,14 @@
 		9677B51A1BA78E1500C82BBB /* ManagedBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5021BA76FC400672E38 /* ManagedBond.swift */; };
 		9677B51B1BA78E1500C82BBB /* ManagedBondGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4F51BA76FC400672E38 /* ManagedBondGroup.swift */; };
 		9677B51C1BA78E1500C82BBB /* ManagedBondProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4F61BA76FC400672E38 /* ManagedBondProperty.swift */; };
+		96E22D481BA8CC290050BB5F /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D471BA8CC290050BB5F /* Node.swift */; };
+		96E22D491BA8CC290050BB5F /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D471BA8CC290050BB5F /* Node.swift */; };
+		96E22D4B1BA8CC7E0050BB5F /* ManagedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D4A1BA8CC7E0050BB5F /* ManagedNode.swift */; };
+		96E22D4C1BA8CC7E0050BB5F /* ManagedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D4A1BA8CC7E0050BB5F /* ManagedNode.swift */; };
+		96E22D4E1BA8D0650050BB5F /* ManagedNodeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D4D1BA8D0650050BB5F /* ManagedNodeProperty.swift */; };
+		96E22D4F1BA8D0650050BB5F /* ManagedNodeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D4D1BA8D0650050BB5F /* ManagedNodeProperty.swift */; };
+		96E22D511BA8D2A30050BB5F /* ManagedNodeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */; };
+		96E22D521BA8D2A30050BB5F /* ManagedNodeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -264,6 +272,10 @@
 		96D4E5451BA76FD900672E38 /* SessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		96D4E5461BA76FD900672E38 /* StackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackTests.swift; sourceTree = "<group>"; };
 		96D4E5471BA76FD900672E38 /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		96E22D471BA8CC290050BB5F /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		96E22D4A1BA8CC7E0050BB5F /* ManagedNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNode.swift; sourceTree = "<group>"; };
+		96E22D4D1BA8D0650050BB5F /* ManagedNodeProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNodeProperty.swift; sourceTree = "<group>"; };
+		96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNodeGroup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -304,6 +316,10 @@
 			isa = PBXGroup;
 			children = (
 				96D4E4FB1BA76FC400672E38 /* Graph.swift */,
+				96E22D471BA8CC290050BB5F /* Node.swift */,
+				96E22D4A1BA8CC7E0050BB5F /* ManagedNode.swift */,
+				96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */,
+				96E22D4D1BA8D0650050BB5F /* ManagedNodeProperty.swift */,
 				96D4E4F81BA76FC400672E38 /* Entity.swift */,
 				96D4E5031BA76FC400672E38 /* ManagedEntity.swift */,
 				96D4E4F91BA76FC400672E38 /* ManagedEntityGroup.swift */,
@@ -691,10 +707,12 @@
 				9677B5061BA78E1500C82BBB /* OrderedMultiSet.swift in Sources */,
 				9677B5071BA78E1500C82BBB /* OrderedDictionary.swift in Sources */,
 				9677B5081BA78E1500C82BBB /* OrderedMultiDictionary.swift in Sources */,
+				96E22D4F1BA8D0650050BB5F /* ManagedNodeProperty.swift in Sources */,
 				9677B5091BA78E1500C82BBB /* Sort.swift in Sources */,
 				9677B50A1BA78E1500C82BBB /* InsertionSort.swift in Sources */,
 				9677B50B1BA78E1500C82BBB /* List.swift in Sources */,
 				9677B50C1BA78E1500C82BBB /* ListNode.swift in Sources */,
+				96E22D521BA8D2A30050BB5F /* ManagedNodeGroup.swift in Sources */,
 				9677B50D1BA78E1500C82BBB /* Stack.swift in Sources */,
 				9677B50E1BA78E1500C82BBB /* Queue.swift in Sources */,
 				9677B50F1BA78E1500C82BBB /* Deque.swift in Sources */,
@@ -705,12 +723,14 @@
 				9677B5141BA78E1500C82BBB /* ManagedEntity.swift in Sources */,
 				9677B5151BA78E1500C82BBB /* ManagedEntityGroup.swift in Sources */,
 				9677B5161BA78E1500C82BBB /* ManagedEntityProperty.swift in Sources */,
+				96E22D491BA8CC290050BB5F /* Node.swift in Sources */,
 				9677B5171BA78E1500C82BBB /* ManagedAction.swift in Sources */,
 				9677B5181BA78E1500C82BBB /* ManagedActionGroup.swift in Sources */,
 				9677B5191BA78E1500C82BBB /* ManagedActionProperty.swift in Sources */,
 				9677B51A1BA78E1500C82BBB /* ManagedBond.swift in Sources */,
 				9677B51B1BA78E1500C82BBB /* ManagedBondGroup.swift in Sources */,
 				9677B51C1BA78E1500C82BBB /* ManagedBondProperty.swift in Sources */,
+				96E22D4C1BA8CC7E0050BB5F /* ManagedNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -761,10 +781,12 @@
 				9677B4E81BA78DEF00C82BBB /* OrderedMultiSet.swift in Sources */,
 				9677B4E91BA78DEF00C82BBB /* OrderedDictionary.swift in Sources */,
 				9677B4EA1BA78DEF00C82BBB /* OrderedMultiDictionary.swift in Sources */,
+				96E22D4E1BA8D0650050BB5F /* ManagedNodeProperty.swift in Sources */,
 				9677B4EB1BA78DEF00C82BBB /* Sort.swift in Sources */,
 				9677B4EC1BA78DEF00C82BBB /* InsertionSort.swift in Sources */,
 				9677B4ED1BA78DEF00C82BBB /* List.swift in Sources */,
 				9677B4EE1BA78DEF00C82BBB /* ListNode.swift in Sources */,
+				96E22D511BA8D2A30050BB5F /* ManagedNodeGroup.swift in Sources */,
 				9677B4EF1BA78DEF00C82BBB /* Stack.swift in Sources */,
 				9677B4F01BA78DEF00C82BBB /* Queue.swift in Sources */,
 				9677B4F11BA78DEF00C82BBB /* Deque.swift in Sources */,
@@ -775,12 +797,14 @@
 				9677B4F61BA78DEF00C82BBB /* ManagedEntity.swift in Sources */,
 				9677B4F71BA78DEF00C82BBB /* ManagedEntityGroup.swift in Sources */,
 				9677B4F81BA78DEF00C82BBB /* ManagedEntityProperty.swift in Sources */,
+				96E22D481BA8CC290050BB5F /* Node.swift in Sources */,
 				9677B4F91BA78DEF00C82BBB /* ManagedAction.swift in Sources */,
 				9677B4FA1BA78DEF00C82BBB /* ManagedActionGroup.swift in Sources */,
 				9677B4FB1BA78DEF00C82BBB /* ManagedActionProperty.swift in Sources */,
 				9677B4FC1BA78DEF00C82BBB /* ManagedBond.swift in Sources */,
 				9677B4FD1BA78DEF00C82BBB /* ManagedBondGroup.swift in Sources */,
 				9677B4FE1BA78DEF00C82BBB /* ManagedBondProperty.swift in Sources */,
+				96E22D4B1BA8CC7E0050BB5F /* ManagedNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,31 +21,17 @@
 import CoreData
 
 @objc(ManagedEntity)
-internal class ManagedEntity : NSManagedObject {
-	@NSManaged internal var nodeClass: String
-	@NSManaged internal var type: String
-	@NSManaged internal var createdDate: NSDate
-	@NSManaged internal var propertySet: NSSet
-	@NSManaged internal var groupSet: NSSet
+internal class ManagedEntity : ManagedNode {
 	@NSManaged internal var actionSubjectSet: NSSet
 	@NSManaged internal var actionObjectSet: NSSet
 	@NSManaged internal var bondSubjectSet: NSSet
 	@NSManaged internal var bondObjectSet: NSSet
 
-	private var context: NSManagedObjectContext?
-	internal var worker: NSManagedObjectContext? {
-		if nil == context {
-			let graph: Graph = Graph()
-			context = graph.worker
-		}
-		return context
-	}
-
 	/**
 		:name:	init
 		:description:	Initializes the Model Object with e a given type.
 	*/
-	convenience internal init(type: String!) {
+	internal convenience init(type: String!) {
 		let g: Graph = Graph()
 		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
@@ -146,14 +132,6 @@ internal class ManagedEntity : NSManagedObject {
 			}
 		}
 		return false
-	}
-
-	/**
-		:name:	delete
-		:description:	Marks the Model Object to be deleted from the Graph.
-	*/
-	internal func delete() {
-		worker?.deleteObject(self)
 	}
 }
 

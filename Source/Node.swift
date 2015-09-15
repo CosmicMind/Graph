@@ -16,24 +16,8 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// #internal
+import Foundation
 
-import CoreData
-
-@objc(ManagedEntityGroup)
-internal class ManagedEntityGroup : ManagedNodeGroup {
-	@NSManaged internal var name: String
-	@NSManaged internal var node: ManagedEntity
-
-	/**
-		:name:	init
-		:description:	Initializer for the Model Object.
-	*/
-	internal convenience init(name: String) {
-		let g: Graph = Graph()
-		let w: NSManagedObjectContext? = g.worker
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
-		self.name = name
-		context = w
-	}
+public class Node {
+	
 }
