@@ -64,10 +64,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertAction(graph: Graph, action: Action) {
-		print(action)
-		print(graph.search(actionProperty: "active"))
 		let a2: Action? = graph.search(actionProperty: "active").last
-		print(action == a2)
 		if action == a2 {
 			expectation?.fulfill()
 			

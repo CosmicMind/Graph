@@ -1,14 +1,12 @@
-![GraphKit iOS](http://graphkit.io/GraphKitLogo.png)
-
-# Build Intelligent Software
-### A powerful iOS / OSX framework for data-driven design.
+# GraphKit
+### A Powerful Data-Driven Framework In Swift
 
 * [Get Started](http://graphkit.io)
 * [Installation Guide](http://www.graphkit.io/tutorials/workspace)
 * [CocoaPods (GK)](https://cocoapods.org/?q=GK)
 
 ### CocoaPods Support
-GraphKit is now on CocoaPods under the name [GK](https://cocoapods.org/?q=GK).
+GraphKit is on CocoaPods under the name [GK](https://cocoapods.org/?q=GK).
 
 ### Unbelievable Persistence
 Developers are limited by their efficiency to model simple and complex data. Without any configuration or schemas, GraphKit can model any scenario with a few lines of code. Take advantage of fast prototyping that is ready for production when you are.
