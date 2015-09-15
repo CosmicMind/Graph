@@ -102,12 +102,29 @@ public protocol GraphDelegate {
 
 @objc(Graph)
 public class Graph : NSObject {
-	public var batchSize: Int = 0 // set number for limit of return objects
-	public var batchOffset: Int = 0
-
-	internal var watching: OrderedDictionary<String, OrderedSet<String>>
+	/**
+		:name:	watchers
+	*/
+	internal var watchers: OrderedDictionary<String, OrderedSet<String>>
+	
+	/**
+		:name:	materPredicate
+	*/
 	internal var masterPredicate: NSPredicate?
-
+	
+	/**
+		:name:	batchSize
+	*/
+	public var batchSize: Int = 0 // set number for limit of return objects
+	
+	/**
+		:name:	batchOffset
+	*/
+	public var batchOffset: Int = 0
+	
+	/**
+		:name:	delegate
+	*/
 	public weak var delegate: GraphDelegate?
 
 	/**
@@ -115,7 +132,7 @@ public class Graph : NSObject {
 		:description:	Initializer for the Object.
 	*/
 	public override init() {
-		watching = OrderedDictionary<String, OrderedSet<String>>()
+		watchers = OrderedDictionary<String, OrderedSet<String>>()
 		super.init()
 	}
 
@@ -503,37 +520,28 @@ public class Graph : NSObject {
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
 					delegate?.graphDidInsertEntity?(self, entity: Entity(entity: node as! ManagedEntity))
-					break
 				case "ManagedEntityGroup_ManagedEntityGroup_":
 					let group: ManagedEntityGroup = node as! ManagedEntityGroup
 					delegate?.graphDidInsertEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
-					break
 				case "ManagedEntityProperty_ManagedEntityProperty_":
 					let property: ManagedEntityProperty = node as! ManagedEntityProperty
 					delegate?.graphDidInsertEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
-					break
 				case "ManagedAction_ManagedAction_":
 					delegate?.graphDidInsertAction?(self, action: Action(action: node as! ManagedAction))
-					break
 				case "ManagedActionGroup_ManagedActionGroup_":
 					let group: ManagedActionGroup = node as! ManagedActionGroup
 					delegate?.graphDidInsertActionGroup?(self, action: Action(action: group.node), group: group.name)
-					break
 				case "ManagedActionProperty_ManagedActionProperty_":
 					let property: ManagedActionProperty = node as! ManagedActionProperty
 					delegate?.graphDidInsertActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
-					break
 				case "ManagedBond_ManagedBond_":
 					delegate?.graphDidInsertBond?(self, bond: Bond(bond: node as! ManagedBond))
-					break
 				case "ManagedBondGroup_ManagedBondGroup_":
 					let group: ManagedBondGroup = node as! ManagedBondGroup
 					delegate?.graphDidInsertBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
-					break
 				case "ManagedBondProperty_ManagedBondProperty_":
 					let property: ManagedBondProperty = node as! ManagedBondProperty
 					delegate?.graphDidInsertBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
-					break
 				default:
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 				}
@@ -553,18 +561,14 @@ public class Graph : NSObject {
 				case "ManagedEntityProperty_ManagedEntityProperty_":
 					let property: ManagedEntityProperty = node as! ManagedEntityProperty
 					delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
-					break
 				case "ManagedActionProperty_ManagedActionProperty_":
 					let property: ManagedActionProperty = node as! ManagedActionProperty
 					delegate?.graphDidUpdateActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
-					break
 				case "ManagedBondProperty_ManagedBondProperty_":
 					let property: ManagedBondProperty = node as! ManagedBondProperty
 					delegate?.graphDidUpdateBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
-					break
 				case "ManagedAction_ManagedAction_":
 					delegate?.graphDidUpdateAction?(self, action: Action(action: node as! ManagedAction))
-					break
 				default:
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 				}
@@ -589,38 +593,30 @@ public class Graph : NSObject {
 				switch(className!) {
 				case "ManagedEntity_ManagedEntity_":
 					delegate?.graphDidDeleteEntity?(self, entity: Entity(entity: node as! ManagedEntity))
-					break
 				case "ManagedEntityProperty_ManagedEntityProperty_":
 					let property: ManagedEntityProperty = node as! ManagedEntityProperty
 					delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
-					break
 				case "ManagedEntityGroup_ManagedEntityGroup_":
 					let group: ManagedEntityGroup = node as! ManagedEntityGroup
 					delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
-					break
 				case "ManagedAction_ManagedAction_":
 					delegate?.graphDidDeleteAction?(self, action: Action(action: node as! ManagedAction))
-					break
 				case "ManagedActionProperty_ManagedActionProperty_":
 					let property: ManagedActionProperty = node as! ManagedActionProperty
 					delegate?.graphDidDeleteActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
-					break
 				case "ManagedActionGroup_ManagedActionGroup_":
 					let group: ManagedActionGroup = node as! ManagedActionGroup
 					delegate?.graphDidDeleteActionGroup?(self, action: Action(action: group.node), group: group.name)
-					break
 				case "ManagedBond_ManagedBond_":
 					delegate?.graphDidDeleteBond?(self, bond: Bond(bond: node as! ManagedBond))
-					break
 				case "ManagedBondProperty_ManagedBondProperty_":
 					let property: ManagedBondProperty = node as! ManagedBondProperty
 					delegate?.graphDidDeleteBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
-					break
 				case "ManagedBondGroup_ManagedBondGroup_":
 					let group: ManagedBondGroup = node as! ManagedBondGroup
 					delegate?.graphDidDeleteBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
-					break
-				default:break
+				default:
+					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 				}
 			}
 		}
@@ -942,51 +938,26 @@ public class Graph : NSObject {
 	//
 	private var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
 		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) {
-			// The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-			// Create the coordinator and store
+			let documentsDirectory: String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
+			let url: NSURL = NSURL.fileURLWithPath(documentsDirectory.stringByAppendingString(GraphUtility.storeName), isDirectory: false)
 			let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
-			let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent(GraphUtility.storeName)
-			let failureReason = "There was an error creating or loading the application's saved data."
 			do {
 				try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
 			} catch {
-				// Report any error we got.
-				var dict = [String: AnyObject]()
-				dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-				dict[NSLocalizedFailureReasonErrorKey] = failureReason
-				
+				var dict: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+				dict[NSLocalizedDescriptionKey] = "[GraphKit Error: Failed to initialize datastore.]"
+				dict[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: There was an error creating or loading the application's saved data.]"
 				dict[NSUnderlyingErrorKey] = error as NSError
-				let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
-				// Replace this with code to handle the error appropriately.
-				// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-				NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
-				abort()
+				print(NSError(domain: "GraphKit", code: 9999, userInfo: dict))
 			}
 			GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
 		}
 		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
-			
-//			let storeURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent(GraphUtility.storeName)
-//			GraphPersistentStoreCoordinator.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
-//			do {
-//				let options: Dictionary = [NSReadOnlyPersistentStoreOption: false, NSSQLitePragmasOption: ["journal_mode": "DELETE"]];
-//				try GraphPersistentStoreCoordinator.persistentStoreCoordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: options)
-//			} catch {}
-//		}
-//		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
-	}
-
-	//
-	//	:name:	applicationDocumentsDirectory
-	//
-	private var applicationDocumentsDirectory: NSURL {
-		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-		return urls[urls.count-1]
 	}
 
 	//
 	//	:name:	prepareForObservation
-	//	:description:	Ensures NotificationCenter is watching the callback selector for this Graph.
+	//	:description:	Ensures NotificationCenter is watchers the callback selector for this Graph.
 	//
 	private func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
@@ -1006,15 +977,15 @@ public class Graph : NSObject {
 
 	//
 	//	:name:	isWatching
-	//	:description:	A sanity check if the Graph is already watching the specified index and key.
+	//	:description:	A sanity check if the Graph is already watchers the specified index and key.
 	//
 	private func isWatching(key: String, index: String) -> Bool {
-		if nil == watching[key] {
-			watching[key] = OrderedSet<String>(elements: index)
+		if nil == watchers[key] {
+			watchers[key] = OrderedSet<String>(elements: index)
 			return false
 		}
-		if !watching[key]!.contains(index) {
-			watching[key]!.insert(index)
+		if !watchers[key]!.contains(index) {
+			watchers[key]!.insert(index)
 			return false
 		}
 		return true
