@@ -63,7 +63,7 @@ Engagement drives the user experience. GraphKit captures engagement through Acti
 let graph = Graph()
 
 let user = Entity(type: "User")
-let books = graph.search(EntityGroup: "Popular")
+let books = graph.search(entityGroup: "Popular")
 
 let purchased = Action(type: "Purchased")
 purchased.addSubject(user)
@@ -83,7 +83,7 @@ As the user engages your application, GraphKit offers a probability interface to
 let graph = Graph()
 let books = OrderedMultiSet<String>()
 
-for purchase in graph.search(Action: "Purchased") {
+for purchase in graph.search(action: "Purchased") {
 	for object in purchase.objects {
 		if "Book" == object.type {
 			books.insert(object["genre"] as! String)
