@@ -68,7 +68,7 @@ internal class ManagedEntity : NSManagedObject {
 	internal subscript(name: String) -> AnyObject? {
 		get {
 			for n in propertySet {
-				let property: EntityProperty = n as! EntityProperty
+				let property: ManagedEntityProperty = n as! ManagedEntityProperty
 				if name == property.name {
 					return property.object
 				}
@@ -78,7 +78,7 @@ internal class ManagedEntity : NSManagedObject {
 		set(object) {
 			if nil == object {
 				for n in propertySet {
-					let property: EntityProperty = n as! EntityProperty
+					let property: ManagedEntityProperty = n as! ManagedEntityProperty
 					if name == property.name {
 						property.delete()
 						let set: NSMutableSet = propertySet as! NSMutableSet
@@ -89,7 +89,7 @@ internal class ManagedEntity : NSManagedObject {
 			} else {
 				var hasProperty: Bool = false
 				for n in propertySet {
-					let property: EntityProperty = n as! EntityProperty
+					let property: ManagedEntityProperty = n as! ManagedEntityProperty
 					if name == property.name {
 						hasProperty = true
 						property.object = object!
@@ -97,7 +97,7 @@ internal class ManagedEntity : NSManagedObject {
 					}
 				}
 				if false == hasProperty {
-					let property: EntityProperty = EntityProperty(name: name, object: object!)
+					let property: ManagedEntityProperty = ManagedEntityProperty(name: name, object: object!)
 					property.node = self
 				}
 			}
@@ -235,7 +235,7 @@ extension ManagedEntity {
 		:name:	addPropertySetObject
 		:description:	Adds the Property to the propertySet for the Entity.
 	*/
-	func addPropertySetObject(value: EntityProperty) {
+	func addPropertySetObject(value: ManagedEntityProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.addObject(value)
 	}
@@ -244,7 +244,7 @@ extension ManagedEntity {
 		:name:	removePropertySetObject
 		:description:	Removes the Property to the propertySet for the Entity.
 	*/
-	func removePropertySetObject(value: EntityProperty) {
+	func removePropertySetObject(value: ManagedEntityProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.removeObject(value)
 	}

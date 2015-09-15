@@ -69,13 +69,13 @@ class BondTests : XCTestCase, GraphDelegate {
         graph.delegate = self
 
         // Let's watch the changes in the Graph for the following Bond values.
-        graph.watch(Bond: "Friend")
-        graph.watch(ManagedBondGroup: "Close")
-        graph.watch(BondProperty: "permission")
-        graph.watch(BondProperty: "year")
+        graph.watch(bond: "Friend")
+        graph.watch(bondGroup: "Close")
+        graph.watch(bondProperty: "permission")
+        graph.watch(bondProperty: "year")
 
         // Let's watch the User Entity values to test reverse Bond indices.
-        graph.watch(Entity: "User")
+        graph.watch(entity: "User")
 
         // Let's create two User Entity Objects.
         let u1: Entity = Entity(type: "User")
@@ -168,19 +168,19 @@ class BondTests : XCTestCase, GraphDelegate {
     func graphDidInsertManagedBondGroup(graph: Graph, bond: Bond, group: String) {
         if "Close" == group {
             groupInsertExpectation?.fulfill()
-            let n: OrderedSet<Bond> = graph.search(ManagedBondGroup: group)
+            let n: OrderedSet<Bond> = graph.search(bondGroup: group)
             if bond.id == n.first?.id {
                 groupSearchExpectation?.fulfill()
             }
         }
     }
 
-    func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject){
+    func graphDidInsertManagedBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject){
         if "permission" == property && "edit" == value as! String {
             permissionInsertExpectation?.fulfill()
-            let n: OrderedSet<Bond> = graph.search(BondProperty: property)
+            let n: OrderedSet<Bond> = graph.search(bondProperty: property)
             if n.first?[property] as! String == value as! String {
-                let m: OrderedSet<Bond> = graph.search(BondProperty: property, value: value as! String)
+                let m: OrderedSet<Bond> = graph.search(bondProperty: property, value: value as! String)
                 if m.first?[property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
@@ -188,9 +188,9 @@ class BondTests : XCTestCase, GraphDelegate {
 
         } else if "year" == property && 1998 == value as! Int {
             yearInsertExpectation?.fulfill()
-            let n: OrderedSet<Bond> = graph.search(BondProperty: property)
+            let n: OrderedSet<Bond> = graph.search(bondProperty: property)
             if n.first?[property] as! Int == value as! Int {
-                let m: OrderedSet<Bond> = graph.search(BondProperty: property, value: value as! Int)
+                let m: OrderedSet<Bond> = graph.search(bondProperty: property, value: value as! Int)
                 if m.first?[property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }
@@ -198,21 +198,21 @@ class BondTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
+    func graphDidUpdateManagedBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
         if "permission" == property && "read" == value as! String {
             permissionUpdateExpectation?.fulfill()
-            let n: OrderedSet<Bond> = graph.search(BondProperty: property)
+            let n: OrderedSet<Bond> = graph.search(bondProperty: property)
             if n.first?[property] as! String == value as! String {
-                let m: OrderedSet<Bond> = graph.search(BondProperty: property, value: value as! String)
+                let m: OrderedSet<Bond> = graph.search(bondProperty: property, value: value as! String)
                 if m.first?[property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
             }
         } else if "year" == property && 2001 == value as! Int {
             yearUpdateExpectation?.fulfill()
-            let n: OrderedSet<Bond> = graph.search(BondProperty: property)
+            let n: OrderedSet<Bond> = graph.search(bondProperty: property)
             if n.first?[property] as! Int == value as! Int {
-                let m: OrderedSet<Bond> = graph.search(BondProperty: property, value: value as! Int)
+                let m: OrderedSet<Bond> = graph.search(bondProperty: property, value: value as! Int)
                 if m.first?[property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }

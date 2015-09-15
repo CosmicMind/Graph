@@ -58,7 +58,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Bond values.
-		graph?.watch(Bond: "B")
+		graph?.watch(bond: "B")
 		
 		var b1: Bond?
 		

@@ -157,7 +157,7 @@ public class Action : NSObject, Comparable {
 	*/
 	public override func isEqual(object: AnyObject?) -> Bool {
 		if let rhs = object as? Action {
-			return id == rhs.id
+			return id.isEqual(rhs.id)
 		}
 		return false
 	}

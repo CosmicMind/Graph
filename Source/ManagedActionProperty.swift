@@ -20,8 +20,8 @@
 
 import CoreData
 
-@objc(ActionProperty)
-internal class ActionProperty : NSManagedObject {
+@objc(ManagedActionProperty)
+internal class ManagedActionProperty : NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var object: AnyObject
 	@NSManaged internal var node: ManagedAction

@@ -71,8 +71,8 @@ class Tests : XCTestCase, GraphDelegate {
 		graph?.save() { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
-		XCTAssertTrue(0 == graph?.search(Bond: "Author").count && 0 == user!.bonds.count, "Author: Not correctly deleted.")
-		XCTAssertTrue(0 == graph?.search(Action: "Read").count, "Read: Not correctly searched.")
+		XCTAssertTrue(0 == graph?.search(bond: "Author").count && 0 == user!.bonds.count, "Author: Not correctly deleted.")
+		XCTAssertTrue(0 == graph?.search(action: "Read").count, "Read: Not correctly searched.")
 		
 		book2!.delete()
 		
@@ -81,7 +81,7 @@ class Tests : XCTestCase, GraphDelegate {
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 
-		XCTAssertTrue(0 == graph?.search(Action: "Read").count, "Read: Not correctly deleted.")
+		XCTAssertTrue(0 == graph?.search(action: "Read").count, "Read: Not correctly deleted.")
 		
 		user!.delete()
 		// Save the Graph, which will execute the delegate handlers.
@@ -89,7 +89,7 @@ class Tests : XCTestCase, GraphDelegate {
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
-		XCTAssertTrue(0 == graph?.search(Action: "Read").count, "Read: Not correctly deleted.")
+		XCTAssertTrue(0 == graph?.search(action: "Read").count, "Read: Not correctly deleted.")
 	}
 	
 	func testPerformance() {

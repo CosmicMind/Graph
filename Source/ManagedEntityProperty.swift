@@ -20,8 +20,8 @@
 
 import CoreData
 
-@objc(EntityProperty)
-internal class EntityProperty : NSManagedObject {
+@objc(ManagedEntityProperty)
+internal class ManagedEntityProperty : NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var object: AnyObject
 	@NSManaged internal var node: ManagedEntity

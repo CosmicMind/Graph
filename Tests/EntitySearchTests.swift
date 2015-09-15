@@ -42,15 +42,15 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Entity values.
-		graph?.watch(Entity: "E")
-		graph?.watch(EntityProperty: "active")
+		graph?.watch(entity: "E")
+		graph?.watch(entityProperty: "active")
 		
-		XCTAssertTrue(0 == graph?.search(EntityProperty: "active").count, "Entity: Search did not pass.")
+		XCTAssertTrue(0 == graph?.search(entityProperty: "active").count, "Entity: Search did not pass.")
 		
 		let e1: Entity = Entity(type: "E")
 		e1["active"] = true
 		
-		let e2: Entity? = graph?.search(EntityProperty: "active").last
+		let e2: Entity? = graph?.search(entityProperty: "active").last
 		
 		XCTAssertTrue(e1 == e2, "Entity: Search did not pass.")
 		
@@ -65,7 +65,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertEntity(graph: Graph, entity: Entity) {
-		let e2: Entity? = graph.search(EntityProperty: "active").last
+		let e2: Entity? = graph.search(entityProperty: "active").last
 		if entity == e2 {
 			expectation?.fulfill()
 			
@@ -80,15 +80,15 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
-		let e2: Entity? = graph.search(EntityProperty: "active").last
+		let e2: Entity? = graph.search(entityProperty: "active").last
 		if nil == e2 {
 			expectation?.fulfill()
-			XCTAssertTrue(0 == graph.search(EntityProperty: "active").count, "Entity: Search did not pass.")
+			XCTAssertTrue(0 == graph.search(entityProperty: "active").count, "Entity: Search did not pass.")
 		}
 	}
 	
-	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-		let _: Entity? = graph.search(EntityProperty: "active").last
+	func graphDidUpdateManagedEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+		let _: Entity? = graph.search(entityProperty: "active").last
 		if value as! Bool == entity["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
 			
@@ -98,7 +98,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			}
 			
-			XCTAssertTrue(0 == graph.search(EntityProperty: "active").count, "Entity: Search did not pass.")
+			XCTAssertTrue(0 == graph.search(entityProperty: "active").count, "Entity: Search did not pass.")
 			
 			expectation = expectationWithDescription("Entity: Delete did not pass.")
 			

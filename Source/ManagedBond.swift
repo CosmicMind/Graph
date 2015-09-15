@@ -64,7 +64,7 @@ internal class ManagedBond : NSManagedObject {
 	internal subscript(name: String) -> AnyObject? {
 		get {
 			for n in propertySet {
-				let property: BondProperty = n as! BondProperty
+				let property: ManagedBondProperty = n as! ManagedBondProperty
 				if name == property.name {
 					return property.object
 				}
@@ -74,7 +74,7 @@ internal class ManagedBond : NSManagedObject {
 		set(object) {
 			if nil == object {
 				for n in propertySet {
-					let property: BondProperty = n as! BondProperty
+					let property: ManagedBondProperty = n as! ManagedBondProperty
 					if name == property.name {
 						property.delete()
 						let set: NSMutableSet = propertySet as! NSMutableSet
@@ -85,7 +85,7 @@ internal class ManagedBond : NSManagedObject {
 			} else {
 				var hasProperty: Bool = false
 				for n in propertySet {
-					let property: BondProperty = n as! BondProperty
+					let property: ManagedBondProperty = n as! ManagedBondProperty
 					if name == property.name {
 						hasProperty = true
 						property.object = object!
@@ -93,7 +93,7 @@ internal class ManagedBond : NSManagedObject {
 					}
 				}
 				if false == hasProperty {
-					let property: BondProperty = BondProperty(name: name, object: object!)
+					let property: ManagedBondProperty = ManagedBondProperty(name: name, object: object!)
 					property.node = self
 				}
 			}
@@ -159,7 +159,7 @@ extension ManagedBond {
 		:name:	addPropertySetObject
 		:description:	Adds the Property to the propertySet for the Bond.
 	*/
-	func addPropertySetObject(value: BondProperty) {
+	func addPropertySetObject(value: ManagedBondProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.addObject(value)
 	}
@@ -168,7 +168,7 @@ extension ManagedBond {
 		:name:	removePropertySetObject
 		:description:	Removes the Property to the propertySet for the Bond.
 	*/
-	func removePropertySetObject(value: BondProperty) {
+	func removePropertySetObject(value: ManagedBondProperty) {
 		let nodes: NSMutableSet = propertySet as! NSMutableSet
 		nodes.removeObject(value)
 	}

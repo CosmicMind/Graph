@@ -135,7 +135,7 @@ public class Bond : NSObject, Comparable {
 	*/
 	public override func isEqual(object: AnyObject?) -> Bool {
 		if let rhs = object as? Bond {
-			return id == rhs.id
+			return id.isEqual(rhs.id)
 		}
 		return false
 	}

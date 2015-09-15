@@ -61,10 +61,10 @@ class EntityTests : XCTestCase, GraphDelegate {
         graph!.delegate = self
 
         // Let's watch the changes in the Graph for the following Entity values.
-        graph!.watch(Entity: "User")
-        graph!.watch(ManagedEntityGroup: "Female")
-        graph!.watch(EntityProperty: "name")
-        graph!.watch(EntityProperty: "age")
+        graph!.watch(entity: "User")
+        graph!.watch(entityGroup: "Female")
+        graph!.watch(entityProperty: "name")
+        graph!.watch(entityProperty: "age")
 
         // Create a User Entity.
         let user: Entity = Entity(type: "User")
@@ -135,19 +135,19 @@ class EntityTests : XCTestCase, GraphDelegate {
     func graphDidInsertManagedEntityGroup(graph: Graph, entity: Entity, group: String) {
         if "Female" == group {
             groupInsertExpectation?.fulfill()
-            let nodes: OrderedSet<Entity> = graph.search(ManagedEntityGroup: group)
+            let nodes: OrderedSet<Entity> = graph.search(entityGroup: group)
             if entity.id == nodes.first?.id {
                 groupSearchExpectation?.fulfill()
             }
         }
     }
 
-    func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+    func graphDidInsertManagedEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         if "name" == property && "Eve" == value as! String {
             nameInsertExpectation?.fulfill()
-            let n: OrderedSet<Entity> = graph.search(EntityProperty: property)
+            let n: OrderedSet<Entity> = graph.search(entityProperty: property)
 			if n.first?[property] as! String == value as! String {
-				let m: OrderedSet<Entity> = graph.search(EntityProperty: property, value: value as! String)
+				let m: OrderedSet<Entity> = graph.search(entityProperty: property, value: value as! String)
 				if m.first?[property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
@@ -155,9 +155,9 @@ class EntityTests : XCTestCase, GraphDelegate {
 
         } else if "age" == property && 26 == value as! Int {
             ageInsertExpectation?.fulfill()
-            let n: OrderedSet<Entity> = graph.search(EntityProperty: property)
+            let n: OrderedSet<Entity> = graph.search(entityProperty: property)
 			if  n.first?[property] as! Int == value as! Int {
-				let m: OrderedSet<Entity> = graph.search(EntityProperty: property, value: value as! Int)
+				let m: OrderedSet<Entity> = graph.search(entityProperty: property, value: value as! Int)
 				if m.first?[property] as! Int == value as! Int {
                     ageSearchExpectation?.fulfill()
                 }
@@ -165,21 +165,21 @@ class EntityTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+    func graphDidUpdateManagedEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         if "name" == property && "Daniel" == value as! String {
             nameUpdateExpectation?.fulfill()
-			let n: OrderedSet<Entity> = graph.search(EntityProperty: property)
+			let n: OrderedSet<Entity> = graph.search(entityProperty: property)
 			if n.first?[property] as! String == value as! String {
-				let m: OrderedSet<Entity> = graph.search(EntityProperty: property, value: value as! String)
+				let m: OrderedSet<Entity> = graph.search(entityProperty: property, value: value as! String)
 				if m.first?[property] as! String == value as! String {
 					nameSearchExpectation?.fulfill()
 				}
 			}
         } else if "age" == property && 31 == value as! Int {
             ageUpdateExpectation?.fulfill()
-			let n: OrderedSet<Entity> = graph.search(EntityProperty: property)
+			let n: OrderedSet<Entity> = graph.search(entityProperty: property)
 			if n.first?[property] as! Int == value as! Int {
-				let m: OrderedSet<Entity> = graph.search(EntityProperty: property, value: value as! Int)
+				let m: OrderedSet<Entity> = graph.search(entityProperty: property, value: value as! Int)
 				if m.first?[property] as! Int == value as! Int {
 					ageSearchExpectation?.fulfill()
 				}

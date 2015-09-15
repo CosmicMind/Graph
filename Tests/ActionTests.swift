@@ -79,15 +79,15 @@ class ActionTests : XCTestCase, GraphDelegate {
         graph!.delegate = self
 
         // Let's watch the changes in the Graph for the following Action values.
-        graph!.watch(Action: "Read")
-        graph!.watch(ManagedActionGroup: "Holiday")
-        graph!.watch(ActionProperty: "name")
-        graph!.watch(ActionProperty: "session")
+        graph!.watch(action: "Read")
+        graph!.watch(actionGroup: "Holiday")
+        graph!.watch(actionProperty: "name")
+        graph!.watch(actionProperty: "session")
 
         // Let's watch the changes in the Graph for the following Entity values.
-        graph!.watch(Entity: "User")
-        graph!.watch(Entity: "Book")
-        graph!.watch(Entity: "Magazine")
+        graph!.watch(entity: "User")
+        graph!.watch(entity: "Book")
+        graph!.watch(entity: "Magazine")
 
         // Create a Read Action.
         let read: Action = Action(type: "Read")
@@ -202,28 +202,28 @@ class ActionTests : XCTestCase, GraphDelegate {
     func graphDidInsertManagedActionGroup(graph: Graph, action: Action, group: String) {
         if "Holiday" == group {
             groupInsertExpectation?.fulfill()
-            let n: OrderedSet<Action> = graph.search(ManagedActionGroup: group)
+            let n: OrderedSet<Action> = graph.search(actionGroup: group)
             if action.id == n.first?.id {
                 groupSearchExpectation?.fulfill()
             }
         }
     }
 
-    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
+    func graphDidInsertManagedActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         if "name" == property && "New Years" == value as! String {
             nameInsertExpectation?.fulfill()
-            let n: OrderedSet<Action> = graph.search(ActionProperty: property)
+            let n: OrderedSet<Action> = graph.search(actionProperty: property)
             if n.first?[property] as! String == value as! String {
-                let m: OrderedSet<Action> = graph.search(ActionProperty: property, value: value as! String)
+                let m: OrderedSet<Action> = graph.search(actionProperty: property, value: value as! String)
                 if m.first?[property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
         } else if "session" == property && 123 == value as! Int {
             sessionInsertExpectation?.fulfill()
-            let n: OrderedSet<Action> = graph.search(ActionProperty: property)
+            let n: OrderedSet<Action> = graph.search(actionProperty: property)
             if n.first?[property] as! Int == value as! Int {
-                let m: OrderedSet<Action> = graph.search(ActionProperty: property, value: value as! Int)
+                let m: OrderedSet<Action> = graph.search(actionProperty: property, value: value as! Int)
                 if m.first?[property] as! Int == value as! Int {
                     sessionSearchExpectation?.fulfill()
                 }
@@ -231,21 +231,21 @@ class ActionTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
+    func graphDidUpdateManagedActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         if "name" == property && "X-MASS" == value as! String {
             nameUpdateExpectation?.fulfill()
-            let n: OrderedSet<Action> = graph.search(ActionProperty: property)
+            let n: OrderedSet<Action> = graph.search(actionProperty: property)
             if n.first?[property] as! String == value as! String {
-                let m: OrderedSet<Action> = graph.search(ActionProperty: property, value: value as! String)
+                let m: OrderedSet<Action> = graph.search(actionProperty: property, value: value as! String)
                 if m.first?[property] as! String == value as! String {
                     nameSearchExpectation?.fulfill()
                 }
             }
         } else if "session" == property && 456 == value as! Int {
             sessionUpdateExpectation?.fulfill()
-            let n: OrderedSet<Action> = graph.search(ActionProperty: property)
+            let n: OrderedSet<Action> = graph.search(actionProperty: property)
             if n.first?[property] as! Int == value as! Int {
-                let m: OrderedSet<Action> = graph.search(ActionProperty: property, value: value as! Int)
+                let m: OrderedSet<Action> = graph.search(actionProperty: property, value: value as! Int)
                 if m.first?[property] as! Int == value as! Int {
                     sessionSearchExpectation?.fulfill()
                 }

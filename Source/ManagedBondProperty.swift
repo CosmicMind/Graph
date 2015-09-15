@@ -20,8 +20,8 @@
 
 import CoreData
 
-@objc(BondProperty)
-internal class BondProperty : NSManagedObject {
+@objc(ManagedBondProperty)
+internal class ManagedBondProperty : NSManagedObject {
 	@NSManaged internal var name: String
 	@NSManaged internal var object: AnyObject
 	@NSManaged internal var node: ManagedBond

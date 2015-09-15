@@ -42,17 +42,15 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Action values.
-		graph?.watch(Action: "A")
-		graph?.watch(ActionProperty: "active")
+		graph?.watch(action: "A")
+		graph?.watch(actionProperty: "active")
 		
-		XCTAssertTrue(0 == graph?.search(ActionProperty: "active").count, "Test failed.")
+		XCTAssertTrue(0 == graph?.search(actionProperty: "active").count, "Test failed.")
 		
 		let a1: Action = Action(type: "A")
 		a1["active"] = true
 		
-		let a2: Action? = graph?.search(ActionProperty: "active").last
-		print(a1)
-		print(a2)
+		let a2: Action? = graph?.search(actionProperty: "active").last
 		XCTAssertTrue(a1 == a2, "Test failed.")
 		
 		expectation = expectationWithDescription("Action: Insert did not pass.")
@@ -66,7 +64,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertAction(graph: Graph, action: Action) {
-		let a2: Action? = graph.search(ActionProperty: "active").last
+		let a2: Action? = graph.search(actionProperty: "active").last
 		if action == a2 {
 			expectation?.fulfill()
 			
@@ -81,14 +79,14 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidDeleteAction(graph: Graph, action: Action) {
-		let a2: Action? = graph.search(ActionProperty: "active").last
+		let a2: Action? = graph.search(actionProperty: "active").last
 		if nil == a2 {
 			expectation?.fulfill()
-			XCTAssertTrue(0 == graph.search(ActionProperty: "active").count, "Test failed.")
+			XCTAssertTrue(0 == graph.search(actionProperty: "active").count, "Test failed.")
 		}
 	}
 	
-	func graphDidUpdateActionProperty(graph: Graph, action: Action,property: String, value: AnyObject){
+	func graphDidUpdateManagedActionProperty(graph: Graph, action: Action,property: String, value: AnyObject){
 		if value as! Bool == action["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
 			
@@ -98,7 +96,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			}
 			
-			XCTAssertTrue(0 == graph.search(ActionProperty: "active").count, "Test failed.")
+			XCTAssertTrue(0 == graph.search(actionProperty: "active").count, "Test failed.")
 			
 			expectation = expectationWithDescription("Action: Delete did not pass.")
 			
