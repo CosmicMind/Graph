@@ -29,7 +29,7 @@ internal class ManagedBond : ManagedNode {
 		:name:	init
 		:description:	Initializes the Model Object with e a given type.
 	*/
-	convenience internal init(type: String!) {
+	internal convenience init(type: String!) {
 		let g: Graph = Graph()
 		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.bondDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)

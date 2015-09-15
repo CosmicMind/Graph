@@ -38,8 +38,8 @@ internal class GraphObject : NSManagedObject {
 	}
 	
 	/**
-	:name:	delete
-	:description:	Marks the Model Object to be deleted from the Graph.
+		:name:	delete
+		:description:	Marks the Model Object to be deleted from the Graph.
 	*/
 	internal func delete() {
 		worker?.deleteObject(self)
