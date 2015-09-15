@@ -137,15 +137,8 @@ public class JSON : Equatable, CustomStringConvertible {
 		- returns:	String
 	*/
 	public var description: String {
-		var error: NSError?
-		var stringified: String?
-		do {
-			stringified = try JSON.stringify(value)
-		} catch let e as NSError {
-			error = e
-			stringified = nil
-		}
-		return nil == error && nil != stringified ? stringified! : "{}"
+		let stringified: String? = try? JSON.stringify(value)
+		return nil == stringified ? "{}" : stringified!
 	}
 	
 	/**
