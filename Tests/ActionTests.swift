@@ -199,7 +199,7 @@ class ActionTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidInsertManagedActionGroup(graph: Graph, action: Action, group: String) {
+    func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
         if "Holiday" == group {
             groupInsertExpectation?.fulfill()
             let n: OrderedSet<Action> = graph.search(actionGroup: group)
@@ -209,7 +209,7 @@ class ActionTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidInsertManagedActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
+    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         if "name" == property && "New Years" == value as! String {
             nameInsertExpectation?.fulfill()
             let n: OrderedSet<Action> = graph.search(actionProperty: property)
@@ -231,7 +231,7 @@ class ActionTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidUpdateManagedActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
+    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         if "name" == property && "X-MASS" == value as! String {
             nameUpdateExpectation?.fulfill()
             let n: OrderedSet<Action> = graph.search(actionProperty: property)

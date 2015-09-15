@@ -165,7 +165,7 @@ class BondTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidInsertManagedBondGroup(graph: Graph, bond: Bond, group: String) {
+    func graphDidInsertBondGroup(graph: Graph, bond: Bond, group: String) {
         if "Close" == group {
             groupInsertExpectation?.fulfill()
             let n: OrderedSet<Bond> = graph.search(bondGroup: group)
@@ -175,7 +175,7 @@ class BondTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidInsertManagedBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject){
+    func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject){
         if "permission" == property && "edit" == value as! String {
             permissionInsertExpectation?.fulfill()
             let n: OrderedSet<Bond> = graph.search(bondProperty: property)
@@ -198,7 +198,7 @@ class BondTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidUpdateManagedBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
+    func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
         if "permission" == property && "read" == value as! String {
             permissionUpdateExpectation?.fulfill()
             let n: OrderedSet<Bond> = graph.search(bondProperty: property)

@@ -87,7 +87,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		}
 	}
 	
-	func graphDidUpdateManagedEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
 		let _: Entity? = graph.search(entityProperty: "active").last
 		if value as! Bool == entity["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()

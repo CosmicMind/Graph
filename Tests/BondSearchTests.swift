@@ -88,7 +88,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		}
 	}
 	
-	func graphDidUpdateManagedBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
+	func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
 		if value as! Bool == bond["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
 			

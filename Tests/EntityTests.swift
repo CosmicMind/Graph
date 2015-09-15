@@ -132,7 +132,7 @@ class EntityTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidInsertManagedEntityGroup(graph: Graph, entity: Entity, group: String) {
+    func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
         if "Female" == group {
             groupInsertExpectation?.fulfill()
             let nodes: OrderedSet<Entity> = graph.search(entityGroup: group)
@@ -142,7 +142,7 @@ class EntityTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidInsertManagedEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+    func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         if "name" == property && "Eve" == value as! String {
             nameInsertExpectation?.fulfill()
             let n: OrderedSet<Entity> = graph.search(entityProperty: property)
@@ -165,7 +165,7 @@ class EntityTests : XCTestCase, GraphDelegate {
         }
     }
 
-    func graphDidUpdateManagedEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+    func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         if "name" == property && "Daniel" == value as! String {
             nameUpdateExpectation?.fulfill()
 			let n: OrderedSet<Entity> = graph.search(entityProperty: property)

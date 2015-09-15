@@ -64,7 +64,10 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertAction(graph: Graph, action: Action) {
+		print(action)
+		print(graph.search(actionProperty: "active"))
 		let a2: Action? = graph.search(actionProperty: "active").last
+		print(action == a2)
 		if action == a2 {
 			expectation?.fulfill()
 			
@@ -86,7 +89,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		}
 	}
 	
-	func graphDidUpdateManagedActionProperty(graph: Graph, action: Action,property: String, value: AnyObject){
+	func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
 		if value as! Bool == action["active"] as! Bool && false == value as! Bool {
 			expectation?.fulfill()
 			
