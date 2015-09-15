@@ -31,47 +31,27 @@ class JSONTests: XCTestCase {
 	}
 	
 	func testParse() {
-		let dict: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
+		let dict: Dictionary<String, AnyObject> = ["user": ["username": "daniel", "password": "abc123", "token": 123456789]]
 		
-		var data: NSData?
-		do {
-			 data = try JSON.serialize(dict)
-		} catch {}
+		let data: NSData? = try? JSON.serialize(dict)
 		XCTAssert(nil != data, "Test failed.")
 		
-		var j1: JSON?
-		do {
-			j1 = try JSON.parse(data!)
-		} catch {}
+		let j1: JSON? = try? JSON.parse(data!)
 		XCTAssert(nil != j1, "Test failed.")
 		
-		XCTAssert(nil != j1, "Test failed.")
-		XCTAssert("username" == j1!["user"]?.stringValue, "Test failed.")
-		XCTAssert("password" == j1!["password"]?.stringValue, "Test failed.")
-		XCTAssert(123456789 == j1!["token"]?.integerValue, "Test failed.")
+		XCTAssert("daniel" == j1!["user"]?["username"]?.stringValue, "Test failed.")
+		XCTAssert("abc123" == j1!["user"]?["password"]?.stringValue, "Test failed.")
+		XCTAssert(123456789 == j1!["user"]?["token"]?.integerValue, "Test failed.")
 	}
 	
 	func testStringify() {
-		let dict: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
+		let dict: Dictionary<String, AnyObject> = ["user": ["username": "daniel", "password": "abc123", "token": 123456789]]
 		
-		var stringified: String?
-		do {
-			stringified = try JSON.stringify(dict)
-		} catch {
-			XCTAssert(false, "Test failed.")
-		}
-		
-		var j1: JSON?
-		do {
-			j1 = try JSON.parse(stringified!)
-		} catch {}
-		
+		let stringified: String? = try? JSON.stringify(dict)
+		let j1: JSON? = try? JSON.parse(stringified!)
 		XCTAssert(nil != j1, "Test failed.")
-		XCTAssert("username" == j1!["user"]?.stringValue, "Test failed.")
-		XCTAssert("password" == j1!["password"]?.stringValue, "Test failed.")
-		XCTAssert(123456789 == j1!["token"]?.integerValue, "Test failed.")
 		
-		XCTAssert("{\"token\":123456789,\"user\":\"username\",\"password\":\"password\"}" == stringified, "Test failed.")
+		XCTAssert("{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}" == stringified, "Test failed.")
 	}
 	
 	func testEquatable() {

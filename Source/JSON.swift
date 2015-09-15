@@ -20,6 +20,17 @@ import Foundation
 
 public class JSON : Equatable, CustomStringConvertible {
 	/**
+		:name:	description
+		:description:	Conforms to the Printable Protocol. Outputs the
+		data in the OrderedSet in a readable format.
+		- returns:	String
+	*/
+	public var description: String {
+		let s: String? = try? JSON.stringify(value)
+		return nil == s ? "{}" : s!
+	}
+	
+	/**
 		:name:	value
 		:description:	The internal value for
 		the JSON obejct.
@@ -54,11 +65,7 @@ public class JSON : Equatable, CustomStringConvertible {
 		- returns:	NSData?
 	*/
 	public var dataValue: NSData? {
-		do {
-			return try JSON.serialize(value)
-		} catch _ {
-			return nil
-		}
+		return try? JSON.serialize(value)
 	}
 	
 	/**
@@ -67,7 +74,7 @@ public class JSON : Equatable, CustomStringConvertible {
 		- returns:	JSON?
 	*/
 	public class func parse(data: NSData) throws -> JSON {
-		var error: NSError? = nil
+		var error: NSError?
 		do {
 			let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
 			return JSON(value: json)
@@ -80,16 +87,15 @@ public class JSON : Equatable, CustomStringConvertible {
 	/**
 		:name:	parse
 		:description:	Parse a JSON block.
-		- returns:	JSON?
+		- returns:	JSON
 	*/
 	public class func parse(json: String) throws -> JSON {
-		var error: NSError? = nil
+		var error: NSError?
 		do {
 			if let data: NSData = NSString(string: json).dataUsingEncoding(NSUTF8StringEncoding) {
 				return try parse(data)
 			}
-		}
-		catch let e as NSError {
+		} catch let e as NSError {
 			error = e
 		}
 		throw error!
@@ -129,18 +135,7 @@ public class JSON : Equatable, CustomStringConvertible {
 	public init(value: AnyObject) {
 		self.value = value
 	}
-	
-	/**
-		:name:	description
-		:description:	Conforms to the Printable Protocol. Outputs the
-		data in the OrderedSet in a readable format.
-		- returns:	String
-	*/
-	public var description: String {
-		let stringified: String? = try? JSON.stringify(value)
-		return nil == stringified ? "{}" : stringified!
-	}
-	
+
 	/**
 		:name:	operator [0...count - 1]
 		:description:	Allows array like access of the index.
@@ -171,10 +166,7 @@ public class JSON : Equatable, CustomStringConvertible {
 }
 
 public func ==(lhs: JSON, rhs: JSON) -> Bool {
-	do {
-		let l: String? = try JSON.stringify(lhs.value)
-		let r: String? = try JSON.stringify(rhs.value)
-		return l == r
-	} catch {}
-	return false
+	let l: String? = try? JSON.stringify(lhs.value)
+	let r: String? = try? JSON.stringify(rhs.value)
+	return l == r
 }
