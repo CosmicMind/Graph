@@ -45,8 +45,8 @@ public class Action : NSObject, Comparable {
 		for v in objects {
 			o.append(v.json.object)
 		}
-		j["subjects"] = JSON(object: s)
-		j["objects"] = JSON(object: o)
+		j["subjects"] = JSON(s)
+		j["objects"] = JSON(o)
 		return j
 	}
 	

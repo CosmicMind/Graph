@@ -40,19 +40,13 @@ internal class Node <Type : ManagedNode> : NSObject {
 		var p: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
 		for (k, v) in properties {
 			switch v {
-			case is Int:
-				p[k] = v
-			case is Double:
-				p[k] = v
-			case is Float:
-				p[k] = v
-			case is String:
-				p[k] = v
-			case is Bool:
-				p[k] = v
-			case is Array<AnyObject>:
-				p[k] = v
-			case is Dictionary<String, AnyObject>:
+			case is Int,
+				 is Double,
+				 is Float,
+				 is String,
+				 is Bool,
+				 is Array<AnyObject>,
+				 is Dictionary<String, AnyObject>:
 				p[k] = v
 			default:
 				p[k] = String(stringInterpolationSegment: v)

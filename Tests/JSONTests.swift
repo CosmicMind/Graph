@@ -50,29 +50,27 @@ class JSONTests: XCTestCase {
 	}
 	
 	func testEquatable() {
-		let j1: JSON = JSON(object: ["user": "username", "password": "password", "token": 123456789])
-		let j2: JSON = JSON(object: ["password": "password", "token": 123456789, "user": "username"])
-		let j3: JSON = JSON(object: ["email": "email", "age": 21])
+		let j1: JSON = JSON(["user": "username", "password": "password", "token": 123456789])
+		let j2: JSON = JSON(["password": "password", "token": 123456789, "user": "username"])
+		let j3: JSON = JSON(["email": "email", "age": 21])
 		
 		XCTAssert(j1 == j2, "Test failed.")
 		XCTAssert(j1 != j3, "Test failed.")
 	}
 	
 	func testManipulations() {
-		let j1: JSON = JSON(object: ["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
+		let j1: JSON = JSON(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
 		XCTAssert("daniel" == j1["user"]?["username"]?.string, "Test failed.")
 		XCTAssert("abc123" == j1["user"]?["password"]?.string, "Test failed.")
 		XCTAssert(123456789 == j1["user"]?["token"]?.int, "Test failed.")
-		j1["key1"] = JSON(object: 123)
+		j1["key1"] = 123
 		XCTAssert(j1["key1"]?.int == 123, "Test failed.")
 		
-		let j2: JSON = JSON(object: [456, "Daniel"])
+		let j2: JSON = JSON([456, "Hello"])
 		XCTAssert(j2[0]?.int == 456, "Test failed.")
-		XCTAssert(j2[1]?.string == "Daniel", "Test failed.")
-		j2.append("Hello")
-		XCTAssert(j2[2]?.string == "Hello", "Test failed.")
-		j2[2] = JSON(object: "World")
-		XCTAssert(j2[2]?.string == "World", "Test failed.")
+		XCTAssert(j2[1]?.string == "Hello", "Test failed.")
+		j2[1] = JSON("World")
+		XCTAssert(j2[1]?.string == "World", "Test failed.")
 	}
 	
 	func testPerformance() {

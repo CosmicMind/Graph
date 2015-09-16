@@ -91,9 +91,9 @@ public class JSON : Equatable, CustomStringConvertible {
 	/**
 		:name:	parse
 	*/
-	public class func parse(data: NSData) -> JSON? {
-		if let object: AnyObject = try? NSJSONSerialization.JSONObjectWithData(data, options: []) {
-			return JSON(object: object)
+	public class func parse(data: NSData, options: NSJSONReadingOptions = .AllowFragments) -> JSON? {
+		if let object: AnyObject = try? NSJSONSerialization.JSONObjectWithData(data, options: options) {
+			return JSON(object)
 		}
 		return nil
 	}
@@ -120,8 +120,8 @@ public class JSON : Equatable, CustomStringConvertible {
 	*/
 	public class func stringify(object: AnyObject) -> String? {
 		if let data: NSData = JSON.serialize(object) {
-			if let object: String = NSString(data: data, encoding: NSUTF8StringEncoding) as? String {
-				return object
+			if let o: String = NSString(data: data, encoding: NSUTF8StringEncoding) as? String {
+				return o
 			}
 		}
 		return nil
@@ -130,52 +130,82 @@ public class JSON : Equatable, CustomStringConvertible {
 	/**
 		:name:	stringify
 	*/
-	public class func stringify(json: JSON) -> String? {
-		return stringify(json.object)
+	public class func stringify(object: JSON) -> String? {
+		return stringify(object.object)
 	}
 	
 	/**
 		:name:	init
 	*/
-	public init(object: AnyObject) {
+	public required init(_ object: AnyObject) {
 		self.object = object
 	}
 	
 	/**
 		:name:	init
 	*/
-	public init(object: JSON) {
+	public init(_ object: JSON) {
 		self.object = object.object
 	}
 	
 	/**
-		:name:	append
+		:name:	init
 	*/
-	public func append(value: AnyObject) {
-		if var item: Array<AnyObject> = array {
-			if let v: AnyObject = value {
-				item.append(v)
+	public init(_ object: Array<AnyObject>) {
+		self.object = object
+	}
+	
+	/**
+		:name:	init
+	*/
+	public init(_ object: Dictionary<String, AnyObject>) {
+		self.object = object
+	}
+	
+	/**
+		:name:	operator [0...count - 1]
+	*/
+	public subscript(index: Int) -> AnyObject? {
+		get { return nil }
+		set(value) {
+			if var item: Array<AnyObject> = array {
+				if let o: JSON = value as? JSON {
+					item[index] = o.object
+				} else if nil == value {
+					item.removeAtIndex(index)
+				} else {
+					item[index] = value!
+				}
 				object = item as AnyObject
 			}
 		}
 	}
-
+	
 	/**
 		:name:	operator [0...count - 1]
 	*/
 	public subscript(index: Int) -> JSON? {
 		get {
 			if let item: Array<AnyObject> = array {
-				return JSON(object: item[index])
+				return JSON(item[index])
 			}
 			return nil
 		}
+	}
+	
+	/**
+		:name:	operator [key 1...key n]
+	*/
+	public subscript(key: String) -> AnyObject? {
+		get { return nil }
 		set(value) {
-			if var item: Array<AnyObject> = array {
-				if let v: JSON = value {
-					item[index] = v.object
-					object = item as AnyObject
+			if var item: Dictionary<String, AnyObject> = dictionary {
+				if let o: JSON = value as? JSON {
+					item[key] = o.object
+				} else {
+					item[key] = value
 				}
+				object = item as AnyObject
 			}
 		}
 	}
@@ -187,16 +217,10 @@ public class JSON : Equatable, CustomStringConvertible {
 		get {
 			if let item: Dictionary<String, AnyObject> = dictionary {
 				if nil != item[key] {
-					return JSON(object: item[key]!)
+					return JSON(item[key]!)
 				}
 			}
 			return nil
-		}
-		set(value) {
-			if var item: Dictionary<String, AnyObject> = dictionary {
-				item[key] = value?.object
-				object = item as AnyObject
-			}
 		}
 	}
 }
