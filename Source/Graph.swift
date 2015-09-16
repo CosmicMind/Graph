@@ -940,10 +940,6 @@ public class Graph : NSObject {
 			do {
 				let documentsDirectory: String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
 				try NSFileManager.defaultManager().createDirectoryAtPath(documentsDirectory, withIntermediateDirectories: true, attributes: nil)
-				
-				let storePath: String = documentsDirectory + "/" + GraphUtility.storeName
-				NSFileManager.defaultManager().createFileAtPath(storePath, contents: nil, attributes: nil)
-				
 				let url: NSURL = NSURL.fileURLWithPath(documentsDirectory + "/" + GraphUtility.storeName, isDirectory: false)
 				let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
 				do {
