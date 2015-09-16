@@ -23,14 +23,24 @@ public class JSON : Equatable, CustomStringConvertible {
 		:name:	array
 	*/
 	public var array: Array<AnyObject>? {
-		return object as? Array<AnyObject>
+		get {
+			return object as? Array<AnyObject>
+		}
+		set(value) {
+			object = value!
+		}
 	}
 	
 	/**
 		:name:	dictionary
 	*/
 	public var dictionary: Dictionary<String, AnyObject>? {
-		return object as? Dictionary<String, AnyObject>
+		get {
+			return object as? Dictionary<String, AnyObject>
+		}
+		set(value) {
+			object = value!
+		}
 	}
 	
 	/**
@@ -119,7 +129,9 @@ public class JSON : Equatable, CustomStringConvertible {
 		:name:	stringify
 	*/
 	public class func stringify(object: AnyObject) -> String? {
-		if let data: NSData = JSON.serialize(object) {
+		if let o: JSON = object as? JSON {
+			return stringify(o.object)
+		} else if let data: NSData = JSON.serialize(object) {
 			if let o: String = NSString(data: data, encoding: NSUTF8StringEncoding) as? String {
 				return o
 			}
@@ -128,38 +140,14 @@ public class JSON : Equatable, CustomStringConvertible {
 	}
 	
 	/**
-		:name:	stringify
-	*/
-	public class func stringify(object: JSON) -> String? {
-		return stringify(object.object)
-	}
-	
-	/**
 		:name:	init
 	*/
 	public required init(_ object: AnyObject) {
-		self.object = object
-	}
-	
-	/**
-		:name:	init
-	*/
-	public init(_ object: JSON) {
-		self.object = object.object
-	}
-	
-	/**
-		:name:	init
-	*/
-	public init(_ object: Array<AnyObject>) {
-		self.object = object
-	}
-	
-	/**
-		:name:	init
-	*/
-	public init(_ object: Dictionary<String, AnyObject>) {
-		self.object = object
+		if let o: JSON = object as? JSON {
+			self.object = o.object
+		} else {
+			self.object = object
+		}
 	}
 	
 	/**

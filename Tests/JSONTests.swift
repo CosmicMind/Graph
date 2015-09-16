@@ -69,8 +69,11 @@ class JSONTests: XCTestCase {
 		let j2: JSON = JSON([456, "Hello"])
 		XCTAssert(j2[0]?.int == 456, "Test failed.")
 		XCTAssert(j2[1]?.string == "Hello", "Test failed.")
-		j2[1] = JSON("World")
+		j2.array?.append(123)
+		j2[1] = "World"
 		XCTAssert(j2[1]?.string == "World", "Test failed.")
+		j2[1] = nil
+		XCTAssert(j2[1]?.string == nil, "Test failed.")
 	}
 	
 	func testPerformance() {
