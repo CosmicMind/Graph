@@ -26,39 +26,39 @@ internal class Node <Type : ManagedNode> : NSObject {
 	//
 	internal let object: Type
 	
-	/**
-		:name:	nodeClass
-	*/
+	//
+	//	:name:	nodeClass
+	//
 	internal var nodeClass: String {
 		return object.nodeClass
 	}
 	
-	/**
-		:name:	type
-	*/
+	//
+	//	:name:	type
+	//
 	internal var type: String {
 		return object.type
 	}
 	
-	/**
-		:name:	id
-	*/
+	//
+	//	:name:	id
+	//
 	internal var id: String {
 		let nodeURL: NSURL = object.objectID.URIRepresentation()
 		let oID: String = nodeURL.lastPathComponent!
 		return nodeClass + type + oID
 	}
 	
-	/**
-		:name:	createdDate
-	*/
+	//
+	//	:name:	createdDate
+	//
 	internal var createdDate: NSDate {
 		return object.createdDate
 	}
 	
-	/**
-		:name:	groups
-	*/
+	//
+	//	:name:	groups
+	//
 	internal var groups: OrderedSet<String> {
 		let groups: OrderedSet<String> = OrderedSet<String>()
 		for group in object.groupSet {
@@ -68,9 +68,9 @@ internal class Node <Type : ManagedNode> : NSObject {
 		return groups
 	}
 	
-	/**
-		:name:	properties
-	*/
+	//
+	//	:name:	properties
+	//
 	internal var properties: Dictionary<String, AnyObject> {
 		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
 		for property in object.propertySet {

@@ -37,10 +37,9 @@ internal class GraphObject : NSManagedObject {
 		return context
 	}
 	
-	/**
-		:name:	delete
-		:description:	Marks the Model Object to be deleted from the Graph.
-	*/
+	//
+	//	:name:	delete
+	//
 	internal func delete() {
 		worker?.deleteObject(self)
 	}
