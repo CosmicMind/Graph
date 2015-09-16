@@ -21,28 +21,19 @@ import Foundation
 public class JSON : Equatable, CustomStringConvertible {
 	/**
 		:name:	description
-		:description:	Conforms to the Printable Protocol. Outputs the
-		data in the OrderedSet in a readable format.
-		- returns:	String
 	*/
 	public var description: String {
-		let s: String? = try? JSON.stringify(value)
+		let s: String? = JSON.stringify(value)
 		return nil == s ? "{}" : s!
 	}
 	
 	/**
 		:name:	value
-		:description:	The internal value for
-		the JSON obejct.
-		- returns:	AnyObject
 	*/
 	public private(set) var value: AnyObject
 	
 	/**
 		:name:	stringValue
-		:description:	A string representation of
-		the JSON value.
-		- returns:	String?
 	*/
 	public var stringValue: String? {
 		return value as? String
@@ -50,9 +41,6 @@ public class JSON : Equatable, CustomStringConvertible {
 	
 	/**
 		:name:	integerValue
-		:description:	An integer prepresentation
-		of the JSON value.
-		- returns:	Int?
 	*/
 	public var integerValue: Int? {
 		return value as? Int
@@ -60,77 +48,52 @@ public class JSON : Equatable, CustomStringConvertible {
 	
 	/**
 		:name:	dataValue
-		:description:	A serialized version of the
-		JSON value.
-		- returns:	NSData?
 	*/
 	public var dataValue: NSData? {
-		return try? JSON.serialize(value)
+		return JSON.serialize(value)
 	}
 	
 	/**
 		:name:	parse
-		:description:	Parse a JSON block.
-		- returns:	JSON?
 	*/
-	public class func parse(data: NSData) throws -> JSON {
-		var error: NSError?
-		do {
-			let json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
-			return JSON(value: json)
-		} catch let e as NSError {
-			error = e
+	public class func parse(data: NSData) -> JSON? {
+		if let value: AnyObject = try? NSJSONSerialization.JSONObjectWithData(data, options: []) {
+			return JSON(value: value)
 		}
-		throw error!
+		return nil
 	}
 	
 	/**
 		:name:	parse
-		:description:	Parse a JSON block.
-		- returns:	JSON
 	*/
-	public class func parse(json: String) throws -> JSON {
-		var error: NSError?
-		do {
-			if let data: NSData = NSString(string: json).dataUsingEncoding(NSUTF8StringEncoding) {
-				return try parse(data)
-			}
-		} catch let e as NSError {
-			error = e
+	public class func parse(json: String) -> JSON? {
+		if let data: NSData = NSString(string: json).dataUsingEncoding(NSUTF8StringEncoding) {
+			return parse(data)
 		}
-		throw error!
+		return nil
 	}
 	
 	/**
 		:name:	serialize
-		:description:	Serialize an object.
-		- returns:	NSData?
 	*/
-	public class func serialize(object: AnyObject) throws -> NSData {
-		return try NSJSONSerialization.dataWithJSONObject(object, options: [])
+	public class func serialize(object: AnyObject) -> NSData? {
+		return try? NSJSONSerialization.dataWithJSONObject(object, options: [])
 	}
 	
 	/**
 		:name:	stringify
-		:description:	Stringify an object.
-		:Returns:	String?
 	*/
-	public class func stringify(object: AnyObject) throws -> String {
-		var error: NSError?
-		do {
-			let data: NSData = try JSON.serialize(object)
-			if let value = NSString(data: data, encoding: NSUTF8StringEncoding) as? String {
+	public class func stringify(object: AnyObject) -> String? {
+		if let data: NSData = JSON.serialize(object) {
+			if let value: String = NSString(data: data, encoding: NSUTF8StringEncoding) as? String {
 				return value
 			}
-		} catch let e as NSError {
-			error = e
 		}
-		throw error!
+		return nil
 	}
 	
 	/**
 		:name:	init
-		:description:	Constructor.
 	*/
 	public init(value: AnyObject) {
 		self.value = value
@@ -138,8 +101,6 @@ public class JSON : Equatable, CustomStringConvertible {
 
 	/**
 		:name:	operator [0...count - 1]
-		:description:	Allows array like access of the index.
-		- returns:	JSON?
 	*/
 	public subscript(index: Int) -> JSON? {
 		if let item: Array<AnyObject> = value as? Array<AnyObject> {
@@ -150,10 +111,6 @@ public class JSON : Equatable, CustomStringConvertible {
 	
 	/**
 		:name:	operator [key 1...key n]
-		:description:	Property key mapping. If the key type is a
-		String, this feature allows access like a
-		Dictionary.
-		- returns:	JSON?
 	*/
 	public subscript(key: String) -> JSON? {
 		if let item: Dictionary<String, AnyObject> = value as? Dictionary<String, AnyObject> {
@@ -166,7 +123,5 @@ public class JSON : Equatable, CustomStringConvertible {
 }
 
 public func ==(lhs: JSON, rhs: JSON) -> Bool {
-	let l: String? = try? JSON.stringify(lhs.value)
-	let r: String? = try? JSON.stringify(rhs.value)
-	return l == r
+	return JSON.stringify(lhs.value)! == JSON.stringify(rhs.value)!
 }

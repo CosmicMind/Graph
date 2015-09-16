@@ -33,10 +33,10 @@ class JSONTests: XCTestCase {
 	func testParse() {
 		let dict: Dictionary<String, AnyObject> = ["user": ["username": "daniel", "password": "abc123", "token": 123456789]]
 		
-		let data: NSData? = try? JSON.serialize(dict)
+		let data: NSData? = JSON.serialize(dict)
 		XCTAssert(nil != data, "Test failed.")
 		
-		let j1: JSON? = try? JSON.parse(data!)
+		let j1: JSON? = JSON.parse(data!)
 		XCTAssert(nil != j1, "Test failed.")
 		
 		XCTAssert("daniel" == j1!["user"]?["username"]?.stringValue, "Test failed.")
@@ -47,8 +47,8 @@ class JSONTests: XCTestCase {
 	func testStringify() {
 		let dict: Dictionary<String, AnyObject> = ["user": ["username": "daniel", "password": "abc123", "token": 123456789]]
 		
-		let stringified: String? = try? JSON.stringify(dict)
-		let j1: JSON? = try? JSON.parse(stringified!)
+		let stringified: String? = JSON.stringify(dict)
+		let j1: JSON? = JSON.parse(stringified!)
 		XCTAssert(nil != j1, "Test failed.")
 		
 		XCTAssert("{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}" == stringified, "Test failed.")
@@ -56,11 +56,12 @@ class JSONTests: XCTestCase {
 	
 	func testEquatable() {
 		let v1: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
-		let v2: Dictionary<String, AnyObject> = ["email": "email", "age": 21]
+		let v2: Dictionary<String, AnyObject> = ["password": "password", "token": 123456789, "user": "username"]
+		let v3: Dictionary<String, AnyObject> = ["email": "email", "age": 21]
 		
 		let j1: JSON = JSON(value: v1)
-		let j2: JSON = JSON(value: v1)
-		let j3: JSON = JSON(value: v2)
+		let j2: JSON = JSON(value: v2)
+		let j3: JSON = JSON(value: v3)
 		
 		XCTAssert(j1 == j2, "Test failed.")
 		XCTAssert(j1 != j3, "Test failed.")
