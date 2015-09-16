@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		657FEDAA1BA8F844004D7504 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657FEDA91BA8F844004D7504 /* Node.swift */; };
+		657FEDAB1BA8F844004D7504 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657FEDA91BA8F844004D7504 /* Node.swift */; };
 		9677B4431BA78A9200C82BBB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4391BA78A9200C82BBB /* GraphKit.framework */; };
 		9677B45F1BA78AA600C82BBB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4551BA78AA600C82BBB /* GraphKit.framework */; };
 		9677B46C1BA78B6200C82BBB /* Probability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -209,6 +211,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		657FEDA91BA8F844004D7504 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		9677B4391BA78A9200C82BBB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B4421BA78A9200C82BBB /* GraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B4551BA78AA600C82BBB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -317,6 +320,7 @@
 			children = (
 				96D4E4FB1BA76FC400672E38 /* Graph.swift */,
 				96E22D531BA8DE590050BB5F /* GraphObject.swift */,
+				657FEDA91BA8F844004D7504 /* Node.swift */,
 				96E22D4A1BA8CC7E0050BB5F /* ManagedNode.swift */,
 				96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */,
 				96E22D4D1BA8D0650050BB5F /* ManagedNodeProperty.swift */,
@@ -703,6 +707,7 @@
 				9677B5021BA78E1500C82BBB /* JSON.swift in Sources */,
 				9677B5031BA78E1500C82BBB /* RedBlackTree.swift in Sources */,
 				9677B5041BA78E1500C82BBB /* RedBlackNode.swift in Sources */,
+				657FEDAB1BA8F844004D7504 /* Node.swift in Sources */,
 				9677B5051BA78E1500C82BBB /* OrderedSet.swift in Sources */,
 				9677B5061BA78E1500C82BBB /* OrderedMultiSet.swift in Sources */,
 				9677B5071BA78E1500C82BBB /* OrderedDictionary.swift in Sources */,
@@ -777,6 +782,7 @@
 				9677B4E41BA78DEF00C82BBB /* JSON.swift in Sources */,
 				9677B4E51BA78DEF00C82BBB /* RedBlackTree.swift in Sources */,
 				9677B4E61BA78DEF00C82BBB /* RedBlackNode.swift in Sources */,
+				657FEDAA1BA8F844004D7504 /* Node.swift in Sources */,
 				9677B4E71BA78DEF00C82BBB /* OrderedSet.swift in Sources */,
 				9677B4E81BA78DEF00C82BBB /* OrderedMultiSet.swift in Sources */,
 				9677B4E91BA78DEF00C82BBB /* OrderedDictionary.swift in Sources */,

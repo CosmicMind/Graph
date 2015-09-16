@@ -26,7 +26,6 @@ internal class ManagedEntityProperty : ManagedNodeProperty {
 
 	/**
 		:name:	init
-		:description:	Initializer for the Model Object.
 	*/
 	internal convenience init(name: String, object: AnyObject) {
 		let g: Graph = Graph()

@@ -20,7 +20,10 @@ import Foundation
 
 @objc(Entity)
 public class Entity : NSObject, Comparable {
-	internal let node: ManagedEntity
+	//
+	//	:name:	node
+	//
+	internal let node: Node<ManagedEntity>
 	
 	/**
 		:name:	description
@@ -31,7 +34,6 @@ public class Entity : NSObject, Comparable {
 	
 	/**
 		:name:	nodeClass
-		:description:	Retrieves the nodeClass for the Model Object that is wrapped internally.
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
@@ -39,7 +41,6 @@ public class Entity : NSObject, Comparable {
 
 	/**
 		:name:	type
-		:description:	Retrieves the type for the Model Object that is wrapped internally.
 	*/
 	public var type: String {
 		return node.type
@@ -47,17 +48,13 @@ public class Entity : NSObject, Comparable {
 
 	/**
 		:name:	id
-		:description:	Retrieves the ID for the Model Object that is wrapped internally.
 	*/
 	public var id: String {
-		let nodeURL: NSURL = node.objectID.URIRepresentation()
-		let oID: String = nodeURL.lastPathComponent!
-		return nodeClass + type + oID
+		return node.id
 	}
 
 	/**
 		:name:	createdDate
-		:description:	Retrieves the date the Model Object was created.
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
@@ -65,46 +62,32 @@ public class Entity : NSObject, Comparable {
 
 	/**
 		:name:	groups
-		:description:	Retrieves the Groups the Entity is a part of.
 	*/
 	public var groups: OrderedSet<String> {
-		let groups: OrderedSet<String> = OrderedSet<String>()
-		for group in node.groupSet {
-			let name: String = group.name
-			groups.insert(name)
-		}
-		return groups
+		return node.groups
 	}
 	
 	/**
 		:name:	properties
-		:description:	Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
 	*/
 	public subscript(name: String) -> AnyObject? {
 		get {
-			return node[name]
+			return node.object[name]
 		}
 		set(value) {
-			node[name] = value
+			node.object[name] = value
 		}
 	}
 
 	/**
 		:name:	properties
-		:description:	Retrieves the Properties the Node is a part of.
 	*/
 	public var properties: Dictionary<String, AnyObject> {
-		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-		for property in node.propertySet {
-			properties[property.name] = property.object
-		}
-		return properties
+		return node.properties
 	}
 
 	/**
     	:name:	actions
-    	:description:	Retrieves an OrderedSet<Action> of Action objects. Where the key
-		is the type of Action and the value is the Action instance.
     */
     public var actions: OrderedSet<Action> {
 		return actionsWhenSubject + actionsWhenObject
@@ -112,14 +95,10 @@ public class Entity : NSObject, Comparable {
 
     /**
     	:name:	actionsWhenSubject
-		:description:	Retrieves an OrderedSet<Action> of Action objects. Where the key
-		is the type of Action and the value is the Action instance.
-		The Actions included are those when the Entity is the subject of
-		the Action.
-    */
+	*/
     public var actionsWhenSubject: OrderedSet<Action> {
 		let nodes: OrderedSet<Action> = OrderedSet<Action>()
-		for entry in node.actionSubjectSet {
+		for entry in node.object.actionSubjectSet {
 			nodes.insert(Action(action: entry as! ManagedAction))
 		}
 		return nodes
@@ -127,14 +106,10 @@ public class Entity : NSObject, Comparable {
 
     /**
     	:name:	actionsWhenObject
-		:description:	Retrieves an OrderedSet<Action> of Action objects. Where the key
-		is the type of Action and the value is the Action instance.
-		The Actions included are those when the Entity is the object of
-		the Action.
 	*/
     public var actionsWhenObject: OrderedSet<Action> {
         let nodes: OrderedSet<Action> = OrderedSet<Action>()
-		for entry in node.actionObjectSet {
+		for entry in node.object.actionObjectSet {
 			nodes.insert(Action(action: entry as! ManagedAction))
 		}
 		return nodes
@@ -142,8 +117,6 @@ public class Entity : NSObject, Comparable {
 
     /**
     	:name:	bonds
-		:description:	Retrieves an OrderedSet<Bond> of Bond objects. Where the key
-		is the type of Bond and the value is the Bond instance.
 	*/
     public var bonds: OrderedSet<Bond> {
 		return bondsWhenSubject + bondsWhenObject
@@ -151,14 +124,10 @@ public class Entity : NSObject, Comparable {
 
     /**
     	:name:	bondsWhenSubject
-		:description:	Retrieves a OrderedSet<Bond> of Bond objects. Where the key
-		is the type of Bond and the value is the Bond instance.
-		The Bonds included are those when the Entity is the subject of
-		the Bond.
 	*/
     public var bondsWhenSubject: OrderedSet<Bond> {
 		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
-		for entry in node.bondSubjectSet {
+		for entry in node.object.bondSubjectSet {
 			nodes.insert(Bond(bond: entry as! ManagedBond))
 		}
 		return nodes
@@ -166,14 +135,10 @@ public class Entity : NSObject, Comparable {
 
     /**
     	:name:	bondsWhenObject
-		:description:	Retrieves an OrderedSet<Bond> of Bond objects. Where the key
-		is the type of Bond and the value is the Bond instance.
-		The Bonds included are those when the Entity is the object of
-		the Bond.
 	*/
     public var bondsWhenObject: OrderedSet<Bond> {
 		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
-		for entry in node.bondObjectSet {
+		for entry in node.object.bondObjectSet {
 			nodes.insert(Bond(bond: entry as! ManagedBond))
 		}
 		return nodes
@@ -181,15 +146,13 @@ public class Entity : NSObject, Comparable {
 	
 	/**
 		:name:	init
-		:description:	Initializes Entity with a given ManagedEntity.
 	*/
 	internal init(entity: ManagedEntity) {
-		node = entity
+		node = Node<ManagedEntity>(node: entity)
 	}
 	
 	/**
 		:name:	init
-		:description:	An initializer for the wrapped Model Object with a given type.
 	*/
 	public convenience init(type: String) {
 		self.init(entity: ManagedEntity(type: type))
@@ -207,34 +170,30 @@ public class Entity : NSObject, Comparable {
 	
 	/**
 		:name:	addGroup
-		:description:	Adds a Group name to the list of Groups if it does not exist.
 	*/
 	public func addGroup(name: String) -> Bool {
-		return node.addGroup(name)
+		return node.object.addGroup(name)
 	}
 	
 	/**
 		:name:	hasGroup
-		:description:	Checks whether the Node is a part of the Group name passed or not.
 	*/
 	public func hasGroup(name: String) -> Bool {
-		return node.hasGroup(name)
+		return node.object.hasGroup(name)
 	}
 	
 	/**
 		:name:	removeGroup
-		:description:	Removes a Group name from the list of Groups if it exists.
 	*/
 	public func removeGroup(name: String) -> Bool {
-		return node.removeGroup(name)
+		return node.object.removeGroup(name)
 	}
 	
     /**
 		:name:	delete
-		:description:	Marks the Model Object to be deleted from the Graph.
-    */
+	*/
     public func delete() {
-		node.delete()
+		node.object.delete()
     }
 }
 

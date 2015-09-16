@@ -90,7 +90,7 @@ internal class ManagedAction : ManagedNode {
 		:name:	addGroup
 		:description:	Adds a Group name to the list of Groups if it does not exist.
     */
-    internal func addGroup(name: String!) -> Bool {
+    internal func addGroup(name: String) -> Bool {
         if !hasGroup(name) {
 			let group: ManagedActionGroup = ManagedActionGroup(name: name)
             group.node = self
@@ -103,7 +103,7 @@ internal class ManagedAction : ManagedNode {
 		:name:	hasGroup
 		:description:	Checks whether the Node is a part of the Group name passed or not.
     */
-    internal func hasGroup(name: String!) -> Bool {
+    internal func hasGroup(name: String) -> Bool {
         for n in groupSet {
             let group: ManagedActionGroup = n as! ManagedActionGroup
             if name == group.name {
@@ -117,7 +117,7 @@ internal class ManagedAction : ManagedNode {
 		:name:	removeGroup
 		:description:	Removes a Group name from the list of Groups if it exists.
     */
-    internal func removeGroup(name: String!) -> Bool {
+    internal func removeGroup(name: String) -> Bool {
         for n in groupSet {
             let group: ManagedActionGroup = n as! ManagedActionGroup
             if name == group.name {
@@ -134,7 +134,7 @@ internal class ManagedAction : ManagedNode {
 		:name:	addSubject
 		:description:	Adds a ManagedEntity Model Object to the Subject Set.
     */
-    internal func addSubject(entity: ManagedEntity!) -> Bool {
+    internal func addSubject(entity: ManagedEntity) -> Bool {
         let count: Int = subjectSet.count
 		mutableSetValueForKey("subjectSet").addObject(entity)
 		return count != subjectSet.count
@@ -144,7 +144,7 @@ internal class ManagedAction : ManagedNode {
 		:name:	removeSubject
 		:description:	Removes a ManagedEntity Model Object from the Subject Set.
     */
-    internal func removeSubject(entity: ManagedEntity!) -> Bool {
+    internal func removeSubject(entity: ManagedEntity) -> Bool {
         let count: Int = subjectSet.count
 		mutableSetValueForKey("subjectSet").removeObject(entity)
 		return count != subjectSet.count
@@ -154,7 +154,7 @@ internal class ManagedAction : ManagedNode {
 		:name:	addObject
 		:description:	Adds a ManagedEntity Model Object to the Object Set.
     */
-    internal func addObject(entity: ManagedEntity!) -> Bool {
+    internal func addObject(entity: ManagedEntity) -> Bool {
         let count: Int = objectSet.count
 		mutableSetValueForKey("objectSet").addObject(entity)
 		return count != objectSet.count
@@ -164,7 +164,7 @@ internal class ManagedAction : ManagedNode {
 		:name:	removeObject
 		:description:	Removes a ManagedEntity Model Object from the Object Set.
     */
-    internal func removeObject(entity: ManagedEntity!) -> Bool {
+    internal func removeObject(entity: ManagedEntity) -> Bool {
         let count: Int = objectSet.count
 		mutableSetValueForKey("objectSet").removeObject(entity)
 		return count != objectSet.count

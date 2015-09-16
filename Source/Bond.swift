@@ -20,7 +20,7 @@ import Foundation
 
 @objc(Bond)
 public class Bond : NSObject, Comparable {
-	internal let node: ManagedBond
+	internal let node: Node<ManagedBond>
 
 	/**
 		:name:	description
@@ -31,7 +31,6 @@ public class Bond : NSObject, Comparable {
 	
 	/**
 		:name:	nodeClass
-		:description:	Retrieves the nodeClass for the Model Object that is wrapped internally.
 	*/
 	public var nodeClass: String {
 		return node.nodeClass
@@ -39,7 +38,6 @@ public class Bond : NSObject, Comparable {
 
 	/**
 		:name:	type
-		:description:	Retrieves the type for the Model Object that is wrapped internally.
 	*/
 	public var type: String {
 		return node.type
@@ -47,17 +45,13 @@ public class Bond : NSObject, Comparable {
 
 	/**
 		:name:	id
-		:description:	Retrieves the ID for the Model Object that is wrapped internally.
 	*/
 	public var id: String {
-		let nodeURL: NSURL = node.objectID.URIRepresentation()
-		let oID: String = nodeURL.lastPathComponent!
-		return nodeClass + type + oID
+		return node.id
 	}
 
 	/**
 		:name:	createdDate
-		:description:	Retrieves the date the Model Object was created.
 	*/
 	public var createdDate: NSDate {
 		return node.createdDate
@@ -65,66 +59,51 @@ public class Bond : NSObject, Comparable {
 
 	/**
 		:name:	groups
-		:description:	Retrieves the Groups the Bond is a part of.
 	*/
 	public var groups: OrderedSet<String> {
-		let groups: OrderedSet<String> = OrderedSet<String>()
-		for group in node.groupSet {
-			let name: String = group.name
-			groups.insert(name)
-		}
-		return groups
+		return node.groups
 	}
 	
 	/**
 		:name:	properties
-		:description:	Retrieves the Properties the Node is a part of.
 	*/
 	public var properties: Dictionary<String, AnyObject> {
-		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-		for property in node.propertySet {
-			properties[property.name] = property.object
-		}
-		return properties
+		return node.properties
 	}
 	
 	/**
 		:name:	subject
-		:description:	Retrieves an Entity Object.
 	*/
 	public var subject: Entity? {
 		get {
-			return nil == node.subject ? nil : Entity(entity: node.subject!)
+			return nil == node.object.subject ? nil : Entity(entity: node.object.subject!)
 		}
 		set(entity) {
-			node.subject = entity?.node
+			node.object.subject = entity?.node.object
 		}
 	}
 	
 	/**
 		:name:	object
-		:description:	Retrieves an Entity Object.
 	*/
 	public var object: Entity? {
 		get {
-			return nil == node.object ? nil : Entity(entity: node.object!)
+			return nil == node.object.object ? nil : Entity(entity: node.object.object!)
 		}
 		set(entity) {
-			node.object = entity?.node
+			node.object.object = entity?.node.object
 		}
 	}
 	
 	/**
 		:name:	init
-		:description: Initializes Bond with a given ManagedBond.
 	*/
 	internal init(bond: ManagedBond) {
-		node = bond
+		node = Node<ManagedBond>(node: bond)
 	}
 	
 	/**
 		:name:	init
-		:description:	An initializer for the wrapped Model Object with a given type.
 	*/
 	public convenience init(type: String) {
 		self.init(bond: ManagedBond(type: type))
@@ -142,47 +121,42 @@ public class Bond : NSObject, Comparable {
 	
 	/**
 		:name:	addGroup
-		:description:	Adds a Group name to the list of Groups if it does not exist.
 	*/
 	public func addGroup(name: String) -> Bool {
-		return node.addGroup(name)
+		return node.object.addGroup(name)
 	}
 
 	/**
 		:name:	hasGroup
-		:description:	Checks whether the Node is a part of the Group name passed or not.
 	*/
 	public func hasGroup(name: String) -> Bool {
-		return node.hasGroup(name)
+		return node.object.hasGroup(name)
 	}
 
 	/**
 		:name:	removeGroup
-		:description:	Removes a Group name from the list of Groups if it exists.
 	*/
 	public func removeGroup(name: String) -> Bool {
-		return node.removeGroup(name)
+		return node.object.removeGroup(name)
 	}
 
 	/**
 		:name:	properties
-		:description:	Allows for Dictionary style coding, which maps to the wrapped Model Object property values.
 	*/
 	public subscript(name: String) -> AnyObject? {
 		get {
-			return node[name]
+			return node.object[name]
 		}
 		set(value) {
-			node[name] = value
+			node.object[name] = value
 		}
 	}
 
 	/**
     	:name:	delete
-    	:description:	Marks the Model Object to be deleted from the Graph.
     */
     public func delete() {
-        node.delete()
+        node.object.delete()
     }
 }
 
