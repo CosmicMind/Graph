@@ -30,9 +30,19 @@ public class Bond : NSObject, Comparable {
 	}
 	
 	/**
+		:name:	json
+	*/
+	public var json: JSON {
+		let j: JSON = node.json
+		j["subject"] = subject?.json
+		j["object"] = object?.json
+		return j
+	}
+	
+	/**
 		:name:	nodeClass
 	*/
-	public var nodeClass: String {
+	public var nodeClass: Int {
 		return node.nodeClass
 	}
 
@@ -99,7 +109,7 @@ public class Bond : NSObject, Comparable {
 		:name:	init
 	*/
 	internal init(bond: ManagedBond) {
-		node = Node<ManagedBond>(node: bond)
+		node = Node<ManagedBond>(object: bond)
 	}
 	
 	/**

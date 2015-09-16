@@ -33,7 +33,7 @@ internal class ManagedBond : ManagedNode {
 		let g: Graph = Graph()
 		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.bondDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
-		nodeClass = "3"
+		nodeClass = 3
         self.type = type
 		createdDate = NSDate()
 		propertySet = NSSet()

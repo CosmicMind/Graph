@@ -68,12 +68,7 @@ public class Session : NSObject {
 			var json: JSON?
 			var err: NSError?
 			if nil == error {
-				do {
-					json = try JSON.parse(data!)
-				} catch let e as NSError {
-					err = e
-					json = nil
-				}
+				json = JSON.parse(data!)
 			} else {
 				err = error
 			}
@@ -92,7 +87,7 @@ public class Session : NSObject {
 	public func post(url: NSURL, json: JSON?, completion: (json: JSON?, error: NSError?) -> ()) {
 		let request = NSMutableURLRequest(URL: url)
 		request.HTTPMethod = "POST"
-		request.HTTPBody = json?.dataValue
+		request.HTTPBody = json?.data
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")
 		
@@ -100,14 +95,7 @@ public class Session : NSObject {
 			var json: JSON?
 			var err: NSError?
 			if nil == error {
-				do {
-					json = try JSON.parse(data!)
-				} catch let error as NSError {
-					err = error
-					json = nil
-				} catch {
-					fatalError()
-				}
+				json = JSON.parse(data!)
 			} else {
 				err = error
 			}

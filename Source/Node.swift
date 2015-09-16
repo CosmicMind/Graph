@@ -26,10 +26,49 @@ internal class Node <Type : ManagedNode> : NSObject {
 	//
 	internal let object: Type
 	
+	/**
+		:name:	description
+	*/
+	internal override var description: String {
+		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
+	}
+	
+	//
+	//	:name:	json
+	//
+	internal var json: JSON {
+		var p: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+		for (k, v) in properties {
+			switch v {
+			case is Int:
+				p[k] = v
+			case is Double:
+				p[k] = v
+			case is Float:
+				p[k] = v
+			case is String:
+				p[k] = v
+			case is Bool:
+				p[k] = v
+			case is Array<AnyObject>:
+				p[k] = v
+			case is Dictionary<String, AnyObject>:
+				p[k] = v
+			default:
+				p[k] = String(stringInterpolationSegment: v)
+			}
+		}
+		var g: Array<String> = Array<String>()
+		for v in groups {
+			g.append(v)
+		}
+		return JSON.parse(JSON.serialize(["nodeClass": nodeClass, "id": id, "type": type, "groups": g, "properties": p, "createdDate": String(stringInterpolationSegment: createdDate)])!)!
+	}
+	
 	//
 	//	:name:	nodeClass
 	//
-	internal var nodeClass: String {
+	internal var nodeClass: Int {
 		return object.nodeClass
 	}
 	
@@ -46,7 +85,7 @@ internal class Node <Type : ManagedNode> : NSObject {
 	internal var id: String {
 		let nodeURL: NSURL = object.objectID.URIRepresentation()
 		let oID: String = nodeURL.lastPathComponent!
-		return nodeClass + type + oID
+		return String(stringInterpolationSegment: nodeClass) + type + oID
 	}
 	
 	//
@@ -82,8 +121,7 @@ internal class Node <Type : ManagedNode> : NSObject {
 	//
 	//	:name:	init
 	//
-	internal init(node: Type) {
-		self.object = node
-		super.init()
+	internal init(object: Type) {
+		self.object = object
 	}
 }

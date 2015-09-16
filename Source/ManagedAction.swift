@@ -33,7 +33,7 @@ internal class ManagedAction : ManagedNode {
 		let g: Graph = Graph()
 		let w: NSManagedObjectContext? = g.worker
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
-		nodeClass = "2"
+		nodeClass = 2
         self.type = type
 		createdDate = NSDate()
 		propertySet = NSSet()

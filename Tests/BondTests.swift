@@ -63,6 +63,40 @@ class BondTests : XCTestCase, GraphDelegate {
 		yearSearchExpectation = nil
 		super.tearDown()
 	}
+	
+	func testJSON() {
+		let author: Bond = Bond(type: "Author")
+		author["genre"] = "Physics"
+		author["pages"] = 101
+		author["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
+		
+		let user: Entity = Entity(type: "User")
+		user["name"] = "Eve"
+		user["age"] = 26
+		user["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
+		user.addGroup("Female")
+		
+		let book: Entity = Entity(type: "Book")
+		book["title"] = "Holographic Universe"
+		book.addGroup("Physics")
+		book.addGroup("Featured")
+		
+		author.subject = user
+		author.object = book
+		
+		graph!.save()
+		
+		XCTAssert(author.json["properties"]?["genre"]?.string == "Physics", "Test failed.")
+		XCTAssert(author.json["properties"]?["pages"]?.int == 101, "Test failed.")
+		XCTAssert(author.json["properties"]?["date"]?.string == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
+		XCTAssert(author.subject?.json == user.json, "Test failed.")
+		XCTAssert(author.object?.json == book.json, "Test failed.")
+		
+		author.delete()
+		user.delete()
+		book.delete()
+		graph!.save()
+	}
 
     func testAll() {
         // Set the XCTest Class as the delegate.

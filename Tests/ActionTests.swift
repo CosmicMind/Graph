@@ -73,6 +73,41 @@ class ActionTests : XCTestCase, GraphDelegate {
 		sessionSearchExpectation = nil
 		super.tearDown()
 	}
+	
+	func testJSON() {
+		let read: Action = Action(type: "Read")
+		read["genre"] = "Physics"
+		read["pages"] = 101
+		read["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
+		read.addGroup("At Night")
+		
+		let user: Entity = Entity(type: "User")
+		user["name"] = "Eve"
+		user["age"] = 26
+		user["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
+		user.addGroup("Female")
+		
+		let book: Entity = Entity(type: "Book")
+		book["title"] = "Holographic Universe"
+		book.addGroup("Physics")
+		book.addGroup("Featured")
+		
+		read.addSubject(user)
+		read.addObject(book)
+		
+		graph!.save()
+		
+		XCTAssert(read.json["properties"]?["genre"]?.string == "Physics", "Test failed.")
+		XCTAssert(read.json["properties"]?["pages"]?.int == 101, "Test failed.")
+		XCTAssert(read.json["properties"]?["date"]?.string == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
+		XCTAssert(read.subjects.first?.json == user.json, "Test failed.")
+		XCTAssert(read.objects.first?.json == book.json, "Test failed.")
+		
+		read.delete()
+		user.delete()
+		book.delete()
+		graph!.save()
+	}
 
     func testAll() {
         // Set the XCTest Class as the delegate.

@@ -700,7 +700,7 @@ public class Graph : NSObject {
 			
 			let nodeClass: NSAttributeDescription = NSAttributeDescription()
 			nodeClass.name = "nodeClass"
-			nodeClass.attributeType = .StringAttributeType
+			nodeClass.attributeType = .Integer64AttributeType
 			nodeClass.optional = false
 			entityProperties.append(nodeClass.copy() as! NSAttributeDescription)
 			actionProperties.append(nodeClass.copy() as! NSAttributeDescription)
@@ -826,7 +826,6 @@ public class Graph : NSObject {
 			actionSubjectRelationship.optional = false
 			actionSubjectRelationship.deleteRule = .CascadeDeleteRule
 			actionSubjectRelationship.destinationEntity = actionDescription
-			
 			actionSubjectRelationship.inverseRelationship = actionSubjectSetRelationship
 			actionSubjectSetRelationship.inverseRelationship = actionSubjectRelationship
 			
@@ -938,19 +937,26 @@ public class Graph : NSObject {
 	//
 	private var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
 		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) {
-			let documentsDirectory: String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
-			let url: NSURL = NSURL.fileURLWithPath(documentsDirectory.stringByAppendingString(GraphUtility.storeName), isDirectory: false)
-			let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
 			do {
-				try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
-			} catch {
-				var dict: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-				dict[NSLocalizedDescriptionKey] = "[GraphKit Error: Failed to initialize datastore.]"
-				dict[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: There was an error creating or loading the application's saved data.]"
-				dict[NSUnderlyingErrorKey] = error as NSError
-				print(NSError(domain: "GraphKit", code: 9999, userInfo: dict))
-			}
-			GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
+				let documentsDirectory: String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
+				try NSFileManager.defaultManager().createDirectoryAtPath(documentsDirectory, withIntermediateDirectories: true, attributes: nil)
+				
+				let storePath: String = documentsDirectory + "/" + GraphUtility.storeName
+				NSFileManager.defaultManager().createFileAtPath(storePath, contents: nil, attributes: nil)
+				
+				let url: NSURL = NSURL.fileURLWithPath(documentsDirectory + "/" + GraphUtility.storeName, isDirectory: false)
+				let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
+				do {
+					try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+				} catch {
+					var dict: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+					dict[NSLocalizedDescriptionKey] = "[GraphKit Error: Failed to initialize datastore.]"
+					dict[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: There was an error creating or loading the application's saved data.]"
+					dict[NSUnderlyingErrorKey] = error as NSError
+					print(NSError(domain: "GraphKit", code: 9999, userInfo: dict))
+				}
+				GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
+			} catch {}
 		}
 		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
 	}

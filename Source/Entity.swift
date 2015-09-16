@@ -29,13 +29,20 @@ public class Entity : NSObject, Comparable {
 		:name:	description
 	*/
 	public override var description: String {
-		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
+		return node.description
+	}
+	
+	/**
+		:name:	json
+	*/
+	public var json: JSON {
+		return node.json
 	}
 	
 	/**
 		:name:	nodeClass
 	*/
-	public var nodeClass: String {
+	public var nodeClass: Int {
 		return node.nodeClass
 	}
 
@@ -148,7 +155,7 @@ public class Entity : NSObject, Comparable {
 		:name:	init
 	*/
 	internal init(entity: ManagedEntity) {
-		node = Node<ManagedEntity>(node: entity)
+		node = Node<ManagedEntity>(object: entity)
 	}
 	
 	/**

@@ -33,9 +33,27 @@ public class Action : NSObject, Comparable {
 	}
 	
 	/**
+		:name:	json
+	*/
+	public var json: JSON {
+		let j: JSON = node.json
+		var s: Array<AnyObject> = Array<AnyObject>()
+		for v in subjects {
+			s.append(v.json.object)
+		}
+		var o: Array<AnyObject> = Array<AnyObject>()
+		for v in objects {
+			o.append(v.json.object)
+		}
+		j["subjects"] = JSON(object: s)
+		j["objects"] = JSON(object: o)
+		return j
+	}
+	
+	/**
 		:name:	nodeClass
 	*/
-	public var nodeClass: String {
+	public var nodeClass: Int {
 		return node.nodeClass
 	}
 
@@ -91,8 +109,8 @@ public class Action : NSObject, Comparable {
     */
     public var subjects: OrderedSet<Entity> {
 		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for entry in node.object.subjectSet {
-			nodes.insert(Entity(entity: entry as! ManagedEntity))
+		for entity in node.object.subjectSet {
+			nodes.insert(Entity(entity: entity as! ManagedEntity))
 		}
 		return nodes
     }
@@ -102,8 +120,8 @@ public class Action : NSObject, Comparable {
 	*/
     public var objects: OrderedSet<Entity> {
 		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for entry in node.object.objectSet {
-			nodes.insert(Entity(entity: entry as! ManagedEntity))
+		for entity in node.object.objectSet {
+			nodes.insert(Entity(entity: entity as! ManagedEntity))
 		}
 		return nodes
     }
@@ -112,7 +130,7 @@ public class Action : NSObject, Comparable {
 		:name:	init
 	*/
 	internal init(action: ManagedAction) {
-		node = Node<ManagedAction>(node: action)
+		node = Node<ManagedAction>(object: action)
 	}
 	
 	/**

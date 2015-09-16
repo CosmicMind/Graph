@@ -56,6 +56,23 @@ class EntityTests : XCTestCase, GraphDelegate {
 		super.tearDown()
 	}
 
+	func testJSON() {
+		let user: Entity = Entity(type: "User")
+		user["name"] = "Eve"
+		user["age"] = 26
+		user["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
+		user.addGroup("Female")
+		
+		graph!.save()
+		
+		XCTAssert(user.json["properties"]?["name"]?.string == "Eve", "Test failed.")
+		XCTAssert(user.json["properties"]?["age"]?.int == 26, "Test failed.")
+		XCTAssert(user.json["properties"]?["date"]?.string == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
+		
+		user.delete()
+		graph!.save()
+	}
+	
     func testAll() {
         // Set the XCTest Class as the delegate.
         graph!.delegate = self

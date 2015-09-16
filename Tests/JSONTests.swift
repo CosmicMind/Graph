@@ -31,40 +31,48 @@ class JSONTests: XCTestCase {
 	}
 	
 	func testParse() {
-		let dict: Dictionary<String, AnyObject> = ["user": ["username": "daniel", "password": "abc123", "token": 123456789]]
-		
-		let data: NSData? = JSON.serialize(dict)
+		let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
 		XCTAssert(nil != data, "Test failed.")
 		
 		let j1: JSON? = JSON.parse(data!)
 		XCTAssert(nil != j1, "Test failed.")
 		
-		XCTAssert("daniel" == j1!["user"]?["username"]?.stringValue, "Test failed.")
-		XCTAssert("abc123" == j1!["user"]?["password"]?.stringValue, "Test failed.")
-		XCTAssert(123456789 == j1!["user"]?["token"]?.integerValue, "Test failed.")
+		XCTAssert("daniel" == j1!["user"]?["username"]?.string, "Test failed.")
+		XCTAssert("abc123" == j1!["user"]?["password"]?.string, "Test failed.")
+		XCTAssert(123456789 == j1!["user"]?["token"]?.int, "Test failed.")
 	}
 	
 	func testStringify() {
-		let dict: Dictionary<String, AnyObject> = ["user": ["username": "daniel", "password": "abc123", "token": 123456789]]
-		
-		let stringified: String? = JSON.stringify(dict)
+		let stringified: String? = JSON.stringify(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
 		let j1: JSON? = JSON.parse(stringified!)
 		XCTAssert(nil != j1, "Test failed.")
-		
 		XCTAssert("{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}" == stringified, "Test failed.")
 	}
 	
 	func testEquatable() {
-		let v1: Dictionary<String, AnyObject> = ["user": "username", "password": "password", "token": 123456789]
-		let v2: Dictionary<String, AnyObject> = ["password": "password", "token": 123456789, "user": "username"]
-		let v3: Dictionary<String, AnyObject> = ["email": "email", "age": 21]
-		
-		let j1: JSON = JSON(value: v1)
-		let j2: JSON = JSON(value: v2)
-		let j3: JSON = JSON(value: v3)
+		let j1: JSON = JSON(object: ["user": "username", "password": "password", "token": 123456789])
+		let j2: JSON = JSON(object: ["password": "password", "token": 123456789, "user": "username"])
+		let j3: JSON = JSON(object: ["email": "email", "age": 21])
 		
 		XCTAssert(j1 == j2, "Test failed.")
 		XCTAssert(j1 != j3, "Test failed.")
+	}
+	
+	func testManipulations() {
+		let j1: JSON = JSON(object: ["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
+		XCTAssert("daniel" == j1["user"]?["username"]?.string, "Test failed.")
+		XCTAssert("abc123" == j1["user"]?["password"]?.string, "Test failed.")
+		XCTAssert(123456789 == j1["user"]?["token"]?.int, "Test failed.")
+		j1["key1"] = JSON(object: 123)
+		XCTAssert(j1["key1"]?.int == 123, "Test failed.")
+		
+		let j2: JSON = JSON(object: [456, "Daniel"])
+		XCTAssert(j2[0]?.int == 456, "Test failed.")
+		XCTAssert(j2[1]?.string == "Daniel", "Test failed.")
+		j2.append("Hello")
+		XCTAssert(j2[2]?.string == "Hello", "Test failed.")
+		j2[2] = JSON(object: "World")
+		XCTAssert(j2[2]?.string == "World", "Test failed.")
 	}
 	
 	func testPerformance() {
