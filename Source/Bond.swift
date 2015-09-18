@@ -149,6 +149,13 @@ public class Bond : NSObject, Comparable {
 	public func removeGroup(name: String) -> Bool {
 		return node.object.removeGroup(name)
 	}
+	
+	/**
+		:name:	toggleGroup
+	*/
+	public func toggleGroup(name: String) -> Bool {
+		return hasGroup(name) ? addGroup(name) : removeGroup(name)
+	}
 
 	/**
 		:name:	properties

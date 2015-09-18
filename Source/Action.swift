@@ -171,6 +171,13 @@ public class Action : NSObject, Comparable {
 		return node.object.removeGroup(name)
 	}
 	
+	/**
+		:name:	toggleGroup
+	*/
+	public func toggleGroup(name: String) -> Bool {
+		return hasGroup(name) ? addGroup(name) : removeGroup(name)
+	}
+	
     /**
     	:name:	addSubject
     */
