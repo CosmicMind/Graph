@@ -368,6 +368,10 @@ public func +<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, 
 	return t
 }
 
+public func +=<Key : Comparable, Value>(var lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) {
+	lhs = lhs + rhs
+}
+
 public func -<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) -> OrderedMultiDictionary<Key, Value> {
 	let t: OrderedMultiDictionary<Key, Value> = OrderedMultiDictionary<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
@@ -379,4 +383,8 @@ public func -<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, 
 		t.insert((n.key, n.value))
 	}
 	return t
+}
+
+public func -=<Key : Comparable, Value>(var lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) {
+	lhs = lhs - rhs
 }

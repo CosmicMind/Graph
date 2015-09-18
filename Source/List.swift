@@ -370,3 +370,7 @@ public func +<Element>(lhs: List<Element>, rhs: List<Element>) -> List<Element> 
 	}
 	return l
 }
+
+public func +=<Element>(var lhs: List<Element>, rhs: List<Element>) {
+	lhs = lhs + rhs
+}

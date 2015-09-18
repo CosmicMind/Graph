@@ -572,8 +572,16 @@ public func +<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedM
 	return lhs.union(rhs)
 }
 
+public func +=<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) {
+	lhs.unionInPlace(rhs)
+}
+
 public func -<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 	return lhs.subtract(rhs)
+}
+
+public func -=<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) {
+	lhs.subtractInPlace(rhs)
 }
 
 public func <=<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {

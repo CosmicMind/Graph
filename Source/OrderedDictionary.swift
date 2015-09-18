@@ -367,6 +367,10 @@ public func +<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: 
 	return t
 }
 
+public func +=<Key : Comparable, Value>(var lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) {
+	lhs = lhs + rhs
+}
+
 public func -<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> OrderedDictionary<Key, Value> {
 	let t: OrderedDictionary<Key, Value> = OrderedDictionary<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
@@ -380,3 +384,6 @@ public func -<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: 
 	return t
 }
 
+public func -=<Key : Comparable, Value>(var lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) {
+	lhs = lhs - rhs
+}

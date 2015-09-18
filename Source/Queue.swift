@@ -118,3 +118,7 @@ public func +<Element>(lhs: Queue<Element>, rhs: Queue<Element>) -> Queue<Elemen
 	}
 	return q
 }
+
+public func +=<Element>(var lhs: Queue<Element>, rhs: Queue<Element>) {
+	lhs = lhs + rhs
+}

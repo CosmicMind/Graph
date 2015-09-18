@@ -146,3 +146,7 @@ public func +<Element>(lhs: Deque<Element>, rhs: Deque<Element>) -> Deque<Elemen
 	}
 	return d
 }
+
+public func +=<Element>(var lhs: Deque<Element>, rhs: Deque<Element>) {
+	lhs = lhs + rhs
+}

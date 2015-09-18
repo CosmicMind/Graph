@@ -555,8 +555,16 @@ public func +<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<El
 	return lhs.union(rhs)
 }
 
+public func +=<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) {
+	lhs.unionInPlace(rhs)
+}
+
 public func -<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> OrderedSet<Element> {
 	return lhs.subtract(rhs)
+}
+
+public func -=<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) {
+	lhs.subtractInPlace(rhs)
 }
 
 public func <=<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {

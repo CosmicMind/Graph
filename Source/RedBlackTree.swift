@@ -731,6 +731,10 @@ public func +<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBl
 	return t
 }
 
+public func +=<Key : Comparable, Value>(var lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) {
+	lhs = lhs + rhs
+}
+
 public func -<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
 	let t: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>()
 	for var i: Int = lhs.count - 1; 0 <= i; --i {
@@ -742,4 +746,8 @@ public func -<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBl
 		t.removeValueForKeys(n.key)
 	}
 	return t
+}
+
+public func -=<Key : Comparable, Value>(var lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) {
+	lhs = lhs - rhs
 }

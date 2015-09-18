@@ -120,3 +120,7 @@ public func +<Element>(lhs: Stack<Element>, rhs: Stack<Element>) -> Stack<Elemen
 	}
 	return s
 }
+
+public func +=<Element>(var lhs: Stack<Element>, rhs: Stack<Element>) {
+	lhs = lhs + rhs
+}
