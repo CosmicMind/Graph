@@ -177,7 +177,6 @@ public extension Graph {
 	
 	//
 	//	:name:	managedObjectContextDidSave
-	//	:description:	The callback that NotificationCenter uses when changes occur in the Graph.
 	//
 	internal func managedObjectContextDidSave(notification: NSNotification) {
 		let userInfo = notification.userInfo
@@ -298,7 +297,6 @@ public extension Graph {
 	
 	//
 	//	:name:	prepareForObservation
-	//	:description:	Ensures NotificationCenter is watchers the callback selector for this Graph.
 	//
 	internal func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
@@ -307,18 +305,16 @@ public extension Graph {
 	
 	//
 	//	:name:	addPredicateToContextWatcher
-	//	:description:	Adds the given predicate to the master predicate, which holds all watchers for the Graph.
 	//
 	internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription, predicate: NSPredicate) {
 		let entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
 		let predicates: Array<NSPredicate> = [entityPredicate, predicate]
 		let finalPredicate: NSPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-		masterPredicate = nil != masterPredicate ? NSCompoundPredicate(orPredicateWithSubpredicates: [masterPredicate!, finalPredicate]) : finalPredicate
+		masterPredicate = nil == masterPredicate ? finalPredicate : NSCompoundPredicate(orPredicateWithSubpredicates: [masterPredicate!, finalPredicate])
 	}
 	
 	//
 	//	:name:	isWatching
-	//	:description:	A sanity check if the Graph is already watchers the specified index and key.
 	//
 	internal func isWatching(key: String, index: String) -> Bool {
 		if nil == watchers[key] {
@@ -334,14 +330,13 @@ public extension Graph {
 	
 	//
 	//	:name:	addWatcher
-	//	:description:	Adds a watcher to the Graph.
 	//
 	internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
 		if !isWatching(value, index: index) {
 			let entityDescription: NSEntityDescription = NSEntityDescription()
 			entityDescription.name = entityDescriptionName
 			entityDescription.managedObjectClassName = managedObjectClassName
-			let predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
+			let predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key, value)
 			addPredicateToContextWatcher(entityDescription, predicate: predicate)
 			prepareForObservation()
 		}

@@ -17,7 +17,7 @@
 //
 
 import XCTest
-import GraphKit
+@testable import GraphKit
 
 class BondStressTests : XCTestCase, GraphDelegate {
 	

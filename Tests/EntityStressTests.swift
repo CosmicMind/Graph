@@ -17,7 +17,7 @@
 //
 
 import XCTest
-import GraphKit
+@testable import GraphKit
 
 class EntityStressTests : XCTestCase, GraphDelegate {
 	
@@ -116,7 +116,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		
 		e1!.delete()
 		
-		graph?.save(nil)
+		graph?.save()
 
 		// Wait for the delegates to be executed.
 		waitForExpectationsWithTimeout(5, handler: nil)
