@@ -78,7 +78,7 @@ class GroupTests: XCTestCase {
 		}
 		graph!.save()
 		
-		let items = graph!.search(entityGroupMap: "#*")
+		let items = graph!.search(EntityGroupMap: "#*")
 		XCTAssert(2 == items.count , "Test failed.\(items.count)")
 		
 		for (_, set) in items {

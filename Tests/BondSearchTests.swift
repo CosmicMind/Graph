@@ -46,12 +46,12 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		graph?.watch(bond: "B")
 		graph?.watch(bondProperty: "active")
 		
-		XCTAssertTrue(0 == graph?.search(bondProperty: "active").count, "Test failed.")
+		XCTAssertTrue(0 == graph?.search(bond: "*", property: [("active", nil)]).count, "Test failed.")
 		
 		let b1: Bond = Bond(type: "B")
 		b1["active"] = true
 		
-		let b2: Bond? = graph?.search(bondProperty: "active").last
+		let b2: Bond? = graph?.search(bond: "*", property: [("active", nil)]).last
 		
 		XCTAssertTrue(b1 == b2, "Bond: Search did not pass.")
 		
@@ -66,7 +66,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertBond(graph: Graph, bond: Bond) {
-		let b2: Bond? = graph.search(bondProperty: "active").last
+		let b2: Bond? = graph.search(bond: "*", property: [("active", nil)]).last
 		if bond == b2 {
 			expectation?.fulfill()
 			
@@ -81,10 +81,10 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidDeleteBond(graph: Graph, bond: Bond) {
-		let b2: Bond? = graph.search(bondProperty: "active").last
+		let b2: Bond? = graph.search(bond: "*", property: [("active", nil)]).last
 		if nil == b2 {
 			expectation?.fulfill()
-			XCTAssertTrue(0 == graph.search(bondProperty: "active").count, "Test failed.")
+			XCTAssertTrue(0 == graph.search(bond: "*", property: [("active", nil)]).count, "Test failed.")
 		}
 	}
 	
@@ -98,7 +98,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			}
 			
-			XCTAssertTrue(0 == graph.search(bondProperty: "active").count, "Test failed.")
+			XCTAssertTrue(0 == graph.search(bond: "*", property: [("active", nil)]).count, "Test failed.")
 			
 			expectation = expectationWithDescription("Bond: Delete did not pass.")
 			

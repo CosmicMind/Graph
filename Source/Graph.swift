@@ -18,24 +18,24 @@
 
 import CoreData
 
-private struct GraphPersistentStoreCoordinator {
-	private static var onceToken: dispatch_once_t = 0
-	private static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
+internal struct GraphPersistentStoreCoordinator {
+	internal static var onceToken: dispatch_once_t = 0
+	internal static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
 }
 
-private struct GraphMainManagedObjectContext {
-	private static var onceToken: dispatch_once_t = 0
-	private static var managedObjectContext: NSManagedObjectContext?
+internal struct GraphMainManagedObjectContext {
+	internal static var onceToken: dispatch_once_t = 0
+	internal static var managedObjectContext: NSManagedObjectContext?
 }
 
-private struct GraphPrivateManagedObjectContext {
-	private static var onceToken: dispatch_once_t = 0
-	private static var managedObjectContext: NSManagedObjectContext?
+internal struct GraphPrivateManagedObjectContext {
+	internal static var onceToken: dispatch_once_t = 0
+	internal static var managedObjectContext: NSManagedObjectContext?
 }
 
-private struct GraphManagedObjectModel {
-	private static var onceToken: dispatch_once_t = 0
-	private static var managedObjectModel: NSManagedObjectModel?
+internal struct GraphManagedObjectModel {
+	internal static var onceToken: dispatch_once_t = 0
+	internal static var managedObjectModel: NSManagedObjectModel?
 }
 
 internal struct GraphUtility {
@@ -157,7 +157,7 @@ public class Graph : NSObject {
 	*/
 	public func save(completion: ((success: Bool, error: NSError?) -> ())?) {
 		let w: NSManagedObjectContext? = worker
-		let p: NSManagedObjectContext? = privateContext
+		let p: NSManagedObjectContext? = internalContext
 		if nil != w && nil != p {
 			w!.performBlockAndWait {
 				var error: NSError?
@@ -255,213 +255,6 @@ public class Graph : NSObject {
 	*/
 	public func watch(bondProperty name: String) {
 		addWatcher("name", value: name, index: GraphUtility.bondPropertyIndexName, entityDescriptionName: GraphUtility.bondPropertyDescriptionName, managedObjectClassName: GraphUtility.bondPropertyObjectClassName)
-	}
-
-	/**
-		:name:	search(entity: groups)
-		:description:	Searches the Graph for Entity Objects with the following type LIKE ?.
-	*/
-	public func search(entity type: String, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
-		let nodes: OrderedSet<Entity> = self.search(Entity: type)
-		if let n: Array<String> = names {
-			for i in n {
-				nodes.intersectInPlace(search(EntityGroup: i))
-			}
-		}
-		if let n: Array<(key: String, value: AnyObject?)> = pairs {
-			for i in n {
-				if let v: AnyObject = i.value {
-					if let a: String = v as? String {
-						nodes.intersectInPlace(search(EntityProperty: i.key, value: a as String))
-					} else if let a: Int = v as? Int {
-						nodes.intersectInPlace(search(EntityProperty: i.key, value: a as Int))
-					} else if let a: Bool = v as? Bool {
-						nodes.intersectInPlace(search(EntityProperty: i.key, value: a as Bool))
-					}
-				} else {
-					nodes.intersectInPlace(search(EntityProperty: i.key))
-				}
-			}
-		}
-		return nodes
-	}
-	
-	/**
-		:name:	search(entityGroupMap)
-		:description:	Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
-	*/
-	public func search(entityGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Entity>> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let dict: OrderedDictionary<String, OrderedSet<Entity>> = OrderedDictionary<String, OrderedSet<Entity>>()
-		for group: ManagedEntityGroup in entries as! Array<ManagedEntityGroup> {
-			if nil == dict[group.name] {
-				dict[group.name] = OrderedSet<Entity>()
-			}
-			dict[group.name]!.insert(Entity(entity: group.node))
-		}
-		return dict
-	}
-
-	/**
-		:name:	search(action)
-		:description:	Searches the Graph for Action Objects with the following type LIKE ?.
-	*/
-	public func search(action type: String) -> OrderedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
-		for action: ManagedAction in entries as! Array<ManagedAction> {
-			nodes.insert(Action(action: action))
-		}
-		return nodes
-	}
-
-	/**
-		:name:	search(actionGroup)
-		:description:	Searches the Graph for Action Group Objects with the following name LIKE ?.
-	*/
-	public func search(actionGroup name: String) -> OrderedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
-		for group: ManagedActionGroup in entries as! Array<ManagedActionGroup> {
-			nodes.insert(Action(action: group.node))
-		}
-		return nodes
-	}
-
-	/**
-		:name:	search(actionGroupMap)
-		:description:	Retrieves all the unique Group Names for Action Nodes with their Action Objects.
-	*/
-	public func search(actionGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Action>> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let dict: OrderedDictionary<String, OrderedSet<Action>> = OrderedDictionary<String, OrderedSet<Action>>()
-		for group: ManagedActionGroup in entries as! Array<ManagedActionGroup> {
-			if nil == dict[group.name] {
-				dict[group.name] = OrderedSet<Action>()
-			}
-			dict[group.name]!.insert(Action(action: group.node))
-		}
-		return dict
-	}
-
-	/**
-		:name:	search(actionProperty)
-		:description:	Searches the Graph for Action Property Objects with the following name LIKE ?.
-	*/
-	public func search(actionProperty name: String) -> OrderedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
-		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
-			nodes.insert(Action(action: property.node))
-		}
-		return nodes
-	}
-
-	/**
-		:name:	search(actionProperty)
-		:description:	Searches the Graph for Action Property Objects with the following name == ? and value == ?.
-	*/
-	public func search(actionProperty name: String, value: String) -> OrderedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
-		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
-			nodes.insert(Action(action: property.node))
-		}
-		return nodes
-	}
-	
-	/**
-		:name:	search(actionProperty)
-		:description:	Searches the Graph for Action Property Objects with the following name == ? and value == ?.
-	*/
-	public func search(actionProperty name: String, value: Int) -> OrderedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
-		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
-			nodes.insert(Action(action: property.node))
-		}
-		return nodes
-	}
-
-	/**
-		:name:	search(bond)
-		:description:	Searches the Graph for Bond Objects with the following type LIKE ?.
-	*/
-	public func search(bond type: String) -> OrderedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
-		for bond: ManagedBond in entries as! Array<ManagedBond> {
-			nodes.insert(Bond(bond: bond))
-		}
-		return nodes
-	}
-
-	/**
-		:name:	search(bondGroup)
-		:description:	Searches the Graph for Bond Group Objects with the following name LIKE ?.
-	*/
-	public func search(bondGroup name: String) -> OrderedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
-		for group: ManagedBondGroup in entries as! Array<ManagedBondGroup> {
-			nodes.insert(Bond(bond: group.node))
-		}
-		return nodes
-	}
-
-	/**
-		:name:	search(bondGroupMap)
-		:description:	Retrieves all the unique Group Names for Bond Nodes with their Bond Objects.
-	*/
-	public func search(bondGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Bond>> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let dict: OrderedDictionary<String, OrderedSet<Bond>> = OrderedDictionary<String, OrderedSet<Bond>>()
-		for group: ManagedBondGroup in entries as! Array<ManagedBondGroup> {
-			if nil == dict[group.name] {
-				dict[group.name] = OrderedSet<Bond>()
-			}
-			dict[group.name]!.insert(Bond(bond: group.node))
-		}
-		return dict
-	}
-
-	/**
-		:name:	search(bondProperty)
-		:description:	Searches the Graph for Bond Property Objects with the following name LIKE ?.
-	*/
-	public func search(bondProperty name: String) -> OrderedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
-		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
-			nodes.insert(Bond(bond: property.node))
-		}
-		return nodes
-	}
-
-	/**
-		:name:	search(bondProperty)
-		:description:	Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
-	*/
-	public func search(bondProperty name: String, value: String) -> OrderedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
-		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
-			nodes.insert(Bond(bond: property.node))
-		}
-		return nodes
-	}
-	
-	/**
-		:name:	search(bondProperty)
-		:description:	Searches the Graph for Bond Property Objects with the following name == ? and value == ?.
-	*/
-	public func search(bondProperty name: String, value: Int) -> OrderedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
-		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
-			nodes.insert(Bond(bond: property.node))
-		}
-		return nodes
 	}
 
 	//
@@ -594,15 +387,15 @@ public class Graph : NSObject {
 	internal var worker: NSManagedObjectContext? {
 		dispatch_once(&GraphMainManagedObjectContext.onceToken) {
 			GraphMainManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-			GraphMainManagedObjectContext.managedObjectContext?.parentContext = self.privateContext
+			GraphMainManagedObjectContext.managedObjectContext?.parentContext = self.internalContext
 		}
 		return GraphPrivateManagedObjectContext.managedObjectContext
 	}
 
 	//
-	//	:name:	privateContext
+	//	:name:	internalContext
 	//
-	private var privateContext: NSManagedObjectContext? {
+	internal var internalContext: NSManagedObjectContext? {
 		dispatch_once(&GraphPrivateManagedObjectContext.onceToken) {
 			GraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
 			GraphPrivateManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
@@ -613,7 +406,7 @@ public class Graph : NSObject {
 	//
 	//	:name:	managedObjectModel
 	//
-	private var managedObjectModel: NSManagedObjectModel? {
+	internal var managedObjectModel: NSManagedObjectModel? {
 		dispatch_once(&GraphManagedObjectModel.onceToken) {
 			GraphManagedObjectModel.managedObjectModel = NSManagedObjectModel()
 			
@@ -899,7 +692,7 @@ public class Graph : NSObject {
 	//
 	//	:name:	persistentStoreCoordinator
 	//
-	private var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
+	internal var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
 		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) {
 			do {
 				let documentsDirectory: String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
@@ -925,16 +718,16 @@ public class Graph : NSObject {
 	//	:name:	prepareForObservation
 	//	:description:	Ensures NotificationCenter is watchers the callback selector for this Graph.
 	//
-	private func prepareForObservation() {
+	internal func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: privateContext)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: internalContext)
 	}
 
 	//
 	//	:name:	addPredicateToContextWatcher
 	//	:description:	Adds the given predicate to the master predicate, which holds all watchers for the Graph.
 	//
-	private func addPredicateToContextWatcher(entityDescription: NSEntityDescription, predicate: NSPredicate) {
+	internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription, predicate: NSPredicate) {
 		let entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
 		let predicates: Array<NSPredicate> = [entityPredicate, predicate]
 		let finalPredicate: NSPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -945,23 +738,23 @@ public class Graph : NSObject {
 	//	:name:	isWatching
 	//	:description:	A sanity check if the Graph is already watchers the specified index and key.
 	//
-	private func isWatching(key: String, index: String) -> Bool {
+	internal func isWatching(key: String, index: String) -> Bool {
 		if nil == watchers[key] {
 			watchers[key] = OrderedSet<String>(elements: index)
 			return false
 		}
-		if !watchers[key]!.contains(index) {
-			watchers[key]!.insert(index)
-			return false
+		if watchers[key]!.contains(index) {
+			return true
 		}
-		return true
+		watchers[key]!.insert(index)
+		return false
 	}
 
 	//
 	//	:name:	addWatcher
 	//	:description:	Adds a watcher to the Graph.
 	//
-	private func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
+	internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
 		if !isWatching(value, index: index) {
 			let entityDescription: NSEntityDescription = NSEntityDescription()
 			entityDescription.name = entityDescriptionName
@@ -970,112 +763,5 @@ public class Graph : NSObject {
 			addPredicateToContextWatcher(entityDescription, predicate: predicate)
 			prepareForObservation()
 		}
-	}
-
-	//
-	//	:name:	search
-	//	:description:	Executes a search through CoreData.
-	//
-	private func search(entityDescriptorName: NSString, predicate: NSPredicate) -> Array<AnyObject> {
-		return search(entityDescriptorName, predicate: predicate, sort: nil)
-	}
-
-	//
-	//	:name:	search
-	//	:description:	Executes a search through CoreData.
-	//
-	private func search(entityDescriptorName: NSString, predicate: NSPredicate, sort: Array<NSSortDescriptor>?) -> Array<AnyObject> {
-		let request: NSFetchRequest = NSFetchRequest()
-		let entity: NSEntityDescription = managedObjectModel!.entitiesByName[entityDescriptorName as String]!
-		request.entity = entity
-		request.predicate = predicate
-		request.fetchBatchSize = batchSize
-		request.fetchOffset = batchOffset
-		request.sortDescriptors = sort
-
-		var nodes: Array<AnyObject> = Array<AnyObject>()
-
-		let moc: NSManagedObjectContext? = worker
-		do {
-			let result: Array<AnyObject> = try moc!.executeFetchRequest(request)
-			for item: AnyObject in result {
-				nodes.append(item)
-			}
-		} catch _ {
-			fatalError("[GraphKit Error: Cannot search NSManagedContext.]")
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(entity)
-	//
-	private func search(Entity type: String) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for entity: ManagedEntity in entries as! Array<ManagedEntity> {
-			nodes.insert(Entity(entity: entity))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(EntityGroup)
-	//
-	private func search(EntityGroup name: String) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for group: ManagedEntityGroup in entries as! Array<ManagedEntityGroup> {
-			nodes.insert(Entity(entity: group.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(EntityProperty)
-	//
-	private func search(EntityProperty name: String) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(EntityProperty)
-	//
-	private func search(EntityProperty name: String, value: String) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(EntityProperty)
-	//
-	private func search(EntityProperty name: String, value: Int) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(EntityProperty)
-	//
-	private func search(EntityProperty name: String, value: Bool) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as Bool))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
-		}
-		return nodes
 	}
 }
