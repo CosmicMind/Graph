@@ -258,31 +258,34 @@ public class Graph : NSObject {
 	}
 
 	/**
-		:name:	search(entity)
+		:name:	search(entity: groups)
 		:description:	Searches the Graph for Entity Objects with the following type LIKE ?.
 	*/
-	public func search(entity type: String) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for entity: ManagedEntity in entries as! Array<ManagedEntity> {
-			nodes.insert(Entity(entity: entity))
+	public func search(entity type: String, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
+		let nodes: OrderedSet<Entity> = self.search(Entity: type)
+		if let n: Array<String> = names {
+			for i in n {
+				nodes.intersectInPlace(search(EntityGroup: i))
+			}
+		}
+		if let n: Array<(key: String, value: AnyObject?)> = pairs {
+			for i in n {
+				if let v: AnyObject = i.value {
+					if let a: String = v as? String {
+						nodes.intersectInPlace(search(EntityProperty: i.key, value: a as String))
+					} else if let a: Int = v as? Int {
+						nodes.intersectInPlace(search(EntityProperty: i.key, value: a as Int))
+					} else if let a: Bool = v as? Bool {
+						nodes.intersectInPlace(search(EntityProperty: i.key, value: a as Bool))
+					}
+				} else {
+					nodes.intersectInPlace(search(EntityProperty: i.key))
+				}
+			}
 		}
 		return nodes
 	}
-
-	/**
-		:name:	search(entityGroup)
-		:description:	Searches the Graph for Entity Group Objects with the following name LIKE ?.
-	*/
-	public func search(entityGroup name: String) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for group: ManagedEntityGroup in entries as! Array<ManagedEntityGroup> {
-			nodes.insert(Entity(entity: group.node))
-		}
-		return nodes
-	}
-
+	
 	/**
 		:name:	search(entityGroupMap)
 		:description:	Retrieves all the unique Group Names for Entity Nodes with their Entity Objects.
@@ -297,45 +300,6 @@ public class Graph : NSObject {
 			dict[group.name]!.insert(Entity(entity: group.node))
 		}
 		return dict
-	}
-
-	/**
-		:name:	search(entityProperty)
-		:description:	Searches the Graph for Entity Property Objects with the following name LIKE ?.
-	*/
-	public func search(entityProperty name: String) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
-		}
-		return nodes
-	}
-
-	/**
-		:name:	search(entityProperty)
-		:description:	Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
-	*/
-	public func search(entityProperty name: String, value: String) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
-		}
-		return nodes
-	}
-	
-	/**
-		:name:	search(entityProperty)
-		:description:	Searches the Graph for Entity Property Objects with the following name == ? and value == ?.
-	*/
-	public func search(entityProperty name: String, value: Int) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
-		}
-		return nodes
 	}
 
 	/**
@@ -1039,6 +1003,78 @@ public class Graph : NSObject {
 			}
 		} catch _ {
 			fatalError("[GraphKit Error: Cannot search NSManagedContext.]")
+		}
+		return nodes
+	}
+	
+	//
+	//	:name:	search(entity)
+	//
+	private func search(Entity type: String) -> OrderedSet<Entity> {
+		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		for entity: ManagedEntity in entries as! Array<ManagedEntity> {
+			nodes.insert(Entity(entity: entity))
+		}
+		return nodes
+	}
+	
+	//
+	//	:name:	search(EntityGroup)
+	//
+	private func search(EntityGroup name: String) -> OrderedSet<Entity> {
+		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		for group: ManagedEntityGroup in entries as! Array<ManagedEntityGroup> {
+			nodes.insert(Entity(entity: group.node))
+		}
+		return nodes
+	}
+	
+	//
+	//	:name:	search(EntityProperty)
+	//
+	private func search(EntityProperty name: String) -> OrderedSet<Entity> {
+		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
+			nodes.insert(Entity(entity: property.node))
+		}
+		return nodes
+	}
+	
+	//
+	//	:name:	search(EntityProperty)
+	//
+	private func search(EntityProperty name: String, value: String) -> OrderedSet<Entity> {
+		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSString))
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
+			nodes.insert(Entity(entity: property.node))
+		}
+		return nodes
+	}
+	
+	//
+	//	:name:	search(EntityProperty)
+	//
+	private func search(EntityProperty name: String, value: Int) -> OrderedSet<Entity> {
+		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as NSNumber))
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
+			nodes.insert(Entity(entity: property.node))
+		}
+		return nodes
+	}
+	
+	//
+	//	:name:	search(EntityProperty)
+	//
+	private func search(EntityProperty name: String, value: Bool) -> OrderedSet<Entity> {
+		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name as NSString, value as Bool))
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
+			nodes.insert(Entity(entity: property.node))
 		}
 		return nodes
 	}
