@@ -23,13 +23,13 @@ public extension Graph {
 		:name:	search(entity: group: property)
 	*/
 	public func search(entity types: String..., group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
-		return search(entity: types, group: names, property: pairs)
+		return search(entity: types, group: names, property: pairs, false)
 	}
 	
 	/**
 		:name:	search(entity: group: property)
 	*/
-	public func search(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
+	public func search(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil, _: Bool = false) -> OrderedSet<Entity> {
 		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		
 		// types
@@ -65,13 +65,13 @@ public extension Graph {
 		:name:	search(action: group: property)
 	*/
 	public func search(action types: String..., group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Action> {
-		return search(action: types, group: names, property: pairs)
+		return search(action: types, group: names, property: pairs, false)
 	}
 	
 	/**
 		:name:	search(action: group: property)
 	*/
-	public func search(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Action> {
+	public func search(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil, _: Bool = false) -> OrderedSet<Action> {
 		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		
 		// types
@@ -107,13 +107,13 @@ public extension Graph {
 		:name:	search(bond: group: property)
 	*/
 	public func search(bond types: String..., group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Bond> {
-		return search(bond: types, group: names, property: pairs)
+		return search(bond: types, group: names, property: pairs, false)
 	}
 	
 	/**
 		:name:	search(bond: group: property)
 	*/
-	public func search(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Bond> {
+	public func search(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil, _: Bool = false) -> OrderedSet<Bond> {
 		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		
 		// types
@@ -232,24 +232,9 @@ public extension Graph {
 	}
 	
 	//
-	//	:name:	search(EntityGroupMap)
-	//
-	public func search(EntityGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Entity>> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let dict: OrderedDictionary<String, OrderedSet<Entity>> = OrderedDictionary<String, OrderedSet<Entity>>()
-		for group: ManagedEntityGroup in entries as! Array<ManagedEntityGroup> {
-			if nil == dict[group.name] {
-				dict[group.name] = OrderedSet<Entity>()
-			}
-			dict[group.name]!.insert(Entity(entity: group.node))
-		}
-		return dict
-	}
-	
-	//
 	//	:name:	search(Action)
 	//
-	public func search(Action type: String) -> OrderedSet<Action> {
+	internal func search(Action type: String) -> OrderedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type as NSString), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
 		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for action: ManagedAction in entries as! Array<ManagedAction> {
@@ -268,21 +253,6 @@ public extension Graph {
 			nodes.insert(Action(action: group.node))
 		}
 		return nodes
-	}
-	
-	//
-	//	:name:	search(ActionGroupMap)
-	//
-	public func search(ActionGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Action>> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let dict: OrderedDictionary<String, OrderedSet<Action>> = OrderedDictionary<String, OrderedSet<Action>>()
-		for group: ManagedActionGroup in entries as! Array<ManagedActionGroup> {
-			if nil == dict[group.name] {
-				dict[group.name] = OrderedSet<Action>()
-			}
-			dict[group.name]!.insert(Action(action: group.node))
-		}
-		return dict
 	}
 	
 	//
@@ -343,21 +313,6 @@ public extension Graph {
 			nodes.insert(Bond(bond: group.node))
 		}
 		return nodes
-	}
-	
-	//
-	//	:name:	search(BondGroupMap)
-	//
-	public func search(BondGroupMap name: String) -> OrderedDictionary<String, OrderedSet<Bond>> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name as NSString))
-		let dict: OrderedDictionary<String, OrderedSet<Bond>> = OrderedDictionary<String, OrderedSet<Bond>>()
-		for group: ManagedBondGroup in entries as! Array<ManagedBondGroup> {
-			if nil == dict[group.name] {
-				dict[group.name] = OrderedSet<Bond>()
-			}
-			dict[group.name]!.insert(Bond(bond: group.node))
-		}
-		return dict
 	}
 	
 	//

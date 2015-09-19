@@ -22,9 +22,18 @@ public extension Graph {
 	/**
 		:name:	watch(entity: group: property)
 	*/
-	public func watch(entity type: String, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
-		// type
-		watch(Entity: type)
+	public func watch(entity types: String..., group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
+		watch(entity: types, group: names, property: pairs, false)
+	}
+	
+	/**
+		:name:	watch(entity: group: property)
+	*/
+	public func watch(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil, _: Bool = false) {
+		// types
+		for i in types {
+			watch(Entity: i)
+		}
 		
 		// groups
 		if let n: Array<String> = names {
@@ -44,9 +53,18 @@ public extension Graph {
 	/**
 		:name:	watch(action: group: property)
 	*/
-	public func watch(action type: String, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
-		// type
-		watch(Action: type)
+	public func watch(action types: String..., group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
+		watch(action: types, group: names, property: pairs, false)
+	}
+	
+	/**
+		:name:	watch(action: group: property)
+	*/
+	public func watch(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil, _: Bool = false) {
+		// types
+		for i in types {
+			watch(Action: i)
+		}
 		
 		// groups
 		if let n: Array<String> = names {
@@ -64,11 +82,20 @@ public extension Graph {
 	}
 	
 	/**
-	:name:	watch(bond: group: property)
+		:name:	watch(bond: group: property)
 	*/
-	public func watch(bond type: String, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
-		// type
-		watch(Bond: type)
+	public func watch(bond types: String..., group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
+		watch(bond: types, group: names, property: pairs, false)
+	}
+	
+	/**
+		:name:	watch(bond: group: property)
+	*/
+	public func watch(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil, _: Bool = false) {
+		// types
+		for i in types {
+			watch(Bond: i)
+		}
 		
 		// groups
 		if let n: Array<String> = names {

@@ -49,7 +49,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		let e1: Entity = Entity(type: "E")
 		e1["active"] = true
 		
-		let e2: Entity? = graph?.search(entity: "*", property: [("active", true)]).last
+		let e2: Entity? = graph?.search(entity: ["*"], property: [("active", true)]).last
 		
 		XCTAssertTrue(e1 == e2, "Entity: Search did not pass.")
 		
