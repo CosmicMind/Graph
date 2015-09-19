@@ -22,9 +22,20 @@ public extension Graph {
 	/**
 		:name:	search(entity: group: property)
 	*/
-	public func search(entity type: String, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
-		// type
-		let nodes: OrderedSet<Entity> = search(Entity: type)
+	public func search(entity types: String..., group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
+		return search(entity: types, group: names, property: pairs)
+	}
+	
+	/**
+		:name:	search(entity: group: property)
+	*/
+	public func search(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
+		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		
+		// types
+		for i in types {
+			nodes += search(Entity: i)
+		}
 		
 		// groups
 		if let n: Array<String> = names {
@@ -53,9 +64,20 @@ public extension Graph {
 	/**
 		:name:	search(action: group: property)
 	*/
-	public func search(action type: String, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Action> {
-		// type
-		let nodes: OrderedSet<Action> = search(Action: type)
+	public func search(action types: String..., group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Action> {
+		return search(action: types, group: names, property: pairs)
+	}
+	
+	/**
+		:name:	search(action: group: property)
+	*/
+	public func search(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Action> {
+		let nodes: OrderedSet<Action> = OrderedSet<Action>()
+		
+		// types
+		for i in types {
+			nodes += search(Action: i)
+		}
 		
 		// groups
 		if let n: Array<String> = names {
@@ -84,9 +106,20 @@ public extension Graph {
 	/**
 		:name:	search(bond: group: property)
 	*/
-	public func search(bond type: String, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Bond> {
-		// type
-		let nodes: OrderedSet<Bond> = search(Bond: type)
+	public func search(bond types: String..., group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Bond> {
+		return search(bond: types, group: names, property: pairs)
+	}
+	
+	/**
+		:name:	search(bond: group: property)
+	*/
+	public func search(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Bond> {
+		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		
+		// types
+		for i in types {
+			nodes += search(Bond: i)
+		}
 		
 		// groups
 		if let n: Array<String> = names {
