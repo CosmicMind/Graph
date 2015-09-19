@@ -81,6 +81,8 @@ class OrderedSetTests: XCTestCase {
 
 		XCTAssert(OrderedSet<Int>(elements: 22, 23, 5) == s1.intersect(s2), "Test failed. \(s1.intersect(s2))")
 		
+		XCTAssert(OrderedSet<Int>() == s1.intersect(OrderedSet<Int>()), "Test failed. \(s1)")
+		
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9)
 		let s4: OrderedSet<Int> = OrderedSet<Int>(elements: 11, 9, 7, 3, 8, 100, 99, 88, 77)
 		XCTAssert(OrderedSet<Int>(elements: 9, 3, 7, 8) == s3.intersect(s4), "Test failed.")
@@ -92,6 +94,9 @@ class OrderedSetTests: XCTestCase {
 		
 		s1.intersectInPlace(s2)
 		XCTAssert(OrderedSet<Int>(elements: 22, 23, 5) == s1, "Test failed. \(s1)")
+		
+		s1.intersectInPlace(OrderedSet<Int>())
+		XCTAssert(OrderedSet<Int>() == s1, "Test failed. \(s1)")
 		
 		let s3: OrderedSet<Int> = OrderedSet<Int>(elements: 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 9, 9)
 		let s4: OrderedSet<Int> = OrderedSet<Int>(elements: 11, 9, 7, 3, 8, 100, 99, 88, 77)

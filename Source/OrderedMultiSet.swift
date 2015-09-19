@@ -290,17 +290,21 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 		var i: Int = 0
 		var j: Int = 0
 		let l: Int = set.count
-		while count > i && l > j {
-			let x: Element = self[i]
-			let y: Element = set[j]
-			if x < y {
-				tree.removeInstanceOfValueForKey(x)
-				count = tree.count
-			} else if y < x {
-				++j
-			} else {
-				++i
-				++j
+		if 0 == l {
+			removeAll()
+		} else {
+			while count > i && l > j {
+				let x: Element = self[i]
+				let y: Element = set[j]
+				if x < y {
+					tree.removeInstanceOfValueForKey(x)
+					count = tree.count
+				} else if y < x {
+					++j
+				} else {
+					++i
+					++j
+				}
 			}
 		}
 	}

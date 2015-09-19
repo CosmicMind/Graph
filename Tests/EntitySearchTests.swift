@@ -50,7 +50,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		let e1: Entity = Entity(type: "E")
 		e1["active"] = true
 		
-		let e2: Entity? = graph?.search(entity: "*", property: [("active", nil)]).last
+		let e2: Entity? = graph?.search(entity: "*", property: [("active", true)]).last
 		
 		XCTAssertTrue(e1 == e2, "Entity: Search did not pass.")
 		
@@ -62,6 +62,22 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		
 		// Wait for the delegates to be executed.
 		waitForExpectationsWithTimeout(5, handler: nil)
+	}
+	
+	func testSearch() {
+		let user: Entity = Entity(type: "SearchUser")
+		user["name"] = "Daniel"
+		user.addGroup("Admin")
+		graph!.save { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+		}
+		
+		for entity in graph!.search(entity: "SearchUser", group: ["Admin"]) {
+			entity.delete()
+		}
+		graph!.save { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+		}
 	}
 	
 	func graphDidInsertEntity(graph: Graph, entity: Entity) {
@@ -96,8 +112,8 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 			graph.save{ (success: Bool, error: NSError?) in
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			}
-			print(graph.search(entity: "*", property: [("active", nil)]))
-			XCTAssertTrue(0 == graph.search(entity: "*", property: [("active", nil)]).count, "Entity: Search did not pass.")
+			
+			XCTAssertTrue(0 == graph.search(entity: "*", property: [("active", false)]).count, "Entity: Search did not pass.")
 			
 			expectation = expectationWithDescription("Entity: Delete did not pass.")
 			

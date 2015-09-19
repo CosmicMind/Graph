@@ -137,21 +137,6 @@ class EntityTests : XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
 	
-	func testSearch() {
-		let user: Entity = Entity(type: "SearchUser")
-		user["name"] = "Daniel"
-		user.addGroup("Admin")
-		graph!.save { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-		}
-		for entity in graph!.search(entity: "SearchUser", group: ["Admin"]) {
-			entity.delete()
-		}
-		graph!.save { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-		}
-	}
-
     func graphDidInsertEntity(graph: Graph, entity: Entity) {
         if "User" == entity.type {
             userInsertExpectation?.fulfill()
