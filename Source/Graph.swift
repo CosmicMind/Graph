@@ -103,45 +103,43 @@ public protocol GraphDelegate {
 @objc(Graph)
 public class Graph : NSObject {
 	/**
-		:name:	watchers
-	*/
-	internal var watchers: OrderedDictionary<String, OrderedSet<String>>
-	
-	/**
-		:name:	materPredicate
-	*/
-	internal var masterPredicate: NSPredicate?
-	
-	/**
 		:name:	batchSize
 	*/
-	public var batchSize: Int = 0 // set number for limit of return objects
+	public var batchSize: Int = 0 // 0 == no limit
 	
 	/**
 		:name:	batchOffset
 	*/
 	public var batchOffset: Int = 0
 	
-	/**
-		:name:	delegate
-	*/
-	public weak var delegate: GraphDelegate?
-
+	//
+	//	:name:	watchers
+	//
+	internal lazy var watchers: OrderedDictionary<String, OrderedSet<String>> = OrderedDictionary<String, OrderedSet<String>>()
+	
+	//
+	//	:name:	materPredicate
+	//
+	internal var masterPredicate: NSPredicate?
+	
 	/**
 		:name:	init
-		:description:	Initializer for the Object.
 	*/
 	public override init() {
-		watchers = OrderedDictionary<String, OrderedSet<String>>()
 		super.init()
 	}
-
+	
 	//
 	//	:name:	deinit
 	//
 	deinit {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
 	}
+	
+	/**
+		:name:	delegate
+	*/
+	public weak var delegate: GraphDelegate?
 
 	/**
 		:name:	save
@@ -180,200 +178,6 @@ public class Graph : NSObject {
 							completion?(success: false, error: e)
 						}
 					}
-				}
-			}
-		}
-	}
-
-	/**
-		:name:	watch(entity)
-		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the spcified type.
-	*/
-	public func watch(entity type: String) {
-		addWatcher("type", value: type, index: GraphUtility.entityIndexName, entityDescriptionName: GraphUtility.entityDescriptionName, managedObjectClassName: GraphUtility.entityObjectClassName)
-	}
-
-	/**
-		:name:	watch(entityGroup)
-		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified group name.
-	*/
-	public func watch(entityGroup name: String) {
-		addWatcher("name", value: name, index: GraphUtility.entityGroupIndexName, entityDescriptionName: GraphUtility.entityGroupDescriptionName, managedObjectClassName: GraphUtility.entityGroupObjectClassName)
-	}
-
-	/**
-		:name:	watch(entityProperty)
-		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Entity with the specified property name.
-	*/
-	public func watch(entityProperty name: String) {
-		addWatcher("name", value: name, index: GraphUtility.entityPropertyIndexName, entityDescriptionName: GraphUtility.entityPropertyDescriptionName, managedObjectClassName: GraphUtility.entityPropertyObjectClassName)
-	}
-
-	/**
-		:name:	watch(action)
-		:description:	Attaches the Graph instance to NotificationCenter in order to Observe changes for an Action with the spcified type.
-	*/
-	public func watch(action type: String) {
-		addWatcher("type", value: type, index: GraphUtility.actionIndexName, entityDescriptionName: GraphUtility.actionDescriptionName, managedObjectClassName: GraphUtility.actionObjectClassName)
-	}
-
-	/**
-		:name:	watch(actionGroup)
-		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified group name.
-	*/
-	public func watch(actionGroup name: String) {
-		addWatcher("name", value: name, index: GraphUtility.actionGroupIndexName, entityDescriptionName: GraphUtility.actionGroupDescriptionName, managedObjectClassName: GraphUtility.actionGroupObjectClassName)
-	}
-
-	/**
-		:name:	watch(actionProperty)
-		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Action with the specified property name.
-	*/
-	public func watch(actionProperty name: String) {
-		addWatcher("name", value: name, index: GraphUtility.actionPropertyIndexName, entityDescriptionName: GraphUtility.actionPropertyDescriptionName, managedObjectClassName: GraphUtility.actionPropertyObjectClassName)
-	}
-
-	/**
-		:name:	watch(bond)
-		:description:	Attaches the Graph instance to NotificationCenter in order to Observe changes for an Bond with the spcified type.
-	*/
-	public func watch(bond type: String) {
-		addWatcher("type", value: type, index: GraphUtility.bondIndexName, entityDescriptionName: GraphUtility.bondDescriptionName, managedObjectClassName: GraphUtility.bondObjectClassName)
-	}
-
-	/**
-		:name:	watch(bondGroup)
-		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified group name.
-	*/
-	public func watch(bondGroup name: String) {
-		addWatcher("name", value: name, index: GraphUtility.bondGroupIndexName, entityDescriptionName: GraphUtility.bondGroupDescriptionName, managedObjectClassName: GraphUtility.bondGroupObjectClassName)
-	}
-
-	/**
-		:name:	watch(bondProperty)
-		:description:	Attaches the Graph instance to NotificationCenter in order to observe changes for an Bond with the specified property name.
-	*/
-	public func watch(bondProperty name: String) {
-		addWatcher("name", value: name, index: GraphUtility.bondPropertyIndexName, entityDescriptionName: GraphUtility.bondPropertyDescriptionName, managedObjectClassName: GraphUtility.bondPropertyObjectClassName)
-	}
-
-	//
-	//	:name:	managedObjectContextDidSave
-	//	:description:	The callback that NotificationCenter uses when changes occur in the Graph.
-	//
-	internal func managedObjectContextDidSave(notification: NSNotification) {
-		let userInfo = notification.userInfo
-
-		// inserts
-		let insertedSet: NSSet = userInfo?[NSInsertedObjectsKey] as! NSSet
-		let	inserted: NSMutableSet = insertedSet.mutableCopy() as! NSMutableSet
-
-		inserted.filterUsingPredicate(masterPredicate!)
-
-		if 0 < inserted.count {
-			let nodes: Array<NSManagedObject> = inserted.allObjects as! [NSManagedObject]
-			for node: NSManagedObject in nodes {
-				let className = String.fromCString(object_getClassName(node))
-				switch(className!) {
-				case "ManagedEntity_ManagedEntity_":
-					delegate?.graphDidInsertEntity?(self, entity: Entity(entity: node as! ManagedEntity))
-				case "ManagedEntityGroup_ManagedEntityGroup_":
-					let group: ManagedEntityGroup = node as! ManagedEntityGroup
-					delegate?.graphDidInsertEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
-				case "ManagedEntityProperty_ManagedEntityProperty_":
-					let property: ManagedEntityProperty = node as! ManagedEntityProperty
-					delegate?.graphDidInsertEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
-				case "ManagedAction_ManagedAction_":
-					delegate?.graphDidInsertAction?(self, action: Action(action: node as! ManagedAction))
-				case "ManagedActionGroup_ManagedActionGroup_":
-					let group: ManagedActionGroup = node as! ManagedActionGroup
-					delegate?.graphDidInsertActionGroup?(self, action: Action(action: group.node), group: group.name)
-				case "ManagedActionProperty_ManagedActionProperty_":
-					let property: ManagedActionProperty = node as! ManagedActionProperty
-					delegate?.graphDidInsertActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
-				case "ManagedBond_ManagedBond_":
-					delegate?.graphDidInsertBond?(self, bond: Bond(bond: node as! ManagedBond))
-				case "ManagedBondGroup_ManagedBondGroup_":
-					let group: ManagedBondGroup = node as! ManagedBondGroup
-					delegate?.graphDidInsertBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
-				case "ManagedBondProperty_ManagedBondProperty_":
-					let property: ManagedBondProperty = node as! ManagedBondProperty
-					delegate?.graphDidInsertBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
-				default:
-					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
-				}
-			}
-		}
-
-		// updates
-		let updatedSet: NSSet = userInfo?[NSUpdatedObjectsKey] as! NSSet
-		let	updated: NSMutableSet = updatedSet.mutableCopy() as! NSMutableSet
-		updated.filterUsingPredicate(masterPredicate!)
-		
-		if 0 < updated.count {
-			let nodes: Array<NSManagedObject> = updated.allObjects as! [NSManagedObject]
-			for node: NSManagedObject in nodes {
-				let className = String.fromCString(object_getClassName(node))
-				switch(className!) {
-				case "ManagedEntityProperty_ManagedEntityProperty_":
-					let property: ManagedEntityProperty = node as! ManagedEntityProperty
-					delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
-				case "ManagedActionProperty_ManagedActionProperty_":
-					let property: ManagedActionProperty = node as! ManagedActionProperty
-					delegate?.graphDidUpdateActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
-				case "ManagedBondProperty_ManagedBondProperty_":
-					let property: ManagedBondProperty = node as! ManagedBondProperty
-					delegate?.graphDidUpdateBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
-				case "ManagedAction_ManagedAction_":
-					delegate?.graphDidUpdateAction?(self, action: Action(action: node as! ManagedAction))
-				default:
-					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
-				}
-			}
-
-		}
-
-		// deletes
-		let deletedSet: NSSet? = userInfo?[NSDeletedObjectsKey] as? NSSet
-
-		if nil == deletedSet {
-			return
-		}
-
-		let	deleted: NSMutableSet = deletedSet!.mutableCopy() as! NSMutableSet
-		deleted.filterUsingPredicate(masterPredicate!)
-
-		if 0 < deleted.count {
-			let nodes: Array<NSManagedObject> = deleted.allObjects as! [NSManagedObject]
-			for node: NSManagedObject in nodes {
-				let className = String.fromCString(object_getClassName(node))
-				switch(className!) {
-				case "ManagedEntity_ManagedEntity_":
-					delegate?.graphDidDeleteEntity?(self, entity: Entity(entity: node as! ManagedEntity))
-				case "ManagedEntityProperty_ManagedEntityProperty_":
-					let property: ManagedEntityProperty = node as! ManagedEntityProperty
-					delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
-				case "ManagedEntityGroup_ManagedEntityGroup_":
-					let group: ManagedEntityGroup = node as! ManagedEntityGroup
-					delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
-				case "ManagedAction_ManagedAction_":
-					delegate?.graphDidDeleteAction?(self, action: Action(action: node as! ManagedAction))
-				case "ManagedActionProperty_ManagedActionProperty_":
-					let property: ManagedActionProperty = node as! ManagedActionProperty
-					delegate?.graphDidDeleteActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
-				case "ManagedActionGroup_ManagedActionGroup_":
-					let group: ManagedActionGroup = node as! ManagedActionGroup
-					delegate?.graphDidDeleteActionGroup?(self, action: Action(action: group.node), group: group.name)
-				case "ManagedBond_ManagedBond_":
-					delegate?.graphDidDeleteBond?(self, bond: Bond(bond: node as! ManagedBond))
-				case "ManagedBondProperty_ManagedBondProperty_":
-					let property: ManagedBondProperty = node as! ManagedBondProperty
-					delegate?.graphDidDeleteBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
-				case "ManagedBondGroup_ManagedBondGroup_":
-					let group: ManagedBondGroup = node as! ManagedBondGroup
-					delegate?.graphDidDeleteBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
-				default:
-					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 				}
 			}
 		}
@@ -712,56 +516,5 @@ public class Graph : NSObject {
 			} catch {}
 		}
 		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
-	}
-
-	//
-	//	:name:	prepareForObservation
-	//	:description:	Ensures NotificationCenter is watchers the callback selector for this Graph.
-	//
-	internal func prepareForObservation() {
-		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: internalContext)
-	}
-
-	//
-	//	:name:	addPredicateToContextWatcher
-	//	:description:	Adds the given predicate to the master predicate, which holds all watchers for the Graph.
-	//
-	internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription, predicate: NSPredicate) {
-		let entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
-		let predicates: Array<NSPredicate> = [entityPredicate, predicate]
-		let finalPredicate: NSPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-		masterPredicate = nil != masterPredicate ? NSCompoundPredicate(orPredicateWithSubpredicates: [masterPredicate!, finalPredicate]) : finalPredicate
-	}
-
-	//
-	//	:name:	isWatching
-	//	:description:	A sanity check if the Graph is already watchers the specified index and key.
-	//
-	internal func isWatching(key: String, index: String) -> Bool {
-		if nil == watchers[key] {
-			watchers[key] = OrderedSet<String>(elements: index)
-			return false
-		}
-		if watchers[key]!.contains(index) {
-			return true
-		}
-		watchers[key]!.insert(index)
-		return false
-	}
-
-	//
-	//	:name:	addWatcher
-	//	:description:	Adds a watcher to the Graph.
-	//
-	internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
-		if !isWatching(value, index: index) {
-			let entityDescription: NSEntityDescription = NSEntityDescription()
-			entityDescription.name = entityDescriptionName
-			entityDescription.managedObjectClassName = managedObjectClassName
-			let predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
-			addPredicateToContextWatcher(entityDescription, predicate: predicate)
-			prepareForObservation()
-		}
 	}
 }

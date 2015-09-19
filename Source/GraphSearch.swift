@@ -100,14 +100,7 @@ public extension Graph {
 	//
 	//	:name:	search
 	//
-	internal func search(entityDescriptorName: NSString, predicate: NSPredicate) -> Array<AnyObject> {
-		return search(entityDescriptorName, predicate: predicate, sort: nil)
-	}
-	
-	//
-	//	:name:	search
-	//
-	internal func search(entityDescriptorName: NSString, predicate: NSPredicate, sort: Array<NSSortDescriptor>?) -> Array<AnyObject> {
+	internal func search(entityDescriptorName: NSString, predicate: NSPredicate, sort: Array<NSSortDescriptor>? = nil) -> Array<AnyObject> {
 		let request: NSFetchRequest = NSFetchRequest()
 		let entity: NSEntityDescription = managedObjectModel!.entitiesByName[entityDescriptorName as String]!
 		request.entity = entity
