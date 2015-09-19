@@ -20,65 +20,131 @@ import CoreData
 
 public extension Graph {
 	/**
-		:name:	watch(entity)
+		:name:	watch(entity: group: property)
 	*/
-	public func watch(entity type: String) {
+	public func watch(entity type: String, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
+		// type
+		watch(Entity: type)
+		
+		// groups
+		if let n: Array<String> = names {
+			for i in n {
+				watch(EntityGroup: i)
+			}
+		}
+		
+		// properties
+		if let n: Array<String> = pairs {
+			for i in n {
+				watch(EntityProperty: i)
+			}
+		}
+	}
+	
+	/**
+		:name:	watch(action: group: property)
+	*/
+	public func watch(action type: String, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
+		// type
+		watch(Action: type)
+		
+		// groups
+		if let n: Array<String> = names {
+			for i in n {
+				watch(ActionGroup: i)
+			}
+		}
+		
+		// properties
+		if let n: Array<String> = pairs {
+			for i in n {
+				watch(ActionProperty: i)
+			}
+		}
+	}
+	
+	/**
+	:name:	watch(bond: group: property)
+	*/
+	public func watch(bond type: String, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
+		// type
+		watch(Bond: type)
+		
+		// groups
+		if let n: Array<String> = names {
+			for i in n {
+				watch(BondGroup: i)
+			}
+		}
+		
+		// properties
+		if let n: Array<String> = pairs {
+			for i in n {
+				watch(BondProperty: i)
+			}
+		}
+	}
+	
+	//
+	//	:name:	watch(Entity)
+	//
+	internal func watch(Entity type: String) {
 		addWatcher("type", value: type, index: GraphUtility.entityIndexName, entityDescriptionName: GraphUtility.entityDescriptionName, managedObjectClassName: GraphUtility.entityObjectClassName)
 	}
 	
-	/**
-		:name:	watch(entityGroup)
-	*/
-	public func watch(entityGroup name: String) {
+	//
+	//	:name:	watch(EntityGroup)
+	//
+	internal func watch(EntityGroup name: String) {
 		addWatcher("name", value: name, index: GraphUtility.entityGroupIndexName, entityDescriptionName: GraphUtility.entityGroupDescriptionName, managedObjectClassName: GraphUtility.entityGroupObjectClassName)
 	}
 	
-	/**
-		:name:	watch(entityProperty)
-	*/
-	public func watch(entityProperty name: String) {
+	//
+	//	:name:	watch(EntityProperty)
+	//
+	internal func watch(EntityProperty name: String) {
 		addWatcher("name", value: name, index: GraphUtility.entityPropertyIndexName, entityDescriptionName: GraphUtility.entityPropertyDescriptionName, managedObjectClassName: GraphUtility.entityPropertyObjectClassName)
 	}
 	
-	/**
-		:name:	watch(action)
-	*/
-	public func watch(action type: String) {
+	//
+	//	:name:	watch(Action)
+	//
+	internal func watch(Action type: String) {
 		addWatcher("type", value: type, index: GraphUtility.actionIndexName, entityDescriptionName: GraphUtility.actionDescriptionName, managedObjectClassName: GraphUtility.actionObjectClassName)
 	}
 	
-	/**
-		:name:	watch(actionGroup)
-	*/
-	public func watch(actionGroup name: String) {
+	//
+	//	:name:	watch(ActionGroup)
+	//
+	internal func watch(ActionGroup name: String) {
 		addWatcher("name", value: name, index: GraphUtility.actionGroupIndexName, entityDescriptionName: GraphUtility.actionGroupDescriptionName, managedObjectClassName: GraphUtility.actionGroupObjectClassName)
 	}
 	
-	/**
-		:name:	watch(actionProperty)
-	*/
-	public func watch(actionProperty name: String) {
+	//
+	//	:name:	watch(ActionProperty)
+	//
+	internal func watch(ActionProperty name: String) {
 		addWatcher("name", value: name, index: GraphUtility.actionPropertyIndexName, entityDescriptionName: GraphUtility.actionPropertyDescriptionName, managedObjectClassName: GraphUtility.actionPropertyObjectClassName)
 	}
 	
-	/**
-		:name:	watch(bond)
-	*/
-	public func watch(bond type: String) {
+	//
+	//	:name:	watch(Bond)
+	//
+	internal func watch(Bond type: String) {
 		addWatcher("type", value: type, index: GraphUtility.bondIndexName, entityDescriptionName: GraphUtility.bondDescriptionName, managedObjectClassName: GraphUtility.bondObjectClassName)
 	}
 	
-	/**
-		:name:	watch(bondGroup)
-	*/
-	public func watch(bondGroup name: String) {
+	//
+	//	:name:	watch(BondGroup)
+	//
+	internal func watch(BondGroup name: String) {
 		addWatcher("name", value: name, index: GraphUtility.bondGroupIndexName, entityDescriptionName: GraphUtility.bondGroupDescriptionName, managedObjectClassName: GraphUtility.bondGroupObjectClassName)
 	}
 	
-	/**
-		:name:	watch(bondProperty)
-	*/
-	public func watch(bondProperty name: String) {
+	//
+	//	:name:	watch(BondProperty)
+	//
+	internal func watch(BondProperty name: String) {
 		addWatcher("name", value: name, index: GraphUtility.bondPropertyIndexName, entityDescriptionName: GraphUtility.bondPropertyDescriptionName, managedObjectClassName: GraphUtility.bondPropertyObjectClassName)
 	}
 	
@@ -155,7 +221,6 @@ public extension Graph {
 					assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 				}
 			}
-			
 		}
 		
 		// deletes

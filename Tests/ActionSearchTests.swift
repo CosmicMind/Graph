@@ -42,8 +42,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Action values.
-		graph?.watch(action: "A")
-		graph?.watch(actionProperty: "active")
+		graph?.watch(action: "A", property: ["active"])
 		
 		XCTAssertTrue(0 == graph?.search(action: "*", property: [("active", nil)]).count, "Test failed.")
 		

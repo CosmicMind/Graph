@@ -42,8 +42,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Entity values.
-		graph?.watch(entity: "E")
-		graph?.watch(entityProperty: "active")
+		graph?.watch(entity: "E", property: ["active"])
 		
 		XCTAssertTrue(0 == graph?.search(entity: "*", property: [("active", nil)]).count, "Entity: Search did not pass.")
 		

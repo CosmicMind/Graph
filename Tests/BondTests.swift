@@ -103,10 +103,7 @@ class BondTests : XCTestCase, GraphDelegate {
         graph.delegate = self
 
         // Let's watch the changes in the Graph for the following Bond values.
-        graph.watch(bond: "Friend")
-        graph.watch(bondGroup: "Close")
-        graph.watch(bondProperty: "permission")
-        graph.watch(bondProperty: "year")
+		graph.watch(bond: "Friend", group: ["Close"], property: ["permission", "year"])
 
         // Let's watch the User Entity values to test reverse Bond indices.
         graph.watch(entity: "User")

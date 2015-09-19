@@ -43,8 +43,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Bond values.
-		graph?.watch(bond: "B")
-		graph?.watch(bondProperty: "active")
+		graph?.watch(bond: "B", property: ["active"])
 		
 		XCTAssertTrue(0 == graph?.search(bond: "*", property: [("active", nil)]).count, "Test failed.")
 		

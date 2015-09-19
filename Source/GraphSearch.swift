@@ -23,12 +23,17 @@ public extension Graph {
 		:name:	search(entity: group: property)
 	*/
 	public func search(entity type: String, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
+		// type
 		let nodes: OrderedSet<Entity> = search(Entity: type)
+		
+		// groups
 		if let n: Array<String> = names {
 			for i in n {
 				nodes.intersectInPlace(search(EntityGroup: i))
 			}
 		}
+		
+		// properties
 		if let n: Array<(key: String, value: AnyObject?)> = pairs {
 			for i in n {
 				if let v: AnyObject = i.value {
@@ -49,12 +54,17 @@ public extension Graph {
 		:name:	search(action: group: property)
 	*/
 	public func search(action type: String, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Action> {
+		// type
 		let nodes: OrderedSet<Action> = search(Action: type)
+		
+		// groups
 		if let n: Array<String> = names {
 			for i in n {
 				nodes.intersectInPlace(search(ActionGroup: i))
 			}
 		}
+		
+		// properties
 		if let n: Array<(key: String, value: AnyObject?)> = pairs {
 			for i in n {
 				if let v: AnyObject = i.value {
@@ -75,12 +85,17 @@ public extension Graph {
 		:name:	search(bond: group: property)
 	*/
 	public func search(bond type: String, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Bond> {
+		// type
 		let nodes: OrderedSet<Bond> = search(Bond: type)
+		
+		// groups
 		if let n: Array<String> = names {
 			for i in n {
 				nodes.intersectInPlace(search(BondGroup: i))
 			}
 		}
+		
+		// properties
 		if let n: Array<(key: String, value: AnyObject?)> = pairs {
 			for i in n {
 				if let v: AnyObject = i.value {

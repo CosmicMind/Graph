@@ -114,10 +114,7 @@ class ActionTests : XCTestCase, GraphDelegate {
         graph!.delegate = self
 
         // Let's watch the changes in the Graph for the following Action values.
-        graph!.watch(action: "Read")
-        graph!.watch(actionGroup: "Holiday")
-        graph!.watch(actionProperty: "name")
-        graph!.watch(actionProperty: "session")
+		graph!.watch(action: "Read", group: ["Holiday"], property: ["name", "session"])
 
         // Let's watch the changes in the Graph for the following Entity values.
         graph!.watch(entity: "User")

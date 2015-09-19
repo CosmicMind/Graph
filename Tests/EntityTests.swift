@@ -78,10 +78,7 @@ class EntityTests : XCTestCase, GraphDelegate {
         graph!.delegate = self
 
         // Let's watch the changes in the Graph for the following Entity values.
-        graph!.watch(entity: "User")
-        graph!.watch(entityGroup: "Female")
-        graph!.watch(entityProperty: "name")
-        graph!.watch(entityProperty: "age")
+		graph!.watch(entity: "User", group: ["Female"], property: ["name", "age"])
 
         // Create a User Entity.
         let user: Entity = Entity(type: "User")
