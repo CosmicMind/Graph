@@ -718,40 +718,34 @@ public func ==<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedB
 	return true
 }
 
+public func !=<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> Bool {
+	return !(lhs == rhs)
+}
+
 public func +<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
-	let t: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>()
-	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		let n: (key: Key, value: Value?) = lhs[i]
-		t.insert(n.key, value: n.value)
-	}
-	for var i: Int = rhs.count - 1; 0 <= i; --i {
-		let n: (key: Key, value: Value?) = rhs[i]
-		t.insert(n.key, value: n.value)
+	let t: RedBlackTree<Key, Value> = lhs
+	for (k, v) in rhs {
+		t.insert(k, value: v)
 	}
 	return t
 }
 
 public func +=<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) {
-	for var i: Int = rhs.count - 1; 0 <= i; --i {
-		let n: (key: Key, value: Value?) = rhs[i]
-		lhs.insert((n.key, n.value))
+	for (k, v) in rhs {
+		lhs.insert(k, value: v)
 	}
 }
 
 public func -<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) -> RedBlackTree<Key, Value> {
-	let t: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>()
-	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		let n: (key: Key, value: Value?) = lhs[i]
-		t.insert(n.key, value: n.value)
-	}
-	for var i: Int = rhs.count - 1; 0 <= i; --i {
-		t.removeValueForKeys(rhs[i].key)
+	let t: RedBlackTree<Key, Value> = rhs
+	for (k, _) in rhs {
+		t.removeValueForKeys(k)
 	}
 	return t
 }
 
 public func -=<Key : Comparable, Value>(lhs: RedBlackTree<Key, Value>, rhs: RedBlackTree<Key, Value>) {
-	for var i: Int = rhs.count - 1; 0 <= i; --i {
-		lhs.removeValueForKeys(rhs[i].key)
+	for (k, _) in rhs {
+		lhs.removeValueForKeys(k)
 	}
 }

@@ -568,6 +568,10 @@ public func ==<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedM
 	return true
 }
 
+public func !=<Element: Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> Bool {
+	return !(lhs == rhs)
+}
+
 public func +<Element : Comparable>(lhs: OrderedMultiSet<Element>, rhs: OrderedMultiSet<Element>) -> OrderedMultiSet<Element> {
 	return lhs.union(rhs)
 }

@@ -137,6 +137,23 @@ class RedBlackTreeTests: XCTestCase {
 		XCTAssert(6 == t1.indexOf(6), "Test failed.")
 		XCTAssert(-1 == t1.indexOf(100), "Test failed.")
 	}
+	
+	func testOperands() {
+		let t1: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>(uniqueKeys: true)
+		t1.insert((1, 1), (2, 2), (3, 3), (4, 4))
+		XCTAssert(4 == t1.count, "Test failed.")
+		
+		let t2: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>(uniqueKeys: true)
+		t2.insert((5, 5), (6, 6), (7, 7), (8, 8))
+		XCTAssert(4 == t2.count, "Test failed.")
+		
+		let t3: RedBlackTree<Int, Int> = t1 + t2
+		XCTAssert(8 == t3.count, "Test failed.")
+		
+		XCTAssert(t1 != t2, "Test failed.")
+		XCTAssert(t3 != t2, "Test failed.")
+		XCTAssert(t3 == (t1 + t2), "Test failed.")
+	}
 
 	func testPerformance() {
 		self.measureBlock() {}

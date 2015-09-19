@@ -551,6 +551,10 @@ public func ==<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<El
 	return true
 }
 
+public func !=<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+	return !(lhs == rhs)
+}
+
 public func +<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> OrderedSet<Element> {
 	return lhs.union(rhs)
 }

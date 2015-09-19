@@ -355,40 +355,34 @@ public func ==<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>,
 	return true
 }
 
+public func !=<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) -> Bool {
+	return !(lhs == rhs)
+}
+
 public func +<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) -> OrderedMultiDictionary<Key, Value> {
-	let t: OrderedMultiDictionary<Key, Value> = OrderedMultiDictionary<Key, Value>()
-	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		let n: (key: Key, value: Value?) = lhs[i]
-		t.insert((n.key, n.value))
-	}
-	for var i: Int = rhs.count - 1; 0 <= i; --i {
-		let n: (key: Key, value: Value?) = rhs[i]
-		t.insert((n.key, n.value))
+	let t: OrderedMultiDictionary<Key, Value> = lhs
+	for (k, v) in rhs {
+		t.insert(k, value: v)
 	}
 	return t
 }
 
 public func +=<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) {
-	for var i: Int = rhs.count - 1; 0 <= i; --i {
-		let n: (key: Key, value: Value?) = rhs[i]
-		lhs.insert((n.key, n.value))
+	for (k, v) in rhs {
+		lhs.insert(k, value: v)
 	}
 }
 
 public func -<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) -> OrderedMultiDictionary<Key, Value> {
-	let t: OrderedMultiDictionary<Key, Value> = OrderedMultiDictionary<Key, Value>()
-	for var i: Int = lhs.count - 1; 0 <= i; --i {
-		let n: (key: Key, value: Value?) = lhs[i]
-		t.insert((n.key, n.value))
-	}
-	for var i: Int = rhs.count - 1; 0 <= i; --i {
-		t.removeValueForKeys(rhs[i].key)
+	let t: OrderedMultiDictionary<Key, Value> = lhs
+	for (k, _) in rhs {
+		t.removeValueForKeys(k)
 	}
 	return t
 }
 
 public func -=<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) {
-	for var i: Int = rhs.count - 1; 0 <= i; --i {
-		lhs.removeValueForKeys(rhs[i].key)
+	for (k, _) in rhs {
+		lhs.removeValueForKeys(k)
 	}
 }
