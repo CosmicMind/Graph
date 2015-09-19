@@ -121,6 +121,8 @@ public func +<Element>(lhs: Stack<Element>, rhs: Stack<Element>) -> Stack<Elemen
 	return s
 }
 
-public func +=<Element>(var lhs: Stack<Element>, rhs: Stack<Element>) {
-	lhs = lhs + rhs
+public func +=<Element>(lhs: Stack<Element>, rhs: Stack<Element>) {
+	for x in rhs {
+		lhs.push(x!)
+	}
 }

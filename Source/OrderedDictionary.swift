@@ -367,8 +367,11 @@ public func +<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: 
 	return t
 }
 
-public func +=<Key : Comparable, Value>(var lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) {
-	lhs = lhs + rhs
+public func +=<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) {
+	for var i: Int = rhs.count - 1; 0 <= i; --i {
+		let n: (key: Key, value: Value?) = rhs[i]
+		lhs.insert((n.key, n.value))
+	}
 }
 
 public func -<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> OrderedDictionary<Key, Value> {
@@ -378,12 +381,13 @@ public func -<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: 
 		t.insert((n.key, n.value))
 	}
 	for var i: Int = rhs.count - 1; 0 <= i; --i {
-		let n: (key: Key, value: Value?) = rhs[i]
-		t.insert((n.key, n.value))
+		t.removeValueForKeys(rhs[i].key)
 	}
 	return t
 }
 
-public func -=<Key : Comparable, Value>(var lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) {
-	lhs = lhs - rhs
+public func -=<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) {
+	for var i: Int = rhs.count - 1; 0 <= i; --i {
+		lhs.removeValueForKeys(rhs[i].key)
+	}
 }

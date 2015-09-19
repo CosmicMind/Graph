@@ -147,6 +147,8 @@ public func +<Element>(lhs: Deque<Element>, rhs: Deque<Element>) -> Deque<Elemen
 	return d
 }
 
-public func +=<Element>(var lhs: Deque<Element>, rhs: Deque<Element>) {
-	lhs = lhs + rhs
+public func +=<Element>(lhs: Deque<Element>, rhs: Deque<Element>) {
+	for x in rhs {
+		lhs.insertAtBack(x!)
+	}
 }
