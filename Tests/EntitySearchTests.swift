@@ -42,9 +42,9 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Entity values.
-		graph?.watch(entity: "E", property: ["active"])
+		graph?.watch(entity: ["E"], property: ["active"])
 		
-		XCTAssertTrue(0 == graph?.search(entity: "*", property: [("active", nil)]).count, "Entity: Search did not pass.")
+		XCTAssertTrue(0 == graph?.search(entity: ["*"], property: [("active", nil)]).count, "Entity: Search did not pass.")
 		
 		let e1: Entity = Entity(type: "E")
 		e1["active"] = true
@@ -64,7 +64,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertEntity(graph: Graph, entity: Entity) {
-		let e2: Entity? = graph.search(entity: "*", property: [(key: "active", value: nil)]).last
+		let e2: Entity? = graph.search(entity: ["*"], property: [(key: "active", value: nil)]).last
 		if entity == e2 {
 			expectation?.fulfill()
 			
@@ -79,10 +79,10 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
-		let e2: Entity? = graph.search(entity: "*", property: [("active", nil)]).last
+		let e2: Entity? = graph.search(entity: ["*"], property: [("active", nil)]).last
 		if nil == e2 {
 			expectation?.fulfill()
-			XCTAssertTrue(0 == graph.search(entity: "*", property: [("active", nil)]).count, "Entity: Search did not pass.")
+			XCTAssertTrue(0 == graph.search(entity: ["*"], property: [("active", nil)]).count, "Entity: Search did not pass.")
 		}
 	}
 	
@@ -96,7 +96,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			}
 			
-			XCTAssertTrue(0 == graph.search(entity: "*", property: [("active", false)]).count, "Entity: Search did not pass.")
+			XCTAssertTrue(0 == graph.search(entity: ["*"], property: [("active", false)]).count, "Entity: Search did not pass.")
 			
 			expectation = expectationWithDescription("Entity: Delete did not pass.")
 			

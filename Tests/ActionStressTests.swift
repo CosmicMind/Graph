@@ -58,7 +58,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		graph!.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Action values.
-		graph!.watch(action: "A")
+		graph!.watch(action: ["A"])
 		
 		var a1: Action?
 		

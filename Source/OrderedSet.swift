@@ -287,24 +287,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Insert elements of a finite sequence of Sets.
 	*/
 	public func intersectInPlace(set: OrderedSet<Element>) {
-		var i: Int = 0
-		var j: Int = 0
-		let l: Int = set.count
-		if 0 == l {
-			removeAll()
-		} else {
-			while count > i && l > j {
-				let x: Element = self[i]
-				let y: Element = set[j]
-				if x < y {
-					remove(x)
-				} else if y < x {
-					++j
-				} else {
-					++i
-					++j
-				}
-			}
+		let s: OrderedSet<Element> = intersect(set)
+		removeAll()
+		for x in s {
+			insert(x)
 		}
 	}
 	

@@ -22,14 +22,7 @@ public extension Graph {
 	/**
 		:name:	search(entity: group: property)
 	*/
-	public func search(entity types: String..., group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
-		return search(entity: types, group: names, property: pairs, false)
-	}
-	
-	/**
-		:name:	search(entity: group: property)
-	*/
-	public func search(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil, _: Bool = false) -> OrderedSet<Entity> {
+	public func search(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
 		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		
 		// types
@@ -64,14 +57,7 @@ public extension Graph {
 	/**
 		:name:	search(action: group: property)
 	*/
-	public func search(action types: String..., group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Action> {
-		return search(action: types, group: names, property: pairs, false)
-	}
-	
-	/**
-		:name:	search(action: group: property)
-	*/
-	public func search(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil, _: Bool = false) -> OrderedSet<Action> {
+	public func search(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Action> {
 		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		
 		// types
@@ -106,14 +92,7 @@ public extension Graph {
 	/**
 		:name:	search(bond: group: property)
 	*/
-	public func search(bond types: String..., group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Bond> {
-		return search(bond: types, group: names, property: pairs, false)
-	}
-	
-	/**
-		:name:	search(bond: group: property)
-	*/
-	public func search(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil, _: Bool = false) -> OrderedSet<Bond> {
+	public func search(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Bond> {
 		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		
 		// types
@@ -211,7 +190,7 @@ public extension Graph {
 	//	:name:	search(EntityProperty)
 	//
 	internal func search(EntityProperty name: String, value: String) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name, value))
+		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
 		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
 			nodes.insert(Entity(entity: property.node))
@@ -223,7 +202,7 @@ public extension Graph {
 	//	:name:	search(EntityProperty)
 	//
 	internal func search(EntityProperty name: String, value: Int) -> OrderedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name, value as NSNumber))
+		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value as NSNumber))
 		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
 		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
 			nodes.insert(Entity(entity: property.node))
@@ -271,7 +250,7 @@ public extension Graph {
 	//	:name:	search(ActionProperty)
 	//
 	internal func search(ActionProperty name: String, value: String) -> OrderedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name, value))
+		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
 		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
 			nodes.insert(Action(action: property.node))
@@ -283,7 +262,7 @@ public extension Graph {
 	//	:name:	search(ActionProperty)
 	//
 	internal func search(ActionProperty name: String, value: Int) -> OrderedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name, value as NSNumber))
+		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value as NSNumber))
 		let nodes: OrderedSet<Action> = OrderedSet<Action>()
 		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
 			nodes.insert(Action(action: property.node))
@@ -331,7 +310,7 @@ public extension Graph {
 	//	:name:	search(BondProperty)
 	//
 	internal func search(BondProperty name: String, value: String) -> OrderedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name, value))
+		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
 		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
 			nodes.insert(Bond(bond: property.node))
@@ -343,7 +322,7 @@ public extension Graph {
 	//	:name:	search(BondProperty)
 	//
 	internal func search(BondProperty name: String, value: Int) -> OrderedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name == %@) AND (object == %@)", name, value as NSNumber))
+		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value as NSNumber))
 		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
 		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
 			nodes.insert(Bond(bond: property.node))

@@ -170,7 +170,7 @@ public class Entity : NSObject, Comparable {
 	*/
 	public override func isEqual(object: AnyObject?) -> Bool {
 		if let rhs = object as? Entity {
-			return id.isEqual(rhs.id)
+			return id == rhs.id
 		}
 		return false
 	}

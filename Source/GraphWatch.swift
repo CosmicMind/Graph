@@ -22,14 +22,7 @@ public extension Graph {
 	/**
 		:name:	watch(entity: group: property)
 	*/
-	public func watch(entity types: String..., group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
-		watch(entity: types, group: names, property: pairs, false)
-	}
-	
-	/**
-		:name:	watch(entity: group: property)
-	*/
-	public func watch(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil, _: Bool = false) {
+	public func watch(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
 		// types
 		for i in types {
 			watch(Entity: i)
@@ -53,14 +46,7 @@ public extension Graph {
 	/**
 		:name:	watch(action: group: property)
 	*/
-	public func watch(action types: String..., group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
-		watch(action: types, group: names, property: pairs, false)
-	}
-	
-	/**
-		:name:	watch(action: group: property)
-	*/
-	public func watch(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil, _: Bool = false) {
+	public func watch(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
 		// types
 		for i in types {
 			watch(Action: i)
@@ -84,14 +70,7 @@ public extension Graph {
 	/**
 		:name:	watch(bond: group: property)
 	*/
-	public func watch(bond types: String..., group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
-		watch(bond: types, group: names, property: pairs, false)
-	}
-	
-	/**
-		:name:	watch(bond: group: property)
-	*/
-	public func watch(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil, _: Bool = false) {
+	public func watch(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
 		// types
 		for i in types {
 			watch(Bond: i)
@@ -307,7 +286,7 @@ public extension Graph {
 	//	:name:	addPredicateToContextWatcher
 	//
 	internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription, predicate: NSPredicate) {
-		let entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name!)
+		let entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString)
 		let predicates: Array<NSPredicate> = [entityPredicate, predicate]
 		let finalPredicate: NSPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 		masterPredicate = nil == masterPredicate ? finalPredicate : NSCompoundPredicate(orPredicateWithSubpredicates: [masterPredicate!, finalPredicate])
@@ -336,7 +315,7 @@ public extension Graph {
 			let entityDescription: NSEntityDescription = NSEntityDescription()
 			entityDescription.name = entityDescriptionName
 			entityDescription.managedObjectClassName = managedObjectClassName
-			let predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key, value)
+			let predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
 			addPredicateToContextWatcher(entityDescription, predicate: predicate)
 			prepareForObservation()
 		}

@@ -58,7 +58,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		graph?.delegate = self
 		
 		// Let's watch the changes in the Graph for the following Entity values.
-		graph?.watch(entity: "E")
+		graph?.watch(entity: ["E"])
 		
 		var e1: Entity?
 		
