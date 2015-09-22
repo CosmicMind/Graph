@@ -27,6 +27,17 @@ public class OrderedMultiSet<Element : Comparable> : Probability<Element>, Colle
 	internal var tree: RedBlackTree<Element, Element>
 
 	/**
+		:name:	array
+	*/
+	public var array: Array<Element> {
+		var a: Array<Element> = Array<Element>()
+		for x in self {
+			a.append(x)
+		}
+		return a
+	}
+	
+	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
 		data in the OrderedMultiSet in a readable format.
