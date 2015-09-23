@@ -19,7 +19,7 @@
 import XCTest
 @testable import GraphKit
 
-class OrderedMultiDictionaryTests: XCTestCase {
+class SortedMultiDictionaryTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -30,7 +30,7 @@ class OrderedMultiDictionaryTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: OrderedMultiDictionary<Int, Int> = OrderedMultiDictionary<Int, Int>()
+		let s: SortedMultiDictionary<Int, Int> = SortedMultiDictionary<Int, Int>()
 		
 		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
 		
@@ -66,10 +66,10 @@ class OrderedMultiDictionaryTests: XCTestCase {
 		s.insert((3, 3))
 		s.updateValue(5, forKey: 3)
 		
-		let subs: OrderedMultiDictionary<Int, Int>.OrderedSearch = s.search(3)
+		let subs: SortedMultiDictionary<Int, Int>.SortedSearch = s.search(3)
 		XCTAssert(2 == subs.count, "Test failed.")
 		
-		let generator: OrderedMultiDictionary<Int, Int>.Generator = subs.generate()
+		let generator: SortedMultiDictionary<Int, Int>.Generator = subs.generate()
 		while let x = generator.next() {
 			XCTAssert(5 == x.value, "Test failed.")
 		}
@@ -84,7 +84,7 @@ class OrderedMultiDictionaryTests: XCTestCase {
 	}
 	
 	func testIndexOf() {
-		let d1: OrderedMultiDictionary<Int, Int> = OrderedMultiDictionary<Int, Int>()
+		let d1: SortedMultiDictionary<Int, Int> = SortedMultiDictionary<Int, Int>()
 		d1.insert(1, value: 1)
 		d1.insert(2, value: 2)
 		d1.insert(3, value: 3)
@@ -99,14 +99,14 @@ class OrderedMultiDictionaryTests: XCTestCase {
 	}
 	
 	func testKeys() {
-		let s: OrderedMultiDictionary<String, Int> = OrderedMultiDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let keys: OrderedMultiDictionary<String, Int>.OrderedKey = OrderedMultiDictionary<String, Int>.OrderedKey(elements: "adam", "daniel", "mike", "natalie")
+		let s: SortedMultiDictionary<String, Int> = SortedMultiDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
+		let keys: SortedMultiDictionary<String, Int>.SortedKey = SortedMultiDictionary<String, Int>.SortedKey(elements: "adam", "daniel", "mike", "natalie")
 		XCTAssert(keys == s.keys, "Test failed.")
 	}
 	
 	func testValues() {
-		let s: OrderedMultiDictionary<String, Int> = OrderedMultiDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let values: OrderedMultiDictionary<String, Int>.OrderedValue = [1, 2, 3, 4]
+		let s: SortedMultiDictionary<String, Int> = SortedMultiDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
+		let values: SortedMultiDictionary<String, Int>.SortedValue = [1, 2, 3, 4]
 		XCTAssert(values == s.values, "Test failed.")
 	}
 	

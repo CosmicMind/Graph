@@ -29,8 +29,8 @@ class ProbabilityTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func testOrderedSetInt() {
-		let s: OrderedSet<Int> = OrderedSet<Int>()
+	func testSortedSetInt() {
+		let s: SortedSet<Int> = SortedSet<Int>()
 		
 		s.insert(1, 2, 3, 3)
 		
@@ -42,8 +42,8 @@ class ProbabilityTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testOrderedMultiSetInt() {
-		let s: OrderedSet<Int> = OrderedSet<Int>()
+	func testSortedMultiSetInt() {
+		let s: SortedSet<Int> = SortedSet<Int>()
 		
 		s.insert(1, 2, 3, 3)
 		
@@ -55,8 +55,8 @@ class ProbabilityTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testOrderedDictionaryInt() {
-		let s: OrderedDictionary<Int, Int> = OrderedDictionary<Int, Int>()
+	func testSortedDictionaryInt() {
+		let s: SortedDictionary<Int, Int> = SortedDictionary<Int, Int>()
 		
 		s.insert((1, 1))
 		s.insert((2, 2))
@@ -71,8 +71,8 @@ class ProbabilityTests: XCTestCase {
 		XCTAssert(0 == s.count, "Test failed.")
 	}
 	
-	func testOrderedMultiDictionaryInt() {
-		let s: OrderedMultiDictionary<Int, Int> = OrderedMultiDictionary<Int, Int>()
+	func testSortedMultiDictionaryInt() {
+		let s: SortedMultiDictionary<Int, Int> = SortedMultiDictionary<Int, Int>()
 		
 		s.insert((1, 1))
 		s.insert((2, 2))
@@ -95,7 +95,7 @@ class ProbabilityTests: XCTestCase {
 		}
 		graph.save()
 		
-		let entities: OrderedSet<Entity> = graph.search(entity: ["ProbTest"])
+		let entities: SortedSet<Entity> = graph.search(entity: ["ProbTest"])
 		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
 		
 		for e in entities {
@@ -106,7 +106,7 @@ class ProbabilityTests: XCTestCase {
 	
 	func testAction() {
 		let graph = Graph()
-		let books = OrderedMultiSet<String>()
+		let books = SortedMultiSet<String>()
 		
 		for purchase in graph.search(action: ["Purchased"]) {
 			for object in purchase.objects {

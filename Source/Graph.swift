@@ -115,7 +115,7 @@ public class Graph : NSObject {
 	//
 	//	:name:	watchers
 	//
-	internal lazy var watchers: OrderedDictionary<String, OrderedSet<String>> = OrderedDictionary<String, OrderedSet<String>>()
+	internal lazy var watchers: SortedDictionary<String, SortedSet<String>> = SortedDictionary<String, SortedSet<String>>()
 	
 	//
 	//	:name:	materPredicate

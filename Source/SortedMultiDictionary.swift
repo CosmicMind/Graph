@@ -16,12 +16,12 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
+public class SortedMultiDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
-	public typealias OrderedKey = OrderedMultiSet<Key>
-	public typealias OrderedValue = Array<Value>
-	public typealias OrderedSearch = OrderedMultiDictionary<Key, Value>
-	internal typealias OrderedNode = RedBlackNode<Key, Value>
+	public typealias SortedKey = SortedMultiSet<Key>
+	public typealias SortedValue = Array<Value>
+	public typealias SortedSearch = SortedMultiDictionary<Key, Value>
+	internal typealias SortedNode = RedBlackNode<Key, Value>
 	
 	/**
 		:name:	tree
@@ -33,7 +33,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
-		data in the OrderedMultiDictionary in a readable format.
+		data in the SortedMultiDictionary in a readable format.
 		- returns:	String
 	*/
 	public var description: String {
@@ -62,7 +62,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	
 	/**
 		:name:	isEmpty
-		:description:	A boolean of whether the OrderedMultiDictionary is empty.
+		:description:	A boolean of whether the SortedMultiDictionary is empty.
 		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
@@ -90,10 +90,10 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	keys
 		:description:	Returns an array of the key values in ordered.
-		- returns:	OrderedMultiDictionary.OrderedKey
+		- returns:	SortedMultiDictionary.SortedKey
 	*/
-	public var keys: OrderedMultiDictionary.OrderedKey {
-		let s: OrderedKey = OrderedKey()
+	public var keys: SortedMultiDictionary.SortedKey {
+		let s: SortedKey = SortedKey()
 		for x in self {
 			s.insert(x.key)
 		}
@@ -104,10 +104,10 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 		:name:	values
 		:description:	Returns an array of the values that are ordered based
 		on the key ordering.
-		- returns:	OrderedMultiDictionary.OrderedValue
+		- returns:	SortedMultiDictionary.SortedValue
 	*/
-	public var values: OrderedMultiDictionary.OrderedValue {
-		var s: OrderedValue = OrderedValue()
+	public var values: SortedMultiDictionary.SortedValue {
+		var s: SortedValue = SortedValue()
 		for x in self {
 			s.append(x.value!)
 		}
@@ -146,9 +146,9 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	//	:description:	Conforms to the SequenceType Protocol. Returns
 	//	the next value in the sequence of nodes using
 	//	index values [0...n-1].
-	//	:returns:	OrderedMultiDictionary.Generator
+	//	:returns:	SortedMultiDictionary.Generator
 	//
-	public func generate() -> OrderedMultiDictionary.Generator {
+	public func generate() -> SortedMultiDictionary.Generator {
 		var index = startIndex
 		return anyGenerator {
 			if index < self.endIndex {
@@ -253,20 +253,20 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	removeValueForKeys
 		:description:	Removes key / value pairs based on the key value given.
-		- returns:	OrderedMultiDictionary<Key, Value>?
+		- returns:	SortedMultiDictionary<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Key...) -> OrderedMultiDictionary<Key, Value>? {
+	public func removeValueForKeys(keys: Key...) -> SortedMultiDictionary<Key, Value>? {
 		return removeValueForKeys(keys)
 	}
 	
 	/**
 		:name:	removeValueForKeys
 		:description:	Removes key / value pairs based on the key value given.
-		- returns:	OrderedMultiDictionary<Key, Value>?
+		- returns:	SortedMultiDictionary<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Array<Key>) -> OrderedMultiDictionary<Key, Value>? {
+	public func removeValueForKeys(keys: Array<Key>) -> SortedMultiDictionary<Key, Value>? {
 		if let r: RedBlackTree<Key, Value> = tree.removeValueForKeys(keys) {
-			let d: OrderedMultiDictionary<Key, Value> = OrderedMultiDictionary<Key, Value>()
+			let d: SortedMultiDictionary<Key, Value> = SortedMultiDictionary<Key, Value>()
 			for (k, v) in r {
 				d.insert(k, value: v)
 			}
@@ -307,21 +307,21 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	/**
 		:name:	search
 		:description:	Accepts a list of keys and returns a subset
-		OrderedMultiDictionary with the given values if they exist.
-		- returns:	OrderedMultiDictionary.OrderedSearch
+		SortedMultiDictionary with the given values if they exist.
+		- returns:	SortedMultiDictionary.SortedSearch
 	*/
-	public func search(keys: Key...) -> OrderedMultiDictionary.OrderedSearch {
+	public func search(keys: Key...) -> SortedMultiDictionary.SortedSearch {
 		return search(keys)
 	}
 	
 	/**
 		:name:	search
 		:description:	Accepts an array of keys and returns a subset
-		OrderedMultiDictionary with the given values if they exist.
-		- returns:	OrderedMultiDictionary.OrderedSearch
+		SortedMultiDictionary with the given values if they exist.
+		- returns:	SortedMultiDictionary.SortedSearch
 	*/
-	public func search(keys: Array<Key>) -> OrderedMultiDictionary.OrderedSearch {
-		var dict: OrderedSearch = OrderedSearch()
+	public func search(keys: Array<Key>) -> SortedMultiDictionary.SortedSearch {
+		var dict: SortedSearch = SortedSearch()
 		for key: Key in keys {
 			traverse(key, node: tree.root, dict: &dict)
 		}
@@ -330,9 +330,9 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	
 	/**
 		:name:	traverse
-		:description:	Traverses the OrderedMultiDictionary, looking for a key match.
+		:description:	Traverses the SortedMultiDictionary, looking for a key match.
 	*/
-	internal func traverse(key: Key, node: OrderedMultiDictionary.OrderedNode, inout dict: OrderedMultiDictionary.OrderedSearch) {
+	internal func traverse(key: Key, node: SortedMultiDictionary.SortedNode, inout dict: SortedMultiDictionary.SortedSearch) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))
@@ -343,7 +343,7 @@ public class OrderedMultiDictionary<Key : Comparable, Value> : Probability<Key>,
 	}
 }
 
-public func ==<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) -> Bool {
+public func ==<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}
@@ -355,33 +355,33 @@ public func ==<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>,
 	return true
 }
 
-public func !=<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) -> Bool {
+public func !=<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func +<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) -> OrderedMultiDictionary<Key, Value> {
-	let t: OrderedMultiDictionary<Key, Value> = lhs
+public func +<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> SortedMultiDictionary<Key, Value> {
+	let t: SortedMultiDictionary<Key, Value> = lhs
 	for (k, v) in rhs {
 		t.insert(k, value: v)
 	}
 	return t
 }
 
-public func +=<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) {
+public func +=<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) {
 	for (k, v) in rhs {
 		lhs.insert(k, value: v)
 	}
 }
 
-public func -<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) -> OrderedMultiDictionary<Key, Value> {
-	let t: OrderedMultiDictionary<Key, Value> = lhs
+public func -<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> SortedMultiDictionary<Key, Value> {
+	let t: SortedMultiDictionary<Key, Value> = lhs
 	for (k, _) in rhs {
 		t.removeValueForKeys(k)
 	}
 	return t
 }
 
-public func -=<Key : Comparable, Value>(lhs: OrderedMultiDictionary<Key, Value>, rhs: OrderedMultiDictionary<Key, Value>) {
+public func -=<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) {
 	for (k, _) in rhs {
 		lhs.removeValueForKeys(k)
 	}

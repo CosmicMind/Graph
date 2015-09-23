@@ -19,7 +19,7 @@
 import XCTest
 @testable import GraphKit
 
-class OrderedDictionaryTests: XCTestCase {
+class SortedDictionaryTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -30,7 +30,7 @@ class OrderedDictionaryTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let s: OrderedDictionary<Int, Int> = OrderedDictionary<Int, Int>()
+		let s: SortedDictionary<Int, Int> = SortedDictionary<Int, Int>()
 		
 		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
 		
@@ -66,10 +66,10 @@ class OrderedDictionaryTests: XCTestCase {
 		s.insert((3, 3))
 		s.updateValue(5, forKey: 3)
 		
-		let subs: OrderedDictionary<Int, Int>.OrderedSearch = s.search(3)
+		let subs: SortedDictionary<Int, Int>.SortedSearch = s.search(3)
 		XCTAssert(1 == subs.count, "Test failed.")
 		
-		let generator: OrderedDictionary<Int, Int>.Generator = subs.generate()
+		let generator: SortedDictionary<Int, Int>.Generator = subs.generate()
 		while let x = generator.next() {
 			XCTAssert(5 == x.value, "Test failed.")
 		}
@@ -84,7 +84,7 @@ class OrderedDictionaryTests: XCTestCase {
 	}
 	
 	func testIndexOf() {
-		let d1: OrderedDictionary<Int, Int> = OrderedDictionary<Int, Int>()
+		let d1: SortedDictionary<Int, Int> = SortedDictionary<Int, Int>()
 		d1.insert(1, value: 1)
 		d1.insert(2, value: 2)
 		d1.insert(3, value: 3)
@@ -99,14 +99,14 @@ class OrderedDictionaryTests: XCTestCase {
 	}
 	
 	func testKeys() {
-		let s: OrderedDictionary<String, Int> = OrderedDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let keys: OrderedDictionary<String, Int>.OrderedKey = OrderedDictionary<String, Int>.OrderedKey(elements: "adam", "daniel", "mike", "natalie")
+		let s: SortedDictionary<String, Int> = SortedDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
+		let keys: SortedDictionary<String, Int>.SortedKey = SortedDictionary<String, Int>.SortedKey(elements: "adam", "daniel", "mike", "natalie")
 		XCTAssert(keys == s.keys, "Test failed.")
 	}
 	
 	func testValues() {
-		let s: OrderedDictionary<String, Int> = OrderedDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let values: OrderedDictionary<String, Int>.OrderedValue = [1, 2, 3, 4]
+		let s: SortedDictionary<String, Int> = SortedDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
+		let values: SortedDictionary<String, Int>.SortedValue = [1, 2, 3, 4]
 		XCTAssert(values == s.values, "Test failed.")
 	}
 	

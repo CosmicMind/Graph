@@ -199,7 +199,7 @@ class BondTests : XCTestCase, GraphDelegate {
     func graphDidInsertBondGroup(graph: Graph, bond: Bond, group: String) {
         if "Close" == group {
             groupInsertExpectation?.fulfill()
-			let n: OrderedSet<Bond> = graph.search(bond: ["*"], group: [group])
+			let n: SortedSet<Bond> = graph.search(bond: ["*"], group: [group])
             if bond.id == n.first?.id {
                 groupSearchExpectation?.fulfill()
             }
@@ -209,9 +209,9 @@ class BondTests : XCTestCase, GraphDelegate {
     func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject){
         if "permission" == property && "edit" == value as! String {
             permissionInsertExpectation?.fulfill()
-			let n: OrderedSet<Bond> = graph.search(bond: ["*"], property: [(property, nil)])
+			let n: SortedSet<Bond> = graph.search(bond: ["*"], property: [(property, nil)])
             if n.first?[property] as! String == value as! String {
-                let m: OrderedSet<Bond> = graph.search(bond: ["*"], property: [(property, value)])
+                let m: SortedSet<Bond> = graph.search(bond: ["*"], property: [(property, value)])
                 if m.first?[property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
@@ -219,9 +219,9 @@ class BondTests : XCTestCase, GraphDelegate {
 
         } else if "year" == property && 1998 == value as! Int {
             yearInsertExpectation?.fulfill()
-            let n: OrderedSet<Bond> = graph.search(bond: ["*"], property: [(property, nil)])
+            let n: SortedSet<Bond> = graph.search(bond: ["*"], property: [(property, nil)])
             if n.first?[property] as! Int == value as! Int {
-                let m: OrderedSet<Bond> = graph.search(bond: ["*"], property: [(property, value)])
+                let m: SortedSet<Bond> = graph.search(bond: ["*"], property: [(property, value)])
                 if m.first?[property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }
@@ -232,18 +232,18 @@ class BondTests : XCTestCase, GraphDelegate {
     func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject) {
         if "permission" == property && "read" == value as! String {
             permissionUpdateExpectation?.fulfill()
-            let n: OrderedSet<Bond> = graph.search(bond: ["*"], property: [(property, nil)])
+            let n: SortedSet<Bond> = graph.search(bond: ["*"], property: [(property, nil)])
             if n.first?[property] as! String == value as! String {
-                let m: OrderedSet<Bond> = graph.search(bond: ["*"], property: [(property, value)])
+                let m: SortedSet<Bond> = graph.search(bond: ["*"], property: [(property, value)])
                 if m.first?[property] as! String == value as! String {
                     permissionSearchExpectation?.fulfill()
                 }
             }
         } else if "year" == property && 2001 == value as! Int {
             yearUpdateExpectation?.fulfill()
-            let n: OrderedSet<Bond> = graph.search(bond: ["*"], property: [(property, nil)])
+            let n: SortedSet<Bond> = graph.search(bond: ["*"], property: [(property, nil)])
             if n.first?[property] as! Int == value as! Int {
-                let m: OrderedSet<Bond> = graph.search(bond: ["*"], property: [(property, value)])
+                let m: SortedSet<Bond> = graph.search(bond: ["*"], property: [(property, value)])
                 if m.first?[property] as! Int == value as! Int {
                     yearSearchExpectation?.fulfill()
                 }

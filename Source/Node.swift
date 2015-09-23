@@ -92,8 +92,8 @@ internal class Node <Type : ManagedNode> : NSObject {
 	//
 	//	:name:	groups
 	//
-	internal var groups: OrderedSet<String> {
-		let groups: OrderedSet<String> = OrderedSet<String>()
+	internal var groups: SortedSet<String> {
+		let groups: SortedSet<String> = SortedSet<String>()
 		for group in object.groupSet {
 			let name: String = group.name
 			groups.insert(name)

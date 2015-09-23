@@ -297,7 +297,7 @@ public extension Graph {
 	//
 	internal func isWatching(key: String, index: String) -> Bool {
 		if nil == watchers[key] {
-			watchers[key] = OrderedSet<String>(elements: index)
+			watchers[key] = SortedSet<String>(elements: index)
 			return false
 		}
 		if watchers[key]!.contains(index) {

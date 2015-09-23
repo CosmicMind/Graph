@@ -81,7 +81,7 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	groups
 	*/
-	public var groups: OrderedSet<String> {
+	public var groups: SortedSet<String> {
 		return node.groups
 	}
 
@@ -107,8 +107,8 @@ public class Action : NSObject, Comparable {
     /**
     	:name:	subjects
     */
-    public var subjects: OrderedSet<Entity> {
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+    public var subjects: SortedSet<Entity> {
+		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		for entity in node.object.subjectSet {
 			nodes.insert(Entity(entity: entity as! ManagedEntity))
 		}
@@ -118,8 +118,8 @@ public class Action : NSObject, Comparable {
     /**
     	:name:	objects
 	*/
-    public var objects: OrderedSet<Entity> {
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+    public var objects: SortedSet<Entity> {
+		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		for entity in node.object.objectSet {
 			nodes.insert(Entity(entity: entity as! ManagedEntity))
 		}

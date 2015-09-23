@@ -16,16 +16,16 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class OrderedSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, CustomStringConvertible {
+public class SortedMultiSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<Element>
 	
 	/**
 		:name:	tree
 		:description:	Internal storage of elements.
-		- returns:	RedBlckTree<Element, Element>
+		- returns:	RedBlackTree<Element, Element>
 	*/
 	internal var tree: RedBlackTree<Element, Element>
-	
+
 	/**
 		:name:	array
 	*/
@@ -40,7 +40,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
-		data in the OrderedSet in a readable format.
+		data in the SortedMultiSet in a readable format.
 		- returns:	String
 	*/
 	public var description: String {
@@ -102,18 +102,18 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	public var endIndex: Int {
 		return count
 	}
-	
+
 	/**
 		:name:	init
-		:description:	Constructor.
+		:description:	Constructor
 	*/
 	public override init() {
-		tree = RedBlackTree<Element, Element>(uniqueKeys: true)
+		tree = RedBlackTree<Element, Element>(uniqueKeys: false)
 	}
 
 	/**
 		:name:	init
-		:description:	Constructor.
+		:description:	Constructor
 	*/
 	public convenience init(elements: Element...) {
 		self.init(elements: elements)
@@ -121,7 +121,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 
 	/**
 		:name:	init
-		:description:	Constructor.
+		:description:	Constructor
 	*/
 	public convenience init(elements: Array<Element>) {
 		self.init()
@@ -133,9 +133,9 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	//	:description:	Conforms to the SequenceType Protocol. Returns
 	//	the next value in the sequence of nodes using
 	//	index values [0...n-1].
-	//	:returns:	OrderedSet.Generator
-	//
-	public func generate() -> OrderedSet.Generator {
+	//	:returns:	SortedMultiSet.Generator
+	//	
+	public func generate() -> SortedMultiSet.Generator {
 		var index = startIndex
 		return anyGenerator {
 			if index < self.endIndex {
@@ -156,7 +156,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	public subscript(index: Int) -> Element {
 		return tree[index].key
 	}
-	
+
 	/**
 		:name:	indexOf
 		:description:	Returns the Index of a given member, or -1 if the member is not present in the set.
@@ -169,7 +169,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	contains
 		:description:	A boolean check if values exists
-		 in the set.
+		in the set.
 		- returns:	Bool
 	*/
 	public func contains(elements: Element...) -> Bool {
@@ -179,7 +179,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	contains
 		:description:	A boolean check if an array of values exist
-		 in the set.
+		in the set.
 		- returns:	Bool
 	*/
 	public func contains(elements: Array<Element>) -> Bool {
@@ -214,7 +214,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 
 	/**
 		:name:	insert
-		:description:	Inserts new elements into the OrderedSet.
+		:description:	Inserts new elements into the SortedMultiSet.
 	*/
 	public func insert(elements: Element...) {
 		insert(elements)
@@ -222,7 +222,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 
 	/**
 		:name:	insert
-		:description:	Inserts new elements into the OrderedSet.
+		:description:	Inserts new elements into the SortedMultiSet.
 	*/
 	public func insert(elements: Array<Element>) {
 		for x in elements {
@@ -233,21 +233,21 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 
 	/**
 		:name:	remove
-		:description:	Removes elements from the OrderedSet.
-		- returns:	OrderedSet<Element>?
+		:description:	Removes elements from the SortedMultiSet.
+		- returns:	SortedMultiSet<Element>?
 	*/
-	public func remove(elements: Element...) -> OrderedSet<Element>? {
+	public func remove(elements: Element...) -> SortedMultiSet<Element>? {
 		return remove(elements)
 	}
 
 	/**
 		:name:	remove
-		:description:	Removes elements from the OrderedSet.
-		- returns:	OrderedSet<Element>?
+		:description:	Removes elements from the SortedMultiSet.
+		- returns:	SortedMultiSet<Element>?
 	*/
-	public func remove(elements: Array<Element>) -> OrderedSet<Element>? {
+	public func remove(elements: Array<Element>) -> SortedMultiSet<Element>? {
 		if let r: RedBlackTree<Element, Element> = tree.removeValueForKeys(elements) {
-			let s: OrderedSet<Element> = OrderedSet<Element>()
+			let s: SortedMultiSet<Element> = SortedMultiSet<Element>()
 			for (k, _) in r {
 				s.insert(k)
 			}
@@ -265,14 +265,14 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		tree.removeAll()
 		count = tree.count
 	}
-	
+
 	/**
 		:name:	intersect
 		:description:	Return a new set with elements common to this set and a finite sequence of Sets.
-		- returns:	OrderedSet<Element>
+		- returns:	SortedMultiSet<Element>
 	*/
-	public func intersect(set: OrderedSet<Element>) -> OrderedSet<Element> {
-		let s: OrderedSet<Element> = OrderedSet<Element>()
+	public func intersect(set: SortedMultiSet<Element>) -> SortedMultiSet<Element> {
+		let s: SortedMultiSet<Element> = SortedMultiSet<Element>()
 		var i: Int = 0
 		var j: Int = 0
 		let k: Int = count
@@ -297,8 +297,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:name:	intersectInPlace
 		:description:	Insert elements of a finite sequence of Sets.
 	*/
-	public func intersectInPlace(set: OrderedSet<Element>) {
-		let s: OrderedSet<Element> = intersect(set)
+	public func intersectInPlace(set: SortedMultiSet<Element>) {
+		let s: SortedMultiSet<Element> = intersect(set)
 		removeAll()
 		for x in s {
 			insert(x)
@@ -308,10 +308,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	union
 		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
-		- returns:	OrderedSet<Element>
+		- returns:	SortedMultiSet<Element>
 	*/
-	public func union(set: OrderedSet<Element>) -> OrderedSet<Element> {
-		let s: OrderedSet<Element> = OrderedSet<Element>()
+	public func union(set: SortedMultiSet<Element>) -> SortedMultiSet<Element> {
+		let s: SortedMultiSet<Element> = SortedMultiSet<Element>()
 		var i: Int = 0
 		var j: Int = 0
 		let k: Int = count
@@ -339,25 +339,40 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		}
 		return s
 	}
-
+	
 	/**
 		:name:	unionInPlace
 		:description:	Return a new Set with items in both this set and a finite sequence of Sets.
 	*/
-	public func unionInPlace(set: OrderedSet<Element>) {
-		var j: Int = set.count
-		while 0 != j {
-			insert(set[--j])
+	public func unionInPlace(set: SortedMultiSet<Element>) {
+		var i: Int = 0
+		var j: Int = 0
+		let l: Int = set.count
+		while count > i && l > j {
+			let x: Element = self[i]
+			let y: Element = set[j]
+			if x < y {
+				++i
+			} else if y < x {
+				insert(y)
+				++j
+			} else {
+				++i
+				++j
+			}
+		}
+		while l > j {
+			insert(set[j++])
 		}
 	}
 	
 	/**
 		:name:	subtract
 		:description:	Return a new set with elements in this set that do not occur in a finite sequence of Sets.
-		- returns:	OrderedSet<Element>
+		- returns:	SortedMultiSet<Element>
 	*/
-	public func subtract(set: OrderedSet<Element>) -> OrderedSet<Element> {
-		let s: OrderedSet<Element> = OrderedSet<Element>()
+	public func subtract(set: SortedMultiSet<Element>) -> SortedMultiSet<Element> {
+		let s: SortedMultiSet<Element> = SortedMultiSet<Element>()
 		var i: Int = 0
 		var j: Int = 0
 		let k: Int = count
@@ -385,7 +400,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:name:	subtractInPlace
 		:description:	Remove all elements in the set that occur in a finite sequence of Sets.
 	*/
-	public func subtractInPlace(set: OrderedSet<Element>) {
+	public func subtractInPlace(set: SortedMultiSet<Element>) {
 		var i: Int = 0
 		var j: Int = 0
 		let l: Int = set.count
@@ -397,7 +412,8 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 			} else if y < x {
 				++j
 			} else {
-				remove(x)
+				tree.removeInstanceOfValueForKey(x)
+				count = tree.count
 				++j
 			}
 		}
@@ -406,10 +422,10 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 	/**
 		:name:	exclusiveOr
 		:description:	Return a new set with elements that are either in the set or a finite sequence but do not occur in both.
-		- returns:	OrderedSet<Element>
+		- returns:	SortedMultiSet<Element>
 	*/
-	public func exclusiveOr(set: OrderedSet<Element>) -> OrderedSet<Element> {
-		let s: OrderedSet<Element> = OrderedSet<Element>()
+	public func exclusiveOr(set: SortedMultiSet<Element>) -> SortedMultiSet<Element> {
+		let s: SortedMultiSet<Element> = SortedMultiSet<Element>()
 		var i: Int = 0
 		var j: Int = 0
 		let k: Int = count
@@ -419,13 +435,13 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 			let y: Element = set[j]
 			if x < y {
 				s.insert(x)
-				++i
+				++i;
 			} else if y < x {
 				s.insert(y)
 				++j
 			} else {
-				++i
-				++j
+				i += countOf(x)
+				j += set.countOf(y)
 			}
 		}
 		while k > i {
@@ -443,7 +459,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		common element, otherwise add it to the set. Repeated elements of the sequence will be
 		ignored.
 	*/
-	public func exclusiveOrInPlace(set: OrderedSet<Element>) {
+	public func exclusiveOrInPlace(set: SortedMultiSet<Element>) {
 		var i: Int = 0
 		var j: Int = 0
 		let l: Int = set.count
@@ -470,7 +486,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Returns true if no elements in the set are in a finite sequence of Sets.
 		- returns:	Bool
 	*/
-	public func isDisjointWith(set: OrderedSet<Element>) -> Bool {
+	public func isDisjointWith(set: SortedMultiSet<Element>) -> Bool {
 		var i: Int = count - 1
 		var j: Int = set.count - 1
 		while 0 <= i && 0 <= j {
@@ -492,7 +508,7 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Returns true if the set is a subset of a finite sequence as a Set.
 		- returns:	Bool
 	*/
-	public func isSubsetOf(set: OrderedSet<Element>) -> Bool {
+	public func isSubsetOf(set: SortedMultiSet<Element>) -> Bool {
 		if count > set.count {
 			return false
 		}
@@ -503,22 +519,22 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		}
 		return true
 	}
-
+	
 	/**
 		:name:	isStrictSubsetOf
 		:description:	Returns true if the set is a subset of a finite sequence as a Set but not equal.
 		- returns:	Bool
 	*/
-	public func isStrictSubsetOf(set: OrderedSet<Element>) -> Bool {
+	public func isStrictSubsetOf(set: SortedMultiSet<Element>) -> Bool {
 		return count < set.count && isSubsetOf(set)
 	}
-
+	
 	/**
 		:name:	isSupersetOf
 		:description:	Returns true if the set is a superset of a finite sequence as a Set.
 		- returns:	Bool
 	*/
-	public func isSupersetOf(set: OrderedSet<Element>) -> Bool {
+	public func isSupersetOf(set: SortedMultiSet<Element>) -> Bool {
 		if count < set.count {
 			return false
 		}
@@ -535,12 +551,12 @@ public class OrderedSet<Element : Comparable> : Probability<Element>, Collection
 		:description:	Returns true if the set is a superset of a finite sequence as a Set but not equal.
 		- returns:	Bool
 	*/
-	public func isStrictSupersetOf(set: OrderedSet<Element>) -> Bool {
+	public func isStrictSupersetOf(set: SortedMultiSet<Element>) -> Bool {
 		return count > set.count && isSupersetOf(set)
 	}
 }
 
-public func ==<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+public func ==<Element: Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}
@@ -552,38 +568,38 @@ public func ==<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<El
 	return true
 }
 
-public func !=<Element: Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+public func !=<Element: Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func +<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> OrderedSet<Element> {
+public func +<Element : Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) -> SortedMultiSet<Element> {
 	return lhs.union(rhs)
 }
 
-public func +=<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) {
+public func +=<Element : Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) {
 	lhs.unionInPlace(rhs)
 }
 
-public func -<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> OrderedSet<Element> {
+public func -<Element : Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) -> SortedMultiSet<Element> {
 	return lhs.subtract(rhs)
 }
 
-public func -=<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) {
+public func -=<Element : Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) {
 	lhs.subtractInPlace(rhs)
 }
 
-public func <=<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+public func <=<Element : Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) -> Bool {
 	return lhs.isSubsetOf(rhs)
 }
 
-public func >=<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+public func >=<Element : Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) -> Bool {
 	return lhs.isSupersetOf(rhs)
 }
 
-public func ><Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+public func ><Element : Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) -> Bool {
 	return lhs.isStrictSupersetOf(rhs)
 }
 
-public func <<Element : Comparable>(lhs: OrderedSet<Element>, rhs: OrderedSet<Element>) -> Bool {
+public func <<Element : Comparable>(lhs: SortedMultiSet<Element>, rhs: SortedMultiSet<Element>) -> Bool {
 	return lhs.isStrictSubsetOf(rhs)
 }

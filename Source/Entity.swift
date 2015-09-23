@@ -70,7 +70,7 @@ public class Entity : NSObject, Comparable {
 	/**
 		:name:	groups
 	*/
-	public var groups: OrderedSet<String> {
+	public var groups: SortedSet<String> {
 		return node.groups
 	}
 	
@@ -96,15 +96,15 @@ public class Entity : NSObject, Comparable {
 	/**
     	:name:	actions
     */
-    public var actions: OrderedSet<Action> {
+    public var actions: SortedSet<Action> {
 		return actionsWhenSubject + actionsWhenObject
     }
 
     /**
     	:name:	actionsWhenSubject
 	*/
-    public var actionsWhenSubject: OrderedSet<Action> {
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
+    public var actionsWhenSubject: SortedSet<Action> {
+		let nodes: SortedSet<Action> = SortedSet<Action>()
 		for entry in node.object.actionSubjectSet {
 			nodes.insert(Action(action: entry as! ManagedAction))
 		}
@@ -114,8 +114,8 @@ public class Entity : NSObject, Comparable {
     /**
     	:name:	actionsWhenObject
 	*/
-    public var actionsWhenObject: OrderedSet<Action> {
-        let nodes: OrderedSet<Action> = OrderedSet<Action>()
+    public var actionsWhenObject: SortedSet<Action> {
+        let nodes: SortedSet<Action> = SortedSet<Action>()
 		for entry in node.object.actionObjectSet {
 			nodes.insert(Action(action: entry as! ManagedAction))
 		}
@@ -125,15 +125,15 @@ public class Entity : NSObject, Comparable {
     /**
     	:name:	bonds
 	*/
-    public var bonds: OrderedSet<Bond> {
+    public var bonds: SortedSet<Bond> {
 		return bondsWhenSubject + bondsWhenObject
     }
 
     /**
     	:name:	bondsWhenSubject
 	*/
-    public var bondsWhenSubject: OrderedSet<Bond> {
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+    public var bondsWhenSubject: SortedSet<Bond> {
+		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		for entry in node.object.bondSubjectSet {
 			nodes.insert(Bond(bond: entry as! ManagedBond))
 		}
@@ -143,8 +143,8 @@ public class Entity : NSObject, Comparable {
     /**
     	:name:	bondsWhenObject
 	*/
-    public var bondsWhenObject: OrderedSet<Bond> {
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+    public var bondsWhenObject: SortedSet<Bond> {
+		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		for entry in node.object.bondObjectSet {
 			nodes.insert(Bond(bond: entry as! ManagedBond))
 		}

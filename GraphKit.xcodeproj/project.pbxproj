@@ -35,10 +35,10 @@
 		9677B46F1BA78B6200C82BBB /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4FD1BA76FC400672E38 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4701BA78B6200C82BBB /* RedBlackTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50C1BA76FC400672E38 /* RedBlackTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4711BA78B6200C82BBB /* RedBlackNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50B1BA76FC400672E38 /* RedBlackNode.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		9677B4721BA78B6200C82BBB /* OrderedSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5071BA76FC400672E38 /* OrderedSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		9677B4731BA78B6200C82BBB /* OrderedMultiSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5061BA76FC400672E38 /* OrderedMultiSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		9677B4741BA78B6200C82BBB /* OrderedDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5041BA76FC400672E38 /* OrderedDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		9677B4751BA78B6200C82BBB /* OrderedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5051BA76FC400672E38 /* OrderedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B4721BA78B6200C82BBB /* SortedSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5071BA76FC400672E38 /* SortedSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B4731BA78B6200C82BBB /* SortedMultiSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5061BA76FC400672E38 /* SortedMultiSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B4741BA78B6200C82BBB /* SortedDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5041BA76FC400672E38 /* SortedDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B4751BA78B6200C82BBB /* SortedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5051BA76FC400672E38 /* SortedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4761BA78B6200C82BBB /* Sort.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50E1BA76FC400672E38 /* Sort.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4771BA78B6200C82BBB /* InsertionSort.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4FC1BA76FC400672E38 /* InsertionSort.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4781BA78B6200C82BBB /* List.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4FF1BA76FC400672E38 /* List.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -65,10 +65,10 @@
 		9677B48E1BA78BB000C82BBB /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4FD1BA76FC400672E38 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B48F1BA78BB000C82BBB /* RedBlackTree.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50C1BA76FC400672E38 /* RedBlackTree.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4901BA78BB000C82BBB /* RedBlackNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50B1BA76FC400672E38 /* RedBlackNode.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		9677B4911BA78BB000C82BBB /* OrderedSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5071BA76FC400672E38 /* OrderedSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		9677B4921BA78BB000C82BBB /* OrderedMultiSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5061BA76FC400672E38 /* OrderedMultiSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		9677B4931BA78BB000C82BBB /* OrderedDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5041BA76FC400672E38 /* OrderedDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		9677B4941BA78BB000C82BBB /* OrderedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5051BA76FC400672E38 /* OrderedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B4911BA78BB000C82BBB /* SortedSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5071BA76FC400672E38 /* SortedSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B4921BA78BB000C82BBB /* SortedMultiSet.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5061BA76FC400672E38 /* SortedMultiSet.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B4931BA78BB000C82BBB /* SortedDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5041BA76FC400672E38 /* SortedDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B4941BA78BB000C82BBB /* SortedMultiDictionary.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5051BA76FC400672E38 /* SortedMultiDictionary.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4951BA78BB000C82BBB /* Sort.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50E1BA76FC400672E38 /* Sort.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4961BA78BB000C82BBB /* InsertionSort.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4FC1BA76FC400672E38 /* InsertionSort.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4971BA78BB000C82BBB /* List.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4FF1BA76FC400672E38 /* List.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -145,10 +145,10 @@
 		9677B4E41BA78DEF00C82BBB /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4FD1BA76FC400672E38 /* JSON.swift */; };
 		9677B4E51BA78DEF00C82BBB /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50C1BA76FC400672E38 /* RedBlackTree.swift */; };
 		9677B4E61BA78DEF00C82BBB /* RedBlackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50B1BA76FC400672E38 /* RedBlackNode.swift */; };
-		9677B4E71BA78DEF00C82BBB /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5071BA76FC400672E38 /* OrderedSet.swift */; };
-		9677B4E81BA78DEF00C82BBB /* OrderedMultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5061BA76FC400672E38 /* OrderedMultiSet.swift */; };
-		9677B4E91BA78DEF00C82BBB /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5041BA76FC400672E38 /* OrderedDictionary.swift */; };
-		9677B4EA1BA78DEF00C82BBB /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5051BA76FC400672E38 /* OrderedMultiDictionary.swift */; };
+		9677B4E71BA78DEF00C82BBB /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5071BA76FC400672E38 /* SortedSet.swift */; };
+		9677B4E81BA78DEF00C82BBB /* SortedMultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5061BA76FC400672E38 /* SortedMultiSet.swift */; };
+		9677B4E91BA78DEF00C82BBB /* SortedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5041BA76FC400672E38 /* SortedDictionary.swift */; };
+		9677B4EA1BA78DEF00C82BBB /* SortedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5051BA76FC400672E38 /* SortedMultiDictionary.swift */; };
 		9677B4EB1BA78DEF00C82BBB /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50E1BA76FC400672E38 /* Sort.swift */; };
 		9677B4EC1BA78DEF00C82BBB /* InsertionSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4FC1BA76FC400672E38 /* InsertionSort.swift */; };
 		9677B4ED1BA78DEF00C82BBB /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4FF1BA76FC400672E38 /* List.swift */; };
@@ -175,10 +175,10 @@
 		9677B5021BA78E1500C82BBB /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4FD1BA76FC400672E38 /* JSON.swift */; };
 		9677B5031BA78E1500C82BBB /* RedBlackTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50C1BA76FC400672E38 /* RedBlackTree.swift */; };
 		9677B5041BA78E1500C82BBB /* RedBlackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50B1BA76FC400672E38 /* RedBlackNode.swift */; };
-		9677B5051BA78E1500C82BBB /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5071BA76FC400672E38 /* OrderedSet.swift */; };
-		9677B5061BA78E1500C82BBB /* OrderedMultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5061BA76FC400672E38 /* OrderedMultiSet.swift */; };
-		9677B5071BA78E1500C82BBB /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5041BA76FC400672E38 /* OrderedDictionary.swift */; };
-		9677B5081BA78E1500C82BBB /* OrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5051BA76FC400672E38 /* OrderedMultiDictionary.swift */; };
+		9677B5051BA78E1500C82BBB /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5071BA76FC400672E38 /* SortedSet.swift */; };
+		9677B5061BA78E1500C82BBB /* SortedMultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5061BA76FC400672E38 /* SortedMultiSet.swift */; };
+		9677B5071BA78E1500C82BBB /* SortedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5041BA76FC400672E38 /* SortedDictionary.swift */; };
+		9677B5081BA78E1500C82BBB /* SortedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5051BA76FC400672E38 /* SortedMultiDictionary.swift */; };
 		9677B5091BA78E1500C82BBB /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50E1BA76FC400672E38 /* Sort.swift */; };
 		9677B50A1BA78E1500C82BBB /* InsertionSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4FC1BA76FC400672E38 /* InsertionSort.swift */; };
 		9677B50B1BA78E1500C82BBB /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4FF1BA76FC400672E38 /* List.swift */; };
@@ -255,10 +255,10 @@
 		96D4E5011BA76FC400672E38 /* ManagedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedAction.swift; sourceTree = "<group>"; };
 		96D4E5021BA76FC400672E38 /* ManagedBond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBond.swift; sourceTree = "<group>"; };
 		96D4E5031BA76FC400672E38 /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
-		96D4E5041BA76FC400672E38 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
-		96D4E5051BA76FC400672E38 /* OrderedMultiDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiDictionary.swift; sourceTree = "<group>"; };
-		96D4E5061BA76FC400672E38 /* OrderedMultiSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiSet.swift; sourceTree = "<group>"; };
-		96D4E5071BA76FC400672E38 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
+		96D4E5041BA76FC400672E38 /* SortedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedDictionary.swift; sourceTree = "<group>"; };
+		96D4E5051BA76FC400672E38 /* SortedMultiDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedMultiDictionary.swift; sourceTree = "<group>"; };
+		96D4E5061BA76FC400672E38 /* SortedMultiSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedMultiSet.swift; sourceTree = "<group>"; };
+		96D4E5071BA76FC400672E38 /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		96D4E5081BA76FC400672E38 /* Probability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Probability.swift; sourceTree = "<group>"; };
 		96D4E5091BA76FC400672E38 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		96D4E50A1BA76FC400672E38 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
@@ -393,10 +393,10 @@
 			children = (
 				96D4E50C1BA76FC400672E38 /* RedBlackTree.swift */,
 				96D4E50B1BA76FC400672E38 /* RedBlackNode.swift */,
-				96D4E5071BA76FC400672E38 /* OrderedSet.swift */,
-				96D4E5061BA76FC400672E38 /* OrderedMultiSet.swift */,
-				96D4E5041BA76FC400672E38 /* OrderedDictionary.swift */,
-				96D4E5051BA76FC400672E38 /* OrderedMultiDictionary.swift */,
+				96D4E5071BA76FC400672E38 /* SortedSet.swift */,
+				96D4E5061BA76FC400672E38 /* SortedMultiSet.swift */,
+				96D4E5041BA76FC400672E38 /* SortedDictionary.swift */,
+				96D4E5051BA76FC400672E38 /* SortedMultiDictionary.swift */,
 			);
 			name = Tree;
 			sourceTree = "<group>";
@@ -508,10 +508,10 @@
 				9677B48E1BA78BB000C82BBB /* JSON.swift in Headers */,
 				9677B48F1BA78BB000C82BBB /* RedBlackTree.swift in Headers */,
 				9677B4901BA78BB000C82BBB /* RedBlackNode.swift in Headers */,
-				9677B4911BA78BB000C82BBB /* OrderedSet.swift in Headers */,
-				9677B4921BA78BB000C82BBB /* OrderedMultiSet.swift in Headers */,
-				9677B4931BA78BB000C82BBB /* OrderedDictionary.swift in Headers */,
-				9677B4941BA78BB000C82BBB /* OrderedMultiDictionary.swift in Headers */,
+				9677B4911BA78BB000C82BBB /* SortedSet.swift in Headers */,
+				9677B4921BA78BB000C82BBB /* SortedMultiSet.swift in Headers */,
+				9677B4931BA78BB000C82BBB /* SortedDictionary.swift in Headers */,
+				9677B4941BA78BB000C82BBB /* SortedMultiDictionary.swift in Headers */,
 				9677B4951BA78BB000C82BBB /* Sort.swift in Headers */,
 				9677B4961BA78BB000C82BBB /* InsertionSort.swift in Headers */,
 				9677B4971BA78BB000C82BBB /* List.swift in Headers */,
@@ -552,10 +552,10 @@
 				9677B46F1BA78B6200C82BBB /* JSON.swift in Headers */,
 				9677B4701BA78B6200C82BBB /* RedBlackTree.swift in Headers */,
 				9677B4711BA78B6200C82BBB /* RedBlackNode.swift in Headers */,
-				9677B4721BA78B6200C82BBB /* OrderedSet.swift in Headers */,
-				9677B4731BA78B6200C82BBB /* OrderedMultiSet.swift in Headers */,
-				9677B4741BA78B6200C82BBB /* OrderedDictionary.swift in Headers */,
-				9677B4751BA78B6200C82BBB /* OrderedMultiDictionary.swift in Headers */,
+				9677B4721BA78B6200C82BBB /* SortedSet.swift in Headers */,
+				9677B4731BA78B6200C82BBB /* SortedMultiSet.swift in Headers */,
+				9677B4741BA78B6200C82BBB /* SortedDictionary.swift in Headers */,
+				9677B4751BA78B6200C82BBB /* SortedMultiDictionary.swift in Headers */,
 				9677B4761BA78B6200C82BBB /* Sort.swift in Headers */,
 				9677B4771BA78B6200C82BBB /* InsertionSort.swift in Headers */,
 				9677B4781BA78B6200C82BBB /* List.swift in Headers */,
@@ -749,11 +749,11 @@
 				9677B5031BA78E1500C82BBB /* RedBlackTree.swift in Sources */,
 				9677B5041BA78E1500C82BBB /* RedBlackNode.swift in Sources */,
 				657FEDAB1BA8F844004D7504 /* Node.swift in Sources */,
-				9677B5051BA78E1500C82BBB /* OrderedSet.swift in Sources */,
-				9677B5061BA78E1500C82BBB /* OrderedMultiSet.swift in Sources */,
-				9677B5071BA78E1500C82BBB /* OrderedDictionary.swift in Sources */,
+				9677B5051BA78E1500C82BBB /* SortedSet.swift in Sources */,
+				9677B5061BA78E1500C82BBB /* SortedMultiSet.swift in Sources */,
+				9677B5071BA78E1500C82BBB /* SortedDictionary.swift in Sources */,
 				96E22D551BA8DE590050BB5F /* GraphObject.swift in Sources */,
-				9677B5081BA78E1500C82BBB /* OrderedMultiDictionary.swift in Sources */,
+				9677B5081BA78E1500C82BBB /* SortedMultiDictionary.swift in Sources */,
 				96E22D4F1BA8D0650050BB5F /* ManagedNodeProperty.swift in Sources */,
 				9677B5091BA78E1500C82BBB /* Sort.swift in Sources */,
 				9677B50A1BA78E1500C82BBB /* InsertionSort.swift in Sources */,
@@ -825,11 +825,11 @@
 				9677B4E51BA78DEF00C82BBB /* RedBlackTree.swift in Sources */,
 				9677B4E61BA78DEF00C82BBB /* RedBlackNode.swift in Sources */,
 				657FEDAA1BA8F844004D7504 /* Node.swift in Sources */,
-				9677B4E71BA78DEF00C82BBB /* OrderedSet.swift in Sources */,
-				9677B4E81BA78DEF00C82BBB /* OrderedMultiSet.swift in Sources */,
-				9677B4E91BA78DEF00C82BBB /* OrderedDictionary.swift in Sources */,
+				9677B4E71BA78DEF00C82BBB /* SortedSet.swift in Sources */,
+				9677B4E81BA78DEF00C82BBB /* SortedMultiSet.swift in Sources */,
+				9677B4E91BA78DEF00C82BBB /* SortedDictionary.swift in Sources */,
 				96E22D541BA8DE590050BB5F /* GraphObject.swift in Sources */,
-				9677B4EA1BA78DEF00C82BBB /* OrderedMultiDictionary.swift in Sources */,
+				9677B4EA1BA78DEF00C82BBB /* SortedMultiDictionary.swift in Sources */,
 				96E22D4E1BA8D0650050BB5F /* ManagedNodeProperty.swift in Sources */,
 				9677B4EB1BA78DEF00C82BBB /* Sort.swift in Sources */,
 				9677B4EC1BA78DEF00C82BBB /* InsertionSort.swift in Sources */,

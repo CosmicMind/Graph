@@ -22,8 +22,8 @@ public extension Graph {
 	/**
 		:name:	search(entity: group: property)
 	*/
-	public func search(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Entity> {
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+	public func search(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Entity> {
+		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		
 		// types
 		for i in types {
@@ -57,8 +57,8 @@ public extension Graph {
 	/**
 		:name:	search(action: group: property)
 	*/
-	public func search(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Action> {
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
+	public func search(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Action> {
+		let nodes: SortedSet<Action> = SortedSet<Action>()
 		
 		// types
 		for i in types {
@@ -92,8 +92,8 @@ public extension Graph {
 	/**
 		:name:	search(bond: group: property)
 	*/
-	public func search(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> OrderedSet<Bond> {
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+	public func search(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Bond> {
+		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		
 		// types
 		for i in types {
@@ -153,9 +153,9 @@ public extension Graph {
 	//
 	//	:name:	search(Entity)
 	//
-	internal func search(Entity type: String) -> OrderedSet<Entity> {
+	internal func search(Entity type: String) -> SortedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		for entity: ManagedEntity in entries as! Array<ManagedEntity> {
 			nodes.insert(Entity(entity: entity))
 		}
@@ -165,9 +165,9 @@ public extension Graph {
 	//
 	//	:name:	search(EntityGroup)
 	//
-	internal func search(EntityGroup name: String) -> OrderedSet<Entity> {
+	internal func search(EntityGroup name: String) -> SortedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		for group: ManagedEntityGroup in entries as! Array<ManagedEntityGroup> {
 			nodes.insert(Entity(entity: group.node))
 		}
@@ -177,9 +177,9 @@ public extension Graph {
 	//
 	//	:name:	search(EntityProperty)
 	//
-	internal func search(EntityProperty name: String) -> OrderedSet<Entity> {
+	internal func search(EntityProperty name: String) -> SortedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
 			nodes.insert(Entity(entity: property.node))
 		}
@@ -189,9 +189,9 @@ public extension Graph {
 	//
 	//	:name:	search(EntityProperty)
 	//
-	internal func search(EntityProperty name: String, value: String) -> OrderedSet<Entity> {
+	internal func search(EntityProperty name: String, value: String) -> SortedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
 			nodes.insert(Entity(entity: property.node))
 		}
@@ -201,9 +201,9 @@ public extension Graph {
 	//
 	//	:name:	search(EntityProperty)
 	//
-	internal func search(EntityProperty name: String, value: Int) -> OrderedSet<Entity> {
+	internal func search(EntityProperty name: String, value: Int) -> SortedSet<Entity> {
 		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value as NSNumber))
-		let nodes: OrderedSet<Entity> = OrderedSet<Entity>()
+		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
 			nodes.insert(Entity(entity: property.node))
 		}
@@ -213,9 +213,9 @@ public extension Graph {
 	//
 	//	:name:	search(Action)
 	//
-	internal func search(Action type: String) -> OrderedSet<Action> {
+	internal func search(Action type: String) -> SortedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: SortedSet<Action> = SortedSet<Action>()
 		for action: ManagedAction in entries as! Array<ManagedAction> {
 			nodes.insert(Action(action: action))
 		}
@@ -225,9 +225,9 @@ public extension Graph {
 	//
 	//	:name:	search(ActionGroup)
 	//
-	internal func search(ActionGroup name: String) -> OrderedSet<Action> {
+	internal func search(ActionGroup name: String) -> SortedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: SortedSet<Action> = SortedSet<Action>()
 		for group: ManagedActionGroup in entries as! Array<ManagedActionGroup> {
 			nodes.insert(Action(action: group.node))
 		}
@@ -237,9 +237,9 @@ public extension Graph {
 	//
 	//	:name:	search(ActionProperty)
 	//
-	internal func search(ActionProperty name: String) -> OrderedSet<Action> {
+	internal func search(ActionProperty name: String) -> SortedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: SortedSet<Action> = SortedSet<Action>()
 		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
 			nodes.insert(Action(action: property.node))
 		}
@@ -249,9 +249,9 @@ public extension Graph {
 	//
 	//	:name:	search(ActionProperty)
 	//
-	internal func search(ActionProperty name: String, value: String) -> OrderedSet<Action> {
+	internal func search(ActionProperty name: String, value: String) -> SortedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: SortedSet<Action> = SortedSet<Action>()
 		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
 			nodes.insert(Action(action: property.node))
 		}
@@ -261,9 +261,9 @@ public extension Graph {
 	//
 	//	:name:	search(ActionProperty)
 	//
-	internal func search(ActionProperty name: String, value: Int) -> OrderedSet<Action> {
+	internal func search(ActionProperty name: String, value: Int) -> SortedSet<Action> {
 		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value as NSNumber))
-		let nodes: OrderedSet<Action> = OrderedSet<Action>()
+		let nodes: SortedSet<Action> = SortedSet<Action>()
 		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
 			nodes.insert(Action(action: property.node))
 		}
@@ -273,9 +273,9 @@ public extension Graph {
 	//
 	//	:name:	search(Bond)
 	//
-	internal func search(Bond type: String) -> OrderedSet<Bond> {
+	internal func search(Bond type: String) -> SortedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		for bond: ManagedBond in entries as! Array<ManagedBond> {
 			nodes.insert(Bond(bond: bond))
 		}
@@ -285,9 +285,9 @@ public extension Graph {
 	//
 	//	:name:	search(BondGroup)
 	//
-	internal func search(BondGroup name: String) -> OrderedSet<Bond> {
+	internal func search(BondGroup name: String) -> SortedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		for group: ManagedBondGroup in entries as! Array<ManagedBondGroup> {
 			nodes.insert(Bond(bond: group.node))
 		}
@@ -297,9 +297,9 @@ public extension Graph {
 	//
 	//	:name:	search(BondProperty)
 	//
-	internal func search(BondProperty name: String) -> OrderedSet<Bond> {
+	internal func search(BondProperty name: String) -> SortedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
 			nodes.insert(Bond(bond: property.node))
 		}
@@ -309,9 +309,9 @@ public extension Graph {
 	//
 	//	:name:	search(BondProperty)
 	//
-	internal func search(BondProperty name: String, value: String) -> OrderedSet<Bond> {
+	internal func search(BondProperty name: String, value: String) -> SortedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
 			nodes.insert(Bond(bond: property.node))
 		}
@@ -321,9 +321,9 @@ public extension Graph {
 	//
 	//	:name:	search(BondProperty)
 	//
-	internal func search(BondProperty name: String, value: Int) -> OrderedSet<Bond> {
+	internal func search(BondProperty name: String, value: Int) -> SortedSet<Bond> {
 		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value as NSNumber))
-		let nodes: OrderedSet<Bond> = OrderedSet<Bond>()
+		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
 			nodes.insert(Bond(bond: property.node))
 		}

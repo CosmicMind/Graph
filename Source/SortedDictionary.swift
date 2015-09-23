@@ -16,12 +16,12 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
+public class SortedDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
-	public typealias OrderedKey = OrderedSet<Key>
-	public typealias OrderedValue = Array<Value>
-	public typealias OrderedSearch = OrderedDictionary<Key, Value>
-	internal typealias OrderedNode = RedBlackNode<Key, Value>
+	public typealias SortedKey = SortedSet<Key>
+	public typealias SortedValue = Array<Value>
+	public typealias SortedSearch = SortedDictionary<Key, Value>
+	internal typealias SortedNode = RedBlackNode<Key, Value>
 	
 	/**
 		:name:	tree
@@ -33,7 +33,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	description
 		:description:	Conforms to the Printable Protocol. Outputs the
-		data in the OrderedDictionary in a readable format.
+		data in the SortedDictionary in a readable format.
 		- returns:	String
 	*/
 	public var description: String {
@@ -62,7 +62,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	
 	/**
 		:name:	isEmpty
-		:description:	A boolean of whether the OrderedDictionary is empty.
+		:description:	A boolean of whether the SortedDictionary is empty.
 		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
@@ -89,11 +89,11 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	
 	/**
 		:name:	keys
-		:description:	Returns an array of the key values in ordered.
-		- returns:	OrderedDictionary.OrderedKey
+		:description:	Returns an array of the key values in order.
+		- returns:	SortedDictionary.SortedKey
 	*/
-	public var keys: OrderedDictionary.OrderedKey {
-		let s: OrderedKey = OrderedKey()
+	public var keys: SortedDictionary.SortedKey {
+		let s: SortedKey = SortedKey()
 		for x in self {
 			s.insert(x.key)
 		}
@@ -102,12 +102,12 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	
 	/**
 		:name:	values
-		:description:	Returns an array of the values that are ordered based
+		:description:	Returns an array of the values that are sorted based
 		on the key ordering.
-		- returns:	OrderedDictionary.OrderedValue
+		- returns:	SortedDictionary.SortedValue
 	*/
-	public var values: OrderedDictionary.OrderedValue {
-		var s: OrderedValue = OrderedValue()
+	public var values: SortedDictionary.SortedValue {
+		var s: SortedValue = SortedValue()
 		for x in self {
 			s.append(x.value!)
 		}
@@ -146,9 +146,9 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	//	:description:	Conforms to the SequenceType Protocol. Returns
 	//	the next value in the sequence of nodes using
 	//	index values [0...n-1].
-	//	:returns:	OrderedDictionary.Generator
+	//	:returns:	SortedDictionary.Generator
 	//
-	public func generate() -> OrderedDictionary.Generator {
+	public func generate() -> SortedDictionary.Generator {
 		var index = startIndex
 		return anyGenerator {
 			if index < self.endIndex {
@@ -253,20 +253,20 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	removeValueForKeys
 		:description:	Removes key / value pairs based on the key value given.
-		- returns:	OrderedDictionary<Key, Value>?
+		- returns:	SortedDictionary<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Key...) -> OrderedDictionary<Key, Value>? {
+	public func removeValueForKeys(keys: Key...) -> SortedDictionary<Key, Value>? {
 		return removeValueForKeys(keys)
 	}
 	
 	/**
 		:name:	removeValueForKeys
 		:description:	Removes key / value pairs based on the key value given.
-		- returns:	OrderedDictionary<Key, Value>?
+		- returns:	SortedDictionary<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Array<Key>) -> OrderedDictionary<Key, Value>? {
+	public func removeValueForKeys(keys: Array<Key>) -> SortedDictionary<Key, Value>? {
 		if let r: RedBlackTree<Key, Value> = tree.removeValueForKeys(keys) {
-			let d: OrderedDictionary<Key, Value> = OrderedDictionary<Key, Value>()
+			let d: SortedDictionary<Key, Value> = SortedDictionary<Key, Value>()
 			for (k, v) in r {
 				d.insert(k, value: v)
 			}
@@ -306,21 +306,21 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	/**
 		:name:	search
 		:description:	Accepts a list of keys and returns a subset
-		OrderedDictionary with the given values if they exist.
-		- returns:	OrderedDictionary.OrderedSearch
+		SortedDictionary with the given values if they exist.
+		- returns:	SortedDictionary.SortedSearch
 	*/
-	public func search(keys: Key...) -> OrderedDictionary.OrderedSearch {
+	public func search(keys: Key...) -> SortedDictionary.SortedSearch {
 		return search(keys)
 	}
 	
 	/**
 		:name:	search
 		:description:	Accepts an array of keys and returns a subset
-		OrderedDictionary with the given values if they exist.
-		- returns:	OrderedDictionary.OrderedSearch
+		SortedDictionary with the given values if they exist.
+		- returns:	SortedDictionary.SortedSearch
 	*/
-	public func search(keys: Array<Key>) -> OrderedDictionary.OrderedSearch {
-		var dict: OrderedSearch = OrderedSearch()
+	public func search(keys: Array<Key>) -> SortedDictionary.SortedSearch {
+		var dict: SortedSearch = SortedSearch()
 		for key: Key in keys {
 			traverse(key, node: tree.root, dict: &dict)
 		}
@@ -329,9 +329,9 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	
 	/**
 		:name:	traverse
-		:description:	Traverses the OrderedDictionary, looking for a key match.
+		:description:	Traverses the SortedDictionary, looking for a key match.
 	*/
-	internal func traverse(key: Key, node: OrderedDictionary.OrderedNode, inout dict: OrderedDictionary.OrderedSearch) {
+	internal func traverse(key: Key, node: SortedDictionary.SortedNode, inout dict: SortedDictionary.SortedSearch) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))
@@ -342,7 +342,7 @@ public class OrderedDictionary<Key : Comparable, Value> : Probability<Key>, Coll
 	}
 }
 
-public func ==<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
+public func ==<Key : Comparable, Value>(lhs: SortedDictionary<Key, Value>, rhs: SortedDictionary<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}
@@ -354,33 +354,33 @@ public func ==<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs:
 	return true
 }
 
-public func !=<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
+public func !=<Key : Comparable, Value>(lhs: SortedDictionary<Key, Value>, rhs: SortedDictionary<Key, Value>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func +<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> OrderedDictionary<Key, Value> {
-	let t: OrderedDictionary<Key, Value> = lhs
+public func +<Key : Comparable, Value>(lhs: SortedDictionary<Key, Value>, rhs: SortedDictionary<Key, Value>) -> SortedDictionary<Key, Value> {
+	let t: SortedDictionary<Key, Value> = lhs
 	for (k, v) in rhs {
 		t.insert(k, value: v)
 	}
 	return t
 }
 
-public func +=<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) {
+public func +=<Key : Comparable, Value>(lhs: SortedDictionary<Key, Value>, rhs: SortedDictionary<Key, Value>) {
 	for (k, v) in rhs {
 		lhs.insert(k, value: v)
 	}
 }
 
-public func -<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> OrderedDictionary<Key, Value> {
-	let t: OrderedDictionary<Key, Value> = lhs
+public func -<Key : Comparable, Value>(lhs: SortedDictionary<Key, Value>, rhs: SortedDictionary<Key, Value>) -> SortedDictionary<Key, Value> {
+	let t: SortedDictionary<Key, Value> = lhs
 	for (k, _) in rhs {
 		t.removeValueForKeys(k)
 	}
 	return t
 }
 
-public func -=<Key : Comparable, Value>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) {
+public func -=<Key : Comparable, Value>(lhs: SortedDictionary<Key, Value>, rhs: SortedDictionary<Key, Value>) {
 	for (k, _) in rhs {
 		lhs.removeValueForKeys(k)
 	}

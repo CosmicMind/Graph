@@ -70,7 +70,7 @@ public class Bond : NSObject, Comparable {
 	/**
 		:name:	groups
 	*/
-	public var groups: OrderedSet<String> {
+	public var groups: SortedSet<String> {
 		return node.groups
 	}
 	
