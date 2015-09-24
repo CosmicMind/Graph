@@ -450,6 +450,7 @@
 		96D4E4E71BA76FA400672E38 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				96D4E4FE1BA76FC400672E38 /* LICENSE */,
 				9677B4331BA78A5600C82BBB /* Supporting Files */,
 				9677B4321BA78A4000C82BBB /* Probability */,
 				9677B4311BA78A2700C82BBB /* Network */,
@@ -457,7 +458,6 @@
 				9677B42F1BA789E600C82BBB /* Sort */,
 				9677B42E1BA789B100C82BBB /* List */,
 				9677B42D1BA7896100C82BBB /* Graph */,
-				96D4E4FE1BA76FC400672E38 /* LICENSE */,
 			);
 			path = Source;
 			sourceTree = "<group>";
