@@ -1,71 +1,56 @@
 # GraphKit
-### A Powerful Data-Driven Framework In Swift
-
-* [Get Started](http://graphkit.io)
-* [Installation Guide](http://www.graphkit.io/tutorials/workspace)
-* [CocoaPods (GK)](https://cocoapods.org/?q=GK)
 
 ### CocoaPods Support
+
 GraphKit is on CocoaPods under the name [GK](https://cocoapods.org/?q=GK).
 
-### Unbelievable Persistence
-Developers are limited by their efficiency to model simple and complex data. Without any configuration or schemas, GraphKit can model any scenario with a few lines of code. Take advantage of fast prototyping that is ready for production when you are.
+### A Simple Entity
 
-### Flexible Data Structures
-
-Juggle data around with ease and comfort. A library of flexible data structures are at your fingertips.
-
-### Built in Probability Theory
-
-An interwoven probability framework is built in. Bring your application to life based on user engagement and predictive analytics without making a single network request.
-
-### A Simple Model
-
-GraphKit model objects vary based on usage. An Entity is representative of a person place or thing. Below is an example of creating a User Entity and saving it to the Graph.
+Let's begin with creating a simple model object using an Entity. An Entity represents a person, place, or thing. Below is an example of creating a User type Entity.
 
 ```swift
-let graph = Graph()
+let graph: Graph = Graph()
 
-let user = Entity(type: "User")
+let user: Entity = Entity(type: "User")
 user["name"] = "Eve"
 user["age"] = 27
 
 graph.save()
 ```
 
-### Relationships Between Models
+### Relationship Bond
 
-Relationships between Model objects is done using sentence structures. A Bond object forms the connection between two Entity objects using its subject and object property. Below is an example of a relationship between a User Entity and a Book Entity where the User is the Author of the Book.
+A Relationship between two Entity objects is done using a Bond. A Bond is structured like a sentence, in that it has a Subject and Object. Below is an example of constructing a relationship, between a User and Book. It may be thought of as User is Author of Book.
 
 ```swift
-let graph = Graph()
+let graph: Graph = Graph()
 
-let user = Entity(type: "User")
+let user: Entity = Entity(type: "User")
 user["name"] = "Michael Talbot"
 
-let book = Entity(type: "Book")
+let book: Entity = Entity(type: "Book")
 book["title"] = "The Holographic Universe"
 book.addGroup("Physics")
 
-let bond = Bond(type: "AuthorOf")
-bond["written"] = "May 6th 1992"
-bond.subject = user
-bond.object = book
+let author: Bond = Bond(type: "Author")
+author["written"] = "May 6th 1992"
+author.subject = user
+author.object = book
 
 graph.save()
 ```
 
-### Real-Time Analytics
+### Real-Time Action
 
-Engagement drives the user experience. GraphKit captures engagement through Action objects that form a relationship between many subjects and many objects. Below is an example of a User Entity purchasing many books in a single transaction.
+Engagement drives experience. When a user engages your application, an Action object may be used to capture all the relevant data in a single snapshot. An Action does this, very much like a Bond, by relating Subjects to Objects. Below is an example of a user purchasing many books. It may be thought of as User Purchased these Book(s).
 
 ```swift
-let graph = Graph()
+let graph: Graph = Graph()
 
-let user = Entity(type: "User")
-let books = graph.search(entityGroup: "Popular")
+let user: Entity = Entity(type: "User")
+let books: SortedSet<Entity> = graph.search(entity: ["Book"], group: ["Physics"])
 
-let purchased = Action(type: "Purchased")
+let purchased: Action = Action(type: "Purchased")
 purchased.addSubject(user)
 
 for book in books {
@@ -75,41 +60,57 @@ for book in books {
 graph.save()
 ```
 
-### Recommendations Based on Probability
+### A Probable World
 
-As the user engages your application, GraphKit offers a probability interface to give a truely unique experience. Below is an example of recommending a book that is in the physics genre.
+A great experience is never static. Data structures in GraphKit have an internal probability mechanism that enables your application to create a dynamic experience. Below is an example of determining the probability of rolling a 3 with a single die.
 
 ```swift
-let graph = Graph()
-let books = OrderedMultiSet<String>()
+let die: SortedSet<Int> = SortedSet<Int>(elements: 1, 2, 3, 4, 5, 6)
+print(die.probabilityOf(3)) // output: 0.166666666666667
+```
 
-for purchase in graph.search(action: "Purchased") {
-	for object in purchase.objects {
-		if "Book" == object.type {
-			books.insert(object["genre"] as! String)
-		}
-	}
-}
+It is possible to use the probability mechanism with stored objects in the Graph. Below is the same example that sets each die value as an Entity.
 
-if books.probabilityOf("Physics") > 0.5 {
-	// offer physics books
-} else {
-	// offer other books
-}
+```swift
+let graph: Graph = Graph()
+
+let n1: Entity = Entity(type: "Number")
+n1["value"] = 1
+
+let n2: Entity = Entity(type: "Number")
+n2["value"] = 2
+
+let n3: Entity = Entity(type: "Number")
+n3["value"] = 3
+
+let n4: Entity = Entity(type: "Number")
+n4["value"] = 4
+
+let n5: Entity = Entity(type: "Number")
+n5["value"] = 5
+
+let n6: Entity = Entity(type: "Number")
+n6["value"] = 6
+
+let die: SortedSet<Entity> = SortedSet<Entity>(elements: n1, n2, n3, n4, n5, n6)
+print(die.probabilityOf(n3)) // output: 0.166666666666667
+
+graph.save()
 ```
 
 ### Data-Driven Design
 
-As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching Clicked Actions on a button.
+As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a User Clicked a Button.
 
 ```swift
-let graph = Graph()
+let graph: Graph = Graph() // set UIViewController delegate as GraphDelegate
 graph.delegate = self
-graph.watch(Action: "Clicked")
 
-let user = Entity(type: "User")
-let clicked = Action(type: "Clicked")
-let button = Entity(type: "Button")
+graph.watch(action: ["Clicked"])
+
+let user: Entity = Entity(type: "User")
+let clicked: Action = Action(type: "Clicked")
+let button: Entity = Entity(type: "Button")
 
 clicked.addSubject(user)
 clicked.addObject(button)
@@ -132,15 +133,12 @@ func graphDidInsertAction(graph: Graph, action: Action) {
  }
 ```
 
-
 ### License
-
 
 [AGPLv3](http://choosealicense.com/licenses/agpl-3.0/)
 
-
 ### Contributors
-
 
 * [Daniel Dahan](https://github.com/danieldahan)
 * [Adam Dahan](https://github.com/adamdahan)
+* [Michael Reyder](https://github.com/michaelReyder)
