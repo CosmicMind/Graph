@@ -123,10 +123,8 @@ func graphDidInsertAction(graph: Graph, action: Action) {
     case "Clicked":
       println(action.subjects.first?.type) // User
       println(action.objects.first?.type) // Button
-      break
     case "Swiped":
       // handle swipe
-     break
     default:
      break
     }
