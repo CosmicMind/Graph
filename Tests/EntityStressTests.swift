@@ -64,7 +64,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		
 		dispatch_async(queue1) {
 			e1 = Entity(type: "E")
-			for i in 1...100 {
+			for i in 1...1000 {
 				let prop: String = String(i)
 				e1!.addGroup(prop)
 				e1!.addGroup("test")
@@ -72,7 +72,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 				e1![prop] = i
 			}
 			dispatch_async(self.queue2) {
-				for i in 1...50 {
+				for i in 1...500 {
 					let prop: String = String(i)
 					e1!.addGroup(prop)
 					e1!.addGroup("test")
@@ -82,7 +82,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 					e1![prop] = nil
 				}
 				dispatch_async(self.queue3) {
-					for i in 1...100 {
+					for i in 1...1000 {
 						let prop: String = String(i)
 						e1!.addGroup(prop)
 						e1!.addGroup("test")
@@ -90,7 +90,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 						e1!["test"] = "test"
 					}
 					dispatch_async(self.queue4) {
-						for i in 1...50 {
+						for i in 1...500 {
 							let prop: String = String(i)
 							e1!.addGroup(prop)
 							e1!.addGroup("test")
@@ -110,7 +110,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		expectation = expectationWithDescription("Entity: Insert did not pass.")
 
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(5, handler: nil)
+		waitForExpectationsWithTimeout(60, handler: nil)
 		
 		expectation = expectationWithDescription("Entity: Delete did not pass.")
 		
@@ -123,7 +123,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertEntity(graph: Graph, entity: Entity) {
-		if 51 == entity.groups.count && 51 == entity.properties.count {
+		if 501 == entity.groups.count && 501 == entity.properties.count {
 			expectation?.fulfill()
 		}
 	}

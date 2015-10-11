@@ -34,16 +34,11 @@ internal class ManagedNode : GraphObject {
 	//	deleted.
 	//
 	internal override func delete() {
-		var g: Graph?
-		if 0 == propertySet.count ? 0 < groupSet.count : true {
-			g = Graph()
-		}
 		var s: NSMutableSet = groupSet as! NSMutableSet
 		for x in s {
 			if let v: ManagedNodeGroup = x as? ManagedNodeGroup {
 				v.delete()
 				s.removeObject(v)
-				g?.save()
 			}
 		}
 		s = propertySet as! NSMutableSet
@@ -51,7 +46,6 @@ internal class ManagedNode : GraphObject {
 			if let v: ManagedNodeProperty = x as? ManagedNodeProperty {
 				v.delete()
 				s.removeObject(v)
-				g?.save()
 			}
 		}
 		super.delete()

@@ -64,7 +64,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		
 		dispatch_async(queua1) {
 			a1 = Action(type: "A")
-			for i in 1...100 {
+			for i in 1...1000 {
 				let prop: String = String(i)
 				a1!.addGroup(prop)
 				a1!.addGroup("test")
@@ -72,7 +72,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 				a1![prop] = i
 			}
 			dispatch_async(self.queue2) {
-				for i in 1...50 {
+				for i in 1...500 {
 					let prop: String = String(i)
 					a1!.addGroup(prop)
 					a1!.addGroup("test")
@@ -82,7 +82,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 					a1![prop] = nil
 				}
 				dispatch_async(self.queue3) {
-					for i in 1...100 {
+					for i in 1...1000 {
 						let prop: String = String(i)
 						a1!.addGroup(prop)
 						a1!.addGroup("test")
@@ -90,7 +90,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 						a1!["test"] = "test"
 					}
 					dispatch_async(self.queue4) {
-						for i in 1...50 {
+						for i in 1...500 {
 							let prop: String = String(i)
 							a1!.addGroup(prop)
 							a1!.addGroup("test")
@@ -111,7 +111,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		expectation = expectationWithDescription("Action: Insert did not pass.")
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(5, handler: nil)
+		waitForExpectationsWithTimeout(60, handler: nil)
 		
 		expectation = expectationWithDescription("Action: Delete did not pass.")
 		
@@ -126,7 +126,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertAction(graph: Graph, action: Action) {
-		if 51 == action.groups.count && 51 == action.properties.count {
+		if 501 == action.groups.count && 501 == action.properties.count {
 			expectation?.fulfill()
 		}
 	}

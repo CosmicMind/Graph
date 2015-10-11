@@ -64,7 +64,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		
 		dispatch_async(queub1) {
 			b1 = Bond(type: "B")
-			for i in 1...100 {
+			for i in 1...1000 {
 				let prop: String = String(i)
 				b1!.addGroup(prop)
 				b1!.addGroup("test")
@@ -72,7 +72,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 				b1![prop] = i
 			}
 			dispatch_async(self.queue2) {
-				for i in 1...50 {
+				for i in 1...500 {
 					let prop: String = String(i)
 					b1!.addGroup(prop)
 					b1!.addGroup("test")
@@ -82,7 +82,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 					b1![prop] = nil
 				}
 				dispatch_async(self.queue3) {
-					for i in 1...100 {
+					for i in 1...1000 {
 						let prop: String = String(i)
 						b1!.addGroup(prop)
 						b1!.addGroup("test")
@@ -90,7 +90,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 						b1!["test"] = "test"
 					}
 					dispatch_async(self.queue4) {
-						for i in 1...50 {
+						for i in 1...500 {
 							let prop: String = String(i)
 							b1!.addGroup(prop)
 							b1!.addGroup("test")
@@ -111,7 +111,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		expectation = expectationWithDescription("Bond: Insert did not pass.")
 		
 		// Wait for the delegates to be executed.
-		waitForExpectationsWithTimeout(5, handler: nil)
+		waitForExpectationsWithTimeout(60, handler: nil)
 		
 		expectation = expectationWithDescription("Bond: Delete did not pass.")
 		
@@ -126,7 +126,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertBond(graph: Graph, bond: Bond) {
-		if 51 == bond.groups.count && 51 == bond.properties.count {
+		if 501 == bond.groups.count && 501 == bond.properties.count {
 			expectation?.fulfill()
 		}
 	}
