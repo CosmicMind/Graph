@@ -26,4 +26,33 @@ internal class ManagedNode : GraphObject {
 	@NSManaged internal var createdDate: NSDate
 	@NSManaged internal var propertySet: NSSet
 	@NSManaged internal var groupSet: NSSet
+	
+	//
+	//	:name:	delete
+	//	:note: This method when called, deletes all the relationships first
+	//	so delegation can be called with an entact Node, then the Node is
+	//	deleted.
+	//
+	internal override func delete() {
+		let b: Bool = 0 == propertySet.count ? 0 < groupSet.count : true
+		var s: NSMutableSet = groupSet as! NSMutableSet
+		for x in s {
+			if let v: ManagedNodeGroup = x as? ManagedNodeGroup {
+				v.delete()
+				s.removeObject(v)
+			}
+		}
+		s = propertySet as! NSMutableSet
+		for x in s {
+			if let v: ManagedNodeProperty = x as? ManagedNodeProperty {
+				v.delete()
+				s.removeObject(v)
+			}
+		}
+		if b {
+			let g: Graph = Graph()
+			g.save()
+		}
+		super.delete()
+	}
 }
