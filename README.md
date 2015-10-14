@@ -72,8 +72,6 @@ print(die.probabilityOf(3)) // output: 0.166666666666667
 It is possible to use the probability mechanism with stored objects in the Graph. Below is the same example that sets each die value as an Entity.
 
 ```swift
-let graph: Graph = Graph()
-
 let n1: Entity = Entity(type: "Number")
 n1["value"] = 1
 
@@ -94,8 +92,6 @@ n6["value"] = 6
 
 let die: SortedSet<Entity> = SortedSet<Entity>(elements: n1, n2, n3, n4, n5, n6)
 print(die.probabilityOf(n3)) // output: 0.166666666666667
-
-graph.save()
 ```
 
 ### Data-Driven Design
