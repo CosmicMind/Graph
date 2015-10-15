@@ -66,7 +66,7 @@ internal class Node <Type : ManagedNode> : NSObject {
 	//
 	//	:name:	nodeClass
 	//
-	internal var nodeClass: Int {
+	internal var nodeClass: NSNumber {
 		return object.nodeClass
 	}
 	

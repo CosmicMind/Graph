@@ -21,7 +21,7 @@
 import CoreData
 
 internal class ManagedNode : GraphObject {
-	@NSManaged internal var nodeClass: Int
+	@NSManaged internal var nodeClass: NSNumber
 	@NSManaged internal var type: String
 	@NSManaged internal var createdDate: NSDate
 	@NSManaged internal var propertySet: NSSet

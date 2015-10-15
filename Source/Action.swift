@@ -53,7 +53,7 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	nodeClass
 	*/
-	public var nodeClass: Int {
+	public var nodeClass: NSNumber {
 		return node.nodeClass
 	}
 
