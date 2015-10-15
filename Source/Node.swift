@@ -56,7 +56,11 @@ internal class Node <Type : ManagedNode> : NSObject {
 		for v in groups {
 			g.append(v)
 		}
-		return JSON.parse(JSON.serialize(["nodeClass": nodeClass, "id": id, "type": type, "groups": g, "properties": p, "createdDate": String(stringInterpolationSegment: createdDate)])!)!
+		let formatter = NSDateFormatter()
+		formatter.dateStyle = .FullStyle
+		formatter.timeStyle = .FullStyle
+		let dictionary: Dictionary<String, AnyObject> = ["nodeClass": nodeClass, "id": id, "type": type, "groups": g, "properties": p, "createdDate": formatter.stringFromDate(createdDate)] as Dictionary<String, AnyObject>
+		return JSON.parse(JSON.serialize(dictionary)!)!
 	}
 	
 	//
