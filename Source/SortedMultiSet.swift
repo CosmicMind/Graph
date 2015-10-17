@@ -27,9 +27,9 @@ public class SortedMultiSet<Element : Comparable> : Probability<Element>, Collec
 	internal var tree: RedBlackTree<Element, Element>
 
 	/**
-		:name:	array
+		:name:	asArray
 	*/
-	public var array: Array<Element> {
+	public var asArray: Array<Element> {
 		var a: Array<Element> = Array<Element>()
 		for x in self {
 			a.append(x)

@@ -22,7 +22,7 @@ public extension Graph {
 	/**
 		:name:	watch(entity: group: property)
 	*/
-	public func watch(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
+	public func watch(entity types: Array<String>, group names: Array<String>? = nil, property keys: Array<String>? = nil) {
 		// types
 		for i in types {
 			watch(Entity: i)
@@ -36,7 +36,7 @@ public extension Graph {
 		}
 		
 		// properties
-		if let n: Array<String> = pairs {
+		if let n: Array<String> = keys {
 			for i in n {
 				watch(EntityProperty: i)
 			}
@@ -46,7 +46,7 @@ public extension Graph {
 	/**
 		:name:	watch(action: group: property)
 	*/
-	public func watch(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
+	public func watch(action types: Array<String>, group names: Array<String>? = nil, property keys: Array<String>? = nil) {
 		// types
 		for i in types {
 			watch(Action: i)
@@ -60,7 +60,7 @@ public extension Graph {
 		}
 		
 		// properties
-		if let n: Array<String> = pairs {
+		if let n: Array<String> = keys {
 			for i in n {
 				watch(ActionProperty: i)
 			}
@@ -70,7 +70,7 @@ public extension Graph {
 	/**
 		:name:	watch(bond: group: property)
 	*/
-	public func watch(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<String>? = nil) {
+	public func watch(bond types: Array<String>, group names: Array<String>? = nil, property keys: Array<String>? = nil) {
 		// types
 		for i in types {
 			watch(Bond: i)
@@ -84,7 +84,7 @@ public extension Graph {
 		}
 		
 		// properties
-		if let n: Array<String> = pairs {
+		if let n: Array<String> = keys {
 			for i in n {
 				watch(BondProperty: i)
 			}

@@ -33,17 +33,17 @@ public class Action : NSObject, Comparable {
 	}
 	
 	/**
-		:name:	json
+		:name:	asJSON
 	*/
-	public var json: JSON {
-		let j: JSON = node.json
+	public var asJSON: JSON {
+		let j: JSON = node.asJSON
 		var s: Array<AnyObject> = Array<AnyObject>()
 		for v in subjects {
-			s.append(v.json.object)
+			s.append(v.asJSON.object)
 		}
 		var o: Array<AnyObject> = Array<AnyObject>()
 		for v in objects {
-			o.append(v.json.object)
+			o.append(v.asJSON.object)
 		}
 		j["subjects"] = JSON(s)
 		j["objects"] = JSON(o)

@@ -34,9 +34,9 @@ internal class Node <Type : ManagedNode> : NSObject {
 	}
 	
 	//
-	//	:name:	json
+	//	:name:	asJSON
 	//
-	internal var json: JSON {
+	internal var asJSON: JSON {
 		var p: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
 		for (k, v) in properties {
 			switch v {

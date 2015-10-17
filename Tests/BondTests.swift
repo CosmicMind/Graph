@@ -86,11 +86,11 @@ class BondTests : XCTestCase, GraphDelegate {
 		
 		graph!.save()
 		
-		XCTAssert(author.json["properties"]?["genre"]?.string == "Physics", "Test failed.")
-		XCTAssert(author.json["properties"]?["pages"]?.int == 101, "Test failed.")
-		XCTAssert(author.json["properties"]?["date"]?.string == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
-		XCTAssert(author.subject?.json == user.json, "Test failed.")
-		XCTAssert(author.object?.json == book.json, "Test failed.")
+		XCTAssert(author.asJSON["properties"]?["genre"]?.string == "Physics", "Test failed.")
+		XCTAssert(author.asJSON["properties"]?["pages"]?.int == 101, "Test failed.")
+		XCTAssert(author.asJSON["properties"]?["date"]?.string == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
+		XCTAssert(author.subject?.asJSON == user.asJSON, "Test failed.")
+		XCTAssert(author.object?.asJSON == book.asJSON, "Test failed.")
 		
 		author.delete()
 		user.delete()

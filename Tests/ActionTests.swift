@@ -97,11 +97,11 @@ class ActionTests : XCTestCase, GraphDelegate {
 		
 		graph!.save()
 		
-		XCTAssert(read.json["properties"]?["genre"]?.string == "Physics", "Test failed.")
-		XCTAssert(read.json["properties"]?["pages"]?.int == 101, "Test failed.")
-		XCTAssert(read.json["properties"]?["date"]?.string == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
-		XCTAssert(read.subjects.first?.json == user.json, "Test failed.")
-		XCTAssert(read.objects.first?.json == book.json, "Test failed.")
+		XCTAssert(read.asJSON["properties"]?["genre"]?.string == "Physics", "Test failed.")
+		XCTAssert(read.asJSON["properties"]?["pages"]?.int == 101, "Test failed.")
+		XCTAssert(read.asJSON["properties"]?["date"]?.string == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
+		XCTAssert(read.subjects.first?.asJSON == user.asJSON, "Test failed.")
+		XCTAssert(read.objects.first?.asJSON == book.asJSON, "Test failed.")
 		
 		read.delete()
 		user.delete()

@@ -33,10 +33,10 @@ public class Entity : NSObject, Comparable {
 	}
 	
 	/**
-		:name:	json
+		:name:	asJSON
 	*/
-	public var json: JSON {
-		return node.json
+	public var asJSON: JSON {
+		return node.asJSON
 	}
 	
 	/**

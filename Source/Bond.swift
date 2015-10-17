@@ -30,12 +30,12 @@ public class Bond : NSObject, Comparable {
 	}
 	
 	/**
-		:name:	json
+		:name:	asJSON
 	*/
-	public var json: JSON {
-		let j: JSON = node.json
-		j["subject"] = subject?.json
-		j["object"] = object?.json
+	public var asJSON: JSON {
+		let j: JSON = node.asJSON
+		j["subject"] = subject?.asJSON
+		j["object"] = object?.asJSON
 		return j
 	}
 	
