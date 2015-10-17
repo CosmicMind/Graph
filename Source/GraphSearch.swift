@@ -43,8 +43,8 @@ public extension Graph {
 				if let v: AnyObject = i.value {
 					if let a: String = v as? String {
 						nodes.intersectInPlace(search(EntityProperty: i.key, value: a as String))
-					} else if let a: Int = v as? Int {
-						nodes.intersectInPlace(search(EntityProperty: i.key, value: a as Int))
+					} else if let a: NSNumber = v as? NSNumber {
+						nodes.intersectInPlace(search(EntityProperty: i.key, value: a))
 					}
 				} else {
 					nodes.intersectInPlace(search(EntityProperty: i.key))
@@ -77,9 +77,9 @@ public extension Graph {
 			for i in n {
 				if let v: AnyObject = i.value {
 					if let a: String = v as? String {
-						nodes.intersectInPlace(search(ActionProperty: i.key, value: a as String))
-					} else if let a: Int = v as? Int {
-						nodes.intersectInPlace(search(ActionProperty: i.key, value: a as Int))
+						nodes.intersectInPlace(search(ActionProperty: i.key, value: a))
+					} else if let a: NSNumber = v as? NSNumber {
+						nodes.intersectInPlace(search(ActionProperty: i.key, value: a))
 					}
 				} else {
 					nodes.intersectInPlace(search(ActionProperty: i.key))
@@ -112,9 +112,9 @@ public extension Graph {
 			for i in n {
 				if let v: AnyObject = i.value {
 					if let a: String = v as? String {
-						nodes.intersectInPlace(search(BondProperty: i.key, value: a as String))
-					} else if let a: Int = v as? Int {
-						nodes.intersectInPlace(search(BondProperty: i.key, value: a as Int))
+						nodes.intersectInPlace(search(BondProperty: i.key, value: a))
+					} else if let a: NSNumber = v as? NSNumber {
+						nodes.intersectInPlace(search(BondProperty: i.key, value: a))
 					}
 				} else {
 					nodes.intersectInPlace(search(BondProperty: i.key))
@@ -201,8 +201,8 @@ public extension Graph {
 	//
 	//	:name:	search(EntityProperty)
 	//
-	internal func search(EntityProperty name: String, value: Int) -> SortedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value as NSNumber))
+	internal func search(EntityProperty name: String, value: NSNumber) -> SortedSet<Entity> {
+		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
 		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
 			nodes.insert(Entity(entity: property.node))
@@ -261,8 +261,8 @@ public extension Graph {
 	//
 	//	:name:	search(ActionProperty)
 	//
-	internal func search(ActionProperty name: String, value: Int) -> SortedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value as NSNumber))
+	internal func search(ActionProperty name: String, value: NSNumber) -> SortedSet<Action> {
+		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
 		let nodes: SortedSet<Action> = SortedSet<Action>()
 		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
 			nodes.insert(Action(action: property.node))
@@ -321,8 +321,8 @@ public extension Graph {
 	//
 	//	:name:	search(BondProperty)
 	//
-	internal func search(BondProperty name: String, value: Int) -> SortedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value as NSNumber))
+	internal func search(BondProperty name: String, value: NSNumber) -> SortedSet<Bond> {
+		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
 		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
 			nodes.insert(Bond(bond: property.node))
