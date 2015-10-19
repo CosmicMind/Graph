@@ -28,11 +28,6 @@ internal struct GraphMainManagedObjectContext {
 	internal static var managedObjectContext: NSManagedObjectContext?
 }
 
-internal struct GraphPrivateManagedObjectContext {
-	internal static var onceToken: dispatch_once_t = 0
-	internal static var managedObjectContext: NSManagedObjectContext?
-}
-
 internal struct GraphManagedObjectModel {
 	internal static var onceToken: dispatch_once_t = 0
 	internal static var managedObjectModel: NSManagedObjectModel?
@@ -155,30 +150,12 @@ public class Graph : NSObject {
 	*/
 	public func save(completion: ((success: Bool, error: NSError?) -> ())?) {
 		let w: NSManagedObjectContext? = worker
-		let p: NSManagedObjectContext? = internalContext
-		if nil != w && nil != p {
-			w!.performBlockAndWait {
-				var error: NSError?
-				var result: Bool?
-				do {
-					try w!.save()
-					result = true
-				} catch let e as NSError {
-					error = e
-					result = false
-				}
-				dispatch_async(dispatch_get_main_queue()) {
-					if false == result {
-						completion?(success: false, error: error)
-					} else {
-						do {
-							try p!.save()
-							completion?(success: true, error: nil)
-						} catch let e as NSError {
-							completion?(success: false, error: e)
-						}
-					}
-				}
+		if nil != w {
+			do {
+				try w!.save()
+				completion?(success: true, error: nil)
+			} catch let e as NSError {
+				completion?(success: false, error: e)
 			}
 		}
 	}
@@ -191,20 +168,9 @@ public class Graph : NSObject {
 	internal var worker: NSManagedObjectContext? {
 		dispatch_once(&GraphMainManagedObjectContext.onceToken) {
 			GraphMainManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-			GraphMainManagedObjectContext.managedObjectContext?.parentContext = self.internalContext
+			GraphMainManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
 		}
-		return GraphPrivateManagedObjectContext.managedObjectContext
-	}
-
-	//
-	//	:name:	internalContext
-	//
-	internal var internalContext: NSManagedObjectContext? {
-		dispatch_once(&GraphPrivateManagedObjectContext.onceToken) {
-			GraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-			GraphPrivateManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
-		}
-		return GraphPrivateManagedObjectContext.managedObjectContext
+		return GraphMainManagedObjectContext.managedObjectContext
 	}
 
 	//

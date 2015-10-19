@@ -158,7 +158,7 @@ public extension Graph {
 	//	:name:	managedObjectContextDidSave
 	//
 	internal func managedObjectContextDidSave(notification: NSNotification) {
-		let userInfo = notification.userInfo
+		let userInfo: [NSObject : AnyObject]? = notification.userInfo
 		
 		// inserts
 		let insertedSet: NSSet = userInfo?[NSInsertedObjectsKey] as! NSSet
@@ -278,8 +278,9 @@ public extension Graph {
 	//	:name:	prepareForObservation
 	//
 	internal func prepareForObservation() {
+		NSNotificationCenter.defaultCenter().removeObserver(self)
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: internalContext)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: worker)
 	}
 	
 	//
