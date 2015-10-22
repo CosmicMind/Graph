@@ -243,6 +243,28 @@ print(setE.contains(setA.first!.subject!)) // true
 print(setE.probabilityOf(setA.first!.subject!, setA.last!.subject!)) // 0.666666666666667
 ```
 
+We can even apply filter, map, and sort operations to search results. Below are some more examples using the data from above.
+
+```swift
+// filter
+let arrayA: Array<Entity> = setC.filter { (entity: Entity) -> Bool in
+	return entity["title"] as? String == "The Holographic Universe"
+}
+print(arrayA.count) // 1
+
+// map
+let arrayB: Array<Bond> = setA.map { (bond: Bond) -> Bond in
+	bond["mapped"] = true
+	return bond
+}
+print(arrayB.first!["mapped"] as? Bool) // output: true
+
+// sort
+let arrayC: Array<Entity> = setE.sort { (a: Entity, b: Entity) -> Bool in
+	return (a["name"] as? String) < (b["name"] as? String)
+}
+print(arrayC.first!["name"] as? String) // output: "Dr. Walter Russell"
+```
 
 ### License
 
