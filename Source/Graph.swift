@@ -23,7 +23,7 @@ internal struct GraphPersistentStoreCoordinator {
 	internal static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
 }
 
-internal struct GraphMainManagedObjectContext {
+internal struct GraphManagedObjectContext {
 	internal static var onceToken: dispatch_once_t = 0
 	internal static var managedObjectContext: NSManagedObjectContext?
 }
@@ -138,7 +138,6 @@ public class Graph : NSObject {
 
 	/**
 		:name:	save
-		:description:	Updates the persistent layer by processing all the changes in the Graph.
 	*/
 	public func save() {
 		save(nil)
@@ -146,31 +145,29 @@ public class Graph : NSObject {
 
 	/**
 		:name:	save
-		:description:	Updates the persistent layer by processing all the changes in the Graph.
 	*/
-	public func save(completion: ((success: Bool, error: NSError?) -> ())?) {
-		let w: NSManagedObjectContext? = worker
-		if nil != w {
-			do {
-				try w!.save()
-				completion?(success: true, error: nil)
-			} catch let e as NSError {
-				completion?(success: false, error: e)
+	public func save(completion: ((success: Bool, error: NSError?) -> Void)?) {
+		if let moc: NSManagedObjectContext = worker {
+			if moc.hasChanges {
+				do {
+					try moc.save()
+					completion?(success: true, error: nil)
+				} catch let e as NSError {
+					completion?(success: false, error: e)
+				}
 			}
 		}
 	}
 
 	/**
 		:name:	worker
-		:description:	A NSManagedObjectContext that is configured to be thread safe
-		for the NSManagedObjects calling on it.
 	*/
 	internal var worker: NSManagedObjectContext? {
-		dispatch_once(&GraphMainManagedObjectContext.onceToken) {
-			GraphMainManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-			GraphMainManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
+		dispatch_once(&GraphManagedObjectContext.onceToken) {
+			GraphManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+			GraphManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
 		}
-		return GraphMainManagedObjectContext.managedObjectContext
+		return GraphManagedObjectContext.managedObjectContext
 	}
 
 	//

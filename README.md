@@ -127,6 +127,123 @@ func graphDidInsertAction(graph: Graph, action: Action) {
  }
 ```
 
+### Faceted Search
+
+To explore the intricate relationships within Graph, the search API is as faceted as it is dimensional. This allows the exploration of your data through any view point.
+
+The below example shows how to access a couple Entity types simultaneously.
+
+```swift
+let graph: Graph = Graph()
+
+// users
+let u1: Entity = Entity(type: "User")
+u1["name"] = "Michael Talbot"
+
+let u2: Entity = Entity(type: "User")
+u2["name"] = "Dr. Walter Russell"
+
+let u3: Entity = Entity(type: "User")
+u3["name"] = "Steven Speilberg"
+
+// media
+let b1: Entity = Entity(type: "Book")
+b1["title"] = "The Holographic Universe"
+b1.addGroup("Physics")
+
+let b2: Entity = Entity(type: "Book")
+b2["title"] = "Universal One"
+b2.addGroup("Physics")
+b2.addGroup("Math")
+
+let v1: Entity = Entity(type: "Video")
+v1["title"] = "Jurassic Park"
+v1.addGroup("Thriller")
+v1.addGroup("Action")
+
+// relationships
+let r1: Bond = Bond(type: "Author")
+r1["year"] = "1992"
+r1.subject = u1
+r1.object = b1
+
+let r2: Bond = Bond(type: "Author")
+r2["year"] = "1926"
+r2.subject = u2
+r2.object = b2
+
+let r3: Bond = Bond(type: "Director")
+r3["year"] = "1993"
+r3.subject = u3
+r3.object = v1
+
+graph.save()
+
+let media: SortedSet<Entity> = graph.search(entity: ["Book", "Video"])
+print(media.count) // output: 3
+```
+
+All search results are SortedSet structures that sort data by the id property of the model object. It is possible to narrow the search result by adding group and property filters. The example below demonstrates this.
+
+```swift
+let setA: SortedSet<Entity> = graph.search(entity: ["*"], group: ["Physics"])
+print(setA.count) // output: 2
+```
+
+The * wildcard value tells Graph to look for Entity objects that have values LIKE the ones passed. In the above search, we are asking Graph to look for all Entity types that are in the group "Physics".
+
+The following example searches Graph by property.
+
+```swift
+let setB: SortedSet<Entity> = graph.search(entity: ["Book", "Video"], property: [("title", "Jurassic Park")])
+print(setB.count) // output: 1
+```
+
+We can optionally include a group filter to the above search.
+
+```swift
+let setC: SortedSet<Entity> = graph.search(entity: ["Book", "Video"], group: ["Math"], property: [("title", "Jurassic Park")])
+print(setC.count) // output: 0
+```
+
+The above example returns 0 Entity objects, since "Jurassic Park" is not in the group "Math".
+
+Since return types are SortedSet structures, it is possible to apply set theory to search results. SortedSet structures support operators as well.
+
+Below are some examples of set operations.
+
+```swift
+let setA: SortedSet<Bond> = graph.search(bond: ["Author"])
+let setB: SortedSet<Bond> = graph.search(bond: ["Director"])
+
+let setC: SortedSet<Entity> = graph.search(entity: ["Book"], group: ["Physics"])
+let setD: SortedSet<Entity> = graph.search(entity: ["Book"], group: ["Math"])
+
+let setE: SortedSet<Entity> = graph.search(entity: ["User"])
+
+// union
+print((setA + setB).count) // output: 3
+print(setA.union(setB).count) // output: 3
+
+// intersect
+print(setC.intersect(setD).count) // output: 1
+
+// subset
+print(setD < setC) // true
+print(setD.isSubsetOf(setC)) // true
+
+// superset
+print(setD > setC) // false
+print(setD.isSupersetOf(setC)) // false
+
+// contains
+print(setE.contains(setA.first!.subject!)) // true
+
+// probability
+print(setE.probabilityOf(setA.first!.subject!, setA.last!.subject!)) // 0.666666666666667
+```
+
+
 ### License
 
 [AGPLv3](http://choosealicense.com/licenses/agpl-3.0/)
