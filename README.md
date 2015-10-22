@@ -306,7 +306,7 @@ JSON is a widely used format for sending data through networks and your applicat
 
 ```swift
 // serialize
-		let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
+let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
 
 // parse
 let j1: JSON? = JSON.parse(data!)
@@ -321,7 +321,21 @@ print(stringified) // output: "{\"user\":{\"password\":\"abc123\",\"token\":1234
 // parse
 let j2: JSON? = JSON.parse(stringified!)
 print(j2?["user"]?["token"]?.int) // output: 123456789
+
+// Entity
+let graph: Graph = Graph()
+
+let user: Entity = Entity(type: "User")
+user["name"] = "Michael Talbot"
+
+graph.save()
+
+print(user.asJSON) // output: {"properties":{"name":"Michael Talbot"},"createdDate":"Thursday, October 22, 2015 at 1:11:05 PM Eastern Daylight Time","nodeClass":1,"id":"1Userp7","groups":[],"type":"User"}
 ```
+
+### Algorithms & Structures
+
+GraphKit comes packed with some useful data structures to help write wonderful algorithms. The following structures are included: List, Stack, Queue, Deque, RedBlackTree, SortedSet, SortedMultiSet, SortedDictionary, and SortedMultiDictionary.
 
 ### License
 
