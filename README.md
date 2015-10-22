@@ -266,6 +266,63 @@ let arrayC: Array<Entity> = setE.sort { (a: Entity, b: Entity) -> Bool in
 print(arrayC.first!["name"] as? String) // output: "Dr. Walter Russell"
 ```
 
+### Remote Data
+
+It is great to have data flow throughout your application. Let's go beyond this by sending and receiving JSON objects from our application to a remote address.
+
+Below is an example of a GET and POST request.
+
+```swift
+let session: Session = Session()
+session.get(NSURL(string: "http://graph.graphkit.io/key/1/graph/test")!) { (json: JSON?, error: NSError?) in
+	// do something
+}
+
+session.post(NSURL(string: "http://graph.graphkit.io/index")!, json: JSON([["type": "User", "nodeClass": 1]])) { (json: JSON?, error: NSError?) in
+	// do something
+}
+```
+
+You can even send Entity, Action, and Bond objects easily with the asJSON conversion facility. Below is an example of saving an Entity if the server receives it.
+
+```swift
+let graph: Graph = Graph()
+
+let user: Entity = Entity(type: "User")
+user["name"] = "Michael Talbot"
+
+session.post(NSURL(string: "http://graph.graphkit.io/index")!, json: user.asJSON) { (json: JSON?, error: NSError?) in
+	// Save the user if it is received correctly.
+	if nil != error {
+		user.delete()
+	}
+	graph.save()
+}
+```
+
+### JSON Manipulation
+
+JSON is a widely used format for sending data through networks and your application locally. GraphKit comes with a full JSON parser. Below are some examples of JSON manipulations.
+
+```swift
+// serialize
+		let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
+
+// parse
+let j1: JSON? = JSON.parse(data!)
+
+// access
+print(j1?["user"]?["username"]?.string) // output: "daniel"
+
+// stringify
+let stringified: String? = JSON.stringify(j1!)
+print(stringified) // output: "{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}"
+
+// parse
+let j2: JSON? = JSON.parse(stringified!)
+print(j2?["user"]?["token"]?.int) // output: 123456789
+```
+
 ### License
 
 [AGPLv3](http://choosealicense.com/licenses/agpl-3.0/)
