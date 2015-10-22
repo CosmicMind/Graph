@@ -6,7 +6,7 @@ GraphKit is on CocoaPods under the name [GK](https://cocoapods.org/?q=GK).
 
 ### A Simple Entity
 
-Let's begin with creating a simple model object using an Entity. An Entity represents a person, place, or thing. Below is an example of creating a User type Entity.
+Let's begin with creating a simple model object using an Entity. An Entity represents a person, place, or thing. Below is an example of creating a "User" type Entity.
 
 ```swift
 let graph: Graph = Graph()
@@ -20,7 +20,7 @@ graph.save()
 
 ### Relationship Bond
 
-A Relationship between two Entity objects is done using a Bond. A Bond is structured like a sentence, in that it has a Subject and Object. Below is an example of constructing a relationship, between a User and Book. It may be thought of as User is Author of Book.
+A Relationship between two Entity objects is done using a Bond. A Bond is structured like a sentence, in that it has a Subject and Object. Below is an example of constructing a relationship, between a "User" and "Book" Entity type. It may be thought of as "User is Author of Book".
 
 ```swift
 let graph: Graph = Graph()
@@ -42,7 +42,7 @@ graph.save()
 
 ### Real-Time Action
 
-Engagement drives experience. When a user engages your application, an Action object may be used to capture all the relevant data in a single snapshot. An Action does this, very much like a Bond, by relating Subjects to Objects. Below is an example of a user purchasing many books. It may be thought of as User Purchased these Book(s).
+Engagement drives experience. When a user engages your application, an Action object may be used to capture all the relevant data in a single snapshot. An Action does this, very much like a Bond, by relating Subjects to Objects. Below is an example of a user purchasing many books. It may be thought of as "User Purchased these Book(s)".
 
 ```swift
 let graph: Graph = Graph()
@@ -96,7 +96,7 @@ print(die.probabilityOf(n3)) // output: 0.166666666666667
 
 ### Data-Driven Design
 
-As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a User Clicked a Button.
+As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User Clicked a Button".
 
 ```swift
 let graph: Graph = Graph() // set UIViewController delegate as GraphDelegate
@@ -243,7 +243,7 @@ print(setE.contains(setA.first!.subject!)) // true
 print(setE.probabilityOf(setA.first!.subject!, setA.last!.subject!)) // 0.666666666666667
 ```
 
-We can even apply filter, map, and sort operations to search results. Below are some more examples using the data from above.
+We can even apply filter, map, and sort operations to search results. Below are some examples using the data from above.
 
 ```swift
 // filter
