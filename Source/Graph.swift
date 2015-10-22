@@ -167,7 +167,7 @@ public class Graph : NSObject {
 	*/
 	internal var worker: NSManagedObjectContext? {
 		dispatch_once(&GraphMainManagedObjectContext.onceToken) {
-			GraphMainManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+			GraphMainManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
 			GraphMainManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
 		}
 		return GraphMainManagedObjectContext.managedObjectContext
