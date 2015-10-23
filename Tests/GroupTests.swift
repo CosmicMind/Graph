@@ -20,11 +20,16 @@ import XCTest
 import Foundation
 @testable import GraphKit
 
-class GroupTests: XCTestCase {
+class GroupTests: XCTestCase, GraphDelegate {
+	
 	private var graph: Graph?
+	var expectation: XCTestExpectation?
+	
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
+		graph?.delegate = self
+		graph?.watch(entity: ["Test"], group: ["group1"], property:  ["property1"])
 	}
 	
 	override func tearDown() {
@@ -88,6 +93,35 @@ class GroupTests: XCTestCase {
 		graph!.save()
 		
 		XCTAssert(0 == items.count , "Test failed.")
+	}
+	
+	func testWatch() {		
+		
+		expectation = expectationWithDescription("Test failed.")
+		
+		let e: Entity = Entity(type: "Test")
+		e["property1"] = "Value1"
+		e.addGroup("group1")
+		
+		graph?.save()
+		
+		waitForExpectationsWithTimeout(5, handler: nil)
+		
+		e.delete()
+		
+		expectation = expectationWithDescription("Test failed.")
+		
+		graph?.save()
+		
+		waitForExpectationsWithTimeout(5, handler: nil)
+	}
+	
+	func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
+		expectation?.fulfill()
+	}
+	
+	func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String) {
+		expectation?.fulfill()
 	}
 	
 	func testPerformance() {
