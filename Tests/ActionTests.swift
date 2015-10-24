@@ -97,9 +97,9 @@ class ActionTests : XCTestCase, GraphDelegate {
 		
 		graph!.save()
 		
-		XCTAssert(read.asJSON["properties"]?["genre"]?.string == "Physics", "Test failed.")
-		XCTAssert(read.asJSON["properties"]?["pages"]?.int == 101, "Test failed.")
-		XCTAssert(read.asJSON["properties"]?["date"]?.string == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
+		XCTAssert(read.asJSON["properties"]?["genre"]?.asString == "Physics", "Test failed.")
+		XCTAssert(read.asJSON["properties"]?["pages"]?.asInt == 101, "Test failed.")
+		XCTAssert(read.asJSON["properties"]?["date"]?.asString == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
 		XCTAssert(read.subjects.first?.asJSON == user.asJSON, "Test failed.")
 		XCTAssert(read.objects.first?.asJSON == book.asJSON, "Test failed.")
 		

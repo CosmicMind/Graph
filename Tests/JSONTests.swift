@@ -37,9 +37,9 @@ class JSONTests: XCTestCase {
 		let j1: JSON? = JSON.parse(data!)
 		XCTAssert(nil != j1, "Test failed.")
 		
-		XCTAssert("daniel" == j1!["user"]?["username"]?.string, "Test failed.")
-		XCTAssert("abc123" == j1!["user"]?["password"]?.string, "Test failed.")
-		XCTAssert(123456789 == j1!["user"]?["token"]?.int, "Test failed.")
+		XCTAssert("daniel" == j1!["user"]?["username"]?.asString, "Test failed.")
+		XCTAssert("abc123" == j1!["user"]?["password"]?.asString, "Test failed.")
+		XCTAssert(123456789 == j1!["user"]?["token"]?.asInt, "Test failed.")
 	}
 	
 	func testStringify() {
@@ -60,20 +60,20 @@ class JSONTests: XCTestCase {
 	
 	func testManipulations() {
 		let j1: JSON = JSON(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
-		XCTAssert("daniel" == j1["user"]?["username"]?.string, "Test failed.")
-		XCTAssert("abc123" == j1["user"]?["password"]?.string, "Test failed.")
-		XCTAssert(123456789 == j1["user"]?["token"]?.int, "Test failed.")
+		XCTAssert("daniel" == j1["user"]?["username"]?.asString, "Test failed.")
+		XCTAssert("abc123" == j1["user"]?["password"]?.asString, "Test failed.")
+		XCTAssert(123456789 == j1["user"]?["token"]?.asInt, "Test failed.")
 		j1["key1"] = 123
-		XCTAssert(j1["key1"]?.int == 123, "Test failed.")
+		XCTAssert(j1["key1"]?.asInt == 123, "Test failed.")
 		
 		let j2: JSON = JSON([456, "Hello"])
-		XCTAssert(j2[0]?.int == 456, "Test failed.")
-		XCTAssert(j2[1]?.string == "Hello", "Test failed.")
-		j2.array?.append(123)
+		XCTAssert(j2[0]?.asInt == 456, "Test failed.")
+		XCTAssert(j2[1]?.asString == "Hello", "Test failed.")
+		j2.asArray?.append(123)
 		j2[1] = "World"
-		XCTAssert(j2[1]?.string == "World", "Test failed.")
+		XCTAssert(j2[1]?.asString == "World", "Test failed.")
 		j2[1] = nil
-		XCTAssert(j2[1]?.string == nil, "Test failed.")
+		XCTAssert(j2[1]?.asString == nil, "Test failed.")
 	}
 	
 	func testPerformance() {

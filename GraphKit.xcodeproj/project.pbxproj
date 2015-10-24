@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6557F6B41BADC14F00CBA9AC /* GraphSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6557F6B31BADC14F00CBA9AC /* GraphSearch.swift */; settings = {ASSET_TAGS = (); }; };
-		6557F6B51BADC14F00CBA9AC /* GraphSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6557F6B31BADC14F00CBA9AC /* GraphSearch.swift */; settings = {ASSET_TAGS = (); }; };
+		6557F6B41BADC14F00CBA9AC /* GraphSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6557F6B31BADC14F00CBA9AC /* GraphSearch.swift */; };
+		6557F6B51BADC14F00CBA9AC /* GraphSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6557F6B31BADC14F00CBA9AC /* GraphSearch.swift */; };
 		6557F6B61BADC2FA00CBA9AC /* GraphObject.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E22D531BA8DE590050BB5F /* GraphObject.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		6557F6B71BADC2FA00CBA9AC /* GraphSearch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 6557F6B31BADC14F00CBA9AC /* GraphSearch.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		6557F6B81BADC2FA00CBA9AC /* Node.swift in Headers */ = {isa = PBXBuildFile; fileRef = 657FEDA91BA8F844004D7504 /* Node.swift */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -21,8 +21,8 @@
 		6557F6BF1BADC31900CBA9AC /* ManagedNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E22D4A1BA8CC7E0050BB5F /* ManagedNode.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		6557F6C01BADC31900CBA9AC /* ManagedNodeGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E22D501BA8D2A30050BB5F /* ManagedNodeGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		6557F6C11BADC31900CBA9AC /* ManagedNodeProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E22D4D1BA8D0650050BB5F /* ManagedNodeProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
-		6557F6C31BADD2A700CBA9AC /* GraphWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6557F6C21BADD2A700CBA9AC /* GraphWatch.swift */; settings = {ASSET_TAGS = (); }; };
-		6557F6C41BADD2A700CBA9AC /* GraphWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6557F6C21BADD2A700CBA9AC /* GraphWatch.swift */; settings = {ASSET_TAGS = (); }; };
+		6557F6C31BADD2A700CBA9AC /* GraphWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6557F6C21BADD2A700CBA9AC /* GraphWatch.swift */; };
+		6557F6C41BADD2A700CBA9AC /* GraphWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6557F6C21BADD2A700CBA9AC /* GraphWatch.swift */; };
 		6557F6C51BADD3C100CBA9AC /* GraphWatch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 6557F6C21BADD2A700CBA9AC /* GraphWatch.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		6557F6C61BADD3CD00CBA9AC /* GraphWatch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 6557F6C21BADD2A700CBA9AC /* GraphWatch.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		657FEDAA1BA8F844004D7504 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657FEDA91BA8F844004D7504 /* Node.swift */; };

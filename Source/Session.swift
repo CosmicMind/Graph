@@ -87,7 +87,7 @@ public class Session : NSObject {
 	public func post(url: NSURL, json: JSON?, completion: (json: JSON?, error: NSError?) -> ()) {
 		let request = NSMutableURLRequest(URL: url)
 		request.HTTPMethod = "POST"
-		request.HTTPBody = json?.data
+		request.HTTPBody = json?.asNSData
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")
 		

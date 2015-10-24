@@ -20,30 +20,6 @@ import Foundation
 
 public class JSON : Equatable, CustomStringConvertible {
 	/**
-		:name:	array
-	*/
-	public var array: Array<AnyObject>? {
-		get {
-			return object as? Array<AnyObject>
-		}
-		set(value) {
-			object = value!
-		}
-	}
-	
-	/**
-		:name:	dictionary
-	*/
-	public var dictionary: Dictionary<String, AnyObject>? {
-		get {
-			return object as? Dictionary<String, AnyObject>
-		}
-		set(value) {
-			object = value!
-		}
-	}
-	
-	/**
 		:name:	description
 	*/
 	public var description: String {
@@ -57,44 +33,68 @@ public class JSON : Equatable, CustomStringConvertible {
 	public private(set) var object: AnyObject
 	
 	/**
-		:name:	string
+		:name:	asArray
 	*/
-	public var string: String? {
+	public var asArray: Array<AnyObject>? {
+		get {
+			return object as? Array<AnyObject>
+		}
+		set(value) {
+			object = value!
+		}
+	}
+	
+	/**
+		:name:	asDictionary
+	*/
+	public var asDictionary: Dictionary<String, AnyObject>? {
+		get {
+			return object as? Dictionary<String, AnyObject>
+		}
+		set(value) {
+			object = value!
+		}
+	}
+	
+	/**
+		:name:	asString
+	*/
+	public var asString: String? {
 		return object as? String
 	}
 	
 	/**
-		:name:	int
+		:name:	asInt
 	*/
-	public var int: Int? {
+	public var asInt: Int? {
 		return object as? Int
 	}
 	
 	/**
-		:name:	double
+		:name:	asDouble
 	*/
-	public var double: Double? {
+	public var asDouble: Double? {
 		return object as? Double
 	}
 	
 	/**
-		:name:	double
+		:name:	asFloat
 	*/
-	public var float: Float? {
+	public var asFloat: Float? {
 		return object as? Float
 	}
 	
 	/**
-		:name:	bool
+		:name:	asBool
 	*/
-	public var bool: Bool? {
+	public var asBool: Bool? {
 		return object as? Bool
 	}
 	
 	/**
-		:name:	dataValue
+		:name:	asNSData
 	*/
-	public var data: NSData? {
+	public var asNSData: NSData? {
 		return JSON.serialize(object)
 	}
 	
@@ -156,7 +156,7 @@ public class JSON : Equatable, CustomStringConvertible {
 	public subscript(index: Int) -> AnyObject? {
 		get { return nil }
 		set(value) {
-			if var item: Array<AnyObject> = array {
+			if var item: Array<AnyObject> = asArray {
 				if let o: JSON = value as? JSON {
 					item[index] = o.object
 				} else if nil == value {
@@ -174,7 +174,7 @@ public class JSON : Equatable, CustomStringConvertible {
 	*/
 	public subscript(index: Int) -> JSON? {
 		get {
-			if let item: Array<AnyObject> = array {
+			if let item: Array<AnyObject> = asArray {
 				return JSON(item[index])
 			}
 			return nil
@@ -187,7 +187,7 @@ public class JSON : Equatable, CustomStringConvertible {
 	public subscript(key: String) -> AnyObject? {
 		get { return nil }
 		set(value) {
-			if var item: Dictionary<String, AnyObject> = dictionary {
+			if var item: Dictionary<String, AnyObject> = asDictionary {
 				if let o: JSON = value as? JSON {
 					item[key] = o.object
 				} else {
@@ -203,7 +203,7 @@ public class JSON : Equatable, CustomStringConvertible {
 	*/
 	public subscript(key: String) -> JSON? {
 		get {
-			if let item: Dictionary<String, AnyObject> = dictionary {
+			if let item: Dictionary<String, AnyObject> = asDictionary {
 				if nil != item[key] {
 					return JSON(item[key]!)
 				}

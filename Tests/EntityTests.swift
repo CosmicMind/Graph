@@ -65,9 +65,9 @@ class EntityTests : XCTestCase, GraphDelegate {
 		
 		graph!.save()
 		
-		XCTAssert(user.asJSON["properties"]?["name"]?.string == "Eve", "Test failed.")
-		XCTAssert(user.asJSON["properties"]?["age"]?.int == 26, "Test failed.")
-		XCTAssert(user.asJSON["properties"]?["date"]?.string == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
+		XCTAssert(user.asJSON["properties"]?["name"]?.asString == "Eve", "Test failed.")
+		XCTAssert(user.asJSON["properties"]?["age"]?.asInt == 26, "Test failed.")
+		XCTAssert(user.asJSON["properties"]?["date"]?.asString == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
 		
 		user.delete()
 		graph!.save()

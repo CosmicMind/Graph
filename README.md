@@ -312,7 +312,7 @@ let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "
 let j1: JSON? = JSON.parse(data!)
 
 // access
-print(j1?["user"]?["username"]?.string) // output: "daniel"
+print(j1?["user"]?["username"]?.asString) // output: "daniel"
 
 // stringify
 let stringified: String? = JSON.stringify(j1!)
@@ -320,7 +320,7 @@ print(stringified) // output: "{\"user\":{\"password\":\"abc123\",\"token\":1234
 
 // parse
 let j2: JSON? = JSON.parse(stringified!)
-print(j2?["user"]?["token"]?.int) // output: 123456789
+print(j2?["user"]?["token"]?.asInt) // output: 123456789
 
 // Entity
 let graph: Graph = Graph()
