@@ -234,27 +234,18 @@ public class SortedMultiSet<Element : Comparable> : Probability<Element>, Collec
 	/**
 		:name:	remove
 		:description:	Removes elements from the SortedMultiSet.
-		- returns:	SortedMultiSet<Element>?
 	*/
-	public func remove(elements: Element...) -> SortedMultiSet<Element>? {
-		return remove(elements)
+	public func remove(elements: Element...) {
+		remove(elements)
 	}
 
 	/**
 		:name:	remove
 		:description:	Removes elements from the SortedMultiSet.
-		- returns:	SortedMultiSet<Element>?
 	*/
-	public func remove(elements: Array<Element>) -> SortedMultiSet<Element>? {
-		if let r: RedBlackTree<Element, Element> = tree.removeValueForKeys(elements) {
-			let s: SortedMultiSet<Element> = SortedMultiSet<Element>()
-			for (k, _) in r {
-				s.insert(k)
-			}
-			count = tree.count
-			return s
-		}
-		return nil
+	public func remove(elements: Array<Element>) {
+		tree.removeValueForKeys(elements)
+		count = tree.count
 	}
 
 	/**
@@ -298,10 +289,25 @@ public class SortedMultiSet<Element : Comparable> : Probability<Element>, Collec
 		:description:	Insert elements of a finite sequence of Sets.
 	*/
 	public func intersectInPlace(set: SortedMultiSet<Element>) {
-		let s: SortedMultiSet<Element> = intersect(set)
-		removeAll()
-		for x in s {
-			insert(x)
+		let l = set.count
+		if 0 == l {
+			removeAll()
+		} else {
+			var i: Int = 0
+			var j: Int = 0
+			while count > i && l > j {
+				let x: Element = self[i]
+				let y: Element = set[j]
+				if x < y {
+					tree.removeValueForKey(x)
+					count = tree.count
+				} else if y < x {
+					++j
+				} else {
+					++i
+					++j
+				}
+			}
 		}
 	}
 	
@@ -412,7 +418,7 @@ public class SortedMultiSet<Element : Comparable> : Probability<Element>, Collec
 			} else if y < x {
 				++j
 			} else {
-				tree.removeInstanceOfValueForKey(x)
+				tree.removeValueForKey(x)
 				count = tree.count
 				++j
 			}

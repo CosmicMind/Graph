@@ -16,7 +16,7 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class SortedDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
+public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
 	public typealias SortedKey = SortedSet<Key>
 	public typealias SortedValue = Array<Value>
@@ -29,6 +29,19 @@ public class SortedDictionary<Key : Comparable, Value> : Probability<Key>, Colle
 		- returns:	RedBlackTree<Key, Value>
 	*/
 	internal var tree: RedBlackTree<Key, Value>
+	
+	/**
+		:name:	asDictionary
+	*/
+	public var asDictionary: Dictionary<Key, Value> {
+		var d: Dictionary<Key, Value> = Dictionary<Key, Value>()
+		for (k, v) in self {
+			if let x = v {
+				d[k] = x
+			}
+		}
+		return d
+	}
 	
 	/**
 		:name:	description
@@ -253,27 +266,18 @@ public class SortedDictionary<Key : Comparable, Value> : Probability<Key>, Colle
 	/**
 		:name:	removeValueForKeys
 		:description:	Removes key / value pairs based on the key value given.
-		- returns:	SortedDictionary<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Key...) -> SortedDictionary<Key, Value>? {
-		return removeValueForKeys(keys)
+	public func removeValueForKeys(keys: Key...) {
+		removeValueForKeys(keys)
 	}
 	
 	/**
 		:name:	removeValueForKeys
 		:description:	Removes key / value pairs based on the key value given.
-		- returns:	SortedDictionary<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Array<Key>) -> SortedDictionary<Key, Value>? {
-		if let r: RedBlackTree<Key, Value> = tree.removeValueForKeys(keys) {
-			let d: SortedDictionary<Key, Value> = SortedDictionary<Key, Value>()
-			for (k, v) in r {
-				d.insert(k, value: v)
-			}
-			count = tree.count
-			return d
-		}
-		return nil
+	public func removeValueForKeys(keys: Array<Key>) {
+		tree.removeValueForKeys(keys)
+		count = tree.count
 	}
 	
 	/**

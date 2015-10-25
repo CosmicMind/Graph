@@ -16,7 +16,7 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class SortedMultiDictionary<Key : Comparable, Value> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
+public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
 	public typealias SortedKey = SortedMultiSet<Key>
 	public typealias SortedValue = Array<Value>
@@ -29,6 +29,19 @@ public class SortedMultiDictionary<Key : Comparable, Value> : Probability<Key>, 
 		- returns:	RedBlackTree<Key, Value>
 	*/
 	internal var tree: RedBlackTree<Key, Value>
+	
+	/**
+		:name:	asDictionary
+	*/
+	public var asDictionary: Dictionary<Key, Value> {
+		var d: Dictionary<Key, Value> = Dictionary<Key, Value>()
+		for (k, v) in self {
+			if let x = v {
+				d[k] = x
+			}
+		}
+		return d
+	}
 	
 	/**
 		:name:	description
@@ -255,25 +268,17 @@ public class SortedMultiDictionary<Key : Comparable, Value> : Probability<Key>, 
 		:description:	Removes key / value pairs based on the key value given.
 		- returns:	SortedMultiDictionary<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Key...) -> SortedMultiDictionary<Key, Value>? {
-		return removeValueForKeys(keys)
+	public func removeValueForKeys(keys: Key...) {
+		removeValueForKeys(keys)
 	}
 	
 	/**
 		:name:	removeValueForKeys
 		:description:	Removes key / value pairs based on the key value given.
-		- returns:	SortedMultiDictionary<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Array<Key>) -> SortedMultiDictionary<Key, Value>? {
-		if let r: RedBlackTree<Key, Value> = tree.removeValueForKeys(keys) {
-			let d: SortedMultiDictionary<Key, Value> = SortedMultiDictionary<Key, Value>()
-			for (k, v) in r {
-				d.insert(k, value: v)
-			}
-			count = tree.count
-			return d
-		}
-		return nil
+	public func removeValueForKeys(keys: Array<Key>) {
+		tree.removeValueForKeys(keys)
+		count = tree.count
 	}
 	
 	/**
@@ -343,7 +348,7 @@ public class SortedMultiDictionary<Key : Comparable, Value> : Probability<Key>, 
 	}
 }
 
-public func ==<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> Bool {
+public func ==<Key : Hashable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> Bool {
 	if lhs.count != rhs.count {
 		return false
 	}
@@ -355,11 +360,11 @@ public func ==<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, 
 	return true
 }
 
-public func !=<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> Bool {
+public func !=<Key : Hashable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func +<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> SortedMultiDictionary<Key, Value> {
+public func +<Key : Hashable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> SortedMultiDictionary<Key, Value> {
 	let t: SortedMultiDictionary<Key, Value> = lhs
 	for (k, v) in rhs {
 		t.insert(k, value: v)
@@ -367,13 +372,13 @@ public func +<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, r
 	return t
 }
 
-public func +=<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) {
+public func +=<Key : Hashable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) {
 	for (k, v) in rhs {
 		lhs.insert(k, value: v)
 	}
 }
 
-public func -<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> SortedMultiDictionary<Key, Value> {
+public func -<Key : Hashable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) -> SortedMultiDictionary<Key, Value> {
 	let t: SortedMultiDictionary<Key, Value> = lhs
 	for (k, _) in rhs {
 		t.removeValueForKeys(k)
@@ -381,7 +386,7 @@ public func -<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, r
 	return t
 }
 
-public func -=<Key : Comparable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) {
+public func -=<Key : Hashable, Value>(lhs: SortedMultiDictionary<Key, Value>, rhs: SortedMultiDictionary<Key, Value>) {
 	for (k, _) in rhs {
 		lhs.removeValueForKeys(k)
 	}

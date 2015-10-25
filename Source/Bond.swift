@@ -77,7 +77,7 @@ public class Bond : NSObject, Comparable {
 	/**
 		:name:	properties
 	*/
-	public var properties: Dictionary<String, AnyObject> {
+	public var properties: SortedDictionary<String, AnyObject> {
 		return node.properties
 	}
 	

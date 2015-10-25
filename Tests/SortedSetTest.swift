@@ -51,19 +51,18 @@ class SortedSetTests: XCTestCase {
 		}
 		
 		XCTAssert(1 == s.count, "Test failed.")
-		XCTAssert(SortedSet<Int>(elements: 2) == s.remove(2), "Test failed.")
-		XCTAssert(nil == s.remove(2), "Test failed.")
+		
+		s.remove(2)
 		s.insert(10)
 		XCTAssert(1 == s.count, "Test failed.")
 		
-		XCTAssert(SortedSet<Int>(elements: 10) == s.remove(10), "Test failed.")
+		s.remove(10)
 		XCTAssert(0 == s.count, "Test failed.")
 		
 		s.insert(1)
 		s.insert(2)
 		s.insert(3)
-		
-		XCTAssert(SortedSet<Int>(elements: 1, 2) == s.remove(1, 2), "Test failed.")
+		s.remove(1, 2)
 		XCTAssert(1 == s.count, "Test failed.")
 		
 		s.removeAll()
@@ -72,7 +71,8 @@ class SortedSetTests: XCTestCase {
 	
 	func testRemove() {
 		let s1: SortedSet<Int> = SortedSet<Int>(elements: 22, 23, 1, 2, 3, 4, 5)
-		XCTAssert(SortedSet<Int>(elements: 1, 2, 3) == s1.remove(1, 2, 3), "Test failed.")
+		s1.remove(1, 2, 3)
+		XCTAssert(4 == s1.count, "Test failed.")
 	}
 	
 	func testIntersect() {
@@ -232,6 +232,39 @@ class SortedSetTests: XCTestCase {
 		XCTAssert(0 == s1.indexOf(1), "Test failed.")
 		XCTAssert(5 == s1.indexOf(6), "Test failed.")
 		XCTAssert(-1 == s1.indexOf(100), "Test failed.")
+	}
+	
+	func testEntityIntersection() {
+		let graph: Graph = Graph()
+		
+		let e1: Entity = Entity(type: "User")
+		let e2: Entity = Entity(type: "User")
+		let e3: Entity = Entity(type: "User")
+		let e4: Entity = Entity(type: "User")
+		
+		let s1: SortedSet<Entity> = SortedSet<Entity>()
+		s1.insert(e1)
+		s1.insert(e2)
+		s1.insert(e3)
+		
+		let s2: SortedSet<Entity> = SortedSet<Entity>()
+		s2.insert(e2)
+		s2.insert(e3)
+		s2.insert(e4)
+		
+		XCTAssertTrue(SortedSet<Entity>(elements: e2, e3) == s1.intersect(s2), "Test failed.")
+		
+		s1.intersectInPlace(s2)
+		XCTAssertTrue(SortedSet<Entity>(elements: e2, e3) == s1, "Test failed.")
+		
+		e1.delete()
+		e2.delete()
+		e3.delete()
+		e4.delete()
+		
+		graph.save({ (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Test failed.")
+		})
 	}
 	
 	func testPerformance() {

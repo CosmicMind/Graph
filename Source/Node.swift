@@ -39,17 +39,19 @@ internal class Node <Type : ManagedNode> : NSObject {
 	internal var asJSON: JSON {
 		var p: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
 		for (k, v) in properties {
-			switch v {
-			case is Int,
-				 is Double,
-				 is Float,
-				 is String,
-				 is Bool,
-				 is Array<AnyObject>,
-				 is Dictionary<String, AnyObject>:
-				p[k] = v
-			default:
-				p[k] = String(stringInterpolationSegment: v)
+			if let x = v {
+				switch v {
+				case is Int,
+					 is Double,
+					 is Float,
+					 is String,
+					 is Bool,
+					 is Array<AnyObject>,
+					 is Dictionary<String, AnyObject>:
+					p[k] = x
+				default:
+					p[k] = String(stringInterpolationSegment: x)
+				}
 			}
 		}
 		var g: Array<String> = Array<String>()
@@ -81,6 +83,9 @@ internal class Node <Type : ManagedNode> : NSObject {
 	//	:name:	id
 	//
 	internal var id: String {
+		do {
+			try object.worker?.obtainPermanentIDsForObjects([object])
+		} catch {}
 		let nodeURL: NSURL = object.objectID.URIRepresentation()
 		let oID: String = nodeURL.lastPathComponent!
 		return String(stringInterpolationSegment: nodeClass) + type + oID
@@ -108,8 +113,8 @@ internal class Node <Type : ManagedNode> : NSObject {
 	//
 	//	:name:	properties
 	//
-	internal var properties: Dictionary<String, AnyObject> {
-		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+	internal var properties: SortedDictionary<String, AnyObject> {
+		let properties: SortedDictionary<String, AnyObject> = SortedDictionary<String, AnyObject>()
 		for property in object.propertySet {
 			properties[property.name] = property.object
 		}

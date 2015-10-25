@@ -72,7 +72,8 @@ class SortedMultiSetTests: XCTestCase {
 	
 	func testRemove() {
 		let s1: SortedMultiSet<Int> = SortedMultiSet<Int>(elements: 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9)
-		XCTAssert(SortedMultiSet<Int>(elements: 1, 2, 3, 3, 5, 5) == s1.remove(1, 2, 3, 5), "Test failed.")
+		s1.remove(1, 2, 3, 5)
+		XCTAssert(5 == s1.count, "Test failed.")
 	}
 	
 	func testIntersect() {

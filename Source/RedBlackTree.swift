@@ -216,7 +216,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		the given key value will be removed.
 		- returns:	RedBlackTree<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Key...) -> RedBlackTree<Key, Value>? {
+	public func removeValueForKeys(keys: Key...) {
 		return removeValueForKeys(keys)
 	}
 	
@@ -227,25 +227,22 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		the given key will be removed.
 		- returns:	RedBlackTree<Key, Value>?
 	*/
-	public func removeValueForKeys(keys: Array<Key>) -> RedBlackTree<Key, Value>? {
-		let r: RedBlackTree<Key, Value> = RedBlackTree<Key, Value>(uniqueKeys: isUniquelyKeyed)
+	public func removeValueForKeys(keys: Array<Key>) {
 		for x in keys {
 			var z: RedBlackNode<Key, Value> = internalRemoveValueForKey(x)
 			while sentinel !== z {
-				r.insert(z.key, value: z.value)
 				z = internalRemoveValueForKey(x)
 			}
 		}
-		return 0 == r.count ? nil : r
 	}
 
 	/**
-		:name:	removeInstanceOfValueForKey
+		:name:	removeValueForKey
 		:description:	Removes a single instance of a value for a key. This is
 		important when using non-unique keys.
 		- returns:	Value?
 	*/
-	public func removeInstanceOfValueForKey(key: Key) -> Value? {
+	public func removeValueForKey(key: Key) -> Value? {
 		return internalRemoveValueForKey(key).value
 	}
 	

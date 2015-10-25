@@ -234,27 +234,18 @@ public class SortedSet<Element : Comparable> : Probability<Element>, CollectionT
 	/**
 		:name:	remove
 		:description:	Removes elements from the SortedSet.
-		- returns:	SortedSet<Element>?
 	*/
-	public func remove(elements: Element...) -> SortedSet<Element>? {
-		return remove(elements)
+	public func remove(elements: Element...) {
+		remove(elements)
 	}
 
 	/**
 		:name:	remove
 		:description:	Removes elements from the SortedSet.
-		- returns:	SortedSet<Element>?
 	*/
-	public func remove(elements: Array<Element>) -> SortedSet<Element>? {
-		if let r: RedBlackTree<Element, Element> = tree.removeValueForKeys(elements) {
-			let s: SortedSet<Element> = SortedSet<Element>()
-			for (k, _) in r {
-				s.insert(k)
-			}
-			count = tree.count
-			return s
-		}
-		return nil
+	public func remove(elements: Array<Element>) {
+		tree.removeValueForKeys(elements)
+		count = tree.count
 	}
 
 	/**
@@ -298,13 +289,27 @@ public class SortedSet<Element : Comparable> : Probability<Element>, CollectionT
 		:description:	Insert elements of a finite sequence of Sets.
 	*/
 	public func intersectInPlace(set: SortedSet<Element>) {
-		let s: SortedSet<Element> = intersect(set)
-		removeAll()
-		for x in s {
-			insert(x)
+		let l = set.count
+		if 0 == l {
+			removeAll()
+		} else {
+			var i: Int = 0
+			var j: Int = 0
+			while count > i && l > j {
+				let x: Element = self[i]
+				let y: Element = set[j]
+				if x < y {
+					remove(x)
+				} else if y < x {
+					++j
+				} else {
+					++i
+					++j
+				}
+			}
 		}
 	}
-	
+		
 	/**
 		:name:	union
 		:description:	Return a new Set with items in both this set and a finite sequence of Sets.

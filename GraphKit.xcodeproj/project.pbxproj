@@ -103,10 +103,10 @@
 		9677B4B51BA78C3C00C82BBB /* InsertionSortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53A1BA76FD900672E38 /* InsertionSortTests.swift */; };
 		9677B4B61BA78C3C00C82BBB /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53B1BA76FD900672E38 /* JSONTests.swift */; };
 		9677B4B71BA78C3C00C82BBB /* ListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53C1BA76FD900672E38 /* ListTests.swift */; };
-		9677B4B81BA78C3C00C82BBB /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53D1BA76FD900672E38 /* OrderedDictionaryTests.swift */; };
-		9677B4B91BA78C3C00C82BBB /* OrderedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53E1BA76FD900672E38 /* OrderedMultiDictionaryTests.swift */; };
-		9677B4BA1BA78C3C00C82BBB /* OrderedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53F1BA76FD900672E38 /* OrderedMultiSetTests.swift */; };
-		9677B4BB1BA78C3C00C82BBB /* OrderedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5401BA76FD900672E38 /* OrderedSetTest.swift */; };
+		9677B4B81BA78C3C00C82BBB /* SortedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53D1BA76FD900672E38 /* SortedDictionaryTests.swift */; };
+		9677B4B91BA78C3C00C82BBB /* SortedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53E1BA76FD900672E38 /* SortedMultiDictionaryTests.swift */; };
+		9677B4BA1BA78C3C00C82BBB /* SortedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53F1BA76FD900672E38 /* SortedMultiSetTests.swift */; };
+		9677B4BB1BA78C3C00C82BBB /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5401BA76FD900672E38 /* SortedSetTest.swift */; };
 		9677B4BC1BA78C3C00C82BBB /* ProbabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5411BA76FD900672E38 /* ProbabilityTests.swift */; };
 		9677B4BD1BA78C3C00C82BBB /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5421BA76FD900672E38 /* QueueTests.swift */; };
 		9677B4BE1BA78C3C00C82BBB /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5431BA76FD900672E38 /* ReachabilityTests.swift */; };
@@ -128,10 +128,10 @@
 		9677B4CF1BA78C3D00C82BBB /* InsertionSortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53A1BA76FD900672E38 /* InsertionSortTests.swift */; };
 		9677B4D01BA78C3D00C82BBB /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53B1BA76FD900672E38 /* JSONTests.swift */; };
 		9677B4D11BA78C3D00C82BBB /* ListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53C1BA76FD900672E38 /* ListTests.swift */; };
-		9677B4D21BA78C3D00C82BBB /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53D1BA76FD900672E38 /* OrderedDictionaryTests.swift */; };
-		9677B4D31BA78C3D00C82BBB /* OrderedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53E1BA76FD900672E38 /* OrderedMultiDictionaryTests.swift */; };
-		9677B4D41BA78C3D00C82BBB /* OrderedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53F1BA76FD900672E38 /* OrderedMultiSetTests.swift */; };
-		9677B4D51BA78C3D00C82BBB /* OrderedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5401BA76FD900672E38 /* OrderedSetTest.swift */; };
+		9677B4D21BA78C3D00C82BBB /* SortedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53D1BA76FD900672E38 /* SortedDictionaryTests.swift */; };
+		9677B4D31BA78C3D00C82BBB /* SortedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53E1BA76FD900672E38 /* SortedMultiDictionaryTests.swift */; };
+		9677B4D41BA78C3D00C82BBB /* SortedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53F1BA76FD900672E38 /* SortedMultiSetTests.swift */; };
+		9677B4D51BA78C3D00C82BBB /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5401BA76FD900672E38 /* SortedSetTest.swift */; };
 		9677B4D61BA78C3D00C82BBB /* ProbabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5411BA76FD900672E38 /* ProbabilityTests.swift */; };
 		9677B4D71BA78C3D00C82BBB /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5421BA76FD900672E38 /* QueueTests.swift */; };
 		9677B4D81BA78C3D00C82BBB /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5431BA76FD900672E38 /* ReachabilityTests.swift */; };
@@ -281,10 +281,10 @@
 		96D4E53A1BA76FD900672E38 /* InsertionSortTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsertionSortTests.swift; sourceTree = "<group>"; };
 		96D4E53B1BA76FD900672E38 /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTests.swift; sourceTree = "<group>"; };
 		96D4E53C1BA76FD900672E38 /* ListTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTests.swift; sourceTree = "<group>"; };
-		96D4E53D1BA76FD900672E38 /* OrderedDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryTests.swift; sourceTree = "<group>"; };
-		96D4E53E1BA76FD900672E38 /* OrderedMultiDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiDictionaryTests.swift; sourceTree = "<group>"; };
-		96D4E53F1BA76FD900672E38 /* OrderedMultiSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedMultiSetTests.swift; sourceTree = "<group>"; };
-		96D4E5401BA76FD900672E38 /* OrderedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSetTest.swift; sourceTree = "<group>"; };
+		96D4E53D1BA76FD900672E38 /* SortedDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedDictionaryTests.swift; sourceTree = "<group>"; };
+		96D4E53E1BA76FD900672E38 /* SortedMultiDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedMultiDictionaryTests.swift; sourceTree = "<group>"; };
+		96D4E53F1BA76FD900672E38 /* SortedMultiSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedMultiSetTests.swift; sourceTree = "<group>"; };
+		96D4E5401BA76FD900672E38 /* SortedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSetTest.swift; sourceTree = "<group>"; };
 		96D4E5411BA76FD900672E38 /* ProbabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProbabilityTests.swift; sourceTree = "<group>"; };
 		96D4E5421BA76FD900672E38 /* QueueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		96D4E5431BA76FD900672E38 /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
@@ -481,10 +481,10 @@
 				96D4E53A1BA76FD900672E38 /* InsertionSortTests.swift */,
 				96D4E53B1BA76FD900672E38 /* JSONTests.swift */,
 				96D4E53C1BA76FD900672E38 /* ListTests.swift */,
-				96D4E53D1BA76FD900672E38 /* OrderedDictionaryTests.swift */,
-				96D4E53E1BA76FD900672E38 /* OrderedMultiDictionaryTests.swift */,
-				96D4E53F1BA76FD900672E38 /* OrderedMultiSetTests.swift */,
-				96D4E5401BA76FD900672E38 /* OrderedSetTest.swift */,
+				96D4E53D1BA76FD900672E38 /* SortedDictionaryTests.swift */,
+				96D4E53E1BA76FD900672E38 /* SortedMultiDictionaryTests.swift */,
+				96D4E53F1BA76FD900672E38 /* SortedMultiSetTests.swift */,
+				96D4E5401BA76FD900672E38 /* SortedSetTest.swift */,
 				96D4E5411BA76FD900672E38 /* ProbabilityTests.swift */,
 				96D4E5421BA76FD900672E38 /* QueueTests.swift */,
 				96D4E5431BA76FD900672E38 /* ReachabilityTests.swift */,
@@ -787,15 +787,15 @@
 			files = (
 				9677B4CD1BA78C3D00C82BBB /* EntityTests.swift in Sources */,
 				9677B4CC1BA78C3D00C82BBB /* EntityStressTests.swift in Sources */,
-				9677B4D51BA78C3D00C82BBB /* OrderedSetTest.swift in Sources */,
+				9677B4D51BA78C3D00C82BBB /* SortedSetTest.swift in Sources */,
 				9677B4CE1BA78C3D00C82BBB /* GroupTests.swift in Sources */,
 				9677B4D81BA78C3D00C82BBB /* ReachabilityTests.swift in Sources */,
-				9677B4D21BA78C3D00C82BBB /* OrderedDictionaryTests.swift in Sources */,
+				9677B4D21BA78C3D00C82BBB /* SortedDictionaryTests.swift in Sources */,
 				9677B4CB1BA78C3D00C82BBB /* EntitySearchTests.swift in Sources */,
 				9677B4C71BA78C3D00C82BBB /* BondSearchTests.swift in Sources */,
 				9677B4D71BA78C3D00C82BBB /* QueueTests.swift in Sources */,
 				9677B4D91BA78C3D00C82BBB /* RedBlackTreeTests.swift in Sources */,
-				9677B4D41BA78C3D00C82BBB /* OrderedMultiSetTests.swift in Sources */,
+				9677B4D41BA78C3D00C82BBB /* SortedMultiSetTests.swift in Sources */,
 				9677B4CF1BA78C3D00C82BBB /* InsertionSortTests.swift in Sources */,
 				9677B4CA1BA78C3D00C82BBB /* DequeTests.swift in Sources */,
 				9677B4C61BA78C3D00C82BBB /* ActionTests.swift in Sources */,
@@ -809,7 +809,7 @@
 				9677B4DB1BA78C3D00C82BBB /* StackTests.swift in Sources */,
 				9677B4C51BA78C3D00C82BBB /* ActionStressTests.swift in Sources */,
 				9677B4D11BA78C3D00C82BBB /* ListTests.swift in Sources */,
-				9677B4D31BA78C3D00C82BBB /* OrderedMultiDictionaryTests.swift in Sources */,
+				9677B4D31BA78C3D00C82BBB /* SortedMultiDictionaryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -863,15 +863,15 @@
 			files = (
 				9677B4B31BA78C3C00C82BBB /* EntityTests.swift in Sources */,
 				9677B4B21BA78C3C00C82BBB /* EntityStressTests.swift in Sources */,
-				9677B4BB1BA78C3C00C82BBB /* OrderedSetTest.swift in Sources */,
+				9677B4BB1BA78C3C00C82BBB /* SortedSetTest.swift in Sources */,
 				9677B4B41BA78C3C00C82BBB /* GroupTests.swift in Sources */,
 				9677B4BE1BA78C3C00C82BBB /* ReachabilityTests.swift in Sources */,
-				9677B4B81BA78C3C00C82BBB /* OrderedDictionaryTests.swift in Sources */,
+				9677B4B81BA78C3C00C82BBB /* SortedDictionaryTests.swift in Sources */,
 				9677B4B11BA78C3C00C82BBB /* EntitySearchTests.swift in Sources */,
 				9677B4AD1BA78C3C00C82BBB /* BondSearchTests.swift in Sources */,
 				9677B4BD1BA78C3C00C82BBB /* QueueTests.swift in Sources */,
 				9677B4BF1BA78C3C00C82BBB /* RedBlackTreeTests.swift in Sources */,
-				9677B4BA1BA78C3C00C82BBB /* OrderedMultiSetTests.swift in Sources */,
+				9677B4BA1BA78C3C00C82BBB /* SortedMultiSetTests.swift in Sources */,
 				9677B4B51BA78C3C00C82BBB /* InsertionSortTests.swift in Sources */,
 				9677B4B01BA78C3C00C82BBB /* DequeTests.swift in Sources */,
 				9677B4AC1BA78C3C00C82BBB /* ActionTests.swift in Sources */,
@@ -885,7 +885,7 @@
 				9677B4C11BA78C3C00C82BBB /* StackTests.swift in Sources */,
 				9677B4AB1BA78C3C00C82BBB /* ActionStressTests.swift in Sources */,
 				9677B4B71BA78C3C00C82BBB /* ListTests.swift in Sources */,
-				9677B4B91BA78C3C00C82BBB /* OrderedMultiDictionaryTests.swift in Sources */,
+				9677B4B91BA78C3C00C82BBB /* SortedMultiDictionaryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

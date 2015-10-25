@@ -51,14 +51,15 @@ class SortedMultiDictionaryTests: XCTestCase {
 		}
 		
 		XCTAssert(1000 == s.count, "Test failed.")
-		XCTAssert(nil != s.removeValueForKeys(2), "Test failed.")
-		XCTAssert(nil == s.removeValueForKeys(2), "Test failed.")
+		s.removeValueForKeys(2)
 		
 		s.insert((2, 10))
 		XCTAssert(1 == s.count, "Test failed.")
 		XCTAssert(10 == s.findValueForKey(2), "Test failed.")
 		XCTAssert(10 == s[0].value!, "Test failed.")
-		XCTAssert(true == (nil != s.removeValueForKeys(2) && 0 == s.count), "Test failed.")
+		
+		s.removeValueForKeys(2)
+		XCTAssert(0 == s.count, "Test failed.")
 		
 		s.insert((1, 1))
 		s.insert((2, 2))
