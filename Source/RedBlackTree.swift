@@ -242,7 +242,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 		important when using non-unique keys.
 		- returns:	Value?
 	*/
-	public func removeValueForKey(key: Key) -> Value? {
+	public func removeInstanceValueForKey(key: Key) -> Value? {
 		return internalRemoveValueForKey(key).value
 	}
 	

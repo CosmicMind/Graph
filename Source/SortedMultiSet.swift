@@ -299,7 +299,7 @@ public class SortedMultiSet<Element : Comparable> : Probability<Element>, Collec
 				let x: Element = self[i]
 				let y: Element = set[j]
 				if x < y {
-					tree.removeValueForKey(x)
+					tree.removeInstanceValueForKey(x)
 					count = tree.count
 				} else if y < x {
 					++j
@@ -418,7 +418,7 @@ public class SortedMultiSet<Element : Comparable> : Probability<Element>, Collec
 			} else if y < x {
 				++j
 			} else {
-				tree.removeValueForKey(x)
+				tree.removeInstanceValueForKey(x)
 				count = tree.count
 				++j
 			}
