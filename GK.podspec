@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name = 'GK'
     s.version = '3.25.1'
-    s.license = { :type => 'AGPLv3+', :file => 'LICENSE' }
+    s.license = { :type => 'AGPL-3.0', :file => 'LICENSE' }
     s.summary = 'A Powerful Data-Driven Framework In Swift'
     s.homepage = 'http://www.graphkit.io/'
     s.social_media_url = 'https://www.facebook.com/graphkit'
