@@ -67,7 +67,7 @@ class SortedDictionaryTests: XCTestCase {
 		s.insert((3, 3))
 		s.updateValue(5, forKey: 3)
 		
-		let subs: SortedDictionary<Int, Int>.SortedSearch = s.search(3)
+		let subs: SortedDictionary<Int, Int> = s.search(3)
 		XCTAssert(1 == subs.count, "Test failed.")
 		
 		let generator: SortedDictionary<Int, Int>.Generator = subs.generate()
@@ -101,13 +101,13 @@ class SortedDictionaryTests: XCTestCase {
 	
 	func testKeys() {
 		let s: SortedDictionary<String, Int> = SortedDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let keys: SortedDictionary<String, Int>.SortedKey = SortedDictionary<String, Int>.SortedKey(elements: "adam", "daniel", "mike", "natalie")
+		let keys: SortedSet<String> = SortedSet<String>(elements: "adam", "daniel", "mike", "natalie")
 		XCTAssert(keys == s.keys, "Test failed.")
 	}
 	
 	func testValues() {
 		let s: SortedDictionary<String, Int> = SortedDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let values: SortedDictionary<String, Int>.SortedValue = [1, 2, 3, 4]
+		let values: Array<Int> = [1, 2, 3, 4]
 		XCTAssert(values == s.values, "Test failed.")
 	}
 	

@@ -18,10 +18,6 @@
 
 public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
-	public typealias SortedKey = SortedMultiSet<Key>
-	public typealias SortedValue = Array<Value>
-	public typealias SortedSearch = SortedMultiDictionary<Key, Value>
-	internal typealias SortedNode = RedBlackNode<Key, Value>
 	
 	/**
 		:name:	tree
@@ -33,12 +29,10 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 	/**
 		:name:	asDictionary
 	*/
-	public var asDictionary: Dictionary<Key, Value> {
-		var d: Dictionary<Key, Value> = Dictionary<Key, Value>()
+	public var asDictionary: Dictionary<Key, Value?> {
+		var d: Dictionary<Key, Value?> = Dictionary<Key, Value?>()
 		for (k, v) in self {
-			if let x = v {
-				d[k] = x
-			}
+			d[k] = v
 		}
 		return d
 	}
@@ -103,10 +97,9 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 	/**
 		:name:	keys
 		:description:	Returns an array of the key values in ordered.
-		- returns:	SortedMultiDictionary.SortedKey
 	*/
-	public var keys: SortedMultiDictionary.SortedKey {
-		let s: SortedKey = SortedKey()
+	public var keys: SortedMultiSet<Key> {
+		let s: SortedMultiSet<Key> = SortedMultiSet<Key>()
 		for x in self {
 			s.insert(x.key)
 		}
@@ -117,10 +110,9 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 		:name:	values
 		:description:	Returns an array of the values that are ordered based
 		on the key ordering.
-		- returns:	SortedMultiDictionary.SortedValue
 	*/
-	public var values: SortedMultiDictionary.SortedValue {
-		var s: SortedValue = SortedValue()
+	public var values: Array<Value> {
+		var s: Array<Value> = Array<Value>()
 		for x in self {
 			s.append(x.value!)
 		}
@@ -313,9 +305,8 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 		:name:	search
 		:description:	Accepts a list of keys and returns a subset
 		SortedMultiDictionary with the given values if they exist.
-		- returns:	SortedMultiDictionary.SortedSearch
 	*/
-	public func search(keys: Key...) -> SortedMultiDictionary.SortedSearch {
+	public func search(keys: Key...) -> SortedMultiDictionary<Key, Value> {
 		return search(keys)
 	}
 	
@@ -323,10 +314,9 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 		:name:	search
 		:description:	Accepts an array of keys and returns a subset
 		SortedMultiDictionary with the given values if they exist.
-		- returns:	SortedMultiDictionary.SortedSearch
 	*/
-	public func search(keys: Array<Key>) -> SortedMultiDictionary.SortedSearch {
-		var dict: SortedSearch = SortedSearch()
+	public func search(keys: Array<Key>) -> SortedMultiDictionary<Key, Value> {
+		var dict: SortedMultiDictionary<Key, Value> = SortedMultiDictionary<Key, Value>()
 		for key: Key in keys {
 			traverse(key, node: tree.root, dict: &dict)
 		}
@@ -337,7 +327,7 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 		:name:	traverse
 		:description:	Traverses the SortedMultiDictionary, looking for a key match.
 	*/
-	internal func traverse(key: Key, node: SortedMultiDictionary.SortedNode, inout dict: SortedMultiDictionary.SortedSearch) {
+	internal func traverse(key: Key, node: RedBlackNode<Key, Value>, inout dict: SortedMultiDictionary<Key, Value>) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))

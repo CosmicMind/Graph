@@ -67,7 +67,7 @@ class SortedMultiDictionaryTests: XCTestCase {
 		s.insert((3, 3))
 		s.updateValue(5, forKey: 3)
 		
-		let subs: SortedMultiDictionary<Int, Int>.SortedSearch = s.search(3)
+		let subs: SortedMultiDictionary<Int, Int>= s.search(3)
 		XCTAssert(2 == subs.count, "Test failed.")
 		
 		let generator: SortedMultiDictionary<Int, Int>.Generator = subs.generate()
@@ -101,13 +101,13 @@ class SortedMultiDictionaryTests: XCTestCase {
 	
 	func testKeys() {
 		let s: SortedMultiDictionary<String, Int> = SortedMultiDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let keys: SortedMultiDictionary<String, Int>.SortedKey = SortedMultiDictionary<String, Int>.SortedKey(elements: "adam", "daniel", "mike", "natalie")
+		let keys: SortedMultiSet<String> = SortedMultiSet<String>(elements: "adam", "daniel", "mike", "natalie")
 		XCTAssert(keys == s.keys, "Test failed.")
 	}
 	
 	func testValues() {
 		let s: SortedMultiDictionary<String, Int> = SortedMultiDictionary<String, Int>(elements: ("adam", 1), ("daniel", 2), ("mike", 3), ("natalie", 4))
-		let values: SortedMultiDictionary<String, Int>.SortedValue = [1, 2, 3, 4]
+		let values: Array<Int> = [1, 2, 3, 4]
 		XCTAssert(values == s.values, "Test failed.")
 	}
 	

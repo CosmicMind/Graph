@@ -18,10 +18,6 @@
 
 public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
-	public typealias SortedKey = SortedSet<Key>
-	public typealias SortedValue = Array<Value>
-	public typealias SortedSearch = SortedDictionary<Key, Value>
-	internal typealias SortedNode = RedBlackNode<Key, Value>
 	
 	/**
 		:name:	tree
@@ -33,12 +29,10 @@ public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Pr
 	/**
 		:name:	asDictionary
 	*/
-	public var asDictionary: Dictionary<Key, Value> {
-		var d: Dictionary<Key, Value> = Dictionary<Key, Value>()
+	public var asDictionary: Dictionary<Key, Value?> {
+		var d: Dictionary<Key, Value?> = Dictionary<Key, Value?>()
 		for (k, v) in self {
-			if let x = v {
-				d[k] = x
-			}
+			d[k] = v
 		}
 		return d
 	}
@@ -105,8 +99,8 @@ public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Pr
 		:description:	Returns an array of the key values in order.
 		- returns:	SortedDictionary.SortedKey
 	*/
-	public var keys: SortedDictionary.SortedKey {
-		let s: SortedKey = SortedKey()
+	public var keys: SortedSet<Key> {
+		let s: SortedSet<Key> = SortedSet<Key>()
 		for x in self {
 			s.insert(x.key)
 		}
@@ -119,8 +113,8 @@ public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Pr
 		on the key ordering.
 		- returns:	SortedDictionary.SortedValue
 	*/
-	public var values: SortedDictionary.SortedValue {
-		var s: SortedValue = SortedValue()
+	public var values: Array<Value> {
+		var s: Array<Value> = Array<Value>()
 		for x in self {
 			s.append(x.value!)
 		}
@@ -311,9 +305,8 @@ public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Pr
 		:name:	search
 		:description:	Accepts a list of keys and returns a subset
 		SortedDictionary with the given values if they exist.
-		- returns:	SortedDictionary.SortedSearch
 	*/
-	public func search(keys: Key...) -> SortedDictionary.SortedSearch {
+	public func search(keys: Key...) -> SortedDictionary<Key, Value> {
 		return search(keys)
 	}
 	
@@ -321,10 +314,9 @@ public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Pr
 		:name:	search
 		:description:	Accepts an array of keys and returns a subset
 		SortedDictionary with the given values if they exist.
-		- returns:	SortedDictionary.SortedSearch
 	*/
-	public func search(keys: Array<Key>) -> SortedDictionary.SortedSearch {
-		var dict: SortedSearch = SortedSearch()
+	public func search(keys: Array<Key>) -> SortedDictionary<Key, Value> {
+		var dict: SortedDictionary<Key, Value> = SortedDictionary<Key, Value>()
 		for key: Key in keys {
 			traverse(key, node: tree.root, dict: &dict)
 		}
@@ -335,7 +327,7 @@ public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Pr
 		:name:	traverse
 		:description:	Traverses the SortedDictionary, looking for a key match.
 	*/
-	internal func traverse(key: Key, node: SortedDictionary.SortedNode, inout dict: SortedDictionary.SortedSearch) {
+	internal func traverse(key: Key, node: RedBlackNode<Key, Value>, inout dict: SortedDictionary<Key, Value>) {
 		if tree.sentinel !== node {
 			if key == node.key {
 				dict.insert((key, node.value))
