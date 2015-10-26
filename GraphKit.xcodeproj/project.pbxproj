@@ -27,6 +27,8 @@
 		6557F6C61BADD3CD00CBA9AC /* GraphWatch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 6557F6C21BADD2A700CBA9AC /* GraphWatch.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		657FEDAA1BA8F844004D7504 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657FEDA91BA8F844004D7504 /* Node.swift */; };
 		657FEDAB1BA8F844004D7504 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657FEDA91BA8F844004D7504 /* Node.swift */; };
+		9606E1C61BDEA0460013EA82 /* GraphKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9606E1C51BDEA0460013EA82 /* GraphKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9606E1C71BDEA0460013EA82 /* GraphKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9606E1C51BDEA0460013EA82 /* GraphKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4431BA78A9200C82BBB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4391BA78A9200C82BBB /* GraphKit.framework */; };
 		9677B45F1BA78AA600C82BBB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4551BA78AA600C82BBB /* GraphKit.framework */; };
 		9677B46C1BA78B6200C82BBB /* Probability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -230,6 +232,7 @@
 		6557F6B31BADC14F00CBA9AC /* GraphSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSearch.swift; sourceTree = "<group>"; };
 		6557F6C21BADD2A700CBA9AC /* GraphWatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphWatch.swift; sourceTree = "<group>"; };
 		657FEDA91BA8F844004D7504 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		9606E1C51BDEA0460013EA82 /* GraphKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphKit.h; sourceTree = "<group>"; };
 		9677B4391BA78A9200C82BBB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B4421BA78A9200C82BBB /* GraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B4551BA78AA600C82BBB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -452,6 +455,7 @@
 			children = (
 				96D4E4FE1BA76FC400672E38 /* LICENSE */,
 				9677B4331BA78A5600C82BBB /* Supporting Files */,
+				9606E1C51BDEA0460013EA82 /* GraphKit.h */,
 				9677B4321BA78A4000C82BBB /* Probability */,
 				9677B4311BA78A2700C82BBB /* Network */,
 				9677B4301BA789F200C82BBB /* Tree */,
@@ -510,6 +514,7 @@
 				9677B4901BA78BB000C82BBB /* RedBlackNode.swift in Headers */,
 				9677B4911BA78BB000C82BBB /* SortedSet.swift in Headers */,
 				9677B4921BA78BB000C82BBB /* SortedMultiSet.swift in Headers */,
+				9606E1C71BDEA0460013EA82 /* GraphKit.h in Headers */,
 				9677B4931BA78BB000C82BBB /* SortedDictionary.swift in Headers */,
 				9677B4941BA78BB000C82BBB /* SortedMultiDictionary.swift in Headers */,
 				9677B4951BA78BB000C82BBB /* Sort.swift in Headers */,
@@ -554,6 +559,7 @@
 				9677B4711BA78B6200C82BBB /* RedBlackNode.swift in Headers */,
 				9677B4721BA78B6200C82BBB /* SortedSet.swift in Headers */,
 				9677B4731BA78B6200C82BBB /* SortedMultiSet.swift in Headers */,
+				9606E1C61BDEA0460013EA82 /* GraphKit.h in Headers */,
 				9677B4741BA78B6200C82BBB /* SortedDictionary.swift in Headers */,
 				9677B4751BA78B6200C82BBB /* SortedMultiDictionary.swift in Headers */,
 				9677B4761BA78B6200C82BBB /* Sort.swift in Headers */,
