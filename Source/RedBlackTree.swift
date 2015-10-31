@@ -16,7 +16,7 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, CollectionType, CustomStringConvertible {
+public class RedBlackTree<Key : Comparable, Value> : Probable<Key>, CollectionType, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
 	
 	/**
@@ -160,7 +160,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 
 	/**
 		:name:	countOf
-		:description:	Conforms to ProbabilityType protocol.
+		:description:	Conforms to ProbableType protocol.
 		- returns:	Int
 	*/
 	public override func countOf(keys: Key...) -> Int {
@@ -169,7 +169,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probability<Key>, Collectio
 
 	/**
 		:name:	countOf
-		:description:	Conforms to ProbabilityType protocol.
+		:description:	Conforms to ProbableType protocol.
 		- returns:	Int
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {

@@ -16,7 +16,7 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
+public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Probable<Key>, CollectionType, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
 	
 	/**
@@ -211,7 +211,7 @@ public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Pr
 	
 	/**
 		:name:	countOf
-		:description:	Conforms to ProbabilityType protocol.
+		:description:	Conforms to ProbableType protocol.
 		- returns:	Int
 	*/
 	public override func countOf(keys: Key...) -> Int {
@@ -220,7 +220,7 @@ public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Pr
 	
 	/**
 		:name:	countOf
-		:description:	Conforms to ProbabilityType protocol.
+		:description:	Conforms to ProbableType protocol.
 		- returns:	Int
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {

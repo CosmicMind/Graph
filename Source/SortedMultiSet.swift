@@ -16,7 +16,7 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class SortedMultiSet<Element : Comparable> : Probability<Element>, CollectionType, Comparable, Equatable, CustomStringConvertible {
+public class SortedMultiSet<Element : Comparable> : Probable<Element>, CollectionType, Comparable, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<Element>
 	
 	/**
@@ -196,7 +196,7 @@ public class SortedMultiSet<Element : Comparable> : Probability<Element>, Collec
 	
 	/**
 		:name:	countOf
-		:description:	Conforms to ProbabilityType protocol.
+		:description:	Conforms to ProbableType protocol.
 		- returns:	Int
 	*/
 	public override func countOf(elements: Element...) -> Int {
@@ -205,7 +205,7 @@ public class SortedMultiSet<Element : Comparable> : Probability<Element>, Collec
 
 	/**
 		:name:	countOf
-		:description:	Conforms to ProbabilityType protocol.
+		:description:	Conforms to ProbableType protocol.
 		- returns:	Int
 	*/
 	public override func countOf(elements: Array<Element>) -> Int {

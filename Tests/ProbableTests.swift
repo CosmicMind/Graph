@@ -19,7 +19,7 @@
 import XCTest
 @testable import GraphKit
 
-class ProbabilityTests: XCTestCase {
+class ProbableTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()

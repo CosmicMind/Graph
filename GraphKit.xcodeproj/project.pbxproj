@@ -31,7 +31,7 @@
 		9606E1C71BDEA0460013EA82 /* GraphKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9606E1C51BDEA0460013EA82 /* GraphKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B4431BA78A9200C82BBB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4391BA78A9200C82BBB /* GraphKit.framework */; };
 		9677B45F1BA78AA600C82BBB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4551BA78AA600C82BBB /* GraphKit.framework */; };
-		9677B46C1BA78B6200C82BBB /* Probability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B46C1BA78B6200C82BBB /* Probable.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probable.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B46D1BA78B6200C82BBB /* Reachability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50A1BA76FC400672E38 /* Reachability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B46E1BA78B6200C82BBB /* Session.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50D1BA76FC400672E38 /* Session.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B46F1BA78B6200C82BBB /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4FD1BA76FC400672E38 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -61,7 +61,7 @@
 		9677B4871BA78B6200C82BBB /* ManagedBond.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5021BA76FC400672E38 /* ManagedBond.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		9677B4881BA78B6200C82BBB /* ManagedBondGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4F51BA76FC400672E38 /* ManagedBondGroup.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		9677B4891BA78B6200C82BBB /* ManagedBondProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4F61BA76FC400672E38 /* ManagedBondProperty.swift */; settings = {ATTRIBUTES = (Private, ); }; };
-		9677B48B1BA78BB000C82BBB /* Probability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9677B48B1BA78BB000C82BBB /* Probable.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probable.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B48C1BA78BB000C82BBB /* Reachability.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50A1BA76FC400672E38 /* Reachability.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B48D1BA78BB000C82BBB /* Session.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E50D1BA76FC400672E38 /* Session.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9677B48E1BA78BB000C82BBB /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96D4E4FD1BA76FC400672E38 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -109,7 +109,7 @@
 		9677B4B91BA78C3C00C82BBB /* SortedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53E1BA76FD900672E38 /* SortedMultiDictionaryTests.swift */; };
 		9677B4BA1BA78C3C00C82BBB /* SortedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53F1BA76FD900672E38 /* SortedMultiSetTests.swift */; };
 		9677B4BB1BA78C3C00C82BBB /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5401BA76FD900672E38 /* SortedSetTest.swift */; };
-		9677B4BC1BA78C3C00C82BBB /* ProbabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5411BA76FD900672E38 /* ProbabilityTests.swift */; };
+		9677B4BC1BA78C3C00C82BBB /* ProbableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5411BA76FD900672E38 /* ProbableTests.swift */; };
 		9677B4BD1BA78C3C00C82BBB /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5421BA76FD900672E38 /* QueueTests.swift */; };
 		9677B4BE1BA78C3C00C82BBB /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5431BA76FD900672E38 /* ReachabilityTests.swift */; };
 		9677B4BF1BA78C3C00C82BBB /* RedBlackTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5441BA76FD900672E38 /* RedBlackTreeTests.swift */; };
@@ -134,14 +134,14 @@
 		9677B4D31BA78C3D00C82BBB /* SortedMultiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53E1BA76FD900672E38 /* SortedMultiDictionaryTests.swift */; };
 		9677B4D41BA78C3D00C82BBB /* SortedMultiSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E53F1BA76FD900672E38 /* SortedMultiSetTests.swift */; };
 		9677B4D51BA78C3D00C82BBB /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5401BA76FD900672E38 /* SortedSetTest.swift */; };
-		9677B4D61BA78C3D00C82BBB /* ProbabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5411BA76FD900672E38 /* ProbabilityTests.swift */; };
+		9677B4D61BA78C3D00C82BBB /* ProbableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5411BA76FD900672E38 /* ProbableTests.swift */; };
 		9677B4D71BA78C3D00C82BBB /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5421BA76FD900672E38 /* QueueTests.swift */; };
 		9677B4D81BA78C3D00C82BBB /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5431BA76FD900672E38 /* ReachabilityTests.swift */; };
 		9677B4D91BA78C3D00C82BBB /* RedBlackTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5441BA76FD900672E38 /* RedBlackTreeTests.swift */; };
 		9677B4DA1BA78C3D00C82BBB /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5451BA76FD900672E38 /* SessionTests.swift */; };
 		9677B4DB1BA78C3D00C82BBB /* StackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5461BA76FD900672E38 /* StackTests.swift */; };
 		9677B4DC1BA78C3D00C82BBB /* GraphKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5471BA76FD900672E38 /* GraphKitTests.swift */; };
-		9677B4E11BA78DEF00C82BBB /* Probability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probability.swift */; };
+		9677B4E11BA78DEF00C82BBB /* Probable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probable.swift */; };
 		9677B4E21BA78DEF00C82BBB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50A1BA76FC400672E38 /* Reachability.swift */; };
 		9677B4E31BA78DEF00C82BBB /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50D1BA76FC400672E38 /* Session.swift */; };
 		9677B4E41BA78DEF00C82BBB /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4FD1BA76FC400672E38 /* JSON.swift */; };
@@ -171,7 +171,7 @@
 		9677B4FC1BA78DEF00C82BBB /* ManagedBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5021BA76FC400672E38 /* ManagedBond.swift */; };
 		9677B4FD1BA78DEF00C82BBB /* ManagedBondGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4F51BA76FC400672E38 /* ManagedBondGroup.swift */; };
 		9677B4FE1BA78DEF00C82BBB /* ManagedBondProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4F61BA76FC400672E38 /* ManagedBondProperty.swift */; };
-		9677B4FF1BA78E1500C82BBB /* Probability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probability.swift */; };
+		9677B4FF1BA78E1500C82BBB /* Probable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E5081BA76FC400672E38 /* Probable.swift */; };
 		9677B5001BA78E1500C82BBB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50A1BA76FC400672E38 /* Reachability.swift */; };
 		9677B5011BA78E1500C82BBB /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E50D1BA76FC400672E38 /* Session.swift */; };
 		9677B5021BA78E1500C82BBB /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D4E4FD1BA76FC400672E38 /* JSON.swift */; };
@@ -262,7 +262,7 @@
 		96D4E5051BA76FC400672E38 /* SortedMultiDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedMultiDictionary.swift; sourceTree = "<group>"; };
 		96D4E5061BA76FC400672E38 /* SortedMultiSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedMultiSet.swift; sourceTree = "<group>"; };
 		96D4E5071BA76FC400672E38 /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
-		96D4E5081BA76FC400672E38 /* Probability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Probability.swift; sourceTree = "<group>"; };
+		96D4E5081BA76FC400672E38 /* Probable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Probable.swift; sourceTree = "<group>"; };
 		96D4E5091BA76FC400672E38 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		96D4E50A1BA76FC400672E38 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		96D4E50B1BA76FC400672E38 /* RedBlackNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackNode.swift; sourceTree = "<group>"; };
@@ -288,7 +288,7 @@
 		96D4E53E1BA76FD900672E38 /* SortedMultiDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedMultiDictionaryTests.swift; sourceTree = "<group>"; };
 		96D4E53F1BA76FD900672E38 /* SortedMultiSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedMultiSetTests.swift; sourceTree = "<group>"; };
 		96D4E5401BA76FD900672E38 /* SortedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSetTest.swift; sourceTree = "<group>"; };
-		96D4E5411BA76FD900672E38 /* ProbabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProbabilityTests.swift; sourceTree = "<group>"; };
+		96D4E5411BA76FD900672E38 /* ProbableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProbableTests.swift; sourceTree = "<group>"; };
 		96D4E5421BA76FD900672E38 /* QueueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		96D4E5431BA76FD900672E38 /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
 		96D4E5441BA76FD900672E38 /* RedBlackTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedBlackTreeTests.swift; sourceTree = "<group>"; };
@@ -414,12 +414,12 @@
 			name = Network;
 			sourceTree = "<group>";
 		};
-		9677B4321BA78A4000C82BBB /* Probability */ = {
+		9677B4321BA78A4000C82BBB /* Probable */ = {
 			isa = PBXGroup;
 			children = (
-				96D4E5081BA76FC400672E38 /* Probability.swift */,
+				96D4E5081BA76FC400672E38 /* Probable.swift */,
 			);
-			name = Probability;
+			name = Probable;
 			sourceTree = "<group>";
 		};
 		9677B4331BA78A5600C82BBB /* Supporting Files */ = {
@@ -456,7 +456,7 @@
 				96D4E4FE1BA76FC400672E38 /* LICENSE */,
 				9677B4331BA78A5600C82BBB /* Supporting Files */,
 				9606E1C51BDEA0460013EA82 /* GraphKit.h */,
-				9677B4321BA78A4000C82BBB /* Probability */,
+				9677B4321BA78A4000C82BBB /* Probable */,
 				9677B4311BA78A2700C82BBB /* Network */,
 				9677B4301BA789F200C82BBB /* Tree */,
 				9677B42F1BA789E600C82BBB /* Sort */,
@@ -489,7 +489,7 @@
 				96D4E53E1BA76FD900672E38 /* SortedMultiDictionaryTests.swift */,
 				96D4E53F1BA76FD900672E38 /* SortedMultiSetTests.swift */,
 				96D4E5401BA76FD900672E38 /* SortedSetTest.swift */,
-				96D4E5411BA76FD900672E38 /* ProbabilityTests.swift */,
+				96D4E5411BA76FD900672E38 /* ProbableTests.swift */,
 				96D4E5421BA76FD900672E38 /* QueueTests.swift */,
 				96D4E5431BA76FD900672E38 /* ReachabilityTests.swift */,
 				96D4E5441BA76FD900672E38 /* RedBlackTreeTests.swift */,
@@ -506,7 +506,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9677B48B1BA78BB000C82BBB /* Probability.swift in Headers */,
+				9677B48B1BA78BB000C82BBB /* Probable.swift in Headers */,
 				9677B48C1BA78BB000C82BBB /* Reachability.swift in Headers */,
 				9677B48D1BA78BB000C82BBB /* Session.swift in Headers */,
 				9677B48E1BA78BB000C82BBB /* JSON.swift in Headers */,
@@ -551,7 +551,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9677B46C1BA78B6200C82BBB /* Probability.swift in Headers */,
+				9677B46C1BA78B6200C82BBB /* Probable.swift in Headers */,
 				9677B46D1BA78B6200C82BBB /* Reachability.swift in Headers */,
 				9677B46E1BA78B6200C82BBB /* Session.swift in Headers */,
 				9677B46F1BA78B6200C82BBB /* JSON.swift in Headers */,
@@ -748,7 +748,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6557F6B51BADC14F00CBA9AC /* GraphSearch.swift in Sources */,
-				9677B4FF1BA78E1500C82BBB /* Probability.swift in Sources */,
+				9677B4FF1BA78E1500C82BBB /* Probable.swift in Sources */,
 				9677B5001BA78E1500C82BBB /* Reachability.swift in Sources */,
 				9677B5011BA78E1500C82BBB /* Session.swift in Sources */,
 				9677B5021BA78E1500C82BBB /* JSON.swift in Sources */,
@@ -811,7 +811,7 @@
 				9677B4C81BA78C3D00C82BBB /* BondStressTests.swift in Sources */,
 				9677B4D01BA78C3D00C82BBB /* JSONTests.swift in Sources */,
 				9677B4C41BA78C3D00C82BBB /* ActionSearchTests.swift in Sources */,
-				9677B4D61BA78C3D00C82BBB /* ProbabilityTests.swift in Sources */,
+				9677B4D61BA78C3D00C82BBB /* ProbableTests.swift in Sources */,
 				9677B4DB1BA78C3D00C82BBB /* StackTests.swift in Sources */,
 				9677B4C51BA78C3D00C82BBB /* ActionStressTests.swift in Sources */,
 				9677B4D11BA78C3D00C82BBB /* ListTests.swift in Sources */,
@@ -824,7 +824,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6557F6B41BADC14F00CBA9AC /* GraphSearch.swift in Sources */,
-				9677B4E11BA78DEF00C82BBB /* Probability.swift in Sources */,
+				9677B4E11BA78DEF00C82BBB /* Probable.swift in Sources */,
 				9677B4E21BA78DEF00C82BBB /* Reachability.swift in Sources */,
 				9677B4E31BA78DEF00C82BBB /* Session.swift in Sources */,
 				9677B4E41BA78DEF00C82BBB /* JSON.swift in Sources */,
@@ -887,7 +887,7 @@
 				9677B4AE1BA78C3C00C82BBB /* BondStressTests.swift in Sources */,
 				9677B4B61BA78C3C00C82BBB /* JSONTests.swift in Sources */,
 				9677B4AA1BA78C3C00C82BBB /* ActionSearchTests.swift in Sources */,
-				9677B4BC1BA78C3C00C82BBB /* ProbabilityTests.swift in Sources */,
+				9677B4BC1BA78C3C00C82BBB /* ProbableTests.swift in Sources */,
 				9677B4C11BA78C3C00C82BBB /* StackTests.swift in Sources */,
 				9677B4AB1BA78C3C00C82BBB /* ActionStressTests.swift in Sources */,
 				9677B4B71BA78C3C00C82BBB /* ListTests.swift in Sources */,

@@ -16,7 +16,7 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable> : Probability<Key>, CollectionType, Equatable, CustomStringConvertible {
+public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable> : Probable<Key>, CollectionType, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
 	
 	/**
@@ -209,7 +209,7 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 	
 	/**
 		:name:	countOf
-		:description:	Conforms to ProbabilityType protocol.
+		:description:	Conforms to ProbableType protocol.
 		- returns:	Int
 	*/
 	public override func countOf(keys: Key...) -> Int {
@@ -218,7 +218,7 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 	
 	/**
 		:name:	countOf
-		:description:	Conforms to ProbabilityType protocol.
+		:description:	Conforms to ProbableType protocol.
 		- returns:	Int
 	*/
 	public override func countOf(keys: Array<Key>) -> Int {

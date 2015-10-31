@@ -16,7 +16,7 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-internal protocol ProbabilityType {
+internal protocol ProbableType {
 	typealias ElementType
 	
 	/**
@@ -70,7 +70,7 @@ internal protocol ProbabilityType {
 	func expectedValueOf(trials: Int, elements: Array<ElementType>) -> Double
 }
 
-public class Probability<Element : Comparable> : ProbabilityType {
+public class Probable<Element : Comparable> : ProbableType {
 	typealias ElementType = Element
 
 	public internal(set) var count: Int = 0
