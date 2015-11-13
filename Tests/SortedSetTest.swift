@@ -262,9 +262,9 @@ class SortedSetTests: XCTestCase {
 		e3.delete()
 		e4.delete()
 		
-		graph.save({ (success: Bool, error: NSError?) in
+		graph.save { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Test failed.")
-		})
+		}
 	}
 	
 	func testPerformance() {
