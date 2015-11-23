@@ -23,21 +23,13 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 	
 	var expectation: XCTestExpectation?
 	
-	private var queua1: dispatch_queue_t = {
-		return dispatch_queue_create(("io.graphkit.ActionStressTests.1" as NSString).UTF8String, nil)
-	}()
+	private lazy var queua1: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionStressTests.1", nil)
 	
-	private var queue2: dispatch_queue_t = {
-		return dispatch_queue_create(("io.graphkit.ActionStressTests.2" as NSString).UTF8String, nil)
-	}()
+	private lazy var queue2: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionStressTests.2", nil)
 	
-	private var queue3: dispatch_queue_t = {
-		return dispatch_queue_create(("io.graphkit.ActionStressTests.3" as NSString).UTF8String, nil)
-	}()
+	private lazy var queue3: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionStressTests.3", nil)
 	
-	private var queue4: dispatch_queue_t = {
-		return dispatch_queue_create(("io.graphkit.ActionStressTests.4" as NSString).UTF8String, nil)
-	}()
+	private lazy var queue4: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionStressTests.4", nil)
 	
 	private var graph: Graph?
 	
