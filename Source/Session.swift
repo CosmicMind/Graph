@@ -72,8 +72,6 @@ public class Session : NSObject {
 			} else {
 				err = error
 			}
-            
-            // do some task
             dispatch_async(dispatch_get_main_queue()) {
                 completion(json: json, error: err)
             }
@@ -103,7 +101,6 @@ public class Session : NSObject {
 			} else {
 				err = error
 			}
-            // do some task
             dispatch_async(dispatch_get_main_queue()) {
                 completion(json: json, error: err)
             }
