@@ -72,7 +72,11 @@ public class Session : NSObject {
 			} else {
 				err = error
 			}
-			completion(json: json, error: err)
+            
+            // do some task
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(json: json, error: err)
+            }
 			self.delegate?.sessionDidReceiveGetResponse(self, json: json, error: err)
 		}).resume()
 	}
@@ -99,8 +103,11 @@ public class Session : NSObject {
 			} else {
 				err = error
 			}
-			completion(json: json, error: err)
-			self.delegate?.sessionDidReceivePOSTResponse(self, json: json, error: err)
+            // do some task
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(json: json, error: err)
+            }
+            self.delegate?.sessionDidReceivePOSTResponse(self, json: json, error: err)
 		}).resume()
 	}
 }
