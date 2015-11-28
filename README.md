@@ -1,6 +1,6 @@
-# GraphKit
-
 ![GK](http://www.graphkit.io/GK/GraphKit.png)
+
+# GraphKit
 
 ### CocoaPods Support
 
