@@ -1,5 +1,6 @@
-![GK](http://www.cosmicmind.io/GraphKit.png)
 # GraphKit
+
+![GK](http://www.graphkit.io/GraphKit.png)
 
 ### CocoaPods Support
 
