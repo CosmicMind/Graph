@@ -145,6 +145,8 @@ To explore the intricate relationships within Graph, the search API is as facete
 
 The below example shows how to access a couple Entity types simultaneously.
 
+![GK](http://www.graphkit.io/GK/FacetedSearch.png)
+
 ```swift
 let graph: Graph = Graph()
 
