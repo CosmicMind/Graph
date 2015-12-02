@@ -106,6 +106,8 @@ print(die.probabilityOf(n3)) // output: 0.166666666666667
 
 As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User Clicked a Button".
 
+![GK](http://www.graphkit.io/GK/DataDriven.png)
+
 ```swift
 let graph: Graph = Graph() // set UIViewController delegate as GraphDelegate
 graph.delegate = self
