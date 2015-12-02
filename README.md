@@ -72,6 +72,8 @@ graph.save()
 
 A great experience is never static. Data structures in GraphKit have an internal probability mechanism that enables your application to create a dynamic experience. Below is an example of determining the probability of rolling a 3 with a single die.
 
+![GK](http://www.graphkit.io/GK/Probability.png)
+
 ```swift
 let die: SortedSet<Int> = SortedSet<Int>(elements: 1, 2, 3, 4, 5, 6)
 print(die.probabilityOf(3)) // output: 0.166666666666667
