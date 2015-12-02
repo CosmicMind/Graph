@@ -26,6 +26,8 @@ graph.save()
 
 A Relationship between two Entity objects is done using a Bond. A Bond is structured like a sentence, in that it has a Subject and Object. Below is an example of constructing a relationship, between a "User" and "Book" Entity type. It may be thought of as "User is Author of Book".
 
+![GK](http://www.graphkit.io/GK/Bond.png)
+
 ```swift
 let graph: Graph = Graph()
 
