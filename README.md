@@ -50,6 +50,8 @@ graph.save()
 
 Engagement drives experience. When a user engages your application, an Action object may be used to capture all the relevant data in a single snapshot. An Action does this, very much like a Bond, by relating Subjects to Objects. Below is an example of a user purchasing many books. It may be thought of as "User Purchased these Book(s)".
 
+![GK](http://www.graphkit.io/GK/Action.png)
+
 ```swift
 let graph: Graph = Graph()
 
