@@ -10,6 +10,8 @@ GraphKit is on CocoaPods under the name [GK](https://cocoapods.org/?q=GK).
 
 Let's begin with creating a simple model object using an Entity. An Entity represents a person, place, or thing. Below is an example of creating a "User" type Entity.
 
+![GK](http://www.graphkit.io/GK/Entity.png)
+
 ```swift
 let graph: Graph = Graph()
 
