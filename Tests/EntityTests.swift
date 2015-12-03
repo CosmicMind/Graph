@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 GraphKit, Inc. <http://graphkit.io> and other GraphKit contributors.
+// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io> and other CosmicMind contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -54,23 +54,6 @@ class EntityTests : XCTestCase, GraphDelegate {
 		ageUpdateExpectation = nil
 		ageSearchExpectation = nil
 		super.tearDown()
-	}
-
-	func testJSON() {
-		let user: Entity = Entity(type: "User")
-		user["name"] = "Eve"
-		user["age"] = 26
-		user["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
-		user.addGroup("Female")
-		
-		graph!.save()
-		
-		XCTAssert(user.asJSON["properties"]?["name"]?.asString == "Eve", "Test failed.")
-		XCTAssert(user.asJSON["properties"]?["age"]?.asInt == 26, "Test failed.")
-		XCTAssert(user.asJSON["properties"]?["date"]?.asString == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
-		
-		user.delete()
-		graph!.save()
 	}
 	
     func testAll() {

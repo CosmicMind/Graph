@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 GraphKit, Inc. <http://graphkit.io> and other GraphKit contributors.
+// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io> and other CosmicMind contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -72,41 +72,6 @@ class ActionTests : XCTestCase, GraphDelegate {
 		sessionDeleteExpectation = nil
 		sessionSearchExpectation = nil
 		super.tearDown()
-	}
-	
-	func testJSON() {
-		let read: Action = Action(type: "Read")
-		read["genre"] = "Physics"
-		read["pages"] = 101
-		read["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
-		read.addGroup("At Night")
-		
-		let user: Entity = Entity(type: "User")
-		user["name"] = "Eve"
-		user["age"] = 26
-		user["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
-		user.addGroup("Female")
-		
-		let book: Entity = Entity(type: "Book")
-		book["title"] = "Holographic Universe"
-		book.addGroup("Physics")
-		book.addGroup("Featured")
-		
-		read.addSubject(user)
-		read.addObject(book)
-		
-		graph!.save()
-		
-		XCTAssert(read.asJSON["properties"]?["genre"]?.asString == "Physics", "Test failed.")
-		XCTAssert(read.asJSON["properties"]?["pages"]?.asInt == 101, "Test failed.")
-		XCTAssert(read.asJSON["properties"]?["date"]?.asString == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
-		XCTAssert(read.subjects.first?.asJSON == user.asJSON, "Test failed.")
-		XCTAssert(read.objects.first?.asJSON == book.asJSON, "Test failed.")
-		
-		read.delete()
-		user.delete()
-		book.delete()
-		graph!.save()
 	}
 
     func testAll() {

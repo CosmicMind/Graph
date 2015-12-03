@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = 'GK'
-    s.version = '3.26.6'
+    s.version = '3.27.0'
     s.license = { :type => 'AGPL-3.0', :file => 'LICENSE' }
     s.summary = 'A powerful data-driven framework in Swift.'
     s.homepage = 'http://graphkit.io'
@@ -9,6 +9,6 @@ Pod::Spec.new do |s|
     s.source = { :git => 'https://github.com/CosmicMind/GraphKit.git', :tag => s.version }
     s.ios.deployment_target = '8.0'
     s.osx.deployment_target = '10.10'
-    s.source_files = 'Source/*.swift'
+    s.source_files = 'Sources/*.swift'
     s.requires_arc = true
 end

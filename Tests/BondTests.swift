@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 GraphKit, Inc. <http://graphkit.io> and other GraphKit contributors.
+// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io> and other CosmicMind contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -64,40 +64,6 @@ class BondTests : XCTestCase, GraphDelegate {
 		super.tearDown()
 	}
 	
-	func testJSON() {
-		let author: Bond = Bond(type: "Author")
-		author["genre"] = "Physics"
-		author["pages"] = 101
-		author["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
-		
-		let user: Entity = Entity(type: "User")
-		user["name"] = "Eve"
-		user["age"] = 26
-		user["date"] = NSDate(timeIntervalSince1970: NSTimeInterval(1))
-		user.addGroup("Female")
-		
-		let book: Entity = Entity(type: "Book")
-		book["title"] = "Holographic Universe"
-		book.addGroup("Physics")
-		book.addGroup("Featured")
-		
-		author.subject = user
-		author.object = book
-		
-		graph!.save()
-		
-		XCTAssert(author.asJSON["properties"]?["genre"]?.asString == "Physics", "Test failed.")
-		XCTAssert(author.asJSON["properties"]?["pages"]?.asInt == 101, "Test failed.")
-		XCTAssert(author.asJSON["properties"]?["date"]?.asString == String(stringInterpolationSegment: NSDate(timeIntervalSince1970: NSTimeInterval(1))), "Test failed.")
-		XCTAssert(author.subject?.asJSON == user.asJSON, "Test failed.")
-		XCTAssert(author.object?.asJSON == book.asJSON, "Test failed.")
-		
-		author.delete()
-		user.delete()
-		book.delete()
-		graph!.save()
-	}
-
     func testAll() {
         // Set the XCTest Class as the delegate.
         graph.delegate = self
