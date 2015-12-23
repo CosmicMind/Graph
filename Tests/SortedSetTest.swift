@@ -257,17 +257,13 @@ class SortedSetTests: XCTestCase {
 		s1.intersectInPlace(s2)
 		XCTAssertTrue(SortedSet<Entity>(elements: e2, e3) == s1, "Test failed.")
 		
-		graph.save { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Test failed. \(error)")
-		}
-		
 		e1.delete()
 		e2.delete()
 		e3.delete()
 		e4.delete()
 
 		graph.save { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Test failed. \(error)")
+			XCTAssertFalse(success, "Test failed. \(error)")
 		}
 	}
 	
