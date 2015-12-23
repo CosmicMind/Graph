@@ -136,18 +136,11 @@ public extension Graph {
 		request.fetchOffset = batchOffset
 		request.sortDescriptors = sort
 		
-		var nodes: Array<AnyObject> = Array<AnyObject>()
-		
-		let moc: NSManagedObjectContext? = worker
 		do {
-			let result: Array<AnyObject> = try moc!.executeFetchRequest(request)
-			for item: AnyObject in result {
-				nodes.append(item)
-			}
-		} catch _ {
+			return try worker!.executeFetchRequest(request)
+		} catch {
 			fatalError("[GraphKit Error: Cannot search NSManagedContext.]")
 		}
-		return nodes
 	}
 	
 	//
