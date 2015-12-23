@@ -41,6 +41,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
+		graph.watch(entity: ["S", "O"])
 		graph.watch(action: ["T"], group: ["G"], property: ["P"])
 	}
 	
@@ -50,10 +51,28 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
-		for var i: Int = 1000; i > 0; --i {
+		let subjects: SortedSet<Entity> = SortedSet<Entity>()
+		for var i = 0; i < 5; ++i {
+			subjects.insert(Entity(type: "S"))
+		}
+		
+		let objects: SortedSet<Entity> = SortedSet<Entity>()
+		for var i = 0; i < 5; ++i {
+			objects.insert(Entity(type: "O"))
+		}
+		
+		for var i: Int = 100; i > 0; --i {
 			let n: Action = Action(type: "T")
 			n["P"] = "A"
 			n.addGroup("G")
+			
+			for s in subjects {
+				n.addSubject(s)
+			}
+			
+			for o in objects {
+				n.addObject(o)
+			}
 		}
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
@@ -86,6 +105,14 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 			n.delete()
 		}
 		
+		for s in subjects {
+			s.delete()
+		}
+		
+		for o in objects {
+			o.delete()
+		}
+		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		deleteExpectation = expectationWithDescription("Test: Delete did not pass.")
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
@@ -103,7 +130,9 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == action.type)
 		XCTAssertTrue(action["P"] as? String == "A")
 		XCTAssertTrue(action.hasGroup("G"))
-		if 1000 == ++insertActionCount {
+		XCTAssertTrue(5 == action.subjects.count)
+		XCTAssertTrue(5 == action.objects.count)
+		if 100 == ++insertActionCount {
 			insertExpectation?.fulfill()
 		}
 	}
@@ -113,7 +142,9 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("A" == value as? String)
 		XCTAssertTrue(action[property] as? String == value as? String)
-		if 1000 == ++insertPropertyCount {
+		XCTAssertTrue(5 == action.subjects.count)
+		XCTAssertTrue(5 == action.objects.count)
+		if 100 == ++insertPropertyCount {
 			insertPropertyExpectation?.fulfill()
 		}
 	}
@@ -121,7 +152,9 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 	func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
 		XCTAssertTrue("T" == action.type)
 		XCTAssertTrue("G" == group)
-		if 1000 == ++insertGroupCount {
+		XCTAssertTrue(5 == action.subjects.count)
+		XCTAssertTrue(5 == action.objects.count)
+		if 100 == ++insertGroupCount {
 			insertGroupExpectation?.fulfill()
 		}
 	}
@@ -131,13 +164,17 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
 		XCTAssertTrue(action[property] as? String == value as? String)
-		if 1000 == ++updatePropertyCount {
+		XCTAssertTrue(5 == action.subjects.count)
+		XCTAssertTrue(5 == action.objects.count)
+		if 100 == ++updatePropertyCount {
 			updatePropertyExpectation?.fulfill()
 		}
 	}
 	
 	func graphDidDeleteAction(graph: Graph, action: Action) {
 		XCTAssertTrue("T" == action.type)
+		XCTAssertTrue(0 == action.subjects.count)
+		XCTAssertTrue(0 == action.objects.count)
 		if 0 == --insertActionCount {
 			deleteExpectation?.fulfill()
 		}
@@ -147,6 +184,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == action.type)
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
+		XCTAssertTrue(0 == action.subjects.count)
+		XCTAssertTrue(0 == action.objects.count)
 		if 0 == --insertPropertyCount {
 			deletePropertyExpectation?.fulfill()
 		}
@@ -155,6 +194,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 	func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String) {
 		XCTAssertTrue("T" == action.type)
 		XCTAssertTrue("G" == group)
+		XCTAssertTrue(0 == action.subjects.count)
+		XCTAssertTrue(0 == action.objects.count)
 		if 0 == --insertGroupCount {
 			deleteGroupExpectation?.fulfill()
 		}

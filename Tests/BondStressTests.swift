@@ -41,6 +41,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
+		graph.watch(entity: ["S", "O"])
 		graph.watch(bond: ["T"], group: ["G"], property: ["P"])
 	}
 	
@@ -52,8 +53,11 @@ class BondStressTests : XCTestCase, GraphDelegate {
 	func testAll() {
 		for var i: Int = 1000; i > 0; --i {
 			let n: Bond = Bond(type: "T")
+			
 			n["P"] = "A"
 			n.addGroup("G")
+			n.subject = Entity(type: "S")
+			n.object = Entity(type: "O")
 		}
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
@@ -83,6 +87,8 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(10, handler: nil)
 		
 		for n in graph.search(bond: ["T"]) {
+			n.subject?.delete()
+			n.object?.delete()
 			n.delete()
 		}
 		
@@ -103,6 +109,8 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == bond.type)
 		XCTAssertTrue(bond["P"] as? String == "A")
 		XCTAssertTrue(bond.hasGroup("G"))
+		XCTAssertTrue("S" == bond.subject?.type)
+		XCTAssertTrue("O" == bond.object?.type)
 		if 1000 == ++insertBondCount {
 			insertExpectation?.fulfill()
 		}
@@ -113,6 +121,8 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("A" == value as? String)
 		XCTAssertTrue(bond[property] as? String == value as? String)
+		XCTAssertTrue("S" == bond.subject?.type)
+		XCTAssertTrue("O" == bond.object?.type)
 		if 1000 == ++insertPropertyCount {
 			insertPropertyExpectation?.fulfill()
 		}
@@ -131,6 +141,8 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
 		XCTAssertTrue(bond[property] as? String == value as? String)
+		XCTAssertTrue("S" == bond.subject?.type)
+		XCTAssertTrue("O" == bond.object?.type)
 		if 1000 == ++updatePropertyCount {
 			updatePropertyExpectation?.fulfill()
 		}
@@ -138,6 +150,8 @@ class BondStressTests : XCTestCase, GraphDelegate {
 	
 	func graphDidDeleteBond(graph: Graph, bond: Bond) {
 		XCTAssertTrue("T" == bond.type)
+		XCTAssertTrue(nil == bond.subject)
+		XCTAssertTrue(nil == bond.object)
 		if 0 == --insertBondCount {
 			deleteExpectation?.fulfill()
 		}
@@ -147,6 +161,8 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == bond.type)
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
+		XCTAssertTrue(nil == bond.subject)
+		XCTAssertTrue(nil == bond.object)
 		if 0 == --insertPropertyCount {
 			deletePropertyExpectation?.fulfill()
 		}
@@ -155,6 +171,8 @@ class BondStressTests : XCTestCase, GraphDelegate {
 	func graphDidDeleteBondGroup(graph: Graph, bond: Bond, group: String) {
 		XCTAssertTrue("T" == bond.type)
 		XCTAssertTrue("G" == group)
+		XCTAssertTrue(nil == bond.subject)
+		XCTAssertTrue(nil == bond.object)
 		if 0 == --insertGroupCount {
 			deleteGroupExpectation?.fulfill()
 		}
