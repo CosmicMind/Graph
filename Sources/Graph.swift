@@ -122,13 +122,6 @@ public class Graph : NSObject {
 	//
 	internal var masterPredicate: NSPredicate?
 	
-	/**
-		:name:	init
-	*/
-	public override init() {
-		super.init()
-	}
-	
 	//
 	//	:name:	deinit
 	//
@@ -513,22 +506,12 @@ public class Graph : NSObject {
 				let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
 				do {
 					try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
-				} catch let e as NSError {
-					var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-					userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Failed to initialize datastore.]"
-					userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: There was an error creating or loading the application's saved data.]"
-					let error = NSError(domain: "io.graphkit.Graph", code: 2222, userInfo: userInfo)
-					userInfo[NSUnderlyingErrorKey] = e
-					print(error)
+				} catch {
+					fatalError("[GraphKit Error: There was an error creating or loading the application's saved data.]")
 				}
 				GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
-			} catch let e as NSError {
-				var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-				userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Failed to create file for datastore.]"
-				userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: There was an error creating or loading the application's saved data.]"
-				let error = NSError(domain: "io.graphkit.Graph", code: 3333, userInfo: userInfo)
-				userInfo[NSUnderlyingErrorKey] = e
-				print(error)
+			} catch {
+				fatalError("[GraphKit Error: There was an error creating the data directory path.]")
 			}
 		}
 		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
