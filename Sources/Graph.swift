@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io> and other CosmicMind contributors
+// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -23,7 +23,12 @@ internal struct GraphPersistentStoreCoordinator {
 	internal static var persistentStoreCoordinator: NSPersistentStoreCoordinator?
 }
 
-internal struct GraphManagedObjectContext {
+internal struct GraphPrivateManagedObjectContext {
+	internal static var onceToken: dispatch_once_t = 0
+	internal static var managedObjectContext: NSManagedObjectContext?
+}
+
+internal struct GraphMainManagedObjectContext {
 	internal static var onceToken: dispatch_once_t = 0
 	internal static var managedObjectContext: NSManagedObjectContext?
 }
@@ -139,35 +144,75 @@ public class Graph : NSObject {
 	/**
 		:name:	save
 	*/
-	public func save() {
-		save(nil)
-	}
-
-	/**
-		:name:	save
-	*/
-	public func save(completion: ((success: Bool, error: NSError?) -> Void)?) {
-		if let moc: NSManagedObjectContext = worker {
-			if moc.hasChanges {
-				do {
-					try moc.save()
-					completion?(success: true, error: nil)
-				} catch let e as NSError {
-					completion?(success: false, error: e)
+	public func save(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+		if let w: NSManagedObjectContext = worker {
+			if w.hasChanges {
+				if let p: NSManagedObjectContext = privateContext {
+					var error: NSError?
+					var saved: Bool = false
+					w.performBlockAndWait {
+						do {
+							try w.save()
+							saved = true
+						} catch let e as NSError {
+							error = e
+						}
+					}
+					if saved {
+						if p.hasChanges {
+							p.performBlock {
+								do {
+									try p.save()
+									dispatch_async(dispatch_get_main_queue()) {
+										completion?(success: true, error: nil)
+									}
+								} catch let e as NSError {
+									dispatch_async(dispatch_get_main_queue()) {
+										completion?(success: false, error: e)
+									}
+								}
+							}
+						} else {
+							dispatch_async(dispatch_get_main_queue()) {
+								var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+								userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Private context does not have any changes.]"
+								userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: Private context does not have any changes.]"
+								error = NSError(domain: "io.graphkit.Graph", code: 1111, userInfo: userInfo)
+								userInfo[NSUnderlyingErrorKey] = error
+								
+								completion?(success: false, error: error)
+							}
+						}
+					} else {
+						dispatch_async(dispatch_get_main_queue()) {
+							completion?(success: false, error: error)
+						}
+					}
 				}
 			}
 		}
 	}
-
+	
 	/**
-		:name:	worker
+	:name:	worker
 	*/
 	internal var worker: NSManagedObjectContext? {
-		dispatch_once(&GraphManagedObjectContext.onceToken) {
-			GraphManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-			GraphManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
+		dispatch_once(&GraphMainManagedObjectContext.onceToken) { [unowned self] in
+			GraphMainManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+			GraphMainManagedObjectContext.managedObjectContext?.parentContext = self.privateContext
 		}
-		return GraphManagedObjectContext.managedObjectContext
+		return GraphMainManagedObjectContext.managedObjectContext
+	}
+	
+	/**
+	:name:	privateContext
+	*/
+	internal var privateContext: NSManagedObjectContext? {
+		dispatch_once(&GraphPrivateManagedObjectContext.onceToken) { [unowned self] in
+			GraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+			GraphPrivateManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
+		}
+		return GraphPrivateManagedObjectContext.managedObjectContext
 	}
 
 	//
@@ -468,15 +513,23 @@ public class Graph : NSObject {
 				let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
 				do {
 					try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
-				} catch {
-					var dict: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-					dict[NSLocalizedDescriptionKey] = "[GraphKit Error: Failed to initialize datastore.]"
-					dict[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: There was an error creating or loading the application's saved data.]"
-					dict[NSUnderlyingErrorKey] = error as NSError
-					print(NSError(domain: "GraphKit", code: 9999, userInfo: dict))
+				} catch let e as NSError {
+					var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+					userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Failed to initialize datastore.]"
+					userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: There was an error creating or loading the application's saved data.]"
+					let error = NSError(domain: "io.graphkit.Graph", code: 2222, userInfo: userInfo)
+					userInfo[NSUnderlyingErrorKey] = e
+					print(error)
 				}
 				GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
-			} catch {}
+			} catch let e as NSError {
+				var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+				userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Failed to create file for datastore.]"
+				userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: There was an error creating or loading the application's saved data.]"
+				let error = NSError(domain: "io.graphkit.Graph", code: 3333, userInfo: userInfo)
+				userInfo[NSUnderlyingErrorKey] = e
+				print(error)
+			}
 		}
 		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
 	}

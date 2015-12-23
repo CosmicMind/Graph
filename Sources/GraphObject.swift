@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io> and other CosmicMind contributors
+// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -31,8 +31,8 @@ internal class GraphObject : NSManagedObject {
 	//
 	internal var worker: NSManagedObjectContext? {
 		if nil == context {
-			let graph: Graph = Graph()
-			context = graph.worker
+			let g: Graph = Graph()
+			context = g.worker
 		}
 		return context
 	}

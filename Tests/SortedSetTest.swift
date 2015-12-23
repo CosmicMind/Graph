@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io> and other CosmicMind contributors
+// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -257,13 +257,17 @@ class SortedSetTests: XCTestCase {
 		s1.intersectInPlace(s2)
 		XCTAssertTrue(SortedSet<Entity>(elements: e2, e3) == s1, "Test failed.")
 		
+		graph.save { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Test failed. \(error)")
+		}
+		
 		e1.delete()
 		e2.delete()
 		e3.delete()
 		e4.delete()
-		
+
 		graph.save { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Test failed.")
+			XCTAssertTrue(success, "Test failed. \(error)")
 		}
 	}
 	

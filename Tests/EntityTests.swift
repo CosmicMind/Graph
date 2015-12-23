@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io> and other CosmicMind contributors
+// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -20,171 +20,90 @@ import XCTest
 @testable import GraphKit
 
 class EntityTests : XCTestCase, GraphDelegate {
-
-    var userInsertExpectation: XCTestExpectation?
-	var userDeleteExpectation: XCTestExpectation?
-    var groupInsertExpectation: XCTestExpectation?
-    var groupSearchExpectation: XCTestExpectation?
-    var nameInsertExpectation: XCTestExpectation?
-    var nameUpdateExpectation: XCTestExpectation?
-    var nameSearchExpectation: XCTestExpectation?
-    var ageInsertExpectation: XCTestExpectation?
-    var ageUpdateExpectation: XCTestExpectation?
-    var ageSearchExpectation: XCTestExpectation?
-
-	private var graph: Graph?
 	
-	var expectation: XCTestExpectation?
+	private var graph: Graph!
+	
+	var saveExpectation: XCTestExpectation?
+	var insertExpectation: XCTestExpectation?
+	var updateExpectation: XCTestExpectation?
+	var deleteExpectation: XCTestExpectation?
+	var deletePropertyExpectation: XCTestExpectation?
 	
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
+		graph.delegate = self
+		graph.watch(entity: ["T"], property: ["name"])
 	}
 	
 	override func tearDown() {
 		graph = nil
-		userInsertExpectation = nil
-		userDeleteExpectation = nil
-		groupInsertExpectation = nil
-		groupSearchExpectation = nil
-		nameInsertExpectation = nil
-		nameUpdateExpectation = nil
-		nameSearchExpectation = nil
-		ageInsertExpectation = nil
-		ageUpdateExpectation = nil
-		ageSearchExpectation = nil
 		super.tearDown()
 	}
 	
-    func testAll() {
-        // Set the XCTest Class as the delegate.
-        graph!.delegate = self
-
-        // Let's watch the changes in the Graph for the following Entity values.
-		graph!.watch(entity: ["User"], group: ["Female"], property: ["name", "age"])
-
-        // Create a User Entity.
-        let user: Entity = Entity(type: "User")
-        user["name"] = "Eve"
-        user["age"] = 26
-        user.addGroup("Female")
+	func testGeneral() {
+		let n1: Entity = Entity(type: "T")
+		n1["name"] = "Daniel"
 		
-        // Set an Expectation for the insert watcher.
-        userInsertExpectation = expectationWithDescription("User: Insert did not pass.")
-        groupInsertExpectation = expectationWithDescription("Group: Insert did not pass.")
-        groupSearchExpectation = expectationWithDescription("Group: Search did not pass.")
-        nameInsertExpectation = expectationWithDescription("Name: Insert did not pass.")
-        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
-        ageInsertExpectation = expectationWithDescription("Age: Insert did not pass.")
-        ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
-
-        // Save the Graph, which will execute the delegate handlers.
-        graph!.save { (success: Bool, error: NSError?) in
-            XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-        }
-
-        // Wait for the delegates to be executed.
-        waitForExpectationsWithTimeout(5, handler: nil)
-
-        user["name"] = "Daniel"
-        user["age"] = 31
-
-        // Set an Expectation for the update watcher.
-        nameUpdateExpectation = expectationWithDescription("Name: Update did not pass.")
-        nameSearchExpectation = expectationWithDescription("Name: Search did not pass.")
-        ageUpdateExpectation = expectationWithDescription("Age: Update did not pass.")
-        ageSearchExpectation = expectationWithDescription("Age: Search did not pass.")
-
-        // Save the Graph, which will execute the delegate handlers.
-        graph!.save { (success: Bool, error: NSError?) in
-            XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-        }
-
-        // Wait for the delegates to be executed.
-        waitForExpectationsWithTimeout(5, handler: nil)
-
-        user.delete()
-
-        // Set an Expectation for the delete watcher.
-        userDeleteExpectation = expectationWithDescription("User: Delete did not pass.")
-        
-        // Save the Graph, which will execute the delegate handlers.
-        graph!.save { (success: Bool, error: NSError?) in
-            XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-        }
-
-        // Wait for the delegates to be executed.
-        waitForExpectationsWithTimeout(5, handler: nil)
-    }
-	
-    func graphDidInsertEntity(graph: Graph, entity: Entity) {
-        if "User" == entity.type {
-            userInsertExpectation?.fulfill()
+		saveExpectation = expectationWithDescription("Concurrency: Save did not pass.")
+		insertExpectation = expectationWithDescription("Concurrency: Insert did not pass.")
+		
+		graph?.save { [unowned self] (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+			self.saveExpectation?.fulfill()
 		}
-    }
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
+	
+		n1["name"] = "Eve"
 
-    func graphDidDeleteEntity(graph: Graph, entity: Entity) {
-        if "User" == entity.type {
-            userDeleteExpectation?.fulfill()
-        }
-    }
-
-    func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
-        if "Female" == group {
-            groupInsertExpectation?.fulfill()
-			let nodes: SortedSet<Entity> = graph.search(entity: ["*"], group: [group])
-            if entity.id == nodes.first?.id {
-                groupSearchExpectation?.fulfill()
-            }
-        }
-    }
-
-    func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-        if "name" == property && "Eve" == value as! String {
-            nameInsertExpectation?.fulfill()
-			let n: SortedSet<Entity> = graph.search(entity: ["*"], property: [(property, nil)])
-			if n.first?[property] as! String == value as! String {
-				let m: SortedSet<Entity> = graph.search(entity: ["*"], property: [(property, value)])
-				if m.first?[property] as! String == value as! String {
-                    nameSearchExpectation?.fulfill()
-                }
-            }
-
-        } else if "age" == property && 26 == value as! Int {
-            ageInsertExpectation?.fulfill()
-			let n: SortedSet<Entity> = graph.search(entity: ["*"], property: [(property, nil)])
-			if  n.first?[property] as! Int == value as! Int {
-				let m: SortedSet<Entity> = graph.search(entity: ["*"], property: [(property, value)])
-				if m.first?[property] as! Int == value as! Int {
-                    ageSearchExpectation?.fulfill()
-                }
-            }
-        }
-    }
-
-    func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-        if "name" == property && "Daniel" == value as! String {
-            nameUpdateExpectation?.fulfill()
-			let n: SortedSet<Entity> = graph.search(entity: ["*"], property: [(property, nil)])
-			if n.first?[property] as! String == value as! String {
-				let m: SortedSet<Entity> = graph.search(entity: ["*"], property: [(property, value)])
-				if m.first?[property] as! String == value as! String {
-					nameSearchExpectation?.fulfill()
-				}
-			}
-        } else if "age" == property && 31 == value as! Int {
-            ageUpdateExpectation?.fulfill()
-			let n: SortedSet<Entity> = graph.search(entity: ["*"], property: [(property, nil)])
-			if n.first?[property] as! Int == value as! Int {
-				let m: SortedSet<Entity> = graph.search(entity: ["*"], property: [(property, value)])
-				if m.first?[property] as! Int == value as! Int {
-					ageSearchExpectation?.fulfill()
-				}
-			}
-        }
-    }
+		saveExpectation = expectationWithDescription("Concurrency: Save did not pass.")
+		updateExpectation = expectationWithDescription("Concurrency: Update did not pass.")
+		
+		graph?.save { [unowned self] (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+			self.saveExpectation?.fulfill()
+		}
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		n1.delete()
+		
+		saveExpectation = expectationWithDescription("Concurrency: Save did not pass.")
+		deleteExpectation = expectationWithDescription("Concurrency: Delete did not pass.")
+		deletePropertyExpectation = expectationWithDescription("Concurrency: Delete property did not pass.")
+		
+		graph?.save { [unowned self] (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+			self.saveExpectation?.fulfill()
+		}
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
+	}
+	
+	func graphDidInsertEntity(graph: Graph, entity: Entity) {
+		XCTAssertTrue(entity["name"] as? String == "Daniel")
+		insertExpectation?.fulfill()
+	}
+	
+	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+		XCTAssertTrue(entity[property] as? String == value as? String)
+		updateExpectation?.fulfill()
+	}
+	
+	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
+		deleteExpectation?.fulfill()
+	}
+	
+	func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+		XCTAssertTrue("T" == entity.type)
+		XCTAssertTrue("name" == property)
+		XCTAssertTrue("Eve" == value as? String)
+		deletePropertyExpectation?.fulfill()
+	}
 	
 	func testPerformance() {
 		self.measureBlock() {}
 	}
 }
+
