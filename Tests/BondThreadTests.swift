@@ -20,8 +20,7 @@ import XCTest
 @testable import GraphKit
 
 class BondThreadTests : XCTestCase, GraphDelegate {
-	
-	private var graph: Graph!
+	var graph: Graph!
 	
 	var insertSaveExpectation: XCTestExpectation?
 	var insertExpectation: XCTestExpectation?

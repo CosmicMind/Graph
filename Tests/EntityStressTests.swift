@@ -20,8 +20,7 @@ import XCTest
 @testable import GraphKit
 
 class EntityStressTests : XCTestCase, GraphDelegate {
-	
-	private var graph: Graph!
+	var graph: Graph!
 	
 	var insertEntityCount: Int = 0
 	var insertPropertyCount: Int = 0

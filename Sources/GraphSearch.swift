@@ -20,306 +20,248 @@ import CoreData
 
 public extension Graph {
 	/**
-		:name:	search(entity: group: property)
+	:name:	search(entity: groups: properties)
 	*/
-	public func search(entity types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Entity> {
+	public func search(entity types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Entity> {
 		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		
-		// types
-		for i in types {
-			nodes += search(Entity: i)
+		var groupNodes: Array<AnyObject>?
+		var propertyNodes: Array<AnyObject>?
+		
+		if let v: Array<String> = groups {
+			groupNodes = search(GraphUtility.entityDescriptionName, types: types, groupDescriptionName: GraphUtility.entityGroupDescriptionName, groups: v)
 		}
 		
-		// groups
-		if let n: Array<String> = names {
-			for i in n {
-				nodes.intersectInPlace(search(EntityGroup: i))
-			}
+		if let v: Array<(key: String, value: AnyObject?)> = properties {
+			propertyNodes = search(GraphUtility.entityDescriptionName, types: types, propertyDescriptionName: GraphUtility.entityPropertyDescriptionName, properties: v)
 		}
 		
-		// properties
-		if let n: Array<(key: String, value: AnyObject?)> = pairs {
-			for i in n {
-				if let v: AnyObject = i.value {
-					if let a: String = v as? String {
-						nodes.intersectInPlace(search(EntityProperty: i.key, value: a as String))
-					} else if let a: NSNumber = v as? NSNumber {
-						nodes.intersectInPlace(search(EntityProperty: i.key, value: a))
+		if nil != groupNodes && nil != propertyNodes {
+			if groupNodes!.count < propertyNodes!.count {
+				for v in propertyNodes! {
+					nodes.insert(Entity(entity: (v as! ManagedEntityProperty).node as ManagedEntity))
+				}
+				for v in groupNodes! {
+					let n: Entity = Entity(entity: (v as! ManagedEntityGroup).node as ManagedEntity)
+					if !nodes.contains(n) {
+						nodes.remove(n)
 					}
-				} else {
-					nodes.intersectInPlace(search(EntityProperty: i.key))
+				}
+			} else {
+				for v in groupNodes! {
+					nodes.insert(Entity(entity: (v as! ManagedEntityGroup).node as ManagedEntity))
+				}
+				for v in propertyNodes! {
+					let n: Entity = Entity(entity: (v as! ManagedEntityProperty).node as ManagedEntity)
+					if !nodes.contains(n) {
+						nodes.remove(n)
+					}
 				}
 			}
+		} else if let v: Array<AnyObject> = groupNodes {
+			for n in v {
+				nodes.insert(Entity(entity: (n as! ManagedEntityGroup).node as ManagedEntity))
+			}
+		} else if let v: Array<AnyObject> = propertyNodes {
+			for n in v {
+				nodes.insert(Entity(entity: (n as! ManagedEntityProperty).node as ManagedEntity))
+			}
+		} else {
+			for v in search(GraphUtility.entityDescriptionName, types: types)! {
+				nodes.insert(Entity(entity: v as! ManagedEntity))
+			}
 		}
+		
 		return nodes
 	}
 	
 	/**
-		:name:	search(action: group: property)
+	:name:	search(action: groups: properties)
 	*/
-	public func search(action types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Action> {
+	public func search(action types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Action> {
 		let nodes: SortedSet<Action> = SortedSet<Action>()
 		
-		// types
-		for i in types {
-			nodes += search(Action: i)
+		var groupNodes: Array<AnyObject>?
+		var propertyNodes: Array<AnyObject>?
+		
+		if let v: Array<String> = groups {
+			groupNodes = search(GraphUtility.actionDescriptionName, types: types, groupDescriptionName: GraphUtility.actionGroupDescriptionName, groups: v)
 		}
 		
-		// groups
-		if let n: Array<String> = names {
-			for i in n {
-				nodes.intersectInPlace(search(ActionGroup: i))
-			}
+		if let v: Array<(key: String, value: AnyObject?)> = properties {
+			propertyNodes = search(GraphUtility.actionDescriptionName, types: types, propertyDescriptionName: GraphUtility.actionPropertyDescriptionName, properties: v)
 		}
 		
-		// properties
-		if let n: Array<(key: String, value: AnyObject?)> = pairs {
-			for i in n {
-				if let v: AnyObject = i.value {
-					if let a: String = v as? String {
-						nodes.intersectInPlace(search(ActionProperty: i.key, value: a))
-					} else if let a: NSNumber = v as? NSNumber {
-						nodes.intersectInPlace(search(ActionProperty: i.key, value: a))
+		if nil != groupNodes && nil != propertyNodes {
+			if groupNodes!.count < propertyNodes!.count {
+				for v in propertyNodes! {
+					nodes.insert(Action(action: (v as! ManagedActionProperty).node as ManagedAction))
+				}
+				for v in groupNodes! {
+					let n: Action = Action(action: (v as! ManagedActionGroup).node as ManagedAction)
+					if !nodes.contains(n) {
+						nodes.remove(n)
 					}
-				} else {
-					nodes.intersectInPlace(search(ActionProperty: i.key))
+				}
+			} else {
+				for v in groupNodes! {
+					nodes.insert(Action(action: (v as! ManagedActionGroup).node as ManagedAction))
+				}
+				for v in propertyNodes! {
+					let n: Action = Action(action: (v as! ManagedActionProperty).node as ManagedAction)
+					if !nodes.contains(n) {
+						nodes.remove(n)
+					}
 				}
 			}
+		} else if let v: Array<AnyObject> = groupNodes {
+			for n in v {
+				nodes.insert(Action(action: (n as! ManagedActionGroup).node as ManagedAction))
+			}
+		} else if let v: Array<AnyObject> = propertyNodes {
+			for n in v {
+				nodes.insert(Action(action: (n as! ManagedActionProperty).node as ManagedAction))
+			}
+		} else {
+			for v in search(GraphUtility.actionDescriptionName, types: types)! {
+				nodes.insert(Action(action: v as! ManagedAction))
+			}
 		}
+		
 		return nodes
 	}
 	
 	/**
-		:name:	search(bond: group: property)
+	:name:	search(bond: groups: properties)
 	*/
-	public func search(bond types: Array<String>, group names: Array<String>? = nil, property pairs: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Bond> {
+	public func search(bond types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Bond> {
 		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		
-		// types
-		for i in types {
-			nodes += search(Bond: i)
+		var groupNodes: Array<AnyObject>?
+		var propertyNodes: Array<AnyObject>?
+		
+		if let v: Array<String> = groups {
+			groupNodes = search(GraphUtility.bondDescriptionName, types: types, groupDescriptionName: GraphUtility.bondGroupDescriptionName, groups: v)
 		}
 		
-		// groups
-		if let n: Array<String> = names {
-			for i in n {
-				nodes.intersectInPlace(search(BondGroup: i))
-			}
+		if let v: Array<(key: String, value: AnyObject?)> = properties {
+			propertyNodes = search(GraphUtility.bondDescriptionName, types: types, propertyDescriptionName: GraphUtility.bondPropertyDescriptionName, properties: v)
 		}
 		
-		// properties
-		if let n: Array<(key: String, value: AnyObject?)> = pairs {
-			for i in n {
-				if let v: AnyObject = i.value {
-					if let a: String = v as? String {
-						nodes.intersectInPlace(search(BondProperty: i.key, value: a))
-					} else if let a: NSNumber = v as? NSNumber {
-						nodes.intersectInPlace(search(BondProperty: i.key, value: a))
+		if nil != groupNodes && nil != propertyNodes {
+			if groupNodes!.count < propertyNodes!.count {
+				for v in propertyNodes! {
+					nodes.insert(Bond(bond: (v as! ManagedBondProperty).node as ManagedBond))
+				}
+				for v in groupNodes! {
+					let n: Bond = Bond(bond: (v as! ManagedBondGroup).node as ManagedBond)
+					if !nodes.contains(n) {
+						nodes.remove(n)
 					}
-				} else {
-					nodes.intersectInPlace(search(BondProperty: i.key))
+				}
+			} else {
+				for v in groupNodes! {
+					nodes.insert(Bond(bond: (v as! ManagedBondGroup).node as ManagedBond))
+				}
+				for v in propertyNodes! {
+					let n: Bond = Bond(bond: (v as! ManagedBondProperty).node as ManagedBond)
+					if !nodes.contains(n) {
+						nodes.remove(n)
+					}
 				}
 			}
+		} else if let v: Array<AnyObject> = groupNodes {
+			for n in v {
+				nodes.insert(Bond(bond: (n as! ManagedBondGroup).node as ManagedBond))
+			}
+		} else if let v: Array<AnyObject> = propertyNodes {
+			for n in v {
+				nodes.insert(Bond(bond: (n as! ManagedBondProperty).node as ManagedBond))
+			}
+		} else {
+			for v in search(GraphUtility.bondDescriptionName, types: types)! {
+				nodes.insert(Bond(bond: v as! ManagedBond))
+			}
 		}
+		
 		return nodes
 	}
 	
-	//
-	//	:name:	search
-	//
-	internal func search(entityDescriptorName: NSString, predicate: NSPredicate, sort: Array<NSSortDescriptor>? = nil) -> Array<AnyObject> {
+	internal func search(typeDescriptionName: String, types: Array<String>) -> Array<AnyObject>? {
+		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		for v in types {
+			typesPredicate.append(NSPredicate(format: "type LIKE %@", v))
+		}
+		
+		let entityDescription: NSEntityDescription = NSEntityDescription.entityForName(typeDescriptionName, inManagedObjectContext: worker!)!
 		let request: NSFetchRequest = NSFetchRequest()
-		let entity: NSEntityDescription = managedObjectModel!.entitiesByName[entityDescriptorName as String]!
-		request.entity = entity
-		request.predicate = predicate
+		request.entity = entityDescription
 		request.fetchBatchSize = batchSize
 		request.fetchOffset = batchOffset
-		request.sortDescriptors = sort
+		request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
 		
-		do {
-			return try worker!.executeFetchRequest(request)
-		} catch {
-			fatalError("[GraphKit Error: Cannot search NSManagedContext.]")
-		}
+		return try? worker!.executeFetchRequest(request)
 	}
 	
-	//
-	//	:name:	search(Entity)
-	//
-	internal func search(Entity type: String) -> SortedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: SortedSet<Entity> = SortedSet<Entity>()
-		for entity: ManagedEntity in entries as! Array<ManagedEntity> {
-			nodes.insert(Entity(entity: entity))
+	internal func search(typeDescriptionName: String, types: Array<String>, groupDescriptionName: String, groups: Array<String>) -> Array<AnyObject>? {
+		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		for v in types {
+			typesPredicate.append(NSPredicate(format: "node.type LIKE %@", v))
 		}
-		return nodes
+		
+		var groupPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		if let g: Array<String> = groups {
+			for v in g {
+				groupPredicate.append(NSPredicate(format: "name LIKE %@", v))
+			}
+		}
+		
+		let entityDescription: NSEntityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: worker!)!
+		let request: NSFetchRequest = NSFetchRequest()
+		request.entity = entityDescription
+		request.relationshipKeyPathsForPrefetching = [typeDescriptionName]
+		request.fetchBatchSize = batchSize
+		request.fetchOffset = batchOffset
+		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+			NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate),
+			NSCompoundPredicate(andPredicateWithSubpredicates: groupPredicate)
+		])
+		
+		return try? worker!.executeFetchRequest(request)
 	}
 	
-	//
-	//	:name:	search(EntityGroup)
-	//
-	internal func search(EntityGroup name: String) -> SortedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: SortedSet<Entity> = SortedSet<Entity>()
-		for group: ManagedEntityGroup in entries as! Array<ManagedEntityGroup> {
-			nodes.insert(Entity(entity: group.node))
+	internal func search(typeDescriptionName: String, types: Array<String>, propertyDescriptionName: String, properties: Array<(key: String, value: AnyObject?)>) -> Array<AnyObject>? {
+		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		for v in types {
+			typesPredicate.append(NSPredicate(format: "node.type LIKE %@", v))
 		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(EntityProperty)
-	//
-	internal func search(EntityProperty name: String) -> SortedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: SortedSet<Entity> = SortedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
+		
+		var propertyPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		if let p: Array<(key: String, value: AnyObject?)> = properties {
+			for (k, v) in p {
+				if let x: AnyObject = v {
+					if let a: String = x as? String {
+						propertyPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "(name LIKE %@)", k), NSPredicate(format: "object = %@", a)]))
+					} else if let a: NSNumber = x as? NSNumber {
+						propertyPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "(name LIKE %@)", k), NSPredicate(format: "object = %@", a)]))
+					}
+				} else {
+					propertyPredicate.append(NSPredicate(format: "name LIKE %@", k))
+				}
+			}
 		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(EntityProperty)
-	//
-	internal func search(EntityProperty name: String, value: String) -> SortedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
-		let nodes: SortedSet<Entity> = SortedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(EntityProperty)
-	//
-	internal func search(EntityProperty name: String, value: NSNumber) -> SortedSet<Entity> {
-		let entries: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
-		let nodes: SortedSet<Entity> = SortedSet<Entity>()
-		for property: ManagedEntityProperty in entries as! Array<ManagedEntityProperty> {
-			nodes.insert(Entity(entity: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(Action)
-	//
-	internal func search(Action type: String) -> SortedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: SortedSet<Action> = SortedSet<Action>()
-		for action: ManagedAction in entries as! Array<ManagedAction> {
-			nodes.insert(Action(action: action))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(ActionGroup)
-	//
-	internal func search(ActionGroup name: String) -> SortedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: SortedSet<Action> = SortedSet<Action>()
-		for group: ManagedActionGroup in entries as! Array<ManagedActionGroup> {
-			nodes.insert(Action(action: group.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(ActionProperty)
-	//
-	internal func search(ActionProperty name: String) -> SortedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: SortedSet<Action> = SortedSet<Action>()
-		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
-			nodes.insert(Action(action: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(ActionProperty)
-	//
-	internal func search(ActionProperty name: String, value: String) -> SortedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
-		let nodes: SortedSet<Action> = SortedSet<Action>()
-		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
-			nodes.insert(Action(action: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(ActionProperty)
-	//
-	internal func search(ActionProperty name: String, value: NSNumber) -> SortedSet<Action> {
-		let entries: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
-		let nodes: SortedSet<Action> = SortedSet<Action>()
-		for property: ManagedActionProperty in entries as! Array<ManagedActionProperty> {
-			nodes.insert(Action(action: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(Bond)
-	//
-	internal func search(Bond type: String) -> SortedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondDescriptionName, predicate: NSPredicate(format: "type LIKE %@", type), sort: [NSSortDescriptor(key: "createdDate", ascending: false)])
-		let nodes: SortedSet<Bond> = SortedSet<Bond>()
-		for bond: ManagedBond in entries as! Array<ManagedBond> {
-			nodes.insert(Bond(bond: bond))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(BondGroup)
-	//
-	internal func search(BondGroup name: String) -> SortedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: SortedSet<Bond> = SortedSet<Bond>()
-		for group: ManagedBondGroup in entries as! Array<ManagedBondGroup> {
-			nodes.insert(Bond(bond: group.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(BondProperty)
-	//
-	internal func search(BondProperty name: String) -> SortedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "name LIKE %@", name))
-		let nodes: SortedSet<Bond> = SortedSet<Bond>()
-		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
-			nodes.insert(Bond(bond: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(BondProperty)
-	//
-	internal func search(BondProperty name: String, value: String) -> SortedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
-		let nodes: SortedSet<Bond> = SortedSet<Bond>()
-		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
-			nodes.insert(Bond(bond: property.node))
-		}
-		return nodes
-	}
-	
-	//
-	//	:name:	search(BondProperty)
-	//
-	internal func search(BondProperty name: String, value: NSNumber) -> SortedSet<Bond> {
-		let entries: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, predicate: NSPredicate(format: "(name = %@) AND (object = %@)", name, value))
-		let nodes: SortedSet<Bond> = SortedSet<Bond>()
-		for property: ManagedBondProperty in entries as! Array<ManagedBondProperty> {
-			nodes.insert(Bond(bond: property.node))
-		}
-		return nodes
+		
+		let entityDescription: NSEntityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: worker!)!
+		let request: NSFetchRequest = NSFetchRequest()
+		request.entity = entityDescription
+		request.relationshipKeyPathsForPrefetching = [typeDescriptionName]
+		request.fetchBatchSize = batchSize
+		request.fetchOffset = batchOffset
+		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+			NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate),
+			NSCompoundPredicate(andPredicateWithSubpredicates: propertyPredicate)
+		])
+		
+		return try? worker!.executeFetchRequest(request)
 	}
 }
