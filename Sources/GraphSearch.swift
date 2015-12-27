@@ -190,7 +190,7 @@ public extension Graph {
 	internal func search(typeDescriptionName: String, types: Array<String>) -> Array<AnyObject>? {
 		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
 		for v in types {
-			typesPredicate.append(NSPredicate(format: "type LIKE %@", v))
+			typesPredicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
 		}
 		
 		let entityDescription: NSEntityDescription = NSEntityDescription.entityForName(typeDescriptionName, inManagedObjectContext: worker!)!
@@ -204,64 +204,71 @@ public extension Graph {
 	}
 	
 	internal func search(typeDescriptionName: String, types: Array<String>, groupDescriptionName: String, groups: Array<String>) -> Array<AnyObject>? {
-		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
-		for v in types {
-			typesPredicate.append(NSPredicate(format: "node.type LIKE %@", v))
-		}
-		
-		var groupPredicate: Array<NSPredicate> = Array<NSPredicate>()
-		if let g: Array<String> = groups {
-			for v in g {
-				groupPredicate.append(NSPredicate(format: "name LIKE %@", v))
-			}
-		}
-		
 		let entityDescription: NSEntityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: worker!)!
 		let request: NSFetchRequest = NSFetchRequest()
 		request.entity = entityDescription
 		request.relationshipKeyPathsForPrefetching = [typeDescriptionName]
 		request.fetchBatchSize = batchSize
 		request.fetchOffset = batchOffset
+		
+		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		for v in types {
+			typesPredicate.append(NSPredicate(format: "node.type LIKE[cd] %@", v))
+		}
+		
+		var groupsPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		for v in groups {
+			groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
+		}
+		
 		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
 			NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate),
-			NSCompoundPredicate(andPredicateWithSubpredicates: groupPredicate)
+			NSCompoundPredicate(andPredicateWithSubpredicates: groupsPredicate)
 		])
-		
+			
 		return try? worker!.executeFetchRequest(request)
 	}
 	
 	internal func search(typeDescriptionName: String, types: Array<String>, propertyDescriptionName: String, properties: Array<(key: String, value: AnyObject?)>) -> Array<AnyObject>? {
-		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
-		for v in types {
-			typesPredicate.append(NSPredicate(format: "node.type LIKE %@", v))
-		}
-		
-		var propertyPredicate: Array<NSPredicate> = Array<NSPredicate>()
-		if let p: Array<(key: String, value: AnyObject?)> = properties {
-			for (k, v) in p {
-				if let x: AnyObject = v {
-					if let a: String = x as? String {
-						propertyPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "(name LIKE %@)", k), NSPredicate(format: "object = %@", a)]))
-					} else if let a: NSNumber = x as? NSNumber {
-						propertyPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "(name LIKE %@)", k), NSPredicate(format: "object = %@", a)]))
-					}
-				} else {
-					propertyPredicate.append(NSPredicate(format: "name LIKE %@", k))
-				}
-			}
-		}
-		
 		let entityDescription: NSEntityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: worker!)!
 		let request: NSFetchRequest = NSFetchRequest()
 		request.entity = entityDescription
 		request.relationshipKeyPathsForPrefetching = [typeDescriptionName]
 		request.fetchBatchSize = batchSize
 		request.fetchOffset = batchOffset
-		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-			NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate),
-			NSCompoundPredicate(andPredicateWithSubpredicates: propertyPredicate)
-		])
 		
-		return try? worker!.executeFetchRequest(request)
+		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		for v in types {
+			typesPredicate.append(NSPredicate(format: "node.type LIKE[cd] %@", v))
+		}
+		
+		var nodes: Array<AnyObject> = Array<AnyObject>()
+		
+		if let p: Array<(key: String, value: AnyObject?)> = properties {
+			var propertyPredicate: Array<NSPredicate> = Array<NSPredicate>()
+			
+			for (k, v) in p {
+				if let x: AnyObject = v {
+					if let a: String = x as? String {
+						propertyPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
+					} else if let a: NSNumber = x as? NSNumber {
+						propertyPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
+					}
+				} else {
+					propertyPredicate.append(NSPredicate(format: "name LIKE[cd] %@", k))
+				}
+				
+				request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+					NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate),
+					NSCompoundPredicate(andPredicateWithSubpredicates: propertyPredicate)
+				])
+				
+				if let n: Array<AnyObject> = try? worker!.executeFetchRequest(request) {
+					nodes.appendContentsOf(n)
+				}
+			}
+		}
+		
+		return nodes
 	}
 }
