@@ -28,12 +28,6 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	override func tearDown() {
-		for n in graph.searchForBond(types: ["*"]) {
-			n.delete()
-		}
-		graph.save { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-		}
 		graph = nil
 		super.tearDown()
 	}
@@ -99,6 +93,13 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G*"]).count)
 			XCTAssertEqual(0, self.graph.searchForEntity(types: ["T1", "T2"], groups: ["G1", "G2", "G3"]).count)
 			XCTAssertEqual(0, self.graph.searchForEntity(types: ["T1", "T2", "T3"], groups: ["G1", "G2", "G3"]).count)
+		}
+		
+		for n in graph.searchForEntity(types: ["*"]) {
+			n.delete()
+		}
+		graph.save { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 	}
 	

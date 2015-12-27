@@ -225,6 +225,8 @@ public extension Graph {
 			NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate),
 			NSCompoundPredicate(andPredicateWithSubpredicates: groupsPredicate)
 		])
+		
+		print(request.predicate)
 			
 		return try? worker!.executeFetchRequest(request)
 	}

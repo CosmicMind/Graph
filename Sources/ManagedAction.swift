@@ -63,8 +63,7 @@ internal class ManagedAction : ManagedNode {
 					let property: ManagedActionProperty = n as! ManagedActionProperty
 					if name == property.name {
 						property.delete()
-						let set: NSMutableSet = propertySet as! NSMutableSet
-						set.removeObject(property)
+						(propertySet as! NSMutableSet).removeObject(property)
 						break
 					}
 				}
@@ -122,8 +121,7 @@ internal class ManagedAction : ManagedNode {
             let group: ManagedActionGroup = n as! ManagedActionGroup
             if name == group.name {
 				group.delete()
-				let set: NSMutableSet = groupSet as! NSMutableSet
-				set.removeObject(group)
+				(groupSet as! NSMutableSet).removeObject(group)
 				return true
             }
         }
@@ -136,7 +134,7 @@ internal class ManagedAction : ManagedNode {
     */
     internal func addSubject(entity: ManagedEntity) -> Bool {
         let count: Int = subjectSet.count
-		mutableSetValueForKey("subjectSet").addObject(entity)
+		(subjectSet as! NSMutableSet).addObject(entity)
 		return count != subjectSet.count
     }
 
@@ -146,7 +144,7 @@ internal class ManagedAction : ManagedNode {
     */
     internal func removeSubject(entity: ManagedEntity) -> Bool {
         let count: Int = subjectSet.count
-		mutableSetValueForKey("subjectSet").removeObject(entity)
+		(subjectSet as! NSMutableSet).removeObject(entity)
 		return count != subjectSet.count
     }
 
@@ -156,7 +154,7 @@ internal class ManagedAction : ManagedNode {
     */
     internal func addObject(entity: ManagedEntity) -> Bool {
         let count: Int = objectSet.count
-		mutableSetValueForKey("objectSet").addObject(entity)
+		(objectSet as! NSMutableSet).addObject(entity)
 		return count != objectSet.count
     }
 
@@ -166,7 +164,7 @@ internal class ManagedAction : ManagedNode {
     */
     internal func removeObject(entity: ManagedEntity) -> Bool {
         let count: Int = objectSet.count
-		mutableSetValueForKey("objectSet").removeObject(entity)
+		(objectSet as! NSMutableSet).removeObject(entity)
 		return count != objectSet.count
     }
 }
@@ -178,8 +176,7 @@ extension ManagedAction {
 		:description:	Adds the Property to the propertySet for the Action.
 	*/
 	func addPropertySetObject(value: ManagedActionProperty) {
-		let nodes: NSMutableSet = propertySet as! NSMutableSet
-		nodes.addObject(value)
+		(propertySet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -187,8 +184,7 @@ extension ManagedAction {
 		:description:	Removes the Property to the propertySet for the Action.
 	*/
 	func removePropertySetObject(value: ManagedActionProperty) {
-		let nodes: NSMutableSet = propertySet as! NSMutableSet
-		nodes.removeObject(value)
+		(propertySet as! NSMutableSet).removeObject(value)
 	}
 
 	/**
@@ -196,8 +192,7 @@ extension ManagedAction {
 		:description:	Adds the Group to the groupSet for the Action.
 	*/
 	func addGroupSetObject(value: ManagedActionGroup) {
-		let nodes: NSMutableSet = groupSet as! NSMutableSet
-		nodes.addObject(value)
+		(groupSet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -205,7 +200,6 @@ extension ManagedAction {
 		:description:	Removes the Group to the groupSet for the Action.
 	*/
 	func removeGroupSetObject(value: ManagedActionGroup) {
-		let nodes: NSMutableSet = groupSet as! NSMutableSet
-		nodes.removeObject(value)
+		(groupSet as! NSMutableSet).removeObject(value)
 	}
 }

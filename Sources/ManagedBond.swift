@@ -63,8 +63,7 @@ internal class ManagedBond : ManagedNode {
 					let property: ManagedBondProperty = n as! ManagedBondProperty
 					if name == property.name {
 						property.delete()
-						let set: NSMutableSet = propertySet as! NSMutableSet
-						set.removeObject(property)
+						(propertySet as! NSMutableSet).removeObject(property)
 						break
 					}
 				}
@@ -122,8 +121,7 @@ internal class ManagedBond : ManagedNode {
             let group: ManagedBondGroup = n as! ManagedBondGroup
             if name == group.name {
 				group.delete()
-				let set: NSMutableSet = groupSet as! NSMutableSet
-				set.removeObject(group)
+				(groupSet as! NSMutableSet).removeObject(group)
 				return true
             }
         }
@@ -138,8 +136,7 @@ extension ManagedBond {
 		:description:	Adds the Property to the propertySet for the Bond.
 	*/
 	func addPropertySetObject(value: ManagedBondProperty) {
-		let nodes: NSMutableSet = propertySet as! NSMutableSet
-		nodes.addObject(value)
+		(propertySet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -147,8 +144,7 @@ extension ManagedBond {
 		:description:	Removes the Property to the propertySet for the Bond.
 	*/
 	func removePropertySetObject(value: ManagedBondProperty) {
-		let nodes: NSMutableSet = propertySet as! NSMutableSet
-		nodes.removeObject(value)
+		(propertySet as! NSMutableSet).removeObject(value)
 	}
 
 	/**
@@ -156,8 +152,7 @@ extension ManagedBond {
 		:description:	Adds the Group to the groupSet for the Bond.
 	*/
 	func addGroupSetObject(value: ManagedBondGroup) {
-		let nodes: NSMutableSet = groupSet as! NSMutableSet
-		nodes.addObject(value)
+		(groupSet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -165,7 +160,6 @@ extension ManagedBond {
 		:description:	Removes the Group to the groupSet for the Bond.
 	*/
 	func removeGroupSetObject(value: ManagedBondGroup) {
-		let nodes: NSMutableSet = groupSet as! NSMutableSet
-		nodes.removeObject(value)
+		(groupSet as! NSMutableSet).removeObject(value)
 	}
 }

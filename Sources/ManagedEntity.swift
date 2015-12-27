@@ -67,8 +67,7 @@ internal class ManagedEntity : ManagedNode {
 					let property: ManagedEntityProperty = n as! ManagedEntityProperty
 					if name == property.name {
 						property.delete()
-						let set: NSMutableSet = propertySet as! NSMutableSet
-						set.removeObject(property)
+						(propertySet as! NSMutableSet).removeObject(property)
 						break
 					}
 				}
@@ -126,8 +125,7 @@ internal class ManagedEntity : ManagedNode {
 			let group: ManagedEntityGroup = n as! ManagedEntityGroup
 			if name == group.name {
 				group.delete()
-				let set: NSMutableSet = groupSet as! NSMutableSet
-				set.removeObject(group)
+				(groupSet as! NSMutableSet).removeObject(group)
 				return true
 			}
 		}
@@ -142,8 +140,7 @@ extension ManagedEntity {
 		:description:	Adds the Action to the actionSubjectSet for the Entity.
 	*/
 	func addActionSubjectSetObject(value: ManagedAction) {
-		let nodes: NSMutableSet = actionSubjectSet as! NSMutableSet
-		nodes.addObject(value)
+		(actionSubjectSet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -151,8 +148,7 @@ extension ManagedEntity {
 		:description:	Removes the Action to the actionSubjectSet for the Entity.
 	*/
 	func removeActionSubjectSetObject(value: ManagedAction) {
-		let nodes: NSMutableSet = actionSubjectSet as! NSMutableSet
-		nodes.removeObject(value)
+		(actionSubjectSet as! NSMutableSet).removeObject(value)
 	}
 
 	/**
@@ -160,8 +156,7 @@ extension ManagedEntity {
 		:description:	Adds the Action to the actionObjectSet for the Entity.
 	*/
 	func addActionObjectSetObject(value: ManagedAction) {
-		let nodes: NSMutableSet = actionObjectSet as! NSMutableSet
-		nodes.addObject(value)
+		(actionObjectSet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -169,8 +164,7 @@ extension ManagedEntity {
 		:description:	Removes the Action to the actionObjectSet for the Entity.
 	*/
 	func removeActionObjectSetObject(value: ManagedAction) {
-		let nodes: NSMutableSet = actionObjectSet as! NSMutableSet
-		nodes.removeObject(value)
+		(actionObjectSet as! NSMutableSet).removeObject(value)
 	}
 
 	/**
@@ -178,8 +172,7 @@ extension ManagedEntity {
 		:description:	Adds the Bond to the bondSubjectSet for the Entity.
 	*/
 	func addBondSubjectSetObject(value: ManagedBond) {
-		let nodes: NSMutableSet = bondSubjectSet as! NSMutableSet
-		nodes.addObject(value)
+		(bondSubjectSet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -187,8 +180,7 @@ extension ManagedEntity {
 		:description:	Removes the Bond to the bondSubjectSet for the Entity.
 	*/
 	func removeBondSubjectSetObject(value: ManagedBond) {
-		let nodes: NSMutableSet = bondSubjectSet as! NSMutableSet
-		nodes.removeObject(value)
+		(bondSubjectSet as! NSMutableSet).removeObject(value)
 	}
 
 	/**
@@ -196,8 +188,7 @@ extension ManagedEntity {
 		:description:	Adds the Bond to the bondObjectSet for the Entity.
 	*/
 	func addBondObjectSetObject(value: ManagedBond) {
-		let nodes: NSMutableSet = bondObjectSet as! NSMutableSet
-		nodes.addObject(value)
+		(bondObjectSet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -205,8 +196,7 @@ extension ManagedEntity {
 		:description:	Removes the Bond to the bondObjectSet for the Entity.
 	*/
 	func removeBondObjectSetObject(value: ManagedBond) {
-		let nodes: NSMutableSet = bondObjectSet as! NSMutableSet
-		nodes.removeObject(value)
+		(bondObjectSet as! NSMutableSet).removeObject(value)
 	}
 
 	/**
@@ -214,8 +204,7 @@ extension ManagedEntity {
 		:description:	Adds the Property to the propertySet for the Entity.
 	*/
 	func addPropertySetObject(value: ManagedEntityProperty) {
-		let nodes: NSMutableSet = propertySet as! NSMutableSet
-		nodes.addObject(value)
+		(propertySet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -223,8 +212,7 @@ extension ManagedEntity {
 		:description:	Removes the Property to the propertySet for the Entity.
 	*/
 	func removePropertySetObject(value: ManagedEntityProperty) {
-		let nodes: NSMutableSet = propertySet as! NSMutableSet
-		nodes.removeObject(value)
+		(propertySet as! NSMutableSet).removeObject(value)
 	}
 
 	/**
@@ -232,8 +220,7 @@ extension ManagedEntity {
 		:description:	Adds the Group to the groupSet for the Entity.
 	*/
 	func addGroupSetObject(value: ManagedEntityGroup) {
-		let nodes: NSMutableSet = groupSet as! NSMutableSet
-		nodes.addObject(value)
+		(groupSet as! NSMutableSet).addObject(value)
 	}
 
 	/**
@@ -241,7 +228,6 @@ extension ManagedEntity {
 		:description:	Removes the Group to the groupSet for the Entity.
 	*/
 	func removeGroupSetObject(value: ManagedEntityGroup) {
-		let nodes: NSMutableSet = groupSet as! NSMutableSet
-		nodes.removeObject(value)
+		(groupSet as! NSMutableSet).removeObject(value)
 	}
 }
