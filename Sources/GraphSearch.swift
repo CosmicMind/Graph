@@ -20,9 +20,9 @@ import CoreData
 
 public extension Graph {
 	/**
-	:name:	search(entity: groups: properties)
+	:name:	searchForEntity(types: groups: properties)
 	*/
-	public func search(entity types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Entity> {
+	public func searchForEntity(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Entity> {
 		let nodes: SortedSet<Entity> = SortedSet<Entity>()
 		
 		var groupNodes: Array<AnyObject>?
@@ -76,9 +76,9 @@ public extension Graph {
 	}
 	
 	/**
-	:name:	search(action: groups: properties)
+	:name:	searchForAction(types: groups: properties)
 	*/
-	public func search(action types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Action> {
+	public func searchForAction(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Action> {
 		let nodes: SortedSet<Action> = SortedSet<Action>()
 		
 		var groupNodes: Array<AnyObject>?
@@ -132,9 +132,9 @@ public extension Graph {
 	}
 	
 	/**
-	:name:	search(bond: groups: properties)
+	:name:	searchForBond(types: groups: properties)
 	*/
-	public func search(bond types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Bond> {
+	public func searchForBond(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Bond> {
 		let nodes: SortedSet<Bond> = SortedSet<Bond>()
 		
 		var groupNodes: Array<AnyObject>?

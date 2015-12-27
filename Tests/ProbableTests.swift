@@ -95,7 +95,7 @@ class ProbableTests: XCTestCase {
 		}
 		graph.save()
 		
-		let entities: SortedSet<Entity> = graph.search(entity: ["ProbTest"])
+		let entities: SortedSet<Entity> = graph.searchForEntity(types: ["ProbTest"])
 		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
 		
 		for e in entities {
@@ -108,7 +108,7 @@ class ProbableTests: XCTestCase {
 		let graph = Graph()
 		let books = SortedMultiSet<String>()
 		
-		for purchase in graph.search(action: ["Purchased"]) {
+		for purchase in graph.searchForAction(types: ["Purchased"]) {
 			for object in purchase.objects {
 				if "Book" == object.type {
 					books.insert(object["genre"] as! String)

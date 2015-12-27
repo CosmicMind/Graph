@@ -67,7 +67,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 		
-		for n in graph.search(entity: ["T"]) {
+		for n in graph.searchForEntity(types: ["T"]) {
 			n["P"] = "B"
 		}
 		
@@ -81,7 +81,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 		
-		for n in graph.search(entity: ["T"]) {
+		for n in graph.searchForEntity(types: ["T"]) {
 			n.delete()
 		}
 		

@@ -71,7 +71,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 		
-		for n in graph.search(bond: ["T"]) {
+		for n in graph.searchForBond(types: ["T"]) {
 			n["P"] = "B"
 		}
 		
@@ -85,7 +85,7 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 		
-		for n in graph.search(bond: ["T"]) {
+		for n in graph.searchForBond(types: ["T"]) {
 			n.subject?.delete()
 			n.object?.delete()
 			n.delete()

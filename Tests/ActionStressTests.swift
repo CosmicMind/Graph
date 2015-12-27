@@ -86,7 +86,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 		
-		for n in graph.search(action: ["T"]) {
+		for n in graph.searchForAction(types: ["T"]) {
 			n["P"] = "B"
 		}
 		
@@ -100,7 +100,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 		
-		for n in graph.search(action: ["T"]) {
+		for n in graph.searchForAction(types: ["T"]) {
 			n.delete()
 		}
 		
