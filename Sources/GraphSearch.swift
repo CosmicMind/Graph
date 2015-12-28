@@ -217,15 +217,16 @@ public extension Graph {
 		}
 		
 		var groupsPredicate: Array<NSPredicate> = Array<NSPredicate>()
-		for v in groups {
-			groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
-		}
+//		for v in groups {
+			groupsPredicate.append(NSPredicate(format: "ANY %@ CONTAINS node.groupSet.name", groups))
+//		}
+		
+		groupsPredicate.append(NSPredicate(format: "%@ <= node.groupSet.@count", groups.count as NSNumber))
 		
 		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
 			NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate),
 			NSCompoundPredicate(andPredicateWithSubpredicates: groupsPredicate)
 		])
-		
 		print(request.predicate)
 			
 		return try? worker!.executeFetchRequest(request)

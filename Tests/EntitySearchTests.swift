@@ -90,7 +90,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 			XCTAssertEqual(50, self.graph.searchForEntity(types: ["*"], groups: ["G1", "G2"]).count)
 			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1", "T2"], groups: ["G1", "G2"]).count)
 			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G1", "G2"]).count)
-			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G*"]).count)
+			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G1"]).count)
 			XCTAssertEqual(0, self.graph.searchForEntity(types: ["T1", "T2"], groups: ["G1", "G2", "G3"]).count)
 			XCTAssertEqual(0, self.graph.searchForEntity(types: ["T1", "T2", "T3"], groups: ["G1", "G2", "G3"]).count)
 		}
