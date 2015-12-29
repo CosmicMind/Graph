@@ -33,6 +33,13 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
+		for n in graph.searchForEntity(types: ["*"]) {
+			n.delete()
+		}
+		graph.save { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+		}
+		
 		for var i: Int = 0; i < 50; ++i {
 			let n: Entity = Entity(type: "T1")
 			n["P1"] = 0 == i % 2 ? "V1" : 1
@@ -90,7 +97,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 			XCTAssertEqual(50, self.graph.searchForEntity(types: ["*"], groups: ["G1", "G2"]).count)
 			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1", "T2"], groups: ["G1", "G2"]).count)
 			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G1", "G2"]).count)
-			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G1"]).count)
+			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G*"]).count)
 			XCTAssertEqual(0, self.graph.searchForEntity(types: ["T1", "T2"], groups: ["G1", "G2", "G3"]).count)
 			XCTAssertEqual(0, self.graph.searchForEntity(types: ["T1", "T2", "T3"], groups: ["G1", "G2", "G3"]).count)
 		}

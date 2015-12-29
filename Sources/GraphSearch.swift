@@ -217,9 +217,9 @@ public extension Graph {
 		}
 		
 		var groupsPredicate: Array<NSPredicate> = Array<NSPredicate>()
-//		for v in groups {
-			groupsPredicate.append(NSPredicate(format: "ANY %@ CONTAINS node.groupSet.name", groups))
-//		}
+		for v in groups {
+			groupsPredicate.append(NSPredicate(format: "%@ LIKE[%@] name AND ANY %@ CONTAINS[cd] node.groupSet.name", v, groups))
+		}
 		
 		groupsPredicate.append(NSPredicate(format: "%@ <= node.groupSet.@count", groups.count as NSNumber))
 		
