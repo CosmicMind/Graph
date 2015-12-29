@@ -95,7 +95,7 @@ class ProbableTests: XCTestCase {
 		}
 		graph.save()
 		
-		let entities: SortedSet<Entity> = graph.searchForEntity(types: ["ProbTest"])
+		let entities: Array<Entity> = graph.searchForEntity(types: ["ProbTest"])
 		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
 		
 		for e in entities {

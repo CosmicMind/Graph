@@ -22,55 +22,66 @@ public extension Graph {
 	/**
 	:name:	searchForEntity(types: groups: properties)
 	*/
-	public func searchForEntity(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Entity> {
-		let nodes: SortedSet<Entity> = SortedSet<Entity>()
+	public func searchForEntity(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Entity> {
+		var nodes: Array<Entity> = Array<Entity>()
 		
+		var typeNodes: Array<AnyObject>?
 		var groupNodes: Array<AnyObject>?
 		var propertyNodes: Array<AnyObject>?
 		
-		if let v: Array<String> = groups {
-			groupNodes = search(GraphUtility.entityDescriptionName, types: types, groupDescriptionName: GraphUtility.entityGroupDescriptionName, groups: v)
+		if let v: Array<String> = types {
+			typeNodes = search(GraphUtility.entityDescriptionName, types: v)
 		}
 		
-		if let v: Array<(key: String, value: AnyObject?)> = properties {
-			propertyNodes = search(GraphUtility.entityDescriptionName, types: types, propertyDescriptionName: GraphUtility.entityPropertyDescriptionName, properties: v)
+		if let v: Array<AnyObject> = typeNodes {
+			for x in v {
+				nodes.append(Entity(entity: x as! ManagedEntity))
+			}
 		}
 		
-		if nil != groupNodes && nil != propertyNodes {
-			if groupNodes!.count < propertyNodes!.count {
-				for v in propertyNodes! {
-					nodes.insert(Entity(entity: (v as! ManagedEntityProperty).node as ManagedEntity))
-				}
-				for v in groupNodes! {
-					let n: Entity = Entity(entity: (v as! ManagedEntityGroup).node as ManagedEntity)
-					if !nodes.contains(n) {
-						nodes.remove(n)
-					}
-				}
-			} else {
-				for v in groupNodes! {
-					nodes.insert(Entity(entity: (v as! ManagedEntityGroup).node as ManagedEntity))
-				}
-				for v in propertyNodes! {
-					let n: Entity = Entity(entity: (v as! ManagedEntityProperty).node as ManagedEntity)
-					if !nodes.contains(n) {
-						nodes.remove(n)
-					}
-				}
-			}
-		} else if let v: Array<AnyObject> = groupNodes {
-			for n in v {
-				nodes.insert(Entity(entity: (n as! ManagedEntityGroup).node as ManagedEntity))
-			}
-		} else if let v: Array<AnyObject> = propertyNodes {
-			for n in v {
-				nodes.insert(Entity(entity: (n as! ManagedEntityProperty).node as ManagedEntity))
-			}
-		} else {
-			for v in search(GraphUtility.entityDescriptionName, types: types)! {
-				nodes.insert(Entity(entity: v as! ManagedEntity))
-			}
-		}
+//		if let v: Array<String> = groups {
+//			groupNodes = search(GraphUtility.entityDescriptionName, types: types, groupDescriptionName: GraphUtility.entityGroupDescriptionName, groups: v)
+//		}
+//		
+//		if let v: Array<(key: String, value: AnyObject?)> = properties {
+//			propertyNodes = search(GraphUtility.entityDescriptionName, types: types, propertyDescriptionName: GraphUtility.entityPropertyDescriptionName, properties: v)
+//		}
+//		
+//		if nil != groupNodes && nil != propertyNodes {
+//			if groupNodes!.count < propertyNodes!.count {
+//				for v in propertyNodes! {
+//					nodes.insert(Entity(entity: (v as! ManagedEntityProperty).node as ManagedEntity))
+//				}
+//				for v in groupNodes! {
+//					let n: Entity = Entity(entity: (v as! ManagedEntityGroup).node as ManagedEntity)
+//					if !nodes.contains(n) {
+//						nodes.remove(n)
+//					}
+//				}
+//			} else {
+//				for v in groupNodes! {
+//					nodes.insert(Entity(entity: (v as! ManagedEntityGroup).node as ManagedEntity))
+//				}
+//				for v in propertyNodes! {
+//					let n: Entity = Entity(entity: (v as! ManagedEntityProperty).node as ManagedEntity)
+//					if !nodes.contains(n) {
+//						nodes.remove(n)
+//					}
+//				}
+//			}
+//		} else if let v: Array<AnyObject> = groupNodes {
+//			for n in v {
+//				nodes.insert(Entity(entity: (n as! ManagedEntityGroup).node as ManagedEntity))
+//			}
+//		} else if let v: Array<AnyObject> = propertyNodes {
+//			for n in v {
+//				nodes.insert(Entity(entity: (n as! ManagedEntityProperty).node as ManagedEntity))
+//			}
+//		} else {
+//			for v in search(GraphUtility.entityDescriptionName, types: types)! {
+//				nodes.insert(Entity(entity: v as! ManagedEntity))
+//			}
+//		}
 		
 		return nodes
 	}
@@ -198,6 +209,7 @@ public extension Graph {
 		request.entity = entityDescription
 		request.fetchBatchSize = batchSize
 		request.fetchOffset = batchOffset
+		request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: false)]
 		request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
 		
 		return try? worker!.executeFetchRequest(request)

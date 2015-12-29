@@ -16,8 +16,13 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class RedBlackTree<Key : Comparable, Value> : Probable<Key>, CollectionType, CustomStringConvertible {
+public class RedBlackTree<Key : Comparable, Value> : ProbableType, CollectionType, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
+	
+	/**
+	Total number of elements within the RedBlackTree
+	*/
+	public internal(set) var count: Int = 0
 	
 	/**
 		:name:	sentinel
@@ -123,7 +128,7 @@ public class RedBlackTree<Key : Comparable, Value> : Probable<Key>, CollectionTy
 		:description:	Constructor where the tree is guaranteed to store
 		non-unique keys.
 	*/
-	public override init() {
+	public init() {
 		isUniquelyKeyed = false
 		sentinel = RedBlackNode<Key, Value>()
 		root = sentinel
@@ -159,25 +164,49 @@ public class RedBlackTree<Key : Comparable, Value> : Probable<Key>, CollectionTy
 	}
 
 	/**
-		:name:	countOf
-		:description:	Conforms to ProbableType protocol.
-		- returns:	Int
+	Conforms to ProbableType protocol.
 	*/
-	public override func countOf(keys: Key...) -> Int {
+	public func countOf<T: Equatable>(keys: T...) -> Int {
 		return countOf(keys)
 	}
 
 	/**
-		:name:	countOf
-		:description:	Conforms to ProbableType protocol.
-		- returns:	Int
+	Conforms to ProbableType protocol.
 	*/
-	public override func countOf(keys: Array<Key>) -> Int {
-		var count: Int = 0
+	public func countOf<T: Equatable>(keys: Array<T>) -> Int {
+		var c: Int = 0
 		for key in keys {
-			internalCount(key, node: root, count: &count)
+			internalCount(key as! Key, node: root, count: &c)
 		}
-		return count
+		return c
+	}
+	
+	/**
+	The probability of elements.
+	*/
+	public func probabilityOf<T: Equatable>(elements: T...) -> Double {
+		return probabilityOf(elements)
+	}
+	
+	/**
+	The probability of elements.
+	*/
+	public func probabilityOf<T: Equatable>(elements: Array<T>) -> Double {
+		return 0 == count ? 0 : Double(countOf(elements)) / Double(count)
+	}
+	
+	/**
+	The expected value of elements.
+	*/
+	public func expectedValueOf<T: Equatable>(trials: Int, elements: T...) -> Double {
+		return expectedValueOf(trials, elements: elements)
+	}
+	
+	/**
+	The expected value of elements.
+	*/
+	public func expectedValueOf<T: Equatable>(trials: Int, elements: Array<T>) -> Double {
+		return Double(trials) * probabilityOf(elements)
 	}
 
 	/**

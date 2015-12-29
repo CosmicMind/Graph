@@ -16,8 +16,13 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class SortedSet<Element : Comparable> : Probable<Element>, CollectionType, Comparable, Equatable, CustomStringConvertible {
+public class SortedSet<Element : Comparable> : ProbableType, CollectionType, Comparable, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<Element>
+	
+	/**
+	Total number of elements within the RedBlackTree
+	*/
+	public internal(set) var count: Int = 0
 	
 	/**
 		:name:	tree
@@ -107,7 +112,7 @@ public class SortedSet<Element : Comparable> : Probable<Element>, CollectionType
 		:name:	init
 		:description:	Constructor.
 	*/
-	public override init() {
+	public init() {
 		tree = RedBlackTree<Element, Element>(uniqueKeys: true)
 	}
 
@@ -143,6 +148,48 @@ public class SortedSet<Element : Comparable> : Probable<Element>, CollectionType
 			}
 			return nil
 		}
+	}
+
+	/**
+	Conforms to ProbableType protocol.
+	*/
+	public func countOf<T: Equatable>(keys: T...) -> Int {
+		return countOf(keys)
+	}
+	
+	/**
+	Conforms to ProbableType protocol.
+	*/
+	public func countOf<T: Equatable>(keys: Array<T>) -> Int {
+		return tree.countOf(keys)
+	}
+	
+	/**
+	The probability of elements.
+	*/
+	public func probabilityOf<T: Equatable>(elements: T...) -> Double {
+		return probabilityOf(elements)
+	}
+	
+	/**
+	The probability of elements.
+	*/
+	public func probabilityOf<T: Equatable>(elements: Array<T>) -> Double {
+		return tree.probabilityOf(elements)
+	}
+	
+	/**
+	The expected value of elements.
+	*/
+	public func expectedValueOf<T: Equatable>(trials: Int, elements: T...) -> Double {
+		return expectedValueOf(trials, elements: elements)
+	}
+	
+	/**
+	The expected value of elements.
+	*/
+	public func expectedValueOf<T: Equatable>(trials: Int, elements: Array<T>) -> Double {
+		return tree.expectedValueOf(trials, elements: elements)
 	}
 
 	/**
@@ -192,24 +239,6 @@ public class SortedSet<Element : Comparable> : Probable<Element>, CollectionType
 			}
 		}
 		return true
-	}
-	
-	/**
-		:name:	countOf
-		:description:	Conforms to ProbableType protocol.
-		- returns:	Int
-	*/
-	public override func countOf(elements: Element...) -> Int {
-		return tree.countOf(elements)
-	}
-
-	/**
-		:name:	countOf
-		:description:	Conforms to ProbableType protocol.
-		- returns:	Int
-	*/
-	public override func countOf(elements: Array<Element>) -> Int {
-		return tree.countOf(elements)
 	}
 
 	/**

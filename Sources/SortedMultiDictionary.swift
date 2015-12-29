@@ -16,9 +16,14 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable> : Probable<Key>, CollectionType, Equatable, CustomStringConvertible {
+public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable> : ProbableType, CollectionType, Equatable, CustomStringConvertible {
 	public typealias Generator = AnyGenerator<(key: Key, value: Value?)>
 	
+	/**
+	Total number of elements within the RedBlackTree
+	*/
+	public internal(set) var count: Int = 0
+
 	/**
 		:name:	tree
 		:description:	Internal storage of (key, value) pairs.
@@ -123,7 +128,7 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 		:name:	init
 		:description:	Constructor.
 	*/
-	public override init() {
+	public init() {
 		tree = RedBlackTree<Key, Value>(uniqueKeys: false)
 	}
 	
@@ -161,6 +166,48 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 			}
 			return nil
 		}
+	}
+	
+	/**
+	Conforms to ProbableType protocol.
+	*/
+	public func countOf<T: Equatable>(keys: T...) -> Int {
+		return countOf(keys)
+	}
+	
+	/**
+	Conforms to ProbableType protocol.
+	*/
+	public func countOf<T: Equatable>(keys: Array<T>) -> Int {
+		return tree.countOf(keys)
+	}
+	
+	/**
+	The probability of elements.
+	*/
+	public func probabilityOf<T: Equatable>(elements: T...) -> Double {
+		return probabilityOf(elements)
+	}
+	
+	/**
+	The probability of elements.
+	*/
+	public func probabilityOf<T: Equatable>(elements: Array<T>) -> Double {
+		return tree.probabilityOf(elements)
+	}
+	
+	/**
+	The expected value of elements.
+	*/
+	public func expectedValueOf<T: Equatable>(trials: Int, elements: T...) -> Double {
+		return expectedValueOf(trials, elements: elements)
+	}
+	
+	/**
+	The expected value of elements.
+	*/
+	public func expectedValueOf<T: Equatable>(trials: Int, elements: Array<T>) -> Double {
+		return tree.expectedValueOf(trials, elements: elements)
 	}
 	
 	/**
@@ -205,24 +252,6 @@ public class SortedMultiDictionary<Key : Comparable, Value where Key : Hashable>
 	*/
 	public func indexOf(key: Key) -> Int {
 		return tree.indexOf(key)
-	}
-	
-	/**
-		:name:	countOf
-		:description:	Conforms to ProbableType protocol.
-		- returns:	Int
-	*/
-	public override func countOf(keys: Key...) -> Int {
-		return tree.countOf(keys)
-	}
-	
-	/**
-		:name:	countOf
-		:description:	Conforms to ProbableType protocol.
-		- returns:	Int
-	*/
-	public override func countOf(keys: Array<Key>) -> Int {
-		return tree.countOf(keys)
 	}
 	
 	/**
