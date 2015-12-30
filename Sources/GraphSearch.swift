@@ -18,6 +18,12 @@
 
 import CoreData
 
+public extension Array where Element : Entity {
+	func hasType(types: Array<String>) {
+		
+	}
+}
+
 public extension Graph {
 	/**
 	:name:	searchForEntity(types: groups: properties)
@@ -25,24 +31,22 @@ public extension Graph {
 	public func searchForEntity(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Entity> {
 		var nodes: Array<Entity> = Array<Entity>()
 		
-		var typeNodes: Array<AnyObject>?
-		var groupNodes: Array<AnyObject>?
-		var propertyNodes: Array<AnyObject>?
-		
 		if let v: Array<String> = types {
-			typeNodes = search(GraphUtility.entityDescriptionName, types: v)
-		}
-		
-		if let v: Array<AnyObject> = typeNodes {
-			for x in v {
-				nodes.append(Entity(entity: x as! ManagedEntity))
+			if let n: Array<ManagedEntity> = search(GraphUtility.entityDescriptionName, types: v) as? Array<ManagedEntity> {
+				for x in n {
+					nodes.append(Entity(entity: x))
+				}
 			}
 		}
 		
-//		if let v: Array<String> = groups {
-//			groupNodes = search(GraphUtility.entityDescriptionName, types: types, groupDescriptionName: GraphUtility.entityGroupDescriptionName, groups: v)
-//		}
-//		
+		if let v: Array<String> = groups {
+			if let n: Array<AnyObject> = search(GraphUtility.entityDescriptionName, groupDescriptionName: GraphUtility.entityGroupDescriptionName, groups: v) {
+				for x in n {
+					nodes.append(Entity(entity: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedEntity))
+				}
+			}
+		}
+//
 //		if let v: Array<(key: String, value: AnyObject?)> = properties {
 //			propertyNodes = search(GraphUtility.entityDescriptionName, types: types, propertyDescriptionName: GraphUtility.entityPropertyDescriptionName, properties: v)
 //		}
@@ -83,7 +87,7 @@ public extension Graph {
 //			}
 //		}
 		
-		return nodes
+		return nodes // nodes.filter { nil == seen.updateValue(true, forKey: ($0 as! Entity).id) }
 	}
 	
 	/**
@@ -96,7 +100,7 @@ public extension Graph {
 		var propertyNodes: Array<AnyObject>?
 		
 		if let v: Array<String> = groups {
-			groupNodes = search(GraphUtility.actionDescriptionName, types: types, groupDescriptionName: GraphUtility.actionGroupDescriptionName, groups: v)
+			groupNodes = search(GraphUtility.actionDescriptionName, groupDescriptionName: GraphUtility.actionGroupDescriptionName, groups: v)
 		}
 		
 		if let v: Array<(key: String, value: AnyObject?)> = properties {
@@ -152,7 +156,7 @@ public extension Graph {
 		var propertyNodes: Array<AnyObject>?
 		
 		if let v: Array<String> = groups {
-			groupNodes = search(GraphUtility.bondDescriptionName, types: types, groupDescriptionName: GraphUtility.bondGroupDescriptionName, groups: v)
+			groupNodes = search(GraphUtility.bondDescriptionName, groupDescriptionName: GraphUtility.bondGroupDescriptionName, groups: v)
 		}
 		
 		if let v: Array<(key: String, value: AnyObject?)> = properties {
@@ -209,38 +213,30 @@ public extension Graph {
 		request.entity = entityDescription
 		request.fetchBatchSize = batchSize
 		request.fetchOffset = batchOffset
-		request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: false)]
 		request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
+		request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: false)]
 		
 		return try? worker!.executeFetchRequest(request)
 	}
 	
-	internal func search(typeDescriptionName: String, types: Array<String>, groupDescriptionName: String, groups: Array<String>) -> Array<AnyObject>? {
+	internal func search(typeDescriptionName: String, groupDescriptionName: String, groups: Array<String>) -> Array<AnyObject>? {
+		var groupsPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		for v in groups {
+			groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
+		}
+		
 		let entityDescription: NSEntityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: worker!)!
 		let request: NSFetchRequest = NSFetchRequest()
 		request.entity = entityDescription
-		request.relationshipKeyPathsForPrefetching = [typeDescriptionName]
 		request.fetchBatchSize = batchSize
 		request.fetchOffset = batchOffset
+		request.resultType = .DictionaryResultType
+		request.propertiesToFetch = ["node"]
+		request.returnsDistinctResults = true
+		request.relationshipKeyPathsForPrefetching = [typeDescriptionName]
+		request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: groupsPredicate)
+		request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: false)]
 		
-		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
-		for v in types {
-			typesPredicate.append(NSPredicate(format: "node.type LIKE[cd] %@", v))
-		}
-		
-		var groupsPredicate: Array<NSPredicate> = Array<NSPredicate>()
-		for v in groups {
-			groupsPredicate.append(NSPredicate(format: "%@ LIKE[%@] name AND ANY %@ CONTAINS[cd] node.groupSet.name", v, groups))
-		}
-		
-		groupsPredicate.append(NSPredicate(format: "%@ <= node.groupSet.@count", groups.count as NSNumber))
-		
-		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-			NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate),
-			NSCompoundPredicate(andPredicateWithSubpredicates: groupsPredicate)
-		])
-		print(request.predicate)
-			
 		return try? worker!.executeFetchRequest(request)
 	}
 	

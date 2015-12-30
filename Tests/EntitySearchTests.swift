@@ -44,8 +44,8 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 			let n: Entity = Entity(type: "T1")
 			n["P1"] = 0 == i % 2 ? "V1" : 1
 			n["P2"] = "V2"
-			n.addGroup("G2")
 			n.addGroup("G1")
+			n.addGroup("G2")
 		}
 		
 		for var i: Int = 0; i < 100; ++i {
@@ -65,11 +65,17 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		}
 		
 		measureBlock {
-//			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"]).count)
-//			XCTAssertEqual(150, self.graph.searchForEntity(types: ["T1", "T2"]).count)
+			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"]).count)
+			XCTAssertEqual(150, self.graph.searchForEntity(types: ["T1", "T2"]).count)
 			XCTAssertEqual(350, self.graph.searchForEntity(types: ["T1", "T2", "T3"]).count)
-//			XCTAssertEqual(350, self.graph.searchForEntity(types: ["*"]).count)
-//			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G1"]).count)
+			XCTAssertEqual(350, self.graph.searchForEntity(types: ["*"]).count)
+
+			XCTAssertEqual(0, self.graph.searchForEntity(groups: ["NONE"]).count)
+			XCTAssertEqual(50, self.graph.searchForEntity(groups: ["G1"]).count)
+			XCTAssertEqual(150, self.graph.searchForEntity(groups: ["G1", "G2"]).count)
+			XCTAssertEqual(350, self.graph.searchForEntity(groups: ["G1", "G2", "G3"]).count)
+			XCTAssertEqual(350, self.graph.searchForEntity(groups: ["*"]).count)
+
 //			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], properties: [("P1", nil)]).count)
 //			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G1"], properties: [("P1", nil)]).count)
 //			
@@ -98,7 +104,6 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 //			XCTAssertEqual(0, self.graph.searchForEntity(types: ["T3"], properties: [("P1", 1), ("P2", nil)]).count)
 //
 //			XCTAssertEqual(50, self.graph.searchForEntity(types: ["*"], groups: ["G1", "G2"]).count)
-//			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1", "T2"], groups: ["G1", "G2"]).count)
 //			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G1", "G2"]).count)
 //			XCTAssertEqual(50, self.graph.searchForEntity(types: ["T1"], groups: ["G*"]).count)
 //			XCTAssertEqual(0, self.graph.searchForEntity(types: ["T1", "T2"], groups: ["G1", "G2", "G3"]).count)
