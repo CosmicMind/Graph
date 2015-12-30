@@ -51,12 +51,7 @@ internal class Node <Type : ManagedNode> : NSObject {
 	//	:name:	id
 	//
 	internal var id: String {
-		do {
-			try object.worker?.obtainPermanentIDsForObjects([object])
-		} catch {}
-		let nodeURL: NSURL = object.objectID.URIRepresentation()
-		let oID: String = nodeURL.lastPathComponent!
-		return String(stringInterpolationSegment: nodeClass) + type + oID
+		return object.id
 	}
 	
 	//

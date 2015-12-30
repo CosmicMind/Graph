@@ -29,118 +29,96 @@ public extension Graph {
 	:name:	searchForEntity(types: groups: properties)
 	*/
 	public func searchForEntity(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Entity> {
-		var nodes: Array<Entity> = Array<Entity>()
+		var nodes: Array<AnyObject> = Array<AnyObject>()
+		var toFilter: Bool = false
 		
 		if let v: Array<String> = types {
-			if let n: Array<ManagedEntity> = search(GraphUtility.entityDescriptionName, types: v) as? Array<ManagedEntity> {
-				for x in n {
-					nodes.append(Entity(entity: x))
-				}
+			if let n: Array<AnyObject> = search(GraphUtility.entityDescriptionName, types: v) {
+				nodes.appendContentsOf(n)
 			}
 		}
 		
 		if let v: Array<String> = groups {
-			if let n: Array<AnyObject> = search(GraphUtility.entityDescriptionName, groupDescriptionName: GraphUtility.entityGroupDescriptionName, groups: v) {
-				for x in n {
-					nodes.append(Entity(entity: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedEntity))
-				}
+			if let n: Array<AnyObject> = search(GraphUtility.entityGroupDescriptionName, groups: v) {
+				toFilter = 0 < nodes.count
+				nodes.appendContentsOf(n)
 			}
 		}
-//
-//		if let v: Array<(key: String, value: AnyObject?)> = properties {
-//			propertyNodes = search(GraphUtility.entityDescriptionName, types: types, propertyDescriptionName: GraphUtility.entityPropertyDescriptionName, properties: v)
-//		}
-//		
-//		if nil != groupNodes && nil != propertyNodes {
-//			if groupNodes!.count < propertyNodes!.count {
-//				for v in propertyNodes! {
-//					nodes.insert(Entity(entity: (v as! ManagedEntityProperty).node as ManagedEntity))
-//				}
-//				for v in groupNodes! {
-//					let n: Entity = Entity(entity: (v as! ManagedEntityGroup).node as ManagedEntity)
-//					if !nodes.contains(n) {
-//						nodes.remove(n)
-//					}
-//				}
-//			} else {
-//				for v in groupNodes! {
-//					nodes.insert(Entity(entity: (v as! ManagedEntityGroup).node as ManagedEntity))
-//				}
-//				for v in propertyNodes! {
-//					let n: Entity = Entity(entity: (v as! ManagedEntityProperty).node as ManagedEntity)
-//					if !nodes.contains(n) {
-//						nodes.remove(n)
-//					}
-//				}
-//			}
-//		} else if let v: Array<AnyObject> = groupNodes {
-//			for n in v {
-//				nodes.insert(Entity(entity: (n as! ManagedEntityGroup).node as ManagedEntity))
-//			}
-//		} else if let v: Array<AnyObject> = propertyNodes {
-//			for n in v {
-//				nodes.insert(Entity(entity: (n as! ManagedEntityProperty).node as ManagedEntity))
-//			}
-//		} else {
-//			for v in search(GraphUtility.entityDescriptionName, types: types)! {
-//				nodes.insert(Entity(entity: v as! ManagedEntity))
-//			}
-//		}
 		
-		return nodes // nodes.filter { nil == seen.updateValue(true, forKey: ($0 as! Entity).id) }
+		if let v: Array<(key: String, value: AnyObject?)> = properties {
+			if let n: Array<AnyObject> = search(GraphUtility.entityPropertyDescriptionName, properties: v) {
+				toFilter = 0 < nodes.count
+				nodes.appendContentsOf(n)
+			}
+		}
+		
+		if toFilter {
+			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
+			for var i: Int = nodes.count - 1; 0 <= i; --i {
+				if let v: ManagedEntity = nodes[i] as? ManagedEntity {
+					if nil == seen.updateValue(true, forKey: v.id) {
+						nodes[i] = Entity(entity: v)
+						continue
+					}
+				} else if let v: ManagedEntity = worker!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedEntity {
+					if nil == seen.updateValue(true, forKey: v.id) {
+						nodes[i] = Entity(entity: v)
+						continue
+					}
+				}
+				nodes.removeAtIndex(i)
+			}
+			return nodes as! Array<Entity>
+		} else {
+			return nodes.map {
+				if let v: ManagedEntity = $0 as? ManagedEntity {
+					return Entity(entity: v)
+				}
+				return Entity(entity: worker!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
+			} as Array<Entity>
+		}
 	}
 	
 	/**
 	:name:	searchForAction(types: groups: properties)
 	*/
-	public func searchForAction(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Action> {
-		let nodes: SortedSet<Action> = SortedSet<Action>()
+	public func searchForAction(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Action> {
+		var nodes: Array<Action> = Array<Action>()
+		var toFilter: Bool = false
 		
-		var groupNodes: Array<AnyObject>?
-		var propertyNodes: Array<AnyObject>?
+		if let v: Array<String> = types {
+			if let n: Array<ManagedAction> = search(GraphUtility.actionDescriptionName, types: v) as? Array<ManagedAction> {
+				for x in n {
+					nodes.append(Action(action: x))
+				}
+			}
+		}
 		
 		if let v: Array<String> = groups {
-			groupNodes = search(GraphUtility.actionDescriptionName, groupDescriptionName: GraphUtility.actionGroupDescriptionName, groups: v)
+			if let n: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, groups: v) {
+				if 0 < nodes.count {
+					toFilter = true
+				}
+				for x in n {
+					nodes.append(Action(action: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedAction))
+				}
+			}
 		}
 		
 		if let v: Array<(key: String, value: AnyObject?)> = properties {
-			propertyNodes = search(GraphUtility.actionDescriptionName, types: types, propertyDescriptionName: GraphUtility.actionPropertyDescriptionName, properties: v)
+			if let n: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, properties: v) {
+				if 0 < nodes.count {
+					toFilter = true
+				}
+				for x in n {
+					nodes.append(Action(action: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedAction))
+				}
+			}
 		}
 		
-		if nil != groupNodes && nil != propertyNodes {
-			if groupNodes!.count < propertyNodes!.count {
-				for v in propertyNodes! {
-					nodes.insert(Action(action: (v as! ManagedActionProperty).node as ManagedAction))
-				}
-				for v in groupNodes! {
-					let n: Action = Action(action: (v as! ManagedActionGroup).node as ManagedAction)
-					if !nodes.contains(n) {
-						nodes.remove(n)
-					}
-				}
-			} else {
-				for v in groupNodes! {
-					nodes.insert(Action(action: (v as! ManagedActionGroup).node as ManagedAction))
-				}
-				for v in propertyNodes! {
-					let n: Action = Action(action: (v as! ManagedActionProperty).node as ManagedAction)
-					if !nodes.contains(n) {
-						nodes.remove(n)
-					}
-				}
-			}
-		} else if let v: Array<AnyObject> = groupNodes {
-			for n in v {
-				nodes.insert(Action(action: (n as! ManagedActionGroup).node as ManagedAction))
-			}
-		} else if let v: Array<AnyObject> = propertyNodes {
-			for n in v {
-				nodes.insert(Action(action: (n as! ManagedActionProperty).node as ManagedAction))
-			}
-		} else {
-			for v in search(GraphUtility.actionDescriptionName, types: types)! {
-				nodes.insert(Action(action: v as! ManagedAction))
-			}
+		if toFilter {
+			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
+			return nodes.filter { nil == seen.updateValue(true, forKey: ($0 as Action).id) }
 		}
 		
 		return nodes
@@ -149,54 +127,43 @@ public extension Graph {
 	/**
 	:name:	searchForBond(types: groups: properties)
 	*/
-	public func searchForBond(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> SortedSet<Bond> {
-		let nodes: SortedSet<Bond> = SortedSet<Bond>()
+	public func searchForBond(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Bond> {
+		var nodes: Array<Bond> = Array<Bond>()
+		var toFilter: Bool = false
 		
-		var groupNodes: Array<AnyObject>?
-		var propertyNodes: Array<AnyObject>?
+		if let v: Array<String> = types {
+			if let n: Array<ManagedBond> = search(GraphUtility.bondDescriptionName, types: v) as? Array<ManagedBond> {
+				for x in n {
+					nodes.append(Bond(bond: x))
+				}
+			}
+		}
 		
 		if let v: Array<String> = groups {
-			groupNodes = search(GraphUtility.bondDescriptionName, groupDescriptionName: GraphUtility.bondGroupDescriptionName, groups: v)
+			if let n: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, groups: v) {
+				if 0 < nodes.count {
+					toFilter = true
+				}
+				for x in n {
+					nodes.append(Bond(bond: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedBond))
+				}
+			}
 		}
 		
 		if let v: Array<(key: String, value: AnyObject?)> = properties {
-			propertyNodes = search(GraphUtility.bondDescriptionName, types: types, propertyDescriptionName: GraphUtility.bondPropertyDescriptionName, properties: v)
+			if let n: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, properties: v) {
+				if 0 < nodes.count {
+					toFilter = true
+				}
+				for x in n {
+					nodes.append(Bond(bond: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedBond))
+				}
+			}
 		}
 		
-		if nil != groupNodes && nil != propertyNodes {
-			if groupNodes!.count < propertyNodes!.count {
-				for v in propertyNodes! {
-					nodes.insert(Bond(bond: (v as! ManagedBondProperty).node as ManagedBond))
-				}
-				for v in groupNodes! {
-					let n: Bond = Bond(bond: (v as! ManagedBondGroup).node as ManagedBond)
-					if !nodes.contains(n) {
-						nodes.remove(n)
-					}
-				}
-			} else {
-				for v in groupNodes! {
-					nodes.insert(Bond(bond: (v as! ManagedBondGroup).node as ManagedBond))
-				}
-				for v in propertyNodes! {
-					let n: Bond = Bond(bond: (v as! ManagedBondProperty).node as ManagedBond)
-					if !nodes.contains(n) {
-						nodes.remove(n)
-					}
-				}
-			}
-		} else if let v: Array<AnyObject> = groupNodes {
-			for n in v {
-				nodes.insert(Bond(bond: (n as! ManagedBondGroup).node as ManagedBond))
-			}
-		} else if let v: Array<AnyObject> = propertyNodes {
-			for n in v {
-				nodes.insert(Bond(bond: (n as! ManagedBondProperty).node as ManagedBond))
-			}
-		} else {
-			for v in search(GraphUtility.bondDescriptionName, types: types)! {
-				nodes.insert(Bond(bond: v as! ManagedBond))
-			}
+		if toFilter {
+			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
+			return nodes.filter { nil == seen.updateValue(true, forKey: ($0 as Bond).id) }
 		}
 		
 		return nodes
@@ -219,7 +186,7 @@ public extension Graph {
 		return try? worker!.executeFetchRequest(request)
 	}
 	
-	internal func search(typeDescriptionName: String, groupDescriptionName: String, groups: Array<String>) -> Array<AnyObject>? {
+	internal func search(groupDescriptionName: String, groups: Array<String>) -> Array<AnyObject>? {
 		var groupsPredicate: Array<NSPredicate> = Array<NSPredicate>()
 		for v in groups {
 			groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
@@ -233,53 +200,38 @@ public extension Graph {
 		request.resultType = .DictionaryResultType
 		request.propertiesToFetch = ["node"]
 		request.returnsDistinctResults = true
-		request.relationshipKeyPathsForPrefetching = [typeDescriptionName]
 		request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: groupsPredicate)
 		request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: false)]
 		
 		return try? worker!.executeFetchRequest(request)
 	}
 	
-	internal func search(typeDescriptionName: String, types: Array<String>, propertyDescriptionName: String, properties: Array<(key: String, value: AnyObject?)>) -> Array<AnyObject>? {
-		let entityDescription: NSEntityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: worker!)!
-		let request: NSFetchRequest = NSFetchRequest()
-		request.entity = entityDescription
-		request.relationshipKeyPathsForPrefetching = [typeDescriptionName]
-		request.fetchBatchSize = batchSize
-		request.fetchOffset = batchOffset
+	internal func search(propertyDescriptionName: String, properties: Array<(key: String, value: AnyObject?)>) -> Array<AnyObject>? {
+		var propertiesPredicate: Array<NSPredicate> = Array<NSPredicate>()
 		
-		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
-		for v in types {
-			typesPredicate.append(NSPredicate(format: "node.type LIKE[cd] %@", v))
-		}
-		
-		var nodes: Array<AnyObject> = Array<AnyObject>()
-		
-		if let p: Array<(key: String, value: AnyObject?)> = properties {
-			var propertyPredicate: Array<NSPredicate> = Array<NSPredicate>()
-			
-			for (k, v) in p {
-				if let x: AnyObject = v {
-					if let a: String = x as? String {
-						propertyPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
-					} else if let a: NSNumber = x as? NSNumber {
-						propertyPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
-					}
-				} else {
-					propertyPredicate.append(NSPredicate(format: "name LIKE[cd] %@", k))
+		for (k, v) in properties {
+			if let x: AnyObject = v {
+				if let a: String = x as? String {
+					propertiesPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
+				} else if let a: NSNumber = x as? NSNumber {
+					propertiesPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
 				}
-				
-				request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-					NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate),
-					NSCompoundPredicate(andPredicateWithSubpredicates: propertyPredicate)
-				])
-				
-				if let n: Array<AnyObject> = try? worker!.executeFetchRequest(request) {
-					nodes.appendContentsOf(n)
-				}
+			} else {
+				propertiesPredicate.append(NSPredicate(format: "name LIKE[cd] %@", k))
 			}
 		}
 		
-		return nodes
+		let entityDescription: NSEntityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: worker!)!
+		let request: NSFetchRequest = NSFetchRequest()
+		request.entity = entityDescription
+		request.fetchBatchSize = batchSize
+		request.fetchOffset = batchOffset
+		request.resultType = .DictionaryResultType
+		request.propertiesToFetch = ["node"]
+		request.returnsDistinctResults = true
+		request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: propertiesPredicate)
+		request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: false)]
+		
+		return try? worker!.executeFetchRequest(request)
 	}
 }

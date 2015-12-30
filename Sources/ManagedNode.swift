@@ -28,6 +28,16 @@ internal class ManagedNode : GraphObject {
 	@NSManaged internal var groupSet: NSSet
 	
 	//
+	//	:name:	id
+	//
+	internal var id: String {
+		do {
+			try worker?.obtainPermanentIDsForObjects([self])
+		} catch {}
+		return String(stringInterpolationSegment: nodeClass) + type + objectID.URIRepresentation().lastPathComponent!
+	}
+	
+	//
 	//	:name:	delete
 	//	:note: This method when called, deletes all the relationships first
 	//	so delegation can be called with an entact Node, then the Node is
