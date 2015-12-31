@@ -157,13 +157,13 @@ class ProbabilityTests: XCTestCase {
 	
 	func testEntity() {
 		let graph: Graph = Graph()
-		let target: Entity = Entity(type: "ProbTest")
+		let target: Entity = Entity(type: "T")
 		for _ in 0..<99 {
-			let _: Entity = Entity(type: "ProbTest")
+			let _: Entity = Entity(type: "T")
 		}
 		graph.save()
 		
-		let entities: Array<Entity> = graph.searchForEntity(types: ["ProbTest"])
+		let entities: Array<Entity> = graph.searchForEntity(types: ["T"])
 		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
 		
 		for e in entities {
@@ -174,13 +174,13 @@ class ProbabilityTests: XCTestCase {
 	
 	func testAction() {
 		let graph: Graph = Graph()
-		let target: Action = Action(type: "ProbTest")
+		let target: Action = Action(type: "T")
 		for _ in 0..<99 {
-			let _: Action = Action(type: "ProbTest")
+			let _: Action = Action(type: "T")
 		}
 		graph.save()
 		
-		let entities: Array<Action> = graph.searchForAction(types: ["ProbTest"])
+		let entities: Array<Action> = graph.searchForAction(types: ["T"])
 		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
 		
 		for e in entities {
@@ -191,13 +191,13 @@ class ProbabilityTests: XCTestCase {
 	
 	func testBond() {
 		let graph: Graph = Graph()
-		let target: Bond = Bond(type: "ProbTest")
+		let target: Bond = Bond(type: "T")
 		for _ in 0..<99 {
-			let _: Bond = Bond(type: "ProbTest")
+			let _: Bond = Bond(type: "T")
 		}
 		graph.save()
 		
-		let entities: Array<Bond> = graph.searchForBond(types: ["ProbTest"])
+		let entities: Array<Bond> = graph.searchForBond(types: ["T"])
 		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
 		
 		for e in entities {

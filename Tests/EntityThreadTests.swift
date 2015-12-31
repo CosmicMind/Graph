@@ -68,25 +68,31 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
 			n["P"] = 111
 			n.addGroup("G")
 			
-			self.graph.save { [unowned self] (success: Bool, error: NSError?) in
-				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-				self.insertSaveExpectation?.fulfill()
-			}
-			
-			dispatch_async(q2) {
-				n["P"] = 222
-				
+			dispatch_async(q1) {
 				self.graph.save { [unowned self] (success: Bool, error: NSError?) in
 					XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-					self.updateSaveExpectation?.fulfill()
+					self.insertSaveExpectation?.fulfill()
 				}
 				
-				dispatch_async(q3) {
-					n.delete()
-					
+				dispatch_async(q2) {
+					n["P"] = 222
+				}
+				
+				dispatch_async(q2) {
 					self.graph.save { [unowned self] (success: Bool, error: NSError?) in
 						XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-						self.deleteSaveExpectation?.fulfill()
+						self.updateSaveExpectation?.fulfill()
+					}
+					
+					dispatch_async(q3) {
+						n.delete()
+					}
+					
+					dispatch_async(q3) {
+						self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+							XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+							self.deleteSaveExpectation?.fulfill()
+						}
 					}
 				}
 			}
