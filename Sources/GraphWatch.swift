@@ -273,9 +273,9 @@ public extension Graph {
 	}
 	
 	//
-	//	:name:	addPredicateToContextWatcher
+	//	:name:	addPredicateToObserve
 	//
-	internal func addPredicateToContextWatcher(entityDescription: NSEntityDescription, predicate: NSPredicate) {
+	internal func addPredicateToObserve(entityDescription: NSEntityDescription, predicate: NSPredicate) {
 		let entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString)
 		let predicates: Array<NSPredicate> = [entityPredicate, predicate]
 		let finalPredicate: NSPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -287,13 +287,13 @@ public extension Graph {
 	//
 	internal func isWatching(key: String, index: String) -> Bool {
 		if nil == watchers[key] {
-			watchers[key] = SortedSet<String>(elements: index)
+			watchers[key] = Array<String>(arrayLiteral: index)
 			return false
 		}
 		if watchers[key]!.contains(index) {
 			return true
 		}
-		watchers[key]!.insert(index)
+		watchers[key]!.append(index)
 		return false
 	}
 	
@@ -306,7 +306,7 @@ public extension Graph {
 			entityDescription.name = entityDescriptionName
 			entityDescription.managedObjectClassName = managedObjectClassName
 			let predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
-			addPredicateToContextWatcher(entityDescription, predicate: predicate)
+			addPredicateToObserve(entityDescription, predicate: predicate)
 			prepareForObservation()
 		}
 	}
