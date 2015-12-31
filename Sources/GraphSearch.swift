@@ -194,7 +194,6 @@ public extension Graph {
 		request.fetchBatchSize = batchSize
 		request.fetchOffset = batchOffset
 		request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
-		request.includesPendingChanges = true
 		request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: false)]
 		
 		return try? worker!.executeFetchRequest(request)
@@ -215,7 +214,6 @@ public extension Graph {
 		request.resultType = .DictionaryResultType
 		request.propertiesToFetch = ["node"]
 		request.returnsDistinctResults = true
-		request.includesPendingChanges = true
 		request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: groupsPredicate)
 		request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: false)]
 		
@@ -245,7 +243,6 @@ public extension Graph {
 		request.resultType = .DictionaryResultType
 		request.propertiesToFetch = ["node"]
 		request.returnsDistinctResults = true
-		request.includesPendingChanges = true
 		request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: propertiesPredicate)
 		request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: false)]
 		
