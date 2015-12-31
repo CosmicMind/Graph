@@ -35,6 +35,10 @@
 		6523D6DC1C32FE3F00A7BAFD /* GraphKit+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6523D6DA1C32FE3F00A7BAFD /* GraphKit+Array.swift */; };
 		65DF57921C33188E00E55C56 /* GraphKit+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF57911C33188E00E55C56 /* GraphKit+Set.swift */; };
 		65DF57931C33189600E55C56 /* GraphKit+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF57911C33188E00E55C56 /* GraphKit+Set.swift */; };
+		65DF57981C34BBFD00E55C56 /* BondSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF57971C34BBFD00E55C56 /* BondSearchTests.swift */; };
+		65DF57991C34BBFD00E55C56 /* BondSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF57971C34BBFD00E55C56 /* BondSearchTests.swift */; };
+		65DF579A1C34BC0400E55C56 /* ActionSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF57941C34BB9500E55C56 /* ActionSearchTests.swift */; };
+		65DF579B1C34BC0500E55C56 /* ActionSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF57941C34BB9500E55C56 /* ActionSearchTests.swift */; };
 		961F9B771C10ED5400ACF5DD /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B4F1C10ED5400ACF5DD /* Action.swift */; };
 		961F9B781C10ED5400ACF5DD /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B4F1C10ED5400ACF5DD /* Action.swift */; };
 		961F9B791C10ED5400ACF5DD /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B501C10ED5400ACF5DD /* Bond.swift */; };
@@ -223,6 +227,8 @@
 		6523D6D21C2EFD6F00A7BAFD /* EntitySearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySearchTests.swift; sourceTree = "<group>"; };
 		6523D6DA1C32FE3F00A7BAFD /* GraphKit+Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GraphKit+Array.swift"; sourceTree = "<group>"; };
 		65DF57911C33188E00E55C56 /* GraphKit+Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GraphKit+Set.swift"; sourceTree = "<group>"; };
+		65DF57941C34BB9500E55C56 /* ActionSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSearchTests.swift; sourceTree = "<group>"; };
+		65DF57971C34BBFD00E55C56 /* BondSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BondSearchTests.swift; sourceTree = "<group>"; };
 		961F9B4F1C10ED5400ACF5DD /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		961F9B501C10ED5400ACF5DD /* Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
 		961F9B511C10ED5400ACF5DD /* Deque.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deque.swift; sourceTree = "<group>"; };
@@ -340,22 +346,22 @@
 				961F9B551C10ED5400ACF5DD /* GraphObject.swift */,
 				961F9B561C10ED5400ACF5DD /* GraphSearch.swift */,
 				961F9B571C10ED5400ACF5DD /* GraphWatch.swift */,
-				961F9B4F1C10ED5400ACF5DD /* Action.swift */,
-				961F9B5E1C10ED5400ACF5DD /* ManagedAction.swift */,
-				961F9B5F1C10ED5400ACF5DD /* ManagedActionGroup.swift */,
-				961F9B601C10ED5400ACF5DD /* ManagedActionProperty.swift */,
-				961F9B501C10ED5400ACF5DD /* Bond.swift */,
-				961F9B611C10ED5400ACF5DD /* ManagedBond.swift */,
-				961F9B621C10ED5400ACF5DD /* ManagedBondGroup.swift */,
-				961F9B631C10ED5400ACF5DD /* ManagedBondProperty.swift */,
-				961F9B521C10ED5400ACF5DD /* Entity.swift */,
-				961F9B641C10ED5400ACF5DD /* ManagedEntity.swift */,
-				961F9B651C10ED5400ACF5DD /* ManagedEntityGroup.swift */,
-				961F9B661C10ED5400ACF5DD /* ManagedEntityProperty.swift */,
 				961F9B6A1C10ED5400ACF5DD /* Node.swift */,
 				961F9B671C10ED5400ACF5DD /* ManagedNode.swift */,
 				961F9B681C10ED5400ACF5DD /* ManagedNodeGroup.swift */,
 				961F9B691C10ED5400ACF5DD /* ManagedNodeProperty.swift */,
+				961F9B521C10ED5400ACF5DD /* Entity.swift */,
+				961F9B641C10ED5400ACF5DD /* ManagedEntity.swift */,
+				961F9B651C10ED5400ACF5DD /* ManagedEntityGroup.swift */,
+				961F9B661C10ED5400ACF5DD /* ManagedEntityProperty.swift */,
+				961F9B501C10ED5400ACF5DD /* Bond.swift */,
+				961F9B611C10ED5400ACF5DD /* ManagedBond.swift */,
+				961F9B621C10ED5400ACF5DD /* ManagedBondGroup.swift */,
+				961F9B631C10ED5400ACF5DD /* ManagedBondProperty.swift */,
+				961F9B4F1C10ED5400ACF5DD /* Action.swift */,
+				961F9B5E1C10ED5400ACF5DD /* ManagedAction.swift */,
+				961F9B5F1C10ED5400ACF5DD /* ManagedActionGroup.swift */,
+				961F9B601C10ED5400ACF5DD /* ManagedActionProperty.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
@@ -419,10 +425,12 @@
 				651B02601C2AD893008967CC /* BondStringTests.swift */,
 				651B026C1C2AEDF7008967CC /* BondStressTests.swift */,
 				651B02931C2B0349008967CC /* BondThreadTests.swift */,
+				65DF57971C34BBFD00E55C56 /* BondSearchTests.swift */,
 				651B02661C2ADC25008967CC /* ActionIntTests.swift */,
 				651B02631C2ADC15008967CC /* ActionStringTests.swift */,
 				651B026F1C2AEE0B008967CC /* ActionStressTests.swift */,
 				651B02961C2B0355008967CC /* ActionThreadTests.swift */,
+				65DF57941C34BB9500E55C56 /* ActionSearchTests.swift */,
 				96D4E5351BA76FD900672E38 /* DequeTests.swift */,
 				96D4E53C1BA76FD900672E38 /* ListTests.swift */,
 				96D4E53D1BA76FD900672E38 /* SortedDictionaryTests.swift */,
@@ -721,12 +729,14 @@
 				651B02951C2B0349008967CC /* BondThreadTests.swift in Sources */,
 				9677B4D51BA78C3D00C82BBB /* SortedSetTest.swift in Sources */,
 				9677B4D21BA78C3D00C82BBB /* SortedDictionaryTests.swift in Sources */,
+				65DF57991C34BBFD00E55C56 /* BondSearchTests.swift in Sources */,
 				651B025F1C2AD875008967CC /* BondIntTests.swift in Sources */,
 				651B025C1C2AD7E9008967CC /* EntityIntTests.swift in Sources */,
 				651B02981C2B0355008967CC /* ActionThreadTests.swift in Sources */,
 				9677B4D71BA78C3D00C82BBB /* QueueTests.swift in Sources */,
 				651B026B1C2ADF34008967CC /* EntityStressTests.swift in Sources */,
 				9677B4D91BA78C3D00C82BBB /* RedBlackTreeTests.swift in Sources */,
+				65DF579B1C34BC0500E55C56 /* ActionSearchTests.swift in Sources */,
 				9677B4D41BA78C3D00C82BBB /* SortedMultiSetTests.swift in Sources */,
 				9677B4CA1BA78C3D00C82BBB /* DequeTests.swift in Sources */,
 				96668B311C2A4F4A001916C7 /* EntityStringTests.swift in Sources */,
@@ -792,12 +802,14 @@
 				651B02941C2B0349008967CC /* BondThreadTests.swift in Sources */,
 				9677B4BB1BA78C3C00C82BBB /* SortedSetTest.swift in Sources */,
 				9677B4B81BA78C3C00C82BBB /* SortedDictionaryTests.swift in Sources */,
+				65DF57981C34BBFD00E55C56 /* BondSearchTests.swift in Sources */,
 				651B025E1C2AD875008967CC /* BondIntTests.swift in Sources */,
 				651B025B1C2AD7E9008967CC /* EntityIntTests.swift in Sources */,
 				651B02971C2B0355008967CC /* ActionThreadTests.swift in Sources */,
 				9677B4BD1BA78C3C00C82BBB /* QueueTests.swift in Sources */,
 				651B026A1C2ADF34008967CC /* EntityStressTests.swift in Sources */,
 				9677B4BF1BA78C3C00C82BBB /* RedBlackTreeTests.swift in Sources */,
+				65DF579A1C34BC0400E55C56 /* ActionSearchTests.swift in Sources */,
 				9677B4BA1BA78C3C00C82BBB /* SortedMultiSetTests.swift in Sources */,
 				9677B4B01BA78C3C00C82BBB /* DequeTests.swift in Sources */,
 				96668B301C2A4F4A001916C7 /* EntityStringTests.swift in Sources */,

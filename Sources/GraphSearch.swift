@@ -74,93 +74,111 @@ public extension Graph {
 	}
 	
 	/**
-	:name:	searchForAction(types: groups: properties)
-	*/
-	public func searchForAction(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Action> {
-		var nodes: Array<Action> = Array<Action>()
-		var toFilter: Bool = false
-		
-		if let v: Array<String> = types {
-			if let n: Array<ManagedAction> = search(GraphUtility.actionDescriptionName, types: v) as? Array<ManagedAction> {
-				for x in n {
-					nodes.append(Action(object: x))
-				}
-			}
-		}
-		
-		if let v: Array<String> = groups {
-			if let n: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, groups: v) {
-				if 0 < nodes.count {
-					toFilter = true
-				}
-				for x in n {
-					nodes.append(Action(object: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedAction))
-				}
-			}
-		}
-		
-		if let v: Array<(key: String, value: AnyObject?)> = properties {
-			if let n: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, properties: v) {
-				if 0 < nodes.count {
-					toFilter = true
-				}
-				for x in n {
-					nodes.append(Action(object: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedAction))
-				}
-			}
-		}
-		
-		if toFilter {
-			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
-			return nodes.filter { nil == seen.updateValue(true, forKey: ($0 as Action).id) }
-		}
-		
-		return nodes
-	}
-	
-	/**
 	:name:	searchForBond(types: groups: properties)
 	*/
-	public func searchForBond(types types: Array<String>, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Bond> {
-		var nodes: Array<Bond> = Array<Bond>()
+	public func searchForBond(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Bond> {
+		var nodes: Array<AnyObject> = Array<AnyObject>()
 		var toFilter: Bool = false
 		
 		if let v: Array<String> = types {
-			if let n: Array<ManagedBond> = search(GraphUtility.bondDescriptionName, types: v) as? Array<ManagedBond> {
-				for x in n {
-					nodes.append(Bond(object: x))
-				}
+			if let n: Array<AnyObject> = search(GraphUtility.bondDescriptionName, types: v) {
+				nodes.appendContentsOf(n)
 			}
 		}
 		
 		if let v: Array<String> = groups {
 			if let n: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, groups: v) {
-				if 0 < nodes.count {
-					toFilter = true
-				}
-				for x in n {
-					nodes.append(Bond(object: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedBond))
-				}
+				toFilter = 0 < nodes.count
+				nodes.appendContentsOf(n)
 			}
 		}
 		
 		if let v: Array<(key: String, value: AnyObject?)> = properties {
 			if let n: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, properties: v) {
-				if 0 < nodes.count {
-					toFilter = true
-				}
-				for x in n {
-					nodes.append(Bond(object: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedBond))
-				}
+				toFilter = 0 < nodes.count
+				nodes.appendContentsOf(n)
 			}
 		}
 		
 		if toFilter {
 			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
-			return nodes.filter { nil == seen.updateValue(true, forKey: ($0 as Bond).id) }
+			for var i: Int = nodes.count - 1; 0 <= i; --i {
+				if let v: ManagedBond = nodes[i] as? ManagedBond {
+					if nil == seen.updateValue(true, forKey: v.id) {
+						nodes[i] = Bond(object: v)
+						continue
+					}
+				} else if let v: ManagedBond = worker!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedBond {
+					if nil == seen.updateValue(true, forKey: v.id) {
+						nodes[i] = Bond(object: v)
+						continue
+					}
+				}
+				nodes.removeAtIndex(i)
+			}
+			return nodes as! Array<Bond>
+		} else {
+			return nodes.map {
+				if let v: ManagedBond = $0 as? ManagedBond {
+					return Bond(object: v)
+				}
+				return Bond(object: worker!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedBond)
+			} as Array<Bond>
+		}
+	}
+	
+	/**
+	:name:	searchForAction(types: groups: properties)
+	*/
+	public func searchForAction(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Action> {
+		var nodes: Array<AnyObject> = Array<AnyObject>()
+		var toFilter: Bool = false
+		
+		if let v: Array<String> = types {
+			if let n: Array<AnyObject> = search(GraphUtility.actionDescriptionName, types: v) {
+				nodes.appendContentsOf(n)
+			}
 		}
 		
-		return nodes
+		if let v: Array<String> = groups {
+			if let n: Array<AnyObject> = search(GraphUtility.actionGroupDescriptionName, groups: v) {
+				toFilter = 0 < nodes.count
+				nodes.appendContentsOf(n)
+			}
+		}
+		
+		if let v: Array<(key: String, value: AnyObject?)> = properties {
+			if let n: Array<AnyObject> = search(GraphUtility.actionPropertyDescriptionName, properties: v) {
+				toFilter = 0 < nodes.count
+				nodes.appendContentsOf(n)
+			}
+		}
+		
+		if toFilter {
+			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
+			for var i: Int = nodes.count - 1; 0 <= i; --i {
+				if let v: ManagedAction = nodes[i] as? ManagedAction {
+					if nil == seen.updateValue(true, forKey: v.id) {
+						nodes[i] = Action(object: v)
+						continue
+					}
+				} else if let v: ManagedAction = worker!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedAction {
+					if nil == seen.updateValue(true, forKey: v.id) {
+						nodes[i] = Action(object: v)
+						continue
+					}
+				}
+				nodes.removeAtIndex(i)
+			}
+			return nodes as! Array<Action>
+		} else {
+			return nodes.map {
+				if let v: ManagedAction = $0 as? ManagedAction {
+					return Action(object: v)
+				}
+				return Action(object: worker!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedAction)
+			} as Array<Action>
+		}
 	}
 	
 	internal func search(typeDescriptionName: String, types: Array<String>) -> Array<AnyObject>? {
