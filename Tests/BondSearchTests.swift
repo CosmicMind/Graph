@@ -36,6 +36,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		for n in graph.searchForBond(types: ["T1", "T2", "T3"]) {
 			n.delete()
 		}
+		
 		graph.save { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
@@ -108,6 +109,7 @@ class BondSearchTests : XCTestCase, GraphDelegate {
 		for n in graph.searchForBond(types: ["T1", "T2", "T3"]) {
 			n.delete()
 		}
+		
 		graph.save { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
