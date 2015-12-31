@@ -40,8 +40,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watch(entity: ["S", "O"])
-		graph.watch(action: ["T"], group: ["G"], property: ["P"])
+		graph.watchForEntity(types: ["S", "O"])
+		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {

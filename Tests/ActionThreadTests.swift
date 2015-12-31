@@ -37,7 +37,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watch(action: ["T"], group: ["G"], property: ["P"])
+		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {

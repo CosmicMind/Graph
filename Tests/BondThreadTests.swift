@@ -37,7 +37,7 @@ class BondThreadTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watch(bond: ["T"], group: ["G"], property: ["P"])
+		graph.watchForBond(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {

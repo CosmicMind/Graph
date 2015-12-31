@@ -63,7 +63,7 @@ public class Entity : NSObject, Comparable {
 	/**
 		:name:	groups
 	*/
-	public var groups: SortedSet<String> {
+	public var groups: Array<String> {
 		return node.groups
 	}
 	
@@ -82,88 +82,80 @@ public class Entity : NSObject, Comparable {
 	/**
 		:name:	properties
 	*/
-	public var properties: SortedDictionary<String, AnyObject> {
+	public var properties: Dictionary<String, AnyObject> {
 		return node.properties
 	}
 
 	/**
     	:name:	actions
     */
-    public var actions: SortedSet<Action> {
+    public var actions: Array<Action> {
 		return actionsWhenSubject + actionsWhenObject
     }
 
     /**
     	:name:	actionsWhenSubject
 	*/
-    public var actionsWhenSubject: SortedSet<Action> {
-		let nodes: SortedSet<Action> = SortedSet<Action>()
-		for entry in node.object.actionSubjectSet {
-			nodes.insert(Action(action: entry as! ManagedAction))
-		}
-		return nodes
+    public var actionsWhenSubject: Array<Action> {
+		return node.object.actionSubjectSet.map {
+			return Action(object: $0 as! ManagedAction)
+		} as Array<Action>
     }
 
     /**
     	:name:	actionsWhenObject
 	*/
-    public var actionsWhenObject: SortedSet<Action> {
-        let nodes: SortedSet<Action> = SortedSet<Action>()
-		for entry in node.object.actionObjectSet {
-			nodes.insert(Action(action: entry as! ManagedAction))
-		}
-		return nodes
+    public var actionsWhenObject: Array<Action> {
+		return node.object.actionObjectSet.map {
+			return Action(object: $0 as! ManagedAction)
+		} as Array<Action>
     }
 
     /**
     	:name:	bonds
 	*/
-    public var bonds: SortedSet<Bond> {
+    public var bonds: Array<Bond> {
 		return bondsWhenSubject + bondsWhenObject
     }
 
     /**
     	:name:	bondsWhenSubject
 	*/
-    public var bondsWhenSubject: SortedSet<Bond> {
-		let nodes: SortedSet<Bond> = SortedSet<Bond>()
-		for entry in node.object.bondSubjectSet {
-			nodes.insert(Bond(bond: entry as! ManagedBond))
-		}
-		return nodes
+    public var bondsWhenSubject: Array<Bond> {
+		return node.object.bondSubjectSet.map {
+			return Bond(object: $0 as! ManagedBond)
+		} as Array<Bond>
     }
 
     /**
     	:name:	bondsWhenObject
 	*/
-    public var bondsWhenObject: SortedSet<Bond> {
-		let nodes: SortedSet<Bond> = SortedSet<Bond>()
-		for entry in node.object.bondObjectSet {
-			nodes.insert(Bond(bond: entry as! ManagedBond))
-		}
-		return nodes
+    public var bondsWhenObject: Array<Bond> {
+		return node.object.bondObjectSet.map {
+			return Bond(object: $0 as! ManagedBond)
+		} as Array<Bond>
     }
 	
 	/**
 		:name:	init
 	*/
-	internal init(entity: ManagedEntity) {
-		node = Node<ManagedEntity>(object: entity)
+	internal init(object: ManagedEntity) {
+		node = Node<ManagedEntity>(object: object)
 	}
 	
 	/**
 		:name:	init
 	*/
 	public convenience init(type: String) {
-		self.init(entity: ManagedEntity(type: type))
+		self.init(object: ManagedEntity(type: type))
 	}
 	
 	/**
 		:name:	isEqual
 	*/
 	public override func isEqual(object: AnyObject?) -> Bool {
-		if let rhs = object as? Entity {
-			return id == rhs.id
+		if let v = object as? Entity {
+			return id == v.id
 		}
 		return false
 	}

@@ -60,14 +60,14 @@ public class Bond : NSObject, Comparable {
 	/**
 		:name:	groups
 	*/
-	public var groups: SortedSet<String> {
+	public var groups: Array<String> {
 		return node.groups
 	}
 	
 	/**
 		:name:	properties
 	*/
-	public var properties: SortedDictionary<String, AnyObject> {
+	public var properties: Dictionary<String, AnyObject> {
 		return node.properties
 	}
 	
@@ -76,7 +76,10 @@ public class Bond : NSObject, Comparable {
 	*/
 	public var subject: Entity? {
 		get {
-			return nil == node.object.subject ? nil : Entity(entity: node.object.subject!)
+			if let v: ManagedEntity = node.object.subject {
+				return Entity(object: v)
+			}
+			return nil
 		}
 		set(entity) {
 			node.object.subject = entity?.node.object
@@ -88,7 +91,10 @@ public class Bond : NSObject, Comparable {
 	*/
 	public var object: Entity? {
 		get {
-			return nil == node.object.object ? nil : Entity(entity: node.object.object!)
+			if let v: ManagedEntity = node.object.object {
+				return Entity(object: v)
+			}
+			return nil
 		}
 		set(entity) {
 			node.object.object = entity?.node.object
@@ -98,23 +104,23 @@ public class Bond : NSObject, Comparable {
 	/**
 		:name:	init
 	*/
-	internal init(bond: ManagedBond) {
-		node = Node<ManagedBond>(object: bond)
+	internal init(object: ManagedBond) {
+		node = Node<ManagedBond>(object: object)
 	}
 	
 	/**
 		:name:	init
 	*/
 	public convenience init(type: String) {
-		self.init(bond: ManagedBond(type: type))
+		self.init(object: ManagedBond(type: type))
 	}
 	
 	/**
 		:name:	isEqual
 	*/
 	public override func isEqual(object: AnyObject?) -> Bool {
-		if let rhs = object as? Bond {
-			return id == rhs.id
+		if let v = object as? Bond {
+			return id == v.id
 		}
 		return false
 	}

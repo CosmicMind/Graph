@@ -18,12 +18,6 @@
 
 import CoreData
 
-public extension Array where Element : Entity {
-	func hasType(types: Array<String>) {
-		
-	}
-}
-
 public extension Graph {
 	/**
 	:name:	searchForEntity(types: groups: properties)
@@ -57,12 +51,12 @@ public extension Graph {
 			for var i: Int = nodes.count - 1; 0 <= i; --i {
 				if let v: ManagedEntity = nodes[i] as? ManagedEntity {
 					if nil == seen.updateValue(true, forKey: v.id) {
-						nodes[i] = Entity(entity: v)
+						nodes[i] = Entity(object: v)
 						continue
 					}
 				} else if let v: ManagedEntity = worker!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedEntity {
 					if nil == seen.updateValue(true, forKey: v.id) {
-						nodes[i] = Entity(entity: v)
+						nodes[i] = Entity(object: v)
 						continue
 					}
 				}
@@ -72,9 +66,9 @@ public extension Graph {
 		} else {
 			return nodes.map {
 				if let v: ManagedEntity = $0 as? ManagedEntity {
-					return Entity(entity: v)
+					return Entity(object: v)
 				}
-				return Entity(entity: worker!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
+				return Entity(object: worker!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
 			} as Array<Entity>
 		}
 	}
@@ -89,7 +83,7 @@ public extension Graph {
 		if let v: Array<String> = types {
 			if let n: Array<ManagedAction> = search(GraphUtility.actionDescriptionName, types: v) as? Array<ManagedAction> {
 				for x in n {
-					nodes.append(Action(action: x))
+					nodes.append(Action(object: x))
 				}
 			}
 		}
@@ -100,7 +94,7 @@ public extension Graph {
 					toFilter = true
 				}
 				for x in n {
-					nodes.append(Action(action: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedAction))
+					nodes.append(Action(object: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedAction))
 				}
 			}
 		}
@@ -111,7 +105,7 @@ public extension Graph {
 					toFilter = true
 				}
 				for x in n {
-					nodes.append(Action(action: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedAction))
+					nodes.append(Action(object: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedAction))
 				}
 			}
 		}
@@ -134,7 +128,7 @@ public extension Graph {
 		if let v: Array<String> = types {
 			if let n: Array<ManagedBond> = search(GraphUtility.bondDescriptionName, types: v) as? Array<ManagedBond> {
 				for x in n {
-					nodes.append(Bond(bond: x))
+					nodes.append(Bond(object: x))
 				}
 			}
 		}
@@ -145,7 +139,7 @@ public extension Graph {
 					toFilter = true
 				}
 				for x in n {
-					nodes.append(Bond(bond: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedBond))
+					nodes.append(Bond(object: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedBond))
 				}
 			}
 		}
@@ -156,7 +150,7 @@ public extension Graph {
 					toFilter = true
 				}
 				for x in n {
-					nodes.append(Bond(bond: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedBond))
+					nodes.append(Bond(object: worker!.objectWithID(x["node"]! as! NSManagedObjectID) as! ManagedBond))
 				}
 			}
 		}
@@ -171,6 +165,7 @@ public extension Graph {
 	
 	internal func search(typeDescriptionName: String, types: Array<String>) -> Array<AnyObject>? {
 		var typesPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		
 		for v in types {
 			typesPredicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
 		}
@@ -188,6 +183,7 @@ public extension Graph {
 	
 	internal func search(groupDescriptionName: String, groups: Array<String>) -> Array<AnyObject>? {
 		var groupsPredicate: Array<NSPredicate> = Array<NSPredicate>()
+		
 		for v in groups {
 			groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
 		}

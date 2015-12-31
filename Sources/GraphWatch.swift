@@ -20,23 +20,23 @@ import CoreData
 
 public extension Graph {
 	/**
-		:name:	watch(entity: group: property)
+		:name:	watchForEntity(types: groups: properties)
 	*/
-	public func watch(entity types: Array<String>, group names: Array<String>? = nil, property keys: Array<String>? = nil) {
+	public func watchForEntity(types types: Array<String>, groups: Array<String>? = nil, properties: Array<String>? = nil) {
 		// types
 		for i in types {
 			watch(Entity: i)
 		}
 		
 		// groups
-		if let n: Array<String> = names {
+		if let n: Array<String> = groups {
 			for i in n {
 				watch(EntityGroup: i)
 			}
 		}
 		
 		// properties
-		if let n: Array<String> = keys {
+		if let n: Array<String> = properties {
 			for i in n {
 				watch(EntityProperty: i)
 			}
@@ -44,23 +44,23 @@ public extension Graph {
 	}
 	
 	/**
-		:name:	watch(action: group: property)
+		:name:	watchForAction(types: groups: properties)
 	*/
-	public func watch(action types: Array<String>, group names: Array<String>? = nil, property keys: Array<String>? = nil) {
+	public func watchForAction(types types: Array<String>, groups: Array<String>? = nil, properties: Array<String>? = nil) {
 		// types
 		for i in types {
 			watch(Action: i)
 		}
 		
 		// groups
-		if let n: Array<String> = names {
+		if let n: Array<String> = groups {
 			for i in n {
 				watch(ActionGroup: i)
 			}
 		}
 		
 		// properties
-		if let n: Array<String> = keys {
+		if let n: Array<String> = properties {
 			for i in n {
 				watch(ActionProperty: i)
 			}
@@ -68,23 +68,23 @@ public extension Graph {
 	}
 	
 	/**
-		:name:	watch(bond: group: property)
+		:name:	watchForBond(types: groups: properties)
 	*/
-	public func watch(bond types: Array<String>, group names: Array<String>? = nil, property keys: Array<String>? = nil) {
+	public func watchForBond(types types: Array<String>, groups: Array<String>? = nil, properties: Array<String>? = nil) {
 		// types
 		for i in types {
 			watch(Bond: i)
 		}
 		
 		// groups
-		if let n: Array<String> = names {
+		if let n: Array<String> = groups {
 			for i in n {
 				watch(BondGroup: i)
 			}
 		}
 		
 		// properties
-		if let n: Array<String> = keys {
+		if let n: Array<String> = properties {
 			for i in n {
 				watch(BondProperty: i)
 			}
@@ -168,31 +168,31 @@ public extension Graph {
 			
 			if 0 < inserted.count {
 				for node: NSManagedObject in inserted.allObjects as! [NSManagedObject] {
-					switch(String.fromCString(object_getClassName(node))!) {
+					switch String.fromCString(object_getClassName(node))! {
 					case "ManagedEntity_ManagedEntity_":
-						self.delegate?.graphDidInsertEntity?(self, entity: Entity(entity: node as! ManagedEntity))
+						self.delegate?.graphDidInsertEntity?(self, entity: Entity(object: node as! ManagedEntity))
 					case "ManagedEntityGroup_ManagedEntityGroup_":
 						let group: ManagedEntityGroup = node as! ManagedEntityGroup
-						self.delegate?.graphDidInsertEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
+						self.delegate?.graphDidInsertEntityGroup?(self, entity: Entity(object: group.node), group: group.name)
 					case "ManagedEntityProperty_ManagedEntityProperty_":
 						let property: ManagedEntityProperty = node as! ManagedEntityProperty
-						self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
+						self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(object: property.node), property: property.name, value: property.object)
 					case "ManagedAction_ManagedAction_":
-						self.delegate?.graphDidInsertAction?(self, action: Action(action: node as! ManagedAction))
+						self.delegate?.graphDidInsertAction?(self, action: Action(object: node as! ManagedAction))
 					case "ManagedActionGroup_ManagedActionGroup_":
 						let group: ManagedActionGroup = node as! ManagedActionGroup
-						self.delegate?.graphDidInsertActionGroup?(self, action: Action(action: group.node), group: group.name)
+						self.delegate?.graphDidInsertActionGroup?(self, action: Action(object: group.node), group: group.name)
 					case "ManagedActionProperty_ManagedActionProperty_":
 						let property: ManagedActionProperty = node as! ManagedActionProperty
-						self.delegate?.graphDidInsertActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
+						self.delegate?.graphDidInsertActionProperty?(self, action: Action(object: property.node), property: property.name, value: property.object)
 					case "ManagedBond_ManagedBond_":
-						self.delegate?.graphDidInsertBond?(self, bond: Bond(bond: node as! ManagedBond))
+						self.delegate?.graphDidInsertBond?(self, bond: Bond(object: node as! ManagedBond))
 					case "ManagedBondGroup_ManagedBondGroup_":
 						let group: ManagedBondGroup = node as! ManagedBondGroup
-						self.delegate?.graphDidInsertBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
+						self.delegate?.graphDidInsertBondGroup?(self, bond: Bond(object: group.node), group: group.name)
 					case "ManagedBondProperty_ManagedBondProperty_":
 						let property: ManagedBondProperty = node as! ManagedBondProperty
-						self.delegate?.graphDidInsertBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
+						self.delegate?.graphDidInsertBondProperty?(self, bond: Bond(object: property.node), property: property.name, value: property.object)
 					default:
 						assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 					}
@@ -207,18 +207,18 @@ public extension Graph {
 			
 			if 0 < updated.count {
 				for node: NSManagedObject in updated.allObjects as! [NSManagedObject] {
-					switch(String.fromCString(object_getClassName(node))!) {
+					switch String.fromCString(object_getClassName(node))! {
 					case "ManagedEntityProperty_ManagedEntityProperty_":
 						let property: ManagedEntityProperty = node as! ManagedEntityProperty
-						self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
+						self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(object: property.node), property: property.name, value: property.object)
 					case "ManagedActionProperty_ManagedActionProperty_":
 						let property: ManagedActionProperty = node as! ManagedActionProperty
-						self.delegate?.graphDidUpdateActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
+						self.delegate?.graphDidUpdateActionProperty?(self, action: Action(object: property.node), property: property.name, value: property.object)
 					case "ManagedBondProperty_ManagedBondProperty_":
 						let property: ManagedBondProperty = node as! ManagedBondProperty
-						self.delegate?.graphDidUpdateBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
+						self.delegate?.graphDidUpdateBondProperty?(self, bond: Bond(object: property.node), property: property.name, value: property.object)
 					case "ManagedAction_ManagedAction_":
-						self.delegate?.graphDidUpdateAction?(self, action: Action(action: node as! ManagedAction))
+						self.delegate?.graphDidUpdateAction?(self, action: Action(object: node as! ManagedAction))
 					default:
 						assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 					}
@@ -233,31 +233,31 @@ public extension Graph {
 			
 			if 0 < deleted.count {
 				for node: NSManagedObject in deleted.allObjects as! [NSManagedObject] {
-					switch(String.fromCString(object_getClassName(node))!) {
+					switch String.fromCString(object_getClassName(node))! {
 					case "ManagedEntity_ManagedEntity_":
-						self.delegate?.graphDidDeleteEntity?(self, entity: Entity(entity: node as! ManagedEntity))
+						self.delegate?.graphDidDeleteEntity?(self, entity: Entity(object: node as! ManagedEntity))
 					case "ManagedEntityProperty_ManagedEntityProperty_":
 						let property: ManagedEntityProperty = node as! ManagedEntityProperty
-						self.delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(entity: property.node), property: property.name, value: property.object)
+						self.delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(object: property.node), property: property.name, value: property.object)
 					case "ManagedEntityGroup_ManagedEntityGroup_":
 						let group: ManagedEntityGroup = node as! ManagedEntityGroup
-						self.delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(entity: group.node), group: group.name)
+						self.delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(object: group.node), group: group.name)
 					case "ManagedAction_ManagedAction_":
-						self.delegate?.graphDidDeleteAction?(self, action: Action(action: node as! ManagedAction))
+						self.delegate?.graphDidDeleteAction?(self, action: Action(object: node as! ManagedAction))
 					case "ManagedActionProperty_ManagedActionProperty_":
 						let property: ManagedActionProperty = node as! ManagedActionProperty
-						self.delegate?.graphDidDeleteActionProperty?(self, action: Action(action: property.node), property: property.name, value: property.object)
+						self.delegate?.graphDidDeleteActionProperty?(self, action: Action(object: property.node), property: property.name, value: property.object)
 					case "ManagedActionGroup_ManagedActionGroup_":
 						let group: ManagedActionGroup = node as! ManagedActionGroup
-						self.delegate?.graphDidDeleteActionGroup?(self, action: Action(action: group.node), group: group.name)
+						self.delegate?.graphDidDeleteActionGroup?(self, action: Action(object: group.node), group: group.name)
 					case "ManagedBond_ManagedBond_":
-						self.delegate?.graphDidDeleteBond?(self, bond: Bond(bond: node as! ManagedBond))
+						self.delegate?.graphDidDeleteBond?(self, bond: Bond(object: node as! ManagedBond))
 					case "ManagedBondProperty_ManagedBondProperty_":
 						let property: ManagedBondProperty = node as! ManagedBondProperty
-						self.delegate?.graphDidDeleteBondProperty?(self, bond: Bond(bond: property.node), property: property.name, value: property.object)
+						self.delegate?.graphDidDeleteBondProperty?(self, bond: Bond(object: property.node), property: property.name, value: property.object)
 					case "ManagedBondGroup_ManagedBondGroup_":
 						let group: ManagedBondGroup = node as! ManagedBondGroup
-						self.delegate?.graphDidDeleteBondGroup?(self, bond: Bond(bond: group.node), group: group.name)
+						self.delegate?.graphDidDeleteBondGroup?(self, bond: Bond(object: group.node), group: group.name)
 					default:
 						assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 					}

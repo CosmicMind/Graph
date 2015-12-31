@@ -40,8 +40,8 @@ class BondStressTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watch(entity: ["S", "O"])
-		graph.watch(bond: ["T"], group: ["G"], property: ["P"])
+		graph.watchForEntity(types: ["S", "O"])
+		graph.watchForBond(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {

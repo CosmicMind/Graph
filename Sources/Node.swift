@@ -64,20 +64,17 @@ internal class Node <Type : ManagedNode> : NSObject {
 	//
 	//	:name:	groups
 	//
-	internal var groups: SortedSet<String> {
-		let groups: SortedSet<String> = SortedSet<String>()
-		for group in object.groupSet {
-			let name: String = group.name
-			groups.insert(name)
-		}
-		return groups
+	internal var groups: Array<String> {
+		return object.groupSet.map {
+			return $0.name
+		} as Array<String>
 	}
 	
 	//
 	//	:name:	properties
 	//
-	internal var properties: SortedDictionary<String, AnyObject> {
-		let properties: SortedDictionary<String, AnyObject> = SortedDictionary<String, AnyObject>()
+	internal var properties: Dictionary<String, AnyObject> {
+		var properties: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
 		for property in object.propertySet {
 			properties[property.name] = property.object
 		}

@@ -63,14 +63,14 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	groups
 	*/
-	public var groups: SortedSet<String> {
+	public var groups: Array<String> {
 		return node.groups
 	}
 
 	/**
 		:name:	properties
 	*/
-	public var properties: SortedDictionary<String, AnyObject> {
+	public var properties: Dictionary<String, AnyObject> {
 		return node.properties
 	}
 
@@ -89,45 +89,41 @@ public class Action : NSObject, Comparable {
     /**
     	:name:	subjects
     */
-    public var subjects: SortedSet<Entity> {
-		let nodes: SortedSet<Entity> = SortedSet<Entity>()
-		for entity in node.object.subjectSet {
-			nodes.insert(Entity(entity: entity as! ManagedEntity))
-		}
-		return nodes
+    public var subjects: Array<Entity> {
+		return node.object.subjectSet.map {
+			return Entity(object: $0 as! ManagedEntity)
+		} as Array<Entity>
     }
 
     /**
     	:name:	objects
 	*/
-    public var objects: SortedSet<Entity> {
-		let nodes: SortedSet<Entity> = SortedSet<Entity>()
-		for entity in node.object.objectSet {
-			nodes.insert(Entity(entity: entity as! ManagedEntity))
-		}
-		return nodes
+    public var objects: Array<Entity> {
+		return node.object.objectSet.map {
+			return Entity(object: $0 as! ManagedEntity)
+		} as Array<Entity>
     }
 	
 	/**
 		:name:	init
 	*/
-	internal init(action: ManagedAction) {
-		node = Node<ManagedAction>(object: action)
+	internal init(object: ManagedAction) {
+		node = Node<ManagedAction>(object: object)
 	}
 	
 	/**
 		:name:	init
 	*/
 	public convenience init(type: String) {
-		self.init(action: ManagedAction(type: type))
+		self.init(object: ManagedAction(type: type))
 	}
 	
 	/**
 		:name:	isEqual
 	*/
 	public override func isEqual(object: AnyObject?) -> Bool {
-		if let rhs = object as? Action {
-			return id == rhs.id
+		if let v = object as? Action {
+			return id == v.id
 		}
 		return false
 	}

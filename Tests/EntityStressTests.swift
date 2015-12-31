@@ -40,7 +40,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watch(entity: ["T"], group: ["G"], property: ["P"])
+		graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
