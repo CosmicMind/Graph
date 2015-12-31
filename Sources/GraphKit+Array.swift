@@ -16,6 +16,15 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+//extension Array {
+//	mutating func removeObject<T: Equatable where T == Array.Generator.Element>(object: T) -> T? {
+//		if let v: Int = indexOf(object) {
+//			return removeAtIndex(v)
+//		}
+//		return nil
+//	}
+//}
+
 extension Array : ProbableType {
 	/**
 	The instance count of elements.
