@@ -199,6 +199,13 @@ public class SortedDictionary<Key : Comparable, Value where Key : Hashable> : Pr
 	}
 	
 	/**
+	The probability of elements.
+	*/
+	public func probabilityOf(block: (key: Key, value: Value?) -> Bool) -> Double {
+		return tree.probabilityOf(block)
+	}
+	
+	/**
 	The expected value of elements.
 	*/
 	public func expectedValueOf<T: Equatable>(trials: Int, elements: T...) -> Double {

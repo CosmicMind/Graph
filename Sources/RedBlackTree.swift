@@ -196,6 +196,19 @@ public class RedBlackTree<Key : Comparable, Value> : ProbableType, CollectionTyp
 	}
 	
 	/**
+	The probability of elements.
+	*/
+	public func probabilityOf(block: (key: Key, value: Value?) -> Bool) -> Double {
+		var c: Int = 0
+		for (k, v) in self {
+			if block(key: k, value: v) {
+				++c
+			}
+		}
+		return Double(c) / Double(count)
+	}
+	
+	/**
 	The expected value of elements.
 	*/
 	public func expectedValueOf<T: Equatable>(trials: Int, elements: T...) -> Double {

@@ -179,6 +179,19 @@ public class SortedSet<Element : Comparable> : ProbableType, CollectionType, Com
 	}
 	
 	/**
+	The probability of elements.
+	*/
+	public func probabilityOf(block: (element: Element) -> Bool) -> Double {
+		var c: Int = 0
+		for x in self {
+			if block(element: x) {
+				++c
+			}
+		}
+		return Double(c) / Double(count)
+	}
+	
+	/**
 	The expected value of elements.
 	*/
 	public func expectedValueOf<T: Equatable>(trials: Int, elements: T...) -> Double {
