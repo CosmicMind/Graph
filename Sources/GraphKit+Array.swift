@@ -16,14 +16,24 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-//extension Array {
-//	mutating func removeObject<T: Equatable where T == Array.Generator.Element>(object: T) -> T? {
-//		if let v: Int = indexOf(object) {
-//			return removeAtIndex(v)
-//		}
-//		return nil
-//	}
-//}
+extension Array where Element: Equatable {
+	mutating func removeObject(object: Element) -> Element? {
+		if let v: Int = indexOf(object) {
+			return removeAtIndex(v)
+		}
+		return nil
+	}
+	
+	mutating func removeObjects(objects: Element...) {
+		removeObjects(objects)
+	}
+	
+	mutating func removeObjects(objects: Array<Element>) {
+		for x in objects {
+			removeObject(x)
+		}
+	}
+}
 
 extension Array : ProbableType {
 	/**

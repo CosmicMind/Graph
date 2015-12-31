@@ -33,7 +33,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
-		for n in graph.searchForAction(types: ["*"]) {
+		for n in graph.searchForAction(types: ["T1", "T2", "T3"]) {
 			n.delete()
 		}
 		graph.save { (success: Bool, error: NSError?) in
@@ -64,50 +64,48 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
-		measureBlock {
-			XCTAssertEqual(0, self.graph.searchForAction().count)
-			
-			XCTAssertEqual(100, self.graph.searchForAction(types: ["T1"]).count)
-			XCTAssertEqual(300, self.graph.searchForAction(types: ["T1", "T2"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["T1", "T2", "T3"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["*"]).count)
-			
-			XCTAssertEqual(0, self.graph.searchForAction(groups: ["NONE"]).count)
-			XCTAssertEqual(100, self.graph.searchForAction(groups: ["G1"]).count)
-			XCTAssertEqual(300, self.graph.searchForAction(groups: ["G1", "G2"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(groups: ["G1", "G2", "G3"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(groups: ["*"]).count)
-			
-			XCTAssertEqual(100, self.graph.searchForAction(types: ["T1"], groups: ["G1"]).count)
-			XCTAssertEqual(300, self.graph.searchForAction(types: ["T1"], groups: ["G1", "G2"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["T1"], groups: ["G1", "G2", "G3"]).count)
-			XCTAssertEqual(300, self.graph.searchForAction(types: ["T1", "T2"], groups: ["G1"]).count)
-			XCTAssertEqual(300, self.graph.searchForAction(types: ["T1", "T2"], groups: ["G1", "G2"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["T1", "T2"], groups: ["G1", "G2", "G3"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["T1", "T2", "T3"], groups: ["G1"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["T1", "T2", "T3"], groups: ["G1", "G2"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["T1", "T2", "T3"], groups: ["G1", "G2", "G3"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["*"], groups: ["G1"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["*"], groups: ["G1", "G2"]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["*"], groups: ["G1", "G2", "G3"]).count)
-			
-			XCTAssertEqual(100, self.graph.searchForAction(properties: [("P1", nil)]).count)
-			XCTAssertEqual(50, self.graph.searchForAction(properties: [("P1", "V1")]).count)
-			XCTAssertEqual(50, self.graph.searchForAction(properties: [("P1", 1)]).count)
-			XCTAssertEqual(50, self.graph.searchForAction(properties: [("*", "V1")]).count)
-			XCTAssertEqual(50, self.graph.searchForAction(properties: [("*", 1)]).count)
-			XCTAssertEqual(100, self.graph.searchForAction(properties: [("P1", "V1"), ("P1", 1)]).count)
-			XCTAssertEqual(300, self.graph.searchForAction(properties: [("P1", nil), ("P2", "V2")]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(properties: [("P1", nil), ("P2", "V2"), ("P3", "V3")]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(properties: [("P1", nil), ("P2", nil), ("P3", nil)]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(properties: [("*", nil)]).count)
-			
-			XCTAssertEqual(300, self.graph.searchForAction(types: ["T1"], properties: [("P1", nil), ("P2", nil)]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["T1"], groups: ["G3"], properties: [("P1", nil), ("P2", nil)]).count)
-			XCTAssertEqual(600, self.graph.searchForAction(types: ["*"], groups: ["*"], properties: [("*", nil)]).count)
-		}
+		XCTAssertEqual(0, graph.searchForAction().count)
 		
-		for n in graph.searchForAction(types: ["*"]) {
+		XCTAssertEqual(100, graph.searchForAction(types: ["T1"]).count)
+		XCTAssertEqual(300, graph.searchForAction(types: ["T1", "T2"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["T1", "T2", "T3"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["*"]).count)
+		
+		XCTAssertEqual(0, graph.searchForAction(groups: ["NONE"]).count)
+		XCTAssertEqual(100, graph.searchForAction(groups: ["G1"]).count)
+		XCTAssertEqual(300, graph.searchForAction(groups: ["G1", "G2"]).count)
+		XCTAssertEqual(600, graph.searchForAction(groups: ["G1", "G2", "G3"]).count)
+		XCTAssertEqual(600, graph.searchForAction(groups: ["*"]).count)
+		
+		XCTAssertEqual(100, graph.searchForAction(types: ["T1"], groups: ["G1"]).count)
+		XCTAssertEqual(300, graph.searchForAction(types: ["T1"], groups: ["G1", "G2"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["T1"], groups: ["G1", "G2", "G3"]).count)
+		XCTAssertEqual(300, graph.searchForAction(types: ["T1", "T2"], groups: ["G1"]).count)
+		XCTAssertEqual(300, graph.searchForAction(types: ["T1", "T2"], groups: ["G1", "G2"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["T1", "T2"], groups: ["G1", "G2", "G3"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["T1", "T2", "T3"], groups: ["G1"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["T1", "T2", "T3"], groups: ["G1", "G2"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["T1", "T2", "T3"], groups: ["G1", "G2", "G3"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["*"], groups: ["G1"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["*"], groups: ["G1", "G2"]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["*"], groups: ["G1", "G2", "G3"]).count)
+		
+		XCTAssertEqual(100, graph.searchForAction(properties: [("P1", nil)]).count)
+		XCTAssertEqual(50, graph.searchForAction(properties: [("P1", "V1")]).count)
+		XCTAssertEqual(50, graph.searchForAction(properties: [("P1", 1)]).count)
+		XCTAssertEqual(50, graph.searchForAction(properties: [("*", "V1")]).count)
+		XCTAssertEqual(50, graph.searchForAction(properties: [("*", 1)]).count)
+		XCTAssertEqual(100, graph.searchForAction(properties: [("P1", "V1"), ("P1", 1)]).count)
+		XCTAssertEqual(300, graph.searchForAction(properties: [("P1", nil), ("P2", "V2")]).count)
+		XCTAssertEqual(600, graph.searchForAction(properties: [("P1", nil), ("P2", "V2"), ("P3", "V3")]).count)
+		XCTAssertEqual(600, graph.searchForAction(properties: [("P1", nil), ("P2", nil), ("P3", nil)]).count)
+		XCTAssertEqual(600, graph.searchForAction(properties: [("*", nil)]).count)
+		
+		XCTAssertEqual(300, graph.searchForAction(types: ["T1"], properties: [("P1", nil), ("P2", nil)]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["T1"], groups: ["G3"], properties: [("P1", nil), ("P2", nil)]).count)
+		XCTAssertEqual(600, graph.searchForAction(types: ["*"], groups: ["*"], properties: [("*", nil)]).count)
+		
+		for n in graph.searchForAction(types: ["T1", "T2", "T3"]) {
 			n.delete()
 		}
 		graph.save { (success: Bool, error: NSError?) in

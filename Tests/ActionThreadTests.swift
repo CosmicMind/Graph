@@ -50,41 +50,6 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
 		let q2: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionThreadTests2", DISPATCH_QUEUE_SERIAL)
 		let q3: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionThreadTests3", DISPATCH_QUEUE_SERIAL)
 		
-		dispatch_async(q1) {
-			let n: Action = Action(type: "T")
-			n["P"] = 111
-			n.addGroup("G")
-			
-			dispatch_async(q1) {
-				self.graph.save { [unowned self] (success: Bool, error: NSError?) in
-					XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-					self.insertSaveExpectation?.fulfill()
-				}
-				
-				dispatch_async(q2) {
-					n["P"] = 222
-				}
-				
-				dispatch_async(q2) {
-					self.graph.save { [unowned self] (success: Bool, error: NSError?) in
-						XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-						self.updateSaveExpectation?.fulfill()
-					}
-					
-					dispatch_async(q3) {
-						n.delete()
-					}
-					
-					dispatch_async(q3) {
-						self.graph.save { [unowned self] (success: Bool, error: NSError?) in
-							XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-							self.deleteSaveExpectation?.fulfill()
-						}
-					}
-				}
-			}
-		}
-		
 		insertSaveExpectation = expectationWithDescription("Test: Save did not pass.")
 		insertExpectation = expectationWithDescription("Test: Insert did not pass.")
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
@@ -93,10 +58,39 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
 		updateSaveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		deleteSaveExpectation = self.expectationWithDescription("Test: Save did not pass.")
-		deleteExpectation = self.expectationWithDescription("Test: Delete did not pass.")
-		deletePropertyExpectation = self.expectationWithDescription("Test: Delete property did not pass.")
-		deleteGroupExpectation = self.expectationWithDescription("Test: Delete group did not pass.")
+		deleteSaveExpectation = expectationWithDescription("Test: Save did not pass.")
+		deleteExpectation = expectationWithDescription("Test: Delete did not pass.")
+		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
+		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
+		
+		dispatch_async(q1) {
+			let n: Action = Action(type: "T")
+			n["P"] = 111
+			n.addGroup("G")
+			
+			self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+				self.insertSaveExpectation?.fulfill()
+			}
+				
+			dispatch_async(q2) {
+				n["P"] = 222
+			
+				self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+					XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+					self.updateSaveExpectation?.fulfill()
+				}
+				
+				dispatch_async(q3) {
+					n.delete()
+				
+					self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+						XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+						self.deleteSaveExpectation?.fulfill()
+					}
+				}
+			}
+		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 	}

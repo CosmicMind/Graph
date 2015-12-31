@@ -22,23 +22,22 @@ public extension Graph {
 	/**
 		:name:	watchForEntity(types: groups: properties)
 	*/
-	public func watchForEntity(types types: Array<String>, groups: Array<String>? = nil, properties: Array<String>? = nil) {
-		// types
-		for i in types {
-			watch(Entity: i)
-		}
-		
-		// groups
-		if let n: Array<String> = groups {
-			for i in n {
-				watch(EntityGroup: i)
+	public func watchForEntity(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<String>? = nil) {
+		if let v: Array<String> = types {
+			for x in v {
+				watch(Entity: x)
 			}
 		}
 		
-		// properties
-		if let n: Array<String> = properties {
-			for i in n {
-				watch(EntityProperty: i)
+		if let v: Array<String> = groups {
+			for x in v {
+				watch(EntityGroup: x)
+			}
+		}
+		
+		if let v: Array<String> = properties {
+			for x in v {
+				watch(EntityProperty: x)
 			}
 		}
 	}
@@ -46,23 +45,22 @@ public extension Graph {
 	/**
 		:name:	watchForAction(types: groups: properties)
 	*/
-	public func watchForAction(types types: Array<String>, groups: Array<String>? = nil, properties: Array<String>? = nil) {
-		// types
-		for i in types {
-			watch(Action: i)
-		}
-		
-		// groups
-		if let n: Array<String> = groups {
-			for i in n {
-				watch(ActionGroup: i)
+	public func watchForAction(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<String>? = nil) {
+		if let v: Array<String> = types {
+			for x in v {
+				watch(Action: x)
 			}
 		}
 		
-		// properties
-		if let n: Array<String> = properties {
-			for i in n {
-				watch(ActionProperty: i)
+		if let v: Array<String> = groups {
+			for x in v {
+				watch(ActionGroup: x)
+			}
+		}
+		
+		if let v: Array<String> = properties {
+			for x in v {
+				watch(ActionProperty: x)
 			}
 		}
 	}
@@ -70,23 +68,22 @@ public extension Graph {
 	/**
 		:name:	watchForBond(types: groups: properties)
 	*/
-	public func watchForBond(types types: Array<String>, groups: Array<String>? = nil, properties: Array<String>? = nil) {
-		// types
-		for i in types {
-			watch(Bond: i)
-		}
-		
-		// groups
-		if let n: Array<String> = groups {
-			for i in n {
-				watch(BondGroup: i)
+	public func watchForBond(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<String>? = nil) {
+		if let v: Array<String> = types {
+			for x in v {
+				watch(Bond: x)
 			}
 		}
 		
-		// properties
-		if let n: Array<String> = properties {
-			for i in n {
-				watch(BondProperty: i)
+		if let v: Array<String> = groups {
+			for x in v {
+				watch(BondGroup: x)
+			}
+		}
+		
+		if let v: Array<String> = properties {
+			for x in v {
+				watch(BondProperty: x)
 			}
 		}
 	}
