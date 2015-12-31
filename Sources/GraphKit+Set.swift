@@ -57,6 +57,10 @@ extension Set : ProbableType {
 	The probability of elements.
 	*/
 	public func probabilityOf(block: (element: Element) -> Bool) -> Double {
+		if 0 == count {
+			return 0
+		}
+		
 		var c: Int = 0
 		for x in self {
 			if block(element: x) {

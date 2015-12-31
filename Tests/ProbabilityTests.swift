@@ -21,6 +21,8 @@ import XCTest
 
 class ProbabilityTests: XCTestCase {
 	
+	var saveExpectation: XCTestExpectation?
+	
 	override func setUp() {
 		super.setUp()
 	}
@@ -31,18 +33,19 @@ class ProbabilityTests: XCTestCase {
 	
 	func testSortedSet() {
 		let s: SortedSet<Int> = SortedSet<Int>()
+		XCTAssertEqual(0, s.probabilityOf({ _ -> Bool in return true}))
 		
 		s.insert(1, 2, 3, 3)
 		
 		let ev1: Double = 16 * s.probabilityOf(2, 3)
 		
-		XCTAssert(ev1 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev1, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		let ev2: Double = 16 * s.probabilityOf { (element: Int) -> Bool in
 			return 2 == element || 3 == element
 		}
 		
-		XCTAssert(ev2 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev2, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
@@ -50,18 +53,19 @@ class ProbabilityTests: XCTestCase {
 	
 	func testSortedMultiSet() {
 		let s: SortedSet<Int> = SortedSet<Int>()
+		XCTAssertEqual(0, s.probabilityOf({ _ -> Bool in return true}))
 		
 		s.insert(1, 2, 3, 3)
 		
 		let ev1: Double = 16 * s.probabilityOf(2, 3)
 		
-		XCTAssert(ev1 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev1, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		let ev2: Double = 16 * s.probabilityOf { (element: Int) -> Bool in
 			return 2 == element || 3 == element
 		}
 		
-		XCTAssert(ev2 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev2, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
@@ -69,6 +73,7 @@ class ProbabilityTests: XCTestCase {
 	
 	func testSortedDictionary() {
 		let s: SortedDictionary<Int, Int> = SortedDictionary<Int, Int>()
+		XCTAssertEqual(0, s.probabilityOf({ _ -> Bool in return true}))
 		
 		s.insert((1, 1))
 		s.insert((2, 2))
@@ -77,13 +82,13 @@ class ProbabilityTests: XCTestCase {
 		
 		let ev1: Double = 16 * s.probabilityOf(2, 3)
 		
-		XCTAssert(ev1 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev1, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		let ev2: Double = 16 * s.probabilityOf { (key: Int, value: Int?) -> Bool in
 			return 2 == value || 3 == value
 		}
 		
-		XCTAssert(ev2 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev2, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
@@ -91,6 +96,7 @@ class ProbabilityTests: XCTestCase {
 	
 	func testSortedMultiDictionary() {
 		let s: SortedMultiDictionary<Int, Int> = SortedMultiDictionary<Int, Int>()
+		XCTAssertEqual(0, s.probabilityOf({ _ -> Bool in return true}))
 		
 		s.insert((1, 1))
 		s.insert((2, 2))
@@ -99,13 +105,13 @@ class ProbabilityTests: XCTestCase {
 		
 		let ev1: Double = 16 * s.probabilityOf(2, 3)
 		
-		XCTAssert(ev1 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev1, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		let ev2: Double = 16 * s.probabilityOf { (key: Int, value: Int?) -> Bool in
 			return 2 == value || 3 == value
 		}
 		
-		XCTAssert(ev2 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev2, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
@@ -113,6 +119,7 @@ class ProbabilityTests: XCTestCase {
 	
 	func testArray() {
 		var s: Array<Int> = Array<Int>()
+		XCTAssertEqual(0, s.probabilityOf({ _ -> Bool in return true}))
 		
 		s.append(1)
 		s.append(2)
@@ -121,13 +128,13 @@ class ProbabilityTests: XCTestCase {
 		
 		let ev1: Double = 16 * s.probabilityOf(2, 3)
 		
-		XCTAssert(ev1 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev1, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		let ev2: Double = 16 * s.probabilityOf { (element: Int) -> Bool in
 			return 2 == element || 3 == element
 		}
 		
-		XCTAssert(ev2 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev2, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
@@ -135,6 +142,7 @@ class ProbabilityTests: XCTestCase {
 	
 	func testSet() {
 		var s: Set<Int> = Set<Int>()
+		XCTAssertEqual(0, s.probabilityOf({ _ -> Bool in return true}))
 		
 		s.insert(1)
 		s.insert(2)
@@ -143,13 +151,13 @@ class ProbabilityTests: XCTestCase {
 		
 		let ev1: Double = 16 * s.probabilityOf(2, 3)
 		
-		XCTAssert(ev1 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev1, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		let ev2: Double = 16 * s.probabilityOf { (element: Int) -> Bool in
 			return 2 == element || 3 == element
 		}
 		
-		XCTAssert(ev2 == s.expectedValueOf(16, elements: 2, 3), "Test failed.")
+		XCTAssertEqual(ev2, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		s.removeAll()
 		XCTAssert(0 == s.count, "Test failed.")
@@ -158,52 +166,103 @@ class ProbabilityTests: XCTestCase {
 	func testEntity() {
 		let graph: Graph = Graph()
 		let target: Entity = Entity(type: "T")
+		
 		for _ in 0..<99 {
 			let _: Entity = Entity(type: "T")
 		}
-		graph.save()
 		
-		let entities: Array<Entity> = graph.searchForEntity(types: ["T"])
-		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
+		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		for e in entities {
-			e.delete()
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+			self.saveExpectation?.fulfill()
 		}
-		graph.save()
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		let s: Array<Entity> = graph.searchForEntity(types: ["T"])
+		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
+		
+		for x in s {
+			x.delete()
+		}
+		
+		saveExpectation = expectationWithDescription("Test: Save did not pass.")
+		
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+			self.saveExpectation?.fulfill()
+		}
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
 	func testAction() {
 		let graph: Graph = Graph()
 		let target: Action = Action(type: "T")
+		
 		for _ in 0..<99 {
 			let _: Action = Action(type: "T")
 		}
-		graph.save()
 		
-		let entities: Array<Action> = graph.searchForAction(types: ["T"])
-		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
+		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		for e in entities {
-			e.delete()
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+			self.saveExpectation?.fulfill()
 		}
-		graph.save()
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		let s: Array<Action> = graph.searchForAction(types: ["T"])
+		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
+		
+		for x in s {
+			x.delete()
+		}
+		
+		saveExpectation = expectationWithDescription("Test: Save did not pass.")
+		
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+			self.saveExpectation?.fulfill()
+		}
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
 	func testBond() {
 		let graph: Graph = Graph()
 		let target: Bond = Bond(type: "T")
+		
 		for _ in 0..<99 {
 			let _: Bond = Bond(type: "T")
 		}
-		graph.save()
 		
-		let entities: Array<Bond> = graph.searchForBond(types: ["T"])
-		XCTAssert(0.01 == entities.probabilityOf(target), "Test failed.")
+		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		for e in entities {
-			e.delete()
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+			self.saveExpectation?.fulfill()
 		}
-		graph.save()
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		let s: Array<Bond> = graph.searchForBond(types: ["T"])
+		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
+		
+		for x in s {
+			x.delete()
+		}
+		
+		saveExpectation = expectationWithDescription("Test: Save did not pass.")
+		
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+			self.saveExpectation?.fulfill()
+		}
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 
 	func testPerformance() {

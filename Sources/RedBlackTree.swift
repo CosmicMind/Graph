@@ -199,6 +199,10 @@ public class RedBlackTree<Key : Comparable, Value> : ProbableType, CollectionTyp
 	The probability of elements.
 	*/
 	public func probabilityOf(block: (key: Key, value: Value?) -> Bool) -> Double {
+		if 0 == count {
+			return 0
+		}
+		
 		var c: Int = 0
 		for (k, v) in self {
 			if block(key: k, value: v) {
