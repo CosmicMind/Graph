@@ -1,16 +1,46 @@
 ![GK](http://www.graphkit.io/GK/GraphKit.png)
 
-# GraphKit
+# Welcome to GraphKit
+
+GraphKit is a data and algorithm framework built on top of CoreData. It is available for iOS and OS X. A major goal in the design of GraphKit is to allow data to be modeled as one would think. The following README is written to get you started, and is by no means a complete tutorial on all that is possible.
 
 ### CocoaPods Support
 
 GraphKit is on CocoaPods under the name [GK](https://cocoapods.org/?q=GK).
 
-### A Simple Entity
+### Carthage Support
 
-Let's begin with creating a simple model object using an Entity. An Entity represents a person, place, or thing. Below is an example of creating a "User" type Entity.
+Carthage is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
 
-![GK](http://www.graphkit.io/GK/Entity.png)
+You can install Carthage with Homebrew using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+To integrate MaterialKit into your Xcode project using Carthage, specify it in your Cartfile:
+
+```bash
+github "CosmicMind/GraphKit"
+```
+
+Run carthage to build the framework and drag the built MaterialKit.framework into your Xcode project.
+
+### Table of Contents  
+
+* [Entity](#entity)
+* [Bond](#bond)
+* [Action](#action)
+
+### Upcoming
+
+* Example Projects
+* Additional Data Structures
+
+<a name="entity"/>
+### Entity
+
+Let's begin with creating a simple model object and saving it to the Graph. Model objects are known as Entity Objects, which represent a person, place, or thing. Below is an example of creating a "User" type Entity.
 
 ```swift
 let graph: Graph = Graph()
@@ -22,11 +52,10 @@ user["age"] = 27
 graph.save()
 ```
 
-### Relationship Bond
+<a name="bond"/>
+### Bond
 
-A Relationship between two Entity objects is done using a Bond. A Bond is structured like a sentence, in that it has a Subject and Object. Below is an example of constructing a relationship, between a "User" and "Book" Entity type. It may be thought of as "User is Author of Book".
-
-![GK](http://www.graphkit.io/GK/Bond.png)
+A Bond is used to form a relationship between two Entity Objects. A Bond's relationship structure is like a sentence, in that it has a Subject and Object. Let's look at an example to clarify this concept. Below is an example of two Entity Objects, a User and a Book, that have a relationship that is defined by the User being the Author of the Book. The relationship should read as, "User is Author of Book."
 
 ```swift
 let graph: Graph = Graph()
@@ -46,17 +75,16 @@ author.object = book
 graph.save()
 ```
 
-### Real-Time Action
+<a name="action"/>
+### Action
 
-Engagement drives experience. When a user engages your application, an Action object may be used to capture all the relevant data in a single snapshot. An Action does this, very much like a Bond, by relating Subjects to Objects. Below is an example of a user purchasing many books. It may be thought of as "User Purchased these Book(s)".
-
-![GK](http://www.graphkit.io/GK/Action.png)
+When a user engages your application, an Action Object may be used to capture all the relevant data in a single snapshot. An Action does this, very much like a Bond, by relating Subjects to Objects. Below is an example of a user purchasing many books. It may be thought of as "User Purchased these Book(s)."
 
 ```swift
 let graph: Graph = Graph()
 
 let user: Entity = Entity(type: "User")
-let books: SortedSet<Entity> = graph.search(entity: ["Book"], group: ["Physics"])
+let books: Array<Entity> = graph.searchForEntity(types: ["Book"])
 
 let purchased: Action = Action(type: "Purchased")
 purchased.addSubject(user)
