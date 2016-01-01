@@ -18,7 +18,7 @@ You can install Carthage with Homebrew using the following command:
 $ brew update
 $ brew install carthage
 ```
-To integrate MaterialKit into your Xcode project using Carthage, specify it in your Cartfile:
+To integrate GraphKit into your Xcode project using Carthage, specify it in your Cartfile:
 
 ```bash
 github "CosmicMind/GraphKit"
