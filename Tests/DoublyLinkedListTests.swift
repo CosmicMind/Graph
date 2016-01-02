@@ -131,9 +131,9 @@ class DoublyLinkedListTests: XCTestCase {
 	
 	func testConcat() {
 		let l1: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
-		l1.insertAtBack(1)
-		l1.insertAtBack(2)
-		l1.insertAtBack(3)
+		l1.insertAtFront(1)
+		l1.insertAtFront(2)
+		l1.insertAtFront(3)
 		
 		let l2: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
 		l2.insertAtBack(4)

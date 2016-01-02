@@ -255,7 +255,109 @@ GraphKit comes packed with some powerful data structures to help write algorithm
 <a name="doublylinkedlist"/>
 ### DoublyLinkedList
 
-The List data structure is an implementation of a Doubly-Linked List, and is excellent for large growing collections of data.
+The DoublyLinkedList data structure is excellent for large growing collections of data. Below is an example of its usage.
+
+```swift
+let listA: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
+listA.insertAtFront(1)
+listA.insertAtFront(2)
+listA.insertAtFront(3)
+
+let listB: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
+listB.insertAtBack(4)
+listB.insertAtBack(5)
+listB.insertAtBack(6)
+
+let listC: DoublyLinkedList<Int> = listA + listB
+
+listC.cursorToFront()
+while !listC.isCursorAtBack {
+	print(listC.cursor)
+	listC.next
+}
+// Output:
+// 1
+// 2
+// 3
+// 4
+// 5
+// 6
+```
+
+<a name="stack"/>
+### Stack
+
+The Stack data structure is a container of objects that are inserted and removed according to the last-in-first-out (LIFO) principle. Below is an example of its usage.
+
+```swift
+let stack: Stack<Int> = Stack<Int>()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+
+while !stack.isEmpty {
+	print(stack.pop())
+}
+// Output:
+// 3
+// 2
+// 1
+```
+
+<a name="queue"/>
+### Queue
+
+The Queue data structure is a container of objects that are inserted and removed according to the first-in-first-out (FIFO) principle. Below is an example of its usage.
+
+```swift
+let queue: Queue<Int> = Queue<Int>()
+queue.enqueue(1)
+queue.enqueue(2)
+queue.enqueue(3)
+
+while !queue.isEmpty {
+	print(queue.dequeue())
+}
+// Output:
+// 1
+// 2
+// 3
+```
+
+<a name="deque"/>
+### Deque
+
+The Deque data structure is a container of objects that are inserted and removed according to the first-in-first-out (FIFO) and last-in-first-out (LIFO) principle. Essentially, a Deque is a Stack and Queue combined. Below is an example of its usage.
+
+```swift
+let dequeA: Deque<Int> = Deque<Int>()
+dequeA.insertAtBack(1)
+dequeA.insertAtBack(2)
+dequeA.insertAtBack(3)
+
+while !dequeA.isEmpty {
+	print(dequeA.front)
+	dequeA.removeAtFront()
+}
+// Output:
+// 1
+// 2
+// 3
+
+let dequeB: Deque<Int> = Deque<Int>()
+dequeB.insertAtBack(4)
+dequeB.insertAtBack(5)
+dequeB.insertAtBack(6)
+
+while !dequeB.isEmpty {
+	print(dequeB.back)
+	dequeB.removeAtBack()
+}
+// Output:
+// 6
+// 5
+// 4
+```
 
 ### License
 
