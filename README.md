@@ -35,6 +35,7 @@ Run carthage to build the framework and drag the built GraphKit.framework into y
 * [Probability](#probability)
 * [Data Driven](#datadriven)
 * [Faceted Search](#facetedsearch)
+* [JSON](#json)
 * [Data Structures](#datastructures)
 * [DoublyLinkedList](#doublylinkedlist)
 * [Stack](#stack)
@@ -244,6 +245,30 @@ let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filt
 	}
 	return false
 }
+```
+
+<a name="json"/>
+### JSON
+
+JSON is a widely used format for serializing data. GraphKit comes with a JSON toolset. Below are some examples of its usage.
+
+```swift
+// serialize
+let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
+
+// parse
+let j1: JSON? = JSON.parse(data!)
+
+// access
+print(j1?["user"]?["username"]?.asString) // output: "daniel"
+
+// stringify
+let stringified: String? = JSON.stringify(j1!)
+print(stringified) // output: "{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}"
+
+// parse
+let j2: JSON? = JSON.parse(stringified!)
+print(j2?["user"]?["token"]?.asInt) // output: 123456789
 ```
 
 <a name="datastructures"/>
