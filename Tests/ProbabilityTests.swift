@@ -223,7 +223,12 @@ class ProbabilityTests: XCTestCase {
 		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
 		
 		XCTAssertEqual(0.5, s.probabilityOf { (action: Action) in
-			return true == action.objects.first?.hasGroup("Physics")
+			if let book: Entity = action.objects.first {
+				if "Book" == book.type {
+					return book.hasGroup("Physics")
+				}
+			}
+			return false
 		}, "Test failed.")
 		
 		for x in s {

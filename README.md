@@ -100,36 +100,65 @@ graph.save()
 
 ### Groups
 
-Groups are used to organize Entities, Bonds, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo, Video, and Book Entity type may exist in a single group called Media. Another example may be including the Photo, Video, and Book Entity types in a Favorite group for your users' account. Below is an example of using groups.
+Groups are used to organize Entities, Bonds, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo and Video Entity type may exist in a group called Media. Another example may be including a Photo and Book Entity type in a Favorites group for your users' account. Below are examples of using groups.
 
 ```swift
 // Adding a group.
 let photo: Entity = Entity(type: "Photo")
 photo.addGroup("Media")
-photo.addGroup("Favorite")
+photo.addGroup("Favorites")
 photo.addGroup("Holiday Album")
 
 let video: Entity = Entity(type: "Video")
 video.addGroup("Media")
 
 let book: Entity = Entity(type: "Book")
+book.addGroup("Favorites")
 book.addGroup("To Read")
 
 // Searching groups.
-let favorites: Array<Entity> = graph.searchForEntity(groups: ["Favorite"])
+let favorites: Array<Entity> = graph.searchForEntity(groups: ["Favorites"])
 ```
 
 <a name="probability"/>
 ### Probability
 
-GraphKit comes ready with Probability in mind. Your application may be completely catered to your individual user's habits and usage. To demonstrate this wonderful feature, let's look at an example where your application executes a different block of code based on the likelihood that a user will purchase a Physics book.
+Probability is a core feature within GraphKit. Your application may be completely catered to your users' habits and usage. To demonstrate this wonderful feature, let's look at some examples:
+
+Determining the probability of rolling a 3 on a die of 6 numbers.
 
 ```swift
-let die: SortedSet<Int> = SortedSet<Int>(elements: 1, 2, 3, 4, 5, 6)
+let die: Array<Int> = Array<Int>(arrayLiteral: 1, 2, 3, 4, 5, 6)
 print(die.probabilityOf(3)) // output: 0.166666666666667
 ```
 
-### Data-Driven Design
+The expected value of rolling a 3 or 6, 100 times on a die of 6 numbers.
+
+```swift
+let die: Array<Int> = Array<Int>(arrayLiteral: 1, 2, 3, 4, 5, 6)
+print(die.expectedValueOf(100, elements: 3, 6)) // output: 33.3333333333333
+```
+
+Recommending a Physics book if the user is likely to buy a Physics book.
+
+```swift
+let purchased: Array<Action> = graph.searchForAction(types: ["Purchased"])
+
+let probabilityOfX: Double = purchased.probabilityOf { (action: Action) in
+	if let book: Entity = action.objects.first {
+		if "Book" == book.type {
+			return book.hasGroup("Physics")
+		}
+	}
+	return false
+}
+
+if 50 < probabilityOfX {
+	// Recommend a Physics book.
+}
+```
+
+### Data-Driven
 
 As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User Clicked a Button".
 
