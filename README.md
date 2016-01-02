@@ -156,7 +156,7 @@ Recommending a Physics book if the user is likely to buy a Physics book.
 ```swift
 let purchased: Array<Action> = graph.searchForAction(types: ["Purchased"])
 
-let probabilityOfX: Double = purchased.probabilityOf { (action: Action) in
+let pOfX: Double = purchased.probabilityOf { (action: Action) in
 	if let entity: Entity = action.objects.first {
 		if "Book" == entity.type {
 			return entity.hasGroup("Physics")
@@ -165,7 +165,7 @@ let probabilityOfX: Double = purchased.probabilityOf { (action: Action) in
 	return false
 }
 
-if 33.33 < probabilityOfX {
+if 33.33 < pOfX {
 	// Recommend a Physics book.
 }
 ```
@@ -224,7 +224,7 @@ let collection: Array<Entity> = graph.searchForEntity(groups: ["Media", "Favorit
 Searching multiple Entity properties.
 
 ```swift
-let collection: Array<Entity> = graph.searchForEntity(properties: [(key: "name", value: "Eve"), ("age", "27")])
+let collection: Array<Entity> = graph.searchForEntity(properties: [(key: "name", value: "Eve"), ("age", 27)])
 ```
 
 Searching multiple facets simultaneously will aggregate all results into a single collection.
