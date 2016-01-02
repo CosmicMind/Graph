@@ -35,6 +35,17 @@ Run carthage to build the framework and drag the built GraphKit.framework into y
 * [Probability](#probability)
 * [Data Driven](#datadriven)
 * [Faceted Search](facetedsearch)
+* [Data Structures](datastructures)
+* [DoublyLinkedList](doublylinkedlist)
+* [Stack](stack)
+* [Queue](queue)
+* [Deque](deque)
+* [RedBlackTree](redblacktree)
+* [SortedSet](sortedset)
+* [SortedMultiSet](sortedmultiset)
+* [SortedDictionary](sorteddictionary)
+* [SortedMultiDictionary](sortedmultidictionary)
+
 
 ### Upcoming
 
@@ -166,8 +177,6 @@ if 50 < probabilityOfX {
 
 As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User Clicked a Button".
 
-![GK](http://www.graphkit.io/GK/DataDriven.png)
-
 ```swift
 // Set the UIViewController's Protocol to GraphDelegate.
 let graph: Graph = Graph()
@@ -242,7 +251,12 @@ let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filt
 <a name="datastructures"/>
 ### Data Structures
 
-GraphKit comes packed with some useful data structures to help write wonderful algorithms. The following structures are included: List, Stack, Queue, Deque, RedBlackTree, SortedSet, SortedMultiSet, SortedDictionary, and SortedMultiDictionary.
+GraphKit comes packed with some powerful data structures to help write algorithms. The following structures are included: List, Stack, Queue, Deque, RedBlackTree, SortedSet, SortedMultiSet, SortedDictionary, and SortedMultiDictionary.
+
+<a name="doublylinkedlist"/>
+### DoublyLinkedList
+
+The List data structure is an implementation of a Doubly-Linked List, and is excellent for large growing collections of data.
 
 ### License
 

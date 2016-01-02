@@ -18,20 +18,20 @@
 
 // #internal
 
-internal class ListNode<Element> : CustomStringConvertible {
+internal class DoublyLinkedListNode<Element> : CustomStringConvertible {
 	/**
 		:name:	next
-		:description:	Points to the successor element in the List.
-		- returns:	ListNode<Element>?
+		:description:	Points to the successor element in the DoublyLinkedList.
+		- returns:	DoublyLinkedListNode<Element>?
 	*/
-	internal var next: ListNode<Element>?
+	internal var next: DoublyLinkedListNode<Element>?
 
 	/**
 		:name:	previous
-		:description:	points to the predacessor element in the List.
-		- returns:	ListNode<Element>?
+		:description:	points to the predacessor element in the DoublyLinkedList.
+		- returns:	DoublyLinkedListNode<Element>?
 	*/
-	internal var previous: ListNode<Element>?
+	internal var previous: DoublyLinkedListNode<Element>?
 
 	/**
 		:name:	data
@@ -53,7 +53,7 @@ internal class ListNode<Element> : CustomStringConvertible {
 		:name:	init
 		:description:	Constructor.
 	*/
-	internal init(next: ListNode<Element>?, previous: ListNode<Element>?, element: Element?) {
+	internal init(next: DoublyLinkedListNode<Element>?, previous: DoublyLinkedListNode<Element>?, element: Element?) {
 		self.next = next
 		self.previous = previous
 		self.element = element

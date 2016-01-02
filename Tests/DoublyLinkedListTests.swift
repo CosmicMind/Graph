@@ -19,7 +19,7 @@
 import XCTest
 @testable import GraphKit
 
-class ListTests: XCTestCase {
+class DoublyLinkedListTests: XCTestCase {
 	
 	override func setUp() {
 		super.setUp()
@@ -30,7 +30,7 @@ class ListTests: XCTestCase {
 	}
 	
 	func testInt() {
-		let l: List<Int> = List<Int>()
+		let l: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
 		
 		l.insertAtFront(1)
 		l.insertAtFront(2)
@@ -130,17 +130,17 @@ class ListTests: XCTestCase {
 	}
 	
 	func testConcat() {
-		let l1: List<Int> = List<Int>()
+		let l1: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
 		l1.insertAtBack(1)
 		l1.insertAtBack(2)
 		l1.insertAtBack(3)
 		
-		let l2: List<Int> = List<Int>()
+		let l2: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
 		l2.insertAtBack(4)
 		l2.insertAtBack(5)
 		l2.insertAtBack(6)
 		
-		let l3: List<Int> = l1 + l2
+		let l3: DoublyLinkedList<Int> = l1 + l2
 		
 		for x in l1 {
 			XCTAssert(x == l3.removeAtFront(), "Concat incorrect.")

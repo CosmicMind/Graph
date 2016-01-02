@@ -22,9 +22,9 @@ public class Deque<Element> : CustomStringConvertible, SequenceType {
 	/**
 		:name:	list
 		:description:	Underlying element structure.
-		- returns:	List<Element>
+		- returns:	DoublyLinkedList<Element>
 	*/
-	private var list: List<Element>
+	private var list: DoublyLinkedList<Element>
 
 	/**
 		:name:	count
@@ -78,7 +78,7 @@ public class Deque<Element> : CustomStringConvertible, SequenceType {
 		:description:	Constructor.
 	*/
 	public init() {
-		list = List<Element>()
+		list = DoublyLinkedList<Element>()
 	}
 
 	//

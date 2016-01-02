@@ -16,33 +16,33 @@
 // in a file called LICENSE.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-public class List<Element> : CustomStringConvertible, SequenceType {
+public class DoublyLinkedList<Element> : CustomStringConvertible, SequenceType {
 	public typealias Generator = AnyGenerator<Element?>
 
 	/**
 		:name:	head
 		:description:	First node in the list.
-		- returns:	ListNode<Element>?
+		- returns:	DoublyLinkedListNode<Element>?
 	*/
-	private var head: ListNode<Element>?
+	private var head: DoublyLinkedListNode<Element>?
 
 	/**
 		:name:	tail
 		:description:	Last node in list.
-		- returns:	ListNode<Element>?
+		- returns:	DoublyLinkedListNode<Element>?
 	*/
-	private var tail: ListNode<Element>?
+	private var tail: DoublyLinkedListNode<Element>?
 
 	/**
 		:name:	current
 		:description:	Current cursor position when iterating.
-		- returns:	ListNode<Element>?
+		- returns:	DoublyLinkedListNode<Element>?
 	*/
-	private var current: ListNode<Element>?
+	private var current: DoublyLinkedListNode<Element>?
 
 	/**
 		:name:	count
-		:description:	Number of nodes in List.
+		:description:	Number of nodes in DoublyLinkedList.
 		- returns:	Int
 	*/
 	public private(set) var count: Int
@@ -50,13 +50,13 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 	/**
 		:name:	internalDescription
 		:description:	Returns a String with only the node data for all
-		nodes in the List.
+		nodes in the DoublyLinkedList.
 		- returns:	String
 	*/
 	internal var internalDescription: String {
 		var output: String = "("
 		var c: Int = 0
-		var x: ListNode<Element>? = head
+		var x: DoublyLinkedListNode<Element>? = head
 		while nil !== x {
 			output += "\(x)"
 			if ++c != count {
@@ -74,12 +74,12 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 		- returns:	String
 	*/
 	public var description: String {
-		return "List" + internalDescription
+		return "DoublyLinkedList" + internalDescription
 	}
 
 	/**
 		:name:	front
-		:description:	Retrieves the data at first node of the List.
+		:description:	Retrieves the data at first node of the DoublyLinkedList.
 		- returns:	Element?
 	*/
 	public var front: Element? {
@@ -88,7 +88,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 
 	/**
 		:name:	back
-		:description:	Retrieves the element at the back node of teh List.
+		:description:	Retrieves the element at the back node of teh DoublyLinkedList.
 		- returns:	Element?
 	*/
 	public var back: Element? {
@@ -98,7 +98,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 	/**
 		:name:	cursor
 		:description:	Retrieves the element at the current iterator position
-		in the List.
+		in the DoublyLinkedList.
 		- returns:	Element?
 	*/
 	public var cursor: Element? {
@@ -131,7 +131,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 
 	/**
 		:name:	isEmpty
-		:description:	A boolean of whether the List is empty.
+		:description:	A boolean of whether the DoublyLinkedList is empty.
 		- returns:	Bool
 	*/
 	public var isEmpty: Bool {
@@ -141,7 +141,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 	/**
 		:name:	isCursorAtBack
 		:description:	A boolean of whether the cursor has reached
-		the back of the List.
+		the back of the DoublyLinkedList.
 		- returns:	Bool
 	*/
 	public var isCursorAtBack: Bool {
@@ -151,7 +151,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 	/**
 		:name:	isCursorAtFront
 		:description:	A boolean of whether the cursor has reached
-		the front of the List.
+		the front of the DoublyLinkedList.
 		- returns:	Bool
 	*/
 	public var isCursorAtFront: Bool {
@@ -171,9 +171,9 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 	//	:name:	generate
 	//	:description:	Conforms to the SequenceType Protocol. Returns
 	//	the next value in the sequence of nodes.
-	//	:returns:	List.Generator
+	//	:returns:	DoublyLinkedList.Generator
 	//
-	public func generate() -> List.Generator {
+	public func generate() -> DoublyLinkedList.Generator {
 		cursorToFront()
 		return anyGenerator {
 			if !self.isCursorAtBack {
@@ -187,7 +187,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 
 	/**
 		:name:	removeAll
-		:description:	Removes all nodes from the List.
+		:description:	Removes all nodes from the DoublyLinkedList.
 	*/
 	public func removeAll() {
 		while !isEmpty {
@@ -198,15 +198,15 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 	/**
 		:name:	insertAtFront
 		:description:	Insert a new element at the front
-		of the List.
+		of the DoublyLinkedList.
 	*/
 	public func insertAtFront(element: Element) {
-		var z: ListNode<Element>
+		var z: DoublyLinkedListNode<Element>
 		if 0 == count {
-			z = ListNode<Element>(next: nil, previous: nil,  element: element)
+			z = DoublyLinkedListNode<Element>(next: nil, previous: nil,  element: element)
 			tail = z
 		} else {
-			z = ListNode<Element>(next: head, previous: nil, element: element)
+			z = DoublyLinkedListNode<Element>(next: head, previous: nil, element: element)
 			head!.previous = z
 		}
 		head = z
@@ -219,7 +219,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 
 	/**
 		:name:	removeAtFront
-		:description:	Remove the element at the front of the List
+		:description:	Remove the element at the front of the DoublyLinkedList
 		and return the element at the poistion.
 		- returns:	Element?
 	*/
@@ -239,15 +239,15 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 	/**
 		:name:	insertAtBack
 		:description:	Insert a new element at the back
-		of the List.
+		of the DoublyLinkedList.
 	*/
 	public func insertAtBack(element: Element) {
-		var z: ListNode<Element>
+		var z: DoublyLinkedListNode<Element>
 		if 0 == count {
-			z = ListNode<Element>(next: nil, previous: nil,  element: element)
+			z = DoublyLinkedListNode<Element>(next: nil, previous: nil,  element: element)
 			head = z
 		} else {
-			z = ListNode<Element>(next: nil, previous: tail, element: element)
+			z = DoublyLinkedListNode<Element>(next: nil, previous: tail, element: element)
 			tail!.next = z
 		}
 		tail = z
@@ -260,7 +260,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 
 	/**
 		:name:	removeAtBack
-		:description:	Remove the element at the back of the List
+		:description:	Remove the element at the back of the DoublyLinkedList
 		and return the element at the poistion.
 		- returns:	Element?
 	*/
@@ -279,7 +279,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 
 	/**
 		:name:	cursorToFront
-		:description:	Move the cursor to the front of the List.
+		:description:	Move the cursor to the front of the DoublyLinkedList.
 	*/
 	public func cursorToFront() {
 		current = head
@@ -287,7 +287,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 
 	/**
 		:name:	cursorToBack
-		:description:	Move the cursor to the back of the List.
+		:description:	Move the cursor to the back of the DoublyLinkedList.
 	*/
 	public func cursorToBack() {
 		current = tail
@@ -301,7 +301,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 		if nil === current || head === current {
 			insertAtFront(element)
 		} else {
-			let z: ListNode<Element> = ListNode<Element>(next: current, previous: current!.previous,  element: element)
+			let z: DoublyLinkedListNode<Element> = DoublyLinkedListNode<Element>(next: current, previous: current!.previous,  element: element)
 			current!.previous?.next = z
 			current!.previous = z
 			++count
@@ -316,7 +316,7 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 		if nil === current || tail === current {
 			insertAtBack(element)
 		} else {
-			let z: ListNode<Element> = ListNode<Element>(next: current!.next, previous: current,  element: element)
+			let z: DoublyLinkedListNode<Element> = DoublyLinkedListNode<Element>(next: current!.next, previous: current,  element: element)
 			current!.next?.previous = z
 			current!.next = z
 			++count
@@ -360,8 +360,8 @@ public class List<Element> : CustomStringConvertible, SequenceType {
 	}
 }
 
-public func +<Element>(lhs: List<Element>, rhs: List<Element>) -> List<Element> {
-	let l: List<Element> = List<Element>()
+public func +<Element>(lhs: DoublyLinkedList<Element>, rhs: DoublyLinkedList<Element>) -> DoublyLinkedList<Element> {
+	let l: DoublyLinkedList<Element> = DoublyLinkedList<Element>()
 	for x in lhs {
 		l.insertAtBack(x!)
 	}
@@ -371,7 +371,7 @@ public func +<Element>(lhs: List<Element>, rhs: List<Element>) -> List<Element> 
 	return l
 }
 
-public func +=<Element>(lhs: List<Element>, rhs: List<Element>) {
+public func +=<Element>(lhs: DoublyLinkedList<Element>, rhs: DoublyLinkedList<Element>) {
 	for x in rhs {
 		lhs.insertAtBack(x!)
 	}

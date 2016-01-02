@@ -22,9 +22,9 @@ public class Stack<Element> : CustomStringConvertible, SequenceType {
 	/**
 		:name:	list
 		:description:	Underlying data structure.
-		- returns:	List<Element>
+		- returns:	DoublyLinkedList<Element>
 	*/
-	private var list: List<Element>
+	private var list: DoublyLinkedList<Element>
 
 	/**
 		:name:	count
@@ -69,7 +69,7 @@ public class Stack<Element> : CustomStringConvertible, SequenceType {
 		:description:	Constructor.
 	*/
 	public init() {
-		list = List<Element>()
+		list = DoublyLinkedList<Element>()
 	}
 
 	//
