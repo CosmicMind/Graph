@@ -54,7 +54,7 @@ Run carthage to build the framework and drag the built GraphKit.framework into y
 <a name="entity"/>
 ### Entity
 
-Let's begin with creating a simple model object and saving it to the Graph. Model objects are known as Entity Objects, which represent a person, place, or thing. Each Entity has a type property that specifies the collection to which it belongs to. Below is an example of creating a "User" type Entity.
+Let's begin with creating a simple model object and saving it to the Graph. Model objects are known as Entity Objects, which represent a person, place, or thing. Each Entity has a type property that specifies the collection to which it belongs to. Below is an example of creating a "User" type Entity and saving it to the Graph.
 
 ```swift
 let graph: Graph = Graph()
@@ -69,7 +69,7 @@ graph.save()
 <a name="bond"/>
 ### Bond
 
-A Bond is used to form a relationship between two Entity Objects. Like an Entity, a Bond also has a type property that specifies the collection to which it belongs to. A Bond's relationship structure is like a sentence, in that it has a Subject and Object. Let's look at an example to clarify this concept. Below is an example of two Entity Objects, a User and a Book, that have a relationship that is defined by the User being the Author of the Book. The relationship should read as, "User is Author of Book."
+A Bond is used to form a relationship between two Entity Objects. Like an Entity, a Bond also has a type property that specifies the collection to which it belongs to. A Bond's relationship structure is like a sentence, in that it has a Subject and Object. Let's look at an example to clarify this concept. Below is an example of two Entity Objects, a User and a Book, which have a relationship that is defined by the User being the Author of the Book. The relationship should read as, "User is Author of Book."
 
 ```swift
 let graph: Graph = Graph()
@@ -116,7 +116,6 @@ graph.save()
 Groups are used to organize Entities, Bonds, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo and Video Entity type may exist in a group called Media. Another example may be including a Photo and Book Entity type in a Favorites group for your users' account. Below are examples of using groups.
 
 ```swift
-// Adding a group.
 let photo: Entity = Entity(type: "Photo")
 photo.addGroup("Media")
 photo.addGroup("Favorites")
@@ -138,14 +137,14 @@ let favorites: Array<Entity> = graph.searchForEntity(groups: ["Favorites"])
 
 Probability is a core feature within GraphKit. Your application may be completely catered to your users' habits and usage. To demonstrate this wonderful feature, let's look at some examples:
 
-Determining the probability of rolling a 3 on a die of 6 numbers.
+Determining the probability of rolling a 3 using a die of 6 numbers.
 
 ```swift
 let die: Array<Int> = Array<Int>(arrayLiteral: 1, 2, 3, 4, 5, 6)
 print(die.probabilityOf(3)) // output: 0.166666666666667
 ```
 
-The expected value of rolling a 3 or 6, 100 times on a die of 6 numbers.
+The expected value of rolling a 3 or 6 with 100 trials using a die of 6 numbers.
 
 ```swift
 let die: Array<Int> = Array<Int>(arrayLiteral: 1, 2, 3, 4, 5, 6)
@@ -166,7 +165,7 @@ let probabilityOfX: Double = purchased.probabilityOf { (action: Action) in
 	return false
 }
 
-if 50 < probabilityOfX {
+if 33.33 < probabilityOfX {
 	// Recommend a Physics book.
 }
 ```
@@ -216,13 +215,13 @@ Searching multiple Entity types.
 let collection: Array<Entity> = graph.searchForEntity(types: ["Photo", "Video"])
 ```
 
-Searching Entity groups.
+Searching multiple Entity groups.
 
 ```swift
 let collection: Array<Entity> = graph.searchForEntity(groups: ["Media", "Favorites"])
 ```
 
-Searching Entity properties.
+Searching multiple Entity properties.
 
 ```swift
 let collection: Array<Entity> = graph.searchForEntity(properties: [(key: "name", value: "Eve"), ("age", "27")])
@@ -250,7 +249,7 @@ let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filt
 <a name="datastructures"/>
 ### Data Structures
 
-GraphKit comes packed with some powerful data structures to help write algorithms. The following structures are included: List, Stack, Queue, Deque, RedBlackTree, SortedSet, SortedMultiSet, SortedDictionary, and SortedMultiDictionary.
+GraphKit comes packed with some powerful data structures to help write algorithms. The following structures are included: DoublyLinkedList, Stack, Queue, Deque, RedBlackTree, SortedSet, SortedMultiSet, SortedDictionary, and SortedMultiDictionary.
 
 <a name="doublylinkedlist"/>
 ### DoublyLinkedList
@@ -327,7 +326,7 @@ while !queue.isEmpty {
 <a name="deque"/>
 ### Deque
 
-The Deque data structure is a container of objects that are inserted and removed according to the first-in-first-out (FIFO) and last-in-first-out (LIFO) principle. Essentially, a Deque is a Stack and Queue combined. Below is an example of its usage.
+The Deque data structure is a container of objects that are inserted and removed according to the first-in-first-out (FIFO) and last-in-first-out (LIFO) principle. Essentially, a Deque is a Stack and Queue combined. Below are examples of its usage.
 
 ```swift
 let dequeA: Deque<Int> = Deque<Int>()
