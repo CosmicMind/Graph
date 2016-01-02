@@ -2,7 +2,7 @@
 
 # Welcome to GraphKit
 
-GraphKit is a data and algorithm framework built on top of CoreData. It is available for iOS and OS X. A major goal in the design of GraphKit is to allow data to be modeled as one would think. The following README is written to get you started, and is by no means a complete tutorial on all that is possible.
+GraphKit is a data and algorithm framework built on top of CoreData. It is available for iOS and OS X. A major goal in the design of GraphKit is to allow data to be modeled as one would think. GraphKit is thread safe and will never require a migration between data model changes. The following README is written to get you started, and is by no means a complete tutorial on all that is possible.
 
 ### CocoaPods Support
 
