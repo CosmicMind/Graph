@@ -378,7 +378,7 @@ print(rbA.count) // Output: 3
 <a name="sortedset"/>
 ### SortedSet
 
-A RedBlackTree is a Balanced Binary Search Tree that maintains insert, remove, update, and search operations in a complexity of O(logn). The GraphKit implementation of a RedBlackTree also includes an order-statistic, which allows the data structure to be accessed using subscripts like an array or dictionary. RedBlackTrees may store unique keys or non-unique key values. Below is an example of its usage.
+SortedSets are a powerful data structure for algorithm and analysis design. Elements within a SortedSet are unique and insert, remove, and search operations have a complexity of O(logn). The GraphKit implementation of a SortedSet also includes an order-statistic, which allows the data structure to be accessed using an index subscript like an array. Below are examples of its usage.
 
 ```swift
 let graph: Graph = Graph()
@@ -391,27 +391,55 @@ let setD: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(
 
 let setE: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(types: ["User"]))
 
-// union
+// Union.
 print((setA + setB).count) // output: 3
 print(setA.union(setB).count) // output: 3
 
-// intersect
+// Intersect.
 print(setC.intersect(setD).count) // output: 1
 
-// subset
+// Subset.
 print(setD < setC) // true
 print(setD.isSubsetOf(setC)) // true
 
-// superset
+// Superset.
 print(setD > setC) // false
 print(setD.isSupersetOf(setC)) // false
 
-// contains
+// Contains.
 print(setE.contains(setA.first!.subject!)) // true
 
-// probability
+// Probability.
 print(setE.probabilityOf(setA.first!.subject!, setA.last!.subject!)) // 0.666666666666667
 ```
+
+<a name="sortedmultiset"/>
+### SortedMultiSet
+
+A SortedMultiSet is identical to a SortedSet, except that a SortedMultiSet allows non-unique elements. Look at [SortedSet](#sortedset) for examples of its usage.
+
+<a name="sorteddictionary"/>
+### SortedDictionary
+
+A SortedDictionary is a powerful data structure that maintains a sorted set of keys with value pairs. Keys within a SortedDictionary are unique and insert, remove, update, and search operations have a complexity of O(logn). Below is an example of its usage.
+
+```swift
+let graph: Graph = Graph()
+
+let dict: SortedDictionary<String, Entity> = SortedDictionary<String, Entity>()
+
+let students: Array<Entity> = graph.searchForEntity(types: ["Student"])
+
+// Do something with an alphabetically SortedDictionary of students.
+for student in students {
+	dict.insert(student["name"] as! String, value: student)
+}
+```
+
+<a name="sortedmultidictionary"/>
+### SortedMultiDictionary
+
+A SortedMultiDictionary is identical to a SortedDictionary, except that a SortedMultiDictionary allows non-unique keys. Look at [SortedDictionary](#sorteddictionary) for examples of its usage.
 
 ### License
 
