@@ -33,6 +33,8 @@ Run carthage to build the framework and drag the built GraphKit.framework into y
 * [Action](#action)
 * [Groups](#groups)
 * [Probability](#probability)
+* [Data Driven](#datadriven)
+* [Faceted Search](facetedsearch)
 
 ### Upcoming
 
@@ -98,6 +100,7 @@ for book in books {
 graph.save()
 ```
 
+<a name="groups"/>
 ### Groups
 
 Groups are used to organize Entities, Bonds, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo and Video Entity type may exist in a group called Media. Another example may be including a Photo and Book Entity type in a Favorites group for your users' account. Below are examples of using groups.
@@ -145,9 +148,9 @@ Recommending a Physics book if the user is likely to buy a Physics book.
 let purchased: Array<Action> = graph.searchForAction(types: ["Purchased"])
 
 let probabilityOfX: Double = purchased.probabilityOf { (action: Action) in
-	if let book: Entity = action.objects.first {
-		if "Book" == book.type {
-			return book.hasGroup("Physics")
+	if let entity: Entity = action.objects.first {
+		if "Book" == entity.type {
+			return entity.hasGroup("Physics")
 		}
 	}
 	return false
@@ -158,17 +161,19 @@ if 50 < probabilityOfX {
 }
 ```
 
-### Data-Driven
+<a name="datadriven"/>
+### Data Driven
 
 As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User Clicked a Button".
 
 ![GK](http://www.graphkit.io/GK/DataDriven.png)
 
 ```swift
-let graph: Graph = Graph() // set UIViewController delegate as GraphDelegate
+// Set the UIViewController's Protocol to GraphDelegate.
+let graph: Graph = Graph()
 graph.delegate = self
 
-graph.watch(action: ["Clicked"])
+graph.watchForAction(types: ["Clicked"])
 
 let user: Entity = Entity(type: "User")
 let clicked: Action = Action(type: "Clicked")
@@ -179,162 +184,63 @@ clicked.addObject(button)
 
 graph.save()
 
-// delegate method
+// Delegate method.
 func graphDidInsertAction(graph: Graph, action: Action) {
     switch(action.type) {
     case "Clicked":
-      println(action.subjects.first?.type) // User
-      println(action.objects.first?.type) // Button
+      print(action.subjects.first?.type) // User
+      print(action.objects.first?.type) // Button
     case "Swiped":
-      // handle swipe
-    default:
-     break
+      // Handle swipe.
+    default:break
     }
  }
 ```
 
+<a name="facetedsearch"/>
 ### Faceted Search
 
-To explore the intricate relationships within Graph, the search API is as faceted as it is dimensional. This allows the exploration of your data through any view point.
+To explore the intricate relationships within the Graph, the search API adopts a faceted design. This allows the exploration of your data through any view point. The below examples show how to use the Graph search API:
 
-The below example shows how to access a couple Entity types simultaneously.
-
-![GK](http://www.graphkit.io/GK/FacetedSearch.png)
+Searching multiple Entity types.
 
 ```swift
-let graph: Graph = Graph()
-
-// users
-let u1: Entity = Entity(type: "User")
-u1["name"] = "Michael Talbot"
-
-let u2: Entity = Entity(type: "User")
-u2["name"] = "Dr. Walter Russell"
-
-let u3: Entity = Entity(type: "User")
-u3["name"] = "Steven Speilberg"
-
-// media
-let b1: Entity = Entity(type: "Book")
-b1["title"] = "The Holographic Universe"
-b1.addGroup("Physics")
-
-let b2: Entity = Entity(type: "Book")
-b2["title"] = "Universal One"
-b2.addGroup("Physics")
-b2.addGroup("Math")
-
-let v1: Entity = Entity(type: "Video")
-v1["title"] = "Jurassic Park"
-v1.addGroup("Thriller")
-v1.addGroup("Action")
-
-// relationships
-let r1: Bond = Bond(type: "Author")
-r1["year"] = "1992"
-r1.subject = u1
-r1.object = b1
-
-let r2: Bond = Bond(type: "Author")
-r2["year"] = "1926"
-r2.subject = u2
-r2.object = b2
-
-let r3: Bond = Bond(type: "Director")
-r3["year"] = "1993"
-r3.subject = u3
-r3.object = v1
-
-graph.save()
-
-let media: SortedSet<Entity> = graph.search(entity: ["Book", "Video"])
-print(media.count) // output: 3
+let collection: Array<Entity> = graph.searchForEntity(types: ["Photo", "Video"])
 ```
 
-All search results are SortedSet structures that sort data by the id property of the model object. It is possible to narrow the search result by adding group and property filters. The example below demonstrates this.
+Searching Entity groups.
 
 ```swift
-let setA: SortedSet<Entity> = graph.search(entity: ["*"], group: ["Physics"])
-print(setA.count) // output: 2
+let collection: Array<Entity> = graph.searchForEntity(groups: ["Media", "Favorites"])
 ```
 
-The * wildcard value tells Graph to look for Entity objects that have values LIKE the ones passed. In the above search, we are asking Graph to look for all Entity types that are in the group "Physics".
-
-The following example searches Graph by property.
+Searching Entity properties.
 
 ```swift
-let setB: SortedSet<Entity> = graph.search(entity: ["Book", "Video"], property: [("title", "Jurassic Park")])
-print(setB.count) // output: 1
+let collection: Array<Entity> = graph.searchForEntity(properties: [(key: "name", value: "Eve"), ("age", "27")])
 ```
 
-We can optionally include a group filter to the above search.
+Searching multiple facets simultaneously will aggregate all results into a single collection.
 
 ```swift
-let setC: SortedSet<Entity> = graph.search(entity: ["Book", "Video"], group: ["Math"], property: [("title", "Jurassic Park")])
-print(setC.count) // output: 0
+let collection: Array<Entity> = graph.searchForEntity(types: ["Photo", "Friends"], groups: ["Media", "Favorites"])
 ```
 
-The above example returns 0 Entity objects, since "Jurassic Park" is not in the group "Math".
-
-Since return types are SortedSet structures, it is possible to apply set theory to search results. SortedSet structures support operators as well.
-
-Below are some examples of set operations.
+Filters may be used to narrow in on a search result. For example, searching a book title and group within purchases.
 
 ```swift
-let setA: SortedSet<Bond> = graph.search(bond: ["Author"])
-let setB: SortedSet<Bond> = graph.search(bond: ["Director"])
-
-let setC: SortedSet<Entity> = graph.search(entity: ["Book"], group: ["Physics"])
-let setD: SortedSet<Entity> = graph.search(entity: ["Book"], group: ["Math"])
-
-let setE: SortedSet<Entity> = graph.search(entity: ["User"])
-
-// union
-print((setA + setB).count) // output: 3
-print(setA.union(setB).count) // output: 3
-
-// intersect
-print(setC.intersect(setD).count) // output: 1
-
-// subset
-print(setD < setC) // true
-print(setD.isSubsetOf(setC)) // true
-
-// superset
-print(setD > setC) // false
-print(setD.isSupersetOf(setC)) // false
-
-// contains
-print(setE.contains(setA.first!.subject!)) // true
-
-// probability
-print(setE.probabilityOf(setA.first!.subject!, setA.last!.subject!)) // 0.666666666666667
-```
-
-We can even apply filter, map, and sort operations to search results. Below are some examples using the data from above.
-
-```swift
-// filter
-let arrayA: Array<Entity> = setC.filter { (entity: Entity) -> Bool in
-	return entity["title"] as? String == "The Holographic Universe"
+let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filter { (action: Action) -> Bool in
+	if let entity: Entity = action.objects.first {
+		if "Book" == entity.type && "The Holographic Universe" == entity["title"] as? String  {
+			return entity.hasGroup("Physics")
+		}
+	}
+	return false
 }
-print(arrayA.count) // 1
-
-// map
-let arrayB: Array<Bond> = setA.map { (bond: Bond) -> Bond in
-	bond["mapped"] = true
-	return bond
-}
-print(arrayB.first!["mapped"] as? Bool) // output: true
-
-// sort
-let arrayC: Array<Entity> = setE.sort { (a: Entity, b: Entity) -> Bool in
-	return (a["name"] as? String) < (b["name"] as? String)
-}
-print(arrayC.first!["name"] as? String) // output: "Dr. Walter Russell"
 ```
 
-### Algorithms & Structures
+<a name="datastructures"/>
+### Data Structures
 
 GraphKit comes packed with some useful data structures to help write wonderful algorithms. The following structures are included: List, Stack, Queue, Deque, RedBlackTree, SortedSet, SortedMultiSet, SortedDictionary, and SortedMultiDictionary.
 
