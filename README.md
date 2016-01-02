@@ -430,7 +430,7 @@ let dict: SortedDictionary<String, Entity> = SortedDictionary<String, Entity>()
 
 let students: Array<Entity> = graph.searchForEntity(types: ["Student"])
 
-// Do something with an alphabetically SortedDictionary of students.
+// Do something with an alphabetically SortedDictionary of student Entity Objects.
 for student in students {
 	dict.insert(student["name"] as! String, value: student)
 }
