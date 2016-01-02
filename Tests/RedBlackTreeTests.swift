@@ -34,7 +34,7 @@ class RedBlackTreeTests: XCTestCase {
 		
 		XCTAssert(0 == s.count, "Test failed, got \(s.count).")
 		
-		for (var i: Int = 1000; i > 0; --i) {
+		for var i: Int = 1000; 0 < i; --i {
 			s.insert(1, value: 1)
 			s.insert(2, value: 2)
 			s.insert(3, value: 3)
@@ -45,7 +45,7 @@ class RedBlackTreeTests: XCTestCase {
 		XCTAssert(2 == s[1].value, "Test failed.")
 		XCTAssert(3 == s[2].value, "Test failed.")
 		
-		for var i: Int = 500; i > 0; --i {
+		for var i: Int = 500; 0 < i; --i {
 			s.removeValueForKeys(1)
 			s.removeValueForKeys(3)
 		}

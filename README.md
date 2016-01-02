@@ -359,6 +359,60 @@ while !dequeB.isEmpty {
 // 4
 ```
 
+<a name="redblacktree"/>
+### RedBlackTree
+
+A RedBlackTree is a Balanced Binary Search Tree that maintains insert, remove, update, and search operations in a complexity of O(logn). The GraphKit implementation of a RedBlackTree also includes an order-statistic, which allows the data structure to be accessed using subscripts like an array or dictionary. RedBlackTrees may store unique keys or non-unique key values. Below is an example of its usage.
+
+```swift
+let rbA: RedBlackTree<Int, Int> = RedBlackTree<Int, Int>(uniqueKeys: true)
+
+for var i: Int = 1000; 0 < i; --i {
+	rbA.insert(1, value: 1)
+	rbA.insert(2, value: 2)
+	rbA.insert(3, value: 3)
+}
+print(rbA.count) // Output: 3
+```
+
+<a name="sortedset"/>
+### SortedSet
+
+A RedBlackTree is a Balanced Binary Search Tree that maintains insert, remove, update, and search operations in a complexity of O(logn). The GraphKit implementation of a RedBlackTree also includes an order-statistic, which allows the data structure to be accessed using subscripts like an array or dictionary. RedBlackTrees may store unique keys or non-unique key values. Below is an example of its usage.
+
+```swift
+let graph: Graph = Graph()
+
+let setA: SortedSet<Bond> = SortedSet<Bond>(elements: graph.searchForBond(types: ["Author"]))
+let setB: SortedSet<Bond> = SortedSet<Bond>(elements: graph.searchForBond(types: ["Director"]))
+
+let setC: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(groups: ["Physics"]))
+let setD: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(groups: ["Math"]))
+
+let setE: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(types: ["User"]))
+
+// union
+print((setA + setB).count) // output: 3
+print(setA.union(setB).count) // output: 3
+
+// intersect
+print(setC.intersect(setD).count) // output: 1
+
+// subset
+print(setD < setC) // true
+print(setD.isSubsetOf(setC)) // true
+
+// superset
+print(setD > setC) // false
+print(setD.isSupersetOf(setC)) // false
+
+// contains
+print(setE.contains(setA.first!.subject!)) // true
+
+// probability
+print(setE.probabilityOf(setA.first!.subject!, setA.last!.subject!)) // 0.666666666666667
+```
+
 ### License
 
 [AGPL-3.0](http://choosealicense.com/licenses/agpl-3.0/)
