@@ -142,14 +142,14 @@ Determining the probability of rolling a 3 using a die of 6 numbers.
 
 ```swift
 let die: Array<Int> = Array<Int>(arrayLiteral: 1, 2, 3, 4, 5, 6)
-print(die.probabilityOf(3)) // output: 0.166666666666667
+print(die.probabilityOf(3)) // Output: 0.166666666666667
 ```
 
 The expected value of rolling a 3 or 6 with 100 trials using a die of 6 numbers.
 
 ```swift
 let die: Array<Int> = Array<Int>(arrayLiteral: 1, 2, 3, 4, 5, 6)
-print(die.expectedValueOf(100, elements: 3, 6)) // output: 33.3333333333333
+print(die.expectedValueOf(100, elements: 3, 6)) // Output: 33.3333333333333
 ```
 
 Recommending a Physics book if the user is likely to buy a Physics book.
@@ -260,15 +260,15 @@ let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "
 let j1: JSON? = JSON.parse(data!)
 
 // Access.
-print(j1?["user"]?["username"]?.asString) // output: "daniel"
+print(j1?["user"]?["username"]?.asString) // Output: "daniel"
 
 // Stringify.
 let stringified: String? = JSON.stringify(j1!)
-print(stringified) // output: "{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}"
+print(stringified) // Output: "{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}"
 
 // Parse.
 let j2: JSON? = JSON.parse(stringified!)
-print(j2?["user"]?["token"]?.asInt) // output: 123456789
+print(j2?["user"]?["token"]?.asInt) // Output: 123456789
 ```
 
 <a name="datastructures"/>
@@ -416,11 +416,11 @@ let setD: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(
 let setE: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(types: ["User"]))
 
 // Union.
-print((setA + setB).count) // output: 3
-print(setA.union(setB).count) // output: 3
+print((setA + setB).count) // Output: 3
+print(setA.union(setB).count) // Output: 3
 
 // Intersect.
-print(setC.intersect(setD).count) // output: 1
+print(setC.intersect(setD).count) // Output: 1
 
 // Subset.
 print(setD < setC) // true
