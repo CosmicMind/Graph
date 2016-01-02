@@ -253,20 +253,20 @@ let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filt
 JSON is a widely used format for serializing data. GraphKit comes with a JSON toolset. Below are some examples of its usage.
 
 ```swift
-// serialize
+// Serialize.
 let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
 
-// parse
+// Parse.
 let j1: JSON? = JSON.parse(data!)
 
-// access
+// Acces.s
 print(j1?["user"]?["username"]?.asString) // output: "daniel"
 
-// stringify
+// Stringify.
 let stringified: String? = JSON.stringify(j1!)
 print(stringified) // output: "{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}"
 
-// parse
+// Parse.
 let j2: JSON? = JSON.parse(stringified!)
 print(j2?["user"]?["token"]?.asInt) // output: 123456789
 ```
