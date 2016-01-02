@@ -24,13 +24,15 @@ To integrate GraphKit into your Xcode project using Carthage, specify it in your
 github "CosmicMind/GraphKit"
 ```
 
-Run carthage to build the framework and drag the built MaterialKit.framework into your Xcode project.
+Run carthage to build the framework and drag the built GraphKit.framework into your Xcode project.
 
 ### Table of Contents  
 
 * [Entity](#entity)
 * [Bond](#bond)
 * [Action](#action)
+* [Groups](#groups)
+* [Probability](#probability)
 
 ### Upcoming
 
@@ -40,7 +42,7 @@ Run carthage to build the framework and drag the built MaterialKit.framework int
 <a name="entity"/>
 ### Entity
 
-Let's begin with creating a simple model object and saving it to the Graph. Model objects are known as Entity Objects, which represent a person, place, or thing. Below is an example of creating a "User" type Entity.
+Let's begin with creating a simple model object and saving it to the Graph. Model objects are known as Entity Objects, which represent a person, place, or thing. Each Entity has a type property that specifies the collection to which it belongs to. Below is an example of creating a "User" type Entity.
 
 ```swift
 let graph: Graph = Graph()
@@ -55,7 +57,7 @@ graph.save()
 <a name="bond"/>
 ### Bond
 
-A Bond is used to form a relationship between two Entity Objects. A Bond's relationship structure is like a sentence, in that it has a Subject and Object. Let's look at an example to clarify this concept. Below is an example of two Entity Objects, a User and a Book, that have a relationship that is defined by the User being the Author of the Book. The relationship should read as, "User is Author of Book."
+A Bond is used to form a relationship between two Entity Objects. Like an Entity, a Bond also has a type property that specifies the collection to which it belongs to. A Bond's relationship structure is like a sentence, in that it has a Subject and Object. Let's look at an example to clarify this concept. Below is an example of two Entity Objects, a User and a Book, that have a relationship that is defined by the User being the Author of the Book. The relationship should read as, "User is Author of Book."
 
 ```swift
 let graph: Graph = Graph()
@@ -78,7 +80,7 @@ graph.save()
 <a name="action"/>
 ### Action
 
-When a user engages your application, an Action Object may be used to capture all the relevant data in a single snapshot. An Action does this, very much like a Bond, by relating Subjects to Objects. Below is an example of a user purchasing many books. It may be thought of as "User Purchased these Book(s)."
+An Action is used to form a relationship between many Entity Objects. Like an Entity, an Action also has a type property that specifies the collection to which it belongs to. An Action's relationship structure is like a sentence, in that it relates a collection of Subjects to a collection of Objects. Below is an example of a User purchasing many Books. It may be thought of as "User Purchased these Book(s)."
 
 ```swift
 let graph: Graph = Graph()
@@ -96,40 +98,35 @@ for book in books {
 graph.save()
 ```
 
-### A Probable World
+### Groups
 
-A great experience is never static. Data structures in GraphKit have an internal probability mechanism that enables your application to create a dynamic experience. Below is an example of determining the probability of rolling a 3 with a single die.
+Groups are used to organize Entities, Bonds, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo, Video, and Book Entity type may exist in a single group called Media. Another example may be including the Photo, Video, and Book Entity types in a Favorite group for your users' account. Below is an example of using groups.
 
-![GK](http://www.graphkit.io/GK/Probability.png)
+```swift
+// Adding a group.
+let photo: Entity = Entity(type: "Photo")
+photo.addGroup("Media")
+photo.addGroup("Favorite")
+photo.addGroup("Holiday Album")
+
+let video: Entity = Entity(type: "Video")
+video.addGroup("Media")
+
+let book: Entity = Entity(type: "Book")
+book.addGroup("To Read")
+
+// Searching groups.
+let favorites: Array<Entity> = graph.searchForEntity(groups: ["Favorite"])
+```
+
+<a name="probability"/>
+### Probability
+
+GraphKit comes ready with Probability in mind. Your application may be completely catered to your individual user's habits and usage. To demonstrate this wonderful feature, let's look at an example where your application executes a different block of code based on the likelihood that a user will purchase a Physics book.
 
 ```swift
 let die: SortedSet<Int> = SortedSet<Int>(elements: 1, 2, 3, 4, 5, 6)
 print(die.probabilityOf(3)) // output: 0.166666666666667
-```
-
-It is possible to use the probability mechanism with stored objects in the Graph. Below is the same example that sets each die value as an Entity.
-
-```swift
-let n1: Entity = Entity(type: "Number")
-n1["value"] = 1
-
-let n2: Entity = Entity(type: "Number")
-n2["value"] = 2
-
-let n3: Entity = Entity(type: "Number")
-n3["value"] = 3
-
-let n4: Entity = Entity(type: "Number")
-n4["value"] = 4
-
-let n5: Entity = Entity(type: "Number")
-n5["value"] = 5
-
-let n6: Entity = Entity(type: "Number")
-n6["value"] = 6
-
-let die: SortedSet<Entity> = SortedSet<Entity>(elements: n1, n2, n3, n4, n5, n6)
-print(die.probabilityOf(n3)) // output: 0.166666666666667
 ```
 
 ### Data-Driven Design

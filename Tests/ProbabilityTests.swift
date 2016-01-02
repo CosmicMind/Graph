@@ -201,8 +201,13 @@ class ProbabilityTests: XCTestCase {
 		let graph: Graph = Graph()
 		let target: Action = Action(type: "T")
 		
-		for _ in 0..<99 {
-			let _: Action = Action(type: "T")
+		for i in 0..<99 {
+			let a: Action = Action(type: "T")
+			if 0 == i % 2 {
+				let n: Entity = Entity(type: "Book")
+				n.addGroup("Physics")
+				a.addObject(n)
+			}
 		}
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
@@ -217,7 +222,14 @@ class ProbabilityTests: XCTestCase {
 		let s: Array<Action> = graph.searchForAction(types: ["T"])
 		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
 		
+		XCTAssertEqual(0.5, s.probabilityOf { (action: Action) in
+			return true == action.objects.first?.hasGroup("Physics")
+		}, "Test failed.")
+		
 		for x in s {
+			for n in x.objects {
+				n.delete()
+			}
 			x.delete()
 		}
 		
