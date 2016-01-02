@@ -259,7 +259,7 @@ let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "
 // Parse.
 let j1: JSON? = JSON.parse(data!)
 
-// Acces.s
+// Access.
 print(j1?["user"]?["username"]?.asString) // output: "daniel"
 
 // Stringify.
