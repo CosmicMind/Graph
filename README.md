@@ -444,25 +444,25 @@ A SortedMultiSet is identical to a SortedSet, except that a SortedMultiSet allow
 <a name="sorteddictionary"/>
 ### SortedDictionary
 
-A SortedDictionary is a powerful data structure that maintains a sorted set of keys with value pairs. Keys within a SortedDictionary are unique and insert, remove, update, and search operations have a complexity of O(logn). Below is an example of its usage.
-
-```swift
-let graph: Graph = Graph()
-
-let dict: SortedDictionary<String, Entity> = SortedDictionary<String, Entity>()
-
-let students: Array<Entity> = graph.searchForEntity(types: ["Student"])
-
-// Do something with an alphabetically SortedDictionary of student Entity Objects.
-for student in students {
-	dict.insert(student["name"] as! String, value: student)
-}
-```
+A SortedDictionary is a powerful data structure that maintains a sorted set of keys with value pairs. Keys within a SortedDictionary are unique and insert, remove, update, and search operations have a complexity of O(logn).
 
 <a name="sortedmultidictionary"/>
 ### SortedMultiDictionary
 
-A SortedMultiDictionary is identical to a SortedDictionary, except that a SortedMultiDictionary allows non-unique keys. Look at [SortedDictionary](#sorteddictionary) for examples of its usage.
+A SortedMultiDictionary is identical to a SortedDictionary, except that a SortedMultiDictionary allows non-unique keys. Below is an example of its usage.
+
+```swift
+let graph: Graph = Graph()
+
+let students: Array<Entity> = graph.searchForEntity(types: ["Student"])
+
+let dict: SortedMultiDictionary<String, Entity> = SortedMultiDictionary<String, Entity>()
+
+// Do something with an alphabetically SortedMultiDictionary of student Entity Objects.
+for student in students {
+	dict.insert(student["name"] as! String, value: student)
+}
+```
 
 ### License
 
