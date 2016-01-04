@@ -26,7 +26,7 @@ github "CosmicMind/GraphKit"
 
 Run carthage to build the framework and drag the built GraphKit.framework into your Xcode project.
 
-### Table of Contents  
+### Contents  
 
 * [Entity](#entity)
 * [Bond](#bond)
@@ -283,9 +283,9 @@ The DoublyLinkedList data structure is excellent for large growing collections o
 
 ```swift
 let listA: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
-listA.insertAtFront(1)
-listA.insertAtFront(2)
 listA.insertAtFront(3)
+listA.insertAtFront(2)
+listA.insertAtFront(1)
 
 let listB: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
 listB.insertAtBack(4)
@@ -295,10 +295,9 @@ listB.insertAtBack(6)
 let listC: DoublyLinkedList<Int> = listA + listB
 
 listC.cursorToFront()
-while !listC.isCursorAtBack {
+repeat {
 	print(listC.cursor)
-	listC.next
-}
+} while nil != listC.next
 // Output:
 // 1
 // 2
@@ -360,8 +359,7 @@ dequeA.insertAtBack(2)
 dequeA.insertAtBack(3)
 
 while !dequeA.isEmpty {
-	print(dequeA.front)
-	dequeA.removeAtFront()
+	print(dequeA.removeAtFront())
 }
 // Output:
 // 1
@@ -374,8 +372,7 @@ dequeB.insertAtBack(5)
 dequeB.insertAtBack(6)
 
 while !dequeB.isEmpty {
-	print(dequeB.back)
-	dequeB.removeAtBack()
+	print(dequeB.removeAtBack())
 }
 // Output:
 // 6

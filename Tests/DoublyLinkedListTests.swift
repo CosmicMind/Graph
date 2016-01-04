@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 CosmicMind, Inc. <http://cosmicmind.io>.
+// Copyright (C) 2015 - 2016 CosmicMind, Inc. <http://cosmicmind.io>. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published
@@ -131,9 +131,9 @@ class DoublyLinkedListTests: XCTestCase {
 	
 	func testConcat() {
 		let l1: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
-		l1.insertAtFront(1)
-		l1.insertAtFront(2)
 		l1.insertAtFront(3)
+		l1.insertAtFront(2)
+		l1.insertAtFront(1)
 		
 		let l2: DoublyLinkedList<Int> = DoublyLinkedList<Int>()
 		l2.insertAtBack(4)
@@ -141,6 +141,11 @@ class DoublyLinkedListTests: XCTestCase {
 		l2.insertAtBack(6)
 		
 		let l3: DoublyLinkedList<Int> = l1 + l2
+		
+		l3.cursorToFront()
+		repeat {
+			print(l3.cursor)
+		} while nil != l3.next
 		
 		for x in l1 {
 			XCTAssert(x == l3.removeAtFront(), "Concat incorrect.")
