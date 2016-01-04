@@ -26,6 +26,10 @@ github "CosmicMind/GraphKit"
 
 Run carthage to build the framework and drag the built GraphKit.framework into your Xcode project.
 
+### Changelog
+
+The GraphKit framework is a fast growing project and will encounter changes throughout its development. It is recommended that the [Changelog](https://github.com/CosmicMind/GraphKit/wiki/Changelog) be reviewed prior to updating versions.
+
 ### Contents  
 
 * [Entity](#entity)
