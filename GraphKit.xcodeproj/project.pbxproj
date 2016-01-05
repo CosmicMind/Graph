@@ -45,6 +45,8 @@
 		960590491C39E77C00691E88 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960590471C39E77C00691E88 /* JSON.swift */; };
 		9605904A1C39E79000691E88 /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 960590471C39E77C00691E88 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9605904B1C39E79800691E88 /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 960590471C39E77C00691E88 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		960590581C3B690600691E88 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960590571C3B690600691E88 /* File.swift */; };
+		960590591C3B690600691E88 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960590571C3B690600691E88 /* File.swift */; };
 		960B233D1C38417700E96216 /* GraphKit+Array.swift in Headers */ = {isa = PBXBuildFile; fileRef = 6523D6DA1C32FE3F00A7BAFD /* GraphKit+Array.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		960B233E1C38417700E96216 /* GraphKit+Set.swift in Headers */ = {isa = PBXBuildFile; fileRef = 65DF57911C33188E00E55C56 /* GraphKit+Set.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		960B23401C38418900E96216 /* GraphKit+Array.swift in Headers */ = {isa = PBXBuildFile; fileRef = 6523D6DA1C32FE3F00A7BAFD /* GraphKit+Array.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -241,6 +243,7 @@
 		65DF57971C34BBFD00E55C56 /* BondSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BondSearchTests.swift; sourceTree = "<group>"; };
 		960590441C39E73B00691E88 /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTests.swift; sourceTree = "<group>"; };
 		960590471C39E77C00691E88 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		960590571C3B690600691E88 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		961F9B4F1C10ED5400ACF5DD /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		961F9B501C10ED5400ACF5DD /* Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
 		961F9B511C10ED5400ACF5DD /* Deque.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deque.swift; sourceTree = "<group>"; };
@@ -337,6 +340,14 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		960590561C3B68F400691E88 /* File */ = {
+			isa = PBXGroup;
+			children = (
+				960590571C3B690600691E88 /* File.swift */,
+			);
+			name = File;
+			sourceTree = "<group>";
+		};
 		960B23341C38409900E96216 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
@@ -356,6 +367,7 @@
 				961F9BC81C10EDC700ACF5DD /* Structures */,
 				961F9BC71C10ED8000ACF5DD /* Graph */,
 				960B23341C38409900E96216 /* JSON */,
+				960590561C3B68F400691E88 /* File */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -737,6 +749,7 @@
 				961F9B861C10ED5400ACF5DD /* GraphSearch.swift in Sources */,
 				961F9BA81C10ED5400ACF5DD /* ManagedNode.swift in Sources */,
 				961F9B7C1C10ED5400ACF5DD /* Deque.swift in Sources */,
+				960590591C3B690600691E88 /* File.swift in Sources */,
 				961F9B801C10ED5400ACF5DD /* Graph.swift in Sources */,
 				961F9BBE1C10ED5400ACF5DD /* SortedDictionary.swift in Sources */,
 				961F9BB81C10ED5400ACF5DD /* RedBlackTree.swift in Sources */,
@@ -812,6 +825,7 @@
 				961F9B851C10ED5400ACF5DD /* GraphSearch.swift in Sources */,
 				961F9BA71C10ED5400ACF5DD /* ManagedNode.swift in Sources */,
 				961F9B7B1C10ED5400ACF5DD /* Deque.swift in Sources */,
+				960590581C3B690600691E88 /* File.swift in Sources */,
 				961F9B7F1C10ED5400ACF5DD /* Graph.swift in Sources */,
 				961F9BBD1C10ED5400ACF5DD /* SortedDictionary.swift in Sources */,
 				961F9BB71C10ED5400ACF5DD /* RedBlackTree.swift in Sources */,
