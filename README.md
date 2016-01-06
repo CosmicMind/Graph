@@ -1,13 +1,19 @@
 ![GraphKit](http://www.graphkit.io/GK/GraphKit.png)
 
-# Welcome to GraphKit
+## Welcome to GraphKit
 
-GraphKit is a data framework. A data framework solves the issue of modeling, mapping, moving, and manipulating data. GraphKit may be used in its simplest form to save and search for data, or it may be used to create robust data-driven applications. What makes GraphKit interesting is in its approach to take the dirty work out of writing algorithms, building recommendations, and driving application behavior. 
+GraphKit is a data framework. A data framework solves the issue of modeling, mapping, moving, and manipulating data. GraphKit may be used in its simplest form to save and search for data, or it may be used to create robust data-driven applications. What makes GraphKit interesting is in its approach to take the dirty work out of writing algorithms, building recommendations, and driving application behavior.
+
+## Why use GraphKit?
+
+Working with data is complicated and usually left to the end of the application development lifecycle. It takes time to setup models with CoreData and even more time to make changes to that model. To ease the use of data in an application, and to make it more enjoyable, GraphKit removes the complexity and allows developers to focus on the parts they care about.
+
+With GraphKit, it becomes easy to map Entity models, create relationships, and build realtime predictive applications that bring a unique experience to your end user. Data structures within GraphKit have a probability extension that allow search queries to become more than simple dumps of data. All data changes can easily be observed to create a completely reactive experience for users, while easing the development of your application.
 
 ## How To Get Started
 
 - [Download GraphKit](https://github.com/ComicMind/GraphKit/archive/master.zip).
-- Read the ["Getting Started" guide](https://github.com/CosmicMind/GraphKit/wiki/Getting-Started-with-GraphKit).
+- Explore the examples in the Examples directory.
 
 ## Communication
 
