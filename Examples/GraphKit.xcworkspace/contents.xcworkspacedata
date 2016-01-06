@@ -4,4 +4,11 @@
    <FileRef
       location = "group:../GraphKit.xcodeproj">
    </FileRef>
+   <Group
+      location = "container:"
+      name = "ToDo">
+      <FileRef
+         location = "group:ToDo/ToDo.xcodeproj">
+      </FileRef>
+   </Group>
 </Workspace>
