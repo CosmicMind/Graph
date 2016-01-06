@@ -2,7 +2,20 @@
 
 # Welcome to GraphKit
 
-GraphKit is a data and algorithm framework built on top of CoreData. It is available for iOS and OS X. A major goal in the design of GraphKit is to allow data to be modeled as one would think. GraphKit is thread safe and will never require a migration between data model changes. The following README is written to get you started, and is by no means a complete tutorial on all that is possible.
+GraphKit is a data framework. A data framework solves the issue of modeling, mapping, moving, and manipulating data. GraphKit may be used in its simplest form to save and search for data, or it may be used to create robust data-driven applications. What makes GraphKit interesting is in its approach to take the dirty work out of writing algorithms, building recommendations, and driving application behavior. 
+
+## How To Get Started
+
+- [Download GraphKit](https://github.com/ComicMind/GraphKit/archive/master.zip).
+- Read the ["Getting Started" guide](https://github.com/CosmicMind/GraphKit/wiki/Getting-Started-with-GraphKit).
+
+## Communication
+
+- If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/graphkit). (Tag 'graphkit')
+- If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/graphkit).
+- If you **found a bug**, _and can provide steps to reliably reproduce it_, open an issue.
+- If you **have a feature request**, open an issue.
+- If you **want to contribute**, submit a pull request.
 
 ### CocoaPods
 
@@ -52,7 +65,7 @@ Run carthage to build the framework and drag the built GraphKit.framework into y
 
 The GraphKit framework is a fast growing project and will encounter changes throughout its development. It is recommended that the [Changelog](https://github.com/CosmicMind/GraphKit/wiki/Changelog) be reviewed prior to updating versions.
 
-### Contents  
+### A Quick Tour  
 
 * [Entity](#entity)
 * [Bond](#bond)
