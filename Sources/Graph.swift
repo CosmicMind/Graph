@@ -498,21 +498,14 @@ public class Graph : NSObject {
 	//	:name:	persistentStoreCoordinator
 	//
 	internal var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
-		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) {
+		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) { [unowned self] in
+			let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
 			do {
-				let documentsDirectory: String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
-				try NSFileManager.defaultManager().createDirectoryAtPath(documentsDirectory, withIntermediateDirectories: true, attributes: nil)
-				let url: NSURL = NSURL.fileURLWithPath(documentsDirectory + "/" + GraphUtility.storeName, isDirectory: false)
-				let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
-				do {
-					try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
-				} catch {
-					fatalError("[GraphKit Error: There was an error creating or loading the application's saved data.]")
-				}
-				GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
+				try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: File.URL(.DocumentDirectory, path: GraphUtility.storeName), options: nil)
 			} catch {
-				fatalError("[GraphKit Error: There was an error creating the data directory path.]")
+				fatalError("[GraphKit Error: There was an error creating or loading the application's saved data.]")
 			}
+			GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
 		}
 		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
 	}

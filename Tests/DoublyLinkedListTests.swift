@@ -142,11 +142,6 @@ class DoublyLinkedListTests: XCTestCase {
 		
 		let l3: DoublyLinkedList<Int> = l1 + l2
 		
-		l3.cursorToFront()
-		repeat {
-			print(l3.cursor)
-		} while nil != l3.next
-		
 		for x in l1 {
 			XCTAssert(x == l3.removeAtFront(), "Concat incorrect.")
 		}

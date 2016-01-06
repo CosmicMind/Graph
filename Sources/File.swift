@@ -165,14 +165,14 @@ public struct File {
 		let path: NSURL? = File.documentDirectoryPath
 		var pathComponents = path?.pathComponents
 		pathComponents?.removeLast()
-		return NSURL(string:Schema.File.stringByAppendingString((pathComponents?.joinWithSeparator("/"))!))
+		return NSURL(string: Schema.File.stringByAppendingString((pathComponents?.joinWithSeparator("/"))!))
 	}
 	
 	/**
 	:name:	fileExistsAtPath
 	*/
-	public static func fileExistsAtPath(url: NSURL) -> Bool {
-		return NSFileManager.defaultManager().fileExistsAtPath(url.path!)
+	public static func fileExistsAtPath(URL: NSURL) -> Bool {
+		return NSFileManager.defaultManager().fileExistsAtPath(URL.path!)
 	}
 	
 	/**
@@ -186,8 +186,8 @@ public struct File {
 	/**
 	:name:  isWritableFileAtPath
 	*/
-	public static func isWritableFileAtPath(url: NSURL) -> Bool {
-		return NSFileManager.defaultManager().isWritableFileAtPath(url.path!)
+	public static func isWritableFileAtPath(URL: NSURL) -> Bool {
+		return NSFileManager.defaultManager().isWritableFileAtPath(URL.path!)
 	}
 	
 	/**
@@ -205,25 +205,25 @@ public struct File {
 	/**
 	:name:	createDirectory
 	*/
-	public static func createDirectory(path: NSURL, name: String, withIntermediateDirectories createIntermediates: Bool, attributes: [String:AnyObject]?, completion: ((created: Bool?, error: NSError?) -> Void)){
+	public static func createDirectory(path: NSURL, name: String, withIntermediateDirectories createIntermediates: Bool, attributes: [String:AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)) {
 		do {
 			let newPath = path.URLByAppendingPathComponent(name)
 			try NSFileManager.defaultManager().createDirectoryAtPath(newPath.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
-			completion(created: true, error: nil)
+			completion(success: true, error: nil)
 		} catch let error as NSError {
-			completion(created: nil, error: error)
+			completion(success: false, error: error)
 		}
 	}
 	
 	/**
 	:name:	removeDirectory
 	*/
-	public static func removeDirectory(path: NSURL, completion: ((removed: Bool?, error: NSError?) -> Void))  {
+	public static func removeDirectory(path: NSURL, completion: ((success: Bool, error: NSError?) -> Void))  {
 		do {
 			try NSFileManager.defaultManager().removeItemAtURL(path)
-			completion(removed: true, error: nil)
+			completion(success: true, error: nil)
 		} catch let error as NSError {
-			completion(removed: false, error: error)
+			completion(success: false, error: error)
 		}
 	}
 	
@@ -242,12 +242,12 @@ public struct File {
 	/**
 	:name:	writeTo
 	*/
-	public static func writeTo(path: NSURL, value: String, name: String, completion: ((write: Bool?, error: NSError?) -> Void)) {
+	public static func writeTo(path: NSURL, value: String, name: String, completion: ((success: Bool, error: NSError?) -> Void)) {
 		do{
 			try value.writeToURL(path.URLByAppendingPathComponent("/\(name)"), atomically: true, encoding: NSUTF8StringEncoding)
-			completion(write: true, error: nil)
+			completion(success: true, error: nil)
 		} catch let error as NSError {
-			completion(write: false, error: error)
+			completion(success: false, error: error)
 		}
 	}
 	
@@ -255,34 +255,32 @@ public struct File {
 	:name:	readFrom
 	*/
 	public static func readFrom(path: NSURL, completion: ((string: String?, error: NSError?) -> Void)) {
-		let data: NSData? = NSData(contentsOfURL: path)
-		if let fileData = data {
-			let content = String(data: fileData, encoding:NSUTF8StringEncoding)
-			completion(string: content, error: nil)
-			return
+		if let data = NSData(contentsOfURL: path) {
+			completion(string: String(data: data, encoding: NSUTF8StringEncoding), error: nil)
+		} else {
+			completion(string: nil, error: NSError(domain: "io.graphkit.File", code: 0, userInfo: nil))
 		}
-		completion(string: nil, error: NSError(domain: "com.contentkit.fileReadError", code: 0, userInfo: nil))
 	}
 	
 	/**
-	:name:	url
+	:name:	URL
 	*/
-	public static func url(searchPathDirectory: NSSearchPathDirectory, path: String) -> NSURL? {
-		var url: NSURL?
+	public static func URL(searchPathDirectory: NSSearchPathDirectory, path: String) -> NSURL? {
+		var URL: NSURL?
 		switch searchPathDirectory {
 		case .DocumentDirectory:
-			url = File.documentDirectoryPath
+			URL = File.documentDirectoryPath
 		case .LibraryDirectory:
-			url = File.libraryDirectoryPath
+			URL = File.libraryDirectoryPath
 		case .CachesDirectory:
-			url = File.cachesDirectoryPath
+			URL = File.cachesDirectoryPath
 		case .ApplicationSupportDirectory:
-			url = File.applicationSupportDirectoryPath
+			URL = File.applicationSupportDirectoryPath
 		default:
-			url = nil
+			URL = nil
 			break
 		}
-		return url?.URLByAppendingPathComponent(path)
+		return URL?.URLByAppendingPathComponent(path)
 	}
 	
 	/**
@@ -295,17 +293,17 @@ public struct File {
 	/**
 	:name: fileType
 	*/
-	public static func fileType(url: NSURL) -> FileType {
-		var isDir: Bool = false
-		File.contentsOfDirectory(url) { (contents, error) -> Void in
+	public static func fileType(URL: NSURL) -> FileType {
+		var isDirectory: Bool = false
+		File.contentsOfDirectory(URL) { (contents: [NSURL]?, error: NSError?) -> Void in
 			if nil == error {
-				return isDir = true
+				return isDirectory = true
 			}
 		}
-		if isDir {
+		if isDirectory {
 			return .Directory
 		}
-		if let v: String = url.pathExtension {
+		if let v: String = URL.pathExtension {
 			switch v {
 			case ImageExtensionToString(.PNG),
 			ImageExtensionToString(.JPG),

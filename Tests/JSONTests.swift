@@ -17,6 +17,7 @@
 //
 
 import XCTest
+import Foundation
 @testable import GraphKit
 
 class JSONTests: XCTestCase {
