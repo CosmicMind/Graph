@@ -12,7 +12,7 @@ With GraphKit, it becomes easy to map Entity models, create relationships, and b
 
 ## How To Get Started
 
-- [Download GraphKit](https://github.com/ComicMind/GraphKit/archive/master.zip).
+- [Download GraphKit](https://github.com/ComsicMind/GraphKit/archive/master.zip).
 - Explore the examples in the Examples directory.
 
 ## Communication
