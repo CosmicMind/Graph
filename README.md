@@ -1,12 +1,34 @@
-![GK](http://www.graphkit.io/GK/GraphKit.png)
+![GraphKit](http://www.graphkit.io/GK/GraphKit.png)
 
 # Welcome to GraphKit
 
 GraphKit is a data and algorithm framework built on top of CoreData. It is available for iOS and OS X. A major goal in the design of GraphKit is to allow data to be modeled as one would think. GraphKit is thread safe and will never require a migration between data model changes. The following README is written to get you started, and is by no means a complete tutorial on all that is possible.
 
-### CocoaPods Support
+### CocoaPods
 
-GraphKit is on CocoaPods under the name [GK](https://cocoapods.org/?q=GK).
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+
+> CocoaPods 0.39.0+ is required to build GraphKit 4.0.0+.
+
+To integrate GraphKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'GK', '~> 4.0'
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
 
 ### Carthage Support
 
@@ -56,7 +78,7 @@ The GraphKit framework is a fast growing project and will encounter changes thro
 * Example Projects
 * Additional Data Structures
 
-<a name="entity"/>
+<a name="entity"></a>
 ### Entity
 
 Let's begin with creating a simple model object and saving it to the Graph. Model objects are known as Entity Objects, which represent a person, place, or thing. Each Entity has a type property that specifies the collection to which it belongs to. Below is an example of creating a "User" type Entity and saving it to the Graph.
@@ -71,7 +93,7 @@ user["age"] = 27
 graph.save()
 ```
 
-<a name="bond"/>
+<a name="bond"></a>
 ### Bond
 
 A Bond is used to form a relationship between two Entity Objects. Like an Entity, a Bond also has a type property that specifies the collection to which it belongs to. A Bond's relationship structure is like a sentence, in that it has a Subject and Object. Let's look at an example to clarify this concept. Below is an example of two Entity Objects, a User and a Book, which have a relationship that is defined by the User being the Author of the Book. The relationship should read as, "User is Author of Book."
@@ -94,7 +116,7 @@ author.object = book
 graph.save()
 ```
 
-<a name="action"/>
+<a name="action"></a>
 ### Action
 
 An Action is used to form a relationship between many Entity Objects. Like an Entity, an Action also has a type property that specifies the collection to which it belongs to. An Action's relationship structure is like a sentence, in that it relates a collection of Subjects to a collection of Objects. Below is an example of a User purchasing many Books. It may be thought of as "User Purchased these Book(s)."
@@ -115,7 +137,7 @@ for book in books {
 graph.save()
 ```
 
-<a name="groups"/>
+<a name="groups"></a>
 ### Groups
 
 Groups are used to organize Entities, Bonds, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo and Video Entity type may exist in a group called Media. Another example may be including a Photo and Book Entity type in a Favorites group for your users' account. Below are examples of using groups.
@@ -137,7 +159,7 @@ book.addGroup("To Read")
 let favorites: Array<Entity> = graph.searchForEntity(groups: ["Favorites"])
 ```
 
-<a name="probability"/>
+<a name="probability"></a>
 ### Probability
 
 Probability is a core feature within GraphKit. Your application may be completely catered to your users' habits and usage. To demonstrate this wonderful feature, let's look at some examples:
@@ -175,7 +197,7 @@ if 33.33 < pOfX {
 }
 ```
 
-<a name="datadriven"/>
+<a name="datadriven"></a>
 ### Data Driven
 
 As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User Clicked a Button".
@@ -209,7 +231,7 @@ func graphDidInsertAction(graph: Graph, action: Action) {
  }
 ```
 
-<a name="facetedsearch"/>
+<a name="facetedsearch"></a>
 ### Faceted Search
 
 To explore the intricate relationships within the Graph, the search API adopts a faceted design. This allows the exploration of your data through any view point. The below examples show how to use the Graph search API:
@@ -251,7 +273,7 @@ let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filt
 }
 ```
 
-<a name="json"/>
+<a name="json"></a>
 ### JSON
 
 JSON is a widely used format for serializing data. GraphKit comes with a JSON toolset. Below are some examples of its usage.
@@ -273,12 +295,12 @@ let j2: JSON? = JSON.parse(stringified!)
 print(j2?["user"]?["token"]?.asInt) // Output: 123456789
 ```
 
-<a name="datastructures"/>
+<a name="datastructures"></a>
 ### Data Structures
 
 GraphKit comes packed with some powerful data structures to help write algorithms. The following structures are included: DoublyLinkedList, Stack, Queue, Deque, RedBlackTree, SortedSet, SortedMultiSet, SortedDictionary, and SortedMultiDictionary.
 
-<a name="doublylinkedlist"/>
+<a name="doublylinkedlist"></a>
 ### DoublyLinkedList
 
 The DoublyLinkedList data structure is excellent for large growing collections of data. Below is an example of its usage.
@@ -309,7 +331,7 @@ repeat {
 // 6
 ```
 
-<a name="stack"/>
+<a name="stack"></a>
 ### Stack
 
 The Stack data structure is a container of objects that are inserted and removed according to the last-in-first-out (LIFO) principle. Below is an example of its usage.
@@ -329,7 +351,7 @@ while !stack.isEmpty {
 // 1
 ```
 
-<a name="queue"/>
+<a name="queue"></a>
 ### Queue
 
 The Queue data structure is a container of objects that are inserted and removed according to the first-in-first-out (FIFO) principle. Below is an example of its usage.
@@ -349,7 +371,7 @@ while !queue.isEmpty {
 // 3
 ```
 
-<a name="deque"/>
+<a name="deque"></a>
 ### Deque
 
 The Deque data structure is a container of objects that are inserted and removed according to the first-in-first-out (FIFO) and last-in-first-out (LIFO) principle. Essentially, a Deque is a Stack and Queue combined. Below are examples of its usage.
@@ -382,7 +404,7 @@ while !dequeB.isEmpty {
 // 4
 ```
 
-<a name="redblacktree"/>
+<a name="redblacktree"></a>
 ### RedBlackTree
 
 A RedBlackTree is a Balanced Binary Search Tree that maintains insert, remove, update, and search operations in a complexity of O(logn). The GraphKit implementation of a RedBlackTree also includes an order-statistic, which allows the data structure to be accessed using subscripts like an array or dictionary. RedBlackTrees may store unique keys or non-unique key values. Below is an example of its usage.
@@ -398,7 +420,7 @@ for var i: Int = 1000; 0 < i; --i {
 print(rbA.count) // Output: 3
 ```
 
-<a name="sortedset"/>
+<a name="sortedset"></a>
 ### SortedSet
 
 SortedSets are a powerful data structure for algorithm and analysis design. Elements within a SortedSet are unique and insert, remove, and search operations have a complexity of O(logn). The GraphKit implementation of a SortedSet also includes an order-statistic, which allows the data structure to be accessed using an index subscript like an array. Below are examples of its usage.
@@ -436,17 +458,17 @@ print(setE.contains(setA.first!.subject!)) // true
 print(setE.probabilityOf(setA.first!.subject!, setA.last!.subject!)) // 0.666666666666667
 ```
 
-<a name="sortedmultiset"/>
+<a name="sortedmultiset"></a>
 ### SortedMultiSet
 
 A SortedMultiSet is identical to a SortedSet, except that a SortedMultiSet allows non-unique elements. Look at [SortedSet](#sortedset) for examples of its usage.
 
-<a name="sorteddictionary"/>
+<a name="sorteddictionary"></a>
 ### SortedDictionary
 
 A SortedDictionary is a powerful data structure that maintains a sorted set of keys with value pairs. Keys within a SortedDictionary are unique and insert, remove, update, and search operations have a complexity of O(logn).
 
-<a name="sortedmultidictionary"/>
+<a name="sortedmultidictionary"></a>
 ### SortedMultiDictionary
 
 A SortedMultiDictionary is identical to a SortedDictionary, except that a SortedMultiDictionary allows non-unique keys. Below is an example of its usage.
