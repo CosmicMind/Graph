@@ -9,7 +9,6 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "60BEBC3D-ED17-4703-A41A-C3B46A39C600",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "9CF35BC641478FBD765F7442D4034ED362261E0A" : "MaterialKit\/",
     "14FF5CD0A93F3CC14F0E8C5A4FD8ECB4A6DF5909" : "GraphKit\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "GraphKit",
@@ -20,11 +19,6 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/CosmicMind\/GraphKit.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "14FF5CD0A93F3CC14F0E8C5A4FD8ECB4A6DF5909"
-    },
-    {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/CosmicMind\/MaterialKit.git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9CF35BC641478FBD765F7442D4034ED362261E0A"
     }
   ]
 }
