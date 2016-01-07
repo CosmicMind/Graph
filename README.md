@@ -100,17 +100,22 @@ The GraphKit framework is a fast growing project and will encounter changes thro
 <a name="entity"></a>
 ### Entity
 
-Let's begin with creating a simple model object and saving it to the Graph. Model objects are known as Entity Objects, which represent a person, place, or thing. Each Entity has a type property that specifies the collection to which it belongs to. Below is an example of creating a "User" type Entity and saving it to the Graph.
+An Entity is a model object that represents a person, place, or thing. For example a User, Button, Photo, Video, or Note -- pretty much anything that you would like to objectify. To distinguish between different Entity types, the type property is set upon instantiation of a new Entity object. For Example, creating different Entity types is as easy as the code below. 
 
 ```swift
-let graph: Graph = Graph()
-
+// Create a User Entity type.
 let user: Entity = Entity(type: "User")
-user["name"] = "Eve"
-user["age"] = 27
 
-graph.save()
+// Create a Book Entity type.
+let book: Entity = Entity(type: "Book")
+
+// Create a Photo Entity type.
+let photo: Entity = Entity(type: "Photo")
 ```
+
+When a new Entity is created, a record in CoreData is made, which provides a unique ID for the object. The Entity is not yet saved, so discarding an Entity does not create any unnecessary overhead. 
+
+[Learn More About Entities](https://github.com/CosmicMind/GraphKit/wiki/Entity)
 
 <a name="bond"></a>
 ### Bond
@@ -521,4 +526,5 @@ Redistribution and use in source and binary forms, with or without modification,
 *   Neither the name of MaterialKit nor the names of its
     contributors may be used to endorse or promote products derived from
     this software without specific prior written permission.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
