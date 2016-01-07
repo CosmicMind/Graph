@@ -117,6 +117,12 @@
 		961F9BC61C10ED5400ACF5DD /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B761C10ED5400ACF5DD /* Stack.swift */; };
 		964473E01C3B7577004D8A8C /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960590441C39E73B00691E88 /* JSONTests.swift */; };
 		964473E11C3B7578004D8A8C /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960590441C39E73B00691E88 /* JSONTests.swift */; };
+		96607D751C3DB14A008D47D8 /* NodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96607D741C3DB14A008D47D8 /* NodeClass.swift */; };
+		96607D761C3DB14A008D47D8 /* NodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96607D741C3DB14A008D47D8 /* NodeClass.swift */; };
+		96607D771C3DB2E6008D47D8 /* NodeClass.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96607D741C3DB14A008D47D8 /* NodeClass.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96607D781C3DB2E7008D47D8 /* File.swift in Headers */ = {isa = PBXBuildFile; fileRef = 960590571C3B690600691E88 /* File.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96607D791C3DB2F3008D47D8 /* NodeClass.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96607D741C3DB14A008D47D8 /* NodeClass.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96607D7A1C3DB2F3008D47D8 /* File.swift in Headers */ = {isa = PBXBuildFile; fileRef = 960590571C3B690600691E88 /* File.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96668B301C2A4F4A001916C7 /* EntityStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96668B2F1C2A4F4A001916C7 /* EntityStringTests.swift */; };
 		96668B311C2A4F4A001916C7 /* EntityStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96668B2F1C2A4F4A001916C7 /* EntityStringTests.swift */; };
 		9677B4431BA78A9200C82BBB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4391BA78A9200C82BBB /* GraphKit.framework */; };
@@ -279,6 +285,7 @@
 		961F9B741C10ED5400ACF5DD /* SortedMultiSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedMultiSet.swift; sourceTree = "<group>"; };
 		961F9B751C10ED5400ACF5DD /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		961F9B761C10ED5400ACF5DD /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		96607D741C3DB14A008D47D8 /* NodeClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeClass.swift; sourceTree = "<group>"; };
 		96668B2F1C2A4F4A001916C7 /* EntityStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityStringTests.swift; sourceTree = "<group>"; };
 		9677B4391BA78A9200C82BBB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B4421BA78A9200C82BBB /* GraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -375,6 +382,7 @@
 		961F9BC71C10ED8000ACF5DD /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				96607D741C3DB14A008D47D8 /* NodeClass.swift */,
 				961F9B531C10ED5400ACF5DD /* Graph.swift */,
 				961F9B551C10ED5400ACF5DD /* GraphObject.swift */,
 				961F9B561C10ED5400ACF5DD /* GraphSearch.swift */,
@@ -522,6 +530,8 @@
 				960B23401C38418900E96216 /* GraphKit+Array.swift in Headers */,
 				960B23411C38418900E96216 /* GraphKit+Set.swift in Headers */,
 				9605904B1C39E79800691E88 /* JSON.swift in Headers */,
+				96607D791C3DB2F3008D47D8 /* NodeClass.swift in Headers */,
+				96607D7A1C3DB2F3008D47D8 /* File.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,6 +575,8 @@
 				960B233D1C38417700E96216 /* GraphKit+Array.swift in Headers */,
 				960B233E1C38417700E96216 /* GraphKit+Set.swift in Headers */,
 				9605904A1C39E79000691E88 /* JSON.swift in Headers */,
+				96607D771C3DB2E6008D47D8 /* NodeClass.swift in Headers */,
+				96607D781C3DB2E7008D47D8 /* File.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -757,6 +769,7 @@
 				961F9B941C10ED5400ACF5DD /* DoublyLinkedListNode.swift in Sources */,
 				961F9BA21C10ED5400ACF5DD /* ManagedEntity.swift in Sources */,
 				6523D6DC1C32FE3F00A7BAFD /* GraphKit+Array.swift in Sources */,
+				96607D761C3DB14A008D47D8 /* NodeClass.swift in Sources */,
 				961F9B981C10ED5400ACF5DD /* ManagedActionGroup.swift in Sources */,
 				961F9B9A1C10ED5400ACF5DD /* ManagedActionProperty.swift in Sources */,
 				961F9B9E1C10ED5400ACF5DD /* ManagedBondGroup.swift in Sources */,
@@ -833,6 +846,7 @@
 				961F9B931C10ED5400ACF5DD /* DoublyLinkedListNode.swift in Sources */,
 				961F9BA11C10ED5400ACF5DD /* ManagedEntity.swift in Sources */,
 				6523D6DB1C32FE3F00A7BAFD /* GraphKit+Array.swift in Sources */,
+				96607D751C3DB14A008D47D8 /* NodeClass.swift in Sources */,
 				961F9B971C10ED5400ACF5DD /* ManagedActionGroup.swift in Sources */,
 				961F9B991C10ED5400ACF5DD /* ManagedActionProperty.swift in Sources */,
 				961F9B9D1C10ED5400ACF5DD /* ManagedBondGroup.swift in Sources */,
