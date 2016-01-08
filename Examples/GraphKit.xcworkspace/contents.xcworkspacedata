@@ -11,11 +11,4 @@
          location = "group:Entity/Entity.xcodeproj">
       </FileRef>
    </Group>
-   <Group
-      location = "container:"
-      name = "Groups">
-      <FileRef
-         location = "group:Groups/Groups.xcodeproj">
-      </FileRef>
-   </Group>
 </Workspace>
