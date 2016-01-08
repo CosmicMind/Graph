@@ -100,7 +100,7 @@ The GraphKit framework is a fast growing project and will encounter changes thro
 <a name="entity"></a>
 ### Entity
 
-An Entity is a model object that represents a person, place, or thing. For example a User, Button, Photo, Video, or Note -- pretty much anything that you would like to objectify. To distinguish between different Entity types, the type property is set upon instantiation of a new Entity object. For Example, creating different Entity types is as easy as the code below. 
+An Entity is a model object that represents a person, place, or thing. For example a User, Button, Photo, Video, or Note -- pretty much anything that you would like to objectify. To distinguish between different Entity types, the _type_ instance property is set upon instantiation of a new Entity object. For Example, creating different Entity types is as easy as the code below. 
 
 ```swift
 // Create a User Entity type.
@@ -113,7 +113,7 @@ let book: Entity = Entity(type: "Book")
 let photo: Entity = Entity(type: "Photo")
 ```
 
-When a new Entity is created, a record in CoreData is made, which provides a unique ID for the object. The Entity is not yet saved, so discarding an Entity does not create any unnecessary overhead. 
+When a new Entity is created, a record in CoreData is made, which provides a unique _id_ for the object. The Entity is not yet saved, so discarding an Entity does not create any unnecessary overhead.
 
 [Learn More About Entities](https://github.com/CosmicMind/GraphKit/wiki/Entity)
 
