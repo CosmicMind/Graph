@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.io>. 
+* Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.io>.
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -32,41 +32,41 @@ import UIKit
 import GraphKit
 
 public class ViewController: UIViewController {
-    
-    private lazy var graph: Graph = Graph()
-    
-    public let tableView: UITableView = UITableView()
-    public var notes: Array<Entity> = Array<Entity>()
-
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        prepareGraph()
-        prepareNotes()
-        prepareTableView()
-        prepareNavigationBarItems()
-    }
-    
-    public func prepareGraph() {
-        graph.delegate = self
-        graph.watchForEntity(types: ["Note"])
-    }
-    
-    public func prepareNotes() {
-        notes = graph.searchForEntity(types: ["Note"])
-    }
-    
-    public func prepareTableView() {
-        tableView.frame = view.bounds
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.dataSource = self
+	
+	private lazy var graph: Graph = Graph()
+	
+	public let tableView: UITableView = UITableView()
+	public var notes: Array<Entity> = Array<Entity>()
+	
+	public override func viewDidLoad() {
+		super.viewDidLoad()
+		prepareGraph()
+		prepareNotes()
+		prepareTableView()
+		prepareNavigationBarItems()
+	}
+	
+	public func prepareGraph() {
+		graph.delegate = self
+		graph.watchForEntity(types: ["Note"])
+	}
+	
+	public func prepareNotes() {
+		notes = graph.searchForEntity(types: ["Note"])
+	}
+	
+	public func prepareTableView() {
+		tableView.frame = view.bounds
+		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+		tableView.dataSource = self
 		view.addSubview(tableView)
-    }
-    
-    public func prepareNavigationBarItems() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "handleAddButton:")
-    }
-    
-    public func handleAddButton(sender: UIBarButtonItem) {
+	}
+	
+	public func prepareNavigationBarItems() {
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "handleAddButton:")
+	}
+	
+	public func handleAddButton(sender: UIBarButtonItem) {
 		let note: Entity = Entity(type: "Note")
 		
 		note["text"] = "New Note entry."
@@ -76,31 +76,30 @@ public class ViewController: UIViewController {
 			if let e: NSError = error {
 				print(e)
 			}
-        }
-    }
+		}
+	}
 }
 
 extension ViewController: UITableViewDataSource {
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return notes.count;
-    }
+	public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return notes.count;
+	}
 	
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell")! as UITableViewCell
-        cell.backgroundColor = .whiteColor()
-        
+		cell.backgroundColor = .whiteColor()
+		
 		let note: Entity = notes[indexPath.row]
-        cell.textLabel!.text = note["text"] as? String
+		cell.textLabel!.text = note["text"] as? String
 		cell.imageView!.image = note["image"] as? UIImage
 		
 		return cell
-    }
+	}
 }
 
 extension ViewController: GraphDelegate {
-    public func graphDidInsertEntity(graph: Graph, entity: Entity) {
-        notes.append(entity)
-        tableView.reloadData()
-    }
+	public func graphDidInsertEntity(graph: Graph, entity: Entity) {
+		notes.append(entity)
+		tableView.reloadData()
+	}
 }
-

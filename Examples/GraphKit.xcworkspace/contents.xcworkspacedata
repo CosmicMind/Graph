@@ -6,9 +6,9 @@
    </FileRef>
    <Group
       location = "container:"
-      name = "ToDo">
+      name = "Entity">
       <FileRef
-         location = "group:ToDo/ToDo.xcodeproj">
+         location = "group:Entity/Entity.xcodeproj">
       </FileRef>
    </Group>
    <Group
