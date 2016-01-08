@@ -29,11 +29,15 @@
 */
 
 /*
-The following ViewController exemplifies the usage of Entity objects being
-created and inserted within a tableView. There is a single Graph Search
-query when loading the ViewController. On inserts, the Graph Watch API is
-utilized to update the Array block that holds the Entity objects to better
-the efficiency of the overall process of updating the UI for the ViewController.
+The following ViewController exemplifies the usage of Bond objects forming
+relationships between Entity objects. In this example, there are User and 
+Book Entity types that are related through an Author relationship. 
+
+For example:	User is Author of Book.
+
+The User is the sbject of the relationship.
+The Author is the relationship.
+The Book is the object of the relationship.
 */
 
 import UIKit
@@ -43,16 +47,16 @@ public class ViewController: UIViewController {
 	/// Access the Graph persistence layer.
 	private lazy var graph: Graph = Graph()
 	
-	/// A tableView used to display new Entity entries.
+	/// A tableView used to display Bond entries.
 	public let tableView: UITableView = UITableView()
 	
-	/// A list of all the Note Entity types.
-	public var notes: Array<Entity> = Array<Entity>()
+	/// A list of all the Author Bond types.
+	public var authors: Array<Bond> = Array<Bond>()
 	
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 		prepareGraph()
-		prepareNotes()
+		prepareAuthors()
 		prepareTableView()
 		prepareNavigationBarItems()
 	}
@@ -64,15 +68,66 @@ public class ViewController: UIViewController {
 		/*
 		Rather than searching the Note Entity types on each
 		insert, the Graph Watch API is used to update the
-		notes Array. This allows a single search query to be 
+		notes Array. This allows a single search query to be
 		made when loading the ViewController.
 		*/
-		graph.watchForEntity(types: ["Note"])
+		graph.watchForBond(types: ["Author"])
 	}
 	
-	/// Prepares the notes Array.
-	public func prepareNotes() {
-		notes = graph.searchForEntity(types: ["Note"])
+	/// Prepares the authors Array.
+	public func prepareAuthors() {
+		authors = graph.searchForBond(types: ["Author"])
+		
+		// Add Author relationships if none exist.
+		if 0 == authors.count {
+			// Create some User Entity types.
+			let user1: Entity = Entity(type: "User")
+			user1["name"] = "Eve"
+			
+			let user2: Entity = Entity(type: "User")
+			user2["name"] = "Daniel"
+			
+			let user3: Entity = Entity(type: "User")
+			user3["name"] = "Dima"
+			
+			// Create some Book Entity types.
+			let book1: Entity = Entity(type: "Book")
+			book1["title"] = "Yoga For Everyone"
+			
+			let book2: Entity = Entity(type: "Book")
+			book2["title"] = "Learning GraphKit"
+			
+			let book3: Entity = Entity(type: "Book")
+			book3["title"] = "Beautiful Design"
+			
+			// Create some Author Bond types.
+			let author1: Bond = Bond(type: "Author")
+			let author2: Bond = Bond(type: "Author")
+			let author3: Bond = Bond(type: "Author")
+			
+			// Make relationships.
+			author1.subject = user1
+			author1.object = book1
+			
+			author2.subject = user2
+			author2.object = book2
+			
+			author3.subject = user3
+			author3.object = book3
+			
+			/*
+			The graph.save call triggers an asynchronous callback
+			that may be used for various benefits. As well, since
+			the graph is watching Author Bond types, the
+			graphDidInsertBond delegate method is executed once
+			the save is complete.
+			*/
+			graph.save { (success: Bool, error: NSError?) in
+				if let e: NSError = error {
+					print(e)
+				}
+			}
+		}
 	}
 	
 	/// Prepares the tableView.
@@ -90,16 +145,26 @@ public class ViewController: UIViewController {
 	
 	/// Handles the add button event.
 	public func handleAddButton(sender: UIBarButtonItem) {
-		let note: Entity = Entity(type: "Note")
+		// Create a User Entity types.
+		let user: Entity = Entity(type: "User")
+		user["name"] = "Anonymous"
 		
-		note["text"] = "New Note entry."
-		note["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("GraphKit", ofType: "png")!)
+		// Create a Book Entity types.
+		let book: Entity = Entity(type: "Book")
+		book["title"] = "A New Book Title"
+		
+		// Create a Author Bond types.
+		let author: Bond = Bond(type: "Author")
+		
+		// Make relationships.
+		author.subject = user
+		author.object = book
 		
 		/*
 		The graph.save call triggers an asynchronous callback
 		that may be used for various benefits. As well, since
-		the graph is watching Note Entity types, the 
-		graphDidInsertEntity delegate method is executed once
+		the graph is watching Author Bond types, the
+		graphDidInsertBond delegate method is executed once
 		the save is complete.
 		*/
 		graph.save { (success: Bool, error: NSError?) in
@@ -114,17 +179,25 @@ public class ViewController: UIViewController {
 extension ViewController: UITableViewDataSource {
 	/// Determines the number of rows in the tableView.
 	public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return notes.count;
+		return authors.count;
 	}
 	
 	/// Prepares the cells within the tableView.
 	public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell")! as UITableViewCell
-		cell.backgroundColor = .whiteColor()
+		let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
+
+		// Get the Bond relationship.
+		let author: Bond = authors[indexPath.row]
 		
-		let note: Entity = notes[indexPath.row]
-		cell.textLabel!.text = note["text"] as? String
-		cell.imageView!.image = note["image"] as? UIImage
+		// Set the Bookk title if it exists.
+		if let title: String = author.object?["title"] as? String {
+			cell.textLabel?.text = title
+		}
+		
+		// Set the User name if it exists.
+		if let name: String = author.subject?["name"] as? String {
+			cell.detailTextLabel?.text = "Written By: \(name)"
+		}
 		
 		return cell
 	}
@@ -133,11 +206,11 @@ extension ViewController: UITableViewDataSource {
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
 	/**
-	GraphDelegate delegation method that is executed 
-	on Note Entity inserts.
+	GraphDelegate delegation method that is executed
+	on Author Bond inserts.
 	*/
-	public func graphDidInsertEntity(graph: Graph, entity: Entity) {
-		notes.append(entity)
+	public func graphDidInsertBond(graph: Graph, bond: Bond) {
+		authors.append(bond)
 		tableView.reloadData()
 	}
 }

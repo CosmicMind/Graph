@@ -11,4 +11,11 @@
          location = "group:Entity/Entity.xcodeproj">
       </FileRef>
    </Group>
+   <Group
+      location = "container:"
+      name = "Bond">
+      <FileRef
+         location = "group:Bond/Bond.xcodeproj">
+      </FileRef>
+   </Group>
 </Workspace>
