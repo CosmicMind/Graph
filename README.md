@@ -100,7 +100,7 @@ The GraphKit framework is a fast growing project and will encounter changes thro
 <a name="entity"></a>
 ### Entity
 
-An Entity is a model object that represents a person, place, or thing. For example a User, Button, Photo, Video, or Note -- pretty much anything that you would like to objectify. To distinguish between different Entity types, the _type_ instance property is set upon instantiation of a new Entity object. For Example, creating different Entity types is as easy as the code below. 
+An Entity is a model object that represents a person, place, or thing. For example a User, Button, Photo, Video, or Note -- pretty much anything that you would like to objectify. To distinguish between different Entity types, the _type_ instance property is set upon instantiation of a new Entity object. For Example, creating different Entity types is as easy as the code below.
 
 ```swift
 // Create a User Entity type.
@@ -115,30 +115,40 @@ let photo: Entity = Entity(type: "Photo")
 
 When a new Entity is created, a record in CoreData is made, which provides a unique _id_ for the object. The Entity is not yet saved, so discarding an Entity does not create any unnecessary overhead.
 
-[Learn More About Entities](https://github.com/CosmicMind/GraphKit/wiki/Entity)
+[Learn More About Entity Objects](https://github.com/CosmicMind/GraphKit/wiki/Entity)
 
 <a name="bond"></a>
 ### Bond
 
-A Bond is used to form a relationship between two Entity Objects. Like an Entity, a Bond also has a type property that specifies the collection to which it belongs to. A Bond's relationship structure is like a sentence, in that it has a Subject and Object. Let's look at an example to clarify this concept. Below is an example of two Entity Objects, a User and a Book, which have a relationship that is defined by the User being the Author of the Book. The relationship should read as, "User is Author of Book."
+A Bond is a model object that represents a relationship between two [Entity](https://github.com/CosmicMind/GraphKit/wiki/Entity) objects. To distinguish between different Bond types, the _type_ instance property is set upon instantiation of a new Bond object. To form meaningful relationships, sentence structures are used, with a _subject_ and _object_ that form the relationship. For example, we have two Entity types, a User and a Book. The User is the Author of the Book, so how is this modeled? In a sentence it would be, _User is Author of Book_. The User is the _subject_ in this case, and the _object_ is the Book. In code, the following is how this would be modeled.
 
 ```swift
-let graph: Graph = Graph()
-
+// Create a User Entity type.
 let user: Entity = Entity(type: "User")
-user["name"] = "Michael Talbot"
 
+// Create a Book Entity type.
 let book: Entity = Entity(type: "Book")
-book["title"] = "The Holographic Universe"
-book.addGroup("Physics")
 
+// Create an Author Bond type.
 let author: Bond = Bond(type: "Author")
-author["written"] = "May 6th 1992"
+
+// Make the relationship.
 author.subject = user
 author.object = book
-
-graph.save()
 ```
+Another way to think of this relationship through a sentence structure is, _the Book was Written by the User_. So now the Book is the _subject_, the User is the _object_, and Written is the relationship. In code, our example now looks like the following.
+
+```swift
+// Create a Written Bond type.
+let written: Bond = Bond(type: "Written")
+
+// Make the relationship.
+written.subject = book
+written.object = user
+```
+Both approaches are acceptable, it really depends on how you would like to think of it.
+
+[Learn More About Bond Objects](https://github.com/CosmicMind/GraphKit/wiki/Bond)
 
 <a name="action"></a>
 ### Action
