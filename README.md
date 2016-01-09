@@ -120,7 +120,7 @@ When a new Entity is created, a record in CoreData is made, which provides a uni
 <a name="bond"></a>
 ### Bond
 
-A Bond is a model object that represents a relationship between two [Entity](https://github.com/CosmicMind/GraphKit/wiki/Entity) objects. To distinguish between different Bond types, the _type_ instance property is set upon instantiation of a new Bond object. To form meaningful relationships, sentence structures are used, with a _subject_ and _object_ that form the relationship. For example, we have two Entity types, a User and a Book. The User is the Author of the Book, so how is this modeled? In a sentence it would be, _User is Author of Book_. The User is the _subject_ in this case, and the _object_ is the Book. In code, the following is how this would be modeled.
+A Bond is a model object that represents a relationship between two [Entity](https://github.com/CosmicMind/GraphKit/wiki/Entity) objects. To distinguish between different Bond types, the _type_ instance property is set upon instantiation of a new Bond object. To form meaningful relationships, sentence structures are used, with a _subject_ and _object_ that form the relationship. For example, we have two Entity types, a User and a Book. The relationship between the two is that the User is the Author of the Book. So how is this modeled? In a sentence it would be, _User is Author of Book_. The User is the _subject_ in this case, and the _object_ is the Book. In code, the following is how this would be achieved.
 
 ```swift
 // Create a User Entity type.
