@@ -63,14 +63,13 @@ public class ViewController: UIViewController {
 	
 	/// Prepares the Graph instance.
 	public func prepareGraph() {
-		graph.delegate = self
-		
 		/*
-		Rather than searching the Note Entity types on each
+		Rather than searching the Author Bond types on each
 		insert, the Graph Watch API is used to update the
-		notes Array. This allows a single search query to be
+		authors Array. This allows a single search query to be
 		made when loading the ViewController.
 		*/
+		graph.delegate = self
 		graph.watchForBond(types: ["Author"])
 	}
 	
@@ -93,12 +92,15 @@ public class ViewController: UIViewController {
 			// Create some Book Entity types.
 			let book1: Entity = Entity(type: "Book")
 			book1["title"] = "Yoga For Everyone"
+			book1["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Book", ofType: "png")!)
 			
 			let book2: Entity = Entity(type: "Book")
 			book2["title"] = "Learning GraphKit"
+			book2["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Book", ofType: "png")!)
 			
 			let book3: Entity = Entity(type: "Book")
 			book3["title"] = "Beautiful Design"
+			book3["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Book", ofType: "png")!)
 			
 			// Create some Author Bond types.
 			let author1: Bond = Bond(type: "Author")
@@ -152,6 +154,7 @@ public class ViewController: UIViewController {
 		// Create a Book Entity types.
 		let book: Entity = Entity(type: "Book")
 		book["title"] = "A New Book Title"
+		book["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Book", ofType: "png")!)
 		
 		// Create a Author Bond types.
 		let author: Bond = Bond(type: "Author")
@@ -190,8 +193,9 @@ extension ViewController: UITableViewDataSource {
 		let author: Bond = authors[indexPath.row]
 		
 		// Set the Bookk title if it exists.
-		if let title: String = author.object?["title"] as? String {
-			cell.textLabel?.text = title
+		if let book: Entity = author.object {
+			cell.textLabel?.text = book["title"] as? String
+			cell.imageView?.image = book["image"] as? UIImage
 		}
 		
 		// Set the User name if it exists.
@@ -205,10 +209,7 @@ extension ViewController: UITableViewDataSource {
 
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
-	/**
-	GraphDelegate delegation method that is executed
-	on Author Bond inserts.
-	*/
+	/// GraphDelegate delegation method that is executed on Bond inserts.
 	public func graphDidInsertBond(graph: Graph, bond: Bond) {
 		authors.append(bond)
 		tableView.reloadData()

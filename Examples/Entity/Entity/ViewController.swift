@@ -59,14 +59,13 @@ public class ViewController: UIViewController {
 	
 	/// Prepares the Graph instance.
 	public func prepareGraph() {
-		graph.delegate = self
-		
 		/*
 		Rather than searching the Note Entity types on each
 		insert, the Graph Watch API is used to update the
 		notes Array. This allows a single search query to be 
 		made when loading the ViewController.
 		*/
+		graph.delegate = self
 		graph.watchForEntity(types: ["Note"])
 	}
 	
@@ -132,10 +131,7 @@ extension ViewController: UITableViewDataSource {
 
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
-	/**
-	GraphDelegate delegation method that is executed 
-	on Note Entity inserts.
-	*/
+	/// GraphDelegate delegation method that is executed on Entity inserts.
 	public func graphDidInsertEntity(graph: Graph, entity: Entity) {
 		notes.append(entity)
 		tableView.reloadData()

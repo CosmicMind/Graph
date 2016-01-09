@@ -11,8 +11,7 @@
 		96607DA21C40145F008D47D8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96607DA11C40145F008D47D8 /* ViewController.swift */; };
 		96607DA71C40145F008D47D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96607DA61C40145F008D47D8 /* Assets.xcassets */; };
 		96607DAA1C40145F008D47D8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96607DA81C40145F008D47D8 /* LaunchScreen.storyboard */; };
-		96607DB21C4014D2008D47D8 /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96607DB11C4014D2008D47D8 /* GraphKit.framework */; };
-		96607DB31C4014D2008D47D8 /* GraphKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96607DB11C4014D2008D47D8 /* GraphKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		96607DBC1C40AE77008D47D8 /* Book.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607DBB1C40AE77008D47D8 /* Book.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,7 +21,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				96607DB31C4014D2008D47D8 /* GraphKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,7 +34,7 @@
 		96607DA61C40145F008D47D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96607DA91C40145F008D47D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		96607DAB1C40145F008D47D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		96607DB11C4014D2008D47D8 /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = GraphKit.framework; path = "/Users/danieldahan/Library/Developer/Xcode/DerivedData/GraphKit-armxrasbxnehbyefytcidxvmfcbv/Build/Products/Debug-iphoneos/GraphKit.framework"; sourceTree = "<absolute>"; };
+		96607DBB1C40AE77008D47D8 /* Book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Book.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,7 +42,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96607DB21C4014D2008D47D8 /* GraphKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,7 +51,6 @@
 		96607D931C40145F008D47D8 = {
 			isa = PBXGroup;
 			children = (
-				96607DB11C4014D2008D47D8 /* GraphKit.framework */,
 				96607D9E1C40145F008D47D8 /* Bond */,
 				96607D9D1C40145F008D47D8 /* Products */,
 			);
@@ -71,6 +67,7 @@
 		96607D9E1C40145F008D47D8 /* Bond */ = {
 			isa = PBXGroup;
 			children = (
+				96607DBB1C40AE77008D47D8 /* Book.png */,
 				96607D9F1C40145F008D47D8 /* AppDelegate.swift */,
 				96607DA11C40145F008D47D8 /* ViewController.swift */,
 				96607DA61C40145F008D47D8 /* Assets.xcassets */,
@@ -139,6 +136,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96607DBC1C40AE77008D47D8 /* Book.png in Resources */,
 				96607DAA1C40145F008D47D8 /* LaunchScreen.storyboard in Resources */,
 				96607DA71C40145F008D47D8 /* Assets.xcassets in Resources */,
 			);
