@@ -29,75 +29,43 @@
 */
 
 /*
-The following ViewController exemplifies the usage of Entity objects being
-created and inserted within a tableView. There is a single Graph Search
-query when loading the ViewController. On inserts, the Graph Watch API is
-utilized to update the Array block that holds the Entity objects to better
-the efficiency of the overall process of updating the UI for the ViewController.
+The following ViewController exemplifies the usage of Entities. In this example, 
+there are Person Entity types that are displayed in a list.
 */
 
 import UIKit
 import GraphKit
 
-public class ViewController: UIViewController {
+class ViewController: UIViewController {
 	/// Access the Graph persistence layer.
 	private lazy var graph: Graph = Graph()
 	
-	/// A tableView used to display new Entity entries.
-	public let tableView: UITableView = UITableView()
+	/// A tableView used to display Entity entries.
+	private let tableView: UITableView = UITableView()
 	
-	/// A list of all the Note Entity types.
-	public var notes: Array<Entity> = Array<Entity>()
+	/// A list of all the People Entities.
+	private var people: Array<Entity> = Array<Entity>()
 	
-	public override func viewDidLoad() {
+	override func viewDidLoad() {
 		super.viewDidLoad()
 		prepareGraph()
-		prepareNotes()
+		preparePeople()
 		prepareTableView()
 		prepareNavigationBarItems()
 	}
 	
-	/// Prepares the Graph instance.
-	public func prepareGraph() {
-		/*
-		Rather than searching the Note Entity types on each
-		insert, the Graph Watch API is used to update the
-		notes Array. This allows a single search query to be 
-		made when loading the ViewController.
-		*/
-		graph.delegate = self
-		graph.watchForEntity(types: ["Note"])
-	}
-	
-	/// Prepares the notes Array.
-	public func prepareNotes() {
-		notes = graph.searchForEntity(types: ["Note"])
-	}
-	
-	/// Prepares the tableView.
-	public func prepareTableView() {
-		tableView.frame = view.bounds
-		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-		tableView.dataSource = self
-		view.addSubview(tableView)
-	}
-	
-	/// Prepares the navigation bar items.
-	public func prepareNavigationBarItems() {
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "handleAddButton:")
-	}
-	
 	/// Handles the add button event.
-	public func handleAddButton(sender: UIBarButtonItem) {
-		let note: Entity = Entity(type: "Note")
-		
-		note["text"] = "New Note entry."
-		note["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("GraphKit", ofType: "png")!)
+	internal func handleAddButton(sender: UIBarButtonItem) {
+		// Create a Person Entity.
+		let person: Entity = Entity(type: "Person")
+		person["firstName"] = "First"
+		person["lastName"] = "Last"
+		person["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
 		
 		/*
 		The graph.save call triggers an asynchronous callback
 		that may be used for various benefits. As well, since
-		the graph is watching Note Entity types, the 
+		the graph is watching Person Entities, the
 		graphDidInsertEntity delegate method is executed once
 		the save is complete.
 		*/
@@ -107,33 +75,130 @@ public class ViewController: UIViewController {
 			}
 		}
 	}
-}
-
-/// TableViewDataSource methods.
-extension ViewController: UITableViewDataSource {
-	/// Determines the number of rows in the tableView.
-	public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return notes.count;
+	
+	/// Prepares the Graph instance.
+	private func prepareGraph() {
+		/*
+		Rather than searching the Person Entities on each
+		insert, the Graph Watch API is used to update the
+		people Array. This allows a single search query to be
+		made when loading the ViewController.
+		*/
+		graph.delegate = self
+		graph.watchForEntity(types: ["Person"])
 	}
 	
-	/// Prepares the cells within the tableView.
-	public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell")! as UITableViewCell
-		cell.backgroundColor = .whiteColor()
+	/// Prepares the people Array.
+	private func preparePeople() {
+		people = graph.searchForEntity(types: ["Person"])
 		
-		let note: Entity = notes[indexPath.row]
-		cell.textLabel!.text = note["text"] as? String
-		cell.imageView!.image = note["image"] as? UIImage
-		
-		return cell
+		// Add People if none exist.
+		if 0 == people.count {
+			// Create Person Entities.
+			let tim: Entity = Entity(type: "Person")
+			tim["firstName"] = "Tim"
+			tim["lastName"] = "Cook"
+			tim["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("TimCook", ofType: "png")!)
+			
+			let mark: Entity = Entity(type: "Person")
+			mark["firstName"] = "Mark"
+			mark["lastName"] = "Zuckerberg"
+			mark["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!)
+			
+			let elon: Entity = Entity(type: "Person")
+			elon["firstName"] = "Elon"
+			elon["lastName"] = "Musk"
+			elon["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
+			
+			/*
+			The graph.save call triggers an asynchronous callback
+			that may be used for various benefits. As well, since
+			the graph is watching Person Entities, the
+			graphDidInsertEntity delegate method is executed once
+			the save is complete.
+			*/
+			graph.save { (success: Bool, error: NSError?) in
+				if let e: NSError = error {
+					print(e)
+				}
+			}
+		}
+	}
+	
+	/// Prepares the tableView.
+	private func prepareTableView() {
+		tableView.frame = view.bounds
+		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+		tableView.dataSource = self
+		tableView.delegate = self
+		view.addSubview(tableView)
+	}
+	
+	/// Prepares the navigation bar items.
+	private func prepareNavigationBarItems() {
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "handleAddButton:")
 	}
 }
 
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
 	/// GraphDelegate delegation method that is executed on Entity inserts.
-	public func graphDidInsertEntity(graph: Graph, entity: Entity) {
-		notes.append(entity)
+	func graphDidInsertEntity(graph: Graph, entity: Entity) {
+		people.append(entity)
 		tableView.reloadData()
+	}
+}
+
+
+/// TableViewDataSource methods.
+extension ViewController: UITableViewDataSource {
+	/// Determines the number of rows in the tableView.
+	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return people.count;
+	}
+	
+	/// Returns the number of sections.
+	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+		return 1
+	}
+	
+	/// Prepares the cells within the tableView.
+	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+		let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell")! as UITableViewCell
+		
+		// Get the Person Entity.
+		let person: Entity = people[indexPath.row]
+		
+		// Set the Person details.
+		cell.textLabel?.text = (person["firstName"] as! String) + " " + (person["lastName"] as! String)
+		cell.imageView?.image = person["image"] as? UIImage
+		
+		return cell
+	}
+	
+	/// Prepares the header within the tableView.
+	func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		let header = UIView(frame: CGRectMake(0, 0, view.bounds.width, 48))
+		header.backgroundColor = .whiteColor()
+		
+		let label: UILabel = UILabel(frame: CGRectMake(16, 0, view.bounds.width - 32, 48))
+		label.textColor = .grayColor()
+		label.text = "People"
+		
+		header.addSubview(label)
+		return header
+	}
+}
+
+/// UITableViewDelegate methods.
+extension ViewController: UITableViewDelegate {
+	/// Sets the tableView cell height.
+	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+		return 80
+	}
+	
+	/// Sets the tableView header height.
+	func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return 48
 	}
 }

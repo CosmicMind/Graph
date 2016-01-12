@@ -2,18 +2,28 @@
 
 ## Welcome to GraphKit
 
-GraphKit is a data framework. A data framework solves the issue of modeling, mapping, moving, and manipulating data. GraphKit may be used in its simplest form to save and search for data, or it may be used to create robust data-driven applications. What makes GraphKit interesting is in its approach to take the dirty work out of writing algorithms, building recommendations, and driving application behavior.
+GraphKit is a CoreData framework written in Swift. GraphKit is designed to simplify the complexities when working with CoreData while providing a seamless Data-Driven architecture.
 
-## Why use GraphKit?
+## Features
 
-Working with data is complicated and usually left to the end of the application development lifecycle. It takes time to setup models with CoreData and even more time to make changes to that model. To ease the use of data in an application, and to make it more enjoyable, GraphKit removes the complexity and allows developers to focus on the parts they care about.
+- [x] Store Any Data Type, Including Binary Data
+- [x] Relationship Modeling Without Configuration
+- [x] Action Modeling For Analytics
+- [x] Model With Graph Theory and Set Theory
+- [x] Faceted Search API
+- [x] Probability Extension For Predictive Analytics
+- [x] Never Migrate Data Again
+- [x] Library of Data Structures
+- [x] Asynchronous / Synchronous Saving
+- [x] Data-Driven Architecture
+- [x] Asynchronous Model Observation
+- [x] Comprehensive Unit Test Coverage
+- [x] Example Projects
 
-With GraphKit, it becomes easy to map Entity models, create relationships, and build realtime predictive applications that bring a unique experience to your end user. Data structures within GraphKit have a probability extension that allow search queries to become more than simple dumps of data. All data changes can easily be observed to create a completely reactive experience for users, while easing the development of your application.
+## Requirements
 
-## How To Get Started
-
-- [Download GraphKit](https://github.com/CosmicMind/GraphKit/archive/master.zip).
-- Explore the examples in the Examples directory.
+* iOS 8.0+ / Mac OS X 10.9+
+* Xcode 7.2+
 
 ## Communication
 
@@ -23,7 +33,11 @@ With GraphKit, it becomes easy to map Entity models, create relationships, and b
 - If you **have a feature request**, open an issue.
 - If you **want to contribute**, submit a pull request.
 
-### CocoaPods
+## Installation
+> **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks (10.9).**
+> - [Download GraphKit](https://github.com/CosmicMind/GraphKit/archive/master.zip)
+
+## CocoaPods
 
 [CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
 
@@ -49,7 +63,7 @@ Then, run the following command:
 $ pod install
 ```
 
-### Carthage Support
+## Carthage
 
 Carthage is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
 
@@ -65,13 +79,17 @@ To integrate GraphKit into your Xcode project using Carthage, specify it in your
 github "CosmicMind/GraphKit"
 ```
 
-Run carthage to build the framework and drag the built GraphKit.framework into your Xcode project.
+Run `carthage update` to build the framework and drag the built `GraphKit.framework` into your Xcode project.
 
-### Changelog
+## Changelog
 
-The GraphKit framework is a fast growing project and will encounter changes throughout its development. It is recommended that the [Changelog](https://github.com/CosmicMind/GraphKit/wiki/Changelog) be reviewed prior to updating versions.
+GraphKit is a growing project and will encounter changes throughout its development. It is recommended that the [Changelog](https://github.com/CosmicMind/GraphKit/wiki/Changelog) be reviewed prior to updating versions.
 
-### A Quick Tour  
+## Examples
+
+* Visit the Examples directory to see example projects using GraphKit.
+
+## A Tour  
 
 * [Entity](#entity)
 * [Bond](#bond)
@@ -92,66 +110,54 @@ The GraphKit framework is a fast growing project and will encounter changes thro
 * [SortedDictionary](#sorteddictionary)
 * [SortedMultiDictionary](#sortedmultidictionary)
 
-### Upcoming
-
-* Example Projects
-* Additional Data Structures
-
 <a name="entity"></a>
-### Entity
+## Entity
 
-An Entity is a model object that represents a person, place, or thing. For example a User, Button, Photo, Video, or Note -- pretty much anything that you would like to objectify. To distinguish between different Entity types, the _type_ instance property is set upon instantiation of a new Entity object. For Example, creating different Entity types is as easy as the code below.
+An Entity is a model object that represents a person, place, or thing. For example a Person, Company, Photo, Video, or Note -- pretty much anything that you would like to objectify. To distinguish between different Entity types, the _type_ instance property is set upon instantiation of a new Entity. For Example, creating different Entity types is as easy as the code below.
 
 ```swift
-// Create a User Entity type.
-let user: Entity = Entity(type: "User")
+// Create a Person Entity.
+let person: Entity = Entity(type: "Person")
+person["firstName"] = "Elon"
+person["lastName"] = "Musk"
 
-// Create a Book Entity type.
-let book: Entity = Entity(type: "Book")
-
-// Create a Photo Entity type.
-let photo: Entity = Entity(type: "Photo")
+// Create a Company Entity.
+let company: Entity = Entity(type: "Company")
+company["name"] = "Tesla Motors"
 ```
 
-When a new Entity is created, a record in CoreData is made, which provides a unique _id_ for the object. The Entity is not yet saved, so discarding an Entity does not create any unnecessary overhead.
-
-[Learn More About Entity Objects](https://github.com/CosmicMind/GraphKit/wiki/Entity)
+[Learn More About Entities](https://github.com/CosmicMind/GraphKit/wiki/Entity)
 
 <a name="bond"></a>
-### Bond
+## Bond
 
-A Bond is a model object that represents a relationship between two [Entity](https://github.com/CosmicMind/GraphKit/wiki/Entity) objects. To distinguish between different Bond types, the _type_ instance property is set upon instantiation of a new Bond object. To form meaningful relationships, sentence structures are used, with a _subject_ and _object_ that form the relationship. For example, we have two Entity types, a User and a Book. The relationship between the two is that the User is the Author of the Book. So how is this modeled? In a sentence it would be, _User is Author of Book_. The User is the _subject_ in this case, and the _object_ is the Book. In code, the following is how this would be achieved.
-
-```swift
-// Create a User Entity type.
-let user: Entity = Entity(type: "User")
-
-// Create a Book Entity type.
-let book: Entity = Entity(type: "Book")
-
-// Create an Author Bond type.
-let author: Bond = Bond(type: "Author")
-
-// Make the relationship.
-author.subject = user
-author.object = book
-```
-Another way to think of this relationship through a sentence structure is, _the Book was Written by the User_. So now the Book is the _subject_, the User is the _object_, and Written is the relationship. In code, our example now looks like the following.
+A Bond is a model object that represents a relationship between two [Entities](https://github.com/CosmicMind/GraphKit/wiki/Entity). To distinguish between different Bond types, the _type_ instance property is set upon instantiation of a new Bond. To form meaningful relationships, sentence structures are used, with a _subject_ and _object_ that form the relationship. For example, we have two Entity types, a Person and a Company. The relationship between the two is that the Person is an Employee of the Company. So how is this modeled? In a sentence it would be, _Person is Employee of Company_. The Person is the _subject_, and the _object_ is the Company. In code, the following is how this would look.
 
 ```swift
-// Create a Written Bond type.
-let written: Bond = Bond(type: "Written")
+// Create a Person Entity.
+let person: Entity = Entity(type: "Person")
+person["firstName"] = "Mark"
+person["lastName"] = "Zuckerberg"
+
+// Create a Company Entity.
+let company: Entity = Entity(type: "Company")
+company["name"] = "Facebook"
+
+// Create an Employee Bond.
+let employee: Bond = Bond(type: "Employee")
+employee["startDate"] = "February 4, 2004"
 
 // Make the relationship.
-written.subject = book
-written.object = user
+employee.subject = user
+employee.object = company
 ```
-Both approaches are acceptable, it really depends on how you would like to think of it.
 
-[Learn More About Bond Objects](https://github.com/CosmicMind/GraphKit/wiki/Bond)
+Notice that information about the relationship is stored within the Bond leaving both _Mark_ and _Facebook_ to form other relationships freely without any of the relationship information. This is a key principal when using Bonds.
+
+[Learn More About Bonds](https://github.com/CosmicMind/GraphKit/wiki/Bond)
 
 <a name="action"></a>
-### Action
+## Action
 
 An Action is used to form a relationship between many Entity Objects. Like an Entity, an Action also has a type property that specifies the collection to which it belongs to. An Action's relationship structure is like a sentence, in that it relates a collection of Subjects to a collection of Objects. Below is an example of a User purchasing many Books. It may be thought of as "User Purchased these Book(s)."
 
@@ -172,7 +178,7 @@ graph.save()
 ```
 
 <a name="groups"></a>
-### Groups
+## Groups
 
 Groups are used to organize Entities, Bonds, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo and Video Entity type may exist in a group called Media. Another example may be including a Photo and Book Entity type in a Favorites group for your users' account. Below are examples of using groups.
 
@@ -194,7 +200,7 @@ let favorites: Array<Entity> = graph.searchForEntity(groups: ["Favorites"])
 ```
 
 <a name="probability"></a>
-### Probability
+## Probability
 
 Probability is a core feature within GraphKit. Your application may be completely catered to your users' habits and usage. To demonstrate this wonderful feature, let's look at some examples:
 
@@ -232,7 +238,7 @@ if 33.33 < pOfX {
 ```
 
 <a name="datadriven"></a>
-### Data Driven
+## Data Driven
 
 As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User Clicked a Button".
 
@@ -266,7 +272,7 @@ func graphDidInsertAction(graph: Graph, action: Action) {
 ```
 
 <a name="facetedsearch"></a>
-### Faceted Search
+## Faceted Search
 
 To explore the intricate relationships within the Graph, the search API adopts a faceted design. This allows the exploration of your data through any view point. The below examples show how to use the Graph search API:
 
@@ -308,7 +314,7 @@ let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filt
 ```
 
 <a name="json"></a>
-### JSON
+## JSON
 
 JSON is a widely used format for serializing data. GraphKit comes with a JSON toolset. Below are some examples of its usage.
 
@@ -330,12 +336,12 @@ print(j2?["user"]?["token"]?.asInt) // Output: 123456789
 ```
 
 <a name="datastructures"></a>
-### Data Structures
+## Data Structures
 
 GraphKit comes packed with some powerful data structures to help write algorithms. The following structures are included: DoublyLinkedList, Stack, Queue, Deque, RedBlackTree, SortedSet, SortedMultiSet, SortedDictionary, and SortedMultiDictionary.
 
 <a name="doublylinkedlist"></a>
-### DoublyLinkedList
+## DoublyLinkedList
 
 The DoublyLinkedList data structure is excellent for large growing collections of data. Below is an example of its usage.
 
@@ -366,7 +372,7 @@ repeat {
 ```
 
 <a name="stack"></a>
-### Stack
+## Stack
 
 The Stack data structure is a container of objects that are inserted and removed according to the last-in-first-out (LIFO) principle. Below is an example of its usage.
 
@@ -386,7 +392,7 @@ while !stack.isEmpty {
 ```
 
 <a name="queue"></a>
-### Queue
+## Queue
 
 The Queue data structure is a container of objects that are inserted and removed according to the first-in-first-out (FIFO) principle. Below is an example of its usage.
 
@@ -406,7 +412,7 @@ while !queue.isEmpty {
 ```
 
 <a name="deque"></a>
-### Deque
+## Deque
 
 The Deque data structure is a container of objects that are inserted and removed according to the first-in-first-out (FIFO) and last-in-first-out (LIFO) principle. Essentially, a Deque is a Stack and Queue combined. Below are examples of its usage.
 
@@ -439,7 +445,7 @@ while !dequeB.isEmpty {
 ```
 
 <a name="redblacktree"></a>
-### RedBlackTree
+## RedBlackTree
 
 A RedBlackTree is a Balanced Binary Search Tree that maintains insert, remove, update, and search operations in a complexity of O(logn). The GraphKit implementation of a RedBlackTree also includes an order-statistic, which allows the data structure to be accessed using subscripts like an array or dictionary. RedBlackTrees may store unique keys or non-unique key values. Below is an example of its usage.
 
@@ -455,7 +461,7 @@ print(rbA.count) // Output: 3
 ```
 
 <a name="sortedset"></a>
-### SortedSet
+## SortedSet
 
 SortedSets are a powerful data structure for algorithm and analysis design. Elements within a SortedSet are unique and insert, remove, and search operations have a complexity of O(logn). The GraphKit implementation of a SortedSet also includes an order-statistic, which allows the data structure to be accessed using an index subscript like an array. Below are examples of its usage.
 
@@ -493,17 +499,17 @@ print(setE.probabilityOf(setA.first!.subject!, setA.last!.subject!)) // 0.666666
 ```
 
 <a name="sortedmultiset"></a>
-### SortedMultiSet
+## SortedMultiSet
 
 A SortedMultiSet is identical to a SortedSet, except that a SortedMultiSet allows non-unique elements. Look at [SortedSet](#sortedset) for examples of its usage.
 
 <a name="sorteddictionary"></a>
-### SortedDictionary
+## SortedDictionary
 
 A SortedDictionary is a powerful data structure that maintains a sorted set of keys with value pairs. Keys within a SortedDictionary are unique and insert, remove, update, and search operations have a complexity of O(logn).
 
 <a name="sortedmultidictionary"></a>
-### SortedMultiDictionary
+## SortedMultiDictionary
 
 A SortedMultiDictionary is identical to a SortedDictionary, except that a SortedMultiDictionary allows non-unique keys. Below is an example of its usage.
 
@@ -520,7 +526,7 @@ for student in students {
 }
 ```
 
-### License
+## License
 
 Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.io>. All rights reserved.
 

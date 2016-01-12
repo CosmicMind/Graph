@@ -29,98 +29,134 @@
 */
 
 /*
-The following ViewController exemplifies the usage of Bond objects forming
-relationships between Entity objects. In this example, there are User and 
-Book Entity types that are related through an Author relationship. 
+The following ViewController exemplifies the usage of Bonds forming
+relationships between Entities. In this example, there are Person and
+Company Entity types that are related through an Employee relationship.
 
-For example:	User is Author of Book.
+For example:	Person is Employee of Company.
 
-The User is the sbject of the relationship.
-The Author is the relationship.
-The Book is the object of the relationship.
+Person is the sbject of the relationship.
+Employee is the relationship.
+Company is the object of the relationship.
 */
 
 import UIKit
 import GraphKit
 
-public class ViewController: UIViewController {
+class ViewController: UIViewController {
 	/// Access the Graph persistence layer.
 	private lazy var graph: Graph = Graph()
 	
 	/// A tableView used to display Bond entries.
-	public let tableView: UITableView = UITableView()
+	private let tableView: UITableView = UITableView()
 	
-	/// A list of all the Author Bond types.
-	public var authors: Array<Bond> = Array<Bond>()
+	/// A list of all the Employee Bonds.
+	private var employees: Array<Bond> = Array<Bond>()
 	
-	public override func viewDidLoad() {
+	override func viewDidLoad() {
 		super.viewDidLoad()
 		prepareGraph()
-		prepareAuthors()
+		prepareEmployees()
 		prepareTableView()
 		prepareNavigationBarItems()
 	}
 	
-	/// Prepares the Graph instance.
-	public func prepareGraph() {
+	/// Handles the add button event.
+	internal func handleAddButton(sender: UIBarButtonItem) {
+		// Create a Person Entity.
+		let person: Entity = Entity(type: "Person")
+		person["firstName"] = "First"
+		person["lastName"] = "Last"
+		person["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
+		
+		// Create a Company Entity.
+		let company: Entity = Entity(type: "Company")
+		company["name"] = "Company"
+		
+		// Create an Employee Bond.
+		let employee: Bond = Bond(type: "Employee")
+		
+		// Make relationships.
+		employee.subject = person
+		employee.object = company
+		
 		/*
-		Rather than searching the Author Bond types on each
+		The graph.save call triggers an asynchronous callback
+		that may be used for various benefits. As well, since
+		the graph is watching Employee Bonds, the
+		graphDidInsertBond delegate method is executed once
+		the save is complete.
+		*/
+		graph.save { (success: Bool, error: NSError?) in
+			if let e: NSError = error {
+				print(e)
+			}
+		}
+	}
+	
+	/// Prepares the Graph instance.
+	private func prepareGraph() {
+		/*
+		Rather than searching the Employee Bonds on each
 		insert, the Graph Watch API is used to update the
-		authors Array. This allows a single search query to be
+		employees Array. This allows a single search query to be
 		made when loading the ViewController.
 		*/
 		graph.delegate = self
-		graph.watchForBond(types: ["Author"])
+		graph.watchForBond(types: ["Employee"])
 	}
 	
-	/// Prepares the authors Array.
-	public func prepareAuthors() {
-		authors = graph.searchForBond(types: ["Author"])
+	/// Prepares the employees Array.
+	private func prepareEmployees() {
+		employees = graph.searchForBond(types: ["Employee"])
 		
-		// Add Author relationships if none exist.
-		if 0 == authors.count {
-			// Create some User Entity types.
-			let user1: Entity = Entity(type: "User")
-			user1["name"] = "Eve"
+		// Add Employee relationships if none exist.
+		if 0 == employees.count {
+			// Create Person Entities.
+			let tim: Entity = Entity(type: "Person")
+			tim["firstName"] = "Tim"
+			tim["lastName"] = "Cook"
+			tim["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("TimCook", ofType: "png")!)
 			
-			let user2: Entity = Entity(type: "User")
-			user2["name"] = "Daniel"
+			let mark: Entity = Entity(type: "Person")
+			mark["firstName"] = "Mark"
+			mark["lastName"] = "Zuckerberg"
+			mark["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!)
 			
-			let user3: Entity = Entity(type: "User")
-			user3["name"] = "Dima"
+			let elon: Entity = Entity(type: "Person")
+			elon["firstName"] = "Elon"
+			elon["lastName"] = "Musk"
+			elon["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
 			
-			// Create some Book Entity types.
-			let book1: Entity = Entity(type: "Book")
-			book1["title"] = "Yoga For Everyone"
-			book1["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Book", ofType: "png")!)
+			// Create Company Entities.
+			let apple: Entity = Entity(type: "Company")
+			apple["name"] = "Apple"
 			
-			let book2: Entity = Entity(type: "Book")
-			book2["title"] = "Learning GraphKit"
-			book2["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Book", ofType: "png")!)
+			let facebook: Entity = Entity(type: "Company")
+			facebook["name"] = "Facebook"
 			
-			let book3: Entity = Entity(type: "Book")
-			book3["title"] = "Beautiful Design"
-			book3["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Book", ofType: "png")!)
+			let tesla: Entity = Entity(type: "Company")
+			tesla["name"] = "Tesla Motors"
 			
-			// Create some Author Bond types.
-			let author1: Bond = Bond(type: "Author")
-			let author2: Bond = Bond(type: "Author")
-			let author3: Bond = Bond(type: "Author")
+			// Create Employee Bonds.
+			let employee1: Bond = Bond(type: "Employee")
+			let employee2: Bond = Bond(type: "Employee")
+			let employee3: Bond = Bond(type: "Employee")
 			
 			// Make relationships.
-			author1.subject = user1
-			author1.object = book1
+			employee1.subject = tim
+			employee1.object = apple
 			
-			author2.subject = user2
-			author2.object = book2
+			employee2.subject = mark
+			employee2.object = facebook
 			
-			author3.subject = user3
-			author3.object = book3
+			employee3.subject = elon
+			employee3.object = tesla
 			
 			/*
 			The graph.save call triggers an asynchronous callback
 			that may be used for various benefits. As well, since
-			the graph is watching Author Bond types, the
+			the graph is watching Employee Bonds, the
 			graphDidInsertBond delegate method is executed once
 			the save is complete.
 			*/
@@ -133,85 +169,86 @@ public class ViewController: UIViewController {
 	}
 	
 	/// Prepares the tableView.
-	public func prepareTableView() {
+	private func prepareTableView() {
 		tableView.frame = view.bounds
 		tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
 		tableView.dataSource = self
+		tableView.delegate = self
 		view.addSubview(tableView)
 	}
 	
 	/// Prepares the navigation bar items.
-	public func prepareNavigationBarItems() {
+	private func prepareNavigationBarItems() {
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "handleAddButton:")
-	}
-	
-	/// Handles the add button event.
-	public func handleAddButton(sender: UIBarButtonItem) {
-		// Create a User Entity types.
-		let user: Entity = Entity(type: "User")
-		user["name"] = "Anonymous"
-		
-		// Create a Book Entity types.
-		let book: Entity = Entity(type: "Book")
-		book["title"] = "A New Book Title"
-		book["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Book", ofType: "png")!)
-		
-		// Create a Author Bond types.
-		let author: Bond = Bond(type: "Author")
-		
-		// Make relationships.
-		author.subject = user
-		author.object = book
-		
-		/*
-		The graph.save call triggers an asynchronous callback
-		that may be used for various benefits. As well, since
-		the graph is watching Author Bond types, the
-		graphDidInsertBond delegate method is executed once
-		the save is complete.
-		*/
-		graph.save { (success: Bool, error: NSError?) in
-			if let e: NSError = error {
-				print(e)
-			}
-		}
-	}
-}
-
-/// TableViewDataSource methods.
-extension ViewController: UITableViewDataSource {
-	/// Determines the number of rows in the tableView.
-	public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return authors.count;
-	}
-	
-	/// Prepares the cells within the tableView.
-	public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-
-		// Get the Bond relationship.
-		let author: Bond = authors[indexPath.row]
-		
-		// Set the Bookk title if it exists.
-		if let book: Entity = author.object {
-			cell.textLabel?.text = book["title"] as? String
-			cell.imageView?.image = book["image"] as? UIImage
-		}
-		
-		// Set the User name if it exists.
-		if let name: String = author.subject?["name"] as? String {
-			cell.detailTextLabel?.text = "Written By: \(name)"
-		}
-		
-		return cell
 	}
 }
 
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
 	/// GraphDelegate delegation method that is executed on Bond inserts.
-	public func graphDidInsertBond(graph: Graph, bond: Bond) {
-		authors.append(bond)
+	func graphDidInsertBond(graph: Graph, bond: Bond) {
+		employees.append(bond)
 		tableView.reloadData()
+	}
+}
+
+
+/// TableViewDataSource methods.
+extension ViewController: UITableViewDataSource {
+	/// Determines the number of rows in the tableView.
+	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return employees.count;
+	}
+	
+	/// Returns the number of sections.
+	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+		return 1
+	}
+	
+	/// Prepares the cells within the tableView.
+	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+		let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
+		
+		// Get the Bond relationship.
+		let employee: Bond = employees[indexPath.row]
+		
+		// Set the Person details.
+		if let person: Entity = employee.subject {
+			cell.textLabel?.text = (person["firstName"] as! String) + " " + (person["lastName"] as! String)
+			cell.imageView?.image = person["image"] as? UIImage
+		}
+		
+		// Set the Company details.
+		if let company: Entity = employee.object {
+			cell.detailTextLabel?.text = "Works At: " + (company["name"] as! String)
+		}
+		
+		return cell
+	}
+	
+	/// Prepares the header within the tableView.
+	func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		let header = UIView(frame: CGRectMake(0, 0, view.bounds.width, 48))
+		header.backgroundColor = .whiteColor()
+		
+		let label: UILabel = UILabel(frame: CGRectMake(16, 0, view.bounds.width - 32, 48))
+		label.textColor = .grayColor()
+		label.text = "Employees"
+		
+		header.addSubview(label)
+		return header
+	}
+}
+
+/// UITableViewDelegate methods.
+extension ViewController: UITableViewDelegate {
+	/// Sets the tableView cell height.
+	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+		return 80
+	}
+	
+	/// Sets the tableView header height.
+	func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return 48
 	}
 }

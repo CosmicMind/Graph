@@ -11,7 +11,10 @@
 		658F92EF1C3F5BE40058E345 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658F92EE1C3F5BE40058E345 /* ViewController.swift */; };
 		658F92F41C3F5BE40058E345 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 658F92F31C3F5BE40058E345 /* Assets.xcassets */; };
 		658F92F71C3F5BE40058E345 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 658F92F51C3F5BE40058E345 /* LaunchScreen.storyboard */; };
-		96607D921C3F71E6008D47D8 /* GraphKit.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607D911C3F71E6008D47D8 /* GraphKit.png */; };
+		96607E331C45ACF4008D47D8 /* Avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607E2F1C45ACF4008D47D8 /* Avatar.png */; };
+		96607E341C45ACF4008D47D8 /* ElonMusk.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607E301C45ACF4008D47D8 /* ElonMusk.png */; };
+		96607E351C45ACF4008D47D8 /* MarkZuckerberg.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607E311C45ACF4008D47D8 /* MarkZuckerberg.png */; };
+		96607E361C45ACF4008D47D8 /* TimCook.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607E321C45ACF4008D47D8 /* TimCook.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,7 +37,10 @@
 		658F92F31C3F5BE40058E345 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		658F92F61C3F5BE40058E345 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		658F92F81C3F5BE40058E345 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		96607D911C3F71E6008D47D8 /* GraphKit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GraphKit.png; sourceTree = "<group>"; };
+		96607E2F1C45ACF4008D47D8 /* Avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Avatar.png; sourceTree = "<group>"; };
+		96607E301C45ACF4008D47D8 /* ElonMusk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ElonMusk.png; sourceTree = "<group>"; };
+		96607E311C45ACF4008D47D8 /* MarkZuckerberg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MarkZuckerberg.png; sourceTree = "<group>"; };
+		96607E321C45ACF4008D47D8 /* TimCook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TimCook.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +73,10 @@
 		658F92EB1C3F5BE40058E345 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				96607D911C3F71E6008D47D8 /* GraphKit.png */,
+				96607E2F1C45ACF4008D47D8 /* Avatar.png */,
+				96607E301C45ACF4008D47D8 /* ElonMusk.png */,
+				96607E311C45ACF4008D47D8 /* MarkZuckerberg.png */,
+				96607E321C45ACF4008D47D8 /* TimCook.png */,
 				658F92EC1C3F5BE40058E345 /* AppDelegate.swift */,
 				658F92EE1C3F5BE40058E345 /* ViewController.swift */,
 				658F92F31C3F5BE40058E345 /* Assets.xcassets */,
@@ -136,8 +145,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96607E351C45ACF4008D47D8 /* MarkZuckerberg.png in Resources */,
 				658F92F71C3F5BE40058E345 /* LaunchScreen.storyboard in Resources */,
-				96607D921C3F71E6008D47D8 /* GraphKit.png in Resources */,
+				96607E341C45ACF4008D47D8 /* ElonMusk.png in Resources */,
+				96607E331C45ACF4008D47D8 /* Avatar.png in Resources */,
+				96607E361C45ACF4008D47D8 /* TimCook.png in Resources */,
 				658F92F41C3F5BE40058E345 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

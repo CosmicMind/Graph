@@ -11,7 +11,10 @@
 		96607DA21C40145F008D47D8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96607DA11C40145F008D47D8 /* ViewController.swift */; };
 		96607DA71C40145F008D47D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96607DA61C40145F008D47D8 /* Assets.xcassets */; };
 		96607DAA1C40145F008D47D8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96607DA81C40145F008D47D8 /* LaunchScreen.storyboard */; };
-		96607DCF1C41A1D6008D47D8 /* Book.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607DCE1C41A1D6008D47D8 /* Book.png */; };
+		96607E2B1C45A740008D47D8 /* Avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607E271C45A740008D47D8 /* Avatar.png */; };
+		96607E2C1C45A740008D47D8 /* ElonMusk.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607E281C45A740008D47D8 /* ElonMusk.png */; };
+		96607E2D1C45A740008D47D8 /* MarkZuckerberg.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607E291C45A740008D47D8 /* MarkZuckerberg.png */; };
+		96607E2E1C45A740008D47D8 /* TimCook.png in Resources */ = {isa = PBXBuildFile; fileRef = 96607E2A1C45A740008D47D8 /* TimCook.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,7 +37,10 @@
 		96607DA61C40145F008D47D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96607DA91C40145F008D47D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		96607DAB1C40145F008D47D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		96607DCE1C41A1D6008D47D8 /* Book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Book.png; sourceTree = "<group>"; };
+		96607E271C45A740008D47D8 /* Avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Avatar.png; sourceTree = "<group>"; };
+		96607E281C45A740008D47D8 /* ElonMusk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ElonMusk.png; sourceTree = "<group>"; };
+		96607E291C45A740008D47D8 /* MarkZuckerberg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MarkZuckerberg.png; sourceTree = "<group>"; };
+		96607E2A1C45A740008D47D8 /* TimCook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TimCook.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +73,10 @@
 		96607D9E1C40145F008D47D8 /* Bond */ = {
 			isa = PBXGroup;
 			children = (
-				96607DCE1C41A1D6008D47D8 /* Book.png */,
+				96607E271C45A740008D47D8 /* Avatar.png */,
+				96607E281C45A740008D47D8 /* ElonMusk.png */,
+				96607E291C45A740008D47D8 /* MarkZuckerberg.png */,
+				96607E2A1C45A740008D47D8 /* TimCook.png */,
 				96607D9F1C40145F008D47D8 /* AppDelegate.swift */,
 				96607DA11C40145F008D47D8 /* ViewController.swift */,
 				96607DA61C40145F008D47D8 /* Assets.xcassets */,
@@ -136,8 +145,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96607DCF1C41A1D6008D47D8 /* Book.png in Resources */,
+				96607E2D1C45A740008D47D8 /* MarkZuckerberg.png in Resources */,
 				96607DAA1C40145F008D47D8 /* LaunchScreen.storyboard in Resources */,
+				96607E2C1C45A740008D47D8 /* ElonMusk.png in Resources */,
+				96607E2B1C45A740008D47D8 /* Avatar.png in Resources */,
+				96607E2E1C45A740008D47D8 /* TimCook.png in Resources */,
 				96607DA71C40145F008D47D8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
