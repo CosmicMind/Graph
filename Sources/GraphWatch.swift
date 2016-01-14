@@ -78,24 +78,24 @@ public extension Graph {
 	}
 	
 	/**
-		:name:	watchForBond(types: groups: properties)
+		:name:	watchForRelationship(types: groups: properties)
 	*/
-	public func watchForBond(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<String>? = nil) {
+	public func watchForRelationship(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<String>? = nil) {
 		if let v: Array<String> = types {
 			for x in v {
-				watch(Bond: x)
+				watch(Relationship: x)
 			}
 		}
 		
 		if let v: Array<String> = groups {
 			for x in v {
-				watch(BondGroup: x)
+				watch(RelationshipGroup: x)
 			}
 		}
 		
 		if let v: Array<String> = properties {
 			for x in v {
-				watch(BondProperty: x)
+				watch(RelationshipProperty: x)
 			}
 		}
 	}
@@ -143,24 +143,24 @@ public extension Graph {
 	}
 	
 	//
-	//	:name:	watch(Bond)
+	//	:name:	watch(Relationship)
 	//
-	internal func watch(Bond type: String) {
-		addWatcher("type", value: type, index: GraphUtility.bondIndexName, entityDescriptionName: GraphUtility.bondDescriptionName, managedObjectClassName: GraphUtility.bondObjectClassName)
+	internal func watch(Relationship type: String) {
+		addWatcher("type", value: type, index: GraphUtility.relationshipIndexName, entityDescriptionName: GraphUtility.relationshipDescriptionName, managedObjectClassName: GraphUtility.relationshipObjectClassName)
 	}
 	
 	//
-	//	:name:	watch(BondGroup)
+	//	:name:	watch(RelationshipGroup)
 	//
-	internal func watch(BondGroup name: String) {
-		addWatcher("name", value: name, index: GraphUtility.bondGroupIndexName, entityDescriptionName: GraphUtility.bondGroupDescriptionName, managedObjectClassName: GraphUtility.bondGroupObjectClassName)
+	internal func watch(RelationshipGroup name: String) {
+		addWatcher("name", value: name, index: GraphUtility.relationshipGroupIndexName, entityDescriptionName: GraphUtility.relationshipGroupDescriptionName, managedObjectClassName: GraphUtility.relationshipGroupObjectClassName)
 	}
 	
 	//
-	//	:name:	watch(BondProperty)
+	//	:name:	watch(RelationshipProperty)
 	//
-	internal func watch(BondProperty name: String) {
-		addWatcher("name", value: name, index: GraphUtility.bondPropertyIndexName, entityDescriptionName: GraphUtility.bondPropertyDescriptionName, managedObjectClassName: GraphUtility.bondPropertyObjectClassName)
+	internal func watch(RelationshipProperty name: String) {
+		addWatcher("name", value: name, index: GraphUtility.relationshipPropertyIndexName, entityDescriptionName: GraphUtility.relationshipPropertyDescriptionName, managedObjectClassName: GraphUtility.relationshipPropertyObjectClassName)
 	}
 	
 	//
@@ -194,14 +194,14 @@ public extension Graph {
 					case "ManagedActionProperty_ManagedActionProperty_":
 						let property: ManagedActionProperty = node as! ManagedActionProperty
 						delegate?.graphDidInsertActionProperty?(self, action: Action(object: property.node), property: property.name, value: property.object)
-					case "ManagedBond_ManagedBond_":
-						delegate?.graphDidInsertBond?(self, bond: Bond(object: node as! ManagedBond))
-					case "ManagedBondGroup_ManagedBondGroup_":
-						let group: ManagedBondGroup = node as! ManagedBondGroup
-						delegate?.graphDidInsertBondGroup?(self, bond: Bond(object: group.node), group: group.name)
-					case "ManagedBondProperty_ManagedBondProperty_":
-						let property: ManagedBondProperty = node as! ManagedBondProperty
-						delegate?.graphDidInsertBondProperty?(self, bond: Bond(object: property.node), property: property.name, value: property.object)
+					case "ManagedRelationship_ManagedRelationship_":
+						delegate?.graphDidInsertRelationship?(self, relationship: Relationship(object: node as! ManagedRelationship))
+					case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
+						let group: ManagedRelationshipGroup = node as! ManagedRelationshipGroup
+						delegate?.graphDidInsertRelationshipGroup?(self, relationship: Relationship(object: group.node), group: group.name)
+					case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+						let property: ManagedRelationshipProperty = node as! ManagedRelationshipProperty
+						delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(object: property.node), property: property.name, value: property.object)
 					default:
 						assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 					}
@@ -223,9 +223,9 @@ public extension Graph {
 					case "ManagedActionProperty_ManagedActionProperty_":
 						let property: ManagedActionProperty = node as! ManagedActionProperty
 						delegate?.graphDidUpdateActionProperty?(self, action: Action(object: property.node), property: property.name, value: property.object)
-					case "ManagedBondProperty_ManagedBondProperty_":
-						let property: ManagedBondProperty = node as! ManagedBondProperty
-						delegate?.graphDidUpdateBondProperty?(self, bond: Bond(object: property.node), property: property.name, value: property.object)
+					case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+						let property: ManagedRelationshipProperty = node as! ManagedRelationshipProperty
+						delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(object: property.node), property: property.name, value: property.object)
 					case "ManagedAction_ManagedAction_":
 						delegate?.graphDidUpdateAction?(self, action: Action(object: node as! ManagedAction))
 					default:
@@ -259,14 +259,14 @@ public extension Graph {
 					case "ManagedActionGroup_ManagedActionGroup_":
 						let group: ManagedActionGroup = node as! ManagedActionGroup
 						delegate?.graphDidDeleteActionGroup?(self, action: Action(object: group.node), group: group.name)
-					case "ManagedBond_ManagedBond_":
-						delegate?.graphDidDeleteBond?(self, bond: Bond(object: node as! ManagedBond))
-					case "ManagedBondProperty_ManagedBondProperty_":
-						let property: ManagedBondProperty = node as! ManagedBondProperty
-						delegate?.graphDidDeleteBondProperty?(self, bond: Bond(object: property.node), property: property.name, value: property.object)
-					case "ManagedBondGroup_ManagedBondGroup_":
-						let group: ManagedBondGroup = node as! ManagedBondGroup
-						delegate?.graphDidDeleteBondGroup?(self, bond: Bond(object: group.node), group: group.name)
+					case "ManagedRelationship_ManagedRelationship_":
+						delegate?.graphDidDeleteRelationship?(self, relationship: Relationship(object: node as! ManagedRelationship))
+					case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+						let property: ManagedRelationshipProperty = node as! ManagedRelationshipProperty
+						delegate?.graphDidDeleteRelationshipProperty?(self, relationship: Relationship(object: property.node), property: property.name, value: property.object)
+					case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
+						let group: ManagedRelationshipGroup = node as! ManagedRelationshipGroup
+						delegate?.graphDidDeleteRelationshipGroup?(self, relationship: Relationship(object: group.node), group: group.name)
 					default:
 						assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
 					}

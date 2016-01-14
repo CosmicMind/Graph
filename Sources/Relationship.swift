@@ -30,25 +30,22 @@
 
 import Foundation
 
-@objc(Entity)
-public class Entity : NSObject, Comparable {
-	//
-	//	:name:	node
-	//
-	internal let node: Node<ManagedEntity>
-	
+@objc(Relationship)
+public class Relationship : NSObject, Comparable {
+	internal let node: Node<ManagedRelationship>
+
 	/**
 		:name:	description
 	*/
 	public override var description: String {
-		return node.description
+		return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
 	}
 	
 	/**
 		:name:	nodeClass
 	*/
 	public var nodeClass: NodeClass {
-		return .Entity
+		return .Relationship
 	}
 
 	/**
@@ -82,91 +79,59 @@ public class Entity : NSObject, Comparable {
 	/**
 		:name:	properties
 	*/
-	public subscript(name: String) -> AnyObject? {
-		get {
-			return node.object[name]
-		}
-		set(value) {
-			node.object[name] = value
-		}
-	}
-
-	/**
-		:name:	properties
-	*/
 	public var properties: Dictionary<String, AnyObject> {
 		return node.properties
 	}
-
+	
 	/**
-    	:name:	actions
-    */
-    public var actions: Array<Action> {
-		return actionsWhenSubject + actionsWhenObject
-    }
-
-    /**
-    	:name:	actionsWhenSubject
+		:name:	subject
 	*/
-    public var actionsWhenSubject: Array<Action> {
-		return node.object.actionSubjectSet.map {
-			return Action(object: $0 as! ManagedAction)
-		} as Array<Action>
-    }
-
-    /**
-    	:name:	actionsWhenObject
+	public var subject: Entity? {
+		get {
+			if let v: ManagedEntity = node.object.subject {
+				return Entity(object: v)
+			}
+			return nil
+		}
+		set(entity) {
+			node.object.subject = entity?.node.object
+		}
+	}
+	
+	/**
+		:name:	object
 	*/
-    public var actionsWhenObject: Array<Action> {
-		return node.object.actionObjectSet.map {
-			return Action(object: $0 as! ManagedAction)
-		} as Array<Action>
-    }
-
-    /**
-    	:name:	relationships
-	*/
-    public var relationships: Array<Relationship> {
-		return relationshipsWhenSubject + relationshipsWhenObject
-    }
-
-    /**
-    	:name:	relationshipsWhenSubject
-	*/
-    public var relationshipsWhenSubject: Array<Relationship> {
-		return node.object.relationshipSubjectSet.map {
-			return Relationship(object: $0 as! ManagedRelationship)
-		} as Array<Relationship>
-    }
-
-    /**
-    	:name:	relationshipsWhenObject
-	*/
-    public var relationshipsWhenObject: Array<Relationship> {
-		return node.object.relationshipObjectSet.map {
-			return Relationship(object: $0 as! ManagedRelationship)
-		} as Array<Relationship>
-    }
+	public var object: Entity? {
+		get {
+			if let v: ManagedEntity = node.object.object {
+				return Entity(object: v)
+			}
+			return nil
+		}
+		set(entity) {
+			node.object.object = entity?.node.object
+		}
+	}
 	
 	/**
 		:name:	init
 	*/
-	internal init(object: ManagedEntity) {
-		node = Node<ManagedEntity>(object: object)
+	internal init(object: ManagedRelationship) {
+		node = Node<ManagedRelationship>(object: object)
 	}
 	
 	/**
 		:name:	init
 	*/
 	public convenience init(type: String) {
-		self.init(object: ManagedEntity(type: type))
+		self.init(object: ManagedRelationship(type: type))
 	}
 	
 	/**
 		:name:	isEqual
 	*/
 	public override func isEqual(object: AnyObject?) -> Bool {
-		if let v = object as? Entity {
+		if let v = object as? Relationship {
 			return id == v.id
 		}
 		return false
@@ -178,14 +143,14 @@ public class Entity : NSObject, Comparable {
 	public func addGroup(name: String) -> Bool {
 		return node.object.addGroup(name)
 	}
-	
+
 	/**
 		:name:	hasGroup
 	*/
 	public func hasGroup(name: String) -> Bool {
 		return node.object.hasGroup(name)
 	}
-	
+
 	/**
 		:name:	removeGroup
 	*/
@@ -199,28 +164,39 @@ public class Entity : NSObject, Comparable {
 	public func toggleGroup(name: String) -> Bool {
 		return hasGroup(name) ? removeGroup(name) : addGroup(name)
 	}
-	
-    /**
-		:name:	delete
+
+	/**
+		:name:	properties
 	*/
+	public subscript(name: String) -> AnyObject? {
+		get {
+			return node.object[name]
+		}
+		set(value) {
+			node.object[name] = value
+		}
+	}
+
+	/**
+    	:name:	delete
+    */
     public func delete() {
-		node.object.delete()
+        node.object.delete()
     }
 }
 
-public func <=(lhs: Entity, rhs: Entity) -> Bool {
+public func <=(lhs: Relationship, rhs: Relationship) -> Bool {
 	return lhs.id <= rhs.id
 }
 
-public func >=(lhs: Entity, rhs: Entity) -> Bool {
+public func >=(lhs: Relationship, rhs: Relationship) -> Bool {
 	return lhs.id >= rhs.id
 }
 
-public func >(lhs: Entity, rhs: Entity) -> Bool {
+public func >(lhs: Relationship, rhs: Relationship) -> Bool {
 	return lhs.id > rhs.id
 }
 
-public func <(lhs: Entity, rhs: Entity) -> Bool {
+public func <(lhs: Relationship, rhs: Relationship) -> Bool {
 	return lhs.id < rhs.id
 }
-

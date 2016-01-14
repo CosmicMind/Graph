@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.io>.
+* Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.io>. 
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -31,14 +31,16 @@
 import XCTest
 @testable import GraphKit
 
-class ActionStringTests : XCTestCase, GraphDelegate {
+class RelationshipThreadTests : XCTestCase, GraphDelegate {
 	var graph: Graph!
 	
-	var saveExpectation: XCTestExpectation?
+	var insertSaveExpectation: XCTestExpectation?
 	var insertExpectation: XCTestExpectation?
 	var insertPropertyExpectation: XCTestExpectation?
 	var insertGroupExpectation: XCTestExpectation?
+	var updateSaveExpectation: XCTestExpectation?
 	var updatePropertyExpectation: XCTestExpectation?
+	var deleteSaveExpectation: XCTestExpectation?
 	var deleteExpectation: XCTestExpectation?
 	var deletePropertyExpectation: XCTestExpectation?
 	var deleteGroupExpectation: XCTestExpectation?
@@ -47,7 +49,7 @@ class ActionStringTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
+		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
@@ -56,92 +58,98 @@ class ActionStringTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
-		let n: Action = Action(type: "T")
-		n["P"] = "A"
-		n.addGroup("G")
+		let q1: dispatch_queue_t = dispatch_queue_create("io.graphkit.RelationshipThreadTests1", DISPATCH_QUEUE_SERIAL)
+		let q2: dispatch_queue_t = dispatch_queue_create("io.graphkit.RelationshipThreadTests2", DISPATCH_QUEUE_SERIAL)
+		let q3: dispatch_queue_t = dispatch_queue_create("io.graphkit.RelationshipThreadTests3", DISPATCH_QUEUE_SERIAL)
 		
-		saveExpectation = expectationWithDescription("Test: Save did not pass.")
+		insertSaveExpectation = expectationWithDescription("Test: Save did not pass.")
 		insertExpectation = expectationWithDescription("Test: Insert did not pass.")
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-			self.saveExpectation?.fulfill()
-		}
-		
-		waitForExpectationsWithTimeout(10, handler: nil)
-		
-		n["P"] = "B"
-		
-		saveExpectation = expectationWithDescription("Test: Save did not pass.")
+		updateSaveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-			self.saveExpectation?.fulfill()
-		}
-		
-		waitForExpectationsWithTimeout(10, handler: nil)
-		
-		n.delete()
-		
-		saveExpectation = expectationWithDescription("Test: Save did not pass.")
+		deleteSaveExpectation = expectationWithDescription("Test: Save did not pass.")
 		deleteExpectation = expectationWithDescription("Test: Delete did not pass.")
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-			self.saveExpectation?.fulfill()
+		dispatch_async(q1) {
+			let n: Relationship = Relationship(type: "T")
+			n["P"] = 111
+			n.addGroup("G")
+			
+			self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+				self.insertSaveExpectation?.fulfill()
+			}
+			
+			dispatch_async(q2) {
+				n["P"] = 222
+				
+				self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+					XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+					self.updateSaveExpectation?.fulfill()
+				}
+				
+				dispatch_async(q3) {
+					n.delete()
+					
+					self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+						XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+						self.deleteSaveExpectation?.fulfill()
+					}
+				}
+			}
 		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
-	func graphDidInsertAction(graph: Graph, action: Action) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue(action["P"] as? String == "A")
-		XCTAssertTrue(action.hasGroup("G"))
+	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
+		XCTAssertTrue("T" == relationship.type)
+		XCTAssertTrue(relationship["P"] as? Int == 111)
+		XCTAssertTrue(relationship.hasGroup("G"))
 		insertExpectation?.fulfill()
 	}
 	
-	func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("P" == property)
-		XCTAssertTrue("A" == value as? String)
-		XCTAssertTrue(action[property] as? String == value as? String)
+		XCTAssertTrue(111 == value as? Int)
+		XCTAssertTrue(relationship[property] as? Int == value as? Int)
 		insertPropertyExpectation?.fulfill()
 	}
 	
-	func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("G" == group)
 		insertGroupExpectation?.fulfill()
 	}
 	
-	func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("P" == property)
-		XCTAssertTrue("B" == value as? String)
-		XCTAssertTrue(action[property] as? String == value as? String)
+		XCTAssertTrue(222 == value as? Int)
+		XCTAssertTrue(relationship[property] as? Int == value as? Int)
 		updatePropertyExpectation?.fulfill()
 	}
 	
-	func graphDidDeleteAction(graph: Graph, action: Action) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
+		XCTAssertTrue("T" == relationship.type)
 		deleteExpectation?.fulfill()
 	}
 	
-	func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("P" == property)
-		XCTAssertTrue("B" == value as? String)
+		XCTAssertTrue(222 == value as? Int)
 		deletePropertyExpectation?.fulfill()
 	}
 	
-	func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("G" == group)
 		deleteGroupExpectation?.fulfill()
 	}

@@ -260,12 +260,12 @@ class ProbabilityTests: XCTestCase {
 		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
-	func testBond() {
+	func testRelationship() {
 		let graph: Graph = Graph()
-		let target: Bond = Bond(type: "T")
+		let target: Relationship = Relationship(type: "T")
 		
 		for _ in 0..<99 {
-			let _: Bond = Bond(type: "T")
+			let _: Relationship = Relationship(type: "T")
 		}
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
@@ -277,7 +277,7 @@ class ProbabilityTests: XCTestCase {
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 		
-		let s: Array<Bond> = graph.searchForBond(types: ["T"])
+		let s: Array<Relationship> = graph.searchForRelationship(types: ["T"])
 		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
 		
 		for x in s {

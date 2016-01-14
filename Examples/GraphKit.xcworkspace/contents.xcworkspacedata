@@ -13,9 +13,9 @@
    </Group>
    <Group
       location = "container:"
-      name = "Bond">
+      name = "Relationship">
       <FileRef
-         location = "group:Bond/Bond.xcodeproj">
+         location = "group:Relationship/Relationship.xcodeproj">
       </FileRef>
    </Group>
 </Workspace>

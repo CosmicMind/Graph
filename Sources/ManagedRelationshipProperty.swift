@@ -28,10 +28,22 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import Foundation
+import CoreData
 
-public enum NodeClass : NSNumber {
-	case Entity = 1
-	case Relationship = 2
-	case Action = 3
+@objc(ManagedRelationshipProperty)
+internal class ManagedRelationshipProperty : ManagedNodeProperty {
+	@NSManaged internal var node: ManagedRelationship
+
+	/**
+		:name:	init
+		:description:	Initializer for the Model Object.
+	*/
+	internal convenience init(name: String, object: AnyObject) {
+		let g: Graph = Graph()
+		let w: NSManagedObjectContext? = g.worker
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.relationshipPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
+		self.name = name
+		self.object = object
+		context = w
+	}
 }

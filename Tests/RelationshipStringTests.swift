@@ -31,7 +31,7 @@
 import XCTest
 @testable import GraphKit
 
-class ActionStringTests : XCTestCase, GraphDelegate {
+class RelationshipStringTests : XCTestCase, GraphDelegate {
 	var graph: Graph!
 	
 	var saveExpectation: XCTestExpectation?
@@ -47,7 +47,7 @@ class ActionStringTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
+		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
@@ -56,7 +56,7 @@ class ActionStringTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
-		let n: Action = Action(type: "T")
+		let n: Relationship = Relationship(type: "T")
 		n["P"] = "A"
 		n.addGroup("G")
 		
@@ -99,49 +99,49 @@ class ActionStringTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
-	func graphDidInsertAction(graph: Graph, action: Action) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue(action["P"] as? String == "A")
-		XCTAssertTrue(action.hasGroup("G"))
+	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
+		XCTAssertTrue("T" == relationship.type)
+		XCTAssertTrue(relationship["P"] as? String == "A")
+		XCTAssertTrue(relationship.hasGroup("G"))
 		insertExpectation?.fulfill()
 	}
 	
-	func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("A" == value as? String)
-		XCTAssertTrue(action[property] as? String == value as? String)
+		XCTAssertTrue(relationship[property] as? String == value as? String)
 		insertPropertyExpectation?.fulfill()
 	}
 	
-	func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("G" == group)
 		insertGroupExpectation?.fulfill()
 	}
 	
-	func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
-		XCTAssertTrue(action[property] as? String == value as? String)
+		XCTAssertTrue(relationship[property] as? String == value as? String)
 		updatePropertyExpectation?.fulfill()
 	}
 	
-	func graphDidDeleteAction(graph: Graph, action: Action) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
+		XCTAssertTrue("T" == relationship.type)
 		deleteExpectation?.fulfill()
 	}
 	
-	func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
 		deletePropertyExpectation?.fulfill()
 	}
 	
-	func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String) {
-		XCTAssertTrue("T" == action.type)
+	func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
+		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("G" == group)
 		deleteGroupExpectation?.fulfill()
 	}

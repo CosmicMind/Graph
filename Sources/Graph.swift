@@ -73,15 +73,15 @@ internal struct GraphUtility {
 	internal static let actionPropertyObjectClassName: String = actionPropertyIndexName
 	internal static let actionPropertyDescriptionName: String = actionPropertyIndexName
 
-	internal static let bondIndexName: String = "ManagedBond"
-	internal static let bondDescriptionName: String = bondIndexName
-	internal static let bondObjectClassName: String = bondIndexName
-	internal static let bondGroupIndexName: String = "ManagedBondGroup"
-	internal static let bondGroupObjectClassName: String = bondGroupIndexName
-	internal static let bondGroupDescriptionName: String = bondGroupIndexName
-	internal static let bondPropertyIndexName: String = "ManagedBondProperty"
-	internal static let bondPropertyObjectClassName: String = bondPropertyIndexName
-	internal static let bondPropertyDescriptionName: String = bondPropertyIndexName
+	internal static let relationshipIndexName: String = "ManagedRelationship"
+	internal static let relationshipDescriptionName: String = relationshipIndexName
+	internal static let relationshipObjectClassName: String = relationshipIndexName
+	internal static let relationshipGroupIndexName: String = "ManagedRelationshipGroup"
+	internal static let relationshipGroupObjectClassName: String = relationshipGroupIndexName
+	internal static let relationshipGroupDescriptionName: String = relationshipGroupIndexName
+	internal static let relationshipPropertyIndexName: String = "ManagedRelationshipProperty"
+	internal static let relationshipPropertyObjectClassName: String = relationshipPropertyIndexName
+	internal static let relationshipPropertyDescriptionName: String = relationshipPropertyIndexName
 }
 
 @objc(GraphDelegate)
@@ -103,13 +103,13 @@ public protocol GraphDelegate {
 	optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
 	optional func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
 
-	optional func graphDidInsertBond(graph: Graph, bond: Bond)
-	optional func graphDidDeleteBond(graph: Graph, bond: Bond)
-	optional func graphDidInsertBondGroup(graph: Graph, bond: Bond, group: String)
-	optional func graphDidDeleteBondGroup(graph: Graph, bond: Bond, group: String)
-	optional func graphDidInsertBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
-	optional func graphDidUpdateBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
-	optional func graphDidDeleteBondProperty(graph: Graph, bond: Bond, property: String, value: AnyObject)
+	optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship)
+	optional func graphDidDeleteRelationship(graph: Graph, relationship: Relationship)
+	optional func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
+	optional func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
+	optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
+	optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
+	optional func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
 }
 
 @objc(Graph)
@@ -237,10 +237,10 @@ public class Graph : NSObject {
 			actionDescription.name = GraphUtility.actionDescriptionName
 			actionDescription.managedObjectClassName = GraphUtility.actionObjectClassName
 			
-			let bondDescription: NSEntityDescription = NSEntityDescription()
-			var bondProperties: Array<AnyObject> = Array<AnyObject>()
-			bondDescription.name = GraphUtility.bondDescriptionName
-			bondDescription.managedObjectClassName = GraphUtility.bondObjectClassName
+			let relationshipDescription: NSEntityDescription = NSEntityDescription()
+			var relationshipProperties: Array<AnyObject> = Array<AnyObject>()
+			relationshipDescription.name = GraphUtility.relationshipDescriptionName
+			relationshipDescription.managedObjectClassName = GraphUtility.relationshipObjectClassName
 			
 			let entityPropertyDescription: NSEntityDescription = NSEntityDescription()
 			var entityPropertyProperties: Array<AnyObject> = Array<AnyObject>()
@@ -252,10 +252,10 @@ public class Graph : NSObject {
 			actionPropertyDescription.name = GraphUtility.actionPropertyDescriptionName
 			actionPropertyDescription.managedObjectClassName = GraphUtility.actionPropertyObjectClassName
 			
-			let bondPropertyDescription: NSEntityDescription = NSEntityDescription()
-			var bondPropertyProperties: Array<AnyObject> = Array<AnyObject>()
-			bondPropertyDescription.name = GraphUtility.bondPropertyDescriptionName
-			bondPropertyDescription.managedObjectClassName = GraphUtility.bondPropertyObjectClassName
+			let relationshipPropertyDescription: NSEntityDescription = NSEntityDescription()
+			var relationshipPropertyProperties: Array<AnyObject> = Array<AnyObject>()
+			relationshipPropertyDescription.name = GraphUtility.relationshipPropertyDescriptionName
+			relationshipPropertyDescription.managedObjectClassName = GraphUtility.relationshipPropertyObjectClassName
 			
 			let entityGroupDescription: NSEntityDescription = NSEntityDescription()
 			var entityGroupProperties: Array<AnyObject> = Array<AnyObject>()
@@ -267,10 +267,10 @@ public class Graph : NSObject {
 			actionGroupDescription.name = GraphUtility.actionGroupDescriptionName
 			actionGroupDescription.managedObjectClassName = GraphUtility.actionGroupObjectClassName
 			
-			let bondGroupDescription: NSEntityDescription = NSEntityDescription()
-			var bondGroupProperties: Array<AnyObject> = Array<AnyObject>()
-			bondGroupDescription.name = GraphUtility.bondGroupDescriptionName
-			bondGroupDescription.managedObjectClassName = GraphUtility.bondGroupObjectClassName
+			let relationshipGroupDescription: NSEntityDescription = NSEntityDescription()
+			var relationshipGroupProperties: Array<AnyObject> = Array<AnyObject>()
+			relationshipGroupDescription.name = GraphUtility.relationshipGroupDescriptionName
+			relationshipGroupDescription.managedObjectClassName = GraphUtility.relationshipGroupObjectClassName
 			
 			let nodeClass: NSAttributeDescription = NSAttributeDescription()
 			nodeClass.name = "nodeClass"
@@ -278,7 +278,7 @@ public class Graph : NSObject {
 			nodeClass.optional = false
 			entityProperties.append(nodeClass.copy() as! NSAttributeDescription)
 			actionProperties.append(nodeClass.copy() as! NSAttributeDescription)
-			bondProperties.append(nodeClass.copy() as! NSAttributeDescription)
+			relationshipProperties.append(nodeClass.copy() as! NSAttributeDescription)
 			
 			let type: NSAttributeDescription = NSAttributeDescription()
 			type.name = "type"
@@ -286,7 +286,7 @@ public class Graph : NSObject {
 			type.optional = false
 			entityProperties.append(type.copy() as! NSAttributeDescription)
 			actionProperties.append(type.copy() as! NSAttributeDescription)
-			bondProperties.append(type.copy() as! NSAttributeDescription)
+			relationshipProperties.append(type.copy() as! NSAttributeDescription)
 			
 			let createdDate: NSAttributeDescription = NSAttributeDescription()
 			createdDate.name = "createdDate"
@@ -294,7 +294,7 @@ public class Graph : NSObject {
 			createdDate.optional = false
 			entityProperties.append(createdDate.copy() as! NSAttributeDescription)
 			actionProperties.append(createdDate.copy() as! NSAttributeDescription)
-			bondProperties.append(createdDate.copy() as! NSAttributeDescription)
+			relationshipProperties.append(createdDate.copy() as! NSAttributeDescription)
 			
 			let propertyName: NSAttributeDescription = NSAttributeDescription()
 			propertyName.name = "name"
@@ -302,7 +302,7 @@ public class Graph : NSObject {
 			propertyName.optional = false
 			entityPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
 			actionPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
-			bondPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
+			relationshipPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
 			
 			let propertyValue: NSAttributeDescription = NSAttributeDescription()
 			propertyValue.name = "object"
@@ -312,7 +312,7 @@ public class Graph : NSObject {
 			propertyValue.storedInExternalRecord = true
 			entityPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
 			actionPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
-			bondPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
+			relationshipPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
 			
 			let propertyRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			propertyRelationship.name = "node"
@@ -340,10 +340,10 @@ public class Graph : NSObject {
 			actionPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
 			
-			propertyRelationship.destinationEntity = bondDescription
-			propertySetRelationship.destinationEntity = bondPropertyDescription
-			bondPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
-			bondProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
+			propertyRelationship.destinationEntity = relationshipDescription
+			propertySetRelationship.destinationEntity = relationshipPropertyDescription
+			relationshipPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
+			relationshipProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
 			
 			let group: NSAttributeDescription = NSAttributeDescription()
 			group.name = "name"
@@ -351,7 +351,7 @@ public class Graph : NSObject {
 			group.optional = false
 			entityGroupProperties.append(group.copy() as! NSAttributeDescription)
 			actionGroupProperties.append(group.copy() as! NSAttributeDescription)
-			bondGroupProperties.append(group.copy() as! NSAttributeDescription)
+			relationshipGroupProperties.append(group.copy() as! NSAttributeDescription)
 			
 			let groupRelationship: NSRelationshipDescription = NSRelationshipDescription()
 			groupRelationship.name = "node"
@@ -379,10 +379,10 @@ public class Graph : NSObject {
 			actionGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
 			actionProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
 			
-			groupRelationship.destinationEntity = bondDescription
-			groupSetRelationship.destinationEntity = bondGroupDescription
-			bondGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
-			bondProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
+			groupRelationship.destinationEntity = relationshipDescription
+			groupSetRelationship.destinationEntity = relationshipGroupDescription
+			relationshipGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+			relationshipProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
 			
 			// Inverse relationship for Subjects -- B.
 			let actionSubjectSetRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -431,50 +431,50 @@ public class Graph : NSObject {
 			// Inverse relationship for Objects -- E.
 			
 			// Inverse relationship for Subjects -- B.
-			let bondSubjectSetRelationship = NSRelationshipDescription()
-			bondSubjectSetRelationship.name = "subject"
-			bondSubjectSetRelationship.minCount = 1
-			bondSubjectSetRelationship.maxCount = 1
-			bondSubjectSetRelationship.optional = true
-			bondSubjectSetRelationship.deleteRule = .NullifyDeleteRule
-			bondSubjectSetRelationship.destinationEntity = entityDescription
+			let relationshipSubjectSetRelationship = NSRelationshipDescription()
+			relationshipSubjectSetRelationship.name = "subject"
+			relationshipSubjectSetRelationship.minCount = 1
+			relationshipSubjectSetRelationship.maxCount = 1
+			relationshipSubjectSetRelationship.optional = true
+			relationshipSubjectSetRelationship.deleteRule = .NullifyDeleteRule
+			relationshipSubjectSetRelationship.destinationEntity = entityDescription
 			
-			let bondSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
-			bondSubjectRelationship.name = "bondSubjectSet"
-			bondSubjectRelationship.minCount = 0
-			bondSubjectRelationship.maxCount = 0
-			bondSubjectRelationship.optional = false
-			bondSubjectRelationship.deleteRule = .CascadeDeleteRule
-			bondSubjectRelationship.destinationEntity = bondDescription
+			let relationshipSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			relationshipSubjectRelationship.name = "relationshipSubjectSet"
+			relationshipSubjectRelationship.minCount = 0
+			relationshipSubjectRelationship.maxCount = 0
+			relationshipSubjectRelationship.optional = false
+			relationshipSubjectRelationship.deleteRule = .CascadeDeleteRule
+			relationshipSubjectRelationship.destinationEntity = relationshipDescription
 			
-			bondSubjectRelationship.inverseRelationship = bondSubjectSetRelationship
-			bondSubjectSetRelationship.inverseRelationship = bondSubjectRelationship
+			relationshipSubjectRelationship.inverseRelationship = relationshipSubjectSetRelationship
+			relationshipSubjectSetRelationship.inverseRelationship = relationshipSubjectRelationship
 			
-			entityProperties.append(bondSubjectRelationship.copy() as! NSRelationshipDescription)
-			bondProperties.append(bondSubjectSetRelationship.copy() as! NSRelationshipDescription)
+			entityProperties.append(relationshipSubjectRelationship.copy() as! NSRelationshipDescription)
+			relationshipProperties.append(relationshipSubjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Subjects -- E.
 			
 			// Inverse relationship for Objects -- B.
-			let bondObjectSetRelationship = NSRelationshipDescription()
-			bondObjectSetRelationship.name = "object"
-			bondObjectSetRelationship.minCount = 1
-			bondObjectSetRelationship.maxCount = 1
-			bondObjectSetRelationship.optional = true
-			bondObjectSetRelationship.deleteRule = .NullifyDeleteRule
-			bondObjectSetRelationship.destinationEntity = entityDescription
+			let relationshipObjectSetRelationship = NSRelationshipDescription()
+			relationshipObjectSetRelationship.name = "object"
+			relationshipObjectSetRelationship.minCount = 1
+			relationshipObjectSetRelationship.maxCount = 1
+			relationshipObjectSetRelationship.optional = true
+			relationshipObjectSetRelationship.deleteRule = .NullifyDeleteRule
+			relationshipObjectSetRelationship.destinationEntity = entityDescription
 			
-			let bondObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
-			bondObjectRelationship.name = "bondObjectSet"
-			bondObjectRelationship.minCount = 0
-			bondObjectRelationship.maxCount = 0
-			bondObjectRelationship.optional = false
-			bondObjectRelationship.deleteRule = .CascadeDeleteRule
-			bondObjectRelationship.destinationEntity = bondDescription
-			bondObjectRelationship.inverseRelationship = bondObjectSetRelationship
-			bondObjectSetRelationship.inverseRelationship = bondObjectRelationship
+			let relationshipObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
+			relationshipObjectRelationship.name = "relationshipObjectSet"
+			relationshipObjectRelationship.minCount = 0
+			relationshipObjectRelationship.maxCount = 0
+			relationshipObjectRelationship.optional = false
+			relationshipObjectRelationship.deleteRule = .CascadeDeleteRule
+			relationshipObjectRelationship.destinationEntity = relationshipDescription
+			relationshipObjectRelationship.inverseRelationship = relationshipObjectSetRelationship
+			relationshipObjectSetRelationship.inverseRelationship = relationshipObjectRelationship
 			
-			entityProperties.append(bondObjectRelationship.copy() as! NSRelationshipDescription)
-			bondProperties.append(bondObjectSetRelationship.copy() as! NSRelationshipDescription)
+			entityProperties.append(relationshipObjectRelationship.copy() as! NSRelationshipDescription)
+			relationshipProperties.append(relationshipObjectSetRelationship.copy() as! NSRelationshipDescription)
 			// Inverse relationship for Objects -- E.
 			
 			entityDescription.properties = entityProperties as! [NSPropertyDescription]
@@ -485,9 +485,9 @@ public class Graph : NSObject {
 			actionGroupDescription.properties = actionGroupProperties as! [NSPropertyDescription]
 			actionPropertyDescription.properties = actionPropertyProperties as! [NSPropertyDescription]
 			
-			bondDescription.properties = bondProperties as! [NSPropertyDescription]
-			bondGroupDescription.properties = bondGroupProperties as! [NSPropertyDescription]
-			bondPropertyDescription.properties = bondPropertyProperties as! [NSPropertyDescription]
+			relationshipDescription.properties = relationshipProperties as! [NSPropertyDescription]
+			relationshipGroupDescription.properties = relationshipGroupProperties as! [NSPropertyDescription]
+			relationshipPropertyDescription.properties = relationshipPropertyProperties as! [NSPropertyDescription]
 			
 			GraphManagedObjectModel.managedObjectModel?.entities = [
 				entityDescription,
@@ -498,9 +498,9 @@ public class Graph : NSObject {
 				actionGroupDescription,
 				actionPropertyDescription,
 				
-				bondDescription,
-				bondGroupDescription,
-				bondPropertyDescription
+				relationshipDescription,
+				relationshipGroupDescription,
+				relationshipPropertyDescription
 			]
 		}
 		return GraphManagedObjectModel.managedObjectModel
@@ -511,13 +511,21 @@ public class Graph : NSObject {
 	//
 	internal var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
 		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) { [unowned self] in
-			let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
-			do {
-				try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: File.URL(.DocumentDirectory, path: GraphUtility.storeName), options: nil)
-			} catch {
-				fatalError("[GraphKit Error: There was an error creating or loading the application's saved data.]")
+			let directory: String = "GraphKit/Default"
+			File.createDirectory(File.documentDirectoryPath!, name: directory, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) -> Void in
+				if !success {
+					if let e: NSError = error {
+						fatalError(e.localizedDescription)
+					}
+				}
+				let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
+				do {
+					try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: File.URL(.DocumentDirectory, path: "\(directory)/\(GraphUtility.storeName)"), options: nil)
+				} catch {
+					fatalError("[GraphKit Error: There was an error creating or loading the application's saved data.]")
+				}
+				GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
 			}
-			GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
 		}
 		return GraphPersistentStoreCoordinator.persistentStoreCoordinator
 	}

@@ -33,8 +33,8 @@ import CoreData
 internal class ManagedEntity : ManagedNode {
 	@NSManaged internal var actionSubjectSet: NSSet
 	@NSManaged internal var actionObjectSet: NSSet
-	@NSManaged internal var bondSubjectSet: NSSet
-	@NSManaged internal var bondObjectSet: NSSet
+	@NSManaged internal var relationshipSubjectSet: NSSet
+	@NSManaged internal var relationshipObjectSet: NSSet
 
 	/**
 		:name:	init
@@ -51,8 +51,8 @@ internal class ManagedEntity : ManagedNode {
 		groupSet = NSSet()
 		actionSubjectSet = NSSet()
 		actionObjectSet = NSSet()
-		bondSubjectSet = NSSet()
-		bondObjectSet = NSSet()
+		relationshipSubjectSet = NSSet()
+		relationshipObjectSet = NSSet()
 		context = w
 	}
 
@@ -177,35 +177,35 @@ extension ManagedEntity {
 	}
 
 	/**
-		:name:	addBondSubjectSetObject
-		:description:	Adds the Bond to the bondSubjectSet for the Entity.
+		:name:	addRelationshipSubjectSetObject
+		:description:	Adds the Relationship to the relationshipSubjectSet for the Entity.
 	*/
-	func addBondSubjectSetObject(value: ManagedBond) {
-		(bondSubjectSet as! NSMutableSet).addObject(value)
+	func addRelationshipSubjectSetObject(value: ManagedRelationship) {
+		(relationshipSubjectSet as! NSMutableSet).addObject(value)
 	}
 
 	/**
-		:name:	removeBondSubjectSetObject
-		:description:	Removes the Bond to the bondSubjectSet for the Entity.
+		:name:	removeRelationshipSubjectSetObject
+		:description:	Removes the Relationship to the relationshipSubjectSet for the Entity.
 	*/
-	func removeBondSubjectSetObject(value: ManagedBond) {
-		(bondSubjectSet as! NSMutableSet).removeObject(value)
+	func removeRelationshipSubjectSetObject(value: ManagedRelationship) {
+		(relationshipSubjectSet as! NSMutableSet).removeObject(value)
 	}
 
 	/**
-		:name:	addBondObjectSetObject
-		:description:	Adds the Bond to the bondObjectSet for the Entity.
+		:name:	addRelationshipObjectSetObject
+		:description:	Adds the Relationship to the relationshipObjectSet for the Entity.
 	*/
-	func addBondObjectSetObject(value: ManagedBond) {
-		(bondObjectSet as! NSMutableSet).addObject(value)
+	func addRelationshipObjectSetObject(value: ManagedRelationship) {
+		(relationshipObjectSet as! NSMutableSet).addObject(value)
 	}
 
 	/**
-		:name:	removeBondObjectSetObject
-		:description:	Removes the Bond to the bondObjectSet for the Entity.
+		:name:	removeRelationshipObjectSetObject
+		:description:	Removes the Relationship to the relationshipObjectSet for the Entity.
 	*/
-	func removeBondObjectSetObject(value: ManagedBond) {
-		(bondObjectSet as! NSMutableSet).removeObject(value)
+	func removeRelationshipObjectSetObject(value: ManagedRelationship) {
+		(relationshipObjectSet as! NSMutableSet).removeObject(value)
 	}
 
 	/**

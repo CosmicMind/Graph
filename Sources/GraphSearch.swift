@@ -86,27 +86,27 @@ public extension Graph {
 	}
 	
 	/**
-	:name:	searchForBond(types: groups: properties)
+	:name:	searchForRelationship(types: groups: properties)
 	*/
-	public func searchForBond(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Bond> {
+	public func searchForRelationship(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Relationship> {
 		var nodes: Array<AnyObject> = Array<AnyObject>()
 		var toFilter: Bool = false
 		
 		if let v: Array<String> = types {
-			if let n: Array<AnyObject> = search(GraphUtility.bondDescriptionName, types: v) {
+			if let n: Array<AnyObject> = search(GraphUtility.relationshipDescriptionName, types: v) {
 				nodes.appendContentsOf(n)
 			}
 		}
 		
 		if let v: Array<String> = groups {
-			if let n: Array<AnyObject> = search(GraphUtility.bondGroupDescriptionName, groups: v) {
+			if let n: Array<AnyObject> = search(GraphUtility.relationshipGroupDescriptionName, groups: v) {
 				toFilter = 0 < nodes.count
 				nodes.appendContentsOf(n)
 			}
 		}
 		
 		if let v: Array<(key: String, value: AnyObject?)> = properties {
-			if let n: Array<AnyObject> = search(GraphUtility.bondPropertyDescriptionName, properties: v) {
+			if let n: Array<AnyObject> = search(GraphUtility.relationshipPropertyDescriptionName, properties: v) {
 				toFilter = 0 < nodes.count
 				nodes.appendContentsOf(n)
 			}
@@ -115,27 +115,27 @@ public extension Graph {
 		if toFilter {
 			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
 			for var i: Int = nodes.count - 1; 0 <= i; --i {
-				if let v: ManagedBond = nodes[i] as? ManagedBond {
+				if let v: ManagedRelationship = nodes[i] as? ManagedRelationship {
 					if nil == seen.updateValue(true, forKey: v.id) {
-						nodes[i] = Bond(object: v)
+						nodes[i] = Relationship(object: v)
 						continue
 					}
-				} else if let v: ManagedBond = worker!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedBond {
+				} else if let v: ManagedRelationship = worker!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedRelationship {
 					if nil == seen.updateValue(true, forKey: v.id) {
-						nodes[i] = Bond(object: v)
+						nodes[i] = Relationship(object: v)
 						continue
 					}
 				}
 				nodes.removeAtIndex(i)
 			}
-			return nodes as! Array<Bond>
+			return nodes as! Array<Relationship>
 		} else {
 			return nodes.map {
-				if let v: ManagedBond = $0 as? ManagedBond {
-					return Bond(object: v)
+				if let v: ManagedRelationship = $0 as? ManagedRelationship {
+					return Relationship(object: v)
 				}
-				return Bond(object: worker!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedBond)
-			} as Array<Bond>
+				return Relationship(object: worker!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedRelationship)
+			} as Array<Relationship>
 		}
 	}
 	
