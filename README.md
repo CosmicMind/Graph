@@ -92,13 +92,12 @@ GraphKit is a growing project and will encounter changes throughout its developm
 ## A Tour  
 
 * [Entity](#entity)
-* [Bond](#bond)
+* [Relationship](#relationship)
 * [Action](#action)
 * [Groups](#groups)
 * [Probability](#probability)
 * [Data Driven](#datadriven)
 * [Faceted Search](#facetedsearch)
-* [JSON](#json)
 * [Data Structures](#datastructures)
 * [DoublyLinkedList](#doublylinkedlist)
 * [Stack](#stack)
@@ -113,7 +112,7 @@ GraphKit is a growing project and will encounter changes throughout its developm
 <a name="entity"></a>
 ## Entity
 
-An Entity is a model object that represents a person, place, or thing. For example a Person, Company, Photo, Video, or Note -- pretty much anything that you would like to objectify. To distinguish between different Entity types, the _type_ instance property is set upon instantiation of a new Entity. For Example, creating different Entity types is as easy as the code below.
+An **Entity** is a model object that **represents a person, place, or thing**. For example, a Company, Photo, Video, User or Note. In code, the following is how this would look.
 
 ```swift
 // Create a Person Entity.
@@ -128,10 +127,10 @@ company["name"] = "Tesla Motors"
 
 [Learn More About Entities](https://github.com/CosmicMind/GraphKit/wiki/Entity)
 
-<a name="bond"></a>
-## Bond
+<a name="relationship"></a>
+## Relationship
 
-A Bond is a model object that represents a relationship between two [Entities](https://github.com/CosmicMind/GraphKit/wiki/Entity). To distinguish between different Bond types, the _type_ instance property is set upon instantiation of a new Bond. To form meaningful relationships, sentence structures are used, with a _subject_ and _object_ that form the relationship. For example, we have two Entity types, a Person and a Company. The relationship between the two is that the Person is an Employee of the Company. So how is this modeled? In a sentence it would be, _Person is Employee of Company_. The Person is the _subject_, and the _object_ is the Company. In code, the following is how this would look.
+A **Relationship** is a model object that **forms a relationship between two Entities**. For example, "Person is an Employee of Company". _Person_ and _Company_ are two Entities that form a Relationship -- of type _Employee_. In code, the following is how this would look.
 
 ```swift
 // Create a Person Entity.
@@ -143,44 +142,42 @@ person["lastName"] = "Zuckerberg"
 let company: Entity = Entity(type: "Company")
 company["name"] = "Facebook"
 
-// Create an Employee Bond.
-let employee: Bond = Bond(type: "Employee")
+// Create an Employee Relationship.
+let employee: Relationship = Relationship(type: "Employee")
 employee["startDate"] = "February 4, 2004"
 
-// Make the relationship.
-employee.subject = user
+// Form the relationship.
+employee.subject = person
 employee.object = company
 ```
 
-Notice that information about the relationship is stored within the Bond leaving both _Mark_ and _Facebook_ to form other relationships freely without any of the relationship information. This is a key principal when using Bonds.
+Notice that information about the relationship is stored within the _Employee_ Relationship leaving both _Mark_ and _Facebook_ to form other relationships freely. This is a key principal when using Relationships.
 
-[Learn More About Bonds](https://github.com/CosmicMind/GraphKit/wiki/Bond)
+[Learn More About Relationships](https://github.com/CosmicMind/GraphKit/wiki/Relationship)
 
 <a name="action"></a>
 ## Action
 
-An Action is used to form a relationship between many Entity Objects. Like an Entity, an Action also has a type property that specifies the collection to which it belongs to. An Action's relationship structure is like a sentence, in that it relates a collection of Subjects to a collection of Objects. Below is an example of a User purchasing many Books. It may be thought of as "User Purchased these Book(s)."
+An **Action** is a model object that **forms a relationship between a collection of Entity subjects and a collection of Entity objects**. For example, "Person Purchased many Books". The _Purchased_ Action captures the _Person_ Entity and _Book_ Entities in a single relationship that may be used later to ask questions like, "what Books has the Person Purchased?", or "Has the Person Purchased a physics Book?". In code, the following is how this would look.
 
 ```swift
-let graph: Graph = Graph()
-
-let user: Entity = Entity(type: "User")
+let person: Entity = Entity(type: "Person")
 let books: Array<Entity> = graph.searchForEntity(types: ["Book"])
 
 let purchased: Action = Action(type: "Purchased")
-purchased.addSubject(user)
+purchased.addSubject(person)
 
 for book in books {
 	purchased.addObject(book)
 }
-
-graph.save()
 ```
+
+[Learn More About Actions](https://github.com/CosmicMind/GraphKit/wiki/Action)
 
 <a name="groups"></a>
 ## Groups
 
-Groups are used to organize Entities, Bonds, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo and Video Entity type may exist in a group called Media. Another example may be including a Photo and Book Entity type in a Favorites group for your users' account. Below are examples of using groups.
+Groups are used to organize Entities, Relationships, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo and Video Entity type may exist in a group called Media. Another example may be including a Photo and Book Entity type in a Favorites group for your users' account. Below are examples of using groups.
 
 ```swift
 let photo: Entity = Entity(type: "Photo")
@@ -223,7 +220,7 @@ Recommending a Physics book if the user is likely to buy a Physics book.
 ```swift
 let purchased: Array<Action> = graph.searchForAction(types: ["Purchased"])
 
-let pOfX: Double = purchased.probabilityOf { (action: Action) in
+let probabilityOfX: Double = purchased.probabilityOf { (action: Action) in
 	if let entity: Entity = action.objects.first {
 		if "Book" == entity.type {
 			return entity.hasGroup("Physics")
@@ -232,7 +229,7 @@ let pOfX: Double = purchased.probabilityOf { (action: Action) in
 	return false
 }
 
-if 33.33 < pOfX {
+if 33.33 < probabilityOfX {
 	// Recommend a Physics book.
 }
 ```
@@ -274,7 +271,7 @@ func graphDidInsertAction(graph: Graph, action: Action) {
 <a name="facetedsearch"></a>
 ## Faceted Search
 
-To explore the intricate relationships within the Graph, the search API adopts a faceted design. This allows the exploration of your data through any view point. The below examples show how to use the Graph search API:
+To explore the intricate relationships within GraphKit, the search API adopts a faceted design. The below examples show how to use the _Graph_ search API:
 
 Searching multiple Entity types.
 
@@ -311,28 +308,6 @@ let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filt
 	}
 	return false
 }
-```
-
-<a name="json"></a>
-## JSON
-
-JSON is a widely used format for serializing data. GraphKit comes with a JSON toolset. Below are some examples of its usage.
-
-```swift
-// Serialize Dictionary.
-let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
-
-// Parse NSData.
-let j1: JSON? = JSON.parse(data!)
-print(j1?["user"]?["username"]?.asString) // Output: "daniel"
-
-// Stringify.
-let stringified: String? = JSON.stringify(j1!)
-print(stringified) // Output: "{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}"
-
-// Parse String.
-let j2: JSON? = JSON.parse(stringified!)
-print(j2?["user"]?["token"]?.asInt) // Output: 123456789
 ```
 
 <a name="datastructures"></a>
@@ -468,8 +443,8 @@ SortedSets are a powerful data structure for algorithm and analysis design. Elem
 ```swift
 let graph: Graph = Graph()
 
-let setA: SortedSet<Bond> = SortedSet<Bond>(elements: graph.searchForBond(types: ["Author"]))
-let setB: SortedSet<Bond> = SortedSet<Bond>(elements: graph.searchForBond(types: ["Director"]))
+let setA: SortedSet<Relationship> = SortedSet<Relationship>(elements: graph.searchForRelationship(types: ["Author"]))
+let setB: SortedSet<Relationship> = SortedSet<Relationship>(elements: graph.searchForRelationship(types: ["Director"]))
 
 let setC: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(groups: ["Physics"]))
 let setD: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(groups: ["Math"]))

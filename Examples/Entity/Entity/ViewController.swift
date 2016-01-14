@@ -29,8 +29,9 @@
 */
 
 /*
-The following ViewController exemplifies the usage of Entities. In this example, 
-there are Person Entity types that are displayed in a list.
+The following ViewController exemplifies the usage of Entities. 
+In this example, there are Person Entity types that are displayed 
+in a list.
 */
 
 import UIKit
@@ -43,7 +44,7 @@ class ViewController: UIViewController {
 	/// A tableView used to display Entity entries.
 	private let tableView: UITableView = UITableView()
 	
-	/// A list of all the People Entities.
+	/// A list of all the Person Entities.
 	private var people: Array<Entity> = Array<Entity>()
 	
 	override func viewDidLoad() {
@@ -67,7 +68,7 @@ class ViewController: UIViewController {
 		that may be used for various benefits. As well, since
 		the graph is watching Person Entities, the
 		graphDidInsertEntity delegate method is executed once
-		the save is complete.
+		the save has completed.
 		*/
 		graph.save { (success: Bool, error: NSError?) in
 			if let e: NSError = error {
@@ -115,7 +116,7 @@ class ViewController: UIViewController {
 			that may be used for various benefits. As well, since
 			the graph is watching Person Entities, the
 			graphDidInsertEntity delegate method is executed once
-			the save is complete.
+			the save has completed.
 			*/
 			graph.save { (success: Bool, error: NSError?) in
 				if let e: NSError = error {

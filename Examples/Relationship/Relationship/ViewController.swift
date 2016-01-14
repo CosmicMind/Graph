@@ -29,15 +29,15 @@
 */
 
 /*
-The following ViewController exemplifies the usage of Relationships forming
-relationships between Entities. In this example, there are Person and
-Company Entity types that are related through an Employee relationship.
+The following ViewController exemplifies the usage of Relationships. 
+In this example, there are Person and Company Entity types that are 
+related through an Employee Relationship.
 
-For example:	Person is Employee of Company.
+For example:	Person is an Employee of Company.
 
-Person is the sbject of the relationship.
-Employee is the relationship.
-Company is the object of the relationship.
+Person is the sbject of the Relationship.
+Employee is the Relationship type.
+Company is the object of the Relationship.
 */
 
 import UIKit
@@ -76,7 +76,7 @@ class ViewController: UIViewController {
 		// Create an Employee Relationship.
 		let employee: Relationship = Relationship(type: "Employee")
 		
-		// Make relationships.
+		// Form the relationship.
 		employee.subject = person
 		employee.object = company
 		
@@ -85,7 +85,7 @@ class ViewController: UIViewController {
 		that may be used for various benefits. As well, since
 		the graph is watching Employee Relationships, the
 		graphDidInsertRelationship delegate method is executed once
-		the save is complete.
+		the save has completed.
 		*/
 		graph.save { (success: Bool, error: NSError?) in
 			if let e: NSError = error {
@@ -110,7 +110,7 @@ class ViewController: UIViewController {
 	private func prepareEmployees() {
 		employees = graph.searchForRelationship(types: ["Employee"])
 		
-		// Add Employee relationships if none exist.
+		// Add Employee Relationships if none exist.
 		if 0 == employees.count {
 			// Create Person Entities.
 			let tim: Entity = Entity(type: "Person")
@@ -143,7 +143,7 @@ class ViewController: UIViewController {
 			let employee2: Relationship = Relationship(type: "Employee")
 			let employee3: Relationship = Relationship(type: "Employee")
 			
-			// Make relationships.
+			// Form relationships.
 			employee1.subject = tim
 			employee1.object = apple
 			
@@ -158,7 +158,7 @@ class ViewController: UIViewController {
 			that may be used for various benefits. As well, since
 			the graph is watching Employee Relationships, the
 			graphDidInsertRelationship delegate method is executed once
-			the save is complete.
+			the save has completed.
 			*/
 			graph.save { (success: Bool, error: NSError?) in
 				if let e: NSError = error {
@@ -209,7 +209,7 @@ extension ViewController: UITableViewDataSource {
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
 		
-		// Get the Relationship relationship.
+		// Get the Relationship.
 		let employee: Relationship = employees[indexPath.row]
 		
 		// Set the Person details.
