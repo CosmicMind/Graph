@@ -248,6 +248,7 @@ class SortedSetTests: XCTestCase {
 	
 	func testEntityIntersection() {
 		let graph: Graph = Graph()
+		graph.clear()
 		
 		let e1: Entity = Entity(type: "User")
 		let e2: Entity = Entity(type: "User")
@@ -274,9 +275,40 @@ class SortedSetTests: XCTestCase {
 		e3.delete()
 		e4.delete()
 
-		graph.save { (success: Bool, error: NSError?) in
+		graph.asyncSave { (success: Bool, error: NSError?) in
 			XCTAssertFalse(success, "Test failed. \(error)")
 		}
+	}
+	
+	func testExample() {
+		let setA: SortedSet<Int> = SortedSet<Int>(elements: 1, 2, 3) // Sorted: [1, 2, 3]
+		let setB: SortedSet<Int> = SortedSet<Int>(elements: 4, 3, 6) // Sorted: [3, 4, 6]
+		
+		let setC: SortedSet<Int> = SortedSet<Int>(elements: 7, 1, 2) // Sorted: [1, 2, 7]
+		let setD: SortedSet<Int> = SortedSet<Int>(elements: 1, 7) // Sorted: [1, 7]
+		
+		let setE: SortedSet<Int> = SortedSet<Int>(elements: 1, 6, 7) // Sorted: [1, 6, 7]
+		
+		// Union.
+		print((setA + setB).count) // Output: 5
+		print(setA.union(setB).count) // Output: 5
+		
+		// Intersect.
+		print(setC.intersect(setD).count) // Output: 2
+		
+		// Subset.
+		print(setD < setC) // true
+		print(setD.isSubsetOf(setC)) // true
+		
+		// Superset.
+		print(setD > setC) // false
+		print(setD.isSupersetOf(setC)) // false
+		
+		// Contains.
+		print(setE.contains(setA.first!)) // true
+		
+		// Probability.
+		print(setE.probabilityOf(setA.first!, setA.last!)) // 0.333333333333333
 	}
 	
 	func testPerformance() {

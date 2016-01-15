@@ -37,6 +37,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
+		graph.clear()
 	}
 	
 	override func tearDown() {
@@ -45,14 +46,6 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
-		for n in graph.searchForEntity(types: ["*"]) {
-			n.delete()
-		}
-		
-		graph.save { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-		}
-		
 		for var i: Int = 0; i < 100; ++i {
 			let n: Entity = Entity(type: "T1")
 			n["P1"] = 0 == i % 2 ? "V1" : 1
@@ -73,7 +66,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 			n.addGroup("G3")
 		}
 		
-		graph.save { (success: Bool, error: NSError?) in
+		graph.asyncSave { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
@@ -118,13 +111,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(600, graph.searchForEntity(types: ["T1"], groups: ["G3"], properties: [("P1", nil), ("P2", nil)]).count)
 		XCTAssertEqual(600, graph.searchForEntity(types: ["*"], groups: ["*"], properties: [("*", nil)]).count)
 		
-		for n in graph.searchForEntity(types: ["*"]) {
-			n.delete()
-		}
-		
-		graph.save { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-		}
+		graph.clear()
 	}
 	
 	func testPerformance() {

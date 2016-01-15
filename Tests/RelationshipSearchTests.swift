@@ -37,6 +37,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
+		graph.clear()
 	}
 	
 	override func tearDown() {
@@ -49,7 +50,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 			n.delete()
 		}
 		
-		graph.save { (success: Bool, error: NSError?) in
+		graph.asyncSave { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
@@ -73,7 +74,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 			n.addGroup("G3")
 		}
 		
-		graph.save { (success: Bool, error: NSError?) in
+		graph.asyncSave { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
@@ -122,7 +123,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 			n.delete()
 		}
 		
-		graph.save { (success: Bool, error: NSError?) in
+		graph.asyncSave { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 	}

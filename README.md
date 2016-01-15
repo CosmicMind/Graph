@@ -2,7 +2,7 @@
 
 ## Welcome to GraphKit
 
-GraphKit is a CoreData framework written in Swift. GraphKit is designed to simplify the complexities when working with CoreData while providing a seamless Data-Driven architecture.
+GraphKit is a CoreData and Algorithm framework written in Swift. It's designed to simplify the complexities when working with CoreData while providing a seamless data-driven architecture for algorithm design.
 
 ## Features
 
@@ -11,6 +11,7 @@ GraphKit is a CoreData framework written in Swift. GraphKit is designed to simpl
 - [x] Action Modeling For Analytics
 - [x] Model With Graph Theory and Set Theory
 - [x] Faceted Search API
+- [x] JSON Toolset
 - [x] Probability Extension For Predictive Analytics
 - [x] Never Migrate Data Again
 - [x] Library of Data Structures
@@ -98,6 +99,7 @@ GraphKit is a growing project and will encounter changes throughout its developm
 * [Probability](#probability)
 * [Data Driven](#datadriven)
 * [Faceted Search](#facetedsearch)
+* [JSON](#json)
 * [Data Structures](#datastructures)
 * [DoublyLinkedList](#doublylinkedlist)
 * [Stack](#stack)
@@ -115,6 +117,8 @@ GraphKit is a growing project and will encounter changes throughout its developm
 An **Entity** is a model object that **represents a person, place, or thing**. For example, a Company, Photo, Video, User or Note. In code, the following is how this would look.
 
 ```swift
+let graph: Graph = Graph()
+
 // Create a Person Entity.
 let person: Entity = Entity(type: "Person")
 person["firstName"] = "Elon"
@@ -123,6 +127,8 @@ person["lastName"] = "Musk"
 // Create a Company Entity.
 let company: Entity = Entity(type: "Company")
 company["name"] = "Tesla Motors"
+
+graph.save()
 ```
 
 [Learn More About Entities](https://github.com/CosmicMind/GraphKit/wiki/Entity)
@@ -133,6 +139,8 @@ company["name"] = "Tesla Motors"
 A **Relationship** is a model object that **forms a relationship between two Entities**. For example, "Person is an Employee of Company". _Person_ and _Company_ are two Entities that form a Relationship -- of type _Employee_. In code, the following is how this would look.
 
 ```swift
+let graph: Graph = Graph()
+
 // Create a Person Entity.
 let person: Entity = Entity(type: "Person")
 person["firstName"] = "Mark"
@@ -149,6 +157,8 @@ employee["startDate"] = "February 4, 2004"
 // Form the relationship.
 employee.subject = person
 employee.object = company
+
+graph.save()
 ```
 
 Notice that information about the relationship is stored within the _Employee_ Relationship leaving both _Mark_ and _Facebook_ to form other relationships freely. This is a key principal when using Relationships.
@@ -158,9 +168,11 @@ Notice that information about the relationship is stored within the _Employee_ R
 <a name="action"></a>
 ## Action
 
-An **Action** is a model object that **forms a relationship between a collection of Entity subjects and a collection of Entity objects**. For example, "Person Purchased many Books". The _Purchased_ Action captures the _Person_ Entity and _Book_ Entities in a single relationship that may be used later to ask questions like, "what Books has the Person Purchased?", or "Has the Person Purchased a physics Book?". In code, the following is how this would look.
+An **Action** is a model object that **forms a relationship between a collection of Entity subjects and a collection of Entity objects**. For example, "Person Purchased many Books". The _Purchased_ Action captures the _Person_ Entity and _Book_ Entities in a single relationship that may be used later to ask questions like, "what Books has the Person Purchased?", or "Has the Person Purchased a Physics Book?". In code, the following is how this would look.
 
 ```swift
+let graph: Graph = Graph()
+
 let person: Entity = Entity(type: "Person")
 let books: Array<Entity> = graph.searchForEntity(types: ["Book"])
 
@@ -170,6 +182,8 @@ purchased.addSubject(person)
 for book in books {
 	purchased.addObject(book)
 }
+
+graph.save()
 ```
 
 [Learn More About Actions](https://github.com/CosmicMind/GraphKit/wiki/Action)
@@ -180,6 +194,8 @@ for book in books {
 Groups are used to organize Entities, Relationships, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo and Video Entity type may exist in a group called Media. Another example may be including a Photo and Book Entity type in a Favorites group for your users' account. Below are examples of using groups.
 
 ```swift
+let graph: Graph = Graph()
+
 let photo: Entity = Entity(type: "Photo")
 photo.addGroup("Media")
 photo.addGroup("Favorites")
@@ -191,6 +207,8 @@ video.addGroup("Media")
 let book: Entity = Entity(type: "Book")
 book.addGroup("Favorites")
 book.addGroup("To Read")
+
+graph.save()
 
 // Searching groups.
 let favorites: Array<Entity> = graph.searchForEntity(groups: ["Favorites"])
@@ -218,8 +236,12 @@ print(die.expectedValueOf(100, elements: 3, 6)) // Output: 33.3333333333333
 Recommending a Physics book if the user is likely to buy a Physics book.
 
 ```swift
+let graph: Graph = Graph()
+
+// Get all the Purchased Actions.
 let purchased: Array<Action> = graph.searchForAction(types: ["Purchased"])
 
+// Determine the probability of getting a Book in the Physics group.
 let probabilityOfX: Double = purchased.probabilityOf { (action: Action) in
 	if let entity: Entity = action.objects.first {
 		if "Book" == entity.type {
@@ -276,30 +298,36 @@ To explore the intricate relationships within GraphKit, the search API adopts a 
 Searching multiple Entity types.
 
 ```swift
+let graph: Graph = Graph()
 let collection: Array<Entity> = graph.searchForEntity(types: ["Photo", "Video"])
 ```
 
 Searching multiple Entity groups.
 
 ```swift
+let graph: Graph = Graph()
 let collection: Array<Entity> = graph.searchForEntity(groups: ["Media", "Favorites"])
 ```
 
 Searching multiple Entity properties.
 
 ```swift
+let graph: Graph = Graph()
 let collection: Array<Entity> = graph.searchForEntity(properties: [(key: "name", value: "Eve"), ("age", 27)])
 ```
 
 Searching multiple facets simultaneously will aggregate all results into a single collection.
 
 ```swift
+let graph: Graph = Graph()
 let collection: Array<Entity> = graph.searchForEntity(types: ["Photo", "Friends"], groups: ["Media", "Favorites"])
 ```
 
 Filters may be used to narrow in on a search result. For example, searching a book title and group within purchases.
 
 ```swift
+let graph: Graph = Graph()
+
 let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filter { (action: Action) -> Bool in
 	if let entity: Entity = action.objects.first {
 		if "Book" == entity.type && "The Holographic Universe" == entity["title"] as? String  {
@@ -308,6 +336,28 @@ let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filt
 	}
 	return false
 }
+```
+
+<a name="json"></a>
+## JSON
+
+JSON is a widely used format for serializing data. GraphKit comes with a JSON toolset. Below are some examples of its usage.
+
+```swift
+// Serialize Dictionary.
+let data: NSData? = JSON.serialize(["user": ["username": "daniel", "password": "abc123", "token": 123456789]])
+
+// Parse NSData.
+let j1: JSON? = JSON.parse(data!)
+print(j1?["user"]?["username"]?.asString) // Output: "daniel"
+
+// Stringify.
+let stringified: String? = JSON.stringify(j1!)
+print(stringified) // Output: "{\"user\":{\"password\":\"abc123\",\"token\":123456789,\"username\":\"daniel\"}}"
+
+// Parse String.
+let j2: JSON? = JSON.parse(stringified!)
+print(j2?["user"]?["token"]?.asInt) // Output: 123456789
 ```
 
 <a name="datastructures"></a>
@@ -441,22 +491,20 @@ print(rbA.count) // Output: 3
 SortedSets are a powerful data structure for algorithm and analysis design. Elements within a SortedSet are unique and insert, remove, and search operations have a complexity of O(logn). The GraphKit implementation of a SortedSet also includes an order-statistic, which allows the data structure to be accessed using an index subscript like an array. Below are examples of its usage.
 
 ```swift
-let graph: Graph = Graph()
+let setA: SortedSet<Int> = SortedSet<Int>(elements: 1, 2, 3) // Sorted: [1, 2, 3]
+let setB: SortedSet<Int> = SortedSet<Int>(elements: 4, 3, 6) // Sorted: [3, 4, 6]
 
-let setA: SortedSet<Relationship> = SortedSet<Relationship>(elements: graph.searchForRelationship(types: ["Author"]))
-let setB: SortedSet<Relationship> = SortedSet<Relationship>(elements: graph.searchForRelationship(types: ["Director"]))
+let setC: SortedSet<Int> = SortedSet<Int>(elements: 7, 1, 2) // Sorted: [1, 2, 7]
+let setD: SortedSet<Int> = SortedSet<Int>(elements: 1, 7) // Sorted: [1, 7]
 
-let setC: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(groups: ["Physics"]))
-let setD: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(groups: ["Math"]))
-
-let setE: SortedSet<Entity> = SortedSet<Entity>(elements: graph.searchForEntity(types: ["User"]))
+let setE: SortedSet<Int> = SortedSet<Int>(elements: 1, 6, 7) // Sorted: [1, 6, 7]
 
 // Union.
-print((setA + setB).count) // Output: 3
-print(setA.union(setB).count) // Output: 3
+print((setA + setB).count) // Output: 5
+print(setA.union(setB).count) // Output: 5
 
 // Intersect.
-print(setC.intersect(setD).count) // Output: 1
+print(setC.intersect(setD).count) // Output: 2
 
 // Subset.
 print(setD < setC) // true
@@ -467,10 +515,10 @@ print(setD > setC) // false
 print(setD.isSupersetOf(setC)) // false
 
 // Contains.
-print(setE.contains(setA.first!.subject!)) // true
+print(setE.contains(setA.first!)) // true
 
 // Probability.
-print(setE.probabilityOf(setA.first!.subject!, setA.last!.subject!)) // 0.666666666666667
+print(setE.probabilityOf(setA.first!, setA.last!)) // 0.333333333333333
 ```
 
 <a name="sortedmultiset"></a>
@@ -495,7 +543,7 @@ let students: Array<Entity> = graph.searchForEntity(types: ["Student"])
 
 let dict: SortedMultiDictionary<String, Entity> = SortedMultiDictionary<String, Entity>()
 
-// Do something with an alphabetically SortedMultiDictionary of student Entity Objects.
+// Do something with an alphabetically SortedMultiDictionary of Student Entities.
 for student in students {
 	dict.insert(student["name"] as! String, value: student)
 }

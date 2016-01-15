@@ -32,14 +32,18 @@ import XCTest
 @testable import GraphKit
 
 class ProbabilityTests: XCTestCase {
+	var graph: Graph!
 	
 	var saveExpectation: XCTestExpectation?
 	
 	override func setUp() {
 		super.setUp()
+		graph = Graph()
+		graph.clear()
 	}
 	
 	override func tearDown() {
+		graph = nil
 		super.tearDown()
 	}
 	
@@ -176,7 +180,8 @@ class ProbabilityTests: XCTestCase {
 	}
 	
 	func testEntity() {
-		let graph: Graph = Graph()
+		graph.clear()
+		
 		let target: Entity = Entity(type: "T")
 		
 		for _ in 0..<99 {
@@ -185,7 +190,7 @@ class ProbabilityTests: XCTestCase {
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -195,22 +200,14 @@ class ProbabilityTests: XCTestCase {
 		let s: Array<Entity> = graph.searchForEntity(types: ["T"])
 		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
 		
-		for x in s {
-			x.delete()
-		}
-		
-		saveExpectation = expectationWithDescription("Test: Save did not pass.")
-		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-			self.saveExpectation?.fulfill()
-		}
+		graph.clear()
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
 	func testAction() {
-		let graph: Graph = Graph()
+		graph.clear()
+		
 		let target: Action = Action(type: "T")
 		
 		for i in 0..<99 {
@@ -224,7 +221,7 @@ class ProbabilityTests: XCTestCase {
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -243,25 +240,14 @@ class ProbabilityTests: XCTestCase {
 			return false
 		}, "Test failed.")
 		
-		for x in s {
-			for n in x.objects {
-				n.delete()
-			}
-			x.delete()
-		}
-		
-		saveExpectation = expectationWithDescription("Test: Save did not pass.")
-		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-			self.saveExpectation?.fulfill()
-		}
+		graph.clear()
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
 	func testRelationship() {
-		let graph: Graph = Graph()
+		graph.clear()
+		
 		let target: Relationship = Relationship(type: "T")
 		
 		for _ in 0..<99 {
@@ -270,7 +256,7 @@ class ProbabilityTests: XCTestCase {
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -280,16 +266,7 @@ class ProbabilityTests: XCTestCase {
 		let s: Array<Relationship> = graph.searchForRelationship(types: ["T"])
 		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
 		
-		for x in s {
-			x.delete()
-		}
-		
-		saveExpectation = expectationWithDescription("Test: Save did not pass.")
-		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-			self.saveExpectation?.fulfill()
-		}
+		graph.clear()
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
 	}

@@ -147,9 +147,16 @@ public class Graph : NSObject {
 	public weak var delegate: GraphDelegate?
 
 	/**
-		:name:	save
+	Performs an asynchronous save to the PersistentStoreCoordinator.
+	On this save, the worker context is saved with a waiting call, 
+	and since the actual file sync save is done by the parent context, 
+	the save seems near instant and the heavly task of saving is
+	left for the parent context that runs on a private queue. This
+	save method is generally used throughout application run time.
+	- Parameter completion: An Optional completion block that is
+	executed when the save operation is completed.
 	*/
-	public func save(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+	public func asyncSave(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
 		if let w: NSManagedObjectContext = worker {
 			if w.hasChanges {
 				if let p: NSManagedObjectContext = privateContext {
@@ -168,34 +175,89 @@ public class Graph : NSObject {
 							p.performBlock {
 								do {
 									try p.save()
-									dispatch_async(dispatch_get_main_queue()) {
-										completion?(success: true, error: nil)
-									}
+									completion?(success: true, error: nil)
 								} catch let e as NSError {
-									dispatch_async(dispatch_get_main_queue()) {
-										completion?(success: false, error: e)
-									}
+									completion?(success: false, error: e)
 								}
 							}
 						} else {
-							dispatch_async(dispatch_get_main_queue()) {
-								var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-								userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Private context does not have any changes.]"
-								userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: Private context does not have any changes.]"
-								error = NSError(domain: "io.graphkit.Graph", code: 1111, userInfo: userInfo)
-								userInfo[NSUnderlyingErrorKey] = error
-								
-								completion?(success: false, error: error)
-							}
-						}
-					} else {
-						dispatch_async(dispatch_get_main_queue()) {
+							var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+							userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Private context does not have any changes.]"
+							userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: Private context does not have any changes.]"
+							error = NSError(domain: "io.graphkit.Graph", code: 0001, userInfo: userInfo)
+							userInfo[NSUnderlyingErrorKey] = error
+							
 							completion?(success: false, error: error)
 						}
+					} else {
+						completion?(success: false, error: error)
 					}
 				}
 			}
 		}
+	}
+	
+	/**
+	Performs a synchronous save to the PersistentStoreCoordinator.
+	On this save, the worker context is saved with a waiting call,
+	the parent context is passed the save instruction from the 
+	worker, and rather than save asynchronously, it is saved with
+	a waiting call that is also synchronous. This save should be
+	used when saving data before an application terminates.
+	- Parameter completion: An Optional completion block that is
+	executed when the save operation is completed.
+	*/
+	public func syncSave(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+		if let w: NSManagedObjectContext = worker {
+			if w.hasChanges {
+				if let p: NSManagedObjectContext = privateContext {
+					var error: NSError?
+					var saved: Bool = false
+					w.performBlockAndWait {
+						do {
+							try w.save()
+							saved = true
+						} catch let e as NSError {
+							error = e
+						}
+					}
+					if saved {
+						if p.hasChanges {
+							p.performBlockAndWait {
+								do {
+									try p.save()
+									completion?(success: true, error: nil)
+								} catch let e as NSError {
+									completion?(success: false, error: e)
+								}
+							}
+						} else {
+							var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
+							userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Private context does not have any changes.]"
+							userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: Private context does not have any changes.]"
+							error = NSError(domain: "io.graphkit.Graph", code: 0001, userInfo: userInfo)
+							userInfo[NSUnderlyingErrorKey] = error
+							
+							completion?(success: false, error: error)
+						}
+					} else {
+						completion?(success: false, error: error)
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	Clears all persisted data.
+	- Parameter completion: An Optional completion block that is
+	executed when the save operation is completed.
+	*/
+	func clear(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+		for entity in searchForEntity(types: ["*"]) {
+			entity.delete()
+		}
+		syncSave(completion)
 	}
 	
 	/**
@@ -390,7 +452,7 @@ public class Graph : NSObject {
 			actionSubjectSetRelationship.minCount = 0
 			actionSubjectSetRelationship.maxCount = 0
 			actionSubjectSetRelationship.optional = false
-			actionSubjectSetRelationship.deleteRule = .NullifyDeleteRule
+			actionSubjectSetRelationship.deleteRule = .NoActionDeleteRule
 			actionSubjectSetRelationship.destinationEntity = entityDescription
 			
 			let actionSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -413,7 +475,7 @@ public class Graph : NSObject {
 			actionObjectSetRelationship.minCount = 0
 			actionObjectSetRelationship.maxCount = 0
 			actionObjectSetRelationship.optional = false
-			actionObjectSetRelationship.deleteRule = .NullifyDeleteRule
+			actionObjectSetRelationship.deleteRule = .NoActionDeleteRule
 			actionObjectSetRelationship.destinationEntity = entityDescription
 			
 			let actionObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -436,7 +498,7 @@ public class Graph : NSObject {
 			relationshipSubjectSetRelationship.minCount = 1
 			relationshipSubjectSetRelationship.maxCount = 1
 			relationshipSubjectSetRelationship.optional = true
-			relationshipSubjectSetRelationship.deleteRule = .NullifyDeleteRule
+			relationshipSubjectSetRelationship.deleteRule = .NoActionDeleteRule
 			relationshipSubjectSetRelationship.destinationEntity = entityDescription
 			
 			let relationshipSubjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -460,7 +522,7 @@ public class Graph : NSObject {
 			relationshipObjectSetRelationship.minCount = 1
 			relationshipObjectSetRelationship.maxCount = 1
 			relationshipObjectSetRelationship.optional = true
-			relationshipObjectSetRelationship.deleteRule = .NullifyDeleteRule
+			relationshipObjectSetRelationship.deleteRule = .NoActionDeleteRule
 			relationshipObjectSetRelationship.destinationEntity = entityDescription
 			
 			let relationshipObjectRelationship: NSRelationshipDescription = NSRelationshipDescription()
@@ -511,7 +573,7 @@ public class Graph : NSObject {
 	//
 	internal var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
 		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) { [unowned self] in
-			let directory: String = "GraphKit/Default"
+			let directory: String = "GraphKit/default"
 			File.createDirectory(File.documentDirectoryPath!, name: directory, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) -> Void in
 				if !success {
 					if let e: NSError = error {

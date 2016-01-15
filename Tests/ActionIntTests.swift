@@ -46,6 +46,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
+		graph.clear()
 		graph.delegate = self
 		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 	}
@@ -60,6 +61,11 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		n["P"] = 111
 		n.addGroup("G")
 		
+		n.addSubject(Entity(type: "S"))
+		n.addSubject(Entity(type: "S"))
+		n.addObject(Entity(type: "O"))
+		n.addObject(Entity(type: "O"))
+		
 		XCTAssertEqual(NodeClass.Action, n.nodeClass)
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
@@ -67,7 +73,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -79,7 +85,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -93,18 +99,26 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		graph.clear()
 	}
 	
 	func graphDidInsertAction(graph: Graph, action: Action) {
 		XCTAssertTrue("T" == action.type)
 		XCTAssertTrue(action["P"] as? Int == 111)
 		XCTAssertTrue(action.hasGroup("G"))
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		insertExpectation?.fulfill()
 	}
 	
@@ -113,12 +127,24 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue(111 == value as? Int)
 		XCTAssertTrue(action[property] as? Int == value as? Int)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		insertPropertyExpectation?.fulfill()
 	}
 	
 	func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
 		XCTAssertTrue("T" == action.type)
 		XCTAssertTrue("G" == group)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		insertGroupExpectation?.fulfill()
 	}
 	
@@ -127,11 +153,23 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue(222 == value as? Int)
 		XCTAssertTrue(action[property] as? Int == value as? Int)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		updatePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteAction(graph: Graph, action: Action) {
 		XCTAssertTrue("T" == action.type)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		deleteExpectation?.fulfill()
 	}
 	
@@ -139,12 +177,24 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == action.type)
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue(222 == value as? Int)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		deletePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String) {
 		XCTAssertTrue("T" == action.type)
 		XCTAssertTrue("G" == group)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		deleteGroupExpectation?.fulfill()
 	}
 	
