@@ -39,7 +39,7 @@ internal class ManagedAction : ManagedNode {
 		:name:	init
 		:description:	Initializes the Model Object with e a given type.
 	*/
-	internal convenience init(type: String!) {
+	internal convenience init(type: String) {
 		let g: Graph = Graph()
 		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionDescriptionName, inManagedObjectContext: g.context!)!, insertIntoManagedObjectContext: g.context)
 		nodeClass = NodeClass.Action.rawValue
