@@ -41,9 +41,7 @@ internal class ManagedEntity : ManagedNode {
 		:description:	Initializes the Model Object with e a given type.
 	*/
 	internal convenience init(type: String!) {
-		let g: Graph = Graph()
-		let w: NSManagedObjectContext? = g.worker
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityDescriptionName, inManagedObjectContext: ManagedEntity.worker!)!, insertIntoManagedObjectContext: ManagedEntity.worker)
 		nodeClass = NodeClass.Entity.rawValue
 		self.type = type
 		createdDate = NSDate()
@@ -53,7 +51,6 @@ internal class ManagedEntity : ManagedNode {
 		actionObjectSet = NSSet()
 		relationshipSubjectSet = NSSet()
 		relationshipObjectSet = NSSet()
-		context = w
 	}
 
 	/**

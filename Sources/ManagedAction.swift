@@ -40,9 +40,7 @@ internal class ManagedAction : ManagedNode {
 		:description:	Initializes the Model Object with e a given type.
 	*/
 	internal convenience init(type: String!) {
-		let g: Graph = Graph()
-		let w: NSManagedObjectContext? = g.worker
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionDescriptionName, inManagedObjectContext: ManagedAction.worker!)!, insertIntoManagedObjectContext: ManagedAction.worker)
 		nodeClass = NodeClass.Action.rawValue
         self.type = type
 		createdDate = NSDate()
@@ -50,7 +48,6 @@ internal class ManagedAction : ManagedNode {
 		groupSet = NSSet()
         subjectSet = NSSet()
         objectSet = NSSet()
-		context = w
     }
 
 	/**

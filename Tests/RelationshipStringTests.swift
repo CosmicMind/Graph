@@ -46,7 +46,6 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
-		graph.clear()
 		graph.delegate = self
 		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
 	}
@@ -57,6 +56,8 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
+		graph.clear()
+		
 		let n: Relationship = Relationship(type: "T")
 		n["P"] = "A"
 		n.addGroup("G")
@@ -71,7 +72,7 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
-		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -83,7 +84,7 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -97,14 +98,12 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
-		
-		graph.clear()
 	}
 	
 	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {

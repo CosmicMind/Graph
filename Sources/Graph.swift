@@ -184,16 +184,6 @@ public class Graph : NSObject {
 									}
 								}
 							}
-						} else {
-							var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-							userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Private context does not have any changes.]"
-							userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: Private context does not have any changes.]"
-							error = NSError(domain: "io.graphkit.Graph", code: 0001, userInfo: userInfo)
-							userInfo[NSUnderlyingErrorKey] = error
-							
-							dispatch_async(dispatch_get_main_queue()) {
-								completion?(success: false, error: error)
-							}
 						}
 					} else {
 						dispatch_async(dispatch_get_main_queue()) {
@@ -243,16 +233,6 @@ public class Graph : NSObject {
 									}
 								}
 							}
-						} else {
-							var userInfo: Dictionary<String, AnyObject> = Dictionary<String, AnyObject>()
-							userInfo[NSLocalizedDescriptionKey] = "[GraphKit Error: Private context does not have any changes.]"
-							userInfo[NSLocalizedFailureReasonErrorKey] = "[GraphKit Error: Private context does not have any changes.]"
-							error = NSError(domain: "io.graphkit.Graph", code: 0001, userInfo: userInfo)
-							userInfo[NSUnderlyingErrorKey] = error
-							
-							dispatch_async(dispatch_get_main_queue()) {
-								completion?(success: false, error: error)
-							}
 						}
 					} else {
 						dispatch_async(dispatch_get_main_queue()) {
@@ -301,7 +281,7 @@ public class Graph : NSObject {
 	*/
 	internal var privateContext: NSManagedObjectContext? {
 		dispatch_once(&GraphPrivateManagedObjectContext.onceToken) { [unowned self] in
-			GraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+			GraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
 			GraphPrivateManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
 		}
 		return GraphPrivateManagedObjectContext.managedObjectContext

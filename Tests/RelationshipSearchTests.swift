@@ -37,7 +37,6 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
-		graph.clear()
 	}
 	
 	override func tearDown() {
@@ -46,13 +45,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
-		for n in graph.searchForRelationship(types: ["T1", "T2", "T3"]) {
-			n.delete()
-		}
-		
-		graph.asyncSave { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-		}
+		graph.clear()
 		
 		for var i: Int = 0; i < 100; ++i {
 			let n: Relationship = Relationship(type: "T1")
@@ -74,7 +67,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 			n.addGroup("G3")
 		}
 		
-		graph.asyncSave { (success: Bool, error: NSError?) in
+		graph.syncSave { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
@@ -118,14 +111,6 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(300, graph.searchForRelationship(types: ["T1"], properties: [("P1", nil), ("P2", nil)]).count)
 		XCTAssertEqual(600, graph.searchForRelationship(types: ["T1"], groups: ["G3"], properties: [("P1", nil), ("P2", nil)]).count)
 		XCTAssertEqual(600, graph.searchForRelationship(types: ["*"], groups: ["*"], properties: [("*", nil)]).count)
-		
-		for n in graph.searchForRelationship(types: ["T1", "T2", "T3"]) {
-			n.delete()
-		}
-		
-		graph.asyncSave { (success: Bool, error: NSError?) in
-			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-		}
 	}
 	
 	func testPerformance() {

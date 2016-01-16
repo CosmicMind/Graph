@@ -48,7 +48,6 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
-		graph.clear()
 		graph.delegate = self
 		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 	}
@@ -59,6 +58,8 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
+		graph.clear()
+		
 		let q1: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionThreadTests1", DISPATCH_QUEUE_SERIAL)
 		let q2: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionThreadTests2", DISPATCH_QUEUE_SERIAL)
 		let q3: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionThreadTests3", DISPATCH_QUEUE_SERIAL)

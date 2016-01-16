@@ -37,7 +37,6 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
-		graph.clear()
 	}
 	
 	override func tearDown() {
@@ -46,6 +45,8 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
+		graph.clear()
+		
 		for var i: Int = 0; i < 100; ++i {
 			let n: Action = Action(type: "T1")
 			n["P1"] = 0 == i % 2 ? "V1" : 1
@@ -66,7 +67,7 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 			n.addGroup("G3")
 		}
 		
-		graph.asyncSave { (success: Bool, error: NSError?) in
+		graph.syncSave { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
@@ -110,8 +111,6 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(300, graph.searchForAction(types: ["T1"], properties: [("P1", nil), ("P2", nil)]).count)
 		XCTAssertEqual(600, graph.searchForAction(types: ["T1"], groups: ["G3"], properties: [("P1", nil), ("P2", nil)]).count)
 		XCTAssertEqual(600, graph.searchForAction(types: ["*"], groups: ["*"], properties: [("*", nil)]).count)
-		
-		graph.clear()
 	}
 	
 	func testPerformance() {

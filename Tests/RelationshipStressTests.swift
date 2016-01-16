@@ -51,7 +51,6 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
-		graph.clear()
 		graph.delegate = self
 		graph.watchForEntity(types: ["S", "O"])
 		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
@@ -63,6 +62,8 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
+		graph.clear()
+		
 		for var i: Int = 1000; i > 0; --i {
 			let n: Relationship = Relationship(type: "T")
 			
@@ -77,7 +78,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
-		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -91,7 +92,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -109,7 +110,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}

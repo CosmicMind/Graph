@@ -48,7 +48,6 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
-		graph.clear()
 		graph.delegate = self
 		graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
 	}
@@ -59,6 +58,8 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
 	}
 	
 	func testAll() {
+		graph.clear()
+		
 		let q1: dispatch_queue_t = dispatch_queue_create("io.graphkit.EntityThreadTests1", DISPATCH_QUEUE_SERIAL)
 		let q2: dispatch_queue_t = dispatch_queue_create("io.graphkit.EntityThreadTests2", DISPATCH_QUEUE_SERIAL)
 		let q3: dispatch_queue_t = dispatch_queue_create("io.graphkit.EntityThreadTests3", DISPATCH_QUEUE_SERIAL)

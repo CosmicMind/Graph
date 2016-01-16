@@ -39,7 +39,6 @@ class ProbabilityTests: XCTestCase {
 	override func setUp() {
 		super.setUp()
 		graph = Graph()
-		graph.clear()
 	}
 	
 	override func tearDown() {
@@ -180,6 +179,8 @@ class ProbabilityTests: XCTestCase {
 	}
 	
 	func testEntity() {
+		graph.clear()
+		
 		let target: Entity = Entity(type: "T")
 		
 		for _ in 0..<99 {
@@ -188,7 +189,7 @@ class ProbabilityTests: XCTestCase {
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -197,11 +198,11 @@ class ProbabilityTests: XCTestCase {
 		
 		let s: Array<Entity> = graph.searchForEntity(types: ["T"])
 		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
-		
-		graph.clear()
 	}
 	
 	func testAction() {
+		graph.clear()
+		
 		let target: Action = Action(type: "T")
 		
 		for i in 0..<99 {
@@ -215,7 +216,7 @@ class ProbabilityTests: XCTestCase {
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -233,11 +234,11 @@ class ProbabilityTests: XCTestCase {
 			}
 			return false
 		}, "Test failed.")
-		
-		graph.clear()
 	}
 	
 	func testRelationship() {
+		graph.clear()
+		
 		let target: Relationship = Relationship(type: "T")
 		
 		for _ in 0..<99 {
@@ -246,7 +247,7 @@ class ProbabilityTests: XCTestCase {
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -255,8 +256,6 @@ class ProbabilityTests: XCTestCase {
 		
 		let s: Array<Relationship> = graph.searchForRelationship(types: ["T"])
 		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
-		
-		graph.clear()
 	}
 
 	func testPerformance() {
