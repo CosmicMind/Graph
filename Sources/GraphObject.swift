@@ -34,12 +34,12 @@ internal class GraphObject : NSManagedObject {
 	//
 	//	:name:	context
 	//
-	static internal var context: NSManagedObjectContext?
+	internal var context: NSManagedObjectContext?
 	
 	//
 	//	:name:	worker
 	//
-	static internal var worker: NSManagedObjectContext? {
+	internal var worker: NSManagedObjectContext? {
 		if nil == context {
 			let g: Graph = Graph()
 			context = g.worker
@@ -51,7 +51,7 @@ internal class GraphObject : NSManagedObject {
 	//	:name:	delete
 	//
 	internal func delete() {
-		GraphObject.worker?.deleteObject(self)
+		worker?.deleteObject(self)
 	}
 }
 

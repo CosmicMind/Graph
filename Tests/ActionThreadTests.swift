@@ -49,7 +49,6 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
@@ -59,6 +58,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
 	
 	func testAll() {
 		graph.clear()
+		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 		
 		let q1: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionThreadTests1", DISPATCH_QUEUE_SERIAL)
 		let q2: dispatch_queue_t = dispatch_queue_create("io.graphkit.ActionThreadTests2", DISPATCH_QUEUE_SERIAL)

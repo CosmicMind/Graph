@@ -42,7 +42,7 @@ internal class ManagedNode : GraphObject {
 	//
 	internal var id: String {
 		do {
-			try  ManagedNode.worker?.obtainPermanentIDsForObjects([self])
+			try worker?.obtainPermanentIDsForObjects([self])
 		} catch {}
 		return String(stringInterpolationSegment: nodeClass) + type + objectID.URIRepresentation().lastPathComponent!
 	}

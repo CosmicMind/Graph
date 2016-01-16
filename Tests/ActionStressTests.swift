@@ -52,8 +52,6 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watchForEntity(types: ["S", "O"])
-		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
@@ -63,6 +61,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 	
 	func testAll() {
 		graph.clear()
+		graph.watchForEntity(types: ["S", "O"])
+		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 		
 		let subjects: SortedSet<Entity> = SortedSet<Entity>()
 		for var i = 0; i < 5; ++i {

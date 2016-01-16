@@ -49,6 +49,8 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 		
 		for var i: Int = 0; i < 100; ++i {
 			let n: Relationship = Relationship(type: "T1")
+			n.subject = Entity(type: "S1")
+			n.object = Entity(type: "O1")
 			n["P1"] = 0 == i % 2 ? "V1" : 1
 			n["P2"] = "V2"
 			n.addGroup("G1")
@@ -57,12 +59,16 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 		
 		for var i: Int = 0; i < 200; ++i {
 			let n: Relationship = Relationship(type: "T2")
+			n.subject = Entity(type: "S2")
+			n.object = Entity(type: "O2")
 			n["P2"] = "V2"
 			n.addGroup("G2")
 		}
 		
 		for var i: Int = 0; i < 300; ++i {
 			let n: Relationship = Relationship(type: "T3")
+			n.subject = Entity(type: "S3")
+			n.object = Entity(type: "O3")
 			n["P3"] = "V3"
 			n.addGroup("G3")
 		}

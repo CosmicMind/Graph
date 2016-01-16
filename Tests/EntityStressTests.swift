@@ -52,7 +52,6 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
@@ -62,6 +61,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 	
 	func testAll() {
 		graph.clear()
+		graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
 		
 		for var i: Int = 1000; i > 0; --i {
 			let n: Entity = Entity(type: "T")

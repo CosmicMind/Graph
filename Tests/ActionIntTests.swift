@@ -47,7 +47,6 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
@@ -57,6 +56,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 	
 	func testAll() {
 		graph.clear()
+		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 		
 		let n: Action = Action(type: "T")
 		n["P"] = 111

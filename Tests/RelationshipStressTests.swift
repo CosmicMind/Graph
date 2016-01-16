@@ -52,8 +52,6 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watchForEntity(types: ["S", "O"])
-		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
@@ -63,6 +61,8 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 	
 	func testAll() {
 		graph.clear()
+		graph.watchForEntity(types: ["S", "O"])
+		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
 		
 		for var i: Int = 1000; i > 0; --i {
 			let n: Relationship = Relationship(type: "T")

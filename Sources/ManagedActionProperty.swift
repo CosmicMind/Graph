@@ -39,8 +39,11 @@ internal class ManagedActionProperty : ManagedNodeProperty {
 		:description:	Initializer for the Model Object.
 	*/
 	internal convenience init(name: String, object: AnyObject) {
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionPropertyDescriptionName, inManagedObjectContext: ManagedActionProperty.worker!)!, insertIntoManagedObjectContext: ManagedActionProperty.worker)
+		let g: Graph = Graph()
+		let w: NSManagedObjectContext? = g.worker
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
 		self.name = name
 		self.object = object
+		context = w
 	}
 }

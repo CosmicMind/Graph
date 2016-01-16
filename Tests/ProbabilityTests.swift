@@ -240,9 +240,13 @@ class ProbabilityTests: XCTestCase {
 		graph.clear()
 		
 		let target: Relationship = Relationship(type: "T")
+		target.subject = Entity(type: "T")
+		target.object = Entity(type: "T")
 		
 		for _ in 0..<99 {
-			let _: Relationship = Relationship(type: "T")
+			let n: Relationship = Relationship(type: "T")
+			n.subject = Entity(type: "S")
+			n.object = Entity(type: "O")
 		}
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")

@@ -49,7 +49,6 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
@@ -59,6 +58,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 	
 	func testAll() {
 		graph.clear()
+		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
 		
 		let q1: dispatch_queue_t = dispatch_queue_create("io.graphkit.RelationshipThreadTests1", DISPATCH_QUEUE_SERIAL)
 		let q2: dispatch_queue_t = dispatch_queue_create("io.graphkit.RelationshipThreadTests2", DISPATCH_QUEUE_SERIAL)
@@ -70,6 +70,8 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
 		let n: Relationship = Relationship(type: "T")
+		n.subject = Entity(type: "S")
+		n.object = Entity(type: "O")
 		
 		dispatch_async(q1) { [unowned self] in
 			n["P"] = 111
@@ -115,49 +117,50 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue(relationship["P"] as? Int == 111)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual(111, relationship["P"] as? Int)
 		XCTAssertTrue(relationship.hasGroup("G"))
+		XCTAssertEqual("S", relationship.subject?.type)
 		insertExpectation?.fulfill()
 	}
 	
 	func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue(111 == value as? Int)
-		XCTAssertTrue(relationship[property] as? Int == value as? Int)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual(111, value as? Int)
+		XCTAssertEqual(relationship[property] as? Int, value as? Int)
 		insertPropertyExpectation?.fulfill()
 	}
 	
 	func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("G", group)
 		insertGroupExpectation?.fulfill()
 	}
 	
 	func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue(222 == value as? Int)
-		XCTAssertTrue(relationship[property] as? Int == value as? Int)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual(222, value as? Int)
+		XCTAssertEqual(relationship[property] as? Int, value as? Int)
 		updatePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
-		XCTAssertTrue("T" == relationship.type)
+		XCTAssertEqual("T", relationship.type)
 		deleteExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue(222 == value as? Int)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual(222, value as? Int)
 		deletePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("G", group)
 		deleteGroupExpectation?.fulfill()
 	}
 	

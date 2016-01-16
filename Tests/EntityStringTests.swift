@@ -47,7 +47,6 @@ class EntityStringTests : XCTestCase, GraphDelegate {
 		super.setUp()
 		graph = Graph()
 		graph.delegate = self
-		graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
 	}
 	
 	override func tearDown() {
@@ -57,6 +56,7 @@ class EntityStringTests : XCTestCase, GraphDelegate {
 	
 	func testAll() {
 		graph.clear()
+		graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
 		
 		let n: Entity = Entity(type: "T")
 		n["P"] = "A"
