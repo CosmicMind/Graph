@@ -61,6 +61,11 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		n["P"] = "A"
 		n.addGroup("G")
 		
+		n.subject = Entity(type: "S")
+		n.object = Entity(type: "O")
+		
+		XCTAssertEqual(NodeClass.Relationship, n.nodeClass)
+		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		insertExpectation = expectationWithDescription("Test: Insert did not pass.")
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
@@ -98,52 +103,68 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		graph.clear()
 	}
 	
 	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue(relationship["P"] as? String == "A")
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("A", relationship["P"] as? String)
 		XCTAssertTrue(relationship.hasGroup("G"))
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		insertExpectation?.fulfill()
 	}
 	
 	func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue("A" == value as? String)
-		XCTAssertTrue(relationship[property] as? String == value as? String)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual("A", value as? String)
+		XCTAssertEqual(relationship[property] as? String, value as? String)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		insertPropertyExpectation?.fulfill()
 	}
 	
 	func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("G", group)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		insertGroupExpectation?.fulfill()
 	}
 	
 	func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue("B" == value as? String)
-		XCTAssertTrue(relationship[property] as? String == value as? String)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual("B", value as? String)
+		XCTAssertEqual(relationship[property] as? String, value as? String)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		updatePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
-		XCTAssertTrue("T" == relationship.type)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		deleteExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue("B" == value as? String)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual("B", value as? String)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		deletePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
-		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", relationship.type)
+		XCTAssertEqual("G", group)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		deleteGroupExpectation?.fulfill()
 	}
 	

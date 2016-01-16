@@ -61,6 +61,13 @@ class ActionStringTests : XCTestCase, GraphDelegate {
 		n["P"] = "A"
 		n.addGroup("G")
 		
+		n.addSubject(Entity(type: "S"))
+		n.addSubject(Entity(type: "S"))
+		n.addObject(Entity(type: "O"))
+		n.addObject(Entity(type: "O"))
+		
+		XCTAssertEqual(NodeClass.Action, n.nodeClass)
+		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		insertExpectation = expectationWithDescription("Test: Insert did not pass.")
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
@@ -98,52 +105,96 @@ class ActionStringTests : XCTestCase, GraphDelegate {
 		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		graph.clear()
 	}
 	
 	func graphDidInsertAction(graph: Graph, action: Action) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue(action["P"] as? String == "A")
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("A", action["P"] as? String)
 		XCTAssertTrue(action.hasGroup("G"))
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		insertExpectation?.fulfill()
 	}
 	
 	func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue("A" == value as? String)
-		XCTAssertTrue(action[property] as? String == value as? String)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual("A", value as? String)
+		XCTAssertEqual(action[property] as? String, value as? String)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		insertPropertyExpectation?.fulfill()
 	}
 	
 	func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("G", group)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		insertGroupExpectation?.fulfill()
 	}
 	
 	func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue("B" == value as? String)
-		XCTAssertTrue(action[property] as? String == value as? String)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual("B", value as? String)
+		XCTAssertEqual(action[property] as? String, value as? String)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		updatePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteAction(graph: Graph, action: Action) {
-		XCTAssertTrue("T" == action.type)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		deleteExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue("B" == value as? String)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual("B", value as? String)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		deletePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("G", group)
+		XCTAssertEqual(2, action.subjects.count)
+		XCTAssertEqual("S", action.subjects[0].type)
+		XCTAssertEqual("S", action.subjects[1].type)
+		XCTAssertEqual(2, action.objects.count)
+		XCTAssertEqual("O", action.objects[0].type)
+		XCTAssertEqual("O", action.objects[1].type)
 		deleteGroupExpectation?.fulfill()
 	}
 	

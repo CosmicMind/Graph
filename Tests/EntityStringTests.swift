@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.io>. 
+* Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.io>.
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
@@ -61,6 +61,8 @@ class EntityStringTests : XCTestCase, GraphDelegate {
 		n["P"] = "A"
 		n.addGroup("G")
 		
+		XCTAssertEqual(NodeClass.Entity, n.nodeClass)
+		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		insertExpectation = expectationWithDescription("Test: Insert did not pass.")
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
@@ -72,9 +74,9 @@ class EntityStringTests : XCTestCase, GraphDelegate {
 		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
-	
+		
 		n["P"] = "B"
-
+		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
@@ -98,52 +100,54 @@ class EntityStringTests : XCTestCase, GraphDelegate {
 		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		graph.clear()
 	}
 	
 	func graphDidInsertEntity(graph: Graph, entity: Entity) {
-		XCTAssertTrue("T" == entity.type)
-		XCTAssertTrue(entity["P"] as? String == "A")
+		XCTAssertEqual("T", entity.type)
+		XCTAssertEqual("A", entity["P"] as? String)
 		XCTAssertTrue(entity.hasGroup("G"))
 		insertExpectation?.fulfill()
 	}
 	
 	func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == entity.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue("A" == value as? String)
-		XCTAssertTrue(entity[property] as? String == value as? String)
+		XCTAssertEqual("T", entity.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual("A", value as? String)
+		XCTAssertEqual(entity[property] as? String, value as? String)
 		insertPropertyExpectation?.fulfill()
 	}
 	
 	func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
-		XCTAssertTrue("T" == entity.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", entity.type)
+		XCTAssertEqual("G", group)
 		insertGroupExpectation?.fulfill()
 	}
 	
 	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == entity.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue("B" == value as? String)
-		XCTAssertTrue(entity[property] as? String == value as? String)
+		XCTAssertEqual("T", entity.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual("B", value as? String)
+		XCTAssertEqual(entity[property] as? String, value as? String)
 		updatePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
-		XCTAssertTrue("T" == entity.type)
+		XCTAssertEqual("T", entity.type)
 		deleteExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == entity.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue("B" == value as? String)
+		XCTAssertEqual("T", entity.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual("B", value as? String)
 		deletePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String) {
-		XCTAssertTrue("T" == entity.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", entity.type)
+		XCTAssertEqual("G", group)
 		deleteGroupExpectation?.fulfill()
 	}
 	

@@ -79,7 +79,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
-		
+
 		n["P"] = 222
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
@@ -110,8 +110,8 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertAction(graph: Graph, action: Action) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue(action["P"] as? Int == 111)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual(111, action["P"] as? Int)
 		XCTAssertTrue(action.hasGroup("G"))
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
@@ -123,10 +123,10 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue(111 == value as? Int)
-		XCTAssertTrue(action[property] as? Int == value as? Int)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual(111, value as? Int)
+		XCTAssertEqual(action[property] as? Int, value as? Int)
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)
@@ -137,8 +137,8 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("G", group)
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)
@@ -149,10 +149,10 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue(222 == value as? Int)
-		XCTAssertTrue(action[property] as? Int == value as? Int)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual(222, value as? Int)
+		XCTAssertEqual(action[property] as? Int, value as? Int)
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)
@@ -163,7 +163,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidDeleteAction(graph: Graph, action: Action) {
-		XCTAssertTrue("T" == action.type)
+		XCTAssertEqual("T", action.type)
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)
@@ -174,9 +174,9 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("P" == property)
-		XCTAssertTrue(222 == value as? Int)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("P", property)
+		XCTAssertEqual(222, value as? Int)
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)
@@ -187,8 +187,8 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 	}
 	
 	func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String) {
-		XCTAssertTrue("T" == action.type)
-		XCTAssertTrue("G" == group)
+		XCTAssertEqual("T", action.type)
+		XCTAssertEqual("G", group)
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)

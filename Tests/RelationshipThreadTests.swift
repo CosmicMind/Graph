@@ -70,7 +70,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		
 		let n: Relationship = Relationship(type: "T")
 		
-		dispatch_async(q1) {
+		dispatch_async(q1) { [unowned self] in
 			n["P"] = 111
 			n.addGroup("G")
 			
@@ -78,7 +78,6 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 				self.insertSaveExpectation?.fulfill()
 			}
-			
 		}
 		
 		waitForExpectationsWithTimeout(10, handler: nil)
@@ -86,7 +85,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		updateSaveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		dispatch_async(q2) {
+		dispatch_async(q2) { [unowned self] in
 			n["P"] = 222
 			
 			self.graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
@@ -102,7 +101,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		dispatch_async(q3) {
+		dispatch_async(q3) { [unowned self] in
 			n.delete()
 			
 			self.graph.syncSave { [unowned self] (success: Bool, error: NSError?) in

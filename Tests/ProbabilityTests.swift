@@ -176,12 +176,10 @@ class ProbabilityTests: XCTestCase {
 		XCTAssertEqual(ev2, s.expectedValueOf(16, elements: 2, 3), "Test failed.")
 		
 		s.removeAll()
-		XCTAssert(0 == s.count, "Test failed.")
+		XCTAssertEqual(0, s.count)
 	}
 	
 	func testEntity() {
-		graph.clear()
-		
 		let target: Entity = Entity(type: "T")
 		
 		for _ in 0..<99 {
@@ -201,13 +199,9 @@ class ProbabilityTests: XCTestCase {
 		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
 		
 		graph.clear()
-		
-		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
 	func testAction() {
-		graph.clear()
-		
 		let target: Action = Action(type: "T")
 		
 		for i in 0..<99 {
@@ -241,13 +235,9 @@ class ProbabilityTests: XCTestCase {
 		}, "Test failed.")
 		
 		graph.clear()
-		
-		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 	
 	func testRelationship() {
-		graph.clear()
-		
 		let target: Relationship = Relationship(type: "T")
 		
 		for _ in 0..<99 {
@@ -267,8 +257,6 @@ class ProbabilityTests: XCTestCase {
 		XCTAssertEqual(0.01, s.probabilityOf(target), "Test failed.")
 		
 		graph.clear()
-		
-		waitForExpectationsWithTimeout(10, handler: nil)
 	}
 
 	func testPerformance() {

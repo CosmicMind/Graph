@@ -175,9 +175,13 @@ public class Graph : NSObject {
 							p.performBlock {
 								do {
 									try p.save()
-									completion?(success: true, error: nil)
+									dispatch_async(dispatch_get_main_queue()) {
+										completion?(success: true, error: nil)
+									}
 								} catch let e as NSError {
-									completion?(success: false, error: e)
+									dispatch_async(dispatch_get_main_queue()) {
+										completion?(success: false, error: e)
+									}
 								}
 							}
 						} else {
@@ -187,10 +191,14 @@ public class Graph : NSObject {
 							error = NSError(domain: "io.graphkit.Graph", code: 0001, userInfo: userInfo)
 							userInfo[NSUnderlyingErrorKey] = error
 							
-							completion?(success: false, error: error)
+							dispatch_async(dispatch_get_main_queue()) {
+								completion?(success: false, error: error)
+							}
 						}
 					} else {
-						completion?(success: false, error: error)
+						dispatch_async(dispatch_get_main_queue()) {
+							completion?(success: false, error: error)
+						}
 					}
 				}
 			}
@@ -226,9 +234,13 @@ public class Graph : NSObject {
 							p.performBlockAndWait {
 								do {
 									try p.save()
-									completion?(success: true, error: nil)
+									dispatch_async(dispatch_get_main_queue()) {
+										completion?(success: true, error: nil)
+									}
 								} catch let e as NSError {
-									completion?(success: false, error: e)
+									dispatch_async(dispatch_get_main_queue()) {
+										completion?(success: false, error: e)
+									}
 								}
 							}
 						} else {
@@ -238,10 +250,14 @@ public class Graph : NSObject {
 							error = NSError(domain: "io.graphkit.Graph", code: 0001, userInfo: userInfo)
 							userInfo[NSUnderlyingErrorKey] = error
 							
-							completion?(success: false, error: error)
+							dispatch_async(dispatch_get_main_queue()) {
+								completion?(success: false, error: error)
+							}
 						}
 					} else {
-						completion?(success: false, error: error)
+						dispatch_async(dispatch_get_main_queue()) {
+							completion?(success: false, error: error)
+						}
 					}
 				}
 			}
@@ -257,6 +273,15 @@ public class Graph : NSObject {
 		for entity in searchForEntity(types: ["*"]) {
 			entity.delete()
 		}
+		
+		for action in searchForAction(types: ["*"]) {
+			action.delete()
+		}
+		
+		for relationship in searchForRelationship(types: ["*"]) {
+			relationship.delete()
+		}
+		
 		syncSave(completion)
 	}
 	
