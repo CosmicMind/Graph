@@ -40,11 +40,6 @@ internal struct GraphPrivateManagedObjectContext {
 	internal static var managedObjectContext: NSManagedObjectContext?
 }
 
-internal struct GraphMainManagedObjectContext {
-	internal static var onceToken: dispatch_once_t = 0
-	internal static var managedObjectContext: NSManagedObjectContext?
-}
-
 internal struct GraphManagedObjectModel {
 	internal static var onceToken: dispatch_once_t = 0
 	internal static var managedObjectModel: NSManagedObjectModel?
@@ -147,47 +142,22 @@ public class Graph : NSObject {
 	public weak var delegate: GraphDelegate?
 
 	/**
-	Performs an asynchronous save to the PersistentStoreCoordinator.
-	On this save, the worker context is saved with a waiting call, 
-	and since the actual file sync save is done by the parent context, 
-	the save seems near instant and the heavly task of saving is
-	left for the parent context that runs on a private queue. This
-	save method is generally used throughout application run time.
+	Performs an asynchronous save.
 	- Parameter completion: An Optional completion block that is
 	executed when the save operation is completed.
 	*/
 	public func asyncSave(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-		if let w: NSManagedObjectContext = worker {
-			if w.hasChanges {
-				if let p: NSManagedObjectContext = privateContext {
-					var error: NSError?
-					var saved: Bool = false
-					w.performBlockAndWait {
-						do {
-							try w.save()
-							saved = true
-						} catch let e as NSError {
-							error = e
-						}
-					}
-					if saved {
-						if p.hasChanges {
-							p.performBlock {
-								do {
-									try p.save()
-									dispatch_async(dispatch_get_main_queue()) {
-										completion?(success: true, error: nil)
-									}
-								} catch let e as NSError {
-									dispatch_async(dispatch_get_main_queue()) {
-										completion?(success: false, error: e)
-									}
-								}
-							}
-						}
-					} else {
+		if let p: NSManagedObjectContext = context {
+			if p.hasChanges {
+				p.performBlock {
+					do {
+						try p.save()
 						dispatch_async(dispatch_get_main_queue()) {
-							completion?(success: false, error: error)
+							completion?(success: true, error: nil)
+						}
+					} catch let e as NSError {
+						dispatch_async(dispatch_get_main_queue()) {
+							completion?(success: false, error: e)
 						}
 					}
 				}
@@ -196,48 +166,19 @@ public class Graph : NSObject {
 	}
 	
 	/**
-	Performs a synchronous save to the PersistentStoreCoordinator.
-	On this save, the worker context is saved with a waiting call,
-	the parent context is passed the save instruction from the 
-	worker, and rather than save asynchronously, it is saved with
-	a waiting call that is also synchronous. This save should be
-	used when saving data before an application terminates.
+	Performs a synchronous save.
 	- Parameter completion: An Optional completion block that is
 	executed when the save operation is completed.
 	*/
-	public func syncSave(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-		if let w: NSManagedObjectContext = worker {
-			if w.hasChanges {
-				if let p: NSManagedObjectContext = privateContext {
-					var error: NSError?
-					var saved: Bool = false
-					w.performBlockAndWait {
-						do {
-							try w.save()
-							saved = true
-						} catch let e as NSError {
-							error = e
-						}
-					}
-					if saved {
-						if p.hasChanges {
-							p.performBlockAndWait {
-								do {
-									try p.save()
-									dispatch_async(dispatch_get_main_queue()) {
-										completion?(success: true, error: nil)
-									}
-								} catch let e as NSError {
-									dispatch_async(dispatch_get_main_queue()) {
-										completion?(success: false, error: e)
-									}
-								}
-							}
-						}
-					} else {
-						dispatch_async(dispatch_get_main_queue()) {
-							completion?(success: false, error: error)
-						}
+	public func save(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+		if let p: NSManagedObjectContext = context {
+			if p.hasChanges {
+				p.performBlockAndWait {
+					do {
+						try p.save()
+						completion?(success: true, error: nil)
+					} catch let e as NSError {
+						completion?(success: false, error: e)
 					}
 				}
 			}
@@ -262,26 +203,16 @@ public class Graph : NSObject {
 			relationship.delete()
 		}
 		
-		syncSave(completion)
+		save(completion)
 	}
 	
 	/**
-	:name:	worker
+	:name:	context
 	*/
-	internal var worker: NSManagedObjectContext? {
-		dispatch_once(&GraphMainManagedObjectContext.onceToken) { [unowned self] in
-			GraphMainManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-			GraphMainManagedObjectContext.managedObjectContext?.parentContext = self.privateContext
-		}
-		return GraphMainManagedObjectContext.managedObjectContext
-	}
-	
-	/**
-	:name:	privateContext
-	*/
-	internal var privateContext: NSManagedObjectContext? {
+	internal var context: NSManagedObjectContext? {
 		dispatch_once(&GraphPrivateManagedObjectContext.onceToken) { [unowned self] in
 			GraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+			GraphPrivateManagedObjectContext.managedObjectContext?.undoManager
 			GraphPrivateManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
 		}
 		return GraphPrivateManagedObjectContext.managedObjectContext

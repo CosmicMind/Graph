@@ -167,14 +167,8 @@ public extension Graph {
 	//	:name:	managedObjectContextDidSave
 	//
 	internal func managedObjectContextDidSave(notification: NSNotification) {
-		let moc: NSManagedObjectContext = worker!
-		if NSThread.isMainThread() {
-			moc.mergeChangesFromContextDidSaveNotification(notification)
-		} else {
-			dispatch_sync(dispatch_get_main_queue()) {
-				moc.mergeChangesFromContextDidSaveNotification(notification)
-			}
-		}
+		let moc: NSManagedObjectContext = context!
+		moc.mergeChangesFromContextDidSaveNotification(notification)
 		
 		let userInfo: [NSObject : AnyObject]? = notification.userInfo
 		
@@ -289,8 +283,8 @@ public extension Graph {
 	//
 	internal func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
-		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: worker)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: worker)
+		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: context)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: context)
 	}
 	
 	//

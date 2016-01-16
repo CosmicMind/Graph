@@ -41,8 +41,7 @@ internal class ManagedAction : ManagedNode {
 	*/
 	internal convenience init(type: String!) {
 		let g: Graph = Graph()
-		let w: NSManagedObjectContext? = g.worker
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionDescriptionName, inManagedObjectContext: g.context!)!, insertIntoManagedObjectContext: g.context)
 		nodeClass = NodeClass.Action.rawValue
         self.type = type
 		createdDate = NSDate()
@@ -50,7 +49,7 @@ internal class ManagedAction : ManagedNode {
 		groupSet = NSSet()
         subjectSet = NSSet()
         objectSet = NSSet()
-		context = w
+		context = g.context
     }
 
 	/**

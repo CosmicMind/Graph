@@ -275,8 +275,8 @@ class SortedSetTests: XCTestCase {
 		e3.delete()
 		e4.delete()
 		
-		graph.syncSave { (success: Bool, error: NSError?) in
-			XCTAssertFalse(success, "Text failed.")
+		graph.save { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Text failed.")
 		}
 	}
 	

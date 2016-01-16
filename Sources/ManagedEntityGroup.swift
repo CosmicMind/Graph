@@ -40,9 +40,8 @@ internal class ManagedEntityGroup : ManagedNodeGroup {
 	*/
 	internal convenience init(name: String) {
 		let g: Graph = Graph()
-		let w: NSManagedObjectContext? = g.worker
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityGroupDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityGroupDescriptionName, inManagedObjectContext: g.context!)!, insertIntoManagedObjectContext: g.context)
 		self.name = name
-		context = w
+		context = g.context
 	}
 }

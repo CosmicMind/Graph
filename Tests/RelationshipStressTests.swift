@@ -78,7 +78,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
-		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -92,7 +92,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -110,7 +110,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}

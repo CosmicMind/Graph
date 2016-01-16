@@ -73,7 +73,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 			n.addGroup("G3")
 		}
 		
-		graph.syncSave { (success: Bool, error: NSError?) in
+		graph.save { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		

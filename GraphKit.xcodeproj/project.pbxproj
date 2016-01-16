@@ -115,8 +115,6 @@
 		964D153F1C49542600613737 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D153D1C49542600613737 /* JSON.swift */; };
 		964D15421C49548700613737 /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D15411C49548700613737 /* JSONTests.swift */; };
 		964D15431C49548700613737 /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D15411C49548700613737 /* JSONTests.swift */; };
-		964D15451C49953500613737 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D15441C49953500613737 /* GraphTests.swift */; };
-		964D15461C49953500613737 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D15441C49953500613737 /* GraphTests.swift */; };
 		96607D751C3DB14A008D47D8 /* NodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96607D741C3DB14A008D47D8 /* NodeClass.swift */; };
 		96607D761C3DB14A008D47D8 /* NodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96607D741C3DB14A008D47D8 /* NodeClass.swift */; };
 		96607D771C3DB2E6008D47D8 /* NodeClass.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96607D741C3DB14A008D47D8 /* NodeClass.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -285,7 +283,6 @@
 		961F9B761C10ED5400ACF5DD /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		964D153D1C49542600613737 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		964D15411C49548700613737 /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTests.swift; sourceTree = "<group>"; };
-		964D15441C49953500613737 /* GraphTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphTests.swift; sourceTree = "<group>"; };
 		96607D741C3DB14A008D47D8 /* NodeClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeClass.swift; sourceTree = "<group>"; };
 		96668B2F1C2A4F4A001916C7 /* EntityStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityStringTests.swift; sourceTree = "<group>"; };
 		9677B4391BA78A9200C82BBB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -484,7 +481,6 @@
 				96D4E5441BA76FD900672E38 /* RedBlackTreeTests.swift */,
 				96D4E5461BA76FD900672E38 /* StackTests.swift */,
 				964D15411C49548700613737 /* JSONTests.swift */,
-				964D15441C49953500613737 /* GraphTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -796,7 +792,6 @@
 				9677B4CA1BA78C3D00C82BBB /* DequeTests.swift in Sources */,
 				96668B311C2A4F4A001916C7 /* EntityStringTests.swift in Sources */,
 				651B026E1C2AEDF7008967CC /* RelationshipStressTests.swift in Sources */,
-				964D15461C49953500613737 /* GraphTests.swift in Sources */,
 				9677B4D61BA78C3D00C82BBB /* ProbabilityTests.swift in Sources */,
 				651B02711C2AEE0B008967CC /* ActionStressTests.swift in Sources */,
 				9677B4DB1BA78C3D00C82BBB /* StackTests.swift in Sources */,
@@ -874,7 +869,6 @@
 				9677B4B01BA78C3C00C82BBB /* DequeTests.swift in Sources */,
 				96668B301C2A4F4A001916C7 /* EntityStringTests.swift in Sources */,
 				651B026D1C2AEDF7008967CC /* RelationshipStressTests.swift in Sources */,
-				964D15451C49953500613737 /* GraphTests.swift in Sources */,
 				9677B4BC1BA78C3C00C82BBB /* ProbabilityTests.swift in Sources */,
 				651B02701C2AEE0B008967CC /* ActionStressTests.swift in Sources */,
 				9677B4C11BA78C3C00C82BBB /* StackTests.swift in Sources */,

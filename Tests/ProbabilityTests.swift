@@ -189,7 +189,7 @@ class ProbabilityTests: XCTestCase {
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -216,7 +216,7 @@ class ProbabilityTests: XCTestCase {
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -251,7 +251,7 @@ class ProbabilityTests: XCTestCase {
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		
-		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}

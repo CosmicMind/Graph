@@ -72,7 +72,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
-		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -84,7 +84,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -98,7 +98,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		graph.syncSave { [unowned self] (success: Bool, error: NSError?) in
+		graph.save { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -145,8 +145,8 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 	
 	func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
 		XCTAssertEqual("T", relationship.type)
-//		XCTAssertEqual("S", relationship.subject?.type)
-//		XCTAssertEqual("O", relationship.object?.type)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		deleteExpectation?.fulfill()
 	}
 	
@@ -154,16 +154,16 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("T", relationship.type)
 		XCTAssertEqual("P", property)
 		XCTAssertEqual(222, value as? Int)
-//		XCTAssertEqual("S", relationship.subject?.type)
-//		XCTAssertEqual("O", relationship.object?.type)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		deletePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
 		XCTAssertEqual("T", relationship.type)
 		XCTAssertEqual("G", group)
-//		XCTAssertEqual("S", relationship.subject?.type)
-//		XCTAssertEqual("O", relationship.object?.type)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		deleteGroupExpectation?.fulfill()
 	}
 	

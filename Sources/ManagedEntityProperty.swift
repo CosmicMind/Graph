@@ -39,10 +39,9 @@ internal class ManagedEntityProperty : ManagedNodeProperty {
 	*/
 	internal convenience init(name: String, object: AnyObject) {
 		let g: Graph = Graph()
-		let w: NSManagedObjectContext? = g.worker
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityPropertyDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityPropertyDescriptionName, inManagedObjectContext: g.context!)!, insertIntoManagedObjectContext: g.context)
 		self.name = name
 		self.object = object
-		context = w
+		context = g.context
 	}
 }

@@ -42,7 +42,7 @@ internal class GraphObject : NSManagedObject {
 	internal var worker: NSManagedObjectContext? {
 		if nil == context {
 			let g: Graph = Graph()
-			context = g.worker
+			context = g.context
 		}
 		return context
 	}

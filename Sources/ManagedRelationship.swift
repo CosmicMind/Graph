@@ -41,8 +41,7 @@ internal class ManagedRelationship : ManagedNode {
 	*/
 	internal convenience init(type: String!) {
 		let g: Graph = Graph()
-		let w: NSManagedObjectContext? = g.worker
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.relationshipDescriptionName, inManagedObjectContext: w!)!, insertIntoManagedObjectContext: w)
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.relationshipDescriptionName, inManagedObjectContext: g.context!)!, insertIntoManagedObjectContext: g.context)
 		nodeClass = NodeClass.Relationship.rawValue
         self.type = type
 		createdDate = NSDate()
@@ -50,7 +49,7 @@ internal class ManagedRelationship : ManagedNode {
 		groupSet = NSSet()
 		subject = nil
 		object = nil
-		context = w
+		context = g.context
 	}
 
 	/**
