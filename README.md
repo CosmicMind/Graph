@@ -6,8 +6,9 @@ GraphKit is a CoreData and Algorithm framework written in Swift. It's designed t
 
 ## Features
 
+- [x] Thread Safe
 - [x] Store Any Data Type, Including Binary Data
-- [x] Relationship Modeling Without Configuration
+- [x] Relationship Modeling
 - [x] Action Modeling For Analytics
 - [x] Model With Graph Theory and Set Theory
 - [x] Faceted Search API
@@ -114,7 +115,7 @@ GraphKit is a growing project and will encounter changes throughout its developm
 <a name="entity"></a>
 ## Entity
 
-An **Entity** is a model object that **represents a person, place, or thing**. For example, a Company, Photo, Video, User or Note. In code, the following is how this would look.
+An **Entity** is a model object that **represents a person, place, or thing**. For example, a Company, Photo, Video, User, Person, and Note. In code, the following is how this would look.
 
 ```swift
 let graph: Graph = Graph()
