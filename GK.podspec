@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = 'GK'
-    s.version = '4.3.0'
+    s.version = '4.3.1'
     s.license = 'BSD'
     s.summary = 'Elegant CoreData and Algorithms in Swift.'
     s.homepage = 'http://graphkit.io'

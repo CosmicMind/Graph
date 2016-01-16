@@ -14,7 +14,6 @@ GraphKit is a CoreData and Algorithm framework written in Swift. It's designed t
 - [x] Faceted Search API
 - [x] JSON Toolset
 - [x] Probability Extension For Predictive Analytics
-- [x] Never Migrate Data Again
 - [x] Library of Data Structures
 - [x] Asynchronous / Synchronous Saving
 - [x] Data-Driven Architecture
