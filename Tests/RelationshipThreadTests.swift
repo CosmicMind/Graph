@@ -121,6 +121,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(111, relationship["P"] as? Int)
 		XCTAssertTrue(relationship.hasGroup("G"))
 		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
 		insertExpectation?.fulfill()
 	}
 	

@@ -167,6 +167,15 @@ public extension Graph {
 	//	:name:	managedObjectContextDidSave
 	//
 	internal func managedObjectContextDidSave(notification: NSNotification) {
+		let moc: NSManagedObjectContext = worker!
+		if NSThread.isMainThread() {
+			moc.mergeChangesFromContextDidSaveNotification(notification)
+		} else {
+			dispatch_sync(dispatch_get_main_queue()) {
+				moc.mergeChangesFromContextDidSaveNotification(notification)
+			}
+		}
+		
 		let userInfo: [NSObject : AnyObject]? = notification.userInfo
 		
 		// inserts
