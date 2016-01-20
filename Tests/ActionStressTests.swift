@@ -93,7 +93,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -107,7 +107,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -118,20 +118,12 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 			n.delete()
 		}
 		
-		for s in subjects {
-			s.delete()
-		}
-		
-		for o in objects {
-			o.delete()
-		}
-		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		deleteExpectation = expectationWithDescription("Test: Delete did not pass.")
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}

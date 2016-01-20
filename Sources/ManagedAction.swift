@@ -143,7 +143,7 @@ internal class ManagedAction : ManagedNode {
     */
     internal func addSubject(entity: ManagedEntity) -> Bool {
         let count: Int = subjectSet.count
-		(subjectSet as! NSMutableSet).addObject(entity)
+		mutableSetValueForKey("subjectSet").addObject(entity)
 		return count != subjectSet.count
     }
 
@@ -153,7 +153,7 @@ internal class ManagedAction : ManagedNode {
     */
     internal func removeSubject(entity: ManagedEntity) -> Bool {
         let count: Int = subjectSet.count
-		(subjectSet as! NSMutableSet).removeObject(entity)
+		mutableSetValueForKey("subjectSet").removeObject(entity)
 		return count != subjectSet.count
     }
 
@@ -163,7 +163,7 @@ internal class ManagedAction : ManagedNode {
     */
     internal func addObject(entity: ManagedEntity) -> Bool {
         let count: Int = objectSet.count
-		(objectSet as! NSMutableSet).addObject(entity)
+		mutableSetValueForKey("objectSet").addObject(entity)
 		return count != objectSet.count
     }
 
@@ -173,12 +173,12 @@ internal class ManagedAction : ManagedNode {
     */
     internal func removeObject(entity: ManagedEntity) -> Bool {
         let count: Int = objectSet.count
-		(objectSet as! NSMutableSet).removeObject(entity)
+		mutableSetValueForKey("objectSet").removeObject(entity)
 		return count != objectSet.count
     }
 }
 
-extension ManagedAction {
+internal extension ManagedAction {
 
 	/**
 		:name:	addPropertySetObject

@@ -141,7 +141,7 @@ internal class ManagedEntity : ManagedNode {
 	}
 }
 
-extension ManagedEntity {
+internal extension ManagedEntity {
 
 	/**
 		:name:	addActionSubjectSetObject

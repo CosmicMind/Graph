@@ -78,7 +78,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -92,7 +92,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -100,8 +100,6 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		waitForExpectationsWithTimeout(10, handler: nil)
 		
 		for n in graph.searchForRelationship(types: ["T"]) {
-			n.subject?.delete()
-			n.object?.delete()
 			n.delete()
 		}
 		
@@ -110,7 +108,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -124,6 +122,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue(relationship.hasGroup("G"))
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
+		
 		if 1000 == ++insertRelationshipCount {
 			insertExpectation?.fulfill()
 		}
@@ -136,6 +135,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue(relationship[property] as? String == value as? String)
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
+		
 		if 1000 == ++insertPropertyCount {
 			insertPropertyExpectation?.fulfill()
 		}
@@ -144,6 +144,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 	func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
 		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("G" == group)
+		
 		if 1000 == ++insertGroupCount {
 			insertGroupExpectation?.fulfill()
 		}
@@ -156,6 +157,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue(relationship[property] as? String == value as? String)
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
+		
 		if 1000 == ++updatePropertyCount {
 			updatePropertyExpectation?.fulfill()
 		}
@@ -163,8 +165,9 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 	
 	func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
 		XCTAssertTrue("T" == relationship.type)
-		XCTAssertTrue(nil == relationship.subject)
-		XCTAssertTrue(nil == relationship.object)
+		XCTAssertTrue("S" == relationship.subject?.type)
+		XCTAssertTrue("O" == relationship.object?.type)
+		
 		if 0 == --insertRelationshipCount {
 			deleteExpectation?.fulfill()
 		}
@@ -174,8 +177,9 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
-		XCTAssertTrue(nil == relationship.subject)
-		XCTAssertTrue(nil == relationship.object)
+		XCTAssertTrue("S" == relationship.subject?.type)
+		XCTAssertTrue("O" == relationship.object?.type)
+		
 		if 0 == --insertPropertyCount {
 			deletePropertyExpectation?.fulfill()
 		}
@@ -184,8 +188,9 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 	func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
 		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("G" == group)
-		XCTAssertTrue(nil == relationship.subject)
-		XCTAssertTrue(nil == relationship.object)
+		XCTAssertTrue("S" == relationship.subject?.type)
+		XCTAssertTrue("O" == relationship.object?.type)
+		
 		if 0 == --insertGroupCount {
 			deleteGroupExpectation?.fulfill()
 		}

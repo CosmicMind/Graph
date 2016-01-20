@@ -102,7 +102,12 @@ public class Entity : NSObject, Comparable {
     	:name:	actions
     */
     public var actions: Array<Action> {
-		return actionsWhenSubject + actionsWhenObject
+		var s: Set<ManagedAction> = Set<ManagedAction>()
+		s.unionInPlace(node.object.actionSubjectSet as! Set<ManagedAction>)
+		s.unionInPlace(node.object.actionObjectSet as! Set<ManagedAction>)
+		return s.map {
+			return Action(object: $0 as ManagedAction)
+		} as Array<Action>
     }
 
     /**

@@ -74,7 +74,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
 		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -88,7 +88,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
 		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -104,7 +104,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
 		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
 		
-		graph.save { [unowned self] (success: Bool, error: NSError?) in
+		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 			self.saveExpectation?.fulfill()
 		}
@@ -116,6 +116,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == entity.type)
 		XCTAssertTrue(entity["P"] as? String == "A")
 		XCTAssertTrue(entity.hasGroup("G"))
+		
 		if 1000 == ++insertEntityCount {
 			insertExpectation?.fulfill()
 		}
@@ -126,6 +127,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("A" == value as? String)
 		XCTAssertTrue(entity[property] as? String == value as? String)
+		
 		if 1000 == ++insertPropertyCount {
 			insertPropertyExpectation?.fulfill()
 		}
@@ -134,6 +136,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 	func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
 		XCTAssertTrue("T" == entity.type)
 		XCTAssertTrue("G" == group)
+		
 		if 1000 == ++insertGroupCount {
 			insertGroupExpectation?.fulfill()
 		}
@@ -144,6 +147,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
 		XCTAssertTrue(entity[property] as? String == value as? String)
+		
 		if 1000 == ++updatePropertyCount {
 			updatePropertyExpectation?.fulfill()
 		}
@@ -151,6 +155,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 	
 	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
 		XCTAssertTrue("T" == entity.type)
+		
 		if 0 == --insertEntityCount {
 			deleteExpectation?.fulfill()
 		}
@@ -160,6 +165,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == entity.type)
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
+		
 		if 0 == --insertPropertyCount {
 			deletePropertyExpectation?.fulfill()
 		}
@@ -168,6 +174,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 	func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String) {
 		XCTAssertTrue("T" == entity.type)
 		XCTAssertTrue("G" == group)
+		
 		if 0 == --insertGroupCount {
 			deleteGroupExpectation?.fulfill()
 		}

@@ -77,7 +77,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 			n["P"] = 111
 			n.addGroup("G")
 			
-			self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+			self.graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 				self.insertSaveExpectation?.fulfill()
 			}
@@ -91,7 +91,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		dispatch_async(q2) { [unowned self] in
 			n["P"] = 222
 			
-			self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+			self.graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 				self.updateSaveExpectation?.fulfill()
 			}
@@ -107,7 +107,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		dispatch_async(q3) { [unowned self] in
 			n.delete()
 			
-			self.graph.save { [unowned self] (success: Bool, error: NSError?) in
+			self.graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 				self.deleteSaveExpectation?.fulfill()
 			}

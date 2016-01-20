@@ -138,7 +138,7 @@ internal class ManagedRelationship : ManagedNode {
     }
 }
 
-extension ManagedRelationship {
+internal extension ManagedRelationship {
 
 	/**
 		:name:	addPropertySetObject
