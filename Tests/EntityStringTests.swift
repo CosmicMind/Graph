@@ -107,6 +107,7 @@ class EntityStringTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("T", entity.type)
 		XCTAssertEqual("A", entity["P"] as? String)
 		XCTAssertTrue(entity.hasGroup("G"))
+		
 		insertExpectation?.fulfill()
 	}
 	
@@ -115,12 +116,14 @@ class EntityStringTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("P", property)
 		XCTAssertEqual("A", value as? String)
 		XCTAssertEqual(entity[property] as? String, value as? String)
+		
 		insertPropertyExpectation?.fulfill()
 	}
 	
 	func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
 		XCTAssertEqual("T", entity.type)
 		XCTAssertEqual("G", group)
+		
 		insertGroupExpectation?.fulfill()
 	}
 	
@@ -129,11 +132,13 @@ class EntityStringTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("P", property)
 		XCTAssertEqual("B", value as? String)
 		XCTAssertEqual(entity[property] as? String, value as? String)
+		
 		updatePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
 		XCTAssertEqual("T", entity.type)
+		
 		deleteExpectation?.fulfill()
 	}
 	
@@ -141,12 +146,14 @@ class EntityStringTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("T", entity.type)
 		XCTAssertEqual("P", property)
 		XCTAssertEqual("B", value as? String)
+		
 		deletePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String) {
 		XCTAssertEqual("T", entity.type)
 		XCTAssertEqual("G", group)
+		
 		deleteGroupExpectation?.fulfill()
 	}
 	

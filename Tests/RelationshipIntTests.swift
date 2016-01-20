@@ -112,6 +112,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue(relationship.hasGroup("G"))
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		insertExpectation?.fulfill()
 	}
 	
@@ -122,6 +123,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(relationship[property] as? Int, value as? Int)
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		insertPropertyExpectation?.fulfill()
 	}
 	
@@ -130,6 +132,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("G", group)
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		insertGroupExpectation?.fulfill()
 	}
 	
@@ -140,6 +143,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(relationship[property] as? Int, value as? Int)
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		updatePropertyExpectation?.fulfill()
 	}
 	
@@ -147,6 +151,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("T", relationship.type)
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		deleteExpectation?.fulfill()
 	}
 	
@@ -156,6 +161,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(222, value as? Int)
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		deletePropertyExpectation?.fulfill()
 	}
 	
@@ -164,6 +170,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("G", group)
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		deleteGroupExpectation?.fulfill()
 	}
 	

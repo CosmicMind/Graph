@@ -112,6 +112,7 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue(relationship.hasGroup("G"))
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		insertExpectation?.fulfill()
 	}
 	
@@ -122,6 +123,7 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(relationship[property] as? String, value as? String)
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		insertPropertyExpectation?.fulfill()
 	}
 	
@@ -130,6 +132,7 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("G", group)
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		insertGroupExpectation?.fulfill()
 	}
 	
@@ -140,13 +143,15 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(relationship[property] as? String, value as? String)
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
+		
 		updatePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
 		XCTAssertEqual("T", relationship.type)
-//		XCTAssertEqual("S", relationship.subject?.type)
-//		XCTAssertEqual("O", relationship.object?.type)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
+		
 		deleteExpectation?.fulfill()
 	}
 	
@@ -154,16 +159,18 @@ class RelationshipStringTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("T", relationship.type)
 		XCTAssertEqual("P", property)
 		XCTAssertEqual("B", value as? String)
-//		XCTAssertEqual("S", relationship.subject?.type)
-//		XCTAssertEqual("O", relationship.object?.type)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
+		
 		deletePropertyExpectation?.fulfill()
 	}
 	
 	func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
 		XCTAssertEqual("T", relationship.type)
 		XCTAssertEqual("G", group)
-//		XCTAssertEqual("S", relationship.subject?.type)
-//		XCTAssertEqual("O", relationship.object?.type)
+		XCTAssertEqual("S", relationship.subject?.type)
+		XCTAssertEqual("O", relationship.object?.type)
+		
 		deleteGroupExpectation?.fulfill()
 	}
 	

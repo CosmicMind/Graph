@@ -132,7 +132,12 @@ public class Entity : NSObject, Comparable {
     	:name:	relationships
 	*/
     public var relationships: Array<Relationship> {
-		return relationshipsWhenSubject + relationshipsWhenObject
+		var s: Set<ManagedRelationship> = Set<ManagedRelationship>()
+		s.unionInPlace(node.object.relationshipSubjectSet as! Set<ManagedRelationship>)
+		s.unionInPlace(node.object.relationshipObjectSet as! Set<ManagedRelationship>)
+		return s.map {
+			return Relationship(object: $0 as ManagedRelationship)
+		} as Array<Relationship>
     }
 
     /**

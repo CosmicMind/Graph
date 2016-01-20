@@ -122,6 +122,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("O", action.objects[1].type)
 		XCTAssertEqual(action.objects.first!.actions.first, action)
 		XCTAssertEqual(action.objects.last!.actions.first, action)
+		
 		insertExpectation?.fulfill()
 	}
 	
@@ -140,6 +141,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("O", action.objects[1].type)
 		XCTAssertEqual(action.objects.first!.actions.first, action)
 		XCTAssertEqual(action.objects.last!.actions.first, action)
+		
 		insertPropertyExpectation?.fulfill()
 	}
 	
@@ -156,6 +158,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("O", action.objects[1].type)
 		XCTAssertEqual(action.objects.first!.actions.first, action)
 		XCTAssertEqual(action.objects.last!.actions.first, action)
+		
 		insertGroupExpectation?.fulfill()
 	}
 	
@@ -174,6 +177,7 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual("O", action.objects[1].type)
 		XCTAssertEqual(action.objects.first!.actions.first, action)
 		XCTAssertEqual(action.objects.last!.actions.first, action)
+		
 		updatePropertyExpectation?.fulfill()
 	}
 	
@@ -182,13 +186,10 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)
-		XCTAssertEqual(action.subjects.first!.actions.first, action)
-		XCTAssertEqual(action.subjects.last!.actions.first, action)
 		XCTAssertEqual(2, action.objects.count)
 		XCTAssertEqual("O", action.objects[0].type)
 		XCTAssertEqual("O", action.objects[1].type)
-		XCTAssertEqual(action.objects.first!.actions.first, action)
-		XCTAssertEqual(action.objects.last!.actions.first, action)
+		
 		deleteExpectation?.fulfill()
 	}
 	
@@ -199,13 +200,10 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)
-		XCTAssertEqual(action.subjects.first!.actions.first, action)
-		XCTAssertEqual(action.subjects.last!.actions.first, action)
 		XCTAssertEqual(2, action.objects.count)
 		XCTAssertEqual("O", action.objects[0].type)
 		XCTAssertEqual("O", action.objects[1].type)
-		XCTAssertEqual(action.objects.first!.actions.first, action)
-		XCTAssertEqual(action.objects.last!.actions.first, action)
+		
 		deletePropertyExpectation?.fulfill()
 	}
 	
@@ -215,13 +213,10 @@ class ActionIntTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)
-		XCTAssertEqual(action.subjects.first!.actions.first, action)
-		XCTAssertEqual(action.subjects.last!.actions.first, action)
 		XCTAssertEqual(2, action.objects.count)
 		XCTAssertEqual("O", action.objects[0].type)
 		XCTAssertEqual("O", action.objects[1].type)
-		XCTAssertEqual(action.objects.first!.actions.first, action)
-		XCTAssertEqual(action.objects.last!.actions.first, action)
+		
 		deleteGroupExpectation?.fulfill()
 	}
 	

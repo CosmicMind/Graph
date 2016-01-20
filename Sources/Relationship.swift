@@ -181,6 +181,8 @@ public class Relationship : NSObject, Comparable {
     	:name:	delete
     */
     public func delete() {
+		node.object.subject?.removeRelationshipSubjectSetObject(node.object)
+		node.object.object?.removeRelationshipObjectSetObject(node.object)
         node.object.delete()
     }
 }

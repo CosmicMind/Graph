@@ -214,6 +214,17 @@ public class Action : NSObject, Comparable {
     	:name:	delete
     */
     public func delete() {
+		for x in node.object.subjectSet {
+			if let v: ManagedEntity = x as? ManagedEntity {
+				(v.actionSubjectSet as! NSMutableSet).removeObject(node.object)
+			}
+		}
+		
+		for x in node.object.objectSet {
+			if let v: ManagedEntity = x as? ManagedEntity {
+				(v.actionObjectSet as! NSMutableSet).removeObject(node.object)
+			}
+		}
 		node.object.delete()
     }
 }

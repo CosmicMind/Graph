@@ -34,14 +34,8 @@ import XCTest
 class EntityRelationshipTests : XCTestCase, GraphDelegate {
 	var graph: Graph!
 	
-	var saveExpectation: XCTestExpectation?
-	var insertExpectation: XCTestExpectation?
-	var insertPropertyExpectation: XCTestExpectation?
-	var insertGroupExpectation: XCTestExpectation?
-	var updatePropertyExpectation: XCTestExpectation?
-	var deleteExpectation: XCTestExpectation?
-	var deletePropertyExpectation: XCTestExpectation?
-	var deleteGroupExpectation: XCTestExpectation?
+	var insertRelationshipExpectation: XCTestExpectation?
+	var deleteRelationshipExpectation: XCTestExpectation?
 	
 	override func setUp() {
 		super.setUp()
@@ -56,111 +50,191 @@ class EntityRelationshipTests : XCTestCase, GraphDelegate {
 	
 	func testAll() {
 		graph.clear()
-//		graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
+		graph.watchForEntity(types: ["T1", "T2"])
+		graph.watchForRelationship(types: ["R"])
 		
-		let e1: Entity = Entity(type: "T")
-		let e2: Entity = Entity(type: "T")
+		let e1: Entity = Entity(type: "T1")
+		let e2: Entity = Entity(type: "T2")
 		
 		let r1: Relationship = Relationship(type: "R")
 		r1.subject = e1
 		r1.object = e2
 		
+		XCTAssertEqual(1, e1.relationships.count)
+		XCTAssertEqual(1, e1.relationshipsWhenSubject.count)
+		XCTAssertEqual(0, e1.relationshipsWhenObject.count)
 		XCTAssertEqual(r1, e1.relationshipsWhenSubject.first)
+		
+		XCTAssertEqual(1, e2.relationships.count)
+		XCTAssertEqual(0, e2.relationshipsWhenSubject.count)
+		XCTAssertEqual(1, e2.relationshipsWhenObject.count)
 		XCTAssertEqual(r1, e2.relationshipsWhenObject.first)
 		
-		graph.save { (success: Bool, error: NSError?) in
+		insertRelationshipExpectation = expectationWithDescription("Test: Delete did not pass.")
+		
+		graph.asyncSave { (success: Bool, error: NSError?) in
 			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
 		}
 		
+		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		XCTAssertEqual(1, e1.relationships.count)
+		XCTAssertEqual(1, e1.relationshipsWhenSubject.count)
+		XCTAssertEqual(0, e1.relationshipsWhenObject.count)
 		XCTAssertEqual(r1, e1.relationshipsWhenSubject.first)
+		
+		XCTAssertEqual(1, e2.relationships.count)
+		XCTAssertEqual(0, e2.relationshipsWhenSubject.count)
+		XCTAssertEqual(1, e2.relationshipsWhenObject.count)
 		XCTAssertEqual(r1, e2.relationshipsWhenObject.first)
 		
-//		XCTAssertEqual(NodeClass.Entity, n.nodeClass)
-//		
-//		saveExpectation = expectationWithDescription("Test: Save did not pass.")
-//		insertExpectation = expectationWithDescription("Test: Insert did not pass.")
-//		insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
-//		insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
-//		
-//		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
-//			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-//			self.saveExpectation?.fulfill()
-//		}
-//		
-//		waitForExpectationsWithTimeout(10, handler: nil)
-//		
-//		n["P"] = 222
-//		
-//		saveExpectation = expectationWithDescription("Test: Save did not pass.")
-//		updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
-//		
-//		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
-//			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-//			self.saveExpectation?.fulfill()
-//		}
-//		
-//		waitForExpectationsWithTimeout(10, handler: nil)
-//		
-//		n.delete()
-//		
-//		saveExpectation = expectationWithDescription("Test: Save did not pass.")
-//		deleteExpectation = expectationWithDescription("Test: Delete did not pass.")
-//		deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
-//		deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
-//		
-//		graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
-//			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
-//			self.saveExpectation?.fulfill()
-//		}
-//		
-//		waitForExpectationsWithTimeout(10, handler: nil)
+		r1.delete()
+		
+		XCTAssertEqual(0, e1.relationships.count)
+		XCTAssertEqual(0, e1.relationshipsWhenSubject.count)
+		XCTAssertEqual(0, e1.relationshipsWhenObject.count)
+		XCTAssertNotEqual(r1, e1.relationshipsWhenSubject.first)
+		
+		XCTAssertEqual(0, e2.relationships.count)
+		XCTAssertEqual(0, e2.relationshipsWhenSubject.count)
+		XCTAssertEqual(0, e2.relationshipsWhenObject.count)
+		XCTAssertNotEqual(r1, e2.relationshipsWhenObject.first)
+		
+		deleteRelationshipExpectation = expectationWithDescription("Test: Delete did not pass.")
+		
+		graph.asyncSave { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+		}
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		XCTAssertEqual(0, e1.relationships.count)
+		XCTAssertEqual(0, e1.relationshipsWhenSubject.count)
+		XCTAssertEqual(0, e1.relationshipsWhenObject.count)
+		XCTAssertNotEqual(r1, e1.relationshipsWhenSubject.first)
+		
+		XCTAssertEqual(0, e2.relationships.count)
+		XCTAssertEqual(0, e2.relationshipsWhenSubject.count)
+		XCTAssertEqual(0, e2.relationshipsWhenObject.count)
+		XCTAssertNotEqual(r1, e2.relationshipsWhenObject.first)
+		
+		let r2: Relationship = Relationship(type: "R")
+		r2.subject = e1
+		r2.object = e1
+		
+		XCTAssertEqual(1, e1.relationships.count)
+		XCTAssertEqual(1, e1.relationshipsWhenSubject.count)
+		XCTAssertEqual(1, e1.relationshipsWhenObject.count)
+		XCTAssertEqual(r2, e1.relationshipsWhenSubject.first)
+		XCTAssertEqual(r2, e1.relationshipsWhenObject.first)
+		
+		insertRelationshipExpectation = expectationWithDescription("Test: Delete did not pass.")
+		
+		graph.asyncSave { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+		}
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		XCTAssertEqual(1, e1.relationships.count)
+		XCTAssertEqual(1, e1.relationshipsWhenSubject.count)
+		XCTAssertEqual(1, e1.relationshipsWhenObject.count)
+		XCTAssertEqual(r2, e1.relationshipsWhenSubject.first)
+		XCTAssertEqual(r2, e1.relationshipsWhenObject.first)
+		
+		r2.delete()
+		
+		XCTAssertEqual(0, e1.relationships.count)
+		XCTAssertEqual(0, e1.relationshipsWhenSubject.count)
+		XCTAssertEqual(0, e1.relationshipsWhenObject.count)
+		XCTAssertNotEqual(r2, e1.relationshipsWhenSubject.first)
+		XCTAssertNotEqual(r2, e1.relationshipsWhenObject.first)
+		
+		deleteRelationshipExpectation = expectationWithDescription("Test: Delete did not pass.")
+		
+		graph.asyncSave { (success: Bool, error: NSError?) in
+			XCTAssertTrue(success, "Cannot save the Graph: \(error)")
+		}
+		
+		waitForExpectationsWithTimeout(10, handler: nil)
+		
+		XCTAssertEqual(0, e1.relationships.count)
+		XCTAssertEqual(0, e1.relationshipsWhenSubject.count)
+		XCTAssertEqual(0, e1.relationshipsWhenObject.count)
+		XCTAssertNotEqual(r2, e1.relationshipsWhenSubject.first)
+		XCTAssertNotEqual(r2, e1.relationshipsWhenObject.first)
 	}
 	
-	func graphDidInsertEntity(graph: Graph, entity: Entity) {
-		XCTAssertEqual("T", entity.type)
-		XCTAssertEqual(111, entity["P"] as? Int)
-		XCTAssertTrue(entity.hasGroup("G"))
-		insertExpectation?.fulfill()
+	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
+		if relationship.subject != relationship.object {
+			XCTAssertEqual("R", relationship.type)
+			XCTAssertEqual("T1", relationship.subject?.type)
+			XCTAssertEqual("T2", relationship.object?.type)
+			
+			XCTAssertEqual(1, relationship.subject?.relationships.count)
+			XCTAssertEqual(1, relationship.subject?.relationshipsWhenSubject.count)
+			XCTAssertEqual(0, relationship.subject?.relationshipsWhenObject.count)
+			XCTAssertEqual(relationship, relationship.subject?.relationshipsWhenSubject.first)
+			
+			XCTAssertEqual(1, relationship.object?.relationships.count)
+			XCTAssertEqual(0, relationship.object?.relationshipsWhenSubject.count)
+			XCTAssertEqual(1, relationship.object?.relationshipsWhenObject.count)
+			XCTAssertEqual(relationship, relationship.object?.relationshipsWhenObject.first)
+			
+			insertRelationshipExpectation?.fulfill()
+		} else if relationship.subject == relationship.object {
+			XCTAssertEqual("R", relationship.type)
+			XCTAssertEqual("T1", relationship.subject?.type)
+			XCTAssertEqual("T1", relationship.object?.type)
+			
+			XCTAssertEqual(1, relationship.subject?.relationships.count)
+			XCTAssertEqual(1, relationship.subject?.relationshipsWhenSubject.count)
+			XCTAssertEqual(1, relationship.subject?.relationshipsWhenObject.count)
+			XCTAssertEqual(relationship, relationship.subject?.relationshipsWhenSubject.first)
+			
+			XCTAssertEqual(1, relationship.object?.relationships.count)
+			XCTAssertEqual(1, relationship.object?.relationshipsWhenSubject.count)
+			XCTAssertEqual(1, relationship.object?.relationshipsWhenObject.count)
+			XCTAssertEqual(relationship, relationship.object?.relationshipsWhenObject.first)
+			
+			insertRelationshipExpectation?.fulfill()
+		}
 	}
 	
-	func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-		XCTAssertEqual("T", entity.type)
-		XCTAssertEqual("P", property)
-		XCTAssertEqual(111, value as? Int)
-		XCTAssertEqual(entity[property] as? Int, value as? Int)
-		insertPropertyExpectation?.fulfill()
-	}
-	
-	func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
-		XCTAssertEqual("T", entity.type)
-		XCTAssertEqual("G", group)
-		insertGroupExpectation?.fulfill()
-	}
-	
-	func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-		XCTAssertEqual("T", entity.type)
-		XCTAssertEqual("P", property)
-		XCTAssertEqual(222, value as? Int)
-		XCTAssertEqual(entity[property] as? Int, value as? Int)
-		updatePropertyExpectation?.fulfill()
-	}
-	
-	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
-		XCTAssertEqual("T", entity.type)
-		deleteExpectation?.fulfill()
-	}
-	
-	func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
-		XCTAssertEqual("T", entity.type)
-		XCTAssertEqual("P", property)
-		XCTAssertEqual(222, value as? Int)
-		deletePropertyExpectation?.fulfill()
-	}
-	
-	func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String) {
-		XCTAssertEqual("T", entity.type)
-		XCTAssertEqual("G", group)
-		deleteGroupExpectation?.fulfill()
+	func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
+		if relationship.subject != relationship.object {
+			XCTAssertEqual("R", relationship.type)
+			XCTAssertEqual("T1", relationship.subject?.type)
+			XCTAssertEqual("T2", relationship.object?.type)
+			
+			XCTAssertEqual(0, relationship.subject?.relationships.count)
+			XCTAssertEqual(0, relationship.subject?.relationshipsWhenSubject.count)
+			XCTAssertEqual(0, relationship.subject?.relationshipsWhenObject.count)
+			XCTAssertNotEqual(relationship, relationship.subject?.relationshipsWhenSubject.first)
+			
+			XCTAssertEqual(0, relationship.object?.relationships.count)
+			XCTAssertEqual(0, relationship.object?.relationshipsWhenSubject.count)
+			XCTAssertEqual(0, relationship.object?.relationshipsWhenObject.count)
+			XCTAssertNotEqual(relationship, relationship.object?.relationshipsWhenObject.first)
+			
+			deleteRelationshipExpectation?.fulfill()
+		} else if relationship.subject == relationship.object {
+			XCTAssertEqual("R", relationship.type)
+			XCTAssertEqual("T1", relationship.subject?.type)
+			XCTAssertEqual("T1", relationship.object?.type)
+			
+			XCTAssertEqual(0, relationship.subject?.relationships.count)
+			XCTAssertEqual(0, relationship.subject?.relationshipsWhenSubject.count)
+			XCTAssertEqual(0, relationship.subject?.relationshipsWhenObject.count)
+			XCTAssertNotEqual(relationship, relationship.subject?.relationshipsWhenSubject.first)
+			
+			XCTAssertEqual(0, relationship.object?.relationships.count)
+			XCTAssertEqual(0, relationship.object?.relationshipsWhenSubject.count)
+			XCTAssertEqual(0, relationship.object?.relationshipsWhenObject.count)
+			XCTAssertNotEqual(relationship, relationship.object?.relationshipsWhenObject.first)
+			
+			deleteRelationshipExpectation?.fulfill()
+		}
 	}
 	
 	func testPerformance() {
