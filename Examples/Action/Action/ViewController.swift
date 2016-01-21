@@ -29,15 +29,15 @@
 */
 
 /*
-The following ViewController exemplifies the usage of Relationships. 
-In this example, there are Person and Company Entity types that are 
-related through an Employee Relationship.
+The following ViewController exemplifies the usage of Actions.
+In this example, there are Company Entity types that are
+related through an Acquired Action.
 
-For example:	Person is an Employee of Company.
+For example:	CompanyA Acquired CompanyB.
 
-Person is the sbject of the Relationship.
-Employee is the Relationship type.
-Company is the object of the Relationship.
+CompanyA is a sbject of the Action.
+Acquired is the Action type.
+CompanyB is an object of the Action.
 */
 
 import UIKit
@@ -47,117 +47,70 @@ class ViewController: UIViewController {
 	/// Access the Graph persistence layer.
 	private lazy var graph: Graph = Graph()
 	
-	/// A tableView used to display Relationship entries.
+	/// A tableView used to display Action entries.
 	private let tableView: UITableView = UITableView()
 	
-	/// A list of all the Employee Relationships.
-	private var employees: Array<Relationship> = Array<Relationship>()
+	/// A list of all the acquisition Actions.
+	private var acquisitions: Array<Action> = Array<Action>()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		prepareGraph()
-		prepareEmployees()
+		prepareAcquisitions()
 		prepareTableView()
-		prepareNavigationBarItems()
-	}
-	
-	/// Handles the add button event.
-	internal func handleAddButton(sender: UIBarButtonItem) {
-		// Create a Person Entity.
-		let person: Entity = Entity(type: "Person")
-		person["firstName"] = "First"
-		person["lastName"] = "Last"
-		person["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
-		
-		// Create a Company Entity.
-		let company: Entity = Entity(type: "Company")
-		company["name"] = "Company"
-		
-		// Create an Employee Relationship.
-		let employee: Relationship = Relationship(type: "Employee")
-		
-		// Form the relationship.
-		employee.subject = person
-		employee.object = company
-		
-		/*
-		The graph.save call triggers an asynchronous callback
-		that may be used for various benefits. As well, since
-		the graph is watching Employee Relationships, the
-		graphDidInsertRelationship delegate method is executed once
-		the save has completed.
-		*/
-		graph.save { (success: Bool, error: NSError?) in
-			if let e: NSError = error {
-				print(e)
-			}
-		}
 	}
 	
 	/// Prepares the Graph instance.
 	private func prepareGraph() {
 		/*
-		Rather than searching the Employee Relationships on each
+		Rather than searching the Acquired Actions on each
 		insert, the Graph Watch API is used to update the
-		employees Array. This allows a single search query to be
+		acquisitions Array. This allows a single search query to be
 		made when loading the ViewController.
 		*/
 		graph.delegate = self
-		graph.watchForRelationship(types: ["Employee"])
+		graph.watchForAction(types: ["Acquired"])
 	}
 	
-	/// Prepares the employees Array.
-	private func prepareEmployees() {
-		employees = graph.searchForRelationship(types: ["Employee"])
+	/// Prepares the acquisitions Array.
+	private func prepareAcquisitions() {
+		acquisitions = graph.searchForAction(types: ["Acquired"])
 		
-		// Add Employee Relationships if none exist.
-		if 0 == employees.count {
-			// Create Person Entities.
-			let tim: Entity = Entity(type: "Person")
-			tim["firstName"] = "Tim"
-			tim["lastName"] = "Cook"
-			tim["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("TimCook", ofType: "png")!)
-			
-			let mark: Entity = Entity(type: "Person")
-			mark["firstName"] = "Mark"
-			mark["lastName"] = "Zuckerberg"
-			mark["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!)
-			
-			let elon: Entity = Entity(type: "Person")
-			elon["firstName"] = "Elon"
-			elon["lastName"] = "Musk"
-			elon["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
-			
+		// Add Acquired Actions if none exist.
+		if 0 == acquisitions.count {
 			// Create Company Entities.
 			let apple: Entity = Entity(type: "Company")
 			apple["name"] = "Apple"
+			apple["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Apple", ofType: "png")!)
+			
+			let beats: Entity = Entity(type: "Company")
+			beats["name"] = "Beats Electronics"
+			beats["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Beats", ofType: "png")!)
 			
 			let facebook: Entity = Entity(type: "Company")
 			facebook["name"] = "Facebook"
+			facebook["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Facebook", ofType: "png")!)
 			
-			let tesla: Entity = Entity(type: "Company")
-			tesla["name"] = "Tesla Motors"
+			let whatsapp: Entity = Entity(type: "Company")
+			whatsapp["name"] = "WhatsApp"
+			whatsapp["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("WhatsApp", ofType: "png")!)
 			
-			// Create Employee Relationships.
-			let employee1: Relationship = Relationship(type: "Employee")
-			let employee2: Relationship = Relationship(type: "Employee")
-			let employee3: Relationship = Relationship(type: "Employee")
+			// Create Acquired Actions.
+			let acquisition1: Action = Action(type: "Acquired")
+			let acquisition2: Action = Action(type: "Acquired")
 			
 			// Form relationships.
-			employee1.subject = tim
-			employee1.object = apple
+			acquisition1.addSubject(apple)
+			acquisition1.addObject(beats)
 			
-			employee2.subject = mark
-			employee2.object = facebook
-			
-			employee3.subject = elon
-			employee3.object = tesla
+			acquisition2.addSubject(facebook)
+			acquisition2.addObject(whatsapp)
 			
 			/*
 			The graph.save call triggers an asynchronous callback
 			that may be used for various benefits. As well, since
-			the graph is watching Employee Relationships, the
-			graphDidInsertRelationship delegate method is executed once
+			the graph is watching Acquired Actions, the
+			graphDidInsertAction delegate method is executed once
 			the save has completed.
 			*/
 			graph.save { (success: Bool, error: NSError?) in
@@ -176,18 +129,13 @@ class ViewController: UIViewController {
 		tableView.delegate = self
 		view.addSubview(tableView)
 	}
-	
-	/// Prepares the navigation bar items.
-	private func prepareNavigationBarItems() {
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "handleAddButton:")
-	}
 }
 
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
-	/// GraphDelegate delegation method that is executed on Relationship inserts.
-	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
-		employees.append(relationship)
+	/// GraphDelegate delegation method that is executed on Action inserts.
+	func graphDidInsertAction(graph: Graph, action: Action) {
+		acquisitions.append(action)
 		tableView.reloadData()
 	}
 }
@@ -197,30 +145,46 @@ extension ViewController: GraphDelegate {
 extension ViewController: UITableViewDataSource {
 	/// Determines the number of rows in the tableView.
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return employees.count
+		return acquisitions.count
 	}
 	
 	/// Returns the number of sections.
 	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		return 1
+		return 2
 	}
 	
 	/// Prepares the cells within the tableView.
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
 		
-		// Get the Relationship.
-		let employee: Relationship = employees[indexPath.row]
-		
-		// Set the Person details.
-		if let person: Entity = employee.subject {
-			cell.textLabel?.text = (person["firstName"] as! String) + " " + (person["lastName"] as! String)
-			cell.imageView?.image = person["photo"] as? UIImage
-		}
-		
-		// Set the Company details.
-		if let company: Entity = employee.object {
-			cell.detailTextLabel?.text = "Works At: " + (company["name"] as! String)
+		if 0 == indexPath.section {
+			// Get the Action.
+			let acquisition: Action = acquisitions[indexPath.row]
+			
+			// Set the Company details.
+			if let company: Entity = acquisition.subjects.first {
+				cell.textLabel?.text = company["name"] as? String
+				cell.imageView?.image = company["photo"] as? UIImage
+			}
+			
+			// Set the Company details.
+			if let company: Entity = acquisition.objects.first {
+				cell.detailTextLabel?.text = "Bought: " + (company["name"] as! String)
+			}
+		} else {
+			// Get the Action.
+			let acquisition: Action = acquisitions[indexPath.row]
+			
+			// Set the Company details.
+			if let company: Entity = acquisition.objects.first {
+				cell.textLabel?.text = company["name"] as? String
+				cell.imageView?.image = company["photo"] as? UIImage
+			}
+			
+			// Set the Company details.
+			if let company: Entity = acquisition.subjects.first {
+				cell.detailTextLabel?.text = "Sold To: " + (company["name"] as! String)
+			}
 		}
 		
 		return cell
@@ -233,7 +197,7 @@ extension ViewController: UITableViewDataSource {
 		
 		let label: UILabel = UILabel(frame: CGRectMake(16, 0, view.bounds.width - 32, 48))
 		label.textColor = .grayColor()
-		label.text = "Employees"
+		label.text = 0 == section ? "Buyer" : "Seller"
 		
 		header.addSubview(label)
 		return header

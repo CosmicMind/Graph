@@ -61,7 +61,7 @@ class ViewController: UIViewController {
 		let person: Entity = Entity(type: "Person")
 		person["firstName"] = "First"
 		person["lastName"] = "Last"
-		person["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
+		person["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
 		
 		/*
 		The graph.save call triggers an asynchronous callback
@@ -99,17 +99,17 @@ class ViewController: UIViewController {
 			let tim: Entity = Entity(type: "Person")
 			tim["firstName"] = "Tim"
 			tim["lastName"] = "Cook"
-			tim["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("TimCook", ofType: "png")!)
+			tim["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("TimCook", ofType: "png")!)
 			
 			let mark: Entity = Entity(type: "Person")
 			mark["firstName"] = "Mark"
 			mark["lastName"] = "Zuckerberg"
-			mark["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!)
+			mark["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!)
 			
 			let elon: Entity = Entity(type: "Person")
 			elon["firstName"] = "Elon"
 			elon["lastName"] = "Musk"
-			elon["image"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
+			elon["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
 			
 			/*
 			The graph.save call triggers an asynchronous callback
@@ -155,7 +155,7 @@ extension ViewController: GraphDelegate {
 extension ViewController: UITableViewDataSource {
 	/// Determines the number of rows in the tableView.
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return people.count;
+		return people.count
 	}
 	
 	/// Returns the number of sections.
@@ -172,7 +172,7 @@ extension ViewController: UITableViewDataSource {
 		
 		// Set the Person details.
 		cell.textLabel?.text = (person["firstName"] as! String) + " " + (person["lastName"] as! String)
-		cell.imageView?.image = person["image"] as? UIImage
+		cell.imageView?.image = person["photo"] as? UIImage
 		
 		return cell
 	}

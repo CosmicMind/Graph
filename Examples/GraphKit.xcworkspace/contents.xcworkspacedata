@@ -18,4 +18,11 @@
          location = "group:Relationship/Relationship.xcodeproj">
       </FileRef>
    </Group>
+   <Group
+      location = "container:"
+      name = "Action">
+      <FileRef
+         location = "group:Action/Action.xcodeproj">
+      </FileRef>
+   </Group>
 </Workspace>

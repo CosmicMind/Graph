@@ -114,6 +114,8 @@ GraphKit is a growing project and will encounter changes throughout its developm
 <a name="entity"></a>
 ## Entity
 
+![GraphKitEntity](http://graphkit.io/GK/GraphKitEntity.png)
+
 An **Entity** is a model object that **represents a person, place, or thing**. For example, a Company, Photo, Video, User, Person, and Note. In code, the following is how this would look.
 
 ```swift
@@ -123,10 +125,7 @@ let graph: Graph = Graph()
 let person: Entity = Entity(type: "Person")
 person["firstName"] = "Elon"
 person["lastName"] = "Musk"
-
-// Create a Company Entity.
-let company: Entity = Entity(type: "Company")
-company["name"] = "Tesla Motors"
+person["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
 
 graph.save()
 ```
