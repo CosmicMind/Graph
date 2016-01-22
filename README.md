@@ -17,7 +17,7 @@ GraphKit is a CoreData and Algorithm framework written in Swift. It's designed t
 - [x] Library of Data Structures
 - [x] Asynchronous / Synchronous Saving
 - [x] Data-Driven Architecture
-- [x] Asynchronous Model Observation
+- [x] Data Model Observation
 - [x] Comprehensive Unit Test Coverage
 - [x] Example Projects
 
@@ -35,52 +35,11 @@ GraphKit is a CoreData and Algorithm framework written in Swift. It's designed t
 - If you **want to contribute**, submit a pull request.
 
 ## Installation
+
 > **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks (10.9).**
 > - [Download GraphKit](https://github.com/CosmicMind/GraphKit/archive/master.zip)
 
-## CocoaPods
-
-[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
-
-```bash
-$ gem install cocoapods
-```
-
-> CocoaPods 0.39.0+ is required to build GraphKit 4.0.0+.
-
-To integrate GraphKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
-
-```ruby
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
-use_frameworks!
-
-pod 'GK', '~> 4.0'
-```
-
-Then, run the following command:
-
-```bash
-$ pod install
-```
-
-## Carthage
-
-Carthage is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
-
-You can install Carthage with Homebrew using the following command:
-
-```bash
-$ brew update
-$ brew install carthage
-```
-To integrate GraphKit into your Xcode project using Carthage, specify it in your Cartfile:
-
-```bash
-github "CosmicMind/GraphKit"
-```
-
-Run `carthage update` to build the framework and drag the built `GraphKit.framework` into your Xcode project.
+Visit the [Installation](https://github.com/CosmicMind/GraphKit/wiki/Installation) page to learn how to install GraphKit using [CocoaPods](http://cocoapods.org) and [Carthage](https://github.com/Carthage/Carthage).
 
 ## Changelog
 
@@ -114,18 +73,20 @@ GraphKit is a growing project and will encounter changes throughout its developm
 <a name="entity"></a>
 ## Entity
 
-![GraphKitEntity](http://graphkit.io/GK/GraphKitEntity.png)
-
 An **Entity** is a model object that **represents a person, place, or thing**. For example, a Company, Photo, Video, User, Person, and Note. In code, the following is how this would look.
+
+![GraphKitEntity](http://graphkit.io/GK/GraphKitEntity.png)
 
 ```swift
 let graph: Graph = Graph()
 
 // Create a Person Entity.
-let person: Entity = Entity(type: "Person")
-person["firstName"] = "Elon"
-person["lastName"] = "Musk"
-person["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
+let elon: Entity = Entity(type: "Person")
+elon["firstName"] = "Elon"
+elon["lastName"] = "Musk"
+
+let path: String = NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!
+elon["photo"] = UIImage(contentsOfFile: path)
 
 graph.save()
 ```
@@ -135,27 +96,32 @@ graph.save()
 <a name="relationship"></a>
 ## Relationship
 
-A **Relationship** is a model object that **forms a relationship between two Entities**. For example, "Person is an Employee of Company". _Person_ and _Company_ are two Entities that form a Relationship -- of type _Employee_. In code, the following is how this would look.
+A **Relationship** is a model object that **forms a relationship between two Entities**. For example, "Mark is an Employee of Facebook". _Mark_ and _Facebook_ are two Entities that form a Relationship -- of type _Employee_. In code, the following is how this would look.
+
+![GraphKitRelationship](http://graphkit.io/GK/GraphKitRelationship.png)
 
 ```swift
 let graph: Graph = Graph()
 
 // Create a Person Entity.
-let person: Entity = Entity(type: "Person")
-person["firstName"] = "Mark"
-person["lastName"] = "Zuckerberg"
+let mark: Entity = Entity(type: "Person")
+mark["firstName"] = "Mark"
+mark["lastName"] = "Zuckerberg"
+
+let path: String = NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!
+mark["photo"] = UIImage(contentsOfFile: path)
 
 // Create a Company Entity.
-let company: Entity = Entity(type: "Company")
-company["name"] = "Facebook"
+let facebook: Entity = Entity(type: "Company")
+facebook["name"] = "Facebook"
 
 // Create an Employee Relationship.
 let employee: Relationship = Relationship(type: "Employee")
 employee["startDate"] = "February 4, 2004"
 
 // Form the relationship.
-employee.subject = person
-employee.object = company
+employee.subject = mark
+employee.object = facebook
 
 graph.save()
 ```
@@ -167,23 +133,33 @@ Notice that information about the relationship is stored within the _Employee_ R
 <a name="action"></a>
 ## Action
 
-An **Action** is a model object that **forms a relationship between a collection of Entity subjects and a collection of Entity objects**. For example, "Person Purchased many Books". The _Purchased_ Action captures the _Person_ Entity and _Book_ Entities in a single relationship that may be used later to ask questions like, "what Books has the Person Purchased?", or "Has the Person Purchased a Physics Book?". In code, the following is how this would look.
+An **Action** is a model object that **forms a relationship between a collection of Entity subjects and a collection of Entity objects**. For example, "Apple Acquired Beats Electronics". The _Acquired_ Action captures the _Company_ Entities in a single relationship that may be used later to ask questions like, "which company acquired Beats Electronics?", or "what companies did Apple acquire?". In code, the following is how this would look.
+
+![GraphKitAction](http://graphkit.io/GK/GraphKitAction.png)
 
 ```swift
 let graph: Graph = Graph()
 
-let person: Entity = Entity(type: "Person")
-let books: Array<Entity> = graph.searchForEntity(types: ["Book"])
+// Create a Company Entity.
+let apple: Entity = Entity(type: "Company")
+apple["name"] = "Apple"
 
-let purchased: Action = Action(type: "Purchased")
-purchased.addSubject(person)
+// Create a Company Entity.
+let beats: Entity = Entity(type: "Company")
+beats["name"] = "Beats Electronics"
 
-for book in books {
-	purchased.addObject(book)
-}
+// Create an Acquired Action.
+let acquired: Action = Action(type: "Acquired")
+acquired["acquisitionDate"] = "May 28, 2014"
+
+// Form the action.
+acquired.addSubject(apple)
+acquired.addObject(beats)
 
 graph.save()
 ```
+
+Notice that information about the action is stored within the _Acquired_ Action leaving both _Apple_ and _Beats Electronics_ to form other actions freely. This is a key principal when using Actions.
 
 [Learn More About Actions](https://github.com/CosmicMind/GraphKit/wiki/Action)
 

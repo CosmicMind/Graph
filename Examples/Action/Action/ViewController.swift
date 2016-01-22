@@ -97,7 +97,10 @@ class ViewController: UIViewController {
 			
 			// Create Acquired Actions.
 			let acquisition1: Action = Action(type: "Acquired")
+			acquisition1["acquisitionDate"] = "May 28, 2014"
+			
 			let acquisition2: Action = Action(type: "Acquired")
+			acquisition2["acquisitionDate"] = "February 19, 2014"
 			
 			// Form relationships.
 			acquisition1.addSubject(apple)
