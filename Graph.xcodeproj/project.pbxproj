@@ -195,9 +195,9 @@
 		96607D741C3DB14A008D47D8 /* NodeClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeClass.swift; sourceTree = "<group>"; };
 		96668B2F1C2A4F4A001916C7 /* EntityStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityStringTests.swift; sourceTree = "<group>"; };
 		9677B4391BA78A9200C82BBB /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9677B4421BA78A9200C82BBB /* Graph.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Graph.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9677B4421BA78A9200C82BBB /* Graph OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B4551BA78AA600C82BBB /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9677B45E1BA78AA600C82BBB /* Graph.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Graph.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9677B45E1BA78AA600C82BBB /* Graph iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96D4E4EE1BA76FAF00672E38 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96F040611C5006B000C7E304 /* EntityActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityActionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -297,9 +297,9 @@
 			isa = PBXGroup;
 			children = (
 				9677B4391BA78A9200C82BBB /* Graph.framework */,
-				9677B4421BA78A9200C82BBB /* Graph.xctest */,
+				9677B4421BA78A9200C82BBB /* Graph OSX Tests.xctest */,
 				9677B4551BA78AA600C82BBB /* Graph.framework */,
-				9677B45E1BA78AA600C82BBB /* Graph.xctest */,
+				9677B45E1BA78AA600C82BBB /* Graph iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -428,7 +428,7 @@
 			);
 			name = "Graph OSX Tests";
 			productName = "Graph OSXTests";
-			productReference = 9677B4421BA78A9200C82BBB /* Graph.xctest */;
+			productReference = 9677B4421BA78A9200C82BBB /* Graph OSX Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		9677B4541BA78AA600C82BBB /* Graph iOS */ = {
@@ -464,7 +464,7 @@
 			);
 			name = "Graph iOS Tests";
 			productName = "Graph iOSTests";
-			productReference = 9677B45E1BA78AA600C82BBB /* Graph.xctest */;
+			productReference = 9677B45E1BA78AA600C82BBB /* Graph iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -713,7 +713,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-OSX-Tests";
-				PRODUCT_NAME = Graph;
+				PRODUCT_NAME = "Graph OSX Tests";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -727,7 +727,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-OSX-Tests";
-				PRODUCT_NAME = Graph;
+				PRODUCT_NAME = "Graph OSX Tests";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -773,7 +773,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-iOS-Tests";
-				PRODUCT_NAME = Graph;
+				PRODUCT_NAME = "Graph iOS Tests";
 			};
 			name = Debug;
 		};
@@ -784,7 +784,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-iOS-Tests";
-				PRODUCT_NAME = Graph;
+				PRODUCT_NAME = "Graph iOS Tests";
 			};
 			name = Release;
 		};
