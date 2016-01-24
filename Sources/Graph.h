@@ -12,7 +12,7 @@
  *		this list of conditions and the following disclaimer in the documentation
  *		and/or other materials provided with the distribution.
  *
- *	*	Neither the name of GraphKit nor the names of its
+ *	*	Neither the name of Graph nor the names of its
  *		contributors may be used to endorse or promote products derived from
  *		this software without specific prior written permission.
  *
@@ -30,10 +30,10 @@
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for GraphKit.
-FOUNDATION_EXPORT double GraphKitVersionNumber;
+//! Project version number for Graph.
+FOUNDATION_EXPORT double GraphVersionNumber;
 
-//! Project version string for GraphKit.
-FOUNDATION_EXPORT const unsigned char GraphKitVersionString[];
+//! Project version string for Graph.
+FOUNDATION_EXPORT const unsigned char GraphVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <GraphKit/PublicHeader.h>
+// In this header, you should import all the public headers of your framework using statements like #import <Graph/PublicHeader.h>

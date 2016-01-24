@@ -12,7 +12,7 @@
 *		this list of conditions and the following disclaimer in the documentation
 *		and/or other materials provided with the distribution.
 *
-*	*	Neither the name of GraphKit nor the names of its
+*	*	Neither the name of Graph nor the names of its
 *		contributors may be used to endorse or promote products derived from
 *		this software without specific prior written permission.
 *
@@ -46,7 +46,7 @@ internal struct GraphManagedObjectModel {
 }
 
 internal struct GraphUtility {
-	internal static let storeName: String = "GraphKit.sqlite"
+	internal static let storeName: String = "Graph.sqlite"
 
 	internal static let entityIndexName: String = "ManagedEntity"
 	internal static let entityDescriptionName: String = entityIndexName
@@ -509,7 +509,7 @@ public class Graph : NSObject {
 	//
 	internal var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
 		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) { [unowned self] in
-			let directory: String = "GraphKit/default"
+			let directory: String = "Graph/default"
 			File.createDirectory(File.documentDirectoryPath!, name: directory, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) -> Void in
 				if !success {
 					if let e: NSError = error {
@@ -520,7 +520,7 @@ public class Graph : NSObject {
 				do {
 					try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: File.URL(.DocumentDirectory, path: "\(directory)/\(GraphUtility.storeName)"), options: nil)
 				} catch {
-					fatalError("[GraphKit Error: There was an error creating or loading the application's saved data.]")
+					fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
 				}
 				GraphPersistentStoreCoordinator.persistentStoreCoordinator = coordinator
 			}

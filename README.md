@@ -1,8 +1,8 @@
-![GraphKit](http://www.graphkit.io/GK/GraphKit.png)
+![Graph](http://www.cosmicmind.io/GK/Graph.png)
 
-## Welcome to GraphKit
+## Welcome to Graph
 
-GraphKit is a CoreData framework written in Swift. It's designed to simplify the complexities when working with CoreData while providing a seamless data-driven architecture.
+Graph is a CoreData framework written in Swift. It's designed to simplify the complexities when working with CoreData while providing a seamless data-driven architecture.
 
 ## Features
 
@@ -26,8 +26,8 @@ GraphKit is a CoreData framework written in Swift. It's designed to simplify the
 
 ## Communication
 
-- If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/graphkit). (Tag 'graphkit')
-- If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/graphkit).
+- If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/graph). (Tag 'graph')
+- If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/graph).
 - If you **found a bug**, _and can provide steps to reliably reproduce it_, open an issue.
 - If you **have a feature request**, open an issue.
 - If you **want to contribute**, submit a pull request.
@@ -35,17 +35,17 @@ GraphKit is a CoreData framework written in Swift. It's designed to simplify the
 ## Installation
 
 > **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks (10.9).**
-> - [Download GraphKit](https://github.com/CosmicMind/GraphKit/archive/master.zip)
+> - [Download Graph](https://github.com/CosmicMind/Graph/archive/master.zip)
 
-Visit the [Installation](https://github.com/CosmicMind/GraphKit/wiki/Installation) page to learn how to install GraphKit using [CocoaPods](http://cocoapods.org) and [Carthage](https://github.com/Carthage/Carthage).
+Visit the [Installation](https://github.com/CosmicMind/Graph/wiki/Installation) page to learn how to install Graph using [CocoaPods](http://cocoapods.org) and [Carthage](https://github.com/Carthage/Carthage).
 
 ## Changelog
 
-GraphKit is a growing project and will encounter changes throughout its development. It is recommended that the [Changelog](https://github.com/CosmicMind/GraphKit/wiki/Changelog) be reviewed prior to updating versions.
+Graph is a growing project and will encounter changes throughout its development. It is recommended that the [Changelog](https://github.com/CosmicMind/Graph/wiki/Changelog) be reviewed prior to updating versions.
 
 ## Examples
 
-* Visit the Examples directory to see example projects using GraphKit.
+* Visit the Examples directory to see example projects using Graph.
 
 ## A Tour  
 
@@ -63,7 +63,7 @@ GraphKit is a growing project and will encounter changes throughout its developm
 
 An **Entity** is a model object that **represents a person, place, or thing**. For example, a Company, Photo, Video, User, Person, and Note. In code, the following is how this would look.
 
-![GraphKitEntity](http://graphkit.io/GK/GraphKitEntity.png)
+![GraphEntity](http://cosmicmind.io/GK/GraphEntity.png)
 
 ```swift
 let graph: Graph = Graph()
@@ -79,14 +79,14 @@ elon["photo"] = UIImage(contentsOfFile: path)
 graph.save()
 ```
 
-[Learn More About Entities](https://github.com/CosmicMind/GraphKit/wiki/Entity)
+[Learn More About Entities](https://github.com/CosmicMind/Graph/wiki/Entity)
 
 <a name="relationship"></a>
 ## Relationship
 
 A **Relationship** is a model object that **forms a relationship between two Entities**. For example, "Mark is an Employee of Facebook". _Mark_ and _Facebook_ are two Entities that form a Relationship -- of type _Employee_. In code, the following is how this would look.
 
-![GraphKitRelationship](http://graphkit.io/GK/GraphKitRelationship.png)
+![GraphRelationship](http://cosmicmind.io/GK/GraphRelationship.png)
 
 ```swift
 let graph: Graph = Graph()
@@ -116,14 +116,14 @@ graph.save()
 
 Notice that information about the relationship is stored within the _Employee_ Relationship leaving both _Mark_ and _Facebook_ to form other relationships freely. This is a key principal when using Relationships.
 
-[Learn More About Relationships](https://github.com/CosmicMind/GraphKit/wiki/Relationship)
+[Learn More About Relationships](https://github.com/CosmicMind/Graph/wiki/Relationship)
 
 <a name="action"></a>
 ## Action
 
 An **Action** is a model object that **forms a relationship between a collection of Entity subjects and a collection of Entity objects**. For example, "Apple Acquired Beats Electronics". The _Acquired_ Action captures the _Company_ Entities in a single relationship that may be used later to ask questions like, "which company acquired Beats Electronics?", or "what companies did Apple acquire?". In code, the following is how this would look.
 
-![GraphKitAction](http://graphkit.io/GK/GraphKitAction.png)
+![GraphAction](http://cosmicmind.io/GK/GraphAction.png)
 
 ```swift
 let graph: Graph = Graph()
@@ -149,7 +149,7 @@ graph.save()
 
 Notice that information about the action is stored within the _Acquired_ Action leaving both _Apple_ and _Beats Electronics_ to form other actions freely. This is a key principal when using Actions.
 
-[Learn More About Actions](https://github.com/CosmicMind/GraphKit/wiki/Action)
+[Learn More About Actions](https://github.com/CosmicMind/Graph/wiki/Action)
 
 <a name="groups"></a>
 ## Groups
@@ -214,7 +214,7 @@ func graphDidInsertAction(graph: Graph, action: Action) {
 <a name="facetedsearch"></a>
 ## Faceted Search
 
-To explore the intricate relationships within GraphKit, the search API adopts a faceted design. The below examples show how to use the _Graph_ search API:
+To explore the intricate relationships within Graph, the search API adopts a faceted design. The below examples show how to use the _Graph_ search API:
 
 Searching multiple Entity types.
 
@@ -262,7 +262,7 @@ let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filt
 <a name="json"></a>
 ## JSON
 
-JSON is a widely used format for serializing data. GraphKit comes with a JSON toolset. Below are some examples of its usage.
+JSON is a widely used format for serializing data. Graph comes with a JSON toolset. Below are some examples of its usage.
 
 ```swift
 // Serialize Dictionary.
@@ -294,7 +294,7 @@ Redistribution and use in source and binary forms, with or without modification,
     this list of conditions and the following disclaimer in the documentation
     and/or other materials provided with the distribution.
 
-*   Neither the name of GraphKit nor the names of its
+*   Neither the name of Graph nor the names of its
     contributors may be used to endorse or promote products derived from
     this software without specific prior written permission.
 

@@ -12,7 +12,7 @@
 *		this list of conditions and the following disclaimer in the documentation
 *		and/or other materials provided with the distribution.
 *
-*	*	Neither the name of GraphKit nor the names of its
+*	*	Neither the name of Graph nor the names of its
 *		contributors may be used to endorse or promote products derived from
 *		this software without specific prior written permission.
 *
@@ -206,7 +206,7 @@ public extension Graph {
 						let property: ManagedRelationshipProperty = node as! ManagedRelationshipProperty
 						delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(object: property.node), property: property.name, value: property.object)
 					default:
-						assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
+						assert(false, "[Graph Error: Graph observed an object that is invalid.]")
 					}
 				}
 			}
@@ -232,7 +232,7 @@ public extension Graph {
 					case "ManagedAction_ManagedAction_":
 						delegate?.graphDidUpdateAction?(self, action: Action(object: node as! ManagedAction))
 					default:
-						assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
+						assert(false, "[Graph Error: Graph observed an object that is invalid.]")
 					}
 				}
 			}
@@ -271,7 +271,7 @@ public extension Graph {
 						let group: ManagedRelationshipGroup = node as! ManagedRelationshipGroup
 						delegate?.graphDidDeleteRelationshipGroup?(self, relationship: Relationship(object: group.node), group: group.name)
 					default:
-						assert(false, "[GraphKit Error: Graph observed an object that is invalid.]")
+						assert(false, "[Graph Error: Graph observed an object that is invalid.]")
 					}
 				}
 			}

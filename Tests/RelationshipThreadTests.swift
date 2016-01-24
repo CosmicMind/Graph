@@ -12,7 +12,7 @@
 *		this list of conditions and the following disclaimer in the documentation
 *		and/or other materials provided with the distribution.
 *
-*	*	Neither the name of GraphKit nor the names of its
+*	*	Neither the name of Graph nor the names of its
 *		contributors may be used to endorse or promote products derived from
 *		this software without specific prior written permission.
 *
@@ -29,7 +29,7 @@
 */
 
 import XCTest
-@testable import GraphKit
+@testable import Graph
 
 class RelationshipThreadTests : XCTestCase, GraphDelegate {
 	var graph: Graph!
@@ -60,9 +60,9 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		graph.clear()
 		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
 		
-		let q1: dispatch_queue_t = dispatch_queue_create("io.graphkit.RelationshipThreadTests1", DISPATCH_QUEUE_SERIAL)
-		let q2: dispatch_queue_t = dispatch_queue_create("io.graphkit.RelationshipThreadTests2", DISPATCH_QUEUE_SERIAL)
-		let q3: dispatch_queue_t = dispatch_queue_create("io.graphkit.RelationshipThreadTests3", DISPATCH_QUEUE_SERIAL)
+		let q1: dispatch_queue_t = dispatch_queue_create("io.graph.RelationshipThreadTests1", DISPATCH_QUEUE_SERIAL)
+		let q2: dispatch_queue_t = dispatch_queue_create("io.graph.RelationshipThreadTests2", DISPATCH_QUEUE_SERIAL)
+		let q3: dispatch_queue_t = dispatch_queue_create("io.graph.RelationshipThreadTests3", DISPATCH_QUEUE_SERIAL)
 		
 		insertSaveExpectation = expectationWithDescription("Test: Save did not pass.")
 		insertExpectation = expectationWithDescription("Test: Insert did not pass.")

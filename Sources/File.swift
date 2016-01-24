@@ -12,7 +12,7 @@
 *		this list of conditions and the following disclaimer in the documentation
 *		and/or other materials provided with the distribution.
 *
-*	*	Neither the name of GraphKit nor the names of its
+*	*	Neither the name of Graph nor the names of its
 *		contributors may be used to endorse or promote products derived from
 *		this software without specific prior written permission.
 *
@@ -270,7 +270,7 @@ public struct File {
 		if let data = NSData(contentsOfURL: path) {
 			completion(string: String(data: data, encoding: NSUTF8StringEncoding), error: nil)
 		} else {
-			completion(string: nil, error: NSError(domain: "io.graphkit.File", code: 0, userInfo: nil))
+			completion(string: nil, error: NSError(domain: "io.graph.File", code: 0, userInfo: nil))
 		}
 	}
 	

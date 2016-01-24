@@ -47,8 +47,8 @@
 		961F9B7E1C10ED5400ACF5DD /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B521C10ED5400ACF5DD /* Entity.swift */; };
 		961F9B7F1C10ED5400ACF5DD /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B531C10ED5400ACF5DD /* Graph.swift */; };
 		961F9B801C10ED5400ACF5DD /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B531C10ED5400ACF5DD /* Graph.swift */; };
-		961F9B811C10ED5400ACF5DD /* GraphKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B541C10ED5400ACF5DD /* GraphKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		961F9B821C10ED5400ACF5DD /* GraphKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B541C10ED5400ACF5DD /* GraphKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		961F9B811C10ED5400ACF5DD /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B541C10ED5400ACF5DD /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		961F9B821C10ED5400ACF5DD /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B541C10ED5400ACF5DD /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		961F9B831C10ED5400ACF5DD /* GraphObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphObject.swift */; };
 		961F9B841C10ED5400ACF5DD /* GraphObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphObject.swift */; };
 		961F9B851C10ED5400ACF5DD /* GraphSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B561C10ED5400ACF5DD /* GraphSearch.swift */; };
@@ -93,8 +93,8 @@
 		96607D7A1C3DB2F3008D47D8 /* File.swift in Headers */ = {isa = PBXBuildFile; fileRef = 960590571C3B690600691E88 /* File.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96668B301C2A4F4A001916C7 /* EntityStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96668B2F1C2A4F4A001916C7 /* EntityStringTests.swift */; };
 		96668B311C2A4F4A001916C7 /* EntityStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96668B2F1C2A4F4A001916C7 /* EntityStringTests.swift */; };
-		9677B4431BA78A9200C82BBB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4391BA78A9200C82BBB /* GraphKit.framework */; };
-		9677B45F1BA78AA600C82BBB /* GraphKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4551BA78AA600C82BBB /* GraphKit.framework */; };
+		9677B4431BA78A9200C82BBB /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4391BA78A9200C82BBB /* Graph.framework */; };
+		9677B45F1BA78AA600C82BBB /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4551BA78AA600C82BBB /* Graph.framework */; };
 		96E135D21C10F16D00E0BF44 /* Action.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B4F1C10ED5400ACF5DD /* Action.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135D31C10F16D00E0BF44 /* Relationship.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B501C10ED5400ACF5DD /* Relationship.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135D41C10F16D00E0BF44 /* Entity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B521C10ED5400ACF5DD /* Entity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -145,14 +145,14 @@
 			containerPortal = 96D4E4C41BA76EFC00672E38 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 9677B4381BA78A9200C82BBB;
-			remoteInfo = "GraphKit OSX";
+			remoteInfo = "Graph OSX";
 		};
 		9677B4601BA78AA600C82BBB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 96D4E4C41BA76EFC00672E38 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 9677B4541BA78AA600C82BBB;
-			remoteInfo = "GraphKit iOS";
+			remoteInfo = "Graph iOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -177,7 +177,7 @@
 		961F9B501C10ED5400ACF5DD /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
 		961F9B521C10ED5400ACF5DD /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		961F9B531C10ED5400ACF5DD /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
-		961F9B541C10ED5400ACF5DD /* GraphKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphKit.h; sourceTree = "<group>"; };
+		961F9B541C10ED5400ACF5DD /* Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graph.h; sourceTree = "<group>"; };
 		961F9B551C10ED5400ACF5DD /* GraphObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphObject.swift; sourceTree = "<group>"; };
 		961F9B561C10ED5400ACF5DD /* GraphSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSearch.swift; sourceTree = "<group>"; };
 		961F9B571C10ED5400ACF5DD /* GraphWatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphWatch.swift; sourceTree = "<group>"; };
@@ -200,10 +200,10 @@
 		964D15411C49548700613737 /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTests.swift; sourceTree = "<group>"; };
 		96607D741C3DB14A008D47D8 /* NodeClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeClass.swift; sourceTree = "<group>"; };
 		96668B2F1C2A4F4A001916C7 /* EntityStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityStringTests.swift; sourceTree = "<group>"; };
-		9677B4391BA78A9200C82BBB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9677B4421BA78A9200C82BBB /* GraphKit OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9677B4551BA78AA600C82BBB /* GraphKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GraphKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9677B45E1BA78AA600C82BBB /* GraphKit iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GraphKit iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9677B4391BA78A9200C82BBB /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9677B4421BA78A9200C82BBB /* Graph.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Graph.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9677B4551BA78AA600C82BBB /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9677B45E1BA78AA600C82BBB /* Graph.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Graph.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96D4E4EE1BA76FAF00672E38 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96F040611C5006B000C7E304 /* EntityActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityActionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -220,7 +220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9677B4431BA78A9200C82BBB /* GraphKit.framework in Frameworks */,
+				9677B4431BA78A9200C82BBB /* Graph.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,7 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9677B45F1BA78AA600C82BBB /* GraphKit.framework in Frameworks */,
+				9677B45F1BA78AA600C82BBB /* Graph.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,7 +255,7 @@
 			children = (
 				961F9B5B1C10ED5400ACF5DD /* LICENSE */,
 				961F9B581C10ED5400ACF5DD /* Info.plist */,
-				961F9B541C10ED5400ACF5DD /* GraphKit.h */,
+				961F9B541C10ED5400ACF5DD /* Graph.h */,
 				961F9BC71C10ED8000ACF5DD /* Graph */,
 				960590561C3B68F400691E88 /* File */,
 				964D153C1C49541500613737 /* JSON */,
@@ -311,10 +311,10 @@
 		96D4E4CE1BA76EFC00672E38 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9677B4391BA78A9200C82BBB /* GraphKit.framework */,
-				9677B4421BA78A9200C82BBB /* GraphKit OSX Tests.xctest */,
-				9677B4551BA78AA600C82BBB /* GraphKit.framework */,
-				9677B45E1BA78AA600C82BBB /* GraphKit iOS Tests.xctest */,
+				9677B4391BA78A9200C82BBB /* Graph.framework */,
+				9677B4421BA78A9200C82BBB /* Graph.xctest */,
+				9677B4551BA78AA600C82BBB /* Graph.framework */,
+				9677B45E1BA78AA600C82BBB /* Graph.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -372,7 +372,7 @@
 				96E136031C10F22800E0BF44 /* ManagedNodeGroup.swift in Headers */,
 				96E136041C10F22800E0BF44 /* ManagedNodeProperty.swift in Headers */,
 				96E136051C10F22800E0BF44 /* Node.swift in Headers */,
-				961F9B821C10ED5400ACF5DD /* GraphKit.h in Headers */,
+				961F9B821C10ED5400ACF5DD /* Graph.h in Headers */,
 				96607D791C3DB2F3008D47D8 /* NodeClass.swift in Headers */,
 				96607D7A1C3DB2F3008D47D8 /* File.swift in Headers */,
 			);
@@ -402,7 +402,7 @@
 				96E135E31C10F16E00E0BF44 /* ManagedNodeGroup.swift in Headers */,
 				96E135E41C10F16E00E0BF44 /* ManagedNodeProperty.swift in Headers */,
 				96E135E51C10F16E00E0BF44 /* Node.swift in Headers */,
-				961F9B811C10ED5400ACF5DD /* GraphKit.h in Headers */,
+				961F9B811C10ED5400ACF5DD /* Graph.h in Headers */,
 				96607D771C3DB2E6008D47D8 /* NodeClass.swift in Headers */,
 				96607D781C3DB2E7008D47D8 /* File.swift in Headers */,
 			);
@@ -411,9 +411,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		9677B4381BA78A9200C82BBB /* GraphKit OSX */ = {
+		9677B4381BA78A9200C82BBB /* Graph OSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9677B44A1BA78A9200C82BBB /* Build configuration list for PBXNativeTarget "GraphKit OSX" */;
+			buildConfigurationList = 9677B44A1BA78A9200C82BBB /* Build configuration list for PBXNativeTarget "Graph OSX" */;
 			buildPhases = (
 				9677B4341BA78A9200C82BBB /* Sources */,
 				9677B4351BA78A9200C82BBB /* Frameworks */,
@@ -424,14 +424,14 @@
 			);
 			dependencies = (
 			);
-			name = "GraphKit OSX";
-			productName = "GraphKit OSX";
-			productReference = 9677B4391BA78A9200C82BBB /* GraphKit.framework */;
+			name = "Graph OSX";
+			productName = "Graph OSX";
+			productReference = 9677B4391BA78A9200C82BBB /* Graph.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		9677B4411BA78A9200C82BBB /* GraphKit OSX Tests */ = {
+		9677B4411BA78A9200C82BBB /* Graph OSX Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9677B44D1BA78A9200C82BBB /* Build configuration list for PBXNativeTarget "GraphKit OSX Tests" */;
+			buildConfigurationList = 9677B44D1BA78A9200C82BBB /* Build configuration list for PBXNativeTarget "Graph OSX Tests" */;
 			buildPhases = (
 				9677B43E1BA78A9200C82BBB /* Sources */,
 				9677B43F1BA78A9200C82BBB /* Frameworks */,
@@ -442,14 +442,14 @@
 			dependencies = (
 				9677B4451BA78A9200C82BBB /* PBXTargetDependency */,
 			);
-			name = "GraphKit OSX Tests";
-			productName = "GraphKit OSXTests";
-			productReference = 9677B4421BA78A9200C82BBB /* GraphKit OSX Tests.xctest */;
+			name = "Graph OSX Tests";
+			productName = "Graph OSXTests";
+			productReference = 9677B4421BA78A9200C82BBB /* Graph.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		9677B4541BA78AA600C82BBB /* GraphKit iOS */ = {
+		9677B4541BA78AA600C82BBB /* Graph iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9677B4661BA78AA600C82BBB /* Build configuration list for PBXNativeTarget "GraphKit iOS" */;
+			buildConfigurationList = 9677B4661BA78AA600C82BBB /* Build configuration list for PBXNativeTarget "Graph iOS" */;
 			buildPhases = (
 				9677B4501BA78AA600C82BBB /* Sources */,
 				9677B4511BA78AA600C82BBB /* Frameworks */,
@@ -460,14 +460,14 @@
 			);
 			dependencies = (
 			);
-			name = "GraphKit iOS";
-			productName = "GraphKit iOS";
-			productReference = 9677B4551BA78AA600C82BBB /* GraphKit.framework */;
+			name = "Graph iOS";
+			productName = "Graph iOS";
+			productReference = 9677B4551BA78AA600C82BBB /* Graph.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		9677B45D1BA78AA600C82BBB /* GraphKit iOS Tests */ = {
+		9677B45D1BA78AA600C82BBB /* Graph iOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9677B4691BA78AA600C82BBB /* Build configuration list for PBXNativeTarget "GraphKit iOS Tests" */;
+			buildConfigurationList = 9677B4691BA78AA600C82BBB /* Build configuration list for PBXNativeTarget "Graph iOS Tests" */;
 			buildPhases = (
 				9677B45A1BA78AA600C82BBB /* Sources */,
 				9677B45B1BA78AA600C82BBB /* Frameworks */,
@@ -478,9 +478,9 @@
 			dependencies = (
 				9677B4611BA78AA600C82BBB /* PBXTargetDependency */,
 			);
-			name = "GraphKit iOS Tests";
-			productName = "GraphKit iOSTests";
-			productReference = 9677B45E1BA78AA600C82BBB /* GraphKit iOS Tests.xctest */;
+			name = "Graph iOS Tests";
+			productName = "Graph iOSTests";
+			productReference = 9677B45E1BA78AA600C82BBB /* Graph.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -508,7 +508,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 96D4E4C71BA76EFC00672E38 /* Build configuration list for PBXProject "GraphKit" */;
+			buildConfigurationList = 96D4E4C71BA76EFC00672E38 /* Build configuration list for PBXProject "Graph" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -520,10 +520,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9677B4541BA78AA600C82BBB /* GraphKit iOS */,
-				9677B4381BA78A9200C82BBB /* GraphKit OSX */,
-				9677B45D1BA78AA600C82BBB /* GraphKit iOS Tests */,
-				9677B4411BA78A9200C82BBB /* GraphKit OSX Tests */,
+				9677B4541BA78AA600C82BBB /* Graph iOS */,
+				9677B4381BA78A9200C82BBB /* Graph OSX */,
+				9677B45D1BA78AA600C82BBB /* Graph iOS Tests */,
+				9677B4411BA78A9200C82BBB /* Graph OSX Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -675,12 +675,12 @@
 /* Begin PBXTargetDependency section */
 		9677B4451BA78A9200C82BBB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9677B4381BA78A9200C82BBB /* GraphKit OSX */;
+			target = 9677B4381BA78A9200C82BBB /* Graph OSX */;
 			targetProxy = 9677B4441BA78A9200C82BBB /* PBXContainerItemProxy */;
 		};
 		9677B4611BA78AA600C82BBB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9677B4541BA78AA600C82BBB /* GraphKit iOS */;
+			target = 9677B4541BA78AA600C82BBB /* Graph iOS */;
 			targetProxy = 9677B4601BA78AA600C82BBB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -698,8 +698,8 @@
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.GraphKit-OSX";
-				PRODUCT_NAME = GraphKit;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-OSX";
+				PRODUCT_NAME = Graph;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -717,8 +717,8 @@
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.GraphKit-OSX";
-				PRODUCT_NAME = GraphKit;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-OSX";
+				PRODUCT_NAME = Graph;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -732,8 +732,8 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.GraphKit-OSX-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-OSX-Tests";
+				PRODUCT_NAME = Graph;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -746,8 +746,8 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.GraphKit-OSX-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-OSX-Tests";
+				PRODUCT_NAME = Graph;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -763,8 +763,8 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.GraphKit-iOS";
-				PRODUCT_NAME = GraphKit;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-iOS";
+				PRODUCT_NAME = Graph;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -780,8 +780,8 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.GraphKit-iOS";
-				PRODUCT_NAME = GraphKit;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-iOS";
+				PRODUCT_NAME = Graph;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -792,8 +792,8 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.GraphKit-iOS-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-iOS-Tests";
+				PRODUCT_NAME = Graph;
 			};
 			name = Debug;
 		};
@@ -803,8 +803,8 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.GraphKit-iOS-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-iOS-Tests";
+				PRODUCT_NAME = Graph;
 			};
 			name = Release;
 		};
@@ -849,7 +849,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = GraphKit;
+				PRODUCT_NAME = Graph;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -892,7 +892,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = GraphKit;
+				PRODUCT_NAME = Graph;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -904,7 +904,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9677B44A1BA78A9200C82BBB /* Build configuration list for PBXNativeTarget "GraphKit OSX" */ = {
+		9677B44A1BA78A9200C82BBB /* Build configuration list for PBXNativeTarget "Graph OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9677B44B1BA78A9200C82BBB /* Debug */,
@@ -913,7 +913,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9677B44D1BA78A9200C82BBB /* Build configuration list for PBXNativeTarget "GraphKit OSX Tests" */ = {
+		9677B44D1BA78A9200C82BBB /* Build configuration list for PBXNativeTarget "Graph OSX Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9677B44E1BA78A9200C82BBB /* Debug */,
@@ -922,7 +922,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9677B4661BA78AA600C82BBB /* Build configuration list for PBXNativeTarget "GraphKit iOS" */ = {
+		9677B4661BA78AA600C82BBB /* Build configuration list for PBXNativeTarget "Graph iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9677B4671BA78AA600C82BBB /* Debug */,
@@ -931,7 +931,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9677B4691BA78AA600C82BBB /* Build configuration list for PBXNativeTarget "GraphKit iOS Tests" */ = {
+		9677B4691BA78AA600C82BBB /* Build configuration list for PBXNativeTarget "Graph iOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9677B46A1BA78AA600C82BBB /* Debug */,
@@ -940,7 +940,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96D4E4C71BA76EFC00672E38 /* Build configuration list for PBXProject "GraphKit" */ = {
+		96D4E4C71BA76EFC00672E38 /* Build configuration list for PBXProject "Graph" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96D4E4DF1BA76EFC00672E38 /* Debug */,
