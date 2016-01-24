@@ -226,7 +226,7 @@ let probabilityOfX: Double = purchased.probabilityOf { (action: Action) in
 	return false
 }
 
-if 33.33 < probabilityOfX {
+if 0.33 < probabilityOfX {
 	// Recommend a Physics book.
 }
 ```
