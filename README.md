@@ -2,7 +2,7 @@
 
 ## Welcome to GraphKit
 
-GraphKit is a CoreData and Algorithm framework written in Swift. It's designed to simplify the complexities when working with CoreData while providing a seamless data-driven architecture for algorithm design.
+GraphKit is a CoreData framework written in Swift. It's designed to simplify the complexities when working with CoreData while providing a seamless data-driven architecture.
 
 ## Features
 
@@ -13,8 +13,6 @@ GraphKit is a CoreData and Algorithm framework written in Swift. It's designed t
 - [x] Model With Graph Theory and Set Theory
 - [x] Faceted Search API
 - [x] JSON Toolset
-- [x] Probability Extension For Predictive Analytics
-- [x] Library of Data Structures
 - [x] Asynchronous / Synchronous Saving
 - [x] Data-Driven Architecture
 - [x] Data Model Observation

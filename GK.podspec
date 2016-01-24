@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
     s.name = 'GK'
-    s.version = '4.3.3'
+    s.version = '4.4.0'
     s.license = 'BSD'
-    s.summary = 'Elegant CoreData and Algorithms in Swift.'
+    s.summary = 'Elegant CoreData in Swift.'
     s.homepage = 'http://graphkit.io'
     s.social_media_url = 'https://www.facebook.com/graphkit'
     s.authors = { 'CosmicMind, Inc.' => 'support@cosmicmind.io' }
