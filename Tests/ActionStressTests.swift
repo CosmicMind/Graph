@@ -64,14 +64,14 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		graph.watchForEntity(types: ["S", "O"])
 		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 		
-		let subjects: SortedSet<Entity> = SortedSet<Entity>()
+		var subjects: Array<Entity> = Array<Entity>()
 		for var i = 0; i < 5; ++i {
-			subjects.insert(Entity(type: "S"))
+			subjects.append(Entity(type: "S"))
 		}
 		
-		let objects: SortedSet<Entity> = SortedSet<Entity>()
+		var objects: Array<Entity> = Array<Entity>()
 		for var i = 0; i < 5; ++i {
-			objects.insert(Entity(type: "O"))
+			objects.append(Entity(type: "O"))
 		}
 		
 		for var i: Int = 100; i > 0; --i {
