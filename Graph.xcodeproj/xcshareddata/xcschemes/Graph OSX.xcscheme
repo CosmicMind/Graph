@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9677B4411BA78A9200C82BBB"
-               BuildableName = "Graph.xctest"
+               BuildableName = "Graph OSX Tests.xctest"
                BlueprintName = "Graph OSX Tests"
                ReferencedContainer = "container:Graph.xcodeproj">
             </BuildableReference>

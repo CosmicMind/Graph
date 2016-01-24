@@ -12,7 +12,6 @@ Graph is a CoreData framework written in Swift. It's designed to simplify the co
 - [x] Action Modeling For Analytics
 - [x] Model With Graph Theory and Set Theory
 - [x] Faceted Search API
-- [x] JSON Toolset
 - [x] Asynchronous / Synchronous Saving
 - [x] Data-Driven Architecture
 - [x] Data Model Observation
