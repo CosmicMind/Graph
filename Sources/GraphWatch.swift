@@ -167,6 +167,69 @@ public extension Graph {
 	//	:name:	managedObjectContextDidSave
 	//
 	internal func managedObjectContextDidSave(notification: NSNotification) {
+		if NSThread.isMainThread() {
+			notifyWatchers(notification)
+		} else {
+			dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+				self.notifyWatchers(notification)
+			}
+		}
+	}
+	
+	//
+	//	:name:	prepareForObservation
+	//
+	internal func prepareForObservation() {
+		NSNotificationCenter.defaultCenter().removeObserver(self)
+		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: context)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: context)
+	}
+	
+	//
+	//	:name:	addPredicateToObserve
+	//
+	internal func addPredicateToObserve(entityDescription: NSEntityDescription, predicate: NSPredicate) {
+		let entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString)
+		let predicates: Array<NSPredicate> = [entityPredicate, predicate]
+		let finalPredicate: NSPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+		masterPredicate = nil == masterPredicate ? finalPredicate : NSCompoundPredicate(orPredicateWithSubpredicates: [masterPredicate!, finalPredicate])
+	}
+	
+	//
+	//	:name:	isWatching
+	//
+	internal func isWatching(key: String, index: String) -> Bool {
+		if nil == watchers[key] {
+			watchers[key] = Array<String>(arrayLiteral: index)
+			return false
+		}
+		if watchers[key]!.contains(index) {
+			return true
+		}
+		watchers[key]!.append(index)
+		return false
+	}
+	
+	//
+	//	:name:	addWatcher
+	//
+	internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
+		if !isWatching(value, index: index) {
+			let entityDescription: NSEntityDescription = NSEntityDescription()
+			entityDescription.name = entityDescriptionName
+			entityDescription.managedObjectClassName = managedObjectClassName
+			let predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
+			addPredicateToObserve(entityDescription, predicate: predicate)
+			prepareForObservation()
+		}
+	}
+	
+	/**
+	Notifies watchers of changes within the ManagedObjectContext.
+	- Parameter notification: An NSNotification passed from the context
+	save operation.
+	*/
+	private func notifyWatchers(notification: NSNotification) {
 		let moc: NSManagedObjectContext = context!
 		moc.mergeChangesFromContextDidSaveNotification(notification)
 		
@@ -275,54 +338,6 @@ public extension Graph {
 					}
 				}
 			}
-		}
-	}
-	
-	//
-	//	:name:	prepareForObservation
-	//
-	internal func prepareForObservation() {
-		NSNotificationCenter.defaultCenter().removeObserver(self)
-		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: context)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: context)
-	}
-	
-	//
-	//	:name:	addPredicateToObserve
-	//
-	internal func addPredicateToObserve(entityDescription: NSEntityDescription, predicate: NSPredicate) {
-		let entityPredicate: NSPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString)
-		let predicates: Array<NSPredicate> = [entityPredicate, predicate]
-		let finalPredicate: NSPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-		masterPredicate = nil == masterPredicate ? finalPredicate : NSCompoundPredicate(orPredicateWithSubpredicates: [masterPredicate!, finalPredicate])
-	}
-	
-	//
-	//	:name:	isWatching
-	//
-	internal func isWatching(key: String, index: String) -> Bool {
-		if nil == watchers[key] {
-			watchers[key] = Array<String>(arrayLiteral: index)
-			return false
-		}
-		if watchers[key]!.contains(index) {
-			return true
-		}
-		watchers[key]!.append(index)
-		return false
-	}
-	
-	//
-	//	:name:	addWatcher
-	//
-	internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
-		if !isWatching(value, index: index) {
-			let entityDescription: NSEntityDescription = NSEntityDescription()
-			entityDescription.name = entityDescriptionName
-			entityDescription.managedObjectClassName = managedObjectClassName
-			let predicate: NSPredicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
-			addPredicateToObserve(entityDescription, predicate: predicate)
-			prepareForObservation()
 		}
 	}
 }
