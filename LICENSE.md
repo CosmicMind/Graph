@@ -2,7 +2,7 @@ Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-*   Redistributions of source code must retain the above copyright notice, this
+*   Redistributions of source code must retain the above copyright notice, this     
     list of conditions and the following disclaimer.
 
 *   Redistributions in binary form must reproduce the above copyright notice,

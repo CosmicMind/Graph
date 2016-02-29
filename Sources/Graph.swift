@@ -190,7 +190,7 @@ public class Graph : NSObject {
 	- Parameter completion: An Optional completion block that is
 	executed when the save operation is completed.
 	*/
-	func clear(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+	public func clear(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
 		for entity in searchForEntity(types: ["*"]) {
 			entity.delete()
 		}
