@@ -34,7 +34,7 @@ public extension Graph {
 	/**
 	:name:	searchForEntity(types: groups: properties)
 	*/
-	public func searchForEntity(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Entity> {
+	public func searchForEntity<E: Entity>(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<E> {
 		var nodes: Array<AnyObject> = Array<AnyObject>()
 		var toFilter: Bool = false
 		
@@ -74,21 +74,21 @@ public extension Graph {
 				}
 				nodes.removeAtIndex(i)
 			}
-			return nodes as! Array<Entity>
+			return nodes as! Array<E>
 		} else {
 			return nodes.map {
 				if let v: ManagedEntity = $0 as? ManagedEntity {
-					return Entity(object: v)
+					return Entity(object: v).cast(context!)
 				}
-				return Entity(object: context!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
-			} as Array<Entity>
+				return Entity(object: context!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity).cast(context!)
+			} as Array<E>
 		}
 	}
 	
 	/**
 	:name:	searchForRelationship(types: groups: properties)
 	*/
-	public func searchForRelationship(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Relationship> {
+	public func searchForRelationship<R: Relationship>(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<R> {
 		var nodes: Array<AnyObject> = Array<AnyObject>()
 		var toFilter: Bool = false
 		
@@ -128,21 +128,21 @@ public extension Graph {
 				}
 				nodes.removeAtIndex(i)
 			}
-			return nodes as! Array<Relationship>
+			return nodes as! Array<R>
 		} else {
 			return nodes.map {
 				if let v: ManagedRelationship = $0 as? ManagedRelationship {
-					return Relationship(object: v)
+					return Relationship(object: v).cast(context!)
 				}
-				return Relationship(object: context!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedRelationship)
-			} as Array<Relationship>
+				return Relationship(object: context!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedRelationship).cast(context!)
+			} as Array<R>
 		}
 	}
 	
 	/**
 	:name:	searchForAction(types: groups: properties)
 	*/
-	public func searchForAction(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<Action> {
+	public func searchForAction<A: Action>(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<(key: String, value: AnyObject?)>? = nil) -> Array<A> {
 		var nodes: Array<AnyObject> = Array<AnyObject>()
 		var toFilter: Bool = false
 		
@@ -182,14 +182,14 @@ public extension Graph {
 				}
 				nodes.removeAtIndex(i)
 			}
-			return nodes as! Array<Action>
+			return nodes as! Array<A>
 		} else {
 			return nodes.map {
 				if let v: ManagedAction = $0 as? ManagedAction {
-					return Action(object: v)
+					return Action(object: v).cast(context!)
 				}
-				return Action(object: context!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedAction)
-			} as Array<Action>
+				return Action(object: context!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedAction).cast(context!)
+			} as Array<A>
 		}
 	}
 	

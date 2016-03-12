@@ -29,6 +29,7 @@
 */
 
 import Foundation
+import CoreData
 
 @objc(Entity)
 public class Entity : NSObject, Comparable {
@@ -171,6 +172,31 @@ public class Entity : NSObject, Comparable {
 	public convenience init(type: String) {
 		self.init(object: ManagedEntity(type: type))
 	}
+
+	/**
+		:name:	init
+  */
+ public convenience required init(objectID: NSManagedObjectID, context: NSManagedObjectContext) {
+  self.init(object: context.objectWithID(objectID) as! ManagedEntity)
+ }
+ 
+ /**
+  :name: cast
+  */
+	public func cast<E: Entity>() -> E {
+   if let context = self.node.object.context {
+    return cast(context)
+   } else {
+    return cast(Graph().context!)
+   }
+ }
+ 
+ /**
+  :name: cast
+  */
+ public func cast<E: Entity>(context: NSManagedObjectContext) -> E {
+  return E(objectID: self.node.object.objectID, context:context)
+ }
 	
 	/**
 		:name:	isEqual
