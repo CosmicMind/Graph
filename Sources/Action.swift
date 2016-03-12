@@ -29,6 +29,7 @@
 */
 
 import Foundation
+import CoreData
 
 @objc(Action)
 public class Action : NSObject, Comparable {
@@ -129,7 +130,32 @@ public class Action : NSObject, Comparable {
 	public convenience init(type: String) {
 		self.init(object: ManagedAction(type: type))
 	}
-	
+
+ /**
+		:name:	init
+  */
+ public convenience required init(objectID: NSManagedObjectID, context: NSManagedObjectContext) {
+  self.init(object: context.objectWithID(objectID) as! ManagedAction)
+ }
+ 
+	/**
+		:name:	cast
+  */
+ public func cast<A: Action>() -> A {
+  if let context = self.node.object.context {
+   return cast(context)
+  } else {
+   return cast(self.node.object.context!)
+  }
+ }
+ 
+	/**
+		:name:	cast
+  */
+ public func cast<A: Action>(context: NSManagedObjectContext) -> A {
+  return A(objectID: self.node.object.objectID, context: context)
+ }
+ 
 	/**
 		:name:	isEqual
 	*/

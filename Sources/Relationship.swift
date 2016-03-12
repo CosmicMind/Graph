@@ -29,6 +29,7 @@
 */
 
 import Foundation
+import CoreData
 
 @objc(Relationship)
 public class Relationship : NSObject, Comparable {
@@ -126,7 +127,31 @@ public class Relationship : NSObject, Comparable {
 	public convenience init(type: String) {
 		self.init(object: ManagedRelationship(type: type))
 	}
-	
+
+ /**
+  :name: init
+  */
+ public convenience required init(objectID: NSManagedObjectID, context: NSManagedObjectContext) {
+  self.init(object:context.objectWithID(objectID) as! ManagedRelationship)
+ }
+ 
+ /**
+  :name: cast
+  */
+ public func cast<R: Relationship>() -> R {
+  if let context = self.node.object.context {
+   return cast(context)
+  } else {
+   return cast(self.node.object.context!)
+  }
+ }
+ /**
+  :name: cast
+  */
+ public func cast<R: Relationship>(context: NSManagedObjectContext) -> R {
+  return R(objectID: self.node.object.objectID, context: context)
+ }
+
 	/**
 		:name:	isEqual
 	*/
