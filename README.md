@@ -2,6 +2,8 @@
 
 ## Welcome to Graph
 
+[![Join the chat at https://gitter.im/CosmicMind/Graph](https://badges.gitter.im/CosmicMind/Graph.svg)](https://gitter.im/CosmicMind/Graph?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Graph is a CoreData framework written in Swift. It's designed to simplify the complexities when working with CoreData while providing a seamless data-driven architecture.
 
 ## Features
