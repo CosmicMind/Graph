@@ -168,7 +168,7 @@ public class Entity : NSObject, Comparable {
 	/**
 		:name:	init
 	*/
-	public convenience init(type: String) {
+	public required convenience init(type: String) {
 		self.init(object: ManagedEntity(type: type))
 	}
 	

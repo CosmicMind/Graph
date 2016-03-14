@@ -40,8 +40,7 @@ internal class ManagedRelationship : ManagedNode {
 		:description:	Initializes the Model Object with e a given type.
 	*/
 	internal convenience init(type: String) {
-		let g: Graph = Graph()
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.relationshipDescriptionName, inManagedObjectContext: g.context!)!, insertIntoManagedObjectContext: g.context)
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.relationshipDescriptionName, inManagedObjectContext: Graph.context!)!, insertIntoManagedObjectContext: Graph.context)
 		nodeClass = NodeClass.Relationship.rawValue
         self.type = type
 		createdDate = NSDate()
@@ -49,7 +48,7 @@ internal class ManagedRelationship : ManagedNode {
 		groupSet = NSSet()
 		subject = nil
 		object = nil
-		context = g.context
+		context = Graph.context
 	}
 
 	/**

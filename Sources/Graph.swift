@@ -147,7 +147,7 @@ public class Graph : NSObject {
 	executed when the save operation is completed.
 	*/
 	public func asyncSave(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-		if let p: NSManagedObjectContext = context {
+		if let p: NSManagedObjectContext = Graph.context {
 			if p.hasChanges {
 				p.performBlock {
 					do {
@@ -171,7 +171,7 @@ public class Graph : NSObject {
 	executed when the save operation is completed.
 	*/
 	public func save(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-		if let p: NSManagedObjectContext = context {
+		if let p: NSManagedObjectContext = Graph.context {
 			if p.hasChanges {
 				p.performBlockAndWait {
 					do {
@@ -209,11 +209,11 @@ public class Graph : NSObject {
 	/**
 	:name:	context
 	*/
-	internal var context: NSManagedObjectContext? {
-		dispatch_once(&GraphPrivateManagedObjectContext.onceToken) { [unowned self] in
+	internal static var context: NSManagedObjectContext? {
+		dispatch_once(&GraphPrivateManagedObjectContext.onceToken) {
 			GraphPrivateManagedObjectContext.managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
 			GraphPrivateManagedObjectContext.managedObjectContext?.undoManager
-			GraphPrivateManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = self.persistentStoreCoordinator
+			GraphPrivateManagedObjectContext.managedObjectContext?.persistentStoreCoordinator = Graph.persistentStoreCoordinator
 		}
 		return GraphPrivateManagedObjectContext.managedObjectContext
 	}
@@ -221,7 +221,7 @@ public class Graph : NSObject {
 	//
 	//	:name:	managedObjectModel
 	//
-	internal var managedObjectModel: NSManagedObjectModel? {
+	internal static var managedObjectModel: NSManagedObjectModel? {
 		dispatch_once(&GraphManagedObjectModel.onceToken) {
 			GraphManagedObjectModel.managedObjectModel = NSManagedObjectModel()
 			
@@ -507,8 +507,8 @@ public class Graph : NSObject {
 	//
 	//	:name:	persistentStoreCoordinator
 	//
-	internal var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
-		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) { [unowned self] in
+	internal static var persistentStoreCoordinator: NSPersistentStoreCoordinator? {
+		dispatch_once(&GraphPersistentStoreCoordinator.onceToken) {
 			let directory: String = "Graph/default"
 			File.createDirectory(File.documentDirectoryPath!, name: directory, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) -> Void in
 				if !success {
@@ -516,7 +516,7 @@ public class Graph : NSObject {
 						fatalError(e.localizedDescription)
 					}
 				}
-				let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel!)
+				let coordinator = NSPersistentStoreCoordinator(managedObjectModel: Graph.managedObjectModel!)
 				do {
 					try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: File.URL(.DocumentDirectory, path: "\(directory)/\(GraphUtility.storeName)"), options: nil)
 				} catch {

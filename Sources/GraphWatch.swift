@@ -181,8 +181,8 @@ public extension Graph {
 	//
 	internal func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
-		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: context)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: context)
+		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: Graph.context)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: Graph.context)
 	}
 	
 	//
@@ -230,7 +230,7 @@ public extension Graph {
 	save operation.
 	*/
 	private func notifyWatchers(notification: NSNotification) {
-		let moc: NSManagedObjectContext = context!
+		let moc: NSManagedObjectContext = Graph.context!
 		moc.mergeChangesFromContextDidSaveNotification(notification)
 		
 		let userInfo: [NSObject : AnyObject]? = notification.userInfo

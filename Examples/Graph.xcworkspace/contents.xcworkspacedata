@@ -6,21 +6,13 @@
    </FileRef>
    <Group
       location = "container:"
-      name = "Entity">
+      name = "Examples">
       <FileRef
          location = "group:Entity/Entity.xcodeproj">
       </FileRef>
-   </Group>
-   <Group
-      location = "container:"
-      name = "Relationship">
       <FileRef
          location = "group:Relationship/Relationship.xcodeproj">
       </FileRef>
-   </Group>
-   <Group
-      location = "container:"
-      name = "Action">
       <FileRef
          location = "group:Action/Action.xcodeproj">
       </FileRef>

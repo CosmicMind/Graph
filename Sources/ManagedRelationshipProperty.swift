@@ -39,10 +39,9 @@ internal class ManagedRelationshipProperty : ManagedNodeProperty {
 		:description:	Initializer for the Model Object.
 	*/
 	internal convenience init(name: String, object: AnyObject) {
-		let g: Graph = Graph()
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.relationshipPropertyDescriptionName, inManagedObjectContext: g.context!)!, insertIntoManagedObjectContext: g.context)
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.relationshipPropertyDescriptionName, inManagedObjectContext: Graph.context!)!, insertIntoManagedObjectContext: Graph.context)
 		self.name = name
 		self.object = object
-		context = g.context
+		context = Graph.context
 	}
 }

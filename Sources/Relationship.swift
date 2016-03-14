@@ -123,7 +123,7 @@ public class Relationship : NSObject, Comparable {
 	/**
 		:name:	init
 	*/
-	public convenience init(type: String) {
+	public required convenience init(type: String) {
 		self.init(object: ManagedRelationship(type: type))
 	}
 	

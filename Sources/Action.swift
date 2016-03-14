@@ -126,7 +126,7 @@ public class Action : NSObject, Comparable {
 	/**
 		:name:	init
 	*/
-	public convenience init(type: String) {
+	public required convenience init(type: String) {
 		self.init(object: ManagedAction(type: type))
 	}
 	

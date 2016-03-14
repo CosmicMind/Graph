@@ -39,9 +39,8 @@ internal class ManagedActionGroup : ManagedNodeGroup {
 		:description:	Initializer for the Model Object.
 	*/
 	internal convenience init(name: String) {
-		let g: Graph = Graph()
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionGroupDescriptionName, inManagedObjectContext: g.context!)!, insertIntoManagedObjectContext: g.context)
+		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionGroupDescriptionName, inManagedObjectContext: Graph.context!)!, insertIntoManagedObjectContext: Graph.context)
 		self.name = name
-		context = g.context
+		context = Graph.context
 	}
 }
