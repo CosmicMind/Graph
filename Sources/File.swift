@@ -217,10 +217,9 @@ public struct File {
 	/**
 	:name:	createDirectory
 	*/
-	public static func createDirectory(path: NSURL, name: String, withIntermediateDirectories createIntermediates: Bool, attributes: [String:AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)) {
+	public static func createDirectory(URL: NSURL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)) {
 		do {
-			let newPath = path.URLByAppendingPathComponent(name)
-			try NSFileManager.defaultManager().createDirectoryAtPath(newPath.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
+			try NSFileManager.defaultManager().createDirectoryAtPath(URL.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
 			completion(success: true, error: nil)
 		} catch let error as NSError {
 			completion(success: false, error: error)

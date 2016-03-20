@@ -91,6 +91,8 @@
 		96668B311C2A4F4A001916C7 /* EntityStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96668B2F1C2A4F4A001916C7 /* EntityStringTests.swift */; };
 		9677B4431BA78A9200C82BBB /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4391BA78A9200C82BBB /* Graph.framework */; };
 		9677B45F1BA78AA600C82BBB /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4551BA78AA600C82BBB /* Graph.framework */; };
+		96815B281C9F44A50006CBE2 /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96815B271C9F44A50006CBE2 /* GraphModel.swift */; };
+		96815B291C9F44A50006CBE2 /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96815B271C9F44A50006CBE2 /* GraphModel.swift */; };
 		96E135D21C10F16D00E0BF44 /* Action.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B4F1C10ED5400ACF5DD /* Action.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135D31C10F16D00E0BF44 /* Relationship.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B501C10ED5400ACF5DD /* Relationship.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135D41C10F16D00E0BF44 /* Entity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B521C10ED5400ACF5DD /* Entity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -198,6 +200,7 @@
 		9677B4421BA78A9200C82BBB /* Graph OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B4551BA78AA600C82BBB /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B45E1BA78AA600C82BBB /* Graph iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96815B271C9F44A50006CBE2 /* GraphModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphModel.swift; sourceTree = "<group>"; };
 		96D4E4EE1BA76FAF00672E38 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96F040611C5006B000C7E304 /* EntityActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityActionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -261,6 +264,7 @@
 			children = (
 				96607D741C3DB14A008D47D8 /* NodeClass.swift */,
 				961F9B531C10ED5400ACF5DD /* Graph.swift */,
+				96815B271C9F44A50006CBE2 /* GraphModel.swift */,
 				961F9B551C10ED5400ACF5DD /* GraphObject.swift */,
 				961F9B561C10ED5400ACF5DD /* GraphSearch.swift */,
 				961F9B571C10ED5400ACF5DD /* GraphWatch.swift */,
@@ -560,6 +564,7 @@
 				961F9B841C10ED5400ACF5DD /* GraphObject.swift in Sources */,
 				961F9BA61C10ED5400ACF5DD /* ManagedEntityProperty.swift in Sources */,
 				961F9B881C10ED5400ACF5DD /* GraphWatch.swift in Sources */,
+				96815B291C9F44A50006CBE2 /* GraphModel.swift in Sources */,
 				961F9B861C10ED5400ACF5DD /* GraphSearch.swift in Sources */,
 				961F9BA81C10ED5400ACF5DD /* ManagedNode.swift in Sources */,
 				960590591C3B690600691E88 /* File.swift in Sources */,
@@ -613,6 +618,7 @@
 				961F9B831C10ED5400ACF5DD /* GraphObject.swift in Sources */,
 				961F9BA51C10ED5400ACF5DD /* ManagedEntityProperty.swift in Sources */,
 				961F9B871C10ED5400ACF5DD /* GraphWatch.swift in Sources */,
+				96815B281C9F44A50006CBE2 /* GraphModel.swift in Sources */,
 				961F9B851C10ED5400ACF5DD /* GraphSearch.swift in Sources */,
 				961F9BA71C10ED5400ACF5DD /* ManagedNode.swift in Sources */,
 				960590581C3B690600691E88 /* File.swift in Sources */,
