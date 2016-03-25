@@ -60,7 +60,8 @@ public extension Graph {
 		
 		if toFilter {
 			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
-			for var i: Int = nodes.count - 1; 0 <= i; --i {
+			var i: Int = nodes.count
+			while 0 <= --i {
 				if let v: ManagedEntity = nodes[i] as? ManagedEntity {
 					if nil == seen.updateValue(true, forKey: v.id) {
 						nodes[i] = Entity(object: v)
@@ -114,7 +115,8 @@ public extension Graph {
 		
 		if toFilter {
 			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
-			for var i: Int = nodes.count - 1; 0 <= i; --i {
+			var i: Int = nodes.count
+			while 0 <= --i {
 				if let v: ManagedRelationship = nodes[i] as? ManagedRelationship {
 					if nil == seen.updateValue(true, forKey: v.id) {
 						nodes[i] = Relationship(object: v)
@@ -168,7 +170,8 @@ public extension Graph {
 		
 		if toFilter {
 			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
-			for var i: Int = nodes.count - 1; 0 <= i; --i {
+			var i: Int = nodes.count
+			while 0 <= --i {
 				if let v: ManagedAction = nodes[i] as? ManagedAction {
 					if nil == seen.updateValue(true, forKey: v.id) {
 						nodes[i] = Action(object: v)

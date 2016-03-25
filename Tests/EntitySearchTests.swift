@@ -47,7 +47,7 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 	func testAll() {
 		graph.clear()
 		
-		for var i: Int = 0; i < 100; ++i {
+		for i in 0..<100 {
 			let n: Entity = Entity(type: "T1")
 			n["P1"] = 0 == i % 2 ? "V1" : 1
 			n["P2"] = "V2"
@@ -55,13 +55,13 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 			n.addGroup("G2")
 		}
 		
-		for var i: Int = 0; i < 200; ++i {
+		for _ in 0..<200 {
 			let n: Entity = Entity(type: "T2")
 			n["P2"] = "V2"
 			n.addGroup("G2")
 		}
 		
-		for var i: Int = 0; i < 300; ++i {
+		for _ in 0..<300 {
 			let n: Entity = Entity(type: "T3")
 			n["P3"] = "V3"
 			n.addGroup("G3")

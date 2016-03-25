@@ -65,16 +65,16 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
 		
 		var subjects: Array<Entity> = Array<Entity>()
-		for var i = 0; i < 5; ++i {
+		for _ in 0..<5 {
 			subjects.append(Entity(type: "S"))
 		}
 		
 		var objects: Array<Entity> = Array<Entity>()
-		for var i = 0; i < 5; ++i {
+		for _ in 0..<5 {
 			objects.append(Entity(type: "O"))
 		}
 		
-		for var i: Int = 100; i > 0; --i {
+		for _ in 0..<100 {
 			let n: Action = Action(type: "T")
 			n["P"] = "A"
 			n.addGroup("G")

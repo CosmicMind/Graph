@@ -64,7 +64,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		graph.watchForEntity(types: ["S", "O"])
 		graph.watchForRelationship(types: ["T"], groups: ["G"], properties: ["P"])
 		
-		for var i: Int = 1000; i > 0; --i {
+		for _ in 0..<1000 {
 			let n: Relationship = Relationship(type: "T")
 			
 			n["P"] = "A"

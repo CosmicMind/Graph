@@ -63,7 +63,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		graph.clear()
 		graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
 		
-		for var i: Int = 1000; i > 0; --i {
+		for _ in 0..<1000 {
 			let n: Entity = Entity(type: "T")
 			n["P"] = "A"
 			n.addGroup("G")

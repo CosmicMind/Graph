@@ -47,7 +47,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 	func testAll() {
 		graph.clear()
 		
-		for var i: Int = 0; i < 100; ++i {
+		for i in 0..<100 {
 			let n: Relationship = Relationship(type: "T1")
 			n.subject = Entity(type: "S1")
 			n.object = Entity(type: "O1")
@@ -57,7 +57,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 			n.addGroup("G2")
 		}
 		
-		for var i: Int = 0; i < 200; ++i {
+		for _ in 0..<200 {
 			let n: Relationship = Relationship(type: "T2")
 			n.subject = Entity(type: "S2")
 			n.object = Entity(type: "O2")
@@ -65,7 +65,7 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
 			n.addGroup("G2")
 		}
 		
-		for var i: Int = 0; i < 300; ++i {
+		for _ in 0..<300 {
 			let n: Relationship = Relationship(type: "T3")
 			n.subject = Entity(type: "S3")
 			n.object = Entity(type: "O3")
