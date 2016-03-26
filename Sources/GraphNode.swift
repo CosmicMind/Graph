@@ -30,27 +30,17 @@
 
 import CoreData
 
-internal class GraphObject : NSManagedObject {
+internal class GraphNode : NSManagedObject {
 	//
 	//	:name:	context
 	//
 	internal var context: NSManagedObjectContext?
 	
 	//
-	//	:name:	worker
-	//
-	internal var worker: NSManagedObjectContext? {
-		if nil == context {
-			context = Graph.context
-		}
-		return context
-	}
-	
-	//
 	//	:name:	delete
 	//
 	internal func delete() {
-		worker?.deleteObject(self)
+		Graph.context?.deleteObject(self)
 	}
 }
 

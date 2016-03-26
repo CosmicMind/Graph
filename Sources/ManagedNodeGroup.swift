@@ -30,6 +30,6 @@
 
 import CoreData
 
-internal class ManagedNodeGroup : GraphObject {
+internal class ManagedNodeGroup : GraphNode {
 	@NSManaged internal var name: String
 }

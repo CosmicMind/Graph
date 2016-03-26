@@ -49,8 +49,8 @@
 		961F9B801C10ED5400ACF5DD /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B531C10ED5400ACF5DD /* Graph.swift */; };
 		961F9B811C10ED5400ACF5DD /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B541C10ED5400ACF5DD /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		961F9B821C10ED5400ACF5DD /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B541C10ED5400ACF5DD /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		961F9B831C10ED5400ACF5DD /* GraphObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphObject.swift */; };
-		961F9B841C10ED5400ACF5DD /* GraphObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphObject.swift */; };
+		961F9B831C10ED5400ACF5DD /* GraphNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphNode.swift */; };
+		961F9B841C10ED5400ACF5DD /* GraphNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphNode.swift */; };
 		961F9B851C10ED5400ACF5DD /* GraphSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B561C10ED5400ACF5DD /* GraphSearch.swift */; };
 		961F9B861C10ED5400ACF5DD /* GraphSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B561C10ED5400ACF5DD /* GraphSearch.swift */; };
 		961F9B871C10ED5400ACF5DD /* GraphWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961F9B571C10ED5400ACF5DD /* GraphWatch.swift */; };
@@ -97,7 +97,7 @@
 		96E135D31C10F16D00E0BF44 /* Relationship.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B501C10ED5400ACF5DD /* Relationship.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135D41C10F16D00E0BF44 /* Entity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B521C10ED5400ACF5DD /* Entity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135D51C10F16D00E0BF44 /* Graph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B531C10ED5400ACF5DD /* Graph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		96E135D61C10F16D00E0BF44 /* GraphObject.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphObject.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96E135D61C10F16D00E0BF44 /* GraphNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphNode.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135D71C10F16D00E0BF44 /* GraphSearch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B561C10ED5400ACF5DD /* GraphSearch.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135D81C10F16D00E0BF44 /* GraphWatch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B571C10ED5400ACF5DD /* GraphWatch.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135D91C10F16D00E0BF44 /* ManagedAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B5E1C10ED5400ACF5DD /* ManagedAction.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -117,7 +117,7 @@
 		96E135F31C10F22800E0BF44 /* Relationship.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B501C10ED5400ACF5DD /* Relationship.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135F41C10F22800E0BF44 /* Entity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B521C10ED5400ACF5DD /* Entity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135F51C10F22800E0BF44 /* Graph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B531C10ED5400ACF5DD /* Graph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		96E135F61C10F22800E0BF44 /* GraphObject.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphObject.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96E135F61C10F22800E0BF44 /* GraphNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B551C10ED5400ACF5DD /* GraphNode.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135F71C10F22800E0BF44 /* GraphSearch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B561C10ED5400ACF5DD /* GraphSearch.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135F81C10F22800E0BF44 /* GraphWatch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B571C10ED5400ACF5DD /* GraphWatch.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E135F91C10F22800E0BF44 /* ManagedAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = 961F9B5E1C10ED5400ACF5DD /* ManagedAction.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -176,7 +176,7 @@
 		961F9B521C10ED5400ACF5DD /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		961F9B531C10ED5400ACF5DD /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		961F9B541C10ED5400ACF5DD /* Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graph.h; sourceTree = "<group>"; };
-		961F9B551C10ED5400ACF5DD /* GraphObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphObject.swift; sourceTree = "<group>"; };
+		961F9B551C10ED5400ACF5DD /* GraphNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphNode.swift; sourceTree = "<group>"; };
 		961F9B561C10ED5400ACF5DD /* GraphSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSearch.swift; sourceTree = "<group>"; };
 		961F9B571C10ED5400ACF5DD /* GraphWatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphWatch.swift; sourceTree = "<group>"; };
 		961F9B581C10ED5400ACF5DD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -265,7 +265,7 @@
 				96607D741C3DB14A008D47D8 /* NodeClass.swift */,
 				961F9B531C10ED5400ACF5DD /* Graph.swift */,
 				96815B271C9F44A50006CBE2 /* GraphModel.swift */,
-				961F9B551C10ED5400ACF5DD /* GraphObject.swift */,
+				961F9B551C10ED5400ACF5DD /* GraphNode.swift */,
 				961F9B561C10ED5400ACF5DD /* GraphSearch.swift */,
 				961F9B571C10ED5400ACF5DD /* GraphWatch.swift */,
 				961F9B6A1C10ED5400ACF5DD /* Node.swift */,
@@ -344,7 +344,7 @@
 				96E135F31C10F22800E0BF44 /* Relationship.swift in Headers */,
 				96E135F41C10F22800E0BF44 /* Entity.swift in Headers */,
 				96E135F51C10F22800E0BF44 /* Graph.swift in Headers */,
-				96E135F61C10F22800E0BF44 /* GraphObject.swift in Headers */,
+				96E135F61C10F22800E0BF44 /* GraphNode.swift in Headers */,
 				96E135F71C10F22800E0BF44 /* GraphSearch.swift in Headers */,
 				96E135F81C10F22800E0BF44 /* GraphWatch.swift in Headers */,
 				96E135F91C10F22800E0BF44 /* ManagedAction.swift in Headers */,
@@ -374,7 +374,7 @@
 				96E135D31C10F16D00E0BF44 /* Relationship.swift in Headers */,
 				96E135D41C10F16D00E0BF44 /* Entity.swift in Headers */,
 				96E135D51C10F16D00E0BF44 /* Graph.swift in Headers */,
-				96E135D61C10F16D00E0BF44 /* GraphObject.swift in Headers */,
+				96E135D61C10F16D00E0BF44 /* GraphNode.swift in Headers */,
 				96E135D71C10F16D00E0BF44 /* GraphSearch.swift in Headers */,
 				96E135D81C10F16D00E0BF44 /* GraphWatch.swift in Headers */,
 				96E135D91C10F16D00E0BF44 /* ManagedAction.swift in Headers */,
@@ -561,7 +561,7 @@
 				961F9B781C10ED5400ACF5DD /* Action.swift in Sources */,
 				961F9BA01C10ED5400ACF5DD /* ManagedRelationshipProperty.swift in Sources */,
 				961F9B961C10ED5400ACF5DD /* ManagedAction.swift in Sources */,
-				961F9B841C10ED5400ACF5DD /* GraphObject.swift in Sources */,
+				961F9B841C10ED5400ACF5DD /* GraphNode.swift in Sources */,
 				961F9BA61C10ED5400ACF5DD /* ManagedEntityProperty.swift in Sources */,
 				961F9B881C10ED5400ACF5DD /* GraphWatch.swift in Sources */,
 				96815B291C9F44A50006CBE2 /* GraphModel.swift in Sources */,
@@ -615,7 +615,7 @@
 				961F9B771C10ED5400ACF5DD /* Action.swift in Sources */,
 				961F9B9F1C10ED5400ACF5DD /* ManagedRelationshipProperty.swift in Sources */,
 				961F9B951C10ED5400ACF5DD /* ManagedAction.swift in Sources */,
-				961F9B831C10ED5400ACF5DD /* GraphObject.swift in Sources */,
+				961F9B831C10ED5400ACF5DD /* GraphNode.swift in Sources */,
 				961F9BA51C10ED5400ACF5DD /* ManagedEntityProperty.swift in Sources */,
 				961F9B871C10ED5400ACF5DD /* GraphWatch.swift in Sources */,
 				96815B281C9F44A50006CBE2 /* GraphModel.swift in Sources */,

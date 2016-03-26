@@ -30,7 +30,7 @@
 
 import CoreData
 
-internal class ManagedNode : GraphObject {
+internal class ManagedNode : GraphNode {
 	@NSManaged internal var nodeClass: NSNumber
 	@NSManaged internal var type: String
 	@NSManaged internal var createdDate: NSDate
@@ -42,7 +42,7 @@ internal class ManagedNode : GraphObject {
 	//
 	internal var id: String {
 		do {
-			try worker?.obtainPermanentIDsForObjects([self])
+			try Graph.context?.obtainPermanentIDsForObjects([self])
 		} catch {}
 		return String(stringInterpolationSegment: nodeClass) + type + objectID.URIRepresentation().lastPathComponent!
 	}
