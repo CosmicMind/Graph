@@ -117,7 +117,8 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue(entity["P"] as? String == "A")
 		XCTAssertTrue(entity.hasGroup("G"))
 		
-		if 1000 == ++insertEntityCount {
+		insertEntityCount += 1
+		if 1000 == insertEntityCount {
 			insertExpectation?.fulfill()
 		}
 	}
@@ -128,7 +129,8 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("A" == value as? String)
 		XCTAssertTrue(entity[property] as? String == value as? String)
 		
-		if 1000 == ++insertPropertyCount {
+		insertPropertyCount += 1
+		if 1000 == insertPropertyCount {
 			insertPropertyExpectation?.fulfill()
 		}
 	}
@@ -137,7 +139,8 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == entity.type)
 		XCTAssertTrue("G" == group)
 		
-		if 1000 == ++insertGroupCount {
+		insertGroupCount += 1
+		if 1000 == insertGroupCount {
 			insertGroupExpectation?.fulfill()
 		}
 	}
@@ -148,7 +151,8 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("B" == value as? String)
 		XCTAssertTrue(entity[property] as? String == value as? String)
 		
-		if 1000 == ++updatePropertyCount {
+		updatePropertyCount += 1
+		if 1000 == updatePropertyCount {
 			updatePropertyExpectation?.fulfill()
 		}
 	}
@@ -156,7 +160,8 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 	func graphDidDeleteEntity(graph: Graph, entity: Entity) {
 		XCTAssertTrue("T" == entity.type)
 		
-		if 0 == --insertEntityCount {
+		insertEntityCount -= 1
+		if 0 == insertEntityCount {
 			deleteExpectation?.fulfill()
 		}
 	}
@@ -166,7 +171,8 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("P" == property)
 		XCTAssertTrue("B" == value as? String)
 		
-		if 0 == --insertPropertyCount {
+		insertPropertyCount -= 1
+		if 0 == insertPropertyCount {
 			deletePropertyExpectation?.fulfill()
 		}
 	}
@@ -175,7 +181,8 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == entity.type)
 		XCTAssertTrue("G" == group)
 		
-		if 0 == --insertGroupCount {
+		insertGroupCount -= 1
+		if 0 == insertGroupCount {
 			deleteGroupExpectation?.fulfill()
 		}
 	}

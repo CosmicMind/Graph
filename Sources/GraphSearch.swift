@@ -60,20 +60,23 @@ public extension Graph {
 		
 		if toFilter {
 			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
-			var i: Int = nodes.count
-			while 0 <= --i {
+			var i: Int = nodes.count - 1
+			while 0 <= i {
 				if let v: ManagedEntity = nodes[i] as? ManagedEntity {
 					if nil == seen.updateValue(true, forKey: v.id) {
 						nodes[i] = Entity(object: v)
+						i -= 1
 						continue
 					}
 				} else if let v: ManagedEntity = Graph.context!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedEntity {
 					if nil == seen.updateValue(true, forKey: v.id) {
 						nodes[i] = Entity(object: v)
+						i -= 1
 						continue
 					}
 				}
 				nodes.removeAtIndex(i)
+				i -= 1
 			}
 			return nodes as! Array<Entity>
 		} else {
@@ -115,20 +118,23 @@ public extension Graph {
 		
 		if toFilter {
 			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
-			var i: Int = nodes.count
-			while 0 <= --i {
+			var i: Int = nodes.count - 1
+			while 0 <= i {
 				if let v: ManagedRelationship = nodes[i] as? ManagedRelationship {
 					if nil == seen.updateValue(true, forKey: v.id) {
 						nodes[i] = Relationship(object: v)
+						i -= 1
 						continue
 					}
 				} else if let v: ManagedRelationship = Graph.context!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedRelationship {
 					if nil == seen.updateValue(true, forKey: v.id) {
 						nodes[i] = Relationship(object: v)
+						i -= 1
 						continue
 					}
 				}
 				nodes.removeAtIndex(i)
+				i -= 1
 			}
 			return nodes as! Array<Relationship>
 		} else {
@@ -170,20 +176,23 @@ public extension Graph {
 		
 		if toFilter {
 			var seen: Dictionary<String, Bool> = Dictionary<String, Bool>()
-			var i: Int = nodes.count
-			while 0 <= --i {
+			var i: Int = nodes.count - 1
+			while 0 <= i {
 				if let v: ManagedAction = nodes[i] as? ManagedAction {
 					if nil == seen.updateValue(true, forKey: v.id) {
 						nodes[i] = Action(object: v)
+						i -= 1
 						continue
 					}
 				} else if let v: ManagedAction = Graph.context!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedAction {
 					if nil == seen.updateValue(true, forKey: v.id) {
 						nodes[i] = Action(object: v)
+						i -= 1
 						continue
 					}
 				}
 				nodes.removeAtIndex(i)
+				i -= 1
 			}
 			return nodes as! Array<Action>
 		} else {

@@ -123,7 +123,8 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
 		
-		if 1000 == ++insertRelationshipCount {
+		insertRelationshipCount += 1
+		if 1000 == insertRelationshipCount {
 			insertExpectation?.fulfill()
 		}
 	}
@@ -136,7 +137,8 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
 		
-		if 1000 == ++insertPropertyCount {
+		insertPropertyCount += 1
+		if 1000 == insertPropertyCount {
 			insertPropertyExpectation?.fulfill()
 		}
 	}
@@ -145,7 +147,8 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue("G" == group)
 		
-		if 1000 == ++insertGroupCount {
+		insertGroupCount += 1
+		if 1000 == insertGroupCount {
 			insertGroupExpectation?.fulfill()
 		}
 	}
@@ -158,7 +161,8 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
 		
-		if 1000 == ++updatePropertyCount {
+		updatePropertyCount += 1
+		if 1000 == updatePropertyCount {
 			updatePropertyExpectation?.fulfill()
 		}
 	}
@@ -168,7 +172,8 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
 		
-		if 0 == --insertRelationshipCount {
+		insertRelationshipCount -= 1
+		if 0 == insertRelationshipCount {
 			deleteExpectation?.fulfill()
 		}
 	}
@@ -180,7 +185,8 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
 		
-		if 0 == --insertPropertyCount {
+		insertPropertyCount -= 1
+		if 0 == insertPropertyCount {
 			deletePropertyExpectation?.fulfill()
 		}
 	}
@@ -191,7 +197,8 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
 		
-		if 0 == --insertGroupCount {
+		insertGroupCount -= 1
+		if 0 == insertGroupCount {
 			deleteGroupExpectation?.fulfill()
 		}
 	}

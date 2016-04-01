@@ -138,7 +138,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertTrue(5 == action.subjects.count)
 		XCTAssertTrue(5 == action.objects.count)
 		
-		if 100 == ++insertActionCount {
+		insertActionCount += 1
+		if 100 == insertActionCount {
 			insertExpectation?.fulfill()
 		}
 	}
@@ -151,7 +152,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(5, action.subjects.count)
 		XCTAssertEqual(5, action.objects.count)
 		
-		if 100 == ++insertPropertyCount {
+		insertPropertyCount += 1
+		if 100 == insertPropertyCount {
 			insertPropertyExpectation?.fulfill()
 		}
 	}
@@ -162,7 +164,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(5, action.subjects.count)
 		XCTAssertEqual(5, action.objects.count)
 		
-		if 100 == ++insertGroupCount {
+		insertGroupCount += 1
+		if 100 == insertGroupCount {
 			insertGroupExpectation?.fulfill()
 		}
 	}
@@ -175,7 +178,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(5, action.subjects.count)
 		XCTAssertEqual(5, action.objects.count)
 		
-		if 100 == ++updatePropertyCount {
+		updatePropertyCount += 1
+		if 100 == updatePropertyCount {
 			updatePropertyExpectation?.fulfill()
 		}
 	}
@@ -185,7 +189,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(5, action.subjects.count)
 		XCTAssertEqual(5, action.objects.count)
 		
-		if 0 == --insertActionCount {
+		insertActionCount -= 1
+		if 0 == insertActionCount {
 			deleteExpectation?.fulfill()
 		}
 	}
@@ -197,7 +202,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(5, action.subjects.count)
 		XCTAssertEqual(5, action.objects.count)
 		
-		if 0 == --insertPropertyCount {
+		insertPropertyCount -= 1
+		if 0 == insertPropertyCount {
 			deletePropertyExpectation?.fulfill()
 		}
 	}
@@ -208,7 +214,8 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		XCTAssertEqual(5, action.subjects.count)
 		XCTAssertEqual(5, action.objects.count)
 		
-		if 0 == --insertGroupCount {
+		insertGroupCount -= 1
+		if 0 == insertGroupCount {
 			deleteGroupExpectation?.fulfill()
 		}
 	}

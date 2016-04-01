@@ -182,7 +182,7 @@ public extension Graph {
 	internal func prepareForObservation() {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
 		NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: Graph.context)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "managedObjectContextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: Graph.context)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(managedObjectContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: Graph.context)
 	}
 	
 	//
