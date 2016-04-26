@@ -120,7 +120,7 @@ public extension Graph {
 			propertyValue.attributeType = .TransformableAttributeType
 			propertyValue.attributeValueClassName = "AnyObject"
 			propertyValue.optional = false
-			propertyValue.storedInExternalRecord = true
+			propertyValue.allowsExternalBinaryDataStorage = true
 			entityPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
 			actionPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
 			relationshipPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)

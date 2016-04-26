@@ -21,7 +21,7 @@ Graph is a CoreData framework written in Swift. It's designed to simplify the co
 ## Requirements
 
 * iOS 8.0+ / Mac OS X 10.9+
-* Xcode 7.2+
+* Xcode 7.3+
 
 ## Communication
 
