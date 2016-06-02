@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = 'Graph'
-    s.version = '1.0.12'
+    s.version = '1.0.13'
     s.license = 'BSD-3-Clause'
     s.summary = 'An elegant data-driven framework in Swift.'
     s.homepage = 'http://cosmicmind.io'

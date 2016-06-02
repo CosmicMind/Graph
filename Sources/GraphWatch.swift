@@ -230,9 +230,6 @@ public extension Graph {
 	save operation.
 	*/
 	private func notifyWatchers(notification: NSNotification) {
-		let moc: NSManagedObjectContext = Graph.context!
-		moc.mergeChangesFromContextDidSaveNotification(notification)
-		
 		let userInfo: [NSObject : AnyObject]? = notification.userInfo
 		
 		// inserts

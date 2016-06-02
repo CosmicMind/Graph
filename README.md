@@ -76,7 +76,7 @@ elon["photo"] = UIImage(contentsOfFile: path)
 graph.save()
 ```
 
-[Learn More About Entities](https://github.com/CosmicMind/Graph/wiki/Entity)
+[Learn More About Entities](http://www.cosmicmind.io/graph/entity)
 
 <a name="relationship"></a>
 ## Relationship
