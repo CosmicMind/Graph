@@ -75,7 +75,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 		
 		dispatch_async(q1) { [unowned self] in
 			n["P"] = 111
-			n.addGroup("G")
+			n.addToGroup("G")
 			
 			self.graph.asyncSave { [unowned self] (success: Bool, error: NSError?) in
 				XCTAssertTrue(success, "Cannot save the Graph: \(error)")
@@ -119,7 +119,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
 	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
 		XCTAssertEqual("T", relationship.type)
 		XCTAssertEqual(111, relationship["P"] as? Int)
-		XCTAssertTrue(relationship.hasGroup("G"))
+		XCTAssertTrue(relationship.memberOfGroup("G"))
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
 		insertExpectation?.fulfill()

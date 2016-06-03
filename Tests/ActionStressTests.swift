@@ -77,7 +77,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 		for _ in 0..<100 {
 			let n: Action = Action(type: "T")
 			n["P"] = "A"
-			n.addGroup("G")
+			n.addToGroup("G")
 			
 			for s in subjects {
 				n.addSubject(s)
@@ -134,7 +134,7 @@ class ActionStressTests : XCTestCase, GraphDelegate {
 	func graphDidInsertAction(graph: Graph, action: Action) {
 		XCTAssertEqual("T", action.type)
 		XCTAssertEqual("A", action["P"] as? String)
-		XCTAssertTrue(action.hasGroup("G"))
+		XCTAssertTrue(action.memberOfGroup("G"))
 		XCTAssertTrue(5 == action.subjects.count)
 		XCTAssertTrue(5 == action.objects.count)
 		

@@ -66,7 +66,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 		for _ in 0..<1000 {
 			let n: Entity = Entity(type: "T")
 			n["P"] = "A"
-			n.addGroup("G")
+			n.addToGroup("G")
 		}
 		
 		saveExpectation = expectationWithDescription("Test: Save did not pass.")
@@ -115,7 +115,7 @@ class EntityStressTests : XCTestCase, GraphDelegate {
 	func graphDidInsertEntity(graph: Graph, entity: Entity) {
 		XCTAssertTrue("T" == entity.type)
 		XCTAssertTrue(entity["P"] as? String == "A")
-		XCTAssertTrue(entity.hasGroup("G"))
+		XCTAssertTrue(entity.memberOfGroup("G"))
 		
 		insertEntityCount += 1
 		if 1000 == insertEntityCount {
