@@ -60,7 +60,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 		
 		let n: Relationship = Relationship(type: "T")
 		n["P"] = 111
-		n.addGroup("G")
+		n.addToGroup("G")
 		
 		n.subject = Entity(type: "S")
 		n.object = Entity(type: "O")
@@ -109,7 +109,7 @@ class RelationshipIntTests : XCTestCase, GraphDelegate {
 	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
 		XCTAssertEqual("T", relationship.type)
 		XCTAssertEqual(111, relationship["P"] as? Int)
-		XCTAssertTrue(relationship.hasGroup("G"))
+		XCTAssertTrue(relationship.memberOfGroup("G"))
 		XCTAssertEqual("S", relationship.subject?.type)
 		XCTAssertEqual("O", relationship.object?.type)
 		

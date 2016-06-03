@@ -60,7 +60,7 @@ class EntityIntTests : XCTestCase, GraphDelegate {
 		
 		let n: Entity = Entity(type: "T")
 		n["P"] = 111
-		n.addGroup("G")
+		n.addToGroup("G")
 		
 		XCTAssertEqual(NodeClass.Entity, n.nodeClass)
 		
@@ -106,7 +106,7 @@ class EntityIntTests : XCTestCase, GraphDelegate {
 	func graphDidInsertEntity(graph: Graph, entity: Entity) {
 		XCTAssertEqual("T", entity.type)
 		XCTAssertEqual(111, entity["P"] as? Int)
-		XCTAssertTrue(entity.hasGroup("G"))
+		XCTAssertTrue(entity.memberOfGroup("G"))
 		
 		insertExpectation?.fulfill()
 	}

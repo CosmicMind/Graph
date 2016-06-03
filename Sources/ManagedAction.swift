@@ -94,11 +94,11 @@ internal class ManagedAction : ManagedNode {
 	}
 
     /**
-		:name:	addGroup
+		:name:	addToGroup
 		:description:	Adds a Group name to the list of Groups if it does not exist.
     */
-    internal func addGroup(name: String) -> Bool {
-        if !hasGroup(name) {
+    internal func addToGroup(name: String) -> Bool {
+        if !memberOfGroup(name) {
 			let group: ManagedActionGroup = ManagedActionGroup(name: name)
             group.node = self
             return true
@@ -107,10 +107,10 @@ internal class ManagedAction : ManagedNode {
     }
 
     /**
-		:name:	hasGroup
+		:name:	memberOfGroup
 		:description:	Checks whether the Node is a part of the Group name passed or not.
     */
-    internal func hasGroup(name: String) -> Bool {
+    internal func memberOfGroup(name: String) -> Bool {
         for n in groupSet {
             let group: ManagedActionGroup = n as! ManagedActionGroup
             if name == group.name {
@@ -121,10 +121,10 @@ internal class ManagedAction : ManagedNode {
     }
 
     /**
-		:name:	removeGroup
+		:name:	removeFromGroup
 		:description:	Removes a Group name from the list of Groups if it exists.
     */
-    internal func removeGroup(name: String) -> Bool {
+    internal func removeFromGroup(name: String) -> Bool {
         for n in groupSet {
             let group: ManagedActionGroup = n as! ManagedActionGroup
             if name == group.name {

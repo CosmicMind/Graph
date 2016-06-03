@@ -60,7 +60,7 @@ class ActionStringTests : XCTestCase, GraphDelegate {
 		
 		let n: Action = Action(type: "T")
 		n["P"] = "A"
-		n.addGroup("G")
+		n.addToGroup("G")
 		
 		n.addSubject(Entity(type: "S"))
 		n.addSubject(Entity(type: "S"))
@@ -111,7 +111,7 @@ class ActionStringTests : XCTestCase, GraphDelegate {
 	func graphDidInsertAction(graph: Graph, action: Action) {
 		XCTAssertEqual("T", action.type)
 		XCTAssertEqual("A", action["P"] as? String)
-		XCTAssertTrue(action.hasGroup("G"))
+		XCTAssertTrue(action.memberOfGroup("G"))
 		XCTAssertEqual(2, action.subjects.count)
 		XCTAssertEqual("S", action.subjects[0].type)
 		XCTAssertEqual("S", action.subjects[1].type)

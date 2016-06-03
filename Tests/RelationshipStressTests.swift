@@ -68,7 +68,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 			let n: Relationship = Relationship(type: "T")
 			
 			n["P"] = "A"
-			n.addGroup("G")
+			n.addToGroup("G")
 			n.subject = Entity(type: "S")
 			n.object = Entity(type: "O")
 		}
@@ -119,7 +119,7 @@ class RelationshipStressTests : XCTestCase, GraphDelegate {
 	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
 		XCTAssertTrue("T" == relationship.type)
 		XCTAssertTrue(relationship["P"] as? String == "A")
-		XCTAssertTrue(relationship.hasGroup("G"))
+		XCTAssertTrue(relationship.memberOfGroup("G"))
 		XCTAssertTrue("S" == relationship.subject?.type)
 		XCTAssertTrue("O" == relationship.object?.type)
 		

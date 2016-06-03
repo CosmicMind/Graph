@@ -141,31 +141,31 @@ public class Action : NSObject, Comparable {
 	}
 	
 	/**
-		:name:	addGroup
+		:name:	addToGroup
 	*/
-	public func addGroup(name: String) -> Bool {
-		return node.object.addGroup(name)
+	public func addToGroup(name: String) -> Bool {
+		return node.object.addToGroup(name)
 	}
 	
 	/**
-		:name:	hasGroup
+		:name:	memberOfGroup
 	*/
-	public func hasGroup(name: String) -> Bool {
-		return node.object.hasGroup(name)
+	public func memberOfGroup(name: String) -> Bool {
+		return node.object.memberOfGroup(name)
 	}
 	
 	/**
-		:name:	removeGroup
+		:name:	removeFromGroup
 	*/
-	public func removeGroup(name: String) -> Bool {
-		return node.object.removeGroup(name)
+	public func removeFromGroup(name: String) -> Bool {
+		return node.object.removeFromGroup(name)
 	}
 	
 	/**
 		:name:	toggleGroup
 	*/
 	public func toggleGroup(name: String) -> Bool {
-		return hasGroup(name) ? removeGroup(name) : addGroup(name)
+		return memberOfGroup(name) ? removeFromGroup(name) : addToGroup(name)
 	}
 	
     /**

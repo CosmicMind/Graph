@@ -51,20 +51,20 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
 			let n: Entity = Entity(type: "T1")
 			n["P1"] = 0 == i % 2 ? "V1" : 1
 			n["P2"] = "V2"
-			n.addGroup("G1")
-			n.addGroup("G2")
+			n.addToGroup("G1")
+			n.addToGroup("G2")
 		}
 		
 		for _ in 0..<200 {
 			let n: Entity = Entity(type: "T2")
 			n["P2"] = "V2"
-			n.addGroup("G2")
+			n.addToGroup("G2")
 		}
 		
 		for _ in 0..<300 {
 			let n: Entity = Entity(type: "T3")
 			n["P3"] = "V3"
-			n.addGroup("G3")
+			n.addToGroup("G3")
 		}
 		
 		graph.save { (success: Bool, error: NSError?) in
