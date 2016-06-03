@@ -137,7 +137,7 @@ class ViewController: UIViewController {
 	
 	/// Prepares the navigation bar items.
 	private func prepareNavigationBarItems() {
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "handleAddButton:")
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(handleAddButton(_:)))
 	}
 }
 
