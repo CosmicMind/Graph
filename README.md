@@ -113,7 +113,7 @@ graph.save()
 
 Notice that information about the relationship is stored within the _Employee_ Relationship leaving both _Mark_ and _Facebook_ to form other relationships freely. This is a key principal when using Relationships.
 
-[Learn More About Relationships](https://github.com/CosmicMind/Graph/wiki/Relationship)
+[Learn More About Relationships](http://www.cosmicmind.io/graph/relationship)
 
 <a name="action"></a>
 ## Action
