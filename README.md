@@ -51,27 +51,26 @@ Graph is a growing project and will encounter changes throughout its development
 * [Entity](#entity)
 * [Relationship](#relationship)
 * [Action](#action)
-* [Groups](#groups)
 * [Data Driven](#datadriven)
 * [Faceted Search](#facetedsearch)
 
 <a name="entity"></a>
 ## Entity
 
-An **Entity** is a model object that **represents a person, place, or thing**. For example, a Company, Photo, Video, User, Person, and Note. In code, the following is how this would look.
+An Entity is a model object that represents a person, place, or thing. It may store property values and be a member of groups.
 
-![GraphEntity](http://cosmicmind.io/GK/GraphEntity.png)
+For example, creating a Person Entity:
 
 ```swift
 let graph: Graph = Graph()
 
-// Create a Person Entity.
-let elon: Entity = Entity(type: "Person")
-elon["firstName"] = "Elon"
-elon["lastName"] = "Musk"
+let person: Entity = Entity(type: "Person")
+person["firstName"] = "Elon"
+person["lastName"] = "Musk"
+person["age"] = 41
 
-let path: String = NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!
-elon["photo"] = UIImage(contentsOfFile: path)
+person.addToGroup("Male")
+person.addToGroup("Inspiring")
 
 graph.save()
 ```
@@ -81,98 +80,61 @@ graph.save()
 <a name="relationship"></a>
 ## Relationship
 
-A **Relationship** is a model object that **forms a relationship between two Entities**. For example, "Mark is an Employee of Facebook". _Mark_ and _Facebook_ are two Entities that form a Relationship -- of type _Employee_. In code, the following is how this would look.
-
-![GraphRelationship](http://cosmicmind.io/GK/GraphRelationship.png)
+A Relationship is a model object that forms a connection between two Entities. It may store property values and be a member of groups.
 
 ```swift
 let graph: Graph = Graph()
 
-// Create a Person Entity.
-let mark: Entity = Entity(type: "Person")
-mark["firstName"] = "Mark"
-mark["lastName"] = "Zuckerberg"
+let person: Entity = Entity(type: "Person")
+person["firstName"] = "Mark"
+person["lastName"] = "Zuckerberg"
 
-let path: String = NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!
-mark["photo"] = UIImage(contentsOfFile: path)
+let company: Entity = Entity(type: "Company")
+company["name"] = "Facebook"
 
-// Create a Company Entity.
-let facebook: Entity = Entity(type: "Company")
-facebook["name"] = "Facebook"
-
-// Create an Employee Relationship.
 let employee: Relationship = Relationship(type: "Employee")
 employee["startDate"] = "February 4, 2004"
+employee.addToGroup("CEO")
+employee.addToGroup("Founder")
 
-// Form the relationship.
-employee.subject = mark
-employee.object = facebook
+employee.subject = person
+employee.object = company
 
 graph.save()
 ```
-
-Notice that information about the relationship is stored within the _Employee_ Relationship leaving both _Mark_ and _Facebook_ to form other relationships freely. This is a key principal when using Relationships.
 
 [Learn More About Relationships](http://www.cosmicmind.io/graph/relationship)
 
 <a name="action"></a>
 ## Action
 
-An **Action** is a model object that **forms a relationship between a collection of Entity subjects and a collection of Entity objects**. For example, "Apple Acquired Beats Electronics". The _Acquired_ Action captures the _Company_ Entities in a single relationship that may be used later to ask questions like, "which company acquired Beats Electronics?", or "what companies did Apple acquire?". In code, the following is how this would look.
-
-![GraphAction](http://cosmicmind.io/GK/GraphAction.png)
+An Action is a model object that forms a connection between many Entities. It may store property values and be a member of groups.
 
 ```swift
-let graph: Graph = Graph()
+let graph = Graph()
 
-// Create a Company Entity.
-let apple: Entity = Entity(type: "Company")
-apple["name"] = "Apple"
+let user = Entity(type: "User")
+user["name"] = "Daniel"
 
-// Create a Company Entity.
-let beats: Entity = Entity(type: "Company")
-beats["name"] = "Beats Electronics"
+let book1 = Entity(type: "Book")
+book1["title"] = "Learning Swift"
+book1.addToGroup("Programming")
 
-// Create an Acquired Action.
-let acquired: Action = Action(type: "Acquired")
-acquired["acquisitionDate"] = "May 28, 2014"
+let book2 = Entity(type: "Book")
+book2["title"] = "The Holographic Universe"
+book2.addToGroup("Physics")
 
-// Form the action.
-acquired.addSubject(apple)
-acquired.addObject(beats)
+let purchase = Action(type: "Purchase")
+purchase.addToGroup("Pending")
+
+purchase.addSubject(user)
+purchase.addObject(book1)
+purchase.addObject(book2)
 
 graph.save()
 ```
 
-Notice that information about the action is stored within the _Acquired_ Action leaving both _Apple_ and _Beats Electronics_ to form other actions freely. This is a key principal when using Actions.
-
-[Learn More About Actions](https://github.com/CosmicMind/Graph/wiki/Action)
-
-<a name="groups"></a>
-## Groups
-
-Groups are used to organize Entities, Relationships, and Actions into different collections from their types. This allows multiple types to exist in a single collection. For example, a Photo and Video Entity type may exist in a group called Media. Another example may be including a Photo and Book Entity type in a Favorites group for your users' account. Below are examples of using groups.
-
-```swift
-let graph: Graph = Graph()
-
-let photo: Entity = Entity(type: "Photo")
-photo.addGroup("Media")
-photo.addGroup("Favorites")
-photo.addGroup("Holiday Album")
-
-let video: Entity = Entity(type: "Video")
-video.addGroup("Media")
-
-let book: Entity = Entity(type: "Book")
-book.addGroup("Favorites")
-book.addGroup("To Read")
-
-graph.save()
-
-// Searching groups.
-let favorites: Array<Entity> = graph.searchForEntity(groups: ["Favorites"])
-```
+[Learn More About Actions](http://www.cosmicmind.io/graph/action)
 
 <a name="datadriven"></a>
 ## Data Driven
