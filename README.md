@@ -2,7 +2,9 @@
 
 ## Welcome to Graph
 
-Graph is a CoreData framework written in Swift. It's designed to simplify the complexities when working with CoreData while providing a seamless data-driven architecture.
+Graph is a data-driven framework that allows engineers to easily model data in a meaningful way.
+
+Graph's architecture is designed for beginners and professionals. Its robust API requires no setup and is ready for the simplest and most extensive applications.
 
 ## Features
 
