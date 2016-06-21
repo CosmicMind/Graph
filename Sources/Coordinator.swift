@@ -30,17 +30,35 @@
 
 import CoreData
 
-@objc(ManagedActionGroup)
-internal class ManagedActionGroup : ManagedNodeGroup {
-	@NSManaged internal var node: ManagedAction
+internal struct StorageSingleton {
+    static var dispatchToken: dispatch_once_t = 0
+    static var coordinator: NSPersistentStoreCoordinator?
+}
 
-	/**
-		:name:	init
-		:description:	Initializer for the Model Object.
-	*/
-	internal convenience init(name: String) {
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionGroupDescriptionName, inManagedObjectContext: Graph.context!)!, insertIntoManagedObjectContext: Graph.context)
-		self.name = name
-		context = Graph.context
-	}
+internal struct Coordinator {
+    /**
+     Creates an NSPersistentStoreCoordinator.
+     - Parameter type: Storage type.
+     - Parameter name: Storage name.
+     - Parameter location: Storage location.
+     - Returns: An instance of NSPersistentStoreCoordinator.
+    */
+    static func createPersistentStoreCoordinator(type: String, name: String, location: NSURL) -> NSPersistentStoreCoordinator {
+        dispatch_once(&StorageSingleton.dispatchToken) {
+            File.createDirectory(location, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
+                if let e = error {
+                    fatalError(e.localizedDescription)
+                }
+                
+                let coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
+                do {
+                    try coordinator.addPersistentStoreWithType(type, configuration: nil, URL: location.URLByAppendingPathComponent(name), options: nil)
+                } catch {
+                    fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+                }
+                StorageSingleton.coordinator = coordinator
+            }
+        }
+        return StorageSingleton.coordinator!
+    }
 }

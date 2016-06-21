@@ -30,17 +30,33 @@
 
 import CoreData
 
-@objc(ManagedEntityProperty)
-internal class ManagedEntityProperty : ManagedNodeProperty {
-	@NSManaged internal var node: ManagedEntity
-
-	/**
-		:name:	init
-	*/
-	internal convenience init(name: String, object: AnyObject) {
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.entityPropertyDescriptionName, inManagedObjectContext: Graph.context!)!, insertIntoManagedObjectContext: Graph.context)
-		self.name = name
-		self.object = object
-		context = Graph.context
-	}
+internal struct Context {
+    /**
+     Creates a NSManagedContext. The method will ensure that  any contexts that have
+     a concurrency type of .MainQueueConcurrencyType are always created on the main 
+     thread.
+     - Parameter concurrencyType: A concurrency type to use.
+     - Parameter parentContext: An optional parent context.
+    */
+    static func createManagedContext(concurrencyType: NSManagedObjectContextConcurrencyType, parentContext: NSManagedObjectContext? = nil) -> NSManagedObjectContext {
+        var moc: NSManagedObjectContext!
+        
+        let makeContext: () -> Void = {
+            moc = NSManagedObjectContext(concurrencyType: concurrencyType)
+            moc.mergePolicy = NSMergePolicy(mergeType: .MergeByPropertyStoreTrumpMergePolicyType)
+            if let pmoc = parentContext {
+                moc.parentContext = pmoc
+            }
+        }
+        
+        if concurrencyType == .MainQueueConcurrencyType && !NSThread.isMainThread() {
+            dispatch_sync(dispatch_get_main_queue()) {
+                makeContext()
+            }
+        } else {
+            makeContext()
+        }
+        
+        return moc
+    }
 }

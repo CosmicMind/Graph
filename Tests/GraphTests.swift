@@ -29,19 +29,20 @@
  */
 
 import CoreData
+import XCTest
+@testable import Graph
 
-@objc(ManagedRelationshipProperty)
-internal class ManagedRelationshipProperty : ManagedNodeProperty {
-	@NSManaged internal var node: ManagedRelationship
-
-	/**
-		:name:	init
-		:description:	Initializer for the Model Object.
-	*/
-	internal convenience init(name: String, object: AnyObject) {
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.relationshipPropertyDescriptionName, inManagedObjectContext: Graph.context!)!, insertIntoManagedObjectContext: Graph.context)
-		self.name = name
-		self.object = object
-		context = Graph.context
-	}
+class GraphTests : XCTestCase {
+    override func setUp() {
+        super.setUp()
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+    }
+    
+    func testContext() {
+        let g1 = Graph()
+        XCTAssertTrue(g1.context.isKindOfClass(NSManagedObjectContext))
+    }
 }

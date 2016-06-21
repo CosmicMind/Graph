@@ -30,18 +30,17 @@
 
 import CoreData
 
-@objc(ManagedActionProperty)
-internal class ManagedActionProperty : ManagedNodeProperty {
-	@NSManaged internal var node: ManagedAction
+/** Manages the storage details. */
 
-	/**
-		:name:	init
-		:description:	Initializer for the Model Object.
-	*/
-	internal convenience init(name: String, object: AnyObject) {
-		self.init(entity: NSEntityDescription.entityForName(GraphUtility.actionPropertyDescriptionName, inManagedObjectContext: Graph.context!)!, insertIntoManagedObjectContext: Graph.context)
-		self.name = name
-		self.object = object
-		context = Graph.context
-	}
+internal struct Storage {
+    /// Datastore name.
+    static let name: String = "Graph.sqlite"
+    
+    /// URL reference to where the datastore will live.
+    static var location: NSURL {
+        return File.URL(.DocumentDirectory, path: "Graph/default")!
+    }
+    
+    /// Storage type.
+    static var type: String = NSSQLiteStoreType
 }
