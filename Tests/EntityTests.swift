@@ -47,10 +47,10 @@ class EntityTests : XCTestCase {
         let g1 = Graph()
         
         let e1 = Entity("A")
-        e1["p1"] = "v1"
-        e1.addToGroup("g1")
+        e1["p"] = "v"
+        e1.addToGroup("g")
         
-        XCTAssertTrue("v1" == e1["p1"] as? String)
+        XCTAssertTrue("v" == e1["p"] as? String)
         
         saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
         
@@ -63,14 +63,30 @@ class EntityTests : XCTestCase {
         let g2 = Graph("g2")
         
         let e2 = Entity("B", graph: "g2")
-        e2["p1"] = "v1"
-        e2.addToGroup("g1")
+        e2["p"] = "v"
+        e2.addToGroup("g")
         
-        XCTAssertTrue("v1" == e2["p1"] as? String)
+        XCTAssertTrue("v" == e2["p"] as? String)
         
         saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
         
         g2.save { [weak self] (success: Bool, error: NSError?) in
+            self?.saveException?.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
+        
+        let g3 = Graph("g3")
+        
+        let e3 = Entity("B", graph: g3)
+        e3["p"] = "v"
+        e3.addToGroup("g3")
+        
+        XCTAssertTrue("v" == e3["p"] as? String)
+        
+        saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
+        
+        g3.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
         }
         

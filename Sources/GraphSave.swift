@@ -50,6 +50,10 @@ public extension Graph {
                         return
                     }
                     
+                    guard parentContext.hasChanges else {
+                        return
+                    }
+                    
                     parentContext.performBlock {
                         do {
                             try parentContext.save()
