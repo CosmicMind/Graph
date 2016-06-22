@@ -34,13 +34,13 @@ import CoreData
 
 internal struct Storage {
     /// Datastore name.
-    static let name: String = "Graph.sqlite"
-    
+    static let name: String = "default"
+	
+	/// Storage type.
+	static let type: String = NSSQLiteStoreType
+	
     /// URL reference to where the datastore will live.
     static var location: NSURL {
-        return File.URL(.DocumentDirectory, path: "Graph/default")!
+        return File.URL(.DocumentDirectory, path: "Graph/")!
     }
-    
-    /// Storage type.
-    static var type: String = NSSQLiteStoreType
 }

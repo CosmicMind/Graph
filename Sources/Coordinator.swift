@@ -30,35 +30,38 @@
 
 import CoreData
 
-internal struct StorageSingleton {
-    static var dispatchToken: dispatch_once_t = 0
+internal struct CoordinatorSingleton {
     static var coordinator: NSPersistentStoreCoordinator?
 }
 
 internal struct Coordinator {
-    /**
+	/**
      Creates an NSPersistentStoreCoordinator.
-     - Parameter type: Storage type.
      - Parameter name: Storage name.
+     - Parameter type: Storage type.
      - Parameter location: Storage location.
      - Returns: An instance of NSPersistentStoreCoordinator.
-    */
-    static func createPersistentStoreCoordinator(type: String, name: String, location: NSURL) -> NSPersistentStoreCoordinator {
-        dispatch_once(&StorageSingleton.dispatchToken) {
-            File.createDirectory(location, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
-                if let e = error {
-                    fatalError(e.localizedDescription)
-                }
-                
-                let coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
-                do {
-                    try coordinator.addPersistentStoreWithType(type, configuration: nil, URL: location.URLByAppendingPathComponent(name), options: nil)
-                } catch {
-                    fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
-                }
-                StorageSingleton.coordinator = coordinator
+	*/
+    static func createPersistentStoreCoordinator(name: String, type: String, location: NSURL) -> NSPersistentStoreCoordinator {
+        var loc: NSURL!
+        loc = location.URLByAppendingPathComponent(name)
+        File.createDirectory(loc, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
+            if let e = error {
+                fatalError(e.localizedDescription)
             }
+            let coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
+            do {
+                switch type {
+                case NSSQLiteStoreType:
+                    loc = loc.URLByAppendingPathComponent("Graph.sqlite")
+                default:break
+                }
+                try coordinator.addPersistentStoreWithType(type, configuration: nil, URL: loc, options: nil)
+            } catch {
+                fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+            }
+            CoordinatorSingleton.coordinator = coordinator
         }
-        return StorageSingleton.coordinator!
+        return CoordinatorSingleton.coordinator!
     }
 }

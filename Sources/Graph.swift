@@ -30,45 +30,54 @@
 
 import CoreData
 
-internal struct GraphSingleton {
+internal struct GraphRegistry {
     static var dispatchToken: dispatch_once_t = 0
-    static var parentContext: NSManagedObjectContext?
-    static var mainContext: NSManagedObjectContext?
+    static var parentContexts: [String: NSManagedObjectContext]!
+    static var mainContexts: [String: NSManagedObjectContext]!
 }
 
 public class Graph {
-    /// Storage type.
-    private(set) var type: String
-    
     /// Storage name.
     private(set) var name: String
-    
+	
+	/// Storage type.
+	private(set) var type: String
+	
     /// Storage location.
     private(set) var location: NSURL
     
     /// Worker context.
     public private(set) var context: NSManagedObjectContext!
     
-    public init() {
-        self.type = Storage.type
-        self.name = Storage.name
-        self.location = Storage.location
+	public init(name: String = Storage.name, type: String = Storage.type, location: NSURL = Storage.location) {
+        self.name = name
+		self.type = type
+		self.location = location
+        prepareGraphRegistry()
         prepareContext()
+    }
+    
+    /// Prepares the registry.
+    private func prepareGraphRegistry() {
+        dispatch_once(&GraphRegistry.dispatchToken) {
+            GraphRegistry.parentContexts = [String: NSManagedObjectContext]()
+            GraphRegistry.mainContexts = [String: NSManagedObjectContext]()
+        }
     }
     
     /// Prapres the context.
     private func prepareContext() {
-        dispatch_once(&GraphSingleton.dispatchToken) { [weak self] in
-            if let graph = self {
-                let parentContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
-                parentContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(graph.type, name: graph.name, location: graph.location)
-                
-                let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: parentContext)
-                
-                GraphSingleton.parentContext = parentContext
-                GraphSingleton.mainContext = mainContext
-            }
+        guard let moc = GraphRegistry.mainContexts[name] else {
+            let parentContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
+            parentContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name, type: type, location: location)
+            
+            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: parentContext)
+            
+            GraphRegistry.parentContexts[name] = parentContext
+            GraphRegistry.mainContexts[name] = mainContext
+            context = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
+            return
         }
-        context = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: GraphSingleton.mainContext)
+        context = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: moc)
     }
 }
