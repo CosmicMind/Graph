@@ -28,15 +28,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import CoreData
+import Foundation
 
-internal class GraphNode: NSManagedObject {
-    /// Node NSManagedObjectContext reference.
-    internal internal(set) var context: NSManagedObjectContext!
-    
-    /// Marks the node for deletion.
-    internal func delete() {
-        context.deleteObject(self)
-    }
+public enum NodeClass: NSNumber {
+    case Entity = 1
+    case Relationship = 2
+    case Action = 3
 }
-

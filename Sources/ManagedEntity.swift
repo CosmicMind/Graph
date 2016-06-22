@@ -1,0 +1,184 @@
+/*
+ * Copyright (C) 2015 - 2016, CosmicMind, Inc. <http://cosmicmind.io>.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *	*	Redistributions of source code must retain the above copyright notice, this
+ *		list of conditions and the following disclaimer.
+ *
+ *	*	Redistributions in binary form must reproduce the above copyright notice,
+ *		this list of conditions and the following disclaimer in the documentation
+ *		and/or other materials provided with the distribution.
+ *
+ *	*	Neither the name of CosmicMind nor the names of its
+ *		contributors may be used to endorse or promote products derived from
+ *		this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import CoreData
+
+@objc(ManagedEntity)
+internal class ManagedEntity: ManagedNode {
+    @NSManaged internal var actionSubjectSet: NSSet
+    @NSManaged internal var actionObjectSet: NSSet
+    @NSManaged internal var relationshipSubjectSet: NSSet
+    @NSManaged internal var relationshipObjectSet: NSSet
+    
+    /**
+     Initializer that accepts a type and a NSManagedObjectContext.
+     - Parameter type: A reference to the Entity type.
+     - Parameter context: A reference to the NSManagedObejctContext.
+    */
+    internal convenience init(_ type: String, context: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(ModelIdentifier.entityDescriptionName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+        self.type = type
+        self.context = context
+        nodeClass = NodeClass.Entity.rawValue
+        createdDate = NSDate()
+        propertySet = NSSet()
+        groupSet = NSSet()
+        actionSubjectSet = NSSet()
+        actionObjectSet = NSSet()
+        relationshipSubjectSet = NSSet()
+        relationshipObjectSet = NSSet()
+    }
+    
+    /**
+     Access properties using the subscript operator.
+     - Parameter name: A property name value.
+     - Returns: The optional AnyObject value.
+     */
+    internal subscript(name: String) -> AnyObject? {
+        get {
+            for n in propertySet {
+                let property: ManagedEntityProperty = n as! ManagedEntityProperty
+                if name == property.name {
+                    return property.object
+                }
+            }
+            return nil
+        }
+        set(object) {
+            if nil == object {
+                for n in propertySet {
+                    let property: ManagedEntityProperty = n as! ManagedEntityProperty
+                    if name == property.name {
+                        property.delete()
+                        (propertySet as! NSMutableSet).removeObject(property)
+                        break
+                    }
+                }
+            } else {
+                var hasProperty: Bool = false
+                for n in propertySet {
+                    let property: ManagedEntityProperty = n as! ManagedEntityProperty
+                    if name == property.name {
+                        hasProperty = true
+                        property.object = object!
+                        break
+                    }
+                }
+                if false == hasProperty {
+                    let property: ManagedEntityProperty = ManagedEntityProperty(name: name, object: object!, context: context)
+                    property.node = self
+                }
+            }
+        }
+    }
+    
+    /**
+     Adds the ManagedEntity to the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if added, false
+     otherwise.
+     */
+    internal func addToGroup(name: String!) -> Bool {
+        if !memberOfGroup(name) {
+            let group: ManagedEntityGroup = ManagedEntityGroup(name: name, context: context)
+            group.node = self
+            return true
+        }
+        return false
+    }
+    
+    /**
+     Checks membership in a group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    internal func memberOfGroup(name: String!) -> Bool {
+        for n in groupSet {
+            let group: ManagedEntityGroup = n as! ManagedEntityGroup
+            if name == group.name {
+                return true
+            }
+        }
+        return false
+    }
+    
+    /**
+     Removes the ManagedEntity from a group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    internal func removeFromGroup(name: String!) -> Bool {
+        for n in groupSet {
+            let group: ManagedEntityGroup = n as! ManagedEntityGroup
+            if name == group.name {
+                group.delete()
+                (groupSet as! NSMutableSet).removeObject(group)
+                return true
+            }
+        }
+        return false
+    }
+}
+
+internal extension ManagedEntity {
+    /**
+     Adds the relationship between ManagedEntityProperty and ManagedEntity.
+     - Parameter value: A reference to a ManagedEntityProperty.
+     */
+    func addPropertySetObject(value: ManagedEntityProperty) {
+        (propertySet as! NSMutableSet).addObject(value)
+    }
+    
+    /**
+     Removes the relationship between ManagedEntityProperty and ManagedEntity.
+     - Parameter value: A reference to a ManagedEntityProperty.
+     */
+    func removePropertySetObject(value: ManagedEntityProperty) {
+        (propertySet as! NSMutableSet).removeObject(value)
+    }
+    
+    /**
+     Adds the relationship between ManagedEntityGroup and ManagedEntity.
+     - Parameter value: A reference to a ManagedEntityGroup.
+     */
+    func addGroupSetObject(value: ManagedEntityGroup) {
+        (groupSet as! NSMutableSet).addObject(value)
+    }
+    
+    /**
+     Removes the relationship between ManagedEntityGroup and ManagedEntity.
+     - Parameter value: A reference to a ManagedEntityGroup.
+     */
+    func removeGroupSetObject(value: ManagedEntityGroup) {
+        (groupSet as! NSMutableSet).removeObject(value)
+    }
+}

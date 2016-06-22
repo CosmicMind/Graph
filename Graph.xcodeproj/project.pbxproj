@@ -22,6 +22,16 @@
 		96A1E89A1D1A512700FAC2F9 /* ManagedNodeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8981D1A512700FAC2F9 /* ManagedNodeGroup.swift */; };
 		96A1E89C1D1A514300FAC2F9 /* ManagedNodeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89B1D1A514300FAC2F9 /* ManagedNodeProperty.swift */; };
 		96A1E89D1D1A514300FAC2F9 /* ManagedNodeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89B1D1A514300FAC2F9 /* ManagedNodeProperty.swift */; };
+		96A1E8A01D1A543A00FAC2F9 /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89F1D1A543A00FAC2F9 /* ManagedEntity.swift */; };
+		96A1E8A11D1A543A00FAC2F9 /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89F1D1A543A00FAC2F9 /* ManagedEntity.swift */; };
+		96A1E8A31D1A546A00FAC2F9 /* ManagedEntityGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8A21D1A546A00FAC2F9 /* ManagedEntityGroup.swift */; };
+		96A1E8A41D1A546A00FAC2F9 /* ManagedEntityGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8A21D1A546A00FAC2F9 /* ManagedEntityGroup.swift */; };
+		96A1E8A61D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8A51D1A547B00FAC2F9 /* ManagedEntityProperty.swift */; };
+		96A1E8A71D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8A51D1A547B00FAC2F9 /* ManagedEntityProperty.swift */; };
+		96A1E8B61D1A54F500FAC2F9 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8B51D1A54F500FAC2F9 /* Entity.swift */; };
+		96A1E8B71D1A54F500FAC2F9 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8B51D1A54F500FAC2F9 /* Entity.swift */; };
+		96A1E8C61D1A556000FAC2F9 /* NodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8C51D1A556000FAC2F9 /* NodeClass.swift */; };
+		96A1E8C71D1A556000FAC2F9 /* NodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8C51D1A556000FAC2F9 /* NodeClass.swift */; };
 		96F6B5131D19C81C00EDF830 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5121D19C81C00EDF830 /* GraphTests.swift */; };
 		96F6B5141D19C81C00EDF830 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5121D19C81C00EDF830 /* GraphTests.swift */; };
 		96F6B5161D19C8D200EDF830 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5151D19C8D200EDF830 /* Context.swift */; };
@@ -69,6 +79,11 @@
 		96A1E8941D1A4A4D00FAC2F9 /* GraphNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphNode.swift; sourceTree = "<group>"; };
 		96A1E8981D1A512700FAC2F9 /* ManagedNodeGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNodeGroup.swift; sourceTree = "<group>"; };
 		96A1E89B1D1A514300FAC2F9 /* ManagedNodeProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNodeProperty.swift; sourceTree = "<group>"; };
+		96A1E89F1D1A543A00FAC2F9 /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
+		96A1E8A21D1A546A00FAC2F9 /* ManagedEntityGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntityGroup.swift; sourceTree = "<group>"; };
+		96A1E8A51D1A547B00FAC2F9 /* ManagedEntityProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntityProperty.swift; sourceTree = "<group>"; };
+		96A1E8B51D1A54F500FAC2F9 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		96A1E8C51D1A556000FAC2F9 /* NodeClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeClass.swift; sourceTree = "<group>"; };
 		96D4E4EE1BA76FAF00672E38 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96F6B5121D19C81C00EDF830 /* GraphTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphTests.swift; sourceTree = "<group>"; };
 		96F6B5151D19C8D200EDF830 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
@@ -129,6 +144,9 @@
 				961F9B541C10ED5400ACF5DD /* Graph.h */,
 				961F9BC71C10ED8000ACF5DD /* Graph */,
 				96A1E88A1D1A487D00FAC2F9 /* Node */,
+				96A1E89E1D1A542700FAC2F9 /* Entity */,
+				96A1E8A81D1A548700FAC2F9 /* Relationship */,
+				96A1E8B81D1A552600FAC2F9 /* Action */,
 				960590561C3B68F400691E88 /* File */,
 			);
 			path = Sources;
@@ -150,6 +168,7 @@
 		96A1E88A1D1A487D00FAC2F9 /* Node */ = {
 			isa = PBXGroup;
 			children = (
+				96A1E8C51D1A556000FAC2F9 /* NodeClass.swift */,
 				96A1E88B1D1A489300FAC2F9 /* Node.swift */,
 				96A1E88E1D1A48B800FAC2F9 /* NodeDocument.swift */,
 				96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */,
@@ -157,6 +176,31 @@
 				96A1E89B1D1A514300FAC2F9 /* ManagedNodeProperty.swift */,
 			);
 			name = Node;
+			sourceTree = "<group>";
+		};
+		96A1E89E1D1A542700FAC2F9 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				96A1E8B51D1A54F500FAC2F9 /* Entity.swift */,
+				96A1E89F1D1A543A00FAC2F9 /* ManagedEntity.swift */,
+				96A1E8A21D1A546A00FAC2F9 /* ManagedEntityGroup.swift */,
+				96A1E8A51D1A547B00FAC2F9 /* ManagedEntityProperty.swift */,
+			);
+			name = Entity;
+			sourceTree = "<group>";
+		};
+		96A1E8A81D1A548700FAC2F9 /* Relationship */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Relationship;
+			sourceTree = "<group>";
+		};
+		96A1E8B81D1A552600FAC2F9 /* Action */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Action;
 			sourceTree = "<group>";
 		};
 		96D4E4C31BA76EFC00672E38 = {
@@ -365,13 +409,18 @@
 			files = (
 				96F6B5261D19E15E00EDF830 /* Graph.swift in Sources */,
 				96F6B5231D19D56B00EDF830 /* Model.swift in Sources */,
+				96A1E8A41D1A546A00FAC2F9 /* ManagedEntityGroup.swift in Sources */,
+				96A1E8C71D1A556000FAC2F9 /* NodeClass.swift in Sources */,
 				96F6B5201D19D3FF00EDF830 /* Coordinator.swift in Sources */,
 				96A1E89A1D1A512700FAC2F9 /* ManagedNodeGroup.swift in Sources */,
+				96A1E8A11D1A543A00FAC2F9 /* ManagedEntity.swift in Sources */,
 				96F6B5171D19C8D200EDF830 /* Context.swift in Sources */,
 				96A1E8961D1A4A4D00FAC2F9 /* GraphNode.swift in Sources */,
 				96F6B51D1D19CE3700EDF830 /* File.swift in Sources */,
+				96A1E8A71D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */,
 				96F6B51A1D19CBA900EDF830 /* Storage.swift in Sources */,
 				96A1E88D1D1A489300FAC2F9 /* Node.swift in Sources */,
+				96A1E8B71D1A54F500FAC2F9 /* Entity.swift in Sources */,
 				96A1E8931D1A4A2100FAC2F9 /* ManagedNode.swift in Sources */,
 				96A1E89D1D1A514300FAC2F9 /* ManagedNodeProperty.swift in Sources */,
 			);
@@ -392,12 +441,17 @@
 				96A1E8991D1A512700FAC2F9 /* ManagedNodeGroup.swift in Sources */,
 				96A1E8951D1A4A4D00FAC2F9 /* GraphNode.swift in Sources */,
 				96F6B5251D19E15E00EDF830 /* Graph.swift in Sources */,
+				96A1E8C61D1A556000FAC2F9 /* NodeClass.swift in Sources */,
+				96A1E8A01D1A543A00FAC2F9 /* ManagedEntity.swift in Sources */,
+				96A1E8A31D1A546A00FAC2F9 /* ManagedEntityGroup.swift in Sources */,
 				96F6B5221D19D56B00EDF830 /* Model.swift in Sources */,
 				96A1E89C1D1A514300FAC2F9 /* ManagedNodeProperty.swift in Sources */,
 				96A1E88F1D1A48B800FAC2F9 /* NodeDocument.swift in Sources */,
 				96A1E8921D1A4A2100FAC2F9 /* ManagedNode.swift in Sources */,
+				96A1E8A61D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */,
 				96F6B51F1D19D3FF00EDF830 /* Coordinator.swift in Sources */,
 				96F6B5161D19C8D200EDF830 /* Context.swift in Sources */,
+				96A1E8B61D1A54F500FAC2F9 /* Entity.swift in Sources */,
 				96F6B51C1D19CE3700EDF830 /* File.swift in Sources */,
 				96F6B5191D19CBA900EDF830 /* Storage.swift in Sources */,
 				96A1E88C1D1A489300FAC2F9 /* Node.swift in Sources */,

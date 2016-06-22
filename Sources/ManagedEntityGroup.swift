@@ -30,13 +30,19 @@
 
 import CoreData
 
-internal class GraphNode: NSManagedObject {
-    /// Node NSManagedObjectContext reference.
-    internal internal(set) var context: NSManagedObjectContext!
+@objc(ManagedEntityGroup)
+internal class ManagedEntityGroup: ManagedNodeGroup {
+    @NSManaged internal var node: ManagedEntity
     
-    /// Marks the node for deletion.
-    internal func delete() {
-        context.deleteObject(self)
+    /**
+     Initializer that accepts a group name and a 
+     NSManagedObjectContext.
+     - Parameter name: A group name.
+     - Parameter context: A reference to a NSManagedObjectContext.
+    */
+    internal convenience init(name: String, context: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(ModelIdentifier.entityGroupDescriptionName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+        self.name = name
+        self.context = context
     }
 }
-
