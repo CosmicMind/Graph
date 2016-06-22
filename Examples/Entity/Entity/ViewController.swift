@@ -71,7 +71,8 @@ class ViewController: UIViewController {
 		the save has completed.
 		*/
 		graph.save { (success: Bool, error: NSError?) in
-			if let e: NSError = error {
+			print("Saved")
+            if let e: NSError = error {
 				print(e)
 			}
 		}

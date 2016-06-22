@@ -169,26 +169,6 @@ public class Graph: NSObject {
         }
     }
     
-    /**
-     Handler for save notifications. Context merges are made within this handler.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc internal func handleParentContextDidSave(notification: NSNotification) {
-        guard let mainContext = GraphRegistry.mainContexts[name] else {
-            return
-        }
-        
-        if NSThread.isMainThread() {
-            mainContext.mergeChangesFromContextDidSaveNotification(notification)
-            notifyWatchers(notification)
-        } else {
-            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                mainContext.mergeChangesFromContextDidSaveNotification(notification)
-                self?.notifyWatchers(notification)
-            }
-        }
-    }
-    
     /// Prepares the registry.
     private func prepareGraphRegistry() {
         dispatch_once(&GraphRegistry.dispatchToken) {
@@ -383,7 +363,7 @@ public extension Graph {
      :name:	searchForEntity(types: groups: properties)
      */
     public func searchForEntity(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Entity] {
-        var nodes: Array<AnyObject> = Array<AnyObject>()
+        var nodes = [AnyObject]()
         var toFilter: Bool = false
         
         if let v = types {
