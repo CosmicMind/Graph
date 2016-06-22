@@ -13,15 +13,14 @@
 		9677B45F1BA78AA600C82BBB /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4551BA78AA600C82BBB /* Graph.framework */; };
 		96A1E88C1D1A489300FAC2F9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E88B1D1A489300FAC2F9 /* Node.swift */; };
 		96A1E88D1D1A489300FAC2F9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E88B1D1A489300FAC2F9 /* Node.swift */; };
-		96A1E88F1D1A48B800FAC2F9 /* NodeDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E88E1D1A48B800FAC2F9 /* NodeDocument.swift */; };
 		96A1E8921D1A4A2100FAC2F9 /* ManagedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */; };
 		96A1E8931D1A4A2100FAC2F9 /* ManagedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */; };
-		96A1E8951D1A4A4D00FAC2F9 /* GraphNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8941D1A4A4D00FAC2F9 /* GraphNode.swift */; };
-		96A1E8961D1A4A4D00FAC2F9 /* GraphNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8941D1A4A4D00FAC2F9 /* GraphNode.swift */; };
-		96A1E8991D1A512700FAC2F9 /* ManagedNodeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8981D1A512700FAC2F9 /* ManagedNodeGroup.swift */; };
-		96A1E89A1D1A512700FAC2F9 /* ManagedNodeGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8981D1A512700FAC2F9 /* ManagedNodeGroup.swift */; };
-		96A1E89C1D1A514300FAC2F9 /* ManagedNodeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89B1D1A514300FAC2F9 /* ManagedNodeProperty.swift */; };
-		96A1E89D1D1A514300FAC2F9 /* ManagedNodeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89B1D1A514300FAC2F9 /* ManagedNodeProperty.swift */; };
+		96A1E8951D1A4A4D00FAC2F9 /* ManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8941D1A4A4D00FAC2F9 /* ManagedModel.swift */; };
+		96A1E8961D1A4A4D00FAC2F9 /* ManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8941D1A4A4D00FAC2F9 /* ManagedModel.swift */; };
+		96A1E8991D1A512700FAC2F9 /* ManagedGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8981D1A512700FAC2F9 /* ManagedGroup.swift */; };
+		96A1E89A1D1A512700FAC2F9 /* ManagedGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8981D1A512700FAC2F9 /* ManagedGroup.swift */; };
+		96A1E89C1D1A514300FAC2F9 /* ManagedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89B1D1A514300FAC2F9 /* ManagedProperty.swift */; };
+		96A1E89D1D1A514300FAC2F9 /* ManagedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89B1D1A514300FAC2F9 /* ManagedProperty.swift */; };
 		96A1E8A01D1A543A00FAC2F9 /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89F1D1A543A00FAC2F9 /* ManagedEntity.swift */; };
 		96A1E8A11D1A543A00FAC2F9 /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E89F1D1A543A00FAC2F9 /* ManagedEntity.swift */; };
 		96A1E8A31D1A546A00FAC2F9 /* ManagedEntityGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8A21D1A546A00FAC2F9 /* ManagedEntityGroup.swift */; };
@@ -76,11 +75,10 @@
 		9677B4551BA78AA600C82BBB /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B45E1BA78AA600C82BBB /* Graph iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96A1E88B1D1A489300FAC2F9 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
-		96A1E88E1D1A48B800FAC2F9 /* NodeDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeDocument.swift; sourceTree = "<group>"; };
 		96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNode.swift; sourceTree = "<group>"; };
-		96A1E8941D1A4A4D00FAC2F9 /* GraphNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphNode.swift; sourceTree = "<group>"; };
-		96A1E8981D1A512700FAC2F9 /* ManagedNodeGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNodeGroup.swift; sourceTree = "<group>"; };
-		96A1E89B1D1A514300FAC2F9 /* ManagedNodeProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNodeProperty.swift; sourceTree = "<group>"; };
+		96A1E8941D1A4A4D00FAC2F9 /* ManagedModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedModel.swift; sourceTree = "<group>"; };
+		96A1E8981D1A512700FAC2F9 /* ManagedGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedGroup.swift; sourceTree = "<group>"; };
+		96A1E89B1D1A514300FAC2F9 /* ManagedProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedProperty.swift; sourceTree = "<group>"; };
 		96A1E89F1D1A543A00FAC2F9 /* ManagedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntity.swift; sourceTree = "<group>"; };
 		96A1E8A21D1A546A00FAC2F9 /* ManagedEntityGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntityGroup.swift; sourceTree = "<group>"; };
 		96A1E8A51D1A547B00FAC2F9 /* ManagedEntityProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntityProperty.swift; sourceTree = "<group>"; };
@@ -146,7 +144,7 @@
 				961F9B581C10ED5400ACF5DD /* Info.plist */,
 				961F9B541C10ED5400ACF5DD /* Graph.h */,
 				961F9BC71C10ED8000ACF5DD /* Graph */,
-				96A1E88A1D1A487D00FAC2F9 /* Node */,
+				96A1E88A1D1A487D00FAC2F9 /* Model */,
 				96A1E89E1D1A542700FAC2F9 /* Entity */,
 				96A1E8A81D1A548700FAC2F9 /* Relationship */,
 				96A1E8B81D1A552600FAC2F9 /* Action */,
@@ -163,22 +161,21 @@
 				96F6B51E1D19D3FF00EDF830 /* Coordinator.swift */,
 				96F6B5211D19D56B00EDF830 /* Model.swift */,
 				96F6B5241D19E15E00EDF830 /* Graph.swift */,
-				96A1E8941D1A4A4D00FAC2F9 /* GraphNode.swift */,
+				96A1E8941D1A4A4D00FAC2F9 /* ManagedModel.swift */,
+				96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */,
+				96A1E8981D1A512700FAC2F9 /* ManagedGroup.swift */,
+				96A1E89B1D1A514300FAC2F9 /* ManagedProperty.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
 		};
-		96A1E88A1D1A487D00FAC2F9 /* Node */ = {
+		96A1E88A1D1A487D00FAC2F9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				96A1E8C51D1A556000FAC2F9 /* NodeClass.swift */,
 				96A1E88B1D1A489300FAC2F9 /* Node.swift */,
-				96A1E88E1D1A48B800FAC2F9 /* NodeDocument.swift */,
-				96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */,
-				96A1E8981D1A512700FAC2F9 /* ManagedNodeGroup.swift */,
-				96A1E89B1D1A514300FAC2F9 /* ManagedNodeProperty.swift */,
 			);
-			name = Node;
+			name = Model;
 			sourceTree = "<group>";
 		};
 		96A1E89E1D1A542700FAC2F9 /* Entity */ = {
@@ -416,17 +413,17 @@
 				96A1E8A41D1A546A00FAC2F9 /* ManagedEntityGroup.swift in Sources */,
 				96A1E8C71D1A556000FAC2F9 /* NodeClass.swift in Sources */,
 				96F6B5201D19D3FF00EDF830 /* Coordinator.swift in Sources */,
-				96A1E89A1D1A512700FAC2F9 /* ManagedNodeGroup.swift in Sources */,
+				96A1E89A1D1A512700FAC2F9 /* ManagedGroup.swift in Sources */,
 				96A1E8A11D1A543A00FAC2F9 /* ManagedEntity.swift in Sources */,
 				96F6B5171D19C8D200EDF830 /* Context.swift in Sources */,
-				96A1E8961D1A4A4D00FAC2F9 /* GraphNode.swift in Sources */,
+				96A1E8961D1A4A4D00FAC2F9 /* ManagedModel.swift in Sources */,
 				96F6B51D1D19CE3700EDF830 /* File.swift in Sources */,
 				96A1E8A71D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */,
 				96F6B51A1D19CBA900EDF830 /* Storage.swift in Sources */,
 				96A1E88D1D1A489300FAC2F9 /* Node.swift in Sources */,
 				96A1E8B71D1A54F500FAC2F9 /* Entity.swift in Sources */,
 				96A1E8931D1A4A2100FAC2F9 /* ManagedNode.swift in Sources */,
-				96A1E89D1D1A514300FAC2F9 /* ManagedNodeProperty.swift in Sources */,
+				96A1E89D1D1A514300FAC2F9 /* ManagedProperty.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,15 +440,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96A1E8991D1A512700FAC2F9 /* ManagedNodeGroup.swift in Sources */,
-				96A1E8951D1A4A4D00FAC2F9 /* GraphNode.swift in Sources */,
+				96A1E8991D1A512700FAC2F9 /* ManagedGroup.swift in Sources */,
+				96A1E8951D1A4A4D00FAC2F9 /* ManagedModel.swift in Sources */,
 				96F6B5251D19E15E00EDF830 /* Graph.swift in Sources */,
 				96A1E8C61D1A556000FAC2F9 /* NodeClass.swift in Sources */,
 				96A1E8A01D1A543A00FAC2F9 /* ManagedEntity.swift in Sources */,
 				96A1E8A31D1A546A00FAC2F9 /* ManagedEntityGroup.swift in Sources */,
 				96F6B5221D19D56B00EDF830 /* Model.swift in Sources */,
-				96A1E89C1D1A514300FAC2F9 /* ManagedNodeProperty.swift in Sources */,
-				96A1E88F1D1A48B800FAC2F9 /* NodeDocument.swift in Sources */,
+				96A1E89C1D1A514300FAC2F9 /* ManagedProperty.swift in Sources */,
 				96A1E8921D1A4A2100FAC2F9 /* ManagedNode.swift in Sources */,
 				96A1E8A61D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */,
 				96F6B51F1D19D3FF00EDF830 /* Coordinator.swift in Sources */,

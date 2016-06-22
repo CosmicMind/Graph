@@ -30,7 +30,8 @@
 
 import CoreData
 
-internal class GraphNode: NSManagedObject {
+@objc(ManagedModel)
+internal class ManagedModel: NSManagedObject {
     /// Node NSManagedObjectContext reference.
     internal internal(set) var context: NSManagedObjectContext!
     

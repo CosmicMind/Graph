@@ -30,6 +30,23 @@
 
 import CoreData
 
-internal class ManagedNodeGroup: GraphNode {
+@objc(ManagedProperty)
+internal class ManagedProperty: ManagedModel {
     @NSManaged internal var name: String
+    @NSManaged internal var object: AnyObject
+    
+    /**
+     Initializer that accepts an identifier, property name, value and
+     a NSManagedObjectContext.
+     - Parameter identifier: A model identifier.
+     - Parameter name: A property name.
+     - Parameter object: A reference to the object value.
+     - Parameter context: A reference to a NSManagedObjectContext.
+     */
+    internal convenience init(identifier: String, name: String, object: AnyObject, context: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+        self.name = name
+        self.object = object
+        self.context = context
+    }
 }

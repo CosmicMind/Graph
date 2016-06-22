@@ -31,7 +31,7 @@
 import CoreData
 
 @objc(ManagedEntityGroup)
-internal class ManagedEntityGroup: ManagedNodeGroup {
+internal class ManagedEntityGroup: ManagedGroup {
     @NSManaged internal var node: ManagedEntity
     
     /**
@@ -40,9 +40,7 @@ internal class ManagedEntityGroup: ManagedNodeGroup {
      - Parameter name: A group name.
      - Parameter context: A reference to a NSManagedObjectContext.
     */
-    internal convenience init(name: String, context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(ModelIdentifier.entityGroupDescriptionName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-        self.name = name
-        self.context = context
+    internal required convenience init(name: String, context: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.entityGroupDescriptionName, name: name, context: context)
     }
 }

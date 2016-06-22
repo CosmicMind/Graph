@@ -58,7 +58,7 @@ class EntityTests: XCTestCase, GraphDelegate {
         saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
         delegateException = expectationWithDescription("[EntityTests Error: Delegate Etity test failed.]")
         
-        g1.syncSave { [weak self] (success: Bool, error: NSError?) in
+        g1.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
         }
         
@@ -77,7 +77,7 @@ class EntityTests: XCTestCase, GraphDelegate {
         saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
         delegateException = expectationWithDescription("[EntityTests Error: Delegate Etity test failed.]")
         
-        g2.syncSave { [weak self] (success: Bool, error: NSError?) in
+        g2.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
         }
         
@@ -85,19 +85,19 @@ class EntityTests: XCTestCase, GraphDelegate {
         
         let g3 = Graph("g3")
         g3.watchForEntity(types: ["T"])
-        g3.delegate = self
         
-        let e3 = Entity("T", graph: g3)
-        e3["p"] = "v"
-        e3.addToGroup("g3")
-        
-        XCTAssertTrue("v" == e3["p"] as? String)
-        
+        for _ in 0..<10000 {
+            let e3 = Entity("T", graph: g3)
+            e3["p"] = "v"
+            e3.addToGroup("g3")
+            
+            XCTAssertTrue("v" == e3["p"] as? String)
+        }
+            
         saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
-        delegateException = expectationWithDescription("[EntityTests Error: Delegate Etity test failed.]")
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            g3.syncSave { [weak self] (success: Bool, error: NSError?) in
+            g3.save { [weak self] (success: Bool, error: NSError?) in
                 self?.saveException?.fulfill()
             }
         }

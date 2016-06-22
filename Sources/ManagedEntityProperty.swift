@@ -31,7 +31,7 @@
 import CoreData
 
 @objc(ManagedEntityProperty)
-internal class ManagedEntityProperty: ManagedNodeProperty {
+internal class ManagedEntityProperty: ManagedProperty {
     @NSManaged internal var node: ManagedEntity
     
     /**
@@ -41,10 +41,7 @@ internal class ManagedEntityProperty: ManagedNodeProperty {
      - Parameter object: A reference to the object value.
      - Parameter context: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(name: String, object: AnyObject, context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(ModelIdentifier.entityPropertyDescriptionName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-        self.name = name
-        self.object = object
-        self.context = context
+    internal required convenience init(name: String, object: AnyObject, context: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.entityPropertyDescriptionName, name: name, object: object, context: context)
     }
 }

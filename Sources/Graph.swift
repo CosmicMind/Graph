@@ -71,6 +71,12 @@ public class Graph: NSObject {
     /// A reference to a delagte object.
     public weak var delegate: GraphDelegate?
     
+    /// Number of items to return.
+    public var batchSize: Int = 0 // 0 == no limit
+    
+    /// Start the return results from this offset.
+    public var batchOffset: Int = 0
+    
     /// Initializer to default Graph.
     public override init() {
         self.name = Storage.name
@@ -134,44 +140,6 @@ public class Graph: NSObject {
                             dispatch_async(dispatch_get_main_queue()) {
                                 completion?(success: false, error: e)
                             }
-                        }
-                    }
-                } catch let e as NSError {
-                    completion?(success: false, error: e)
-                }
-            }
-        }
-    }
-    
-    /**
-     Performs a synchronous save.
-     - Parameter completion: An Optional completion block that is
-     executed when the save operation is completed.
-     */
-    public func syncSave(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-        guard context.hasChanges else {
-            return
-        }
-        
-        context.performBlockAndWait { [weak self] in
-            if let moc = self?.context {
-                do {
-                    try moc.save()
-                    
-                    guard let parentContext = moc.parentContext else {
-                        return
-                    }
-                    
-                    guard parentContext.hasChanges else {
-                        return
-                    }
-                    
-                    parentContext.performBlockAndWait {
-                        do {
-                            try parentContext.save()
-                            completion?(success: true, error: nil)
-                        } catch let e as NSError {
-                            completion?(success: false, error: e)
                         }
                     }
                 } catch let e as NSError {
@@ -356,10 +324,10 @@ public extension Graph {
                     case "ManagedEntity_ManagedEntity_":
                         delegate?.graphDidInsertEntity?(self, entity: Entity(managedEntity: node as! ManagedEntity))
                     case "ManagedEntityGroup_ManagedEntityGroup_":
-                        let group: ManagedEntityGroup = node as! ManagedEntityGroup
+                        let group = node as! ManagedEntityGroup
                         delegate?.graphDidInsertEntityGroup?(self, entity: Entity(managedEntity: group.node), group: group.name)
                     case "ManagedEntityProperty_ManagedEntityProperty_":
-                        let property: ManagedEntityProperty = node as! ManagedEntityProperty
+                        let property = node as! ManagedEntityProperty
                         delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedEntity: property.node), property: property.name, value: property.object)
                     default:
                         assert(false, "[Graph Error: Graph observed an object that is invalid.]")
@@ -406,5 +374,134 @@ public extension Graph {
                 }
             }
         }
+    }
+}
+
+/// Graph Search API.
+public extension Graph {
+    /**
+     :name:	searchForEntity(types: groups: properties)
+     */
+    public func searchForEntity(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Entity] {
+        var nodes: Array<AnyObject> = Array<AnyObject>()
+        var toFilter: Bool = false
+        
+        if let v = types {
+            if let n = search(ModelIdentifier.entityDescriptionName, types: v) {
+                nodes.appendContentsOf(n)
+            }
+        }
+        
+        if let v = groups {
+            if let n = search(ModelIdentifier.entityGroupDescriptionName, groups: v) {
+                toFilter = 0 < nodes.count
+                nodes.appendContentsOf(n)
+            }
+        }
+        
+        if let v = properties {
+            if let n = search(ModelIdentifier.entityPropertyDescriptionName, properties: v) {
+                toFilter = 0 < nodes.count
+                nodes.appendContentsOf(n)
+            }
+        }
+        
+        if toFilter {
+            var seen = [String: Bool]()
+            var i: Int = nodes.count - 1
+            while 0 <= i {
+                if let v = nodes[i] as? ManagedEntity {
+                    if nil == seen.updateValue(true, forKey: v.id) {
+                        nodes[i] = Entity(managedEntity: v)
+                        i -= 1
+                        continue
+                    }
+                } else if let v = context.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedEntity {
+                    if nil == seen.updateValue(true, forKey: v.id) {
+                        nodes[i] = Entity(managedEntity: v)
+                        i -= 1
+                        continue
+                    }
+                }
+                nodes.removeAtIndex(i)
+                i -= 1
+            }
+            return nodes as! [Entity]
+        } else {
+            return nodes.map {
+                if let v: ManagedEntity = $0 as? ManagedEntity {
+                    return Entity(managedEntity: v)
+                }
+                return Entity(managedEntity: context.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
+            } as [Entity]
+        }
+    }
+    
+    internal func search(typeDescriptionName: String, types: [String]) -> [AnyObject]? {
+        var typesPredicate = [NSPredicate]()
+        
+        for v in types {
+            typesPredicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
+        }
+        
+        let entityDescription = NSEntityDescription.entityForName(typeDescriptionName, inManagedObjectContext: context)!
+        let request = NSFetchRequest()
+        request.entity = entityDescription
+        request.fetchBatchSize = batchSize
+        request.fetchOffset = batchOffset
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
+        request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: true)]
+        
+        return try? context.executeFetchRequest(request)
+    }
+    
+    internal func search(groupDescriptionName: String, groups: [String]) -> [AnyObject]? {
+        var groupsPredicate = [NSPredicate]()
+        
+        for v in groups {
+            groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
+        }
+        
+        let entityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: context)!
+        let request = NSFetchRequest()
+        request.entity = entityDescription
+        request.fetchBatchSize = batchSize
+        request.fetchOffset = batchOffset
+        request.resultType = .DictionaryResultType
+        request.propertiesToFetch = ["node"]
+        request.returnsDistinctResults = true
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: groupsPredicate)
+        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
+        
+        return try? context.executeFetchRequest(request)
+    }
+    
+    internal func search(propertyDescriptionName: String, properties: [(key: String, value: AnyObject?)]) -> [AnyObject]? {
+        var propertiesPredicate = [NSPredicate]()
+        
+        for (k, v) in properties {
+            if let x = v {
+                if let a = x as? String {
+                    propertiesPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
+                } else if let a: NSNumber = x as? NSNumber {
+                    propertiesPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
+                }
+            } else {
+                propertiesPredicate.append(NSPredicate(format: "name LIKE[cd] %@", k))
+            }
+        }
+        
+        let entityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: context)!
+        let request = NSFetchRequest()
+        request.entity = entityDescription
+        request.fetchBatchSize = batchSize
+        request.fetchOffset = batchOffset
+        request.resultType = .DictionaryResultType
+        request.propertiesToFetch = ["node"]
+        request.returnsDistinctResults = true
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: propertiesPredicate)
+        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
+        
+        return try? context.executeFetchRequest(request)
     }
 }

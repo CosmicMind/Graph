@@ -29,9 +29,21 @@
  */
 
 import CoreData
-import UIKit
 
-internal class NodeDocument: UIManagedDocument {
+@objc(ManagedGroup)
+internal class ManagedGroup: ManagedModel {
+    @NSManaged internal var name: String
     
+    /**
+     Initializer that accepts an identifier, a group name and a
+     NSManagedObjectContext.
+     - Parameter identifier: A model identifier.
+     - Parameter name: A group name.
+     - Parameter context: A reference to a NSManagedObjectContext.
+     */
+    internal convenience init(identifier: String, name: String, context: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+        self.name = name
+        self.context = context
+    }
 }
-

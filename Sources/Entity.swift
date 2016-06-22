@@ -68,13 +68,13 @@ public class Entity: NSObject, Comparable {
      Access properties using the subscript operator.
      - Parameter name: A property name value.
      - Returns: The optional AnyObject value.
-    */
+     */
     public subscript(name: String) -> AnyObject? {
         get {
             return node.managedNode[name]
         }
         set(value) {
-            node.managedNode[name] = value
+            (node.managedNode as ManagedEntity)[name] = value
         }
     }
     
@@ -86,7 +86,7 @@ public class Entity: NSObject, Comparable {
     /**
      Initializer that accepts a ManagedEntity.
      - Parameter managedEntity: A reference to a ManagedEntity.
-    */
+     */
     internal init(managedEntity: ManagedEntity) {
         node = Node<ManagedEntity>(managedNode: managedEntity)
     }
@@ -123,7 +123,7 @@ public class Entity: NSObject, Comparable {
     
     /**
      Checks equality between Entities.
-     - Parameter object: A reference to an object to test 
+     - Parameter object: A reference to an object to test
      equality against.
      - Returns: A boolean of the result, true if equal, false
      otherwise.
@@ -139,7 +139,7 @@ public class Entity: NSObject, Comparable {
      otherwise.
      */
     public func addToGroup(name: String) -> Bool {
-        return node.managedNode.addToGroup(name)
+        return (node.managedNode as ManagedEntity).addToGroup(name)
     }
     
     /**
@@ -163,7 +163,7 @@ public class Entity: NSObject, Comparable {
     }
     
     /**
-     Adds the Entity to the group if it is not a member, or 
+     Adds the Entity to the group if it is not a member, or
      removes it if it is a member.
      - Parameter name: The group name.
      */
@@ -192,4 +192,3 @@ public func >(lhs: Entity, rhs: Entity) -> Bool {
 public func <(lhs: Entity, rhs: Entity) -> Bool {
     return lhs.id < rhs.id
 }
-

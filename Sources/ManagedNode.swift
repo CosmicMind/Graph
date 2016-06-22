@@ -30,7 +30,8 @@
 
 import CoreData
 
-internal class ManagedNode: GraphNode {
+@objc(ManagedNode)
+internal class ManagedNode: ManagedModel {
     @NSManaged internal var nodeClass: NSNumber
     @NSManaged internal var type: String
     @NSManaged internal var createdDate: NSDate
@@ -45,21 +46,84 @@ internal class ManagedNode: GraphNode {
         return String(stringInterpolationSegment: nodeClass) + type + objectID.URIRepresentation().lastPathComponent!
     }
     
+    /**
+     Initializer that accepts an identifier, a type, and a NSManagedObjectContext.
+     - Parameter identifier: A model identifier.
+     - Parameter type: A reference to the Entity type.
+     - Parameter context: A reference to the NSManagedObejctContext.
+     */
+    internal convenience init(identifier: String, type: String, context: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+        self.type = type
+        self.context = context
+        nodeClass = NodeClass.Entity.rawValue
+        createdDate = NSDate()
+        propertySet = NSSet()
+        groupSet = NSSet()
+    }
+    
     internal override func delete() {
         var set = groupSet as! NSMutableSet
         set.forEach { (object: AnyObject) in
-            if let group = object as? ManagedNodeGroup {
+            if let group = object as? ManagedGroup {
                 group.delete()
                 set.removeObject(group)
             }
         }
         set = propertySet as! NSMutableSet
         set.forEach { (object: AnyObject) in
-            if let property = object as? ManagedNodeProperty {
+            if let property = object as? ManagedProperty {
                 property.delete()
                 set.removeObject(property)
             }
         }
         super.delete()
+    }
+    
+    /**
+     :name:	properties
+     :description:	Allows for Dictionary style coding, which maps to the internal properties Dictionary.
+     */
+    internal subscript(name: String) -> AnyObject? {
+        if let properties = propertySet as? Set<ManagedProperty> {
+            for property in properties {
+                if name == property.name {
+                    return property.object
+                }
+            }
+        }
+        return nil
+    }
+    
+    /**
+     :name:	memberOfGroup
+     :description:	Checks whether the Node is a part of the Group name passed or not.
+     */
+    internal func memberOfGroup(name: String) -> Bool {
+        if let groups = groupSet as? Set<ManagedGroup> {
+            for group in groups {
+                if name == group.name {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    /**
+     :name:	removeFromGroup
+     :description:	Removes a Group name from the list of Groups if it exists.
+     */
+    internal func removeFromGroup(name: String) -> Bool {
+        if let groups = groupSet as? Set<ManagedGroup> {
+            for group in groups {
+                if name == group.name {
+                    group.delete()
+                    (groupSet as! NSMutableSet).removeObject(group)
+                    return true
+                }
+            }
+        }
+        return false
     }
 }

@@ -58,7 +58,7 @@ class ViewController: UIViewController {
 	/// Handles the add button event.
 	internal func handleAddButton(sender: UIBarButtonItem) {
 		// Create a Person Entity.
-		let person: Entity = Entity(type: "Person")
+		let person: Entity = Entity("Person")
 		person["firstName"] = "First"
 		person["lastName"] = "Last"
 		person["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
@@ -96,17 +96,17 @@ class ViewController: UIViewController {
 		// Add People if none exist.
 		if 0 == people.count {
 			// Create Person Entities.
-			let tim: Entity = Entity(type: "Person")
+			let tim: Entity = Entity("Person")
 			tim["firstName"] = "Tim"
 			tim["lastName"] = "Cook"
 			tim["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("TimCook", ofType: "png")!)
 			
-			let mark: Entity = Entity(type: "Person")
+			let mark: Entity = Entity("Person")
 			mark["firstName"] = "Mark"
 			mark["lastName"] = "Zuckerberg"
 			mark["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!)
 			
-			let elon: Entity = Entity(type: "Person")
+			let elon: Entity = Entity("Person")
 			elon["firstName"] = "Elon"
 			elon["lastName"] = "Musk"
 			elon["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)

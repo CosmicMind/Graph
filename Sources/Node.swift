@@ -30,12 +30,12 @@
 
 import Foundation
 
-internal class Node <T: ManagedNode>: NSObject {
+internal class Node <T: ManagedNode>: CustomStringConvertible {
     /// A reference to the managed node type.
     internal let managedNode: T
     
     /// A string representation of the Node.
-    internal override var description: String {
+    internal var description: String {
         return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
     }
     
@@ -63,7 +63,7 @@ internal class Node <T: ManagedNode>: NSObject {
     internal var groups: [String] {
         return managedNode.groupSet.map {
             return $0.name
-        } as [String]
+            } as [String]
     }
     
     /// A reference to the properties.
@@ -76,9 +76,9 @@ internal class Node <T: ManagedNode>: NSObject {
     }
     
     /**
-     Initializer that accetps a ManagedNode.
-     - Parameter managedNode: A ManagedNode of type T.
-    */
+     Initializer that accepts a managedNode.
+     - Parameter managedNode: A reference to a managedNode.
+     */
     internal init(managedNode: T) {
         self.managedNode = managedNode
     }

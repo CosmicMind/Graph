@@ -42,14 +42,8 @@ internal class ManagedEntity: ManagedNode {
      - Parameter type: A reference to the Entity type.
      - Parameter context: A reference to the NSManagedObejctContext.
     */
-    internal convenience init(_ type: String, context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(ModelIdentifier.entityDescriptionName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-        self.type = type
-        self.context = context
-        nodeClass = NodeClass.Entity.rawValue
-        createdDate = NSDate()
-        propertySet = NSSet()
-        groupSet = NSSet()
+    internal required convenience init(_ type: String, context: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.entityDescriptionName, type: type, context: context)
         actionSubjectSet = NSSet()
         actionObjectSet = NSSet()
         relationshipSubjectSet = NSSet()
@@ -61,41 +55,26 @@ internal class ManagedEntity: ManagedNode {
      - Parameter name: A property name value.
      - Returns: The optional AnyObject value.
      */
-    internal subscript(name: String) -> AnyObject? {
+    internal override subscript(name: String) -> AnyObject? {
         get {
-            for n in propertySet {
-                let property: ManagedEntityProperty = n as! ManagedEntityProperty
-                if name == property.name {
-                    return property.object
-                }
-            }
-            return nil
+            return super[name]
         }
         set(object) {
-            if nil == object {
-                for n in propertySet {
-                    let property: ManagedEntityProperty = n as! ManagedEntityProperty
-                    if name == property.name {
-                        property.delete()
-                        (propertySet as! NSMutableSet).removeObject(property)
-                        break
+            guard let value = object else {
+                if let properties = propertySet as? Set<ManagedEntityProperty> {
+                    for property in properties {
+                        if name == property.name {
+                            property.delete()
+                            (propertySet as! NSMutableSet).removeObject(property)
+                            break
+                        }
                     }
                 }
-            } else {
-                var hasProperty: Bool = false
-                for n in propertySet {
-                    let property: ManagedEntityProperty = n as! ManagedEntityProperty
-                    if name == property.name {
-                        hasProperty = true
-                        property.object = object!
-                        break
-                    }
-                }
-                if false == hasProperty {
-                    let property: ManagedEntityProperty = ManagedEntityProperty(name: name, object: object!, context: context)
-                    property.node = self
-                }
+                return
             }
+            
+            let property = ManagedEntityProperty(name: name, object: value, context: context)
+            property.node = self
         }
     }
     
@@ -105,45 +84,11 @@ internal class ManagedEntity: ManagedNode {
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
-    internal func addToGroup(name: String!) -> Bool {
+    internal func addToGroup(name: String) -> Bool {
         if !memberOfGroup(name) {
-            let group: ManagedEntityGroup = ManagedEntityGroup(name: name, context: context)
+            let group = ManagedEntityGroup(name: name, context: context)
             group.node = self
             return true
-        }
-        return false
-    }
-    
-    /**
-     Checks membership in a group.
-     - Parameter name: The group name.
-     - Returns: A boolean of the result, true if a member, false
-     otherwise.
-     */
-    internal func memberOfGroup(name: String!) -> Bool {
-        for n in groupSet {
-            let group: ManagedEntityGroup = n as! ManagedEntityGroup
-            if name == group.name {
-                return true
-            }
-        }
-        return false
-    }
-    
-    /**
-     Removes the ManagedEntity from a group.
-     - Parameter name: The group name.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
-     */
-    internal func removeFromGroup(name: String!) -> Bool {
-        for n in groupSet {
-            let group: ManagedEntityGroup = n as! ManagedEntityGroup
-            if name == group.name {
-                group.delete()
-                (groupSet as! NSMutableSet).removeObject(group)
-                return true
-            }
         }
         return false
     }
@@ -151,7 +96,7 @@ internal class ManagedEntity: ManagedNode {
 
 internal extension ManagedEntity {
     /**
-     Adds the relationship between ManagedEntityProperty and ManagedEntity.
+     Adds the relationship between EntityProperty and ManagedEntity.
      - Parameter value: A reference to a ManagedEntityProperty.
      */
     func addPropertySetObject(value: ManagedEntityProperty) {
@@ -159,7 +104,7 @@ internal extension ManagedEntity {
     }
     
     /**
-     Removes the relationship between ManagedEntityProperty and ManagedEntity.
+     Removes the relationship between EntityProperty and ManagedEntity.
      - Parameter value: A reference to a ManagedEntityProperty.
      */
     func removePropertySetObject(value: ManagedEntityProperty) {
@@ -167,7 +112,7 @@ internal extension ManagedEntity {
     }
     
     /**
-     Adds the relationship between ManagedEntityGroup and ManagedEntity.
+     Adds the relationship between EntityGroup and ManagedEntity.
      - Parameter value: A reference to a ManagedEntityGroup.
      */
     func addGroupSetObject(value: ManagedEntityGroup) {
@@ -175,7 +120,7 @@ internal extension ManagedEntity {
     }
     
     /**
-     Removes the relationship between ManagedEntityGroup and ManagedEntity.
+     Removes the relationship between EntityGroup and ManagedEntity.
      - Parameter value: A reference to a ManagedEntityGroup.
      */
     func removeGroupSetObject(value: ManagedEntityGroup) {
