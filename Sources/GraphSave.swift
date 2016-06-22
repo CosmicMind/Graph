@@ -29,50 +29,43 @@
  */
 
 import CoreData
-import XCTest
-@testable import Graph
 
-class GraphTests : XCTestCase {
-    var asyncException: XCTestExpectation?
-    
-    override func setUp() {
-		super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-    
-    func testContext() {
-        let g1 = Graph()
-        XCTAssertTrue(g1.context.isKindOfClass(NSManagedObjectContext))
-        XCTAssertEqual(Storage.name, g1.name)
-        XCTAssertEqual(Storage.type, g1.type)
-        XCTAssertEqual(Storage.location, g1.location)
-        
-        let g2 = Graph("marketing")
-        XCTAssertTrue(g2.context.isKindOfClass(NSManagedObjectContext))
-        XCTAssertEqual("marketing", g2.name)
-        XCTAssertEqual(Storage.type, g2.type)
-        XCTAssertEqual(Storage.location, g2.location)
-
-        asyncException = expectationWithDescription("[GraphTests Error: Async tests failed.]")
-        
-        var g3: Graph!
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            g3 = Graph("async")
-            XCTAssertTrue(g3.context.isKindOfClass(NSManagedObjectContext))
-            XCTAssertEqual("async", g3.name)
-            XCTAssertEqual(Storage.type, g3.type)
-            XCTAssertEqual(Storage.location, g3.location)
-            self?.asyncException?.fulfill()
+public extension Graph {
+    /**
+     Performs a save.
+     - Parameter completion: An Optional completion block that is
+     executed when the save operation is completed.
+     */
+    public func save(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+        guard context.hasChanges else {
+            return
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
-        
-        XCTAssertTrue(g3.context.isKindOfClass(NSManagedObjectContext))
-        XCTAssertEqual("async", g3.name)
-        XCTAssertEqual(Storage.type, g3.type)
-        XCTAssertEqual(Storage.location, g3.location)
+        context.performBlockAndWait { [weak self] in
+            if let moc = self?.context {
+                do {
+                    try moc.save()
+                    
+                    guard let parentContext = moc.parentContext else {
+                        return
+                    }
+                    
+                    parentContext.performBlock {
+                        do {
+                            try parentContext.save()
+                            dispatch_async(dispatch_get_main_queue()) {
+                                completion?(success: true, error: nil)
+                            }
+                        } catch let e as NSError {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                completion?(success: false, error: e)
+                            }
+                        }
+                    }
+                } catch let e as NSError {
+                    completion?(success: false, error: e)
+                }
+            }
+        }
     }
 }

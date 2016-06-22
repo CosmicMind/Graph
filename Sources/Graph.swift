@@ -34,6 +34,7 @@ internal struct GraphRegistry {
     static var dispatchToken: dispatch_once_t = 0
     static var parentContexts: [String: NSManagedObjectContext]!
     static var mainContexts: [String: NSManagedObjectContext]!
+    static var contexts: [String: NSManagedObjectContext]!
 }
 
 public class Graph {
@@ -49,7 +50,7 @@ public class Graph {
     /// Worker context.
     public private(set) var context: NSManagedObjectContext!
     
-	public init(name: String = Storage.name, type: String = Storage.type, location: NSURL = Storage.location) {
+	public init(_ name: String = Storage.name, type: String = Storage.type, location: NSURL = Storage.location) {
         self.name = name
 		self.type = type
 		self.location = location
@@ -57,17 +58,30 @@ public class Graph {
         prepareContext()
     }
     
+    @objc internal func handleContextDidSave(notification: NSNotification) {
+        if let mainContext = GraphRegistry.mainContexts[name] {
+            if NSThread.isMainThread() {
+                mainContext.mergeChangesFromContextDidSaveNotification(notification)
+            } else {
+                dispatch_sync(dispatch_get_main_queue()) {
+                    mainContext.mergeChangesFromContextDidSaveNotification(notification)
+                }
+            }
+        }
+    }
+    
     /// Prepares the registry.
     private func prepareGraphRegistry() {
         dispatch_once(&GraphRegistry.dispatchToken) {
             GraphRegistry.parentContexts = [String: NSManagedObjectContext]()
             GraphRegistry.mainContexts = [String: NSManagedObjectContext]()
+            GraphRegistry.contexts = [String: NSManagedObjectContext]()
         }
     }
     
     /// Prapres the context.
     private func prepareContext() {
-        guard let moc = GraphRegistry.mainContexts[name] else {
+        guard let moc = GraphRegistry.contexts[name] else {
             let parentContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
             parentContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name, type: type, location: location)
             
@@ -75,9 +89,14 @@ public class Graph {
             
             GraphRegistry.parentContexts[name] = parentContext
             GraphRegistry.mainContexts[name] = mainContext
+            
             context = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
+            GraphRegistry.contexts[name] = context
+            
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: context)
             return
         }
-        context = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: moc)
+        
+        context = moc
     }
 }
