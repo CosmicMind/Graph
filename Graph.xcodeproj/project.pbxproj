@@ -34,8 +34,6 @@
 		96A1E8C71D1A556000FAC2F9 /* NodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8C51D1A556000FAC2F9 /* NodeClass.swift */; };
 		96A1E8CB1D1A5ED700FAC2F9 /* EntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8C81D1A5E6000FAC2F9 /* EntityTests.swift */; };
 		96A1E8CC1D1A5ED700FAC2F9 /* EntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8C81D1A5E6000FAC2F9 /* EntityTests.swift */; };
-		96A1E8CE1D1A5F4900FAC2F9 /* GraphSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8CD1D1A5F4900FAC2F9 /* GraphSave.swift */; };
-		96A1E8CF1D1A5F4900FAC2F9 /* GraphSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8CD1D1A5F4900FAC2F9 /* GraphSave.swift */; };
 		96F6B5131D19C81C00EDF830 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5121D19C81C00EDF830 /* GraphTests.swift */; };
 		96F6B5141D19C81C00EDF830 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5121D19C81C00EDF830 /* GraphTests.swift */; };
 		96F6B5161D19C8D200EDF830 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5151D19C8D200EDF830 /* Context.swift */; };
@@ -89,7 +87,6 @@
 		96A1E8B51D1A54F500FAC2F9 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		96A1E8C51D1A556000FAC2F9 /* NodeClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeClass.swift; sourceTree = "<group>"; };
 		96A1E8C81D1A5E6000FAC2F9 /* EntityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityTests.swift; sourceTree = "<group>"; };
-		96A1E8CD1D1A5F4900FAC2F9 /* GraphSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSave.swift; sourceTree = "<group>"; };
 		96D4E4EE1BA76FAF00672E38 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96F6B5121D19C81C00EDF830 /* GraphTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphTests.swift; sourceTree = "<group>"; };
 		96F6B5151D19C8D200EDF830 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
@@ -167,7 +164,6 @@
 				96F6B5211D19D56B00EDF830 /* Model.swift */,
 				96F6B5241D19E15E00EDF830 /* Graph.swift */,
 				96A1E8941D1A4A4D00FAC2F9 /* GraphNode.swift */,
-				96A1E8CD1D1A5F4900FAC2F9 /* GraphSave.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
@@ -420,7 +416,6 @@
 				96A1E8A41D1A546A00FAC2F9 /* ManagedEntityGroup.swift in Sources */,
 				96A1E8C71D1A556000FAC2F9 /* NodeClass.swift in Sources */,
 				96F6B5201D19D3FF00EDF830 /* Coordinator.swift in Sources */,
-				96A1E8CF1D1A5F4900FAC2F9 /* GraphSave.swift in Sources */,
 				96A1E89A1D1A512700FAC2F9 /* ManagedNodeGroup.swift in Sources */,
 				96A1E8A11D1A543A00FAC2F9 /* ManagedEntity.swift in Sources */,
 				96F6B5171D19C8D200EDF830 /* Context.swift in Sources */,
@@ -459,7 +454,6 @@
 				96A1E88F1D1A48B800FAC2F9 /* NodeDocument.swift in Sources */,
 				96A1E8921D1A4A2100FAC2F9 /* ManagedNode.swift in Sources */,
 				96A1E8A61D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */,
-				96A1E8CE1D1A5F4900FAC2F9 /* GraphSave.swift in Sources */,
 				96F6B51F1D19D3FF00EDF830 /* Coordinator.swift in Sources */,
 				96F6B5161D19C8D200EDF830 /* Context.swift in Sources */,
 				96A1E8B61D1A54F500FAC2F9 /* Entity.swift in Sources */,

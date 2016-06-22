@@ -97,6 +97,7 @@ public class Entity: NSObject, Comparable {
      - Parameter type: A reference to a type.
      - Parameter graph: A reference to a Graph instance.
      */
+    @nonobjc
     public required convenience init(_ type: String, graph: Graph) {
         self.init(managedEntity: ManagedEntity(type, context: graph.context))
     }
@@ -107,6 +108,7 @@ public class Entity: NSObject, Comparable {
      - Parameter type: A reference to a type.
      - Parameter name: A reference to a Graph instance by name.
      */
+    @nonobjc
     public required convenience init(_ type: String, graph: String) {
         self.init(managedEntity: ManagedEntity(type, context: Graph(graph).context))
     }
