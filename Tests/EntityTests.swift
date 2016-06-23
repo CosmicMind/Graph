@@ -147,7 +147,7 @@ class EntityTests: XCTestCase, GraphDelegate {
     }
     
     func graphDidInsertEntity(graph: Graph, entity: Entity) {
-//        print(graph.searchForEntity(types: ["T"]))
+        print(graph.searchForEntity(types: ["T"]))
         delegateException?.fulfill()
     }
 }

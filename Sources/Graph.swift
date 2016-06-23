@@ -436,7 +436,7 @@ public extension Graph {
             typesPredicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
         }
         
-        let entityDescription = NSEntityDescription.entityForName(typeDescriptionName, inManagedObjectContext: context)!
+        let entityDescription = NSEntityDescription.entityForName(typeDescriptionName, inManagedObjectContext: context.parentContext!.parentContext!)!
         let request = NSFetchRequest()
         request.entity = entityDescription
         request.fetchBatchSize = batchSize
@@ -444,7 +444,7 @@ public extension Graph {
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
         request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: true)]
         
-        return try? context.executeFetchRequest(request)
+        return try? context.parentContext!.parentContext!.executeFetchRequest(request)
     }
     
     internal func search(groupDescriptionName: String, groups: [String]) -> [AnyObject]? {
@@ -454,7 +454,7 @@ public extension Graph {
             groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
         }
         
-        let entityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: context)!
+        let entityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: context.parentContext!.parentContext!)!
         let request = NSFetchRequest()
         request.entity = entityDescription
         request.fetchBatchSize = batchSize
@@ -465,7 +465,7 @@ public extension Graph {
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: groupsPredicate)
         request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
-        return try? context.executeFetchRequest(request)
+        return try? context.parentContext!.parentContext!.executeFetchRequest(request)
     }
     
     internal func search(propertyDescriptionName: String, properties: [(key: String, value: AnyObject?)]) -> [AnyObject]? {
@@ -483,7 +483,7 @@ public extension Graph {
             }
         }
         
-        let entityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: context)!
+        let entityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: context.parentContext!.parentContext!)!
         let request = NSFetchRequest()
         request.entity = entityDescription
         request.fetchBatchSize = batchSize
@@ -494,6 +494,6 @@ public extension Graph {
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: propertiesPredicate)
         request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
-        return try? context.executeFetchRequest(request)
+        return try? context.parentContext!.parentContext!.executeFetchRequest(request)
     }
 }
