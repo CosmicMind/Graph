@@ -44,68 +44,106 @@ class EntityTests: XCTestCase, GraphDelegate {
         super.tearDown()
     }
     
-    func testSave() {
-//        let g1 = Graph()
-//        g1.watchForEntity(types: ["T"])
-//        g1.delegate = self
-//        
-//        let e1 = Entity("T")
-//        e1["p"] = "v"
-//        e1.addToGroup("g")
-//        
-//        XCTAssertTrue("v" == e1["p"] as? String)
-//        
-//        saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
-//        delegateException = expectationWithDescription("[EntityTests Error: Delegate Etity test failed.]")
-//        
-//        g1.save { [weak self] (success: Bool, error: NSError?) in
-//            self?.saveException?.fulfill()
-//            XCTAssertTrue(success)
-//        }
-//        
-//        waitForExpectationsWithTimeout(5, handler: nil)
+    func testAll() {
+//        defaultGraphSAve()
+//        namedGraphSave()
+//        referenceGraphSave()
+        asyncGraphSave()
+    }
+    
+    func defaultGraphSAve() {
+        let g = Graph()
+        g.watchForEntity(types: ["T"])
+        g.delegate = self
         
-        let g2 = Graph("g2")
-        g2.watchForEntity(types: ["T"])
-        g2.delegate = self
+        let e = Entity("T")
+        e["p"] = "v"
+        e.addToGroup("g")
         
-        let e2 = Entity("T", graph: "g2")
-        e2["p"] = "v"
-        e2.addToGroup("g")
-        
-        XCTAssertTrue("v" == e2["p"] as? String)
+        XCTAssertTrue("v" == e["p"] as? String)
         
         saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
         delegateException = expectationWithDescription("[EntityTests Error: Delegate Etity test failed.]")
         
-        g2.save { [weak self] (success: Bool, error: NSError?) in
+        g.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+    }
+    
+    func namedGraphSave() {
+        let g = Graph("testNamedGraphSave")
+        g.watchForEntity(types: ["T"])
+        g.delegate = self
         
-//        let g3 = Graph("g3")
-//        g3.watchForEntity(types: ["T"])
-//        g3.delegate = self
-//        
-//        let e3 = Entity("T", graph: g3)
-//        e3["p"] = "v"
-//        e3.addToGroup("g3")
-//    
-//        XCTAssertTrue("v" == e3["p"] as? String)
-//        
-//        saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
-//        delegateException = expectationWithDescription("[EntityTests Error: Delegate Etity test failed.]")
-//        
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-//            g3.save { [weak self] (success: Bool, error: NSError?) in
-//                self?.saveException?.fulfill()
-//                XCTAssertTrue(success)
-//            }
-//        }
-//        
-//        waitForExpectationsWithTimeout(5, handler: nil)
+        let e = Entity("T", graph: "testNamedGraphSave")
+        e["p"] = "v"
+        e.addToGroup("g")
+        
+        XCTAssertTrue("v" == e["p"] as? String)
+        
+        saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
+        delegateException = expectationWithDescription("[EntityTests Error: Delegate Etity test failed.]")
+        
+        g.save { [weak self] (success: Bool, error: NSError?) in
+            self?.saveException?.fulfill()
+            XCTAssertTrue(success)
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
+    }
+    
+    func referenceGraphSave() {
+        let g = Graph("testReferenceGraphSave")
+        g.watchForEntity(types: ["T"])
+        g.delegate = self
+        
+        let e = Entity("T", graph: g)
+        e["p"] = "v"
+        e.addToGroup("g")
+    
+        XCTAssertTrue("v" == e["p"] as? String)
+        
+        saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
+        delegateException = expectationWithDescription("[EntityTests Error: Delegate Etity test failed.]")
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+            g.save { [weak self] (success: Bool, error: NSError?) in
+                self?.saveException?.fulfill()
+                XCTAssertTrue(success)
+            }
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
+    }
+    
+    func asyncGraphSave() {
+        saveException = expectationWithDescription("[EntityTests Error: Save Etity test failed.]")
+        delegateException = expectationWithDescription("[EntityTests Error: Delegate Etity test failed.]")
+        
+        var g: Graph!
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+            g = Graph("testAsyncGraphSave")
+            g.watchForEntity(types: ["T"])
+            g.delegate = self
+        
+            let e = Entity("T", graph: g)
+            e["p"] = "v"
+            e.addToGroup("g3")
+        
+            XCTAssertTrue("v" == e["p"] as? String)
+        
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+                g.save { [weak self] (success: Bool, error: NSError?) in
+                    self?.saveException?.fulfill()
+                    XCTAssertTrue(success)
+                }
+            }
+        }
+        
+        waitForExpectationsWithTimeout(50, handler: nil)
     }
     
     func graphDidInsertEntity(graph: Graph, entity: Entity) {
