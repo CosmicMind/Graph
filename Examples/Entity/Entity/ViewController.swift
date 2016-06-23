@@ -58,7 +58,7 @@ class ViewController: UIViewController {
 	/// Handles the add button event.
 	internal func handleAddButton(sender: UIBarButtonItem) {
 		// Create a Person Entity.
-		let person: Entity = Entity("Person")
+		let person: Entity = Entity(type: "Person")
 		person["firstName"] = "First"
 		person["lastName"] = "Last"
 		person["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
@@ -71,8 +71,7 @@ class ViewController: UIViewController {
 		the save has completed.
 		*/
 		graph.save { (success: Bool, error: NSError?) in
-			print("Saved")
-            if let e: NSError = error {
+			if let e: NSError = error {
 				print(e)
 			}
 		}
@@ -97,17 +96,17 @@ class ViewController: UIViewController {
 		// Add People if none exist.
 		if 0 == people.count {
 			// Create Person Entities.
-			let tim: Entity = Entity("Person")
+			let tim: Entity = Entity(type: "Person")
 			tim["firstName"] = "Tim"
 			tim["lastName"] = "Cook"
 			tim["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("TimCook", ofType: "png")!)
 			
-			let mark: Entity = Entity("Person")
+			let mark: Entity = Entity(type: "Person")
 			mark["firstName"] = "Mark"
 			mark["lastName"] = "Zuckerberg"
 			mark["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!)
 			
-			let elon: Entity = Entity("Person")
+			let elon: Entity = Entity(type: "Person")
 			elon["firstName"] = "Elon"
 			elon["lastName"] = "Musk"
 			elon["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)

@@ -56,7 +56,7 @@ class EntityTests: XCTestCase, GraphDelegate {
         g.watchForEntity(types: ["T"])
         g.delegate = self
         
-        let e = Entity("T")
+        let e = Entity(type: "T")
         e["p"] = "v"
         e.addToGroup("g")
         
@@ -74,11 +74,11 @@ class EntityTests: XCTestCase, GraphDelegate {
     }
     
     func namedGraphSave() {
-        let g = Graph("testNamedGraphSave")
+        let g = Graph(name: "namedGraphSave")
         g.watchForEntity(types: ["T"])
         g.delegate = self
         
-        let e = Entity("T", graph: "testNamedGraphSave")
+        let e = Entity(type: "T", graph: "namedGraphSave")
         e["p"] = "v"
         e.addToGroup("g")
         
@@ -96,11 +96,11 @@ class EntityTests: XCTestCase, GraphDelegate {
     }
     
     func referenceGraphSave() {
-        let g = Graph("testReferenceGraphSave")
+        let g = Graph(name: "testReferenceGraphSave")
         g.watchForEntity(types: ["T"])
         g.delegate = self
         
-        let e = Entity("T", graph: g)
+        let e = Entity(type: "T", graph: g)
         e["p"] = "v"
         e.addToGroup("g")
     
@@ -125,11 +125,11 @@ class EntityTests: XCTestCase, GraphDelegate {
         
         var g: Graph!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            g = Graph("testAsyncGraphSave")
+            g = Graph(name: "testAsyncGraphSave")
             g.watchForEntity(types: ["T"])
             g.delegate = self
         
-            let e = Entity("T", graph: g)
+            let e = Entity(type: "T", graph: g)
             e["p"] = "v"
             e.addToGroup("g3")
         
@@ -147,7 +147,6 @@ class EntityTests: XCTestCase, GraphDelegate {
     }
     
     func graphDidInsertEntity(graph: Graph, entity: Entity) {
-        print(graph.searchForEntity(types: ["T"]))
         delegateException?.fulfill()
     }
 }

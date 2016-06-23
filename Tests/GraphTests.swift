@@ -50,7 +50,7 @@ class GraphTests : XCTestCase {
         XCTAssertEqual(Storage.type, g1.type)
         XCTAssertEqual(Storage.location, g1.location)
         
-        let g2 = Graph("marketing")
+        let g2 = Graph(name: "marketing")
         XCTAssertTrue(g2.context.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("marketing", g2.name)
         XCTAssertEqual(Storage.type, g2.type)
@@ -60,7 +60,7 @@ class GraphTests : XCTestCase {
         
         var g3: Graph!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            g3 = Graph("async")
+            g3 = Graph(name: "async")
             XCTAssertTrue(g3.context.isKindOfClass(NSManagedObjectContext))
             XCTAssertEqual("async", g3.name)
             XCTAssertEqual(Storage.type, g3.type)

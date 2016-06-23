@@ -51,13 +51,13 @@ public protocol GraphDelegate {
 @objc(Graph)
 public class Graph: NSObject {
     /// Storage name.
-    private(set) var name: String
+    private(set) var name: String!
 	
 	/// Storage type.
-	private(set) var type: String
+	private(set) var type: String!
 	
     /// Storage location.
-    private(set) var location: NSURL
+    private(set) var location: NSURL!
     
     /// Worker context.
     public private(set) var context: NSManagedObjectContext!
@@ -77,24 +77,14 @@ public class Graph: NSObject {
     /// Start the return results from this offset.
     public var batchOffset: Int = 0
     
-    /// Initializer to default Graph.
-    public override init() {
-        self.name = Storage.name
-        self.type = Storage.type
-        self.location = Storage.location
-        super.init()
-        prepareGraphRegistry()
-        prepareContext()
-    }
-    
     /**
      Initializer to named Graph with optional type and location.
      - Parameter name: A name for the Graph.
      - Parameter type: Type of Graph storage.
      - Parameter location: A location for storage.
     */
-	public convenience init(_ name: String, type: String = Storage.type, location: NSURL = Storage.location) {
-        self.init()
+	public required init(name: String = Storage.name, type: String = Storage.type, location: NSURL = Storage.location) {
+        super.init()
         self.name = name
 		self.type = type
 		self.location = location
