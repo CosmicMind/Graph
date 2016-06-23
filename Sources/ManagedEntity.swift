@@ -32,10 +32,10 @@ import CoreData
 
 @objc(ManagedEntity)
 internal class ManagedEntity: ManagedNode {
-    @NSManaged internal var actionSubjectSet: NSSet
-    @NSManaged internal var actionObjectSet: NSSet
-    @NSManaged internal var relationshipSubjectSet: NSSet
-    @NSManaged internal var relationshipObjectSet: NSSet
+//    @NSManaged internal var actionSubjectSet: NSSet
+//    @NSManaged internal var actionObjectSet: NSSet
+//    @NSManaged internal var relationshipSubjectSet: NSSet
+//    @NSManaged internal var relationshipObjectSet: NSSet
     
     /**
      Initializer that accepts a type and a NSManagedObjectContext.
@@ -44,10 +44,10 @@ internal class ManagedEntity: ManagedNode {
     */
     internal required convenience init(_ type: String, context: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.entityDescriptionName, type: type, context: context)
-        actionSubjectSet = NSSet()
-        actionObjectSet = NSSet()
-        relationshipSubjectSet = NSSet()
-        relationshipObjectSet = NSSet()
+//        actionSubjectSet = NSSet()
+//        actionObjectSet = NSSet()
+//        relationshipSubjectSet = NSSet()
+//        relationshipObjectSet = NSSet()
     }
     
     /**
@@ -61,13 +61,11 @@ internal class ManagedEntity: ManagedNode {
         }
         set(object) {
             guard let value = object else {
-                if let properties = propertySet as? Set<ManagedEntityProperty> {
-                    for property in properties {
-                        if name == property.name {
-                            property.delete()
-                            (propertySet as! NSMutableSet).removeObject(property)
-                            break
-                        }
+                for property in propertySet as! Set<ManagedEntityProperty> {
+                    if name == property.name {
+                        property.delete()
+                        (propertySet as! NSMutableSet).removeObject(property)
+                        break
                     }
                 }
                 return

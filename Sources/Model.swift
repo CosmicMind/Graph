@@ -46,25 +46,25 @@ internal struct ModelIdentifier {
     static let entityPropertyObjectClassName: String = entityPropertyIndexName
     static let entityPropertyDescriptionName: String = entityPropertyIndexName
     
-    static let actionIndexName: String = "ManagedAction"
-    static let actionDescriptionName: String = actionIndexName
-    static let actionObjectClassName: String = actionIndexName
-    static let actionGroupIndexName: String = "ManagedActionGroup"
-    static let actionGroupObjectClassName: String = actionGroupIndexName
-    static let actionGroupDescriptionName: String = actionGroupIndexName
-    static let actionPropertyIndexName: String = "ManagedActionProperty"
-    static let actionPropertyObjectClassName: String = actionPropertyIndexName
-    static let actionPropertyDescriptionName: String = actionPropertyIndexName
-    
-    static let relationshipIndexName: String = "ManagedRelationship"
-    static let relationshipDescriptionName: String = relationshipIndexName
-    static let relationshipObjectClassName: String = relationshipIndexName
-    static let relationshipGroupIndexName: String = "ManagedRelationshipGroup"
-    static let relationshipGroupObjectClassName: String = relationshipGroupIndexName
-    static let relationshipGroupDescriptionName: String = relationshipGroupIndexName
-    static let relationshipPropertyIndexName: String = "ManagedRelationshipProperty"
-    static let relationshipPropertyObjectClassName: String = relationshipPropertyIndexName
-    static let relationshipPropertyDescriptionName: String = relationshipPropertyIndexName
+//    static let actionIndexName: String = "ManagedAction"
+//    static let actionDescriptionName: String = actionIndexName
+//    static let actionObjectClassName: String = actionIndexName
+//    static let actionGroupIndexName: String = "ManagedActionGroup"
+//    static let actionGroupObjectClassName: String = actionGroupIndexName
+//    static let actionGroupDescriptionName: String = actionGroupIndexName
+//    static let actionPropertyIndexName: String = "ManagedActionProperty"
+//    static let actionPropertyObjectClassName: String = actionPropertyIndexName
+//    static let actionPropertyDescriptionName: String = actionPropertyIndexName
+//    
+//    static let relationshipIndexName: String = "ManagedRelationship"
+//    static let relationshipDescriptionName: String = relationshipIndexName
+//    static let relationshipObjectClassName: String = relationshipIndexName
+//    static let relationshipGroupIndexName: String = "ManagedRelationshipGroup"
+//    static let relationshipGroupObjectClassName: String = relationshipGroupIndexName
+//    static let relationshipGroupDescriptionName: String = relationshipGroupIndexName
+//    static let relationshipPropertyIndexName: String = "ManagedRelationshipProperty"
+//    static let relationshipPropertyObjectClassName: String = relationshipPropertyIndexName
+//    static let relationshipPropertyDescriptionName: String = relationshipPropertyIndexName
 }
 
 internal struct Model {
@@ -76,77 +76,77 @@ internal struct Model {
             entityDescription.name = ModelIdentifier.entityDescriptionName
             entityDescription.managedObjectClassName = ModelIdentifier.entityObjectClassName
             
-            let actionDescription = NSEntityDescription()
-            var actionProperties = [AnyObject]()
-            actionDescription.name = ModelIdentifier.actionDescriptionName
-            actionDescription.managedObjectClassName = ModelIdentifier.actionObjectClassName
+//            let actionDescription = NSEntityDescription()
+//            var actionProperties = [AnyObject]()
+//            actionDescription.name = ModelIdentifier.actionDescriptionName
+//            actionDescription.managedObjectClassName = ModelIdentifier.actionObjectClassName
             
-            let relationshipDescription = NSEntityDescription()
-            var relationshipProperties = [AnyObject]()
-            relationshipDescription.name = ModelIdentifier.relationshipDescriptionName
-            relationshipDescription.managedObjectClassName = ModelIdentifier.relationshipObjectClassName
+//            let relationshipDescription = NSEntityDescription()
+//            var relationshipProperties = [AnyObject]()
+//            relationshipDescription.name = ModelIdentifier.relationshipDescriptionName
+//            relationshipDescription.managedObjectClassName = ModelIdentifier.relationshipObjectClassName
             
             let entityPropertyDescription = NSEntityDescription()
             var entityPropertyProperties = [AnyObject]()
             entityPropertyDescription.name = ModelIdentifier.entityPropertyDescriptionName
             entityPropertyDescription.managedObjectClassName = ModelIdentifier.entityPropertyObjectClassName
             
-            let actionPropertyDescription = NSEntityDescription()
-            var actionPropertyProperties = [AnyObject]()
-            actionPropertyDescription.name = ModelIdentifier.actionPropertyDescriptionName
-            actionPropertyDescription.managedObjectClassName = ModelIdentifier.actionPropertyObjectClassName
+//            let actionPropertyDescription = NSEntityDescription()
+//            var actionPropertyProperties = [AnyObject]()
+//            actionPropertyDescription.name = ModelIdentifier.actionPropertyDescriptionName
+//            actionPropertyDescription.managedObjectClassName = ModelIdentifier.actionPropertyObjectClassName
             
-            let relationshipPropertyDescription = NSEntityDescription()
-            var relationshipPropertyProperties = [AnyObject]()
-            relationshipPropertyDescription.name = ModelIdentifier.relationshipPropertyDescriptionName
-            relationshipPropertyDescription.managedObjectClassName = ModelIdentifier.relationshipPropertyObjectClassName
+//            let relationshipPropertyDescription = NSEntityDescription()
+//            var relationshipPropertyProperties = [AnyObject]()
+//            relationshipPropertyDescription.name = ModelIdentifier.relationshipPropertyDescriptionName
+//            relationshipPropertyDescription.managedObjectClassName = ModelIdentifier.relationshipPropertyObjectClassName
             
             let entityGroupDescription = NSEntityDescription()
             var entityGroupProperties = [AnyObject]()
             entityGroupDescription.name = ModelIdentifier.entityGroupDescriptionName
             entityGroupDescription.managedObjectClassName = ModelIdentifier.entityGroupObjectClassName
             
-            let actionGroupDescription = NSEntityDescription()
-            var actionGroupProperties = [AnyObject]()
-            actionGroupDescription.name = ModelIdentifier.actionGroupDescriptionName
-            actionGroupDescription.managedObjectClassName = ModelIdentifier.actionGroupObjectClassName
-            
-            let relationshipGroupDescription = NSEntityDescription()
-            var relationshipGroupProperties = [AnyObject]()
-            relationshipGroupDescription.name = ModelIdentifier.relationshipGroupDescriptionName
-            relationshipGroupDescription.managedObjectClassName = ModelIdentifier.relationshipGroupObjectClassName
+//            let actionGroupDescription = NSEntityDescription()
+//            var actionGroupProperties = [AnyObject]()
+//            actionGroupDescription.name = ModelIdentifier.actionGroupDescriptionName
+//            actionGroupDescription.managedObjectClassName = ModelIdentifier.actionGroupObjectClassName
+//            
+//            let relationshipGroupDescription = NSEntityDescription()
+//            var relationshipGroupProperties = [AnyObject]()
+//            relationshipGroupDescription.name = ModelIdentifier.relationshipGroupDescriptionName
+//            relationshipGroupDescription.managedObjectClassName = ModelIdentifier.relationshipGroupObjectClassName
             
             let nodeClass = NSAttributeDescription()
             nodeClass.name = "nodeClass"
             nodeClass.attributeType = .Integer64AttributeType
             nodeClass.optional = false
             entityProperties.append(nodeClass.copy() as! NSAttributeDescription)
-            actionProperties.append(nodeClass.copy() as! NSAttributeDescription)
-            relationshipProperties.append(nodeClass.copy() as! NSAttributeDescription)
+//            actionProperties.append(nodeClass.copy() as! NSAttributeDescription)
+//            relationshipProperties.append(nodeClass.copy() as! NSAttributeDescription)
             
             let type = NSAttributeDescription()
             type.name = "type"
             type.attributeType = .StringAttributeType
             type.optional = false
             entityProperties.append(type.copy() as! NSAttributeDescription)
-            actionProperties.append(type.copy() as! NSAttributeDescription)
-            relationshipProperties.append(type.copy() as! NSAttributeDescription)
+//            actionProperties.append(type.copy() as! NSAttributeDescription)
+//            relationshipProperties.append(type.copy() as! NSAttributeDescription)
             
             let createdDate = NSAttributeDescription()
             createdDate.name = "createdDate"
             createdDate.attributeType = .DateAttributeType
             createdDate.optional = false
             entityProperties.append(createdDate.copy() as! NSAttributeDescription)
-            actionProperties.append(createdDate.copy() as! NSAttributeDescription)
-            relationshipProperties.append(createdDate.copy() as! NSAttributeDescription)
+//            actionProperties.append(createdDate.copy() as! NSAttributeDescription)
+//            relationshipProperties.append(createdDate.copy() as! NSAttributeDescription)
             
             let propertyName = NSAttributeDescription()
             propertyName.name = "name"
             propertyName.attributeType = .StringAttributeType
             propertyName.optional = false
             entityPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
-            actionPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
-            relationshipPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
+//            actionPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
+//            relationshipPropertyProperties.append(propertyName.copy() as! NSAttributeDescription)
             
             let propertyValue = NSAttributeDescription()
             propertyValue.name = "object"
@@ -155,8 +155,8 @@ internal struct Model {
             propertyValue.optional = false
             propertyValue.allowsExternalBinaryDataStorage = true
             entityPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
-            actionPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
-            relationshipPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
+//            actionPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
+//            relationshipPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)
             
             let propertyRelationship = NSRelationshipDescription()
             propertyRelationship.name = "node"
@@ -179,23 +179,23 @@ internal struct Model {
             entityPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
             entityProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
             
-            propertyRelationship.destinationEntity = actionDescription
-            propertySetRelationship.destinationEntity = actionPropertyDescription
-            actionPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
-            actionProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
+//            propertyRelationship.destinationEntity = actionDescription
+//            propertySetRelationship.destinationEntity = actionPropertyDescription
+//            actionPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
+//            actionProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
             
-            propertyRelationship.destinationEntity = relationshipDescription
-            propertySetRelationship.destinationEntity = relationshipPropertyDescription
-            relationshipPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
-            relationshipProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
+//            propertyRelationship.destinationEntity = relationshipDescription
+//            propertySetRelationship.destinationEntity = relationshipPropertyDescription
+//            relationshipPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
+//            relationshipProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
             
             let group = NSAttributeDescription()
             group.name = "name"
             group.attributeType = .StringAttributeType
             group.optional = false
             entityGroupProperties.append(group.copy() as! NSAttributeDescription)
-            actionGroupProperties.append(group.copy() as! NSAttributeDescription)
-            relationshipGroupProperties.append(group.copy() as! NSAttributeDescription)
+//            actionGroupProperties.append(group.copy() as! NSAttributeDescription)
+//            relationshipGroupProperties.append(group.copy() as! NSAttributeDescription)
             
             let groupRelationship = NSRelationshipDescription()
             groupRelationship.name = "node"
@@ -218,134 +218,134 @@ internal struct Model {
             entityGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
             entityProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
             
-            groupRelationship.destinationEntity = actionDescription
-            groupSetRelationship.destinationEntity = actionGroupDescription
-            actionGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
-            actionProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
+//            groupRelationship.destinationEntity = actionDescription
+//            groupSetRelationship.destinationEntity = actionGroupDescription
+//            actionGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+//            actionProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
             
-            groupRelationship.destinationEntity = relationshipDescription
-            groupSetRelationship.destinationEntity = relationshipGroupDescription
-            relationshipGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
-            relationshipProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
+//            groupRelationship.destinationEntity = relationshipDescription
+//            groupSetRelationship.destinationEntity = relationshipGroupDescription
+//            relationshipGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+//            relationshipProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
             
             // Inverse relationship for Subjects -- B.
-            let actionSubjectSetRelationship = NSRelationshipDescription()
-            actionSubjectSetRelationship.name = "subjectSet"
-            actionSubjectSetRelationship.minCount = 0
-            actionSubjectSetRelationship.maxCount = 0
-            actionSubjectSetRelationship.optional = false
-            actionSubjectSetRelationship.deleteRule = .NoActionDeleteRule
-            actionSubjectSetRelationship.destinationEntity = entityDescription
-            
-            let actionSubjectRelationship = NSRelationshipDescription()
-            actionSubjectRelationship.name = "actionSubjectSet"
-            actionSubjectRelationship.minCount = 0
-            actionSubjectRelationship.maxCount = 0
-            actionSubjectRelationship.optional = false
-            actionSubjectRelationship.deleteRule = .CascadeDeleteRule
-            actionSubjectRelationship.destinationEntity = actionDescription
-            actionSubjectRelationship.inverseRelationship = actionSubjectSetRelationship
-            actionSubjectSetRelationship.inverseRelationship = actionSubjectRelationship
-            
-            entityProperties.append(actionSubjectRelationship.copy() as! NSRelationshipDescription)
-            actionProperties.append(actionSubjectSetRelationship.copy() as! NSRelationshipDescription)
+//            let actionSubjectSetRelationship = NSRelationshipDescription()
+//            actionSubjectSetRelationship.name = "subjectSet"
+//            actionSubjectSetRelationship.minCount = 0
+//            actionSubjectSetRelationship.maxCount = 0
+//            actionSubjectSetRelationship.optional = false
+//            actionSubjectSetRelationship.deleteRule = .NoActionDeleteRule
+//            actionSubjectSetRelationship.destinationEntity = entityDescription
+//            
+//            let actionSubjectRelationship = NSRelationshipDescription()
+//            actionSubjectRelationship.name = "actionSubjectSet"
+//            actionSubjectRelationship.minCount = 0
+//            actionSubjectRelationship.maxCount = 0
+//            actionSubjectRelationship.optional = false
+//            actionSubjectRelationship.deleteRule = .CascadeDeleteRule
+//            actionSubjectRelationship.destinationEntity = actionDescription
+//            actionSubjectRelationship.inverseRelationship = actionSubjectSetRelationship
+//            actionSubjectSetRelationship.inverseRelationship = actionSubjectRelationship
+//            
+//            entityProperties.append(actionSubjectRelationship.copy() as! NSRelationshipDescription)
+//            actionProperties.append(actionSubjectSetRelationship.copy() as! NSRelationshipDescription)
             // Inverse relationship for Subjects -- E.
             
             // Inverse relationship for Objects -- B.
-            let actionObjectSetRelationship = NSRelationshipDescription()
-            actionObjectSetRelationship.name = "objectSet"
-            actionObjectSetRelationship.minCount = 0
-            actionObjectSetRelationship.maxCount = 0
-            actionObjectSetRelationship.optional = false
-            actionObjectSetRelationship.deleteRule = .NoActionDeleteRule
-            actionObjectSetRelationship.destinationEntity = entityDescription
-            
-            let actionObjectRelationship = NSRelationshipDescription()
-            actionObjectRelationship.name = "actionObjectSet"
-            actionObjectRelationship.minCount = 0
-            actionObjectRelationship.maxCount = 0
-            actionObjectRelationship.optional = false
-            actionObjectRelationship.deleteRule = .CascadeDeleteRule
-            actionObjectRelationship.destinationEntity = actionDescription
-            actionObjectRelationship.inverseRelationship = actionObjectSetRelationship
-            actionObjectSetRelationship.inverseRelationship = actionObjectRelationship
-            
-            entityProperties.append(actionObjectRelationship.copy() as! NSRelationshipDescription)
-            actionProperties.append(actionObjectSetRelationship.copy() as! NSRelationshipDescription)
+//            let actionObjectSetRelationship = NSRelationshipDescription()
+//            actionObjectSetRelationship.name = "objectSet"
+//            actionObjectSetRelationship.minCount = 0
+//            actionObjectSetRelationship.maxCount = 0
+//            actionObjectSetRelationship.optional = false
+//            actionObjectSetRelationship.deleteRule = .NoActionDeleteRule
+//            actionObjectSetRelationship.destinationEntity = entityDescription
+//            
+//            let actionObjectRelationship = NSRelationshipDescription()
+//            actionObjectRelationship.name = "actionObjectSet"
+//            actionObjectRelationship.minCount = 0
+//            actionObjectRelationship.maxCount = 0
+//            actionObjectRelationship.optional = false
+//            actionObjectRelationship.deleteRule = .CascadeDeleteRule
+//            actionObjectRelationship.destinationEntity = actionDescription
+//            actionObjectRelationship.inverseRelationship = actionObjectSetRelationship
+//            actionObjectSetRelationship.inverseRelationship = actionObjectRelationship
+//            
+//            entityProperties.append(actionObjectRelationship.copy() as! NSRelationshipDescription)
+//            actionProperties.append(actionObjectSetRelationship.copy() as! NSRelationshipDescription)
             // Inverse relationship for Objects -- E.
             
             // Inverse relationship for Subjects -- B.
-            let relationshipSubjectSetRelationship = NSRelationshipDescription()
-            relationshipSubjectSetRelationship.name = "subject"
-            relationshipSubjectSetRelationship.minCount = 1
-            relationshipSubjectSetRelationship.maxCount = 1
-            relationshipSubjectSetRelationship.optional = true
-            relationshipSubjectSetRelationship.deleteRule = .NoActionDeleteRule
-            relationshipSubjectSetRelationship.destinationEntity = entityDescription
-            
-            let relationshipSubjectRelationship = NSRelationshipDescription()
-            relationshipSubjectRelationship.name = "relationshipSubjectSet"
-            relationshipSubjectRelationship.minCount = 0
-            relationshipSubjectRelationship.maxCount = 0
-            relationshipSubjectRelationship.optional = false
-            relationshipSubjectRelationship.deleteRule = .CascadeDeleteRule
-            relationshipSubjectRelationship.destinationEntity = relationshipDescription
-            
-            relationshipSubjectRelationship.inverseRelationship = relationshipSubjectSetRelationship
-            relationshipSubjectSetRelationship.inverseRelationship = relationshipSubjectRelationship
-            
-            entityProperties.append(relationshipSubjectRelationship.copy() as! NSRelationshipDescription)
-            relationshipProperties.append(relationshipSubjectSetRelationship.copy() as! NSRelationshipDescription)
+//            let relationshipSubjectSetRelationship = NSRelationshipDescription()
+//            relationshipSubjectSetRelationship.name = "subject"
+//            relationshipSubjectSetRelationship.minCount = 1
+//            relationshipSubjectSetRelationship.maxCount = 1
+//            relationshipSubjectSetRelationship.optional = true
+//            relationshipSubjectSetRelationship.deleteRule = .NoActionDeleteRule
+//            relationshipSubjectSetRelationship.destinationEntity = entityDescription
+//            
+//            let relationshipSubjectRelationship = NSRelationshipDescription()
+//            relationshipSubjectRelationship.name = "relationshipSubjectSet"
+//            relationshipSubjectRelationship.minCount = 0
+//            relationshipSubjectRelationship.maxCount = 0
+//            relationshipSubjectRelationship.optional = false
+//            relationshipSubjectRelationship.deleteRule = .CascadeDeleteRule
+//            relationshipSubjectRelationship.destinationEntity = relationshipDescription
+//            
+//            relationshipSubjectRelationship.inverseRelationship = relationshipSubjectSetRelationship
+//            relationshipSubjectSetRelationship.inverseRelationship = relationshipSubjectRelationship
+//            
+//            entityProperties.append(relationshipSubjectRelationship.copy() as! NSRelationshipDescription)
+//            relationshipProperties.append(relationshipSubjectSetRelationship.copy() as! NSRelationshipDescription)
             // Inverse relationship for Subjects -- E.
             
             // Inverse relationship for Objects -- B.
-            let relationshipObjectSetRelationship = NSRelationshipDescription()
-            relationshipObjectSetRelationship.name = "object"
-            relationshipObjectSetRelationship.minCount = 1
-            relationshipObjectSetRelationship.maxCount = 1
-            relationshipObjectSetRelationship.optional = true
-            relationshipObjectSetRelationship.deleteRule = .NoActionDeleteRule
-            relationshipObjectSetRelationship.destinationEntity = entityDescription
-            
-            let relationshipObjectRelationship = NSRelationshipDescription()
-            relationshipObjectRelationship.name = "relationshipObjectSet"
-            relationshipObjectRelationship.minCount = 0
-            relationshipObjectRelationship.maxCount = 0
-            relationshipObjectRelationship.optional = false
-            relationshipObjectRelationship.deleteRule = .CascadeDeleteRule
-            relationshipObjectRelationship.destinationEntity = relationshipDescription
-            relationshipObjectRelationship.inverseRelationship = relationshipObjectSetRelationship
-            relationshipObjectSetRelationship.inverseRelationship = relationshipObjectRelationship
-            
-            entityProperties.append(relationshipObjectRelationship.copy() as! NSRelationshipDescription)
-            relationshipProperties.append(relationshipObjectSetRelationship.copy() as! NSRelationshipDescription)
+//            let relationshipObjectSetRelationship = NSRelationshipDescription()
+//            relationshipObjectSetRelationship.name = "object"
+//            relationshipObjectSetRelationship.minCount = 1
+//            relationshipObjectSetRelationship.maxCount = 1
+//            relationshipObjectSetRelationship.optional = true
+//            relationshipObjectSetRelationship.deleteRule = .NoActionDeleteRule
+//            relationshipObjectSetRelationship.destinationEntity = entityDescription
+//            
+//            let relationshipObjectRelationship = NSRelationshipDescription()
+//            relationshipObjectRelationship.name = "relationshipObjectSet"
+//            relationshipObjectRelationship.minCount = 0
+//            relationshipObjectRelationship.maxCount = 0
+//            relationshipObjectRelationship.optional = false
+//            relationshipObjectRelationship.deleteRule = .CascadeDeleteRule
+//            relationshipObjectRelationship.destinationEntity = relationshipDescription
+//            relationshipObjectRelationship.inverseRelationship = relationshipObjectSetRelationship
+//            relationshipObjectSetRelationship.inverseRelationship = relationshipObjectRelationship
+//            
+//            entityProperties.append(relationshipObjectRelationship.copy() as! NSRelationshipDescription)
+//            relationshipProperties.append(relationshipObjectSetRelationship.copy() as! NSRelationshipDescription)
             // Inverse relationship for Objects -- E.
             
             entityDescription.properties = entityProperties as! [NSPropertyDescription]
             entityGroupDescription.properties = entityGroupProperties as! [NSPropertyDescription]
             entityPropertyDescription.properties = entityPropertyProperties as! [NSPropertyDescription]
             
-            actionDescription.properties = actionProperties as! [NSPropertyDescription]
-            actionGroupDescription.properties = actionGroupProperties as! [NSPropertyDescription]
-            actionPropertyDescription.properties = actionPropertyProperties as! [NSPropertyDescription]
-            
-            relationshipDescription.properties = relationshipProperties as! [NSPropertyDescription]
-            relationshipGroupDescription.properties = relationshipGroupProperties as! [NSPropertyDescription]
-            relationshipPropertyDescription.properties = relationshipPropertyProperties as! [NSPropertyDescription]
+//            actionDescription.properties = actionProperties as! [NSPropertyDescription]
+//            actionGroupDescription.properties = actionGroupProperties as! [NSPropertyDescription]
+//            actionPropertyDescription.properties = actionPropertyProperties as! [NSPropertyDescription]
+//            
+//            relationshipDescription.properties = relationshipProperties as! [NSPropertyDescription]
+//            relationshipGroupDescription.properties = relationshipGroupProperties as! [NSPropertyDescription]
+//            relationshipPropertyDescription.properties = relationshipPropertyProperties as! [NSPropertyDescription]
             
             ModelSingleton.managedObjectModel = NSManagedObjectModel()
             ModelSingleton.managedObjectModel?.entities = [
                 entityDescription,
                 entityGroupDescription,
-                entityPropertyDescription,
+                entityPropertyDescription
                 
-                actionDescription,
-                actionGroupDescription,
-                actionPropertyDescription,
-                
-                relationshipDescription,
-                relationshipGroupDescription,
-                relationshipPropertyDescription
+//                actionDescription,
+//                actionGroupDescription,
+//                actionPropertyDescription,
+//                
+//                relationshipDescription,
+//                relationshipGroupDescription,
+//                relationshipPropertyDescription
             ]
         }
         return ModelSingleton.managedObjectModel!

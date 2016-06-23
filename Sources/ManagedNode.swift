@@ -85,11 +85,9 @@ internal class ManagedNode: ManagedModel {
      :description:	Allows for Dictionary style coding, which maps to the internal properties Dictionary.
      */
     internal subscript(name: String) -> AnyObject? {
-        if let properties = propertySet as? Set<ManagedProperty> {
-            for property in properties {
-                if name == property.name {
-                    return property.object
-                }
+        for property in propertySet as! Set<ManagedEntityProperty> {
+            if name == property.name {
+                return property.object
             }
         }
         return nil
@@ -100,11 +98,9 @@ internal class ManagedNode: ManagedModel {
      :description:	Checks whether the Node is a part of the Group name passed or not.
      */
     internal func memberOfGroup(name: String) -> Bool {
-        if let groups = groupSet as? Set<ManagedGroup> {
-            for group in groups {
-                if name == group.name {
-                    return true
-                }
+        for group in groupSet as! Set<ManagedGroup> {
+            if name == group.name {
+                return true
             }
         }
         return false
@@ -115,13 +111,11 @@ internal class ManagedNode: ManagedModel {
      :description:	Removes a Group name from the list of Groups if it exists.
      */
     internal func removeFromGroup(name: String) -> Bool {
-        if let groups = groupSet as? Set<ManagedGroup> {
-            for group in groups {
-                if name == group.name {
-                    group.delete()
-                    (groupSet as! NSMutableSet).removeObject(group)
-                    return true
-                }
+        for group in groupSet as! Set<ManagedGroup> {
+            if name == group.name {
+                group.delete()
+                (groupSet as! NSMutableSet).removeObject(group)
+                return true
             }
         }
         return false
