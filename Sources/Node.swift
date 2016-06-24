@@ -30,6 +30,14 @@
 
 import Foundation
 
+public enum NodeClass: NSNumber {
+    case Entity = 1
+    case Relationship = 2
+    case Action = 3
+}
+
+public protocol NodeType: Comparable {}
+
 internal class Node <T: ManagedNode>: CustomStringConvertible {
     /// A reference to the managed node type.
     internal let managedNode: T
@@ -63,7 +71,7 @@ internal class Node <T: ManagedNode>: CustomStringConvertible {
     internal var groups: [String] {
         return managedNode.groupSet.map {
             return $0.name
-            } as [String]
+        } as [String]
     }
     
     /// A reference to the properties.
@@ -81,5 +89,44 @@ internal class Node <T: ManagedNode>: CustomStringConvertible {
      */
     internal init(managedNode: T) {
         self.managedNode = managedNode
+    }
+    
+    /**
+     Access properties using the subscript operator.
+     - Parameter name: A property name value.
+     - Returns: The optional AnyObject value.
+     */
+    internal subscript(name: String) -> AnyObject? {
+        return managedNode[name]
+    }
+    
+    /**
+     Adds the ManagedNode to the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if added, false
+     otherwise.
+     */
+    internal func addToGroup(name: String) -> Bool {
+        return managedNode.addToGroup(name)
+    }
+    
+    /**
+     Checks if the ManagedNode to a part group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    internal func memberOfGroup(name: String) -> Bool {
+        return managedNode.memberOfGroup(name)
+    }
+    
+    /**
+     Removes the ManagedNode from the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    internal func removeFromGroup(name: String) -> Bool {
+        return managedNode.removeFromGroup(name)
     }
 }

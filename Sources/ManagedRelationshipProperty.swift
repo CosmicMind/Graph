@@ -28,10 +28,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Foundation
+import CoreData
 
-public enum NodeClass: NSNumber {
-    case Entity = 1
-    case Relationship = 2
-    case Action = 3
+@objc(ManagedRelationshipProperty)
+internal class ManagedRelationshipProperty: ManagedProperty {
+    @NSManaged internal var node: ManagedRelationship
+    
+    /**
+     Initializer that accepts a property name, value and
+     a NSManagedObjectContext.
+     - Parameter name: A property name.
+     - Parameter object: A reference to the object value.
+     - Parameter context: A reference to a NSManagedObjectContext.
+     */
+    internal required convenience init(name: String, object: AnyObject, context: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.relationshipPropertyDescriptionName, name: name, object: object, context: context)
+    }
 }

@@ -30,7 +30,6 @@
 
 import CoreData
 
-@objc(ManagedNode)
 internal class ManagedNode: ManagedModel {
     @NSManaged internal var nodeClass: NSNumber
     @NSManaged internal var type: String
@@ -56,23 +55,25 @@ internal class ManagedNode: ManagedModel {
         self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
         self.type = type
         self.context = context
-        nodeClass = NodeClass.Entity.rawValue
         createdDate = NSDate()
         propertySet = NSSet()
         groupSet = NSSet()
     }
     
+    /// Deletes the relationships and actions before marking for deletion.
     internal override func delete() {
         var set = groupSet as! NSMutableSet
-        set.forEach { (object: AnyObject) in
+        groupSet.forEach { (object: AnyObject) in
             if let group = object as? ManagedGroup {
+                group.context = context
                 group.delete()
                 set.removeObject(group)
             }
         }
         set = propertySet as! NSMutableSet
-        set.forEach { (object: AnyObject) in
+        propertySet.forEach { (object: AnyObject) in
             if let property = object as? ManagedProperty {
+                property.context = context
                 property.delete()
                 set.removeObject(property)
             }
@@ -81,11 +82,12 @@ internal class ManagedNode: ManagedModel {
     }
     
     /**
-     :name:	properties
-     :description:	Allows for Dictionary style coding, which maps to the internal properties Dictionary.
+     Access properties using the subscript operator.
+     - Parameter name: A property name value.
+     - Returns: The optional AnyObject value.
      */
     internal subscript(name: String) -> AnyObject? {
-        for property in propertySet as! Set<ManagedEntityProperty> {
+        for property in propertySet as! Set<ManagedProperty> {
             if name == property.name {
                 return property.object
             }
@@ -94,8 +96,20 @@ internal class ManagedNode: ManagedModel {
     }
     
     /**
-     :name:	memberOfGroup
-     :description:	Checks whether the Node is a part of the Group name passed or not.
+     Adds the ManagedNode to the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if added, false
+     otherwise.
+     */
+    internal func addToGroup(name: String) -> Bool {
+        return false
+    }
+    
+    /**
+     Checks if the ManagedNode to a part group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
      */
     internal func memberOfGroup(name: String) -> Bool {
         for group in groupSet as! Set<ManagedGroup> {
@@ -107,8 +121,10 @@ internal class ManagedNode: ManagedModel {
     }
     
     /**
-     :name:	removeFromGroup
-     :description:	Removes a Group name from the list of Groups if it exists.
+     Removes the ManagedNode from the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
      */
     internal func removeFromGroup(name: String) -> Bool {
         for group in groupSet as! Set<ManagedGroup> {

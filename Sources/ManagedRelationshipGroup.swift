@@ -30,19 +30,17 @@
 
 import CoreData
 
-internal class ManagedGroup: ManagedModel {
-    @NSManaged internal var name: String
+@objc(ManagedRelationshipGroup)
+internal class ManagedRelationshipGroup: ManagedGroup {
+    @NSManaged internal var node: ManagedRelationship
     
     /**
-     Initializer that accepts an identifier, a group name and a
+     Initializer that accepts a group name and a
      NSManagedObjectContext.
-     - Parameter identifier: A model identifier.
      - Parameter name: A group name.
      - Parameter context: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(identifier: String, name: String, context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-        self.name = name
-        self.context = context
+    internal required convenience init(name: String, context: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.relationshipGroupDescriptionName, name: name, context: context)
     }
 }

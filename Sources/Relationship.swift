@@ -30,18 +30,18 @@
 
 import Foundation
 
-@objc(Entity)
-public class Entity: NSObject, NodeType {
+@objc(Relationship)
+public class Relationship: NSObject, NodeType {
     /// A reference to the node.
-    internal let node: Node<ManagedEntity>
+    internal let node: Node<ManagedRelationship>
     
     public override var description: String {
-        return node.description
+        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
     }
     
     /// A reference to the nodeClass.
     public var nodeClass: NodeClass {
-        return .Entity
+        return .Relationship
     }
     
     /// A reference to the type.
@@ -83,12 +83,26 @@ public class Entity: NSObject, NodeType {
         return node.properties
     }
     
+    /// A reference to the subject Entity.
+    public var subject: Entity? {
+        didSet {
+            node.managedNode.object = subject?.node.managedNode
+        }
+    }
+    
+    /// A reference to the object Entity.
+    public var object: Entity? {
+        didSet {
+            node.managedNode.object = object?.node.managedNode
+        }
+    }
+    
     /**
-     Initializer that accepts a ManagedEntity.
-     - Parameter managedNode: A reference to a ManagedEntity.
+     Initializer that accepts a ManagedRelationship.
+     - Parameter managedNode: A reference to a ManagedRelationship.
      */
-    internal init(managedNode: ManagedEntity) {
-        node = Node<ManagedEntity>(managedNode: managedNode)
+    internal init(managedNode: ManagedRelationship) {
+        node = Node<ManagedRelationship>(managedNode: managedNode)
     }
     
     /**
@@ -99,7 +113,7 @@ public class Entity: NSObject, NodeType {
      */
     @nonobjc
     public required convenience init(type: String, graph: Graph) {
-        self.init(managedNode: ManagedEntity(type, context: graph.context))
+        self.init(managedNode: ManagedRelationship(type, context: graph.context))
     }
     
     /**
@@ -110,7 +124,7 @@ public class Entity: NSObject, NodeType {
      */
     @nonobjc
     public required convenience init(type: String, graph: String) {
-        self.init(managedNode: ManagedEntity(type, context: Graph(name: graph).context))
+        self.init(managedNode: ManagedRelationship(type, context: Graph(name: graph).context))
     }
     
     /**
@@ -129,11 +143,11 @@ public class Entity: NSObject, NodeType {
      otherwise.
      */
     public override func isEqual(object: AnyObject?) -> Bool {
-        return id == (object as? Entity)?.id
+        return id == (object as? Relationship)?.id
     }
     
     /**
-     Adds the Entity to the group.
+     Adds the Relationship to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -153,7 +167,7 @@ public class Entity: NSObject, NodeType {
     }
     
     /**
-     Removes the Entity from a group.
+     Removes the Relationship from a group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
@@ -163,7 +177,7 @@ public class Entity: NSObject, NodeType {
     }
     
     /**
-     Adds the Entity to the group if it is not a member, or
+     Adds the Relationship to the group if it is not a member, or
      removes it if it is a member.
      - Parameter name: The group name.
      */
@@ -171,24 +185,29 @@ public class Entity: NSObject, NodeType {
         memberOfGroup(name) ? removeFromGroup(name) : addToGroup(name)
     }
     
-    /// Marks the Entity for deletion.
+    /**
+     Marks the Relationship for deletion and removes the subject 
+     and object relationships.
+    */
     public func delete() {
+        node.managedNode.subject?.removeRelationshipSubjectSetObject(node.managedNode)
+        node.managedNode.object?.removeRelationshipObjectSetObject(node.managedNode)
         node.managedNode.delete()
     }
 }
 
-public func <=(lhs: Entity, rhs: Entity) -> Bool {
+public func <=(lhs: Relationship, rhs: Relationship) -> Bool {
     return lhs.id <= rhs.id
 }
 
-public func >=(lhs: Entity, rhs: Entity) -> Bool {
+public func >=(lhs: Relationship, rhs: Relationship) -> Bool {
     return lhs.id >= rhs.id
 }
 
-public func >(lhs: Entity, rhs: Entity) -> Bool {
+public func >(lhs: Relationship, rhs: Relationship) -> Bool {
     return lhs.id > rhs.id
 }
 
-public func <(lhs: Entity, rhs: Entity) -> Bool {
+public func <(lhs: Relationship, rhs: Relationship) -> Bool {
     return lhs.id < rhs.id
 }

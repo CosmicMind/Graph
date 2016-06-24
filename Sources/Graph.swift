@@ -46,6 +46,23 @@ public protocol GraphDelegate {
     optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
     optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
     optional func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+    
+    optional func graphDidInsertAction(graph: Graph, action: Action)
+    optional func graphDidUpdateAction(graph: Graph, action: Action)
+    optional func graphDidDeleteAction(graph: Graph, action: Action)
+    optional func graphDidInsertActionGroup(graph: Graph, action: Action, group: String)
+    optional func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String)
+    optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+    optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+    optional func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+    
+    optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship)
+    optional func graphDidDeleteRelationship(graph: Graph, relationship: Relationship)
+    optional func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
+    optional func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
+    optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
+    optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
+    optional func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
 }
 
 @objc(Graph)
@@ -161,6 +178,27 @@ public class Graph: NSObject {
     }
     
     /**
+     Clears all persisted data.
+     - Parameter completion: An Optional completion block that is
+     executed when the save operation is completed.
+     */
+    public func clear(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+        for entity in searchForEntity(types: ["*"]) {
+            entity.delete()
+        }
+        
+        for action in searchForAction(types: ["*"]) {
+            action.delete()
+        }
+        
+        for relationship in searchForRelationship(types: ["*"]) {
+            relationship.delete()
+        }
+        
+        save(completion)
+    }
+    
+    /**
      Handler for save notifications. Context merges are made within this handler.
      - Parameter notification: NSNotification reference.
     */
@@ -197,293 +235,5 @@ public class Graph: NSObject {
         }
         
         context = moc
-    }
-}
-
-/// Graph Watch API.
-public extension Graph {
-    /**
-     :name:	watchForEntity(types: groups: properties)
-     */
-    public func watchForEntity(types types: Array<String>? = nil, groups: Array<String>? = nil, properties: Array<String>? = nil) {
-        if let v: Array<String> = types {
-            for x in v {
-                watch(Entity: x)
-            }
-        }
-        
-        if let v: Array<String> = groups {
-            for x in v {
-                watch(EntityGroup: x)
-            }
-        }
-        
-        if let v: Array<String> = properties {
-            for x in v {
-                watch(EntityProperty: x)
-            }
-        }
-    }
-    
-    //
-    //	:name:	watch(Entity)
-    //
-    internal func watch(Entity type: String) {
-        addWatcher("type", value: type, index: ModelIdentifier.entityIndexName, entityDescriptionName: ModelIdentifier.entityDescriptionName, managedObjectClassName: ModelIdentifier.entityObjectClassName)
-    }
-    
-    //
-    //	:name:	watch(EntityGroup)
-    //
-    internal func watch(EntityGroup name: String) {
-        addWatcher("name", value: name, index: ModelIdentifier.entityGroupIndexName, entityDescriptionName: ModelIdentifier.entityGroupDescriptionName, managedObjectClassName: ModelIdentifier.entityGroupObjectClassName)
-    }
-    
-    //
-    //	:name:	watch(EntityProperty)
-    //
-    internal func watch(EntityProperty name: String) {
-        addWatcher("name", value: name, index: ModelIdentifier.entityPropertyIndexName, entityDescriptionName: ModelIdentifier.entityPropertyDescriptionName, managedObjectClassName: ModelIdentifier.entityPropertyObjectClassName)
-    }
-    
-    //
-    //	:name:	addPredicateToObserve
-    //
-    internal func addPredicateToObserve(entityDescription: NSEntityDescription, predicate: NSPredicate) {
-        let entityPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString)
-        let predicates = [entityPredicate, predicate]
-        let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-        watchPredicate = nil == watchPredicate ? finalPredicate : NSCompoundPredicate(orPredicateWithSubpredicates: [watchPredicate!, finalPredicate])
-    }
-    
-    //
-    //	:name:	isWatching
-    //
-    internal func isWatching(key: String, index: String) -> Bool {
-        guard var watcher = watchers[key] else {
-            watchers[key] = [String](arrayLiteral: index)
-            return false
-        }
-        guard watcher.contains(index) else {
-            return false
-        }
-        watcher.append(index)
-        return true
-    }
-    
-    //
-    //	:name:	addWatcher
-    //
-    internal func addWatcher(key: String, value: String, index: String, entityDescriptionName: String, managedObjectClassName: String) {
-        guard !isWatching(key, index: index) else {
-            return
-        }
-        
-        let entityDescription = NSEntityDescription()
-        entityDescription.name = entityDescriptionName
-        entityDescription.managedObjectClassName = managedObjectClassName
-        
-        let predicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
-        addPredicateToObserve(entityDescription, predicate: predicate)
-    }
-    
-    /**
-     Notifies watchers of changes within the ManagedObjectContext.
-     - Parameter notification: An NSNotification passed from the context
-     save operation.
-     */
-    internal func notifyWatchers(notification: NSNotification) {
-        let userInfo = notification.userInfo
-        
-        if let insertedSet = userInfo?[NSInsertedObjectsKey] as? NSSet {
-            let	inserted = insertedSet.mutableCopy() as! NSMutableSet
-            
-            inserted.filterUsingPredicate(watchPredicate!)
-            
-            if 0 < inserted.count {
-                for node in inserted.allObjects as! [NSManagedObject] {
-                    switch String.fromCString(object_getClassName(node))! {
-                    case "ManagedEntity_ManagedEntity_":
-                        delegate?.graphDidInsertEntity?(self, entity: Entity(managedEntity: node as! ManagedEntity))
-                    case "ManagedEntityGroup_ManagedEntityGroup_":
-                        let group = node as! ManagedEntityGroup
-                        delegate?.graphDidInsertEntityGroup?(self, entity: Entity(managedEntity: group.node), group: group.name)
-                    case "ManagedEntityProperty_ManagedEntityProperty_":
-                        let property = node as! ManagedEntityProperty
-                        delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedEntity: property.node), property: property.name, value: property.object)
-                    default:
-                        assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                    }
-                }
-            }
-        }
-        
-        if let updatedSet = userInfo?[NSUpdatedObjectsKey] as? NSSet {
-            let	updated = updatedSet.mutableCopy() as! NSMutableSet
-            updated.filterUsingPredicate(watchPredicate!)
-            
-            if 0 < updated.count {
-                for node: NSManagedObject in updated.allObjects as! [NSManagedObject] {
-                    switch String.fromCString(object_getClassName(node))! {
-                    case "ManagedEntityProperty_ManagedEntityProperty_":
-                        let property = node as! ManagedEntityProperty
-                        delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedEntity: property.node), property: property.name, value: property.object)
-                    default:
-                        assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                    }
-                }
-            }
-        }
-        
-        if let deletedSet = userInfo?[NSDeletedObjectsKey] as? NSSet {
-            let	deleted = deletedSet.mutableCopy() as! NSMutableSet
-            deleted.filterUsingPredicate(watchPredicate!)
-            
-            if 0 < deleted.count {
-                for node in deleted.allObjects as! [NSManagedObject] {
-                    switch String.fromCString(object_getClassName(node))! {
-                    case "ManagedEntity_ManagedEntity_":
-                        delegate?.graphDidDeleteEntity?(self, entity: Entity(managedEntity: node as! ManagedEntity))
-                    case "ManagedEntityProperty_ManagedEntityProperty_":
-                        let property = node as! ManagedEntityProperty
-                        delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(managedEntity: property.node), property: property.name, value: property.object)
-                    case "ManagedEntityGroup_ManagedEntityGroup_":
-                        let group = node as! ManagedEntityGroup
-                        delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(managedEntity: group.node), group: group.name)
-                    default:
-                        assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                    }
-                }
-            }
-        }
-    }
-}
-
-/// Graph Search API.
-public extension Graph {
-    /**
-     :name:	searchForEntity(types: groups: properties)
-     */
-    public func searchForEntity(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Entity] {
-        var nodes = [AnyObject]()
-        var toFilter: Bool = false
-        
-        if let v = types {
-            if let n = search(ModelIdentifier.entityDescriptionName, types: v) {
-                nodes.appendContentsOf(n)
-            }
-        }
-        
-        if let v = groups {
-            if let n = search(ModelIdentifier.entityGroupDescriptionName, groups: v) {
-                toFilter = 0 < nodes.count
-                nodes.appendContentsOf(n)
-            }
-        }
-        
-        if let v = properties {
-            if let n = search(ModelIdentifier.entityPropertyDescriptionName, properties: v) {
-                toFilter = 0 < nodes.count
-                nodes.appendContentsOf(n)
-            }
-        }
-        
-        if toFilter {
-            var seen = [String: Bool]()
-            var i: Int = nodes.count - 1
-            while 0 <= i {
-                if let v = nodes[i] as? ManagedEntity {
-                    if nil == seen.updateValue(true, forKey: v.id) {
-                        nodes[i] = Entity(managedEntity: v)
-                        i -= 1
-                        continue
-                    }
-                } else if let v = context.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedEntity {
-                    if nil == seen.updateValue(true, forKey: v.id) {
-                        nodes[i] = Entity(managedEntity: v)
-                        i -= 1
-                        continue
-                    }
-                }
-                nodes.removeAtIndex(i)
-                i -= 1
-            }
-            return nodes as! [Entity]
-        } else {
-            return nodes.map {
-                if let v: ManagedEntity = $0 as? ManagedEntity {
-                    return Entity(managedEntity: v)
-                }
-                return Entity(managedEntity: context.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
-            } as [Entity]
-        }
-    }
-    
-    internal func search(typeDescriptionName: String, types: [String]) -> [AnyObject]? {
-        var typesPredicate = [NSPredicate]()
-        
-        for v in types {
-            typesPredicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
-        }
-        
-        let entityDescription = NSEntityDescription.entityForName(typeDescriptionName, inManagedObjectContext: context.parentContext!.parentContext!)!
-        let request = NSFetchRequest()
-        request.entity = entityDescription
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: true)]
-        
-        return try? context.parentContext!.parentContext!.executeFetchRequest(request)
-    }
-    
-    internal func search(groupDescriptionName: String, groups: [String]) -> [AnyObject]? {
-        var groupsPredicate = [NSPredicate]()
-        
-        for v in groups {
-            groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
-        }
-        
-        let entityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: context.parentContext!.parentContext!)!
-        let request = NSFetchRequest()
-        request.entity = entityDescription
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
-        request.resultType = .DictionaryResultType
-        request.propertiesToFetch = ["node"]
-        request.returnsDistinctResults = true
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: groupsPredicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
-        
-        return try? context.parentContext!.parentContext!.executeFetchRequest(request)
-    }
-    
-    internal func search(propertyDescriptionName: String, properties: [(key: String, value: AnyObject?)]) -> [AnyObject]? {
-        var propertiesPredicate = [NSPredicate]()
-        
-        for (k, v) in properties {
-            if let x = v {
-                if let a = x as? String {
-                    propertiesPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
-                } else if let a: NSNumber = x as? NSNumber {
-                    propertiesPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
-                }
-            } else {
-                propertiesPredicate.append(NSPredicate(format: "name LIKE[cd] %@", k))
-            }
-        }
-        
-        let entityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: context.parentContext!.parentContext!)!
-        let request = NSFetchRequest()
-        request.entity = entityDescription
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
-        request.resultType = .DictionaryResultType
-        request.propertiesToFetch = ["node"]
-        request.returnsDistinctResults = true
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: propertiesPredicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
-        
-        return try? context.parentContext!.parentContext!.executeFetchRequest(request)
     }
 }

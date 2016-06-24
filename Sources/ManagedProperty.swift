@@ -30,7 +30,6 @@
 
 import CoreData
 
-@objc(ManagedProperty)
 internal class ManagedProperty: ManagedModel {
     @NSManaged internal var name: String
     @NSManaged internal var object: AnyObject

@@ -30,19 +30,18 @@
 
 import CoreData
 
-internal class ManagedGroup: ManagedModel {
-    @NSManaged internal var name: String
+@objc(ManagedActionProperty)
+internal class ManagedActionProperty: ManagedProperty {
+    @NSManaged internal var node: ManagedAction
     
     /**
-     Initializer that accepts an identifier, a group name and a
-     NSManagedObjectContext.
-     - Parameter identifier: A model identifier.
-     - Parameter name: A group name.
+     Initializer that accepts a property name, value and
+     a NSManagedObjectContext.
+     - Parameter name: A property name.
+     - Parameter object: A reference to the object value.
      - Parameter context: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(identifier: String, name: String, context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-        self.name = name
-        self.context = context
+    internal required convenience init(name: String, object: AnyObject, context: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.actionPropertyDescriptionName, name: name, object: object, context: context)
     }
 }

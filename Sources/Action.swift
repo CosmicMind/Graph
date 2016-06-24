@@ -30,18 +30,18 @@
 
 import Foundation
 
-@objc(Entity)
-public class Entity: NSObject, NodeType {
+@objc(Action)
+public class Action: NSObject, NodeType {
     /// A reference to the node.
-    internal let node: Node<ManagedEntity>
+    internal let node: Node<ManagedAction>
     
     public override var description: String {
-        return node.description
+        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
     }
     
     /// A reference to the nodeClass.
     public var nodeClass: NodeClass {
-        return .Entity
+        return .Action
     }
     
     /// A reference to the type.
@@ -83,12 +83,26 @@ public class Entity: NSObject, NodeType {
         return node.properties
     }
     
+    /// An Array of Entity subjects.
+    public var subjects: [Entity] {
+        return node.managedNode.subjectSet.map {
+            return Entity(managedNode: $0 as! ManagedEntity)
+        } as [Entity]
+    }
+    
+    /// An Array of Entity objects.
+    public var objects: Array<Entity> {
+        return node.managedNode.objectSet.map {
+            return Entity(managedNode: $0 as! ManagedEntity)
+        } as [Entity]
+    }
+    
     /**
-     Initializer that accepts a ManagedEntity.
-     - Parameter managedNode: A reference to a ManagedEntity.
+     Initializer that accepts a ManagedAction.
+     - Parameter managedNode: A reference to a ManagedAction.
      */
-    internal init(managedNode: ManagedEntity) {
-        node = Node<ManagedEntity>(managedNode: managedNode)
+    internal init(managedNode: ManagedAction) {
+        node = Node<ManagedAction>(managedNode: managedNode)
     }
     
     /**
@@ -99,7 +113,7 @@ public class Entity: NSObject, NodeType {
      */
     @nonobjc
     public required convenience init(type: String, graph: Graph) {
-        self.init(managedNode: ManagedEntity(type, context: graph.context))
+        self.init(managedNode: ManagedAction(type, context: graph.context))
     }
     
     /**
@@ -110,7 +124,7 @@ public class Entity: NSObject, NodeType {
      */
     @nonobjc
     public required convenience init(type: String, graph: String) {
-        self.init(managedNode: ManagedEntity(type, context: Graph(name: graph).context))
+        self.init(managedNode: ManagedAction(type, context: Graph(name: graph).context))
     }
     
     /**
@@ -129,11 +143,11 @@ public class Entity: NSObject, NodeType {
      otherwise.
      */
     public override func isEqual(object: AnyObject?) -> Bool {
-        return id == (object as? Entity)?.id
+        return id == (object as? Action)?.id
     }
     
     /**
-     Adds the Entity to the group.
+     Adds the Action to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -153,7 +167,7 @@ public class Entity: NSObject, NodeType {
     }
     
     /**
-     Removes the Entity from a group.
+     Removes the Action from a group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
@@ -163,7 +177,7 @@ public class Entity: NSObject, NodeType {
     }
     
     /**
-     Adds the Entity to the group if it is not a member, or
+     Adds the Action to the group if it is not a member, or
      removes it if it is a member.
      - Parameter name: The group name.
      */
@@ -171,24 +185,99 @@ public class Entity: NSObject, NodeType {
         memberOfGroup(name) ? removeFromGroup(name) : addToGroup(name)
     }
     
-    /// Marks the Entity for deletion.
+    /**
+     Adds an Entity to the subject set.
+     - Parameter entity: An Entity to add.
+     - Returns: A boolean of the result, true if added, false 
+     otherwise.
+     */
+    public func addSubject(entity: Entity) -> Bool {
+        return node.managedNode.addSubject(entity.node.managedNode)
+    }
+    
+    /**
+     Removes an Entity from the subject set.
+     - Parameter entity: An Entity to remove.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    public func removeSubject(entity: Entity) -> Bool {
+        return node.managedNode.removeSubject(entity.node.managedNode)
+    }
+    
+    /**
+     Checks whether the Entity is a member of the subject set.
+     - Parameter entity: An Entity to check.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    public func memberOfSubjects(entity: Entity) -> Bool {
+        return subjects.contains(entity)
+    }
+    
+    /**
+     Adds an Entity to the object set.
+     - Parameter entity: An Entity to add.
+     - Returns: A boolean of the result, true if added, false
+     otherwise.
+     */
+    public func addObject(entity: Entity) -> Bool {
+        return node.managedNode.addObject(entity.node.managedNode)
+    }
+    
+    /**
+     Removes an Entity from the object set.
+     - Parameter entity: An Entity to remove.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    public func removeObject(entity: Entity) -> Bool {
+        return node.managedNode.removeObject(entity.node.managedNode)
+    }
+    
+    /**
+     Checks whether the Entity is a member of the object set.
+     - Parameter entity: An Entity to check.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    public func memberOfObjects(entity: Entity) -> Bool {
+        return objects.contains(entity)
+    }
+    
+    /**
+     Marks the Action for deletion and removes the Entities from
+     the subject and object set.
+    */
     public func delete() {
+        node.managedNode.subjectSet.forEach { (object: AnyObject) in
+            if let entity: ManagedEntity = object as? ManagedEntity {
+                (entity.actionSubjectSet as! NSMutableSet).removeObject(node.managedNode)
+            }
+        }
+        
+        node.managedNode.objectSet.forEach { (object: AnyObject) in
+            if let entity: ManagedEntity = object as? ManagedEntity {
+                (entity.actionObjectSet as! NSMutableSet).removeObject(node.managedNode)
+            }
+        }
+        
         node.managedNode.delete()
     }
 }
 
-public func <=(lhs: Entity, rhs: Entity) -> Bool {
+public func <=(lhs: Action, rhs: Action) -> Bool {
     return lhs.id <= rhs.id
 }
 
-public func >=(lhs: Entity, rhs: Entity) -> Bool {
+public func >=(lhs: Action, rhs: Action) -> Bool {
     return lhs.id >= rhs.id
 }
 
-public func >(lhs: Entity, rhs: Entity) -> Bool {
+public func >(lhs: Action, rhs: Action) -> Bool {
     return lhs.id > rhs.id
 }
 
-public func <(lhs: Entity, rhs: Entity) -> Bool {
+public func <(lhs: Action, rhs: Action) -> Bool {
     return lhs.id < rhs.id
 }
