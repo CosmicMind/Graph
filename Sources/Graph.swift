@@ -77,7 +77,7 @@ public class Graph: NSObject {
     private(set) var location: NSURL!
     
     /// Worker context.
-    public internal(set) var context: NSManagedObjectContext!
+    public private(set) var context: NSManagedObjectContext!
     
     /// A reference to the watch predicate.
     public internal(set) var watchPredicate: NSPredicate?
@@ -151,17 +151,25 @@ public class Graph: NSObject {
                         privateContext.performBlock {
                             do {
                                 try privateContext.save()
-                                completion?(success: true, error: nil)
+                                dispatch_sync(dispatch_get_main_queue()) {
+                                    completion?(success: true, error: nil)
+                                }
                             } catch let e as NSError {
-                                completion?(success: false, error: e)
+                                dispatch_sync(dispatch_get_main_queue()) {
+                                    completion?(success: false, error: e)
+                                }
                             }
                         }
                     } catch let e as NSError {
-                        completion?(success: false, error: e)
+                        dispatch_sync(dispatch_get_main_queue()) {
+                            completion?(success: false, error: e)
+                        }
                     }
                 }
             } catch let e as NSError {
-                completion?(success: false, error: e)
+                dispatch_sync(dispatch_get_main_queue()) {
+                    completion?(success: false, error: e)
+                }
             }
         }
     }
@@ -187,20 +195,6 @@ public class Graph: NSObject {
         save(completion)
     }
     
-    /**
-     Handler for save notifications. Context merges are made within this handler.
-     - Parameter notification: NSNotification reference.
-     */
-    internal func handleContextDidSave(notification: NSNotification) {
-        if NSThread.isMainThread() {
-            notifyWatchers(notification)
-        } else {
-            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                self?.notifyWatchers(notification)
-            }
-        }
-    }
-    
     /// Prepares the registry.
     private func prepareGraphRegistry() {
         dispatch_once(&GraphRegistry.dispatchToken) {
@@ -223,7 +217,6 @@ public class Graph: NSObject {
             context = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
             GraphRegistry.contexts[name] = context
             
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: privateContext)
             return
         }
         

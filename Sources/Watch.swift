@@ -234,7 +234,6 @@ public extension Graph {
         let predicates = [entityPredicate, predicate]
         let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         watchPredicate = nil == watchPredicate ? finalPredicate : NSCompoundPredicate(orPredicateWithSubpredicates: [watchPredicate!, finalPredicate])
-        print(watchPredicate)
     }
     
     /**
@@ -275,6 +274,28 @@ public extension Graph {
         
         let predicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
         addPredicateToObserve(entityDescription, predicate: predicate)
+        prepareForObservation()
+    }
+    
+    /**
+     Handler for save notifications. Context merges are made within this handler.
+     - Parameter notification: NSNotification reference.
+     */
+    internal func handleContextDidSave(notification: NSNotification) {
+        if NSThread.isMainThread() {
+            notifyWatchers(notification)
+        } else {
+            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                self?.notifyWatchers(notification)
+            }
+        }
+    }
+    
+    /// Prepares the instance for save notifications.   
+    internal func prepareForObservation() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: context.parentContext!.parentContext!)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: context.parentContext!.parentContext!)
     }
     
     /**
@@ -288,8 +309,6 @@ public extension Graph {
         }
         
         let userInfo: [NSObject : AnyObject]? = notification.userInfo
-        
-        print("Inserted", userInfo)
         
         if let insertedSet = userInfo?[NSInsertedObjectsKey] as? NSSet {
             let	inserted = insertedSet.mutableCopy() as! NSMutableSet
