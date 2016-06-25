@@ -35,26 +35,25 @@ class EntityTests: XCTestCase, GraphDelegate {
     var saveException: XCTestExpectation?
     var delegateException: XCTestExpectation?
     
-    var graph: Graph!
-    
     override func setUp() {
         super.setUp()
-        graph = Graph()
-        graph.delegate = self
-        graph.watchForEntity(types: ["T"])
     }
     
     override func tearDown() {
-        graph = nil
         super.tearDown()
     }
     
     func testDefaultGraph() {
-        let n = Entity(type: "T")
-        n["p"] = "v"
-        n.addToGroup("g")
+        let graph = Graph()
+        graph.delegate = self
+        graph.watchForEntity(types: ["T"])
+        graph.clear()
         
-        XCTAssertTrue("v" == n["p"] as? String)
+        let entity = Entity(type: "T")
+        entity["p"] = "v"
+        entity.addToGroup("g")
+        
+        XCTAssertTrue("v" == entity["p"] as? String)
         
         saveException = expectationWithDescription("[EntityTests Error: Save Entity test failed.]")
         delegateException = expectationWithDescription("[EntityTests Error: Delegate Entity test failed.]")
@@ -68,22 +67,22 @@ class EntityTests: XCTestCase, GraphDelegate {
     }
     
     func testNamedGraphSave() {
-        let g = Graph(name: "EntityTests-namedGraphSave")
-        g.clear()
+        let graph = Graph(name: "EntityTests-testNamedGraphSave")
+        graph.clear()
         
-        g.watchForEntity(types: ["T"])
-        g.delegate = self
+        graph.watchForEntity(types: ["T"])
+        graph.delegate = self
         
-        let e = Entity(type: "T", graph: "EntityTests-namedGraphSave")
-        e["p"] = "v"
-        e.addToGroup("g")
+        let entity = Entity(type: "T", graph: "EntityTests-testNamedGraphSave")
+        entity["p"] = "v"
+        entity.addToGroup("g")
         
-        XCTAssertTrue("v" == e["p"] as? String)
+        XCTAssertTrue("v" == entity["p"] as? String)
         
         saveException = expectationWithDescription("[EntityTests Error: Save Entity test failed.]")
         delegateException = expectationWithDescription("[EntityTests Error: Delegate Entity test failed.]")
         
-        g.save { [weak self] (success: Bool, error: NSError?) in
+        graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
         }
@@ -92,23 +91,23 @@ class EntityTests: XCTestCase, GraphDelegate {
     }
     
     func testReferenceGraphSave() {
-        let g = Graph(name: "EntityTests-referenceGraphSave")
-        g.clear()
+        let graph = Graph(name: "EntityTests-testReferenceGraphSave")
+        graph.clear()
         
-        g.watchForEntity(types: ["T"])
-        g.delegate = self
+        graph.watchForEntity(types: ["T"])
+        graph.delegate = self
         
-        let e = Entity(type: "T", graph: g)
-        e["p"] = "v"
-        e.addToGroup("g")
+        let entity = Entity(type: "T", graph: graph)
+        entity["p"] = "v"
+        entity.addToGroup("g")
         
-        XCTAssertTrue("v" == e["p"] as? String)
+        XCTAssertTrue("v" == entity["p"] as? String)
         
         saveException = expectationWithDescription("[EntityTests Error: Save Entity test failed.]")
         delegateException = expectationWithDescription("[EntityTests Error: Delegate Entity test failed.]")
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            g.save { [weak self] (success: Bool, error: NSError?) in
+            graph.save { [weak self] (success: Bool, error: NSError?) in
                 self?.saveException?.fulfill()
                 XCTAssertTrue(success)
             }
@@ -121,22 +120,22 @@ class EntityTests: XCTestCase, GraphDelegate {
         saveException = expectationWithDescription("[EntityTests Error: Save Entity test failed.]")
         delegateException = expectationWithDescription("[EntityTests Error: Delegate Entity test failed.]")
         
-        var g: Graph!
+        var graph: Graph!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            g = Graph(name: "EntityTests-asyncGraphSave")
-            g.clear()
+            graph = Graph(name: "EntityTests-testAsyncGraphSave")
+            graph.clear()
             
-            g.watchForEntity(types: ["T"])
-            g.delegate = self
+            graph.watchForEntity(types: ["T"])
+            graph.delegate = self
             
-            let e = Entity(type: "T", graph: g)
-            e["p"] = "v"
-            e.addToGroup("g3")
+            let entity = Entity(type: "T", graph: graph)
+            entity["p"] = "v"
+            entity.addToGroup("g3")
             
-            XCTAssertTrue("v" == e["p"] as? String)
+            XCTAssertTrue("v" == entity["p"] as? String)
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-                g.save { [weak self] (success: Bool, error: NSError?) in
+                graph.save { [weak self] (success: Bool, error: NSError?) in
                     self?.saveException?.fulfill()
                     XCTAssertTrue(success)
                 }

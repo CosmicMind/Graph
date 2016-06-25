@@ -35,26 +35,25 @@ class RelationshipTests: XCTestCase, GraphDelegate {
     var saveException: XCTestExpectation?
     var delegateException: XCTestExpectation?
     
-    var graph: Graph!
-    
     override func setUp() {
         super.setUp()
-        graph = Graph()
-        graph.delegate = self
-        graph.watchForRelationship(types: ["T"])
     }
     
     override func tearDown() {
-        graph = nil
         super.tearDown()
     }
     
     func testDefaultGraph() {
-        let n = Relationship(type: "T")
-        n["p"] = "v"
-        n.addToGroup("g")
+        let graph = Graph()
+        graph.delegate = self
+        graph.watchForRelationship(types: ["T"])
+        graph.clear()
         
-        XCTAssertTrue("v" == n["p"] as? String)
+        let relationship = Relationship(type: "T")
+        relationship["p"] = "v"
+        relationship.addToGroup("g")
+        
+        XCTAssertTrue("v" == relationship["p"] as? String)
         
         saveException = expectationWithDescription("[RelationshipTests Error: Save Relationship test failed.]")
         delegateException = expectationWithDescription("[RelationshipTests Error: Delegate Relationship test failed.]")
@@ -68,22 +67,22 @@ class RelationshipTests: XCTestCase, GraphDelegate {
     }
     
     func testNamedGraphSave() {
-        let g = Graph(name: "RelationshipTests-namedGraphSave")
-        g.clear()
+        let graph = Graph(name: "RelationshipTests-testNamedGraphSave")
+        graph.clear()
         
-        g.watchForRelationship(types: ["T"])
-        g.delegate = self
+        graph.watchForRelationship(types: ["T"])
+        graph.delegate = self
         
-        let e = Relationship(type: "T", graph: "RelationshipTests-namedGraphSave")
-        e["p"] = "v"
-        e.addToGroup("g")
+        let relationship = Relationship(type: "T", graph: "RelationshipTests-testNamedGraphSave")
+        relationship["p"] = "v"
+        relationship.addToGroup("g")
         
-        XCTAssertTrue("v" == e["p"] as? String)
+        XCTAssertTrue("v" == relationship["p"] as? String)
         
         saveException = expectationWithDescription("[RelationshipTests Error: Save Relationship test failed.]")
         delegateException = expectationWithDescription("[RelationshipTests Error: Delegate Relationship test failed.]")
         
-        g.save { [weak self] (success: Bool, error: NSError?) in
+        graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
         }
@@ -92,23 +91,23 @@ class RelationshipTests: XCTestCase, GraphDelegate {
     }
     
     func testReferenceGraphSave() {
-        let g = Graph(name: "RelationshipTests-referenceGraphSave")
-        g.clear()
+        let graph = Graph(name: "RelationshipTests-testReferenceGraphSave")
+        graph.clear()
         
-        g.watchForRelationship(types: ["T"])
-        g.delegate = self
+        graph.watchForRelationship(types: ["T"])
+        graph.delegate = self
         
-        let e = Relationship(type: "T", graph: g)
-        e["p"] = "v"
-        e.addToGroup("g")
+        let relationship = Relationship(type: "T", graph: graph)
+        relationship["p"] = "v"
+        relationship.addToGroup("g")
         
-        XCTAssertTrue("v" == e["p"] as? String)
+        XCTAssertTrue("v" == relationship["p"] as? String)
         
         saveException = expectationWithDescription("[RelationshipTests Error: Save Relationship test failed.]")
         delegateException = expectationWithDescription("[RelationshipTests Error: Delegate Relationship test failed.]")
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            g.save { [weak self] (success: Bool, error: NSError?) in
+            graph.save { [weak self] (success: Bool, error: NSError?) in
                 self?.saveException?.fulfill()
                 XCTAssertTrue(success)
             }
@@ -121,22 +120,22 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         saveException = expectationWithDescription("[RelationshipTests Error: Save Relationship test failed.]")
         delegateException = expectationWithDescription("[RelationshipTests Error: Delegate Relationship test failed.]")
         
-        var g: Graph!
+        var graph: Graph!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            g = Graph(name: "RelationshipTests-asyncGraphSave")
-            g.clear()
+            graph = Graph(name: "RelationshipTests-testAsyncGraphSave")
+            graph.clear()
             
-            g.watchForRelationship(types: ["T"])
-            g.delegate = self
+            graph.watchForRelationship(types: ["T"])
+            graph.delegate = self
             
-            let e = Relationship(type: "T", graph: g)
-            e["p"] = "v"
-            e.addToGroup("g3")
+            let relationship = Relationship(type: "T", graph: graph)
+            relationship["p"] = "v"
+            relationship.addToGroup("g3")
             
-            XCTAssertTrue("v" == e["p"] as? String)
+            XCTAssertTrue("v" == relationship["p"] as? String)
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-                g.save { [weak self] (success: Bool, error: NSError?) in
+                graph.save { [weak self] (success: Bool, error: NSError?) in
                     self?.saveException?.fulfill()
                     XCTAssertTrue(success)
                 }
