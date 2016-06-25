@@ -177,7 +177,6 @@
 				961F9B581C10ED5400ACF5DD /* Info.plist */,
 				961F9B541C10ED5400ACF5DD /* Graph.h */,
 				961F9BC71C10ED8000ACF5DD /* Graph */,
-				96A1E88A1D1A487D00FAC2F9 /* Model */,
 				96A1E89E1D1A542700FAC2F9 /* Entity */,
 				96A1E8A81D1A548700FAC2F9 /* Relationship */,
 				96A1E8B81D1A552600FAC2F9 /* Action */,
@@ -200,16 +199,9 @@
 				96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */,
 				96A1E8981D1A512700FAC2F9 /* ManagedGroup.swift */,
 				96A1E89B1D1A514300FAC2F9 /* ManagedProperty.swift */,
-			);
-			name = Graph;
-			sourceTree = "<group>";
-		};
-		96A1E88A1D1A487D00FAC2F9 /* Model */ = {
-			isa = PBXGroup;
-			children = (
 				96A1E88B1D1A489300FAC2F9 /* Node.swift */,
 			);
-			name = Model;
+			name = Graph;
 			sourceTree = "<group>";
 		};
 		96A1E89E1D1A542700FAC2F9 /* Entity */ = {
