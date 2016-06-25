@@ -97,28 +97,16 @@ public class Entity: NSObject, NodeType {
      - Parameter type: A reference to a type.
      - Parameter graph: A reference to a Graph instance.
      */
-    @nonobjc
-    public required convenience init(type: String, graph: Graph) {
+    public convenience init(type: String, graph: Graph) {
         self.init(managedNode: ManagedEntity(type, context: graph.context))
-    }
-    
-    /**
-     Initializer that accepts a type and graph. The graph
-     indicates which graph to save to.
-     - Parameter type: A reference to a type.
-     - Parameter name: A reference to a Graph instance by name.
-     */
-    @nonobjc
-    public required convenience init(type: String, graph: String) {
-        self.init(managedNode: ManagedEntity(type, context: Graph(name: graph).context))
     }
     
     /**
      Initializer that accepts a type value.
      - Parameter type: A reference to a type.
      */
-    public required convenience init(type: String) {
-        self.init(type: type, graph: Graph())
+    public convenience init(type: String) {
+        self.init(type: type, graph: Graph(name: Storage.name))
     }
     
     /**

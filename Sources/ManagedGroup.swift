@@ -42,7 +42,7 @@ internal class ManagedGroup: ManagedModel {
      */
     internal convenience init(identifier: String, name: String, context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-        self.name = name
         self.context = context
+        self.name = name
     }
 }

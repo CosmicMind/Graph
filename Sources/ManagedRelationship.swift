@@ -40,7 +40,7 @@ internal class ManagedRelationship: ManagedNode {
      - Parameter type: A reference to the Relationship type.
      - Parameter context: A reference to the NSManagedObejctContext.
      */
-    internal required convenience init(_ type: String, context: NSManagedObjectContext) {
+    internal convenience init(_ type: String, context: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.relationshipDescriptionName, type: type, context: context)
         nodeClass = NodeClass.Relationship.rawValue
         subject = nil

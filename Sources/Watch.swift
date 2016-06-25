@@ -40,22 +40,16 @@ public extension Graph {
      - Returns: An Array of Entities.
      */
     public func watchForEntity(types types: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-        if let v = types {
-            for x in v {
-                watch(Entity: x)
-            }
+        types?.forEach { [weak self] (type: String) in
+            self?.watch(Entity: type)
         }
         
-        if let v = groups {
-            for x in v {
-                watch(EntityGroup: x)
-            }
+        groups?.forEach { [weak self] (group: String) in
+            self?.watch(EntityGroup: group)
         }
         
-        if let v = properties {
-            for x in v {
-                watch(EntityProperty: x)
-            }
+        properties?.forEach { [weak self] (property: String) in
+            self?.watch(EntityProperty: property)
         }
     }
     
@@ -240,6 +234,7 @@ public extension Graph {
         let predicates = [entityPredicate, predicate]
         let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         watchPredicate = nil == watchPredicate ? finalPredicate : NSCompoundPredicate(orPredicateWithSubpredicates: [watchPredicate!, finalPredicate])
+        print(watchPredicate)
     }
     
     /**
@@ -279,6 +274,7 @@ public extension Graph {
         entityDescription.managedObjectClassName = managedObjectClassName
         
         let predicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
+        print(predicate)
         addPredicateToObserve(entityDescription, predicate: predicate)
     }
     
@@ -292,7 +288,9 @@ public extension Graph {
             return
         }
         
-        let userInfo = notification.userInfo
+        let userInfo: [NSObject : AnyObject]? = notification.userInfo
+        
+        print("Inserted", userInfo)
         
         if let insertedSet = userInfo?[NSInsertedObjectsKey] as? NSSet {
             let	inserted = insertedSet.mutableCopy() as! NSMutableSet

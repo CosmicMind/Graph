@@ -44,8 +44,8 @@ internal class ManagedProperty: ManagedModel {
      */
     internal convenience init(identifier: String, name: String, object: AnyObject, context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+        self.context = context
         self.name = name
         self.object = object
-        self.context = context
     }
 }

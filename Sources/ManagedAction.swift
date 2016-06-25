@@ -40,7 +40,7 @@ internal class ManagedAction: ManagedNode {
      - Parameter type: A reference to the Action type.
      - Parameter context: A reference to the NSManagedObejctContext.
      */
-    internal required convenience init(_ type: String, context: NSManagedObjectContext) {
+    internal convenience init(_ type: String, context: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.actionDescriptionName, type: type, context: context)
         nodeClass = NodeClass.Action.rawValue
         subjectSet = NSSet()

@@ -40,7 +40,7 @@ internal class ManagedEntityGroup: ManagedGroup {
      - Parameter name: A group name.
      - Parameter context: A reference to a NSManagedObjectContext.
     */
-    internal required convenience init(name: String, context: NSManagedObjectContext) {
+    internal convenience init(name: String, context: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.entityGroupDescriptionName, name: name, context: context)
     }
 }

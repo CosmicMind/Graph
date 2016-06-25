@@ -40,7 +40,7 @@ internal class ManagedNode: ManagedModel {
     /// A reference to the Nodes unique ID.
     internal var id: String {
         do {
-            try context?.obtainPermanentIDsForObjects([self])
+            try context.obtainPermanentIDsForObjects([self])
         } catch {}
         return String(stringInterpolationSegment: nodeClass) + type + objectID.URIRepresentation().lastPathComponent!
     }
@@ -53,8 +53,8 @@ internal class ManagedNode: ManagedModel {
      */
     internal convenience init(identifier: String, type: String, context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-        self.type = type
         self.context = context
+        self.type = type
         createdDate = NSDate()
         propertySet = NSSet()
         groupSet = NSSet()
