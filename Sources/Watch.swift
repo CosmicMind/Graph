@@ -61,22 +61,16 @@ public extension Graph {
      - Returns: An Array of Relationships.
      */
     public func watchForRelationship(types types: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-        if let v = types {
-            for x in v {
-                watch(Relationship: x)
-            }
+        types?.forEach { [weak self] (type: String) in
+            self?.watch(Relationship: type)
         }
         
-        if let v = groups {
-            for x in v {
-                watch(RelationshipGroup: x)
-            }
+        groups?.forEach { [weak self] (group: String) in
+            self?.watch(RelationshipGroup: group)
         }
         
-        if let v = properties {
-            for x in v {
-                watch(RelationshipProperty: x)
-            }
+        properties?.forEach { [weak self] (property: String) in
+            self?.watch(RelationshipProperty: property)
         }
     }
     
@@ -88,22 +82,16 @@ public extension Graph {
      - Returns: An Array of Actions.
      */
     public func watchForAction(types types: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-        if let v = types {
-            for x in v {
-                watch(Action: x)
-            }
+        types?.forEach { [weak self] (type: String) in
+            self?.watch(Action: type)
         }
         
-        if let v = groups {
-            for x in v {
-                watch(ActionGroup: x)
-            }
+        groups?.forEach { [weak self] (group: String) in
+            self?.watch(ActionGroup: group)
         }
         
-        if let v = properties {
-            for x in v {
-                watch(ActionProperty: x)
-            }
+        properties?.forEach { [weak self] (property: String) in
+            self?.watch(ActionProperty: property)
         }
     }
     
