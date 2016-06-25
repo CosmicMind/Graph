@@ -40,6 +40,8 @@ class EntityTests: XCTestCase, GraphDelegate {
     override func setUp() {
         super.setUp()
         graph = Graph()
+        graph.delegate = self
+        graph.watchForEntity(types: ["T"])
     }
     
     override func tearDown() {
@@ -48,11 +50,6 @@ class EntityTests: XCTestCase, GraphDelegate {
     }
     
     func testAll() {
-//        g.clear()
-        
-        graph.watchForEntity(types: ["T"])
-        graph.delegate = self
-        
         let n = Entity(type: "T")
         n["p"] = "v"
         n.addToGroup("g")
@@ -67,7 +64,7 @@ class EntityTests: XCTestCase, GraphDelegate {
             XCTAssertTrue(success)
         }
         
-        waitForExpectationsWithTimeout(50, handler: nil)
+        waitForExpectationsWithTimeout(5, handler: nil)
     }
     
 //    func namedGraphSave() {
@@ -148,14 +145,6 @@ class EntityTests: XCTestCase, GraphDelegate {
 //        
 //        waitForExpectationsWithTimeout(5, handler: nil)
 //    }
-    
-    func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
-        print("Relationship")
-    }
-    
-    func graphDidInsertAction(graph: Graph, action: Action) {
-        print("Action")
-    }
     
     func graphDidInsertEntity(graph: Graph, entity: Entity) {
         delegateException?.fulfill()

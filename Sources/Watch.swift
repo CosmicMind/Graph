@@ -274,7 +274,6 @@ public extension Graph {
         entityDescription.managedObjectClassName = managedObjectClassName
         
         let predicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
-        print(predicate)
         addPredicateToObserve(entityDescription, predicate: predicate)
     }
     

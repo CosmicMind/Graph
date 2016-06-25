@@ -77,7 +77,7 @@ public class Graph: NSObject {
     private(set) var location: NSURL!
     
     /// Worker context.
-    public private(set) var context: NSManagedObjectContext!
+    public internal(set) var context: NSManagedObjectContext!
     
     /// A reference to the watch predicate.
     public internal(set) var watchPredicate: NSPredicate?
@@ -151,26 +151,17 @@ public class Graph: NSObject {
                         privateContext.performBlock {
                             do {
                                 try privateContext.save()
-                                
-                                dispatch_sync(dispatch_get_main_queue()) {
-                                    completion?(success: true, error: nil)
-                                }
+                                completion?(success: true, error: nil)
                             } catch let e as NSError {
-                                dispatch_sync(dispatch_get_main_queue()) {
-                                    completion?(success: false, error: e)
-                                }
+                                completion?(success: false, error: e)
                             }
                         }
                     } catch let e as NSError {
-                        dispatch_sync(dispatch_get_main_queue()) {
-                            completion?(success: false, error: e)
-                        }
+                        completion?(success: false, error: e)
                     }
                 }
             } catch let e as NSError {
-                dispatch_sync(dispatch_get_main_queue()) {
-                    completion?(success: false, error: e)
-                }
+                completion?(success: false, error: e)
             }
         }
     }
@@ -181,174 +172,26 @@ public class Graph: NSObject {
      executed when the save operation is completed.
      */
     public func clear(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-//        for entity in searchForEntity(types: ["*"]) {
-//            entity.delete()
-//        }
-//        
-//        for action in searchForAction(types: ["*"]) {
-//            action.delete()
-//        }
-//        
-//        for relationship in searchForRelationship(types: ["*"]) {
-//            relationship.delete()
-//        }
-//        
-//        save(completion)
+        for entity in searchForEntity(types: ["*"]) {
+            entity.delete()
+        }
+        
+        for action in searchForAction(types: ["*"]) {
+            action.delete()
+        }
+        
+        for relationship in searchForRelationship(types: ["*"]) {
+            relationship.delete()
+        }
+        
+        save(completion)
     }
     
     /**
      Handler for save notifications. Context merges are made within this handler.
      - Parameter notification: NSNotification reference.
-    */
+     */
     internal func handleContextDidSave(notification: NSNotification) {
-//        guard let moc = notification.object as? NSManagedObjectContext else {
-//            return
-//        }
-        
-    }
-    
-    /**
-     Handler for save notifications. Context merges are made within this handler.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func handleMainContextDidSave(notification: NSNotification) {
-//        guard let mainContext = notification.object as? NSManagedObjectContext else {
-//            return
-//        }
-        print("Hello")
-//        
-//        if NSThread.isMainThread() {
-        guard let predicate = watchPredicate else {
-            return
-        }
-        
-        let userInfo: [NSObject : AnyObject]? = notification.userInfo
-        
-        print("Inserted", userInfo)
-        
-        if let insertedSet = userInfo?[NSInsertedObjectsKey] as? NSSet {
-            let	inserted = insertedSet.mutableCopy() as! NSMutableSet
-            
-            inserted.filterUsingPredicate(predicate)
-            
-            if 0 < inserted.count {
-                for node: NSManagedObject in inserted.allObjects as! [NSManagedObject] {
-                    switch String.fromCString(object_getClassName(node))! {
-                    case "ManagedEntity_ManagedEntity_":
-                        delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: node as! ManagedEntity))
-                    case "ManagedEntityGroup_ManagedEntityGroup_":
-                        let group: ManagedEntityGroup = node as! ManagedEntityGroup
-                        delegate?.graphDidInsertEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
-                    case "ManagedEntityProperty_ManagedEntityProperty_":
-                        let property: ManagedEntityProperty = node as! ManagedEntityProperty
-                        delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    case "ManagedAction_ManagedAction_":
-                        delegate?.graphDidInsertAction?(self, action: Action(managedNode: node as! ManagedAction))
-                    case "ManagedActionGroup_ManagedActionGroup_":
-                        let group: ManagedActionGroup = node as! ManagedActionGroup
-                        delegate?.graphDidInsertActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
-                    case "ManagedActionProperty_ManagedActionProperty_":
-                        let property: ManagedActionProperty = node as! ManagedActionProperty
-                        delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    case "ManagedRelationship_ManagedRelationship_":
-                        delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: node as! ManagedRelationship))
-                    case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
-                        let group: ManagedRelationshipGroup = node as! ManagedRelationshipGroup
-                        delegate?.graphDidInsertRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
-                    case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                        let property: ManagedRelationshipProperty = node as! ManagedRelationshipProperty
-                        delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    default:
-                        assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                    }
-                }
-            }
-        }
-        
-        if let updatedSet = userInfo?[NSUpdatedObjectsKey] as? NSSet {
-            let	updated = updatedSet.mutableCopy() as! NSMutableSet
-            
-            updated.filterUsingPredicate(predicate)
-            
-            if 0 < updated.count {
-                for node: NSManagedObject in updated.allObjects as! [NSManagedObject] {
-                    switch String.fromCString(object_getClassName(node))! {
-                    case "ManagedEntityProperty_ManagedEntityProperty_":
-                        let property: ManagedEntityProperty = node as! ManagedEntityProperty
-                        delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    case "ManagedActionProperty_ManagedActionProperty_":
-                        let property: ManagedActionProperty = node as! ManagedActionProperty
-                        delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                        let property: ManagedRelationshipProperty = node as! ManagedRelationshipProperty
-                        delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    case "ManagedAction_ManagedAction_":
-                        delegate?.graphDidUpdateAction?(self, action: Action(managedNode: node as! ManagedAction))
-                    default:
-                        assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                    }
-                }
-            }
-        }
-        
-        if let deletedSet = userInfo?[NSDeletedObjectsKey] as? NSSet {
-            let	deleted = deletedSet.mutableCopy() as! NSMutableSet
-            
-            deleted.filterUsingPredicate(predicate)
-            
-            if 0 < deleted.count {
-                for node: NSManagedObject in deleted.allObjects as! [NSManagedObject] {
-                    switch String.fromCString(object_getClassName(node))! {
-                    case "ManagedEntity_ManagedEntity_":
-                        delegate?.graphDidDeleteEntity?(self, entity: Entity(managedNode: node as! ManagedEntity))
-                    case "ManagedEntityProperty_ManagedEntityProperty_":
-                        let property: ManagedEntityProperty = node as! ManagedEntityProperty
-                        delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    case "ManagedEntityGroup_ManagedEntityGroup_":
-                        let group: ManagedEntityGroup = node as! ManagedEntityGroup
-                        delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
-                    case "ManagedAction_ManagedAction_":
-                        delegate?.graphDidDeleteAction?(self, action: Action(managedNode: node as! ManagedAction))
-                    case "ManagedActionProperty_ManagedActionProperty_":
-                        let property: ManagedActionProperty = node as! ManagedActionProperty
-                        delegate?.graphDidDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    case "ManagedActionGroup_ManagedActionGroup_":
-                        let group: ManagedActionGroup = node as! ManagedActionGroup
-                        delegate?.graphDidDeleteActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
-                    case "ManagedRelationship_ManagedRelationship_":
-                        delegate?.graphDidDeleteRelationship?(self, relationship: Relationship(managedNode: node as! ManagedRelationship))
-                    case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                        let property: ManagedRelationshipProperty = node as! ManagedRelationshipProperty
-                        delegate?.graphDidDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
-                        let group: ManagedRelationshipGroup = node as! ManagedRelationshipGroup
-                        delegate?.graphDidDeleteRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
-                    default:
-                        assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                    }
-                }
-            }
-        }
-//            print("daniel")
-//        } else {
-//            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-////                self?.notifyWatchers(notification)
-//                print("Eve")
-//            }
-//        }
-    }
-    
-    /**
-     Handler for save notifications. Context merges are made within this handler.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func handlePrivateContextDidSave(notification: NSNotification) {
-//        guard let privateContext = notification.object as? NSManagedObjectContext else {
-//            return
-//        }
-        
         if NSThread.isMainThread() {
             notifyWatchers(notification)
         } else {
@@ -369,7 +212,6 @@ public class Graph: NSObject {
     
     /// Prapres the context.
     private func prepareContext() {
-        name = "daniel"
         guard let moc = GraphRegistry.contexts[name] else {
             let privateContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
             privateContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name, type: type, location: location)
@@ -381,7 +223,7 @@ public class Graph: NSObject {
             context = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
             GraphRegistry.contexts[name] = context
             
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleMainContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: privateContext)
             return
         }
         
