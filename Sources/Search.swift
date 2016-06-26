@@ -89,11 +89,11 @@ public extension Graph {
         return nodes.map {
             if let v: ManagedEntity = $0 as? ManagedEntity {
                 let n = Entity(managedNode: v)
-                n.node.managedNode.context = context
+//                n.node.managedNode.context = context
                 return n
             }
             let n = Entity(managedNode: context.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
-            n.node.managedNode.context = context
+//            n.node.managedNode.context = context
             return n
         } as [Entity]
     }
@@ -155,11 +155,11 @@ public extension Graph {
         return nodes.map {
             if let v: ManagedRelationship = $0 as? ManagedRelationship {
                 let n = Relationship(managedNode: v)
-                n.node.managedNode.context = context
+//                n.node.managedNode.context = context
                 return n
             }
             let n = Relationship(managedNode: context.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedRelationship)
-            n.node.managedNode.context = context
+//            n.node.managedNode.context = context
             return n
         } as [Relationship]
     }
@@ -221,11 +221,11 @@ public extension Graph {
         return nodes.map {
             if let v: ManagedAction = $0 as? ManagedAction {
                 let n = Action(managedNode: v)
-                n.node.managedNode.context = context
+//                n.node.managedNode.context = context
                 return n
             }
             let n = Action(managedNode: context.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedAction)
-            n.node.managedNode.context = context
+//            n.node.managedNode.context = context
             return n
         } as [Action]
     }

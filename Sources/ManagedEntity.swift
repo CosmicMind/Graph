@@ -72,7 +72,7 @@ internal class ManagedEntity: ManagedNode {
                 return
             }
             
-            let property = ManagedEntityProperty(name: name, object: value, context: context)
+            let property = ManagedEntityProperty(name: name, object: value, context: managedObjectContext!)
             property.node = self
         }
     }
@@ -85,7 +85,7 @@ internal class ManagedEntity: ManagedNode {
      */
     internal override func addToGroup(name: String) -> Bool {
         if !memberOfGroup(name) {
-            let group = ManagedEntityGroup(name: name, context: context)
+            let group = ManagedEntityGroup(name: name, context: managedObjectContext!)
             group.node = self
             return true
         }

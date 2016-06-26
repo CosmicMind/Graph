@@ -68,7 +68,7 @@ internal class ManagedAction: ManagedNode {
                 return
             }
             
-            let property = ManagedActionProperty(name: name, object: value, context: context)
+            let property = ManagedActionProperty(name: name, object: value, context: managedObjectContext!)
             property.node = self
         }
     }
@@ -81,7 +81,7 @@ internal class ManagedAction: ManagedNode {
      */
     internal override func addToGroup(name: String) -> Bool {
         if !memberOfGroup(name) {
-            let group = ManagedActionGroup(name: name, context: context)
+            let group = ManagedActionGroup(name: name, context: managedObjectContext!)
             group.node = self
             return true
         }

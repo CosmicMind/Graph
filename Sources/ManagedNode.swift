@@ -30,6 +30,7 @@
 
 import CoreData
 
+@objc(ManagedNode)
 internal class ManagedNode: ManagedModel {
     @NSManaged internal var nodeClass: NSNumber
     @NSManaged internal var type: String
@@ -40,7 +41,7 @@ internal class ManagedNode: ManagedModel {
     /// A reference to the Nodes unique ID.
     internal var id: String {
         do {
-            try context.obtainPermanentIDsForObjects([self])
+            try managedObjectContext?.obtainPermanentIDsForObjects([self])
         } catch {}
         return String(stringInterpolationSegment: nodeClass) + type + objectID.URIRepresentation().lastPathComponent!
     }
@@ -53,7 +54,6 @@ internal class ManagedNode: ManagedModel {
      */
     internal convenience init(identifier: String, type: String, context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-        self.context = context
         self.type = type
         createdDate = NSDate()
         propertySet = NSSet()
@@ -65,7 +65,6 @@ internal class ManagedNode: ManagedModel {
         var set = groupSet as! NSMutableSet
         groupSet.forEach { (object: AnyObject) in
             if let group = object as? ManagedGroup {
-                group.context = context
                 group.delete()
                 set.removeObject(group)
             }
@@ -73,7 +72,6 @@ internal class ManagedNode: ManagedModel {
         set = propertySet as! NSMutableSet
         propertySet.forEach { (object: AnyObject) in
             if let property = object as? ManagedProperty {
-                property.context = context
                 property.delete()
                 set.removeObject(property)
             }

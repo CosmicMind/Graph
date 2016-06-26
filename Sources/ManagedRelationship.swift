@@ -68,7 +68,7 @@ internal class ManagedRelationship: ManagedNode {
                 return
             }
             
-            let property = ManagedRelationshipProperty(name: name, object: value, context: context)
+            let property = ManagedRelationshipProperty(name: name, object: value, context: managedObjectContext!)
             property.node = self
         }
     }
@@ -81,7 +81,7 @@ internal class ManagedRelationship: ManagedNode {
      */
     internal override func addToGroup(name: String) -> Bool {
         if !memberOfGroup(name) {
-            let group = ManagedRelationshipGroup(name: name, context: context)
+            let group = ManagedRelationshipGroup(name: name, context: managedObjectContext!)
             group.node = self
             return true
         }

@@ -31,12 +31,9 @@
 import CoreData
 
 internal class ManagedModel: NSManagedObject {
-    /// Node NSManagedObjectContext reference.
-    internal var context: NSManagedObjectContext!
-    
-    /// Marks the node for deletion.
+    /// Marks node for deletion.
     internal func delete() {
-        context.deleteObject(self)
+        managedObjectContext?.deleteObject(self)
     }
 }
 
