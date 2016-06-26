@@ -250,15 +250,15 @@ public class Action: NSObject, NodeType {
      the subject and object set.
     */
     public func delete() {
-        node.managedNode.subjectSet.forEach { (object: AnyObject) in
+        node.managedNode.subjectSet.forEach { [unowned self] (object: AnyObject) in
             if let entity: ManagedEntity = object as? ManagedEntity {
-                (entity.actionSubjectSet as! NSMutableSet).removeObject(node.managedNode)
+                (entity.actionSubjectSet as! NSMutableSet).removeObject(self.node.managedNode)
             }
         }
         
-        node.managedNode.objectSet.forEach { (object: AnyObject) in
+        node.managedNode.objectSet.forEach { [unowned self] (object: AnyObject) in
             if let entity: ManagedEntity = object as? ManagedEntity {
-                (entity.actionObjectSet as! NSMutableSet).removeObject(node.managedNode)
+                (entity.actionObjectSet as! NSMutableSet).removeObject(self.node.managedNode)
             }
         }
         

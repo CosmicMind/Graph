@@ -38,14 +38,9 @@ public enum NodeClass: NSNumber {
 
 public protocol NodeType: Comparable {}
 
-internal class Node <T: ManagedNode>: CustomStringConvertible {
+internal class Node <T: ManagedNode> {
     /// A reference to the managed node type.
     internal let managedNode: T
-    
-    /// A string representation of the Node.
-    internal var description: String {
-        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
-    }
     
     /// A reference to the nodeClass.
     internal var nodeClass: NSNumber {

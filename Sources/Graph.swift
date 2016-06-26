@@ -37,34 +37,6 @@ internal struct GraphRegistry {
     static var contexts: [String: NSManagedObjectContext]!
 }
 
-@objc(GraphDelegate)
-public protocol GraphDelegate {
-    optional func graphDidInsertEntity(graph: Graph, entity: Entity)
-    optional func graphDidDeleteEntity(graph: Graph, entity: Entity)
-    optional func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String)
-    optional func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String)
-    optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-    optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-    optional func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-    
-    optional func graphDidInsertAction(graph: Graph, action: Action)
-    optional func graphDidUpdateAction(graph: Graph, action: Action)
-    optional func graphDidDeleteAction(graph: Graph, action: Action)
-    optional func graphDidInsertActionGroup(graph: Graph, action: Action, group: String)
-    optional func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String)
-    optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-    optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-    optional func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-    
-    optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidDeleteRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
-    optional func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
-    optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    optional func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-}
-
 @objc(Graph)
 public class Graph: NSObject {
     /// Storage name.
@@ -121,6 +93,13 @@ public class Graph: NSObject {
      */
     public func save(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         guard context.hasChanges else {
+            if NSThread.isMainThread() {
+                completion?(success: true, error: nil)
+            } else {
+                dispatch_sync(dispatch_get_main_queue()) {
+                    completion?(success: true, error: nil)
+                }
+            }
             return
         }
         

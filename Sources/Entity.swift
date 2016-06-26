@@ -35,8 +35,9 @@ public class Entity: NSObject, NodeType {
     /// A reference to the node.
     internal let node: Node<ManagedEntity>
     
+    /// A string representation of the Entity.
     public override var description: String {
-        return node.description
+        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
     }
     
     /// A reference to the nodeClass.
@@ -62,6 +63,76 @@ public class Entity: NSObject, NodeType {
     /// A reference to groups.
     public var groups: [String] {
         return node.groups
+    }
+    
+    /// A reference to all the Actions that the Entity is a part of.
+    public var actions: [Action] {
+        var s = Set<ManagedAction>()
+        s.unionInPlace(node.managedNode.actionSubjectSet as! Set<ManagedAction>)
+        s.unionInPlace(node.managedNode.actionObjectSet as! Set<ManagedAction>)
+        return s.map {
+            let n = Action(managedNode: $0 as ManagedAction)
+            n.node.managedNode.context = node.managedNode.context
+            return n
+        } as [Action]
+    }
+    
+    /**
+    	:name:	actionsWhenSubject
+     */
+    public var actionsWhenSubject: [Action] {
+        return node.managedNode.actionSubjectSet.map {
+            let n = Action(managedNode: $0 as! ManagedAction)
+            n.node.managedNode.context = node.managedNode.context
+            return n
+        } as [Action]
+    }
+    
+    /**
+    	:name:	actionsWhenObject
+     */
+    public var actionsWhenObject: [Action] {
+        return node.managedNode.actionObjectSet.map {
+            let n = Action(managedNode: $0 as! ManagedAction)
+            n.node.managedNode.context = node.managedNode.context
+            return n
+        } as [Action]
+    }
+    
+    /**
+    	:name:	relationships
+     */
+    public var relationships: [Relationship] {
+        var s = Set<ManagedRelationship>()
+        s.unionInPlace(node.managedNode.relationshipSubjectSet as! Set<ManagedRelationship>)
+        s.unionInPlace(node.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
+        return s.map {
+            let n = Relationship(managedNode: $0 as ManagedRelationship)
+            n.node.managedNode.context = node.managedNode.context
+            return n
+        } as [Relationship]
+    }
+    
+    /**
+    	:name:	relationshipsWhenSubject
+     */
+    public var relationshipsWhenSubject: [Relationship] {
+        return node.managedNode.relationshipSubjectSet.map {
+            let n = Relationship(managedNode: $0 as! ManagedRelationship)
+            n.node.managedNode.context = node.managedNode.context
+            return n
+        } as [Relationship]
+    }
+    
+    /**
+    	:name:	relationshipsWhenObject
+     */
+    public var relationshipsWhenObject: [Relationship] {
+        return node.managedNode.relationshipObjectSet.map {
+            let n = Relationship(managedNode: $0 as! ManagedRelationship)
+            n.node.managedNode.context = node.managedNode.context
+            return n
+        } as [Relationship]
     }
     
     /**

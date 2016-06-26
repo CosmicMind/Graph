@@ -262,9 +262,9 @@
 			children = (
 				96D4E4EE1BA76FAF00672E38 /* Info.plist */,
 				96F6B5121D19C81C00EDF830 /* GraphTests.swift */,
+				962EA8C21D1DB993003890F7 /* ActionTests.swift */,
 				96A1E8C81D1A5E6000FAC2F9 /* EntityTests.swift */,
 				962EA8C51D1DB9B4003890F7 /* RelationshipTests.swift */,
-				962EA8C21D1DB993003890F7 /* ActionTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
