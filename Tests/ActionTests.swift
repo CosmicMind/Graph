@@ -169,18 +169,18 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
-//        action.delete()
-//        
-//        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-//        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
-//        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
-//        
-//        graph.save { [weak self] (success: Bool, error: NSError?) in
-//            self?.saveException?.fulfill()
-//            XCTAssertTrue(success)
-//        }
-//        
-//        waitForExpectationsWithTimeout(5, handler: nil)
+        action.delete()
+        
+        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
+        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
+        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
+        
+        graph.save { [weak self] (success: Bool, error: NSError?) in
+            self?.saveException?.fulfill()
+            XCTAssertTrue(success)
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
     }
     
     func graphDidInsertAction(graph: Graph, action: Action) {

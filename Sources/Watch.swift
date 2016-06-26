@@ -297,6 +297,7 @@ public extension Graph {
      Handler for save notifications. Context merges are made within this handler.
      - Parameter notification: NSNotification reference.
      */
+    @objc
     internal func handleContextDidSave(notification: NSNotification) {
         if NSThread.isMainThread() {
             notifyWatchers(notification)
@@ -310,7 +311,6 @@ public extension Graph {
     /// Prepares the instance for save notifications.   
     internal func prepareForObservation() {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: context.parentContext!.parentContext!)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: context.parentContext!.parentContext!)
     }
     
@@ -320,16 +320,16 @@ public extension Graph {
      save operation.
      */
     internal func notifyWatchers(notification: NSNotification) {
-        guard let prediate = watchPredicate else {
+        guard let predicate = watchPredicate else {
             return
         }
         
-        let userInfo: [NSObject : AnyObject]? = notification.userInfo
-        
+        let userInfo = notification.userInfo
+        print(userInfo)
         if let insertedSet = userInfo?[NSInsertedObjectsKey] as? NSSet {
             let	inserted = insertedSet.mutableCopy() as! NSMutableSet
             
-            inserted.filterUsingPredicate(prediate)
+            inserted.filterUsingPredicate(predicate)
             
             if 0 < inserted.count {
                 for node: NSManagedObject in inserted.allObjects as! [NSManagedObject] {
@@ -404,10 +404,11 @@ public extension Graph {
         if let updatedSet = userInfo?[NSUpdatedObjectsKey] as? NSSet {
             let	updated = updatedSet.mutableCopy() as! NSMutableSet
             
-            updated.filterUsingPredicate(prediate)
+            updated.filterUsingPredicate(predicate)
             
             if 0 < updated.count {
                 for node: NSManagedObject in updated.allObjects as! [NSManagedObject] {
+                    print(String.fromCString(object_getClassName(node))!)
                     switch String.fromCString(object_getClassName(node))! {
                     case "ManagedEntityProperty_ManagedEntityProperty_":
                         let property = node as! ManagedEntityProperty
@@ -445,7 +446,7 @@ public extension Graph {
         if let deletedSet = userInfo?[NSDeletedObjectsKey] as? NSSet {
             let	deleted = deletedSet.mutableCopy() as! NSMutableSet
             
-            deleted.filterUsingPredicate(prediate)
+            deleted.filterUsingPredicate(predicate)
             
             if 0 < deleted.count {
                 for node: NSManagedObject in deleted.allObjects as! [NSManagedObject] {
