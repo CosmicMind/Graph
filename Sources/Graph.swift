@@ -37,6 +37,38 @@ internal struct GraphRegistry {
     static var workerManagedObjectContexts: [String: NSManagedObjectContext]!
 }
 
+/**
+ A helper method to ensure that the completion callback 
+ is always called on the main thread.
+ - Parameter success: A boolean of whether the process 
+ was successful or not.
+ - Parameter error: An optional error object to pass.
+ - Parameter completion: An Optional completion block.
+ */
+private func GraphCompletionCallback(success success: Bool, error: NSError?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    if NSThread.isMainThread() {
+        completion?(success: success, error: error)
+    } else {
+        dispatch_sync(dispatch_get_main_queue()) {
+            completion?(success: success, error: error)
+        }
+    }
+}
+
+/**
+ A helper method to construct error messages.
+ - Parameter message: The message to pass.
+ - Returns: An NSError object.
+ */
+private func GraphError(message message: String, domain: String = "io.cosmicmind.graph") -> NSError {
+    var info = [String: AnyObject]()
+    info[NSLocalizedDescriptionKey] = message
+    info[NSLocalizedFailureReasonErrorKey] = message
+    let error = NSError(domain: domain, code: 0001, userInfo: info)
+    info[NSUnderlyingErrorKey] = error
+    return error
+}
+
 @objc(Graph)
 public class Graph: NSObject {
     /// Storage name.
@@ -93,13 +125,10 @@ public class Graph: NSObject {
      */
     public func save(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         guard managedObjectContext.hasChanges else {
-            if NSThread.isMainThread() {
-                completion?(success: true, error: nil)
-            } else {
-                dispatch_sync(dispatch_get_main_queue()) {
-                    completion?(success: true, error: nil)
-                }
-            }
+            GraphCompletionCallback(
+                success: false,
+                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
+                completion: completion)
             return
         }
         
@@ -108,10 +137,18 @@ public class Graph: NSObject {
                 try self?.managedObjectContext.save()
         
                 guard let mainContext = self?.managedObjectContext.parentContext else {
+                    GraphCompletionCallback(
+                        success: false,
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),
+                        completion: completion)
                     return
                 }
                 
                 guard mainContext.hasChanges else {
+                    GraphCompletionCallback(
+                        success: false,
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
+                        completion: completion)
                     return
                 }
                 
@@ -120,35 +157,35 @@ public class Graph: NSObject {
                         try mainContext.save()
                         
                         guard let privateManagedObjectContexts = mainContext.parentContext else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
+                                completion: completion)
                             return
                         }
                         
                         guard privateManagedObjectContexts.hasChanges else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
+                                completion: completion)
                             return
                         }
                         
                         privateManagedObjectContexts.performBlock {
                             do {
                                 try privateManagedObjectContexts.save()
-                                dispatch_sync(dispatch_get_main_queue()) {
-                                    completion?(success: true, error: nil)
-                                }
+                                GraphCompletionCallback(success: true, error: nil, completion: completion)
                             } catch let e as NSError {
-                                dispatch_sync(dispatch_get_main_queue()) {
-                                    completion?(success: false, error: e)
-                                }
+                                GraphCompletionCallback(success: false, error: e, completion: completion)
                             }
                         }
                     } catch let e as NSError {
-                        dispatch_sync(dispatch_get_main_queue()) {
-                            completion?(success: false, error: e)
-                        }
+                        GraphCompletionCallback(success: false, error: e, completion: completion)
                     }
                 }
             } catch let e as NSError {
-                dispatch_sync(dispatch_get_main_queue()) {
-                    completion?(success: false, error: e)
-                }
+                GraphCompletionCallback(success: false, error: e, completion: completion)
             }
         }
     }

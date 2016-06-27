@@ -53,13 +53,13 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
         
         let action = Action(type: "T")
-        action["p"] = "v"
-        action.addToGroup("g")
+        action["P"] = "V"
+        action.addToGroup("G")
         
-        XCTAssertEqual("v", action["p"] as? String)
+        XCTAssertEqual("V", action["P"] as? String)
         
         graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
@@ -79,13 +79,13 @@ class ActionTests: XCTestCase, GraphDelegate {
         let graph = Graph(name: "ActionTests-testNamedGraphSave")
         
         graph.delegate = self
-        graph.watchForAction(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
         
         let action = Action(type: "T", graph: "ActionTests-testNamedGraphSave")
-        action["p"] = "v"
-        action.addToGroup("g")
+        action["P"] = "V"
+        action.addToGroup("G")
         
-        XCTAssertEqual("v", action["p"] as? String)
+        XCTAssertEqual("V", action["P"] as? String)
         
         graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
@@ -105,13 +105,13 @@ class ActionTests: XCTestCase, GraphDelegate {
         let graph = Graph(name: "ActionTests-testReferenceGraphSave")
         
         graph.delegate = self
-        graph.watchForAction(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
         
         let action = Action(type: "T", graph: graph)
-        action["p"] = "v"
-        action.addToGroup("g")
+        action["P"] = "V"
+        action.addToGroup("G")
         
-        XCTAssertEqual("v", action["p"] as? String)
+        XCTAssertEqual("V", action["P"] as? String)
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.save { [weak self] (success: Bool, error: NSError?) in
@@ -132,13 +132,13 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         let graph = Graph(name: "ActionTests-testAsyncGraphSave")
         graph.delegate = self
-        graph.watchForAction(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
         
         let action = Action(type: "T", graph: graph)
-        action["p"] = "v"
-        action.addToGroup("g")
+        action["P"] = "V"
+        action.addToGroup("G")
         
-        XCTAssertEqual("v", action["p"] as? String)
+        XCTAssertEqual("V", action["P"] as? String)
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.save { [weak self] (success: Bool, error: NSError?) in
@@ -159,13 +159,13 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
         
         let action = Action(type: "T")
-        action["p"] = "v"
-        action.addToGroup("g")
+        action["P"] = "V"
+        action.addToGroup("G")
         
-        XCTAssertEqual("v", action["p"] as? String)
+        XCTAssertEqual("V", action["P"] as? String)
         
         graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
@@ -198,13 +198,13 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
         
         let action = Action(type: "T")
-        action["p"] = "v"
-        action.addToGroup("g")
+        action["P"] = "V"
+        action.addToGroup("G")
         
-        XCTAssertEqual("v", action["p"] as? String)
+        XCTAssertEqual("V", action["P"] as? String)
         
         graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
@@ -241,13 +241,13 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForAction(types: ["T"], groups: ["G"], properties: ["P"])
         
         let action = Action(type: "T")
-        action["p"] = "v"
-        action.addToGroup("g")
+        action["P"] = "V"
+        action.addToGroup("G")
         
-        XCTAssertEqual("v", action["p"] as? String)
+        XCTAssertEqual("V", action["P"] as? String)
         
         graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
@@ -279,8 +279,8 @@ class ActionTests: XCTestCase, GraphDelegate {
     func graphDidInsertAction(graph: Graph, action: Action) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual("v", action["p"] as? String)
-        XCTAssertTrue(action.memberOfGroup("g"))
+        XCTAssertEqual("V", action["P"] as? String)
+        XCTAssertTrue(action.memberOfGroup("G"))
         
         delegateException?.fulfill()
     }
@@ -288,8 +288,8 @@ class ActionTests: XCTestCase, GraphDelegate {
     func graphDidUpdateAction(graph: Graph, action: Action) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual("v", action["p"] as? String)
-        XCTAssertTrue(action.memberOfGroup("g"))
+        XCTAssertEqual("V", action["P"] as? String)
+        XCTAssertTrue(action.memberOfGroup("G"))
         
         delegateException?.fulfill()
     }
@@ -297,6 +297,8 @@ class ActionTests: XCTestCase, GraphDelegate {
     func graphDidDeleteAction(graph: Graph, action: Action) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertNil(action["P"])
+        XCTAssertFalse(action.memberOfGroup("G"))
         
         delegateException?.fulfill()
     }
@@ -304,7 +306,8 @@ class ActionTests: XCTestCase, GraphDelegate {
     func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual("g", group)
+        XCTAssertEqual("G", group)
+        XCTAssertTrue(action.memberOfGroup(group))
         
         groupExpception?.fulfill()
     }
@@ -312,7 +315,8 @@ class ActionTests: XCTestCase, GraphDelegate {
     func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual("g", group)
+        XCTAssertEqual("G", group)
+        XCTAssertFalse(action.memberOfGroup(group))
         
         groupExpception?.fulfill()
     }
@@ -320,8 +324,8 @@ class ActionTests: XCTestCase, GraphDelegate {
     func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual("p", property)
-        XCTAssertEqual("v", value as? String)
+        XCTAssertEqual("P", property)
+        XCTAssertEqual("V", value as? String)
         XCTAssertEqual(value as? String, action[property] as? String)
         
         propertyExpception?.fulfill()
@@ -330,8 +334,8 @@ class ActionTests: XCTestCase, GraphDelegate {
     func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual("p", property)
-        XCTAssertEqual("v", value as? String)
+        XCTAssertEqual("P", property)
+        XCTAssertEqual("V", value as? String)
         XCTAssertEqual(value as? String, action[property] as? String)
         
         propertyExpception?.fulfill()
@@ -340,8 +344,9 @@ class ActionTests: XCTestCase, GraphDelegate {
     func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual("p", property)
-        XCTAssertEqual("v", value as? String)
+        XCTAssertEqual("P", property)
+        XCTAssertEqual("V", value as? String)
+        XCTAssertNil(action["P"])
         
         propertyExpception?.fulfill()
     }

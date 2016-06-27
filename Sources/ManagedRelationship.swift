@@ -56,8 +56,8 @@ internal class ManagedRelationship: ManagedNode {
         get {
             return super[name]
         }
-        set(object) {
-            guard let value = object else {
+        set(value) {
+            guard let object = value else {
                 for property in propertySet as! Set<ManagedRelationshipProperty> {
                     if name == property.name {
                         property.delete()
@@ -68,7 +68,14 @@ internal class ManagedRelationship: ManagedNode {
                 return
             }
             
-            let property = ManagedRelationshipProperty(name: name, object: value, managedObjectContext: managedObjectContext!)
+            for property in propertySet as! Set<ManagedRelationshipProperty> {
+                if name == property.name {
+                    property.object = object
+                    return
+                }
+            }
+            
+            let property = ManagedRelationshipProperty(name: name, object: object, managedObjectContext: managedObjectContext!)
             property.node = self
         }
     }
