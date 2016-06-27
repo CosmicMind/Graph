@@ -34,7 +34,7 @@ internal struct GraphRegistry {
     static var dispatchToken: dispatch_once_t = 0
     static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
     static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
-    static var managedObjectContexts: [String: NSManagedObjectContext]!
+    static var workerManagedObjectContexts: [String: NSManagedObjectContext]!
 }
 
 @objc(Graph)
@@ -179,13 +179,13 @@ public class Graph: NSObject {
         dispatch_once(&GraphRegistry.dispatchToken) {
             GraphRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
             GraphRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
-            GraphRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
+            GraphRegistry.workerManagedObjectContexts = [String: NSManagedObjectContext]()
         }
     }
     
     /// Prapres the managedObjectContext.
     private func prepareManagedObjectContext() {
-        guard let moc = GraphRegistry.managedObjectContexts[name] else {
+        guard let moc = GraphRegistry.workerManagedObjectContexts[name] else {
             let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
             privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name, type: type, location: location)
             GraphRegistry.privateManagedObjectContextss[name] = privateManagedObjectContexts
@@ -194,7 +194,7 @@ public class Graph: NSObject {
             GraphRegistry.mainManagedObjectContexts[name] = mainContext
         
             managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
-            GraphRegistry.managedObjectContexts[name] = managedObjectContext
+            GraphRegistry.workerManagedObjectContexts[name] = managedObjectContext
             
             return
         }
