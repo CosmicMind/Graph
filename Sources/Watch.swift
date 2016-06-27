@@ -40,6 +40,15 @@ public protocol GraphDelegate {
     optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
     optional func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
     
+    optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship)
+    optional func graphDidUpdateRelationship(graph: Graph, relationship: Relationship)
+    optional func graphDidDeleteRelationship(graph: Graph, relationship: Relationship)
+    optional func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
+    optional func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
+    optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
+    optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
+    optional func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
+    
     optional func graphDidInsertAction(graph: Graph, action: Action)
     optional func graphDidUpdateAction(graph: Graph, action: Action)
     optional func graphDidDeleteAction(graph: Graph, action: Action)
@@ -48,14 +57,6 @@ public protocol GraphDelegate {
     optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
     optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
     optional func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-    
-    optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidDeleteRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
-    optional func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
-    optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    optional func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
 }
 
 /// Graph Watch API.
@@ -124,10 +125,25 @@ public extension Graph {
     }
     
     /**
+     Handler for save notifications. Context merges are made within this handler.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func handleContextDidSave(notification: NSNotification) {
+        if NSThread.isMainThread() {
+            notifyWatchers(notification)
+        } else {
+            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                self?.notifyWatchers(notification)
+            }
+        }
+    }
+    
+    /**
      Watch for an Entity type.
      - Parameter type: An Entity type to watch for.
     */
-    internal func watch(Entity type: String) {
+    private func watch(Entity type: String) {
         addWatcher(
             "type",
             index: ModelIdentifier.entityIndexName,
@@ -140,7 +156,7 @@ public extension Graph {
      Watch for an Entity group.
      - Parameter name: An Entity group name to watch for.
      */
-    internal func watch(EntityGroup name: String) {
+    private func watch(EntityGroup name: String) {
         addWatcher(
             "name",
             index: ModelIdentifier.entityGroupIndexName,
@@ -153,7 +169,7 @@ public extension Graph {
      Watch for an Entity property.
      - Parameter name: An Entity property to watch for.
      */
-    internal func watch(EntityProperty name: String) {
+    private func watch(EntityProperty name: String) {
         addWatcher(
             "name",
             index: ModelIdentifier.entityPropertyIndexName,
@@ -166,7 +182,7 @@ public extension Graph {
      Watch for a Relationship type.
      - Parameter type: A Relationship type to watch for.
      */
-    internal func watch(Relationship type: String) {
+    private func watch(Relationship type: String) {
         addWatcher(
             "type",
             index: ModelIdentifier.relationshipIndexName,
@@ -179,7 +195,7 @@ public extension Graph {
      Watch for a Relationship group.
      - Parameter name: A Relationship group name to watch for.
      */
-    internal func watch(RelationshipGroup name: String) {
+    private func watch(RelationshipGroup name: String) {
         addWatcher(
             "name",
             index: ModelIdentifier.relationshipGroupIndexName,
@@ -192,7 +208,7 @@ public extension Graph {
      Watch for a Relationship property.
      - Parameter name: An Entity property to watch for.
      */
-    internal func watch(RelationshipProperty name: String) {
+    private func watch(RelationshipProperty name: String) {
         addWatcher(
             "name",
             index: ModelIdentifier.relationshipPropertyIndexName,
@@ -205,7 +221,7 @@ public extension Graph {
      Watch for an Action type.
      - Parameter type: An Action type to watch for.
      */
-    internal func watch(Action type: String) {
+    private func watch(Action type: String) {
         addWatcher(
             "type",
             index: ModelIdentifier.actionIndexName,
@@ -218,7 +234,7 @@ public extension Graph {
      Watch for an Action group.
      - Parameter name: An Action group name to watch for.
      */
-    internal func watch(ActionGroup name: String) {
+    private func watch(ActionGroup name: String) {
         addWatcher(
             "name",
             index: ModelIdentifier.actionGroupIndexName,
@@ -231,7 +247,7 @@ public extension Graph {
      Watch for an Action property.
      - Parameter name: An Action property to watch for.
      */
-    internal func watch(ActionProperty name: String) {
+    private func watch(ActionProperty name: String) {
         addWatcher(
             "name",
             index: ModelIdentifier.actionPropertyIndexName,
@@ -241,25 +257,13 @@ public extension Graph {
     }
     
     /**
-     Adds a predicate to watch for.
-     - Parameter entityDescription: An NSEntityDescription to watch.
-     - Parameter predicate: An NSPredicate.
-    */
-    internal func addPredicateToObserve(entityDescription: NSEntityDescription, predicate: NSPredicate) {
-        let entityPredicate = NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString)
-        let predicates = [entityPredicate, predicate]
-        let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-        watchPredicate = nil == watchPredicate ? finalPredicate : NSCompoundPredicate(orPredicateWithSubpredicates: [watchPredicate!, finalPredicate])
-    }
-    
-    /**
      Checks if the Watch API is watching a certain facet.
      - Parameter key: A key for top level organization.
      - Parameter index: A Model index.
      - Returns: A boolean for the result, true if watching, false
      otherwise.
     */
-    internal func isWatching(key: String, index: String) -> Bool {
+    private func isWatching(key key: String, index: String) -> Bool {
         if nil == watchers[key] {
             watchers[key] = [String](arrayLiteral: index)
             return false
@@ -279,8 +283,8 @@ public extension Graph {
      - Parameter entityDescription: An entity description.
      - Parameter managedObjectClassName: A Mode class name.
     */
-    internal func addWatcher(key: String, index: String, value: String, entityDescriptionName: String, managedObjectClassName: String) {
-        guard !isWatching(key, index: index) else {
+    private func addWatcher(key: String, index: String, value: String, entityDescriptionName: String, managedObjectClassName: String) {
+        guard !isWatching(key: value, index: index) else {
             return
         }
         
@@ -294,24 +298,20 @@ public extension Graph {
     }
     
     /**
-     Handler for save notifications. Context merges are made within this handler.
-     - Parameter notification: NSNotification reference.
+     Adds a predicate to watch for.
+     - Parameter entityDescription: An NSEntityDescription to watch.
+     - Parameter predicate: An NSPredicate.
      */
-    @objc
-    internal func handleContextDidSave(notification: NSNotification) {
-        if NSThread.isMainThread() {
-            notifyWatchers(notification)
-        } else {
-            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                self?.notifyWatchers(notification)
-            }
-        }
+    private func addPredicateToObserve(entityDescription: NSEntityDescription, predicate: NSPredicate) {
+        let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString), predicate])
+        watchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: nil == watchPredicate ? [finalPredicate] : [watchPredicate!, finalPredicate])
     }
     
-    /// Prepares the instance for save notifications.   
-    internal func prepareForObservation() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
+    /// Prepares the instance for save notifications.
+    private func prepareForObservation() {
+        let defaultCenter = NSNotificationCenter.defaultCenter()
+        defaultCenter.removeObserver(self)
+        defaultCenter.addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
     }
     
     /**
@@ -319,8 +319,8 @@ public extension Graph {
      - Parameter notification: An NSNotification passed from the
      managedObjectContext save operation.
      */
-    internal func notifyWatchers(notification: NSNotification) {
-        guard let userInfo = notification.userInfo else {
+    private func notifyWatchers(notification: NSNotification) {
+        guard let info = notification.userInfo else {
             return
         }
         
@@ -328,7 +328,7 @@ public extension Graph {
             return
         }
         
-        if let insertedSet = userInfo[NSInsertedObjectsKey] as? NSSet {
+        if let insertedSet = info[NSInsertedObjectsKey] as? NSSet {
             let	inserted = insertedSet.mutableCopy() as! NSMutableSet
 
             inserted.filterUsingPredicate(predicate)
@@ -374,7 +374,7 @@ public extension Graph {
             }
         }
         
-        if let updatedSet = userInfo[NSUpdatedObjectsKey] as? NSSet {
+        if let updatedSet = info[NSUpdatedObjectsKey] as? NSSet {
             let	updated = updatedSet.mutableCopy() as! NSMutableSet
             
             updated.filterUsingPredicate(predicate)
@@ -396,13 +396,16 @@ public extension Graph {
                 case "ManagedAction_ManagedAction_":
                     self.delegate?.graphDidUpdateAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
                     
+                case "ManagedRelationship_ManagedRelationship_":
+                    self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
+                    
                 default:
                     assert(false, "[Graph Error: Graph observed an object that is invalid.]")
                 }
             }
         }
         
-        if let deletedSet = userInfo[NSDeletedObjectsKey] as? NSSet {
+        if let deletedSet = info[NSDeletedObjectsKey] as? NSSet {
             let	deleted = deletedSet.mutableCopy() as! NSMutableSet
             
             deleted.filterUsingPredicate(predicate)

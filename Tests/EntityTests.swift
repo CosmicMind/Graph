@@ -53,13 +53,13 @@ class EntityTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
         
         let entity = Entity(type: "T")
-        entity["p"] = "v"
-        entity.addToGroup("g")
+        entity["P"] = "V"
+        entity.addToGroup("G")
         
-        XCTAssertEqual("v", entity["p"] as? String)
+        XCTAssertEqual("V", entity["P"] as? String)
         
         graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
@@ -79,13 +79,13 @@ class EntityTests: XCTestCase, GraphDelegate {
         let graph = Graph(name: "EntityTests-testNamedGraphSave")
         
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
         
         let entity = Entity(type: "T", graph: "EntityTests-testNamedGraphSave")
-        entity["p"] = "v"
-        entity.addToGroup("g")
+        entity["P"] = "V"
+        entity.addToGroup("G")
         
-        XCTAssertEqual("v", entity["p"] as? String)
+        XCTAssertEqual("V", entity["P"] as? String)
         
         graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
@@ -105,13 +105,13 @@ class EntityTests: XCTestCase, GraphDelegate {
         let graph = Graph(name: "EntityTests-testReferenceGraphSave")
         
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
         
         let entity = Entity(type: "T", graph: graph)
-        entity["p"] = "v"
-        entity.addToGroup("g")
+        entity["P"] = "V"
+        entity.addToGroup("G")
         
-        XCTAssertEqual("v", entity["p"] as? String)
+        XCTAssertEqual("V", entity["P"] as? String)
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.save { [weak self] (success: Bool, error: NSError?) in
@@ -132,13 +132,13 @@ class EntityTests: XCTestCase, GraphDelegate {
         
         let graph = Graph(name: "EntityTests-testAsyncGraphSave")
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
         
         let entity = Entity(type: "T", graph: graph)
-        entity["p"] = "v"
-        entity.addToGroup("g")
+        entity["P"] = "V"
+        entity.addToGroup("G")
         
-        XCTAssertEqual("v", entity["p"] as? String)
+        XCTAssertEqual("V", entity["P"] as? String)
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.save { [weak self] (success: Bool, error: NSError?) in
@@ -159,13 +159,13 @@ class EntityTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], groups: ["g"], properties: ["p"])
+        graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
         
         let entity = Entity(type: "T")
-        entity["p"] = "v"
-        entity.addToGroup("g")
+        entity["P"] = "V"
+        entity.addToGroup("G")
         
-        XCTAssertEqual("v", entity["p"] as? String)
+        XCTAssertEqual("V", entity["P"] as? String)
         
         graph.save { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
@@ -193,8 +193,8 @@ class EntityTests: XCTestCase, GraphDelegate {
     func graphDidInsertEntity(graph: Graph, entity: Entity) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("v", entity["p"] as? String)
-        XCTAssertTrue(entity.memberOfGroup("g"))
+        XCTAssertEqual("V", entity["P"] as? String)
+        XCTAssertTrue(entity.memberOfGroup("G"))
         
         delegateException?.fulfill()
     }
@@ -202,6 +202,8 @@ class EntityTests: XCTestCase, GraphDelegate {
     func graphDidDeleteEntity(graph: Graph, entity: Entity) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertNil(entity["P"])
+        XCTAssertFalse(entity.memberOfGroup("G"))
         
         delegateException?.fulfill()
     }
@@ -209,7 +211,8 @@ class EntityTests: XCTestCase, GraphDelegate {
     func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("g", group)
+        XCTAssertEqual("G", group)
+        XCTAssertTrue(entity.memberOfGroup(group))
         
         groupExpception?.fulfill()
     }
@@ -217,7 +220,8 @@ class EntityTests: XCTestCase, GraphDelegate {
     func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("g", group)
+        XCTAssertEqual("G", group)
+        XCTAssertFalse(entity.memberOfGroup(group))
         
         groupExpception?.fulfill()
     }
@@ -225,8 +229,8 @@ class EntityTests: XCTestCase, GraphDelegate {
     func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("p", property)
-        XCTAssertEqual("v", value as? String)
+        XCTAssertEqual("P", property)
+        XCTAssertEqual("V", value as? String)
         XCTAssertEqual(value as? String, entity[property] as? String)
         
         propertyExpception?.fulfill()
@@ -235,8 +239,8 @@ class EntityTests: XCTestCase, GraphDelegate {
     func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("p", property)
-        XCTAssertEqual("v", value as? String)
+        XCTAssertEqual("P", property)
+        XCTAssertEqual("V", value as? String)
         XCTAssertEqual(value as? String, entity[property] as? String)
         
         propertyExpception?.fulfill()
@@ -245,8 +249,9 @@ class EntityTests: XCTestCase, GraphDelegate {
     func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("p", property)
-        XCTAssertEqual("v", value as? String)
+        XCTAssertEqual("P", property)
+        XCTAssertEqual("V", value as? String)
+        XCTAssertNil(entity["P"])
         
         propertyExpception?.fulfill()
     }
