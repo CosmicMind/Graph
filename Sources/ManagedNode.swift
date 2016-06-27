@@ -30,7 +30,6 @@
 
 import CoreData
 
-@objc(ManagedNode)
 internal class ManagedNode: ManagedModel {
     @NSManaged internal var nodeClass: NSNumber
     @NSManaged internal var type: String
