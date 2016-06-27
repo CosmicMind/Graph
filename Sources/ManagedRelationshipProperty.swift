@@ -39,9 +39,9 @@ internal class ManagedRelationshipProperty: ManagedProperty {
      a NSManagedObjectContext.
      - Parameter name: A property name.
      - Parameter object: A reference to the object value.
-     - Parameter context: A reference to a NSManagedObjectContext.
+     - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(name: String, object: AnyObject, context: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.relationshipPropertyDescriptionName, name: name, object: object, context: context)
+    internal convenience init(name: String, object: AnyObject, managedObjectContext: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.relationshipPropertyDescriptionName, name: name, object: object, managedObjectContext: managedObjectContext)
     }
 }

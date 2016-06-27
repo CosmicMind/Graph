@@ -32,7 +32,7 @@ import CoreData
 
 internal struct Context {
     /**
-     Creates a NSManagedContext. The method will ensure that  any contexts that have
+     Creates a NSManagedContext. The method will ensure that  any managedObjectContexts that have
      a concurrency type of .MainQueueConcurrencyType are always created on the main 
      thread.
      - Parameter concurrencyType: A concurrency type to use.

@@ -40,10 +40,10 @@ internal class ManagedEntity: ManagedNode {
     /**
      Initializer that accepts a type and a NSManagedObjectContext.
      - Parameter type: A reference to the Entity type.
-     - Parameter context: A reference to the NSManagedObejctContext.
+     - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
     */
-    internal convenience init(_ type: String, context: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.entityDescriptionName, type: type, context: context)
+    internal convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.entityDescriptionName, type: type, managedObjectContext: managedObjectContext)
         nodeClass = NodeClass.Entity.rawValue
         actionSubjectSet = NSSet()
         actionObjectSet = NSSet()
@@ -72,7 +72,7 @@ internal class ManagedEntity: ManagedNode {
                 return
             }
             
-            let property = ManagedEntityProperty(name: name, object: value, context: managedObjectContext!)
+            let property = ManagedEntityProperty(name: name, object: value, managedObjectContext: managedObjectContext!)
             property.node = self
         }
     }
@@ -85,7 +85,7 @@ internal class ManagedEntity: ManagedNode {
      */
     internal override func addToGroup(name: String) -> Bool {
         if !memberOfGroup(name) {
-            let group = ManagedEntityGroup(name: name, context: managedObjectContext!)
+            let group = ManagedEntityGroup(name: name, managedObjectContext: managedObjectContext!)
             group.node = self
             return true
         }

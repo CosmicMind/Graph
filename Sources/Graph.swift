@@ -32,9 +32,9 @@ import CoreData
 
 internal struct GraphRegistry {
     static var dispatchToken: dispatch_once_t = 0
-    static var privateContexts: [String: NSManagedObjectContext]!
-    static var mainContexts: [String: NSManagedObjectContext]!
-    static var contexts: [String: NSManagedObjectContext]!
+    static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
+    static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
+    static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
 
 @objc(Graph)
@@ -48,8 +48,8 @@ public class Graph: NSObject {
     /// Storage location.
     private(set) var location: NSURL!
     
-    /// Worker context.
-    public private(set) var context: NSManagedObjectContext!
+    /// Worker managedObjectContext.
+    public private(set) var managedObjectContext: NSManagedObjectContext!
     
     /// A reference to the watch predicate.
     public internal(set) var watchPredicate: NSPredicate?
@@ -78,7 +78,7 @@ public class Graph: NSObject {
 		self.type = type
 		self.location = location
         prepareGraphRegistry()
-        prepareContext()
+        prepareManagedObjectContext()
     }
     
     /// Deinitializer that removes the Graph from NSNotificationCenter.
@@ -92,7 +92,7 @@ public class Graph: NSObject {
      executed when the save operation is completed.
      */
     public func save(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-        guard context.hasChanges else {
+        guard managedObjectContext.hasChanges else {
             if NSThread.isMainThread() {
                 completion?(success: true, error: nil)
             } else {
@@ -103,11 +103,11 @@ public class Graph: NSObject {
             return
         }
         
-        context.performBlock { [weak self] in
+        managedObjectContext.performBlock { [weak self] in
             do {
-                try self?.context.save()
+                try self?.managedObjectContext.save()
         
-                guard let mainContext = self?.context.parentContext else {
+                guard let mainContext = self?.managedObjectContext.parentContext else {
                     return
                 }
                 
@@ -119,17 +119,17 @@ public class Graph: NSObject {
                     do {
                         try mainContext.save()
                         
-                        guard let privateContext = mainContext.parentContext else {
+                        guard let privateManagedObjectContexts = mainContext.parentContext else {
                             return
                         }
                         
-                        guard privateContext.hasChanges else {
+                        guard privateManagedObjectContexts.hasChanges else {
                             return
                         }
                         
-                        privateContext.performBlock {
+                        privateManagedObjectContexts.performBlock {
                             do {
-                                try privateContext.save()
+                                try privateManagedObjectContexts.save()
                                 dispatch_sync(dispatch_get_main_queue()) {
                                     completion?(success: true, error: nil)
                                 }
@@ -177,28 +177,28 @@ public class Graph: NSObject {
     /// Prepares the registry.
     private func prepareGraphRegistry() {
         dispatch_once(&GraphRegistry.dispatchToken) {
-            GraphRegistry.privateContexts = [String: NSManagedObjectContext]()
-            GraphRegistry.mainContexts = [String: NSManagedObjectContext]()
-            GraphRegistry.contexts = [String: NSManagedObjectContext]()
+            GraphRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
+            GraphRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
+            GraphRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
         }
     }
     
-    /// Prapres the context.
-    private func prepareContext() {
-        guard let moc = GraphRegistry.contexts[name] else {
-            let privateContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
-            privateContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name, type: type, location: location)
-            GraphRegistry.privateContexts[name] = privateContext
+    /// Prapres the managedObjectContext.
+    private func prepareManagedObjectContext() {
+        guard let moc = GraphRegistry.managedObjectContexts[name] else {
+            let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
+            privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name, type: type, location: location)
+            GraphRegistry.privateManagedObjectContextss[name] = privateManagedObjectContexts
             
-            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
-            GraphRegistry.mainContexts[name] = mainContext
+            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
+            GraphRegistry.mainManagedObjectContexts[name] = mainContext
         
-            context = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
-            GraphRegistry.contexts[name] = context
+            managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
+            GraphRegistry.managedObjectContexts[name] = managedObjectContext
             
             return
         }
         
-        context = moc
+        managedObjectContext = moc
     }
 }

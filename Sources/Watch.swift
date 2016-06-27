@@ -311,13 +311,13 @@ public extension Graph {
     /// Prepares the instance for save notifications.   
     internal func prepareForObservation() {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: context)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
     }
     
     /**
      Notifies watchers of changes within the ManagedObjectContext.
-     - Parameter notification: An NSNotification passed from the context
-     save operation.
+     - Parameter notification: An NSNotification passed from the
+     managedObjectContext save operation.
      */
     internal func notifyWatchers(notification: NSNotification) {
         guard let userInfo = notification.userInfo else {
@@ -337,64 +337,37 @@ public extension Graph {
                 for node: NSManagedObject in inserted.allObjects as! [NSManagedObject] {
                     switch String.fromCString(object_getClassName(node))! {
                     case "ManagedEntity_ManagedEntity_":
-                        let n = Entity(managedNode: node as! ManagedEntity)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidInsertEntity?(self, entity: n)
+                        delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: node as! ManagedEntity))
                     
                     case "ManagedEntityGroup_ManagedEntityGroup_":
                         let group = node as! ManagedEntityGroup
-                        let n = Entity(managedNode: group.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidInsertEntityGroup?(self, entity: n, group: group.name)
+                        delegate?.graphDidInsertEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
                     
                     case "ManagedEntityProperty_ManagedEntityProperty_":
                         let property = node as! ManagedEntityProperty
-                        let n = Entity(managedNode: property.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidInsertEntityProperty?(self, entity: n, property: property.name, value: property.object)
+                        delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
                     
                     case "ManagedAction_ManagedAction_":
-                        let n = Action(managedNode: node as! ManagedAction)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidInsertAction?(self, action: n)
+                        delegate?.graphDidInsertAction?(self, action: Action(managedNode: node as! ManagedAction))
                         
                     case "ManagedActionGroup_ManagedActionGroup_":
                         let group: ManagedActionGroup = node as! ManagedActionGroup
-                        let n = Action(managedNode: group.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidInsertActionGroup?(self, action: n, group: group.name)
+                        delegate?.graphDidInsertActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
                     
                     case "ManagedActionProperty_ManagedActionProperty_":
                         let property = node as! ManagedActionProperty
-                        let n = Action(managedNode: property.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidInsertActionProperty?(self, action: n, property: property.name, value: property.object)
+                        delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
                     
                     case "ManagedRelationship_ManagedRelationship_":
-                        let n = Relationship(managedNode: node as! ManagedRelationship)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidInsertRelationship?(self, relationship: n)
+                        delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: node as! ManagedRelationship))
                     
                     case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                         let group = node as! ManagedRelationshipGroup
-                        let n = Relationship(managedNode: group.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidInsertRelationshipGroup?(self, relationship: n, group: group.name)
+                        delegate?.graphDidInsertRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
                     
                     case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                         let property = node as! ManagedRelationshipProperty
-                        let n = Relationship(managedNode: property.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidInsertRelationshipProperty?(self, relationship: n, property: property.name, value: property.object)
+                        delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
                     
                     default:
                         assert(false, "[Graph Error: Graph observed an object that is invalid.]")
@@ -414,30 +387,19 @@ public extension Graph {
                     switch String.fromCString(object_getClassName(node))! {
                     case "ManagedEntityProperty_ManagedEntityProperty_":
                         let property = node as! ManagedEntityProperty
-                        let n = Entity(managedNode: property.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidUpdateEntityProperty?(self, entity: n, property: property.name, value: property.object)
+                        delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
                         
                     case "ManagedActionProperty_ManagedActionProperty_":
                         let property = node as! ManagedActionProperty
-                        let n = Action(managedNode: property.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidUpdateActionProperty?(self, action: n, property: property.name, value: property.object)
+                        delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
                     
                     case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                         let property = node as! ManagedRelationshipProperty
-                        let n = Relationship(managedNode: property.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidUpdateRelationshipProperty?(self, relationship: n, property: property.name, value: property.object)
+                        delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
                     
                     case "ManagedAction_ManagedAction_":
-                        let n = Action(managedNode: node as! ManagedAction)
-                        // n.node.managedNode.context = context
+                        delegate?.graphDidUpdateAction?(self, action: Action(managedNode: node as! ManagedAction))
                         
-                        delegate?.graphDidUpdateAction?(self, action: n)
                     default:
                         assert(false, "[Graph Error: Graph observed an object that is invalid.]")
                     }
@@ -454,64 +416,37 @@ public extension Graph {
                 for node: NSManagedObject in deleted.allObjects as! [NSManagedObject] {
                     switch String.fromCString(object_getClassName(node))! {
                     case "ManagedEntity_ManagedEntity_":
-                        let n = Entity(managedNode: node as! ManagedEntity)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidDeleteEntity?(self, entity: n)
+                        delegate?.graphDidDeleteEntity?(self, entity: Entity(managedNode: node as! ManagedEntity))
                         
                     case "ManagedEntityProperty_ManagedEntityProperty_":
                         let property = node as! ManagedEntityProperty
-                        let n = Entity(managedNode: property.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidDeleteEntityProperty?(self, entity: n, property: property.name, value: property.object)
+                        delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
                         
                     case "ManagedEntityGroup_ManagedEntityGroup_":
                         let group = node as! ManagedEntityGroup
-                        let n = Entity(managedNode: group.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidDeleteEntityGroup?(self, entity: n, group: group.name)
+                        delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
                     
                     case "ManagedAction_ManagedAction_":
-                        let n = Action(managedNode: node as! ManagedAction)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidDeleteAction?(self, action: n)
+                        delegate?.graphDidDeleteAction?(self, action: Action(managedNode: node as! ManagedAction))
                     
                     case "ManagedActionProperty_ManagedActionProperty_":
                         let property = node as! ManagedActionProperty
-                        let n = Action(managedNode: property.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidDeleteActionProperty?(self, action: n, property: property.name, value: property.object)
+                        delegate?.graphDidDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
                     
                     case "ManagedActionGroup_ManagedActionGroup_":
                         let group = node as! ManagedActionGroup
-                        let n = Action(managedNode: group.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidDeleteActionGroup?(self, action: n, group: group.name)
+                        delegate?.graphDidDeleteActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
                     
                     case "ManagedRelationship_ManagedRelationship_":
-                        let n = Relationship(managedNode: node as! ManagedRelationship)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidDeleteRelationship?(self, relationship: n)
+                        delegate?.graphDidDeleteRelationship?(self, relationship: Relationship(managedNode: node as! ManagedRelationship))
                     
                     case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                         let property = node as! ManagedRelationshipProperty
-                        let n = Relationship(managedNode: property.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidDeleteRelationshipProperty?(self, relationship: n, property: property.name, value: property.object)
+                        delegate?.graphDidDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
                     
                     case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                         let group = node as! ManagedRelationshipGroup
-                        let n = Relationship(managedNode: group.node)
-                        // n.node.managedNode.context = context
-                        
-                        delegate?.graphDidDeleteRelationshipGroup?(self, relationship: n, group: group.name)
+                        delegate?.graphDidDeleteRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
                     
                     default:
                         assert(false, "[Graph Error: Graph observed an object that is invalid.]")

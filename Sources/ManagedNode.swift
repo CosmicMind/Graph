@@ -50,10 +50,10 @@ internal class ManagedNode: ManagedModel {
      Initializer that accepts an identifier, a type, and a NSManagedObjectContext.
      - Parameter identifier: A model identifier.
      - Parameter type: A reference to the Entity type.
-     - Parameter context: A reference to the NSManagedObejctContext.
+     - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
      */
-    internal convenience init(identifier: String, type: String, context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+    internal convenience init(identifier: String, type: String, managedObjectContext: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: managedObjectContext)!, insertIntoManagedObjectContext: managedObjectContext)
         self.type = type
         createdDate = NSDate()
         propertySet = NSSet()

@@ -71,9 +71,7 @@ public class Entity: NSObject, NodeType {
         s.unionInPlace(node.managedNode.actionSubjectSet as! Set<ManagedAction>)
         s.unionInPlace(node.managedNode.actionObjectSet as! Set<ManagedAction>)
         return s.map {
-            let n = Action(managedNode: $0 as ManagedAction)
-//            n.node.managedNode.context = node.managedNode.context
-            return n
+            return Action(managedNode: $0 as ManagedAction)
         } as [Action]
     }
     
@@ -82,9 +80,7 @@ public class Entity: NSObject, NodeType {
      */
     public var actionsWhenSubject: [Action] {
         return node.managedNode.actionSubjectSet.map {
-            let n = Action(managedNode: $0 as! ManagedAction)
-//            n.node.managedNode.context = node.managedNode.context
-            return n
+            return Action(managedNode: $0 as! ManagedAction)
         } as [Action]
     }
     
@@ -93,9 +89,7 @@ public class Entity: NSObject, NodeType {
      */
     public var actionsWhenObject: [Action] {
         return node.managedNode.actionObjectSet.map {
-            let n = Action(managedNode: $0 as! ManagedAction)
-//            n.node.managedNode.context = node.managedNode.context
-            return n
+            return Action(managedNode: $0 as! ManagedAction)
         } as [Action]
     }
     
@@ -107,9 +101,7 @@ public class Entity: NSObject, NodeType {
         s.unionInPlace(node.managedNode.relationshipSubjectSet as! Set<ManagedRelationship>)
         s.unionInPlace(node.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
         return s.map {
-            let n = Relationship(managedNode: $0 as ManagedRelationship)
-//            n.node.managedNode.context = node.managedNode.context
-            return n
+            return Relationship(managedNode: $0 as ManagedRelationship)
         } as [Relationship]
     }
     
@@ -118,9 +110,7 @@ public class Entity: NSObject, NodeType {
      */
     public var relationshipsWhenSubject: [Relationship] {
         return node.managedNode.relationshipSubjectSet.map {
-            let n = Relationship(managedNode: $0 as! ManagedRelationship)
-//            n.node.managedNode.context = node.managedNode.context
-            return n
+            return Relationship(managedNode: $0 as! ManagedRelationship)
         } as [Relationship]
     }
     
@@ -129,9 +119,7 @@ public class Entity: NSObject, NodeType {
      */
     public var relationshipsWhenObject: [Relationship] {
         return node.managedNode.relationshipObjectSet.map {
-            let n = Relationship(managedNode: $0 as! ManagedRelationship)
-//            n.node.managedNode.context = node.managedNode.context
-            return n
+            return Relationship(managedNode: $0 as! ManagedRelationship)
         } as [Relationship]
     }
     
@@ -170,7 +158,7 @@ public class Entity: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: String) {
-        self.init(managedNode: ManagedEntity(type, context: Graph(name: graph).context))
+        self.init(managedNode: ManagedEntity(type, managedObjectContext: Graph(name: graph).managedObjectContext))
     }
     
     /**
@@ -181,7 +169,7 @@ public class Entity: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: Graph) {
-        self.init(managedNode: ManagedEntity(type, context: graph.context))
+        self.init(managedNode: ManagedEntity(type, managedObjectContext: graph.managedObjectContext))
     }
     
     /**

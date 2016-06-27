@@ -38,10 +38,10 @@ internal class ManagedRelationship: ManagedNode {
     /**
      Initializer that accepts a type and a NSManagedObjectContext.
      - Parameter type: A reference to the Relationship type.
-     - Parameter context: A reference to the NSManagedObejctContext.
+     - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
      */
-    internal convenience init(_ type: String, context: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.relationshipDescriptionName, type: type, context: context)
+    internal convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.relationshipDescriptionName, type: type, managedObjectContext: managedObjectContext)
         nodeClass = NodeClass.Relationship.rawValue
         subject = nil
         object = nil
@@ -68,7 +68,7 @@ internal class ManagedRelationship: ManagedNode {
                 return
             }
             
-            let property = ManagedRelationshipProperty(name: name, object: value, context: managedObjectContext!)
+            let property = ManagedRelationshipProperty(name: name, object: value, managedObjectContext: managedObjectContext!)
             property.node = self
         }
     }
@@ -81,7 +81,7 @@ internal class ManagedRelationship: ManagedNode {
      */
     internal override func addToGroup(name: String) -> Bool {
         if !memberOfGroup(name) {
-            let group = ManagedRelationshipGroup(name: name, context: managedObjectContext!)
+            let group = ManagedRelationshipGroup(name: name, managedObjectContext: managedObjectContext!)
             group.node = self
             return true
         }

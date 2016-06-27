@@ -45,13 +45,13 @@ class GraphTests : XCTestCase {
     
     func testContext() {
         let g1 = Graph()
-        XCTAssertTrue(g1.context.isKindOfClass(NSManagedObjectContext))
+        XCTAssertTrue(g1.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual(Storage.name, g1.name)
         XCTAssertEqual(Storage.type, g1.type)
         XCTAssertEqual(Storage.location, g1.location)
         
         let g2 = Graph(name: "marketing")
-        XCTAssertTrue(g2.context.isKindOfClass(NSManagedObjectContext))
+        XCTAssertTrue(g2.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("marketing", g2.name)
         XCTAssertEqual(Storage.type, g2.type)
         XCTAssertEqual(Storage.location, g2.location)
@@ -61,7 +61,7 @@ class GraphTests : XCTestCase {
         var g3: Graph!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             g3 = Graph(name: "async")
-            XCTAssertTrue(g3.context.isKindOfClass(NSManagedObjectContext))
+            XCTAssertTrue(g3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
             XCTAssertEqual("async", g3.name)
             XCTAssertEqual(Storage.type, g3.type)
             XCTAssertEqual(Storage.location, g3.location)
@@ -70,7 +70,7 @@ class GraphTests : XCTestCase {
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
-        XCTAssertTrue(g3.context.isKindOfClass(NSManagedObjectContext))
+        XCTAssertTrue(g3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("async", g3.name)
         XCTAssertEqual(Storage.type, g3.type)
         XCTAssertEqual(Storage.location, g3.location)

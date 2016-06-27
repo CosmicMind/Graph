@@ -38,9 +38,9 @@ internal class ManagedActionGroup: ManagedGroup {
      Initializer that accepts a group name and a
      NSManagedObjectContext.
      - Parameter name: A group name.
-     - Parameter context: A reference to a NSManagedObjectContext.
+     - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(name: String, context: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.actionGroupDescriptionName, name: name, context: context)
+    internal convenience init(name: String, managedObjectContext: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.actionGroupDescriptionName, name: name, managedObjectContext: managedObjectContext)
     }
 }

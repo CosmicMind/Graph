@@ -38,10 +38,10 @@ internal class ManagedAction: ManagedNode {
     /**
      Initializer that accepts a type and a NSManagedObjectContext.
      - Parameter type: A reference to the Action type.
-     - Parameter context: A reference to the NSManagedObejctContext.
+     - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
      */
-    internal convenience init(_ type: String, context: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.actionDescriptionName, type: type, context: context)
+    internal convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.actionDescriptionName, type: type, managedObjectContext: managedObjectContext)
         nodeClass = NodeClass.Action.rawValue
         subjectSet = NSSet()
         objectSet = NSSet()
@@ -68,7 +68,7 @@ internal class ManagedAction: ManagedNode {
                 return
             }
             
-            let property = ManagedActionProperty(name: name, object: value, context: managedObjectContext!)
+            let property = ManagedActionProperty(name: name, object: value, managedObjectContext: managedObjectContext!)
             property.node = self
         }
     }
@@ -81,7 +81,7 @@ internal class ManagedAction: ManagedNode {
      */
     internal override func addToGroup(name: String) -> Bool {
         if !memberOfGroup(name) {
-            let group = ManagedActionGroup(name: name, context: managedObjectContext!)
+            let group = ManagedActionGroup(name: name, managedObjectContext: managedObjectContext!)
             group.node = self
             return true
         }

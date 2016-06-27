@@ -113,7 +113,7 @@ public class Action: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: String) {
-        self.init(managedNode: ManagedAction(type, context: Graph(name: graph).context))
+        self.init(managedNode: ManagedAction(type, managedObjectContext: Graph(name: graph).managedObjectContext))
     }
     
     /**
@@ -124,7 +124,7 @@ public class Action: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: Graph) {
-        self.init(managedNode: ManagedAction(type, context: graph.context))
+        self.init(managedNode: ManagedAction(type, managedObjectContext: graph.managedObjectContext))
     }
     
     /**

@@ -113,7 +113,7 @@ public class Relationship: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: String) {
-        self.init(managedNode: ManagedRelationship(type, context: Graph(name: graph).context))
+        self.init(managedNode: ManagedRelationship(type, managedObjectContext: Graph(name: graph).managedObjectContext))
     }
     
     /**
@@ -124,7 +124,7 @@ public class Relationship: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: Graph) {
-        self.init(managedNode: ManagedRelationship(type, context: graph.context))
+        self.init(managedNode: ManagedRelationship(type, managedObjectContext: graph.managedObjectContext))
     }
     
     /**

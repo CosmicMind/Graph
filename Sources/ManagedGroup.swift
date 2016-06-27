@@ -38,10 +38,10 @@ internal class ManagedGroup: ManagedModel {
      NSManagedObjectContext.
      - Parameter identifier: A model identifier.
      - Parameter name: A group name.
-     - Parameter context: A reference to a NSManagedObjectContext.
+     - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(identifier: String, name: String, context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+    internal convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: managedObjectContext)!, insertIntoManagedObjectContext: managedObjectContext)
         self.name = name
     }
 }
