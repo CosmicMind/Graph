@@ -30,13 +30,6 @@
 
 import CoreData
 
-internal struct StorageRegistry {
-    static var dispatchToken: dispatch_once_t = 0
-    static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
-    static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
-    static var workerManagedObjectContexts: [String: NSManagedObjectContext]!
-}
-
 /**
  A helper method to ensure that the completion callback
  is always called on the main thread.
@@ -77,8 +70,13 @@ public struct StorageConstants {
     static let type: String = NSSQLiteStoreType
     
     /// URL reference to where the datastore will live.
-    static var location: NSURL {
-        return File.path(.DocumentDirectory, path: "Graph/")!
+    static var graph: NSURL {
+        return File.path(.DocumentDirectory, path: "io.cosmicmind.graph/")!
+    }
+    
+    /// URL reference to where the datastore will live.
+    static var cloud: NSURL {
+        return File.path(.DocumentDirectory, path: "io.cosmicmind.cloud/")!
     }
 }
 
@@ -277,16 +275,4 @@ public class Storage: NSObject {
         
         sync(completion)
     }
-    
-    /// Prepares the registry.
-    internal func prepareStorageRegistry() {
-        dispatch_once(&StorageRegistry.dispatchToken) {
-            StorageRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
-            StorageRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
-            StorageRegistry.workerManagedObjectContexts = [String: NSManagedObjectContext]()
-        }
-    }
-    
-    /// Prapres the managedObjectContext.
-    internal func prepareManagedObjectContext() {}
 }

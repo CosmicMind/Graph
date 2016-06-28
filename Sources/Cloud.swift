@@ -30,6 +30,13 @@
 
 import CoreData
 
+internal struct CloudStorageRegistry {
+    static var dispatchToken: dispatch_once_t = 0
+    static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
+    static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
+    static var workerManagedObjectContexts: [String: NSManagedObjectContext]!
+}
+
 @objc(CloudDelegate)
 public protocol CloudDelegate {
     optional func cloudDidInsertEntity(cloud: Cloud, entity: Entity)
@@ -74,7 +81,7 @@ public class Cloud: Storage {
      - Parameter completion: An Optional completion block that is
      executed to determine if iCloud support is available or not.
      */
-    public init(name: String = StorageConstants.name, location: NSURL = StorageConstants.location, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public init(name: String = StorageConstants.name, location: NSURL = StorageConstants.cloud, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         super.init()
         self.name = name
         self.type = NSSQLiteStoreType
@@ -84,21 +91,30 @@ public class Cloud: Storage {
         prepareManagedObjectContext()
     }
     
+    /// Prepares the registry.
+    internal func prepareStorageRegistry() {
+        dispatch_once(&CloudStorageRegistry.dispatchToken) {
+            CloudStorageRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
+            CloudStorageRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
+            CloudStorageRegistry.workerManagedObjectContexts = [String: NSManagedObjectContext]()
+        }
+    }
+    
     /// Prapres the managedObjectContext.
-    internal override func prepareManagedObjectContext() {
-        guard let moc = StorageRegistry.workerManagedObjectContexts[name] else {
+    internal func prepareManagedObjectContext() {
+        guard let moc = CloudStorageRegistry.workerManagedObjectContexts[name] else {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
                 if let s = self {
                     let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
                     privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createCloudPersistentStoreCoordinator(s.name, type: s.type, location: s.location) { [weak self] (success: Bool, error: NSError?) in
                         if let s = self {
-                            StorageRegistry.privateManagedObjectContextss[s.name] = privateManagedObjectContexts
+                            CloudStorageRegistry.privateManagedObjectContextss[s.name] = privateManagedObjectContexts
                             
                             let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
-                            StorageRegistry.mainManagedObjectContexts[s.name] = mainContext
+                            CloudStorageRegistry.mainManagedObjectContexts[s.name] = mainContext
                             
                             s.managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
-                            StorageRegistry.workerManagedObjectContexts[s.name] = s.managedObjectContext
+                            CloudStorageRegistry.workerManagedObjectContexts[s.name] = s.managedObjectContext
                             
                             s.completion?(success: success, error: error)
                         }

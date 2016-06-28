@@ -48,13 +48,13 @@ class GraphTests : XCTestCase {
         XCTAssertTrue(g1.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual(StorageConstants.name, g1.name)
         XCTAssertEqual(StorageConstants.type, g1.type)
-        XCTAssertEqual(StorageConstants.location, g1.location)
+        XCTAssertEqual(StorageConstants.graph, g1.location)
         
         let g2 = Graph(name: "marketing")
         XCTAssertTrue(g2.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("marketing", g2.name)
         XCTAssertEqual(StorageConstants.type, g2.type)
-        XCTAssertEqual(StorageConstants.location, g2.location)
+        XCTAssertEqual(StorageConstants.graph, g2.location)
 
         asyncException = expectationWithDescription("[GraphTests Error: Async tests failed.]")
         
@@ -64,7 +64,7 @@ class GraphTests : XCTestCase {
             XCTAssertTrue(g3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
             XCTAssertEqual("async", g3.name)
             XCTAssertEqual(StorageConstants.type, g3.type)
-            XCTAssertEqual(StorageConstants.location, g3.location)
+            XCTAssertEqual(StorageConstants.graph, g3.location)
             self?.asyncException?.fulfill()
         }
         
@@ -73,6 +73,6 @@ class GraphTests : XCTestCase {
         XCTAssertTrue(g3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("async", g3.name)
         XCTAssertEqual(StorageConstants.type, g3.type)
-        XCTAssertEqual(StorageConstants.location, g3.location)
+        XCTAssertEqual(StorageConstants.graph, g3.location)
     }
 }

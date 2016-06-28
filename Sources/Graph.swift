@@ -30,6 +30,13 @@
 
 import CoreData
 
+internal struct GraphStorageRegistry {
+    static var dispatchToken: dispatch_once_t = 0
+    static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
+    static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
+    static var workerManagedObjectContexts: [String: NSManagedObjectContext]!
+}
+
 @objc(GraphDelegate)
 public protocol GraphDelegate {
     optional func graphDidInsertEntity(graph: Graph, entity: Entity)
@@ -70,7 +77,7 @@ public class Graph: Storage {
      - Parameter type: Type of Graph storage.
      - Parameter location: A location for storage.
     */
-    public init(name: String = StorageConstants.name, type: String = StorageConstants.type, location: NSURL = StorageConstants.location) {
+    public init(name: String = StorageConstants.name, type: String = StorageConstants.type, location: NSURL = StorageConstants.graph) {
         super.init()
         self.name = name
 		self.type = type
@@ -79,18 +86,27 @@ public class Graph: Storage {
         prepareManagedObjectContext()
     }
     
+    /// Prepares the registry.
+    internal func prepareStorageRegistry() {
+        dispatch_once(&GraphStorageRegistry.dispatchToken) {
+            GraphStorageRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
+            GraphStorageRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
+            GraphStorageRegistry.workerManagedObjectContexts = [String: NSManagedObjectContext]()
+        }
+    }
+    
     /// Prapres the managedObjectContext.
-    internal override func prepareManagedObjectContext() {
-        guard let moc = StorageRegistry.workerManagedObjectContexts[name] else {
+    internal func prepareManagedObjectContext() {
+        guard let moc = GraphStorageRegistry.workerManagedObjectContexts[name] else {
             let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
             privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createLocalPersistentStoreCoordinator(name, type: type, location: location)
-            StorageRegistry.privateManagedObjectContextss[name] = privateManagedObjectContexts
+            GraphStorageRegistry.privateManagedObjectContextss[name] = privateManagedObjectContexts
             
             let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
-            StorageRegistry.mainManagedObjectContexts[name] = mainContext
+            GraphStorageRegistry.mainManagedObjectContexts[name] = mainContext
         
             managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
-            StorageRegistry.workerManagedObjectContexts[name] = managedObjectContext
+            GraphStorageRegistry.workerManagedObjectContexts[name] = managedObjectContext
             
             return
         }

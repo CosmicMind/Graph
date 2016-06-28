@@ -57,7 +57,7 @@ class CloudTests : XCTestCase {
         XCTAssertTrue(c1.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual(StorageConstants.name, c1.name)
         XCTAssertEqual(StorageConstants.type, c1.type)
-        XCTAssertEqual(StorageConstants.location, c1.location)
+        XCTAssertEqual(StorageConstants.cloud, c1.location)
         
         asyncException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
         
@@ -72,7 +72,7 @@ class CloudTests : XCTestCase {
         XCTAssertTrue(c2.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("cloud", c2.name)
         XCTAssertEqual(StorageConstants.type, c2.type)
-        XCTAssertEqual(StorageConstants.location, c2.location)
+        XCTAssertEqual(StorageConstants.cloud, c2.location)
 
         asyncException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
         
@@ -90,6 +90,6 @@ class CloudTests : XCTestCase {
         XCTAssertTrue(c3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("async", c3.name)
         XCTAssertEqual(StorageConstants.type, c3.type)
-        XCTAssertEqual(StorageConstants.location, c3.location)
+        XCTAssertEqual(StorageConstants.cloud, c3.location)
     }
 }
