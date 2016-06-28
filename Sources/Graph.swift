@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2016, CosmicMind, Inc. <http://cosmicmind.io>.
+ * Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.io>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,16 +72,16 @@ private func GraphError(message message: String, domain: String = "io.cosmicmind
 @objc(Graph)
 public class Graph: NSObject {
     /// Storage name.
-    private(set) var name: String!
+    public internal(set) var name: String!
 	
 	/// Storage type.
-	private(set) var type: String!
+	public internal(set) var type: String!
 	
     /// Storage location.
-    private(set) var location: NSURL!
+    public internal(set) var location: NSURL!
     
     /// Worker managedObjectContext.
-    public private(set) var managedObjectContext: NSManagedObjectContext!
+    public internal(set) var managedObjectContext: NSManagedObjectContext!
     
     /// A reference to the watch predicate.
     public internal(set) var watchPredicate: NSPredicate?
@@ -104,7 +104,7 @@ public class Graph: NSObject {
      - Parameter type: Type of Graph storage.
      - Parameter location: A location for storage.
     */
-	public init(name: String = Storage.name, type: String = Storage.type, location: NSURL = Storage.location) {
+    public init(name: String = Storage.name, type: String = Storage.type, location: NSURL = Storage.location) {
         super.init()
         self.name = name
 		self.type = type
@@ -284,7 +284,7 @@ public class Graph: NSObject {
     }
     
     /// Prepares the registry.
-    private func prepareGraphRegistry() {
+    internal func prepareGraphRegistry() {
         dispatch_once(&GraphRegistry.dispatchToken) {
             GraphRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
             GraphRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
@@ -293,10 +293,10 @@ public class Graph: NSObject {
     }
     
     /// Prapres the managedObjectContext.
-    private func prepareManagedObjectContext() {
+    internal func prepareManagedObjectContext() {
         guard let moc = GraphRegistry.workerManagedObjectContexts[name] else {
             let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
-            privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name, type: type, location: location)
+            privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createLocalPersistentStoreCoordinator(name, type: type, location: location)
             GraphRegistry.privateManagedObjectContextss[name] = privateManagedObjectContexts
             
             let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)

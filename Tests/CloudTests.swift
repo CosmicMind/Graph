@@ -29,33 +29,50 @@
  */
 
 import CoreData
+import XCTest
+@testable import Graph
 
-internal struct Context {
-    /**
-     Creates a NSManagedContext. The method will ensure that  any workerManagedObjectContexts that have
-     a concurrency type of .MainQueueConcurrencyType are always created on the main 
-     thread.
-     - Parameter concurrencyType: A concurrency type to use.
-     - Parameter parentContext: An optional parent context.
-    */
-    static func createManagedContext(concurrencyType: NSManagedObjectContextConcurrencyType, parentContext: NSManagedObjectContext? = nil) -> NSManagedObjectContext {
-        var moc: NSManagedObjectContext!
+class CloudTests : XCTestCase {
+    var asyncException: XCTestExpectation?
+    
+    override func setUp() {
+        super.setUp()
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+    }
+    
+    func testContext() {
+        let c1 = Cloud()
+        XCTAssertTrue(c1.managedObjectContext.isKindOfClass(NSManagedObjectContext))
+        XCTAssertEqual(Storage.name, c1.name)
+        XCTAssertEqual(Storage.type, c1.type)
+        XCTAssertEqual(Storage.location, c1.location)
         
-        let makeContext: () -> Void = {
-            moc = NSManagedObjectContext(concurrencyType: concurrencyType)
-            if let pmoc = parentContext {
-                moc.parentContext = pmoc
-            }
+        let c2 = Cloud(name: "marketing")
+        XCTAssertTrue(c2.managedObjectContext.isKindOfClass(NSManagedObjectContext))
+        XCTAssertEqual("marketing", c2.name)
+        XCTAssertEqual(Storage.type, c2.type)
+        XCTAssertEqual(Storage.location, c2.location)
+        
+        asyncException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
+        
+        var c3: Cloud!
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+            c3 = Cloud(name: "async")
+            XCTAssertTrue(c3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
+            XCTAssertEqual("async", c3.name)
+            XCTAssertEqual(Storage.type, c3.type)
+            XCTAssertEqual(Storage.location, c3.location)
+            self?.asyncException?.fulfill()
         }
         
-        if concurrencyType == .MainQueueConcurrencyType && !NSThread.isMainThread() {
-            dispatch_sync(dispatch_get_main_queue()) {
-                makeContext()
-            }
-        } else {
-            makeContext()
-        }
+        waitForExpectationsWithTimeout(5, handler: nil)
         
-        return moc
+        XCTAssertTrue(c3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
+        XCTAssertEqual("async", c3.name)
+        XCTAssertEqual(Storage.type, c3.type)
+        XCTAssertEqual(Storage.location, c3.location)
     }
 }

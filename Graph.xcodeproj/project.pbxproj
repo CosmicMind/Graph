@@ -33,6 +33,10 @@
 		961FCF211D22D7D6003D9634 /* EntitySearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF1F1D22D7D6003D9634 /* EntitySearchTests.swift */; };
 		961FCF231D22D807003D9634 /* RelationshipSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF221D22D807003D9634 /* RelationshipSearchTests.swift */; };
 		961FCF241D22D807003D9634 /* RelationshipSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF221D22D807003D9634 /* RelationshipSearchTests.swift */; };
+		961FCF291D23010D003D9634 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF281D23010D003D9634 /* Cloud.swift */; };
+		961FCF2A1D23010D003D9634 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF281D23010D003D9634 /* Cloud.swift */; };
+		961FCF2C1D2301D0003D9634 /* CloudTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF2B1D2301D0003D9634 /* CloudTests.swift */; };
+		961FCF2D1D2301D0003D9634 /* CloudTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF2B1D2301D0003D9634 /* CloudTests.swift */; };
 		962EA8AB1D1DABDB003890F7 /* ManagedRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EA8AA1D1DABDB003890F7 /* ManagedRelationship.swift */; };
 		962EA8AC1D1DABDB003890F7 /* ManagedRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EA8AA1D1DABDB003890F7 /* ManagedRelationship.swift */; };
 		962EA8AE1D1DABE6003890F7 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EA8AD1D1DABE6003890F7 /* Relationship.swift */; };
@@ -128,6 +132,8 @@
 		961FCF1C1D22D1F7003D9634 /* ActionSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSearchTests.swift; sourceTree = "<group>"; };
 		961FCF1F1D22D7D6003D9634 /* EntitySearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySearchTests.swift; sourceTree = "<group>"; };
 		961FCF221D22D807003D9634 /* RelationshipSearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipSearchTests.swift; sourceTree = "<group>"; };
+		961FCF281D23010D003D9634 /* Cloud.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
+		961FCF2B1D2301D0003D9634 /* CloudTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudTests.swift; sourceTree = "<group>"; };
 		962EA8AA1D1DABDB003890F7 /* ManagedRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedRelationship.swift; sourceTree = "<group>"; };
 		962EA8AD1D1DABE6003890F7 /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
 		962EA8B01D1DABF8003890F7 /* ManagedRelationshipGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedRelationshipGroup.swift; sourceTree = "<group>"; };
@@ -229,6 +235,7 @@
 				96F6B51E1D19D3FF00EDF830 /* Coordinator.swift */,
 				96F6B5211D19D56B00EDF830 /* Model.swift */,
 				96F6B5241D19E15E00EDF830 /* Graph.swift */,
+				961FCF281D23010D003D9634 /* Cloud.swift */,
 				962EA8CB1D1DBB1C003890F7 /* Search.swift */,
 				962EA8C81D1DBAA9003890F7 /* Watch.swift */,
 				96A1E8941D1A4A4D00FAC2F9 /* ManagedModel.swift */,
@@ -298,6 +305,7 @@
 			children = (
 				96D4E4EE1BA76FAF00672E38 /* Info.plist */,
 				96F6B5121D19C81C00EDF830 /* GraphTests.swift */,
+				961FCF2B1D2301D0003D9634 /* CloudTests.swift */,
 				96A1E8C81D1A5E6000FAC2F9 /* EntityTests.swift */,
 				961FCF001D219BE6003D9634 /* EntityPropertyTests.swift */,
 				961FCF031D21A1D9003D9634 /* EntityPropertyStressTests.swift */,
@@ -493,6 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96F6B5261D19E15E00EDF830 /* Graph.swift in Sources */,
+				961FCF2A1D23010D003D9634 /* Cloud.swift in Sources */,
 				962EA8BB1D1DAD07003890F7 /* ManagedAction.swift in Sources */,
 				962EA8AF1D1DABE6003890F7 /* Relationship.swift in Sources */,
 				96F6B5231D19D56B00EDF830 /* Model.swift in Sources */,
@@ -536,6 +545,7 @@
 				961FCF111D21AD71003D9634 /* RelationshipPropertyStressTests.swift in Sources */,
 				96F6B5141D19C81C00EDF830 /* GraphTests.swift in Sources */,
 				961FCF211D22D7D6003D9634 /* EntitySearchTests.swift in Sources */,
+				961FCF2D1D2301D0003D9634 /* CloudTests.swift in Sources */,
 				961FCEFF1D217E95003D9634 /* EntityThreadTests.swift in Sources */,
 				962EA8C71D1DB9B4003890F7 /* RelationshipTests.swift in Sources */,
 				961FCF0E1D21AD63003D9634 /* RelationshipPropertyTests.swift in Sources */,
@@ -548,6 +558,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96A1E8991D1A512700FAC2F9 /* ManagedGroup.swift in Sources */,
+				961FCF291D23010D003D9634 /* Cloud.swift in Sources */,
 				962EA8BA1D1DAD07003890F7 /* ManagedAction.swift in Sources */,
 				962EA8AE1D1DABE6003890F7 /* Relationship.swift in Sources */,
 				96A1E8951D1A4A4D00FAC2F9 /* ManagedModel.swift in Sources */,
@@ -591,6 +602,7 @@
 				961FCF101D21AD71003D9634 /* RelationshipPropertyStressTests.swift in Sources */,
 				96F6B5131D19C81C00EDF830 /* GraphTests.swift in Sources */,
 				961FCF201D22D7D6003D9634 /* EntitySearchTests.swift in Sources */,
+				961FCF2C1D2301D0003D9634 /* CloudTests.swift in Sources */,
 				961FCEFE1D217E95003D9634 /* EntityThreadTests.swift in Sources */,
 				962EA8C61D1DB9B4003890F7 /* RelationshipTests.swift in Sources */,
 				961FCF0D1D21AD63003D9634 /* RelationshipPropertyTests.swift in Sources */,

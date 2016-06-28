@@ -30,17 +30,23 @@
 
 import CoreData
 
-@objc(ManagedEntityGroup)
-internal class ManagedEntityGroup: ManagedGroup {
-    @NSManaged internal var node: ManagedEntity
-    
-    /**
-     Initializer that accepts a group name and a 
-     NSManagedObjectContext.
-     - Parameter name: A group name.
-     - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-    */
-    internal convenience init(name: String, managedObjectContext: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.entityGroupDescriptionName, name: name, managedObjectContext: managedObjectContext)
+public class Cloud: Graph {
+    /// Prepares the managedObjectContext for iCloud.
+    internal override func prepareManagedObjectContext() {
+        guard let moc = GraphRegistry.workerManagedObjectContexts[name] else {
+            let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
+            privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createLocalPersistentStoreCoordinator(name, type: type, location: location)
+            GraphRegistry.privateManagedObjectContextss[name] = privateManagedObjectContexts
+            
+            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
+            GraphRegistry.mainManagedObjectContexts[name] = mainContext
+            
+            managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
+            GraphRegistry.workerManagedObjectContexts[name] = managedObjectContext
+            
+            return
+        }
+        
+        managedObjectContext = moc
     }
 }

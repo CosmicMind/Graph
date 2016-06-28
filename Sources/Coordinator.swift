@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2016, CosmicMind, Inc. <http://cosmicmind.io>.
+ * Copyright (C) 2015 - 2016, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.io>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,26 +30,25 @@
 
 import CoreData
 
-internal struct CoordinatorSingleton {
-    static var coordinator: NSPersistentStoreCoordinator?
-}
-
 internal struct Coordinator {
 	/**
-     Creates an NSPersistentStoreCoordinator.
+     Creates a NSPersistentStoreCoordinator.
      - Parameter name: Storage name.
      - Parameter type: Storage type.
      - Parameter location: Storage location.
      - Returns: An instance of NSPersistentStoreCoordinator.
 	*/
-    static func createPersistentStoreCoordinator(name: String, type: String, location: NSURL) -> NSPersistentStoreCoordinator {
+    static func createLocalPersistentStoreCoordinator(name: String, type: String, location: NSURL) -> NSPersistentStoreCoordinator {
         var loc: NSURL!
         loc = location.URLByAppendingPathComponent(name)
+        
+        var coordinator: NSPersistentStoreCoordinator!
+        
         File.createDirectoryAtPath(loc, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
             if let e = error {
                 fatalError(e.localizedDescription)
             }
-            let coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
+            coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
             do {
                 switch type {
                 case NSSQLiteStoreType:
@@ -60,8 +59,41 @@ internal struct Coordinator {
             } catch {
                 fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
             }
-            CoordinatorSingleton.coordinator = coordinator
         }
-        return CoordinatorSingleton.coordinator!
+        
+        return coordinator
+    }
+    
+    /**
+     Creates a NSPersistentStoreCoordinator with iCloud support.
+     - Parameter name: Storage name.
+     - Parameter type: Storage type.
+     - Parameter location: Storage location.
+     - Returns: An instance of NSPersistentStoreCoordinator.
+     */
+    static func createCloudPersistentStoreCoordinator(name: String, type: String, location: NSURL) -> NSPersistentStoreCoordinator {
+        var loc: NSURL!
+        loc = location.URLByAppendingPathComponent(name)
+        
+        var coordinator: NSPersistentStoreCoordinator!
+        
+        File.createDirectoryAtPath(loc, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
+            if let e = error {
+                fatalError(e.localizedDescription)
+            }
+            coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
+            do {
+                switch type {
+                case NSSQLiteStoreType:
+                    loc = loc.URLByAppendingPathComponent("Graph.sqlite")
+                default:break
+                }
+                try coordinator.addPersistentStoreWithType(type, configuration: nil, URL: loc, options: nil)
+            } catch {
+                fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+            }
+        }
+        
+        return coordinator
     }
 }
