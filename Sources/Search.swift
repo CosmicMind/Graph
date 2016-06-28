@@ -36,7 +36,7 @@ public extension Graph {
      Searches for Entities that fall into any of the specified facets.
      - Parameter types: An Array of Entity types.
      - Parameter groups: An Array of groups.
-     - Parameter properties: An Array of property typles.
+     - Parameter properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
     public func searchForEntity(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Entity] {
@@ -98,7 +98,7 @@ public extension Graph {
      Searches for Relationships that fall into any of the specified facets.
      - Parameter types: An Array of Relationship types.
      - Parameter groups: An Array of groups.
-     - Parameter properties: An Array of property typles.
+     - Parameter properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
     public func searchForRelationship(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Relationship] {
@@ -160,7 +160,7 @@ public extension Graph {
      Searches for Actions that fall into any of the specified facets.
      - Parameter types: An Array of Action types.
      - Parameter groups: An Array of groups.
-     - Parameter properties: An Array of property typles.
+     - Parameter properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
     public func searchForAction(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Action] {
@@ -218,6 +218,12 @@ public extension Graph {
         } as [Action]
     }
     
+    /**
+     Searches based on type value.
+     - Parameter typeDescriptionName: An entity type description.
+     - Parameter types: An Array of types.
+     - Returns: An optional Array of AnyObjects.
+     */
     internal func search(typeDescriptionName: String, types: [String]) -> [AnyObject]? {
         var typesPredicate = [NSPredicate]()
         
@@ -236,6 +242,12 @@ public extension Graph {
         return try? managedObjectContext.parentContext!.parentContext!.executeFetchRequest(request)
     }
     
+    /**
+     Searches based on group value.
+     - Parameter groupDescriptionName: An entity type description.
+     - Parameter groups: An Array of groups.
+     - Returns: An optional Array of AnyObjects.
+     */
     internal func search(groupDescriptionName: String, groups: [String]) -> [AnyObject]? {
         var groupsPredicate = [NSPredicate]()
         
@@ -257,6 +269,12 @@ public extension Graph {
         return try? managedObjectContext.parentContext!.parentContext!.executeFetchRequest(request)
     }
     
+    /**
+     Searches based on property value.
+     - Parameter propertyDescriptionName: An entity type description.
+     - Parameter properties: An Array of property tuples.
+     - Returns: An optional Array of AnyObjects.
+     */
     internal func search(propertyDescriptionName: String, properties: [(key: String, value: AnyObject?)]) -> [AnyObject]? {
         var propertiesPredicate = [NSPredicate]()
         
