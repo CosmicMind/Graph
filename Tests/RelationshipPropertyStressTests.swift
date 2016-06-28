@@ -67,7 +67,7 @@ class RelationshipPropertyStressTests: XCTestCase, GraphDelegate {
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
-        for i in 0..<100 {
+        for i in 0..<1000 {
             let property = "P\(i)"
             var value = i
             
