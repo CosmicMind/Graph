@@ -30,9 +30,7 @@
 
 import Foundation
 
-/**
- :name: VideoExtension
- */
+/// Video extension types.
 public enum VideoExtension {
     case MOV
     case M4V
@@ -40,7 +38,9 @@ public enum VideoExtension {
 }
 
 /**
- :name: VideoExtensionToString
+ Converts the VideoExtension to a string.
+ - Parameter type: A VideoExtension type.
+ - Returns: A String representation of the VideoExtension.
  */
 public func VideoExtensionToString(type: VideoExtension) -> String {
     switch type {
@@ -53,9 +53,7 @@ public func VideoExtensionToString(type: VideoExtension) -> String {
     }
 }
 
-/**
- :name: ImageExtensionToString
- */
+/// Image extension types.
 public enum ImageExtension {
     case PNG
     case JPG
@@ -65,7 +63,9 @@ public enum ImageExtension {
 }
 
 /**
- :name: ImageExtensionToString
+ Converts the ImageExtension to a string.
+ - Parameter type: A ImageExtension type.
+ - Returns: A String representation of the ImageExtension.
  */
 public func ImageExtensionToString(type: ImageExtension) -> String {
     switch type {
@@ -82,9 +82,7 @@ public func ImageExtensionToString(type: ImageExtension) -> String {
     }
 }
 
-/**
- :name: TextExtension
- */
+/// Text extension types.
 public enum TextExtension {
     case TXT
     case RTF
@@ -92,7 +90,9 @@ public enum TextExtension {
 }
 
 /**
- :name:	TextExtensionToString
+ Converts the TextExtension to a string.
+ - Parameter type: A TextExtension type.
+ - Returns: A String representation of the TextExtension.
  */
 public func TextExtensionToString(type: TextExtension) -> String {
     switch type {
@@ -105,13 +105,16 @@ public func TextExtensionToString(type: TextExtension) -> String {
     }
 }
 
+/// SQLite extension types.
 public enum SQLiteExtension {
     case SQLite
     case SQLiteSHM
 }
 
 /**
- :name:	SQLiteExtensionToString
+ Converts the SQLiteExtension to a string.
+ - Parameter type: A SQLiteExtension type.
+ - Returns: A String representation of the SQLiteExtension.
  */
 public func SQLiteExtensionToString(type: SQLiteExtension) -> String {
     switch type {
@@ -122,24 +125,18 @@ public func SQLiteExtensionToString(type: SQLiteExtension) -> String {
     }
 }
 
-/**
- :name: Schemas used with Persistant Storage
- */
+/// Schemas used with Persistant Storage
 public struct Schema {
-    public static let File: String = "File://"
+    public static let File = "File://"
 }
 
-/**
- :name:	Result enum
- */
+/// A result type.
 public enum Result {
     case Success
     case Failure(error: NSError)
 }
 
-/**
- :name:	FileType enum
- */
+/// File types.
 public enum FileType {
     case Directory
     case Image
@@ -150,122 +147,141 @@ public enum FileType {
 }
 
 public struct File {
-    /**
-     :name:	documentDirectoryPath
-     */
+    /// A reference to the DocumentDirectory.
     public static let documentDirectoryPath: NSURL? = File.pathForDirectory(.DocumentDirectory)
     
-    /**
-     :name:	libraryDirectoryPath
-     */
+    /// A reference to the LibraryDirectory.
     public static let libraryDirectoryPath: NSURL? = File.pathForDirectory(.LibraryDirectory)
     
-    /**
-     :name:	applicationDirectoryPath
-     */
+    /// A reference to the ApplicationSupportDirectory.
     public static let applicationSupportDirectoryPath: NSURL? = File.pathForDirectory(.ApplicationSupportDirectory)
     
-    /**
-     :name:	cachesDirectoryPath
-     */
+    /// A reference to the CachesDirectory.
     public static let cachesDirectoryPath: NSURL? = File.pathForDirectory(.CachesDirectory)
     
-    /**
-     :name:	rootPath
-     */
+    /// A reference to the rootPath.
     public static var rootPath: NSURL? {
-        let path: NSURL? = File.documentDirectoryPath
+        let path = File.documentDirectoryPath
         var pathComponents = path?.pathComponents
         pathComponents?.removeLast()
         return NSURL(string: Schema.File.stringByAppendingString((pathComponents?.joinWithSeparator("/"))!))
     }
     
     /**
-     :name:	fileExistsAtPath
-     */
-    public static func fileExistsAtPath(URL: NSURL) -> Bool {
-        return NSFileManager.defaultManager().fileExistsAtPath(URL.path!)
+     Checks whether a file exists at a given path.
+     - Parameter path: A NSURL to check.
+     - Returns: A boolean of the result, true if exists, false otherwise.
+    */
+    public static func fileExistsAtPath(path: NSURL) -> Bool {
+        return NSFileManager.defaultManager().fileExistsAtPath(path.path!)
     }
     
     /**
-     :name:	contentsEqualAtPath
+     Checks whether a two paths equal the same contents.
+     - Parameter path: A NSURL to check.
+     - Parameter andPath: A comparison path.
+     - Returns: A boolean of the result, true if equal, false otherwise.
      */
     public static func contentsEqualAtPath(path: NSURL, andPath: NSURL) -> Bool {
         return NSFileManager.defaultManager().contentsEqualAtPath(path.path!, andPath: andPath.path!)
     }
     
-    
     /**
-     :name:  isWritableFileAtPath
+     Checks whether a file is writable at a given path.
+     - Parameter path: A NSURL to check.
+     - Returns: A boolean of the result, true if writable, false otherwise.
      */
-    public static func isWritableFileAtPath(URL: NSURL) -> Bool {
-        return NSFileManager.defaultManager().isWritableFileAtPath(URL.path!)
+    public static func isWritableFileAtPath(path: NSURL) -> Bool {
+        return NSFileManager.defaultManager().isWritableFileAtPath(path.path!)
     }
     
     /**
-     :name:  removeItemAtPath
+     Removes an item at a given path.
+     - Parameter path: A NSURL to remove.
+     - Parameter completion: An optional completion block when the operation
+     is done.
      */
-    public static func removeItemAtPath(path: NSURL, completion: ((removed: Bool?, error: NSError?) -> Void)) {
+    public static func removeItemAtPath(path: NSURL, completion: ((removed: Bool?, error: NSError?) -> Void)? = nil) {
         do {
             try NSFileManager.defaultManager().removeItemAtPath(path.path!)
-            completion(removed: true, error: nil)
-        } catch let error as NSError {
-            completion(removed: nil, error: error)
+            completion?(removed: true, error: nil)
+        } catch let e as NSError {
+            completion?(removed: nil, error: e)
         }
     }
     
     /**
-     :name:	createDirectory
+     Creates a directory at a given path.
+     - Parameter path: A NSURL that indicates the directory path to create.
+     - Parameter withIntermediateDirectories: To create intermediate directories.
+     - Parameter attributes: Any additional attributes.
+     - Parameter completion: An optional completion block when the operation
+     is done.
      */
-    public static func createDirectory(URL: NSURL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)) {
+    public static func createDirectoryAtPath(path: NSURL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(URL.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
-            completion(success: true, error: nil)
-        } catch let error as NSError {
-            completion(success: false, error: error)
+            try NSFileManager.defaultManager().createDirectoryAtPath(path.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
+            completion?(success: true, error: nil)
+        } catch let e as NSError {
+            completion?(success: false, error: e)
         }
     }
     
     /**
-     :name:	removeDirectory
+     Removes a directory at a given path.
+     - Parameter path: A NSURL that indicates the directory path to remove.
+     - Parameter completion: An optional completion block when the operation
+     is done.
      */
-    public static func removeDirectory(path: NSURL, completion: ((success: Bool, error: NSError?) -> Void))  {
+    public static func removeDirectoryAtPath(path: NSURL, completion: ((success: Bool, error: NSError?) -> Void)?  = nil)  {
         do {
             try NSFileManager.defaultManager().removeItemAtURL(path)
-            completion(success: true, error: nil)
-        } catch let error as NSError {
-            completion(success: false, error: error)
+            completion?(success: true, error: nil)
+        } catch let e as NSError {
+            completion?(success: false, error: e)
         }
     }
     
     /**
-     :name:	contentsOfDirectory
+     Fetch the contents at a given path.
+     - Parameter path: A NSURL that indicates the directory path to fetch.
+     - Parameter shouldSkipHiddenFiles: A boolean to skip hidden files or not.
+     - Parameter completion: An optional completion block when the operation
+     is done.
      */
-    public static func contentsOfDirectory(path: NSURL, shouldSkipHiddenFiles skip: Bool = false, completion: ((contents: [NSURL]?, error: NSError?) -> Void)) {
+    public static func contentsOfDirectoryAtPath(path: NSURL, shouldSkipHiddenFiles skip: Bool = false, completion: ((contents: [NSURL]?, error: NSError?) -> Void)) {
         do {
             let contents = try NSFileManager.defaultManager().contentsOfDirectoryAtURL(path, includingPropertiesForKeys: nil, options: skip == true ? NSDirectoryEnumerationOptions.SkipsHiddenFiles : NSDirectoryEnumerationOptions(rawValue: 0))
             completion(contents: contents, error: nil)
-        } catch let error as NSError {
-            return completion(contents: nil, error: error)
+        } catch let e as NSError {
+            return completion(contents: nil, error: e)
         }
     }
     
     /**
-     :name:	writeTo
+     Write to a given path.
+     - Parameter path: A NSURL that indicates the directory to write to.
+     - Parameter name: The path name to write at.
+     - Parameter value: The value to write.
+     - Parameter completion: An optional completion block when the operation
+     is done.
      */
-    public static func writeTo(path: NSURL, value: String, name: String, completion: ((success: Bool, error: NSError?) -> Void)) {
+    public static func writeToPath(path: NSURL, name: String, value: String, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         do{
             try value.writeToURL(path.URLByAppendingPathComponent("/\(name)"), atomically: true, encoding: NSUTF8StringEncoding)
-            completion(success: true, error: nil)
-        } catch let error as NSError {
-            completion(success: false, error: error)
+            completion?(success: true, error: nil)
+        } catch let e as NSError {
+            completion?(success: false, error: e)
         }
     }
     
     /**
-     :name:	readFrom
+     Read from a given path.
+     - Parameter path: A NSURL that indicates the directory to write to.
+     - Parameter completion: An optional completion block when the operation
+     is done.
      */
-    public static func readFrom(path: NSURL, completion: ((string: String?, error: NSError?) -> Void)) {
+    public static func readFromPath(path: NSURL, completion: ((string: String?, error: NSError?) -> Void)) {
         if let data = NSData(contentsOfURL: path) {
             completion(string: String(data: data, encoding: NSUTF8StringEncoding), error: nil)
         } else {
@@ -274,9 +290,12 @@ public struct File {
     }
     
     /**
-     :name:	URL
+     Prepares a NSURL based on the given directory path.
+     - Parameter searchPathDirectory: A search directory.
+     - Parameter path: A given path to search from in the directory.
+     - Returns: An optional NSURL to return if possible.
      */
-    public static func URL(searchPathDirectory: NSSearchPathDirectory, path: String) -> NSURL? {
+    public static func path(searchPathDirectory: NSSearchPathDirectory, path: String) -> NSURL? {
         var URL: NSURL?
         switch searchPathDirectory {
         case .DocumentDirectory:
@@ -295,26 +314,29 @@ public struct File {
     }
     
     /**
-     :name: pathForDirectory
+     Fetches a path for a given search directory and creates it if
+     it does not exist.
+     - Parameter searchPathDirectory: A search directory.
+     - Returns: An optional NSURL to return if possible.
      */
-    public static func pathForDirectory(searchPath: NSSearchPathDirectory) -> NSURL? {
-        return try? NSFileManager.defaultManager().URLForDirectory(searchPath, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
+    public static func pathForDirectory(searchPathDirectory: NSSearchPathDirectory) -> NSURL? {
+        return try? NSFileManager.defaultManager().URLForDirectory(searchPathDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
     }
     
     /**
-     :name: fileType
+     Returns the FileType for a given path.
+     - Parameter path: A search path.
+     - Returns: An optional NSURL to return if possible.
      */
-    public static func fileType(URL: NSURL) -> FileType {
-        var isDirectory: Bool = false
-        File.contentsOfDirectory(URL) { (contents: [NSURL]?, error: NSError?) -> Void in
-            if nil == error {
-                return isDirectory = true
-            }
+    public static func fileType(path: NSURL) -> FileType {
+        var isDirectory = false
+        File.contentsOfDirectoryAtPath(path) { (contents: [NSURL]?, error: NSError?) -> Void in
+            isDirectory = nil == error
         }
         if isDirectory {
             return .Directory
         }
-        if let v: String = URL.pathExtension {
+        if let v = path.pathExtension {
             switch v {
             case ImageExtensionToString(.PNG),
                  ImageExtensionToString(.JPG),

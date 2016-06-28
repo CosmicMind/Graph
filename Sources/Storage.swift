@@ -41,6 +41,6 @@ internal struct Storage {
 	
     /// URL reference to where the datastore will live.
     static var location: NSURL {
-        return File.URL(.DocumentDirectory, path: "Graph/")!
+        return File.path(.DocumentDirectory, path: "Graph/")!
     }
 }
