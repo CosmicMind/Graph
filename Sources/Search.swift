@@ -73,7 +73,7 @@ public extension Graph {
                         i -= 1
                         continue
                     }
-                } else if let v = managedObjectContext.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedEntity {
+                } else if let v = managedObjectContext.parentContext!.parentContext!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedEntity {
                     if nil == seen.updateValue(true, forKey: v.id) {
                         nodes[i] = Entity(managedNode: v)
                         i -= 1
@@ -90,7 +90,7 @@ public extension Graph {
             if let n = $0 as? ManagedEntity {
                 return Entity(managedNode: n)
             }
-            return Entity(managedNode: managedObjectContext.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
+            return Entity(managedNode: managedObjectContext.parentContext!.parentContext!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
         } as [Entity]
     }
     
@@ -135,7 +135,7 @@ public extension Graph {
                         i -= 1
                         continue
                     }
-                } else if let v = managedObjectContext.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedRelationship {
+                } else if let v = managedObjectContext.parentContext!.parentContext!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedRelationship {
                     if nil == seen.updateValue(true, forKey: v.id) {
                         nodes[i] = Relationship(managedNode: v)
                         i -= 1
@@ -152,7 +152,7 @@ public extension Graph {
             if let n = $0 as? ManagedRelationship {
                 return Relationship(managedNode: n)
             }
-            return Relationship(managedNode: managedObjectContext.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedRelationship)
+            return Relationship(managedNode: managedObjectContext.parentContext!.parentContext!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedRelationship)
         } as [Relationship]
     }
     
@@ -197,7 +197,7 @@ public extension Graph {
                         i -= 1
                         continue
                     }
-                } else if let v = managedObjectContext.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedAction {
+                } else if let v = managedObjectContext.parentContext!.parentContext!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedAction {
                     if nil == seen.updateValue(true, forKey: v.id) {
                         nodes[i] = Action(managedNode: v)
                         i -= 1
@@ -214,7 +214,7 @@ public extension Graph {
             if let n = $0 as? ManagedAction {
                 return Action(managedNode: n)
             }
-            return Action(managedNode: managedObjectContext.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedAction)
+            return Action(managedNode: managedObjectContext.parentContext!.parentContext!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedAction)
         } as [Action]
     }
     

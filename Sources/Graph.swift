@@ -123,7 +123,7 @@ public class Graph: NSObject {
      - Parameter completion: An Optional completion block that is
      executed when the save operation is completed.
      */
-    public func save(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public func async(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         guard managedObjectContext.hasChanges else {
             GraphCompletionCallback(
                 success: false,
@@ -191,6 +191,78 @@ public class Graph: NSObject {
     }
     
     /**
+     Performs a synchronous save.
+     - Parameter completion: An Optional completion block that is
+     executed when the save operation is completed.
+     */
+    public func sync(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+        guard managedObjectContext.hasChanges else {
+            GraphCompletionCallback(
+                success: false,
+                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
+                completion: completion)
+            return
+        }
+        
+        managedObjectContext.performBlockAndWait { [weak self] in
+            do {
+                try self?.managedObjectContext.save()
+                
+                guard let mainContext = self?.managedObjectContext.parentContext else {
+                    GraphCompletionCallback(
+                        success: false,
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),
+                        completion: completion)
+                    return
+                }
+                
+                guard mainContext.hasChanges else {
+                    GraphCompletionCallback(
+                        success: false,
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
+                        completion: completion)
+                    return
+                }
+                
+                mainContext.performBlockAndWait {
+                    do {
+                        try mainContext.save()
+                        
+                        guard let privateManagedObjectContexts = mainContext.parentContext else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
+                                completion: completion)
+                            return
+                        }
+                        
+                        guard privateManagedObjectContexts.hasChanges else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
+                                completion: completion)
+                            return
+                        }
+                        
+                        privateManagedObjectContexts.performBlockAndWait {
+                            do {
+                                try privateManagedObjectContexts.save()
+                                GraphCompletionCallback(success: true, error: nil, completion: completion)
+                            } catch let e as NSError {
+                                GraphCompletionCallback(success: false, error: e, completion: completion)
+                            }
+                        }
+                    } catch let e as NSError {
+                        GraphCompletionCallback(success: false, error: e, completion: completion)
+                    }
+                }
+            } catch let e as NSError {
+                GraphCompletionCallback(success: false, error: e, completion: completion)
+            }
+        }
+    }
+    
+    /**
      Clears all persisted data.
      - Parameter completion: An Optional completion block that is
      executed when the save operation is completed.
@@ -208,7 +280,7 @@ public class Graph: NSObject {
             relationship.delete()
         }
         
-        save(completion)
+        sync(completion)
     }
     
     /// Prepares the registry.

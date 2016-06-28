@@ -61,13 +61,15 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func testNamedGraphSave() {
@@ -87,13 +89,15 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func testReferenceGraphSave() {
@@ -114,7 +118,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V", action["P"] as? String)
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            graph.save { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: NSError?) in
                 self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
@@ -122,6 +126,8 @@ class ActionTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func testAsyncGraphSave() {
@@ -141,7 +147,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V", action["P"] as? String)
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            graph.save { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: NSError?) in
                 self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
@@ -149,6 +155,8 @@ class ActionTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func testAsyncGraphDelete() {
@@ -167,7 +175,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
@@ -182,12 +190,14 @@ class ActionTests: XCTestCase, GraphDelegate {
         groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
         propertyExpception = expectationWithDescription("[ActionTests Error: Property test failed.]")
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func testSubjects() {
@@ -206,7 +216,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
@@ -224,13 +234,15 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual(4, action.subjects.count)
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func testObjects() {
@@ -249,7 +261,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
@@ -267,13 +279,15 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual(4, action.objects.count)
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func graphDidInsertAction(graph: Graph, action: Action) {

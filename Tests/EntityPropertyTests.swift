@@ -63,13 +63,15 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V1", entity["P1"] as? String)
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func testPropertyUpdate() {
@@ -80,7 +82,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         let entity = Entity(type: "T")
         entity["P1"] = "V1"
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
@@ -98,13 +100,15 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V2", entity["P1"] as? String)
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
 
     func testPropertyDelete() {
@@ -115,7 +119,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         let entity = Entity(type: "T")
         entity["P1"] = "V1"
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
@@ -133,13 +137,15 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         
         XCTAssertNil(entity["P1"])
         
-        graph.save { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: NSError?) in
             self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func graphDidInsertEntity(graph: Graph, entity: Entity) {

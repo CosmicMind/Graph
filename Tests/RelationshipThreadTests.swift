@@ -71,7 +71,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
             relationship["P"] = 111
             relationship.addToGroup("G")
             
-            graph.save { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success, "\(error)")
                 self?.insertSaveExpectation?.fulfill()
             }
@@ -85,7 +85,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         dispatch_async(q2) { [weak self] in
             relationship["P"] = 222
             
-            graph.save { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success, "\(error)")
                 self?.updateSaveExpectation?.fulfill()
             }
@@ -101,13 +101,15 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         dispatch_async(q3) { [weak self] in
             relationship.delete()
             
-            graph.save { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success, "\(error)")
                 self?.deleteSaveExpectation?.fulfill()
             }
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
+        
+        graph.clear()
     }
     
     func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
