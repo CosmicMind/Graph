@@ -44,35 +44,52 @@ class CloudTests : XCTestCase {
     }
     
     func testContext() {
-        let c1 = Cloud()
+        asyncException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
+        
+        let c1 = Cloud() { [weak self] (success: Bool, error: NSError?) in
+            XCTAssertFalse(success)
+            XCTAssertNotNil(error)
+            self?.asyncException?.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
+        
         XCTAssertTrue(c1.managedObjectContext.isKindOfClass(NSManagedObjectContext))
-        XCTAssertEqual(Storage.name, c1.name)
-        XCTAssertEqual(Storage.type, c1.type)
-        XCTAssertEqual(Storage.location, c1.location)
+        XCTAssertEqual(StorageConstants.name, c1.name)
+        XCTAssertEqual(StorageConstants.type, c1.type)
+        XCTAssertEqual(StorageConstants.location, c1.location)
         
-        let c2 = Cloud(name: "marketing")
+        asyncException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
+        
+        let c2 = Cloud(name: "cloud") { [weak self] (success: Bool, error: NSError?) in
+            XCTAssertFalse(success)
+            XCTAssertNotNil(error)
+            self?.asyncException?.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
+
         XCTAssertTrue(c2.managedObjectContext.isKindOfClass(NSManagedObjectContext))
-        XCTAssertEqual("marketing", c2.name)
-        XCTAssertEqual(Storage.type, c2.type)
-        XCTAssertEqual(Storage.location, c2.location)
-        
+        XCTAssertEqual("cloud", c2.name)
+        XCTAssertEqual(StorageConstants.type, c2.type)
+        XCTAssertEqual(StorageConstants.location, c2.location)
+
         asyncException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
         
         var c3: Cloud!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            c3 = Cloud(name: "async")
-            XCTAssertTrue(c3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
-            XCTAssertEqual("async", c3.name)
-            XCTAssertEqual(Storage.type, c3.type)
-            XCTAssertEqual(Storage.location, c3.location)
-            self?.asyncException?.fulfill()
+            c3 = Cloud(name: "async") { [weak self] (success: Bool, error: NSError?) in
+                XCTAssertFalse(success)
+                XCTAssertNotNil(error)
+                self?.asyncException?.fulfill()
+            }
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
         XCTAssertTrue(c3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("async", c3.name)
-        XCTAssertEqual(Storage.type, c3.type)
-        XCTAssertEqual(Storage.location, c3.location)
+        XCTAssertEqual(StorageConstants.type, c3.type)
+        XCTAssertEqual(StorageConstants.location, c3.location)
     }
 }

@@ -30,8 +30,8 @@
 
 import CoreData
 
-/// Graph Search API.
-public extension Graph {
+/// Storage Search API.
+public extension Storage {
     /**
      Searches for Entities that fall into any of the specified facets.
      - Parameter types: An Array of Entity types.
