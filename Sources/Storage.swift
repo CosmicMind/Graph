@@ -62,21 +62,21 @@ internal func StorageError(message message: String, domain: String = "io.cosmicm
     return error
 }
 
-public struct StorageConstants {
+public struct StorageDefaults {
     /// Datastore name.
     static let name: String = "default"
     
     /// Storage type.
     static let type: String = NSSQLiteStoreType
     
-    /// URL reference to where the datastore will live.
+    /// URL reference to where the Graph datastore will live.
     static var graph: NSURL {
-        return File.path(.DocumentDirectory, path: "io.cosmicmind.graph/")!
+        return File.path(.DocumentDirectory, path: "Graph/")!
     }
     
-    /// URL reference to where the datastore will live.
+    /// URL reference to where the Cloud datastore will live.
     static var cloud: NSURL {
-        return File.path(.DocumentDirectory, path: "io.cosmicmind.cloud/")!
+        return File.path(.DocumentDirectory, path: "Cloud/")!
     }
 }
 

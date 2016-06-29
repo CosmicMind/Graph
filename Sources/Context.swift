@@ -43,6 +43,8 @@ internal struct Context {
         
         let makeContext: () -> Void = {
             moc = NSManagedObjectContext(concurrencyType: concurrencyType)
+            moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+            
             if let pmoc = parentContext {
                 moc.parentContext = pmoc
             }

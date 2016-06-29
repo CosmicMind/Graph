@@ -41,6 +41,7 @@
 		96607E301C45ACF4008D47D8 /* ElonMusk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ElonMusk.png; sourceTree = "<group>"; };
 		96607E311C45ACF4008D47D8 /* MarkZuckerberg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MarkZuckerberg.png; sourceTree = "<group>"; };
 		96607E321C45ACF4008D47D8 /* TimCook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TimCook.png; sourceTree = "<group>"; };
+		96843C4B1D236FBB00FA5F63 /* Entity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Entity.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +74,7 @@
 		658F92EB1C3F5BE40058E345 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				96843C4B1D236FBB00FA5F63 /* Entity.entitlements */,
 				96607E2F1C45ACF4008D47D8 /* Avatar.png */,
 				96607E301C45ACF4008D47D8 /* ElonMusk.png */,
 				96607E311C45ACF4008D47D8 /* MarkZuckerberg.png */,
@@ -119,6 +121,12 @@
 				TargetAttributes = {
 					658F92E81C3F5BE40058E345 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 9Z76XCNLGL;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -267,6 +275,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Entity/Entity.entitlements;
 				INFOPLIST_FILE = Entity/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.cosmicmind.Entity;
@@ -278,6 +287,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Entity/Entity.entitlements;
 				INFOPLIST_FILE = Entity/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.cosmicmind.Entity;

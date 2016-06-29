@@ -81,7 +81,7 @@ public class Cloud: Storage {
      - Parameter completion: An Optional completion block that is
      executed to determine if iCloud support is available or not.
      */
-    public init(name: String = StorageConstants.name, location: NSURL = StorageConstants.cloud, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public init(name: String = StorageDefaults.name, location: NSURL = StorageDefaults.cloud, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         super.init()
         self.name = name
         self.type = NSSQLiteStoreType
@@ -116,6 +116,10 @@ public class Cloud: Storage {
                             s.managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
                             CloudStorageRegistry.workerManagedObjectContexts[s.name] = s.managedObjectContext
                             
+                            if success {
+                                self?.prepareNotificationCenter()
+                            }
+                            
                             s.completion?(success: success, error: error)
                         }
                     }
@@ -125,6 +129,39 @@ public class Cloud: Storage {
         }
         
         managedObjectContext = moc
+    }
+    
+    /**
+     Prepares the persistentStoreCoordinator to observe 
+     changes from iCloud.
+    */
+    internal func prepareNotificationCenter() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleCloudDidChange(_:)), name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: managedObjectContext!.parentContext!.parentContext!.persistentStoreCoordinator)
+    }
+    
+    /**
+     Handler for cloud change notifications.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func handleCloudDidChange(notification: NSNotification) {
+        if NSThread.isMainThread() {
+            mergeChanges(notification)
+        } else {
+            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                self?.mergeChanges(notification)
+            }
+        }
+    }
+    
+    /**
+     Merges the changes from iCloud.
+     - Parameter notification: NSNotification reference.
+     */
+    internal func mergeChanges(notification: NSNotification) {
+        managedObjectContext.performBlock { [weak self] in
+            self?.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+        }
     }
 }
 

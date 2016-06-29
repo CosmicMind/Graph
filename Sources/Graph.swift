@@ -77,7 +77,7 @@ public class Graph: Storage {
      - Parameter type: Type of Graph storage.
      - Parameter location: A location for storage.
     */
-    public init(name: String = StorageConstants.name, type: String = StorageConstants.type, location: NSURL = StorageConstants.graph) {
+    public init(name: String = StorageDefaults.name, type: String = StorageDefaults.type, location: NSURL = StorageDefaults.graph) {
         super.init()
         self.name = name
 		self.type = type

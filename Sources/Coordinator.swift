@@ -79,7 +79,7 @@ internal struct Coordinator {
         var loc: NSURL!
         loc = location.URLByAppendingPathComponent(name)
         
-        var options = [String: AnyObject]()
+        var options = [NSObject: AnyObject]()
         
         if let cloudURL = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
             cloudURL.URLByAppendingPathComponent("/Graph/\(name)")
