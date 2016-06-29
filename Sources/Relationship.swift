@@ -109,7 +109,7 @@ public class Relationship: NSObject, NodeType {
      Initializer that accepts a type and graph. The graph
      indicates which graph to save to.
      - Parameter type: A reference to a type.
-     - Parameter name: A reference to a Graph instance by name.
+     - Parameter graph: A reference to a Graph instance by name.
      */
     @nonobjc
     public convenience init(type: String, graph: String) {

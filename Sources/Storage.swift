@@ -30,6 +30,14 @@
 
 import CoreData
 
+internal struct StorageRegistry {
+    static var dispatchToken: dispatch_once_t = 0
+    static var cloud: [String: Bool]!
+    static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
+    static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
+    static var workerManagedObjectContexts: [String: NSManagedObjectContext]!
+}
+
 /**
  A helper method to ensure that the completion callback
  is always called on the main thread.
@@ -70,13 +78,8 @@ public struct StorageDefaults {
     static let type: String = NSSQLiteStoreType
     
     /// URL reference to where the Graph datastore will live.
-    static var graph: NSURL {
+    static var location: NSURL {
         return File.path(.DocumentDirectory, path: "Graph/")!
-    }
-    
-    /// URL reference to where the Cloud datastore will live.
-    static var cloud: NSURL {
-        return File.path(.DocumentDirectory, path: "Cloud/")!
     }
 }
 

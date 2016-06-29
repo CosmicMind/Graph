@@ -30,13 +30,6 @@
 
 import CoreData
 
-internal struct GraphStorageRegistry {
-    static var dispatchToken: dispatch_once_t = 0
-    static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
-    static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
-    static var workerManagedObjectContexts: [String: NSManagedObjectContext]!
-}
-
 @objc(GraphDelegate)
 public protocol GraphDelegate {
     optional func graphDidInsertEntity(graph: Graph, entity: Entity)
@@ -68,50 +61,131 @@ public protocol GraphDelegate {
 
 @objc(Graph)
 public class Graph: Storage {
+    /// A flag to connect to iCloud or not.
+    public internal(set) var cloud: Bool!
+    
     /// A reference to a delagte object.
     public weak var delegate: GraphDelegate?
+    
+    /// A reference to the graph completion handler.
+    internal var completion: ((success: Bool, error: NSError?) -> Void)?
     
     /**
      Initializer to named Graph with optional type and location.
      - Parameter name: A name for the Graph.
-     - Parameter type: Type of Graph storage.
+     - Parameter type: Storage type.
      - Parameter location: A location for storage.
-    */
-    public init(name: String = StorageDefaults.name, type: String = StorageDefaults.type, location: NSURL = StorageDefaults.graph) {
+     - Parameter cloud: A flag for cloud support.
+     - Parameter completion: An Optional completion block that is
+     executed to determine if iCloud support is available or not.
+     */
+    public init(name: String = StorageDefaults.name, type: String = StorageDefaults.type, location: NSURL = StorageDefaults.location, cloud: Bool = false, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         super.init()
         self.name = name
-		self.type = type
-		self.location = location
+        self.type = type
+        self.location = location
+        self.cloud = cloud
+        self.completion = completion
         prepareStorageRegistry()
-        prepareManagedObjectContext()
+        if cloud || true == StorageRegistry.cloud[name] {
+            prepareCloudManagedObjectContext()
+        } else {
+            self.cloud = false
+            prepareManagedObjectContext()
+        }
     }
     
     /// Prepares the registry.
     internal func prepareStorageRegistry() {
-        dispatch_once(&GraphStorageRegistry.dispatchToken) {
-            GraphStorageRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
-            GraphStorageRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
-            GraphStorageRegistry.workerManagedObjectContexts = [String: NSManagedObjectContext]()
+        dispatch_once(&StorageRegistry.dispatchToken) {
+            StorageRegistry.cloud = [String: Bool]()
+            StorageRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
+            StorageRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
+            StorageRegistry.workerManagedObjectContexts = [String: NSManagedObjectContext]()
         }
     }
     
     /// Prapres the managedObjectContext.
     internal func prepareManagedObjectContext() {
-        guard let moc = GraphStorageRegistry.workerManagedObjectContexts[name] else {
+        guard let moc = StorageRegistry.workerManagedObjectContexts[name] else {
             let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
             privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createLocalPersistentStoreCoordinator(name, type: type, location: location)
-            GraphStorageRegistry.privateManagedObjectContextss[name] = privateManagedObjectContexts
+            StorageRegistry.privateManagedObjectContextss[name] = privateManagedObjectContexts
             
             let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
-            GraphStorageRegistry.mainManagedObjectContexts[name] = mainContext
-        
+            StorageRegistry.mainManagedObjectContexts[name] = mainContext
+            
             managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
-            GraphStorageRegistry.workerManagedObjectContexts[name] = managedObjectContext
+            StorageRegistry.workerManagedObjectContexts[name] = managedObjectContext
             
             return
         }
         
         managedObjectContext = moc
+    }
+    
+    /// Prapres the managedObjectContext.
+    internal func prepareCloudManagedObjectContext() {
+        guard let moc = StorageRegistry.workerManagedObjectContexts[name] else {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+                if let s = self {
+                    let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
+                    privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createCloudPersistentStoreCoordinator(s.name, type: s.type, location: s.location) { [weak self] (success: Bool, error: NSError?) in
+                        if let s = self {
+                            StorageRegistry.privateManagedObjectContextss[s.name] = privateManagedObjectContexts
+                            
+                            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
+                            StorageRegistry.mainManagedObjectContexts[s.name] = mainContext
+                            
+                            s.managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
+                            StorageRegistry.workerManagedObjectContexts[s.name] = s.managedObjectContext
+                            
+                            if success {
+                                s.prepareNotificationCenter()
+                                s.cloud = true
+                            }
+                            s.completion?(success: success, error: error)
+                        }
+                    }
+                }
+            }
+            return
+        }
+        
+        managedObjectContext = moc
+    }
+    
+    /**
+     Prepares the persistentStoreCoordinator to observe 
+     changes from iCloud.
+    */
+    internal func prepareNotificationCenter() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleCloudDidChange(_:)), name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: managedObjectContext!.parentContext!.parentContext!.persistentStoreCoordinator)
+    }
+    
+    /**
+     Handler for cloud change notifications.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func handleCloudDidChange(notification: NSNotification) {
+        if NSThread.isMainThread() {
+            mergeChanges(notification)
+        } else {
+            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                self?.mergeChanges(notification)
+            }
+        }
+    }
+    
+    /**
+     Merges the changes from iCloud.
+     - Parameter notification: NSNotification reference.
+     */
+    internal func mergeChanges(notification: NSNotification) {
+        managedObjectContext.performBlock { [weak self] in
+            self?.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+        }
     }
 }
 

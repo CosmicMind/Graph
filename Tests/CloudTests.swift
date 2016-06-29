@@ -33,7 +33,7 @@ import XCTest
 @testable import Graph
 
 class CloudTests : XCTestCase {
-    var asyncException: XCTestExpectation?
+    var cloudException: XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -44,52 +44,52 @@ class CloudTests : XCTestCase {
     }
     
     func testContext() {
-        asyncException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
+        cloudException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
         
-        let c1 = Cloud() { [weak self] (success: Bool, error: NSError?) in
+        let g1 = Graph(cloud: true, name: "cloud1") { [weak self] (success: Bool, error: NSError?) in
             XCTAssertFalse(success)
             XCTAssertNotNil(error)
-            self?.asyncException?.fulfill()
+            self?.cloudException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
-        XCTAssertTrue(c1.managedObjectContext.isKindOfClass(NSManagedObjectContext))
-        XCTAssertEqual(StorageDefaults.name, c1.name)
-        XCTAssertEqual(StorageDefaults.type, c1.type)
-        XCTAssertEqual(StorageDefaults.cloud, c1.location)
+        XCTAssertTrue(g1.managedObjectContext.isKindOfClass(NSManagedObjectContext))
+        XCTAssertEqual("cloud1", g1.name)
+        XCTAssertEqual(StorageDefaults.type, g1.type)
+        XCTAssertEqual(StorageDefaults.location, g1.location)
         
-        asyncException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
+        cloudException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
         
-        let c2 = Cloud(name: "cloud") { [weak self] (success: Bool, error: NSError?) in
+        let g2 = Graph(cloud: true, name: "cloud2") { [weak self] (success: Bool, error: NSError?) in
             XCTAssertFalse(success)
             XCTAssertNotNil(error)
-            self?.asyncException?.fulfill()
+            self?.cloudException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
 
-        XCTAssertTrue(c2.managedObjectContext.isKindOfClass(NSManagedObjectContext))
-        XCTAssertEqual("cloud", c2.name)
-        XCTAssertEqual(StorageDefaults.type, c2.type)
-        XCTAssertEqual(StorageDefaults.cloud, c2.location)
+        XCTAssertTrue(g2.managedObjectContext.isKindOfClass(NSManagedObjectContext))
+        XCTAssertEqual("cloud2", g2.name)
+        XCTAssertEqual(StorageDefaults.type, g2.type)
+        XCTAssertEqual(StorageDefaults.location, g2.location)
 
-        asyncException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
+        cloudException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
         
-        var c3: Cloud!
+        var g3: Graph!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            c3 = Cloud(name: "async") { [weak self] (success: Bool, error: NSError?) in
+            g3 = Graph(cloud: true, name: "cloud3") { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertFalse(success)
                 XCTAssertNotNil(error)
-                self?.asyncException?.fulfill()
+                self?.cloudException?.fulfill()
             }
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
-        XCTAssertTrue(c3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
-        XCTAssertEqual("async", c3.name)
-        XCTAssertEqual(StorageDefaults.type, c3.type)
-        XCTAssertEqual(StorageDefaults.cloud, c3.location)
+        XCTAssertTrue(g3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
+        XCTAssertEqual("cloud3", g3.name)
+        XCTAssertEqual(StorageDefaults.type, g3.type)
+        XCTAssertEqual(StorageDefaults.location, g3.location)
     }
 }
