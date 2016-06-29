@@ -36,9 +36,10 @@ internal struct Coordinator {
      - Parameter name: Storage name.
      - Parameter type: Storage type.
      - Parameter location: Storage location.
+     - Parameter options: Additional options.
      - Returns: An instance of NSPersistentStoreCoordinator.
 	*/
-    static func createLocalPersistentStoreCoordinator(name: String, type: String, location: NSURL) -> NSPersistentStoreCoordinator {
+    static func createPersistentStoreCoordinator(name name: String, type: String, location: NSURL, options: [NSObject: AnyObject]? = nil) -> NSPersistentStoreCoordinator {
         var loc: NSURL!
         loc = location.URLByAppendingPathComponent(name)
         
@@ -49,67 +50,6 @@ internal struct Coordinator {
                 fatalError(e.localizedDescription)
             }
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
-            do {
-                switch type {
-                case NSSQLiteStoreType:
-                    loc = loc.URLByAppendingPathComponent("Graph.sqlite")
-                default:break
-                }
-                try coordinator.addPersistentStoreWithType(type, configuration: nil, URL: loc, options: nil)
-            } catch {
-                fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
-            }
-        }
-        
-        return coordinator
-    }
-    
-    /**
-     Creates a NSPersistentStoreCoordinator with iCloud support.
-     - Parameter name: Storage name.
-     - Parameter type: Storage type.
-     - Parameter location: Storage location.
-     - Parameter completion: An Optional completion block that is
-     executed to determine if iCloud support is available or not.
-     - Returns: An instance of NSPersistentStoreCoordinator.
-     */
-    static func createCloudPersistentStoreCoordinator(name: String, type: String, location: NSURL, completion: ((success: Bool, error: NSError?) -> Void)? = nil) -> NSPersistentStoreCoordinator {
-        var coordinator: NSPersistentStoreCoordinator!
-        
-        var loc: NSURL!
-        loc = location.URLByAppendingPathComponent(name)
-        
-        var options = [NSObject: AnyObject]()
-        
-        if let cloudURL = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
-            cloudURL.URLByAppendingPathComponent("/Graph/\(name)")
-            
-            options[NSMigratePersistentStoresAutomaticallyOption] = true
-            options[NSInferMappingModelAutomaticallyOption] = true
-            options[NSPersistentStoreUbiquitousContentURLKey] = cloudURL
-            
-            StorageCompletionCallback(success: true, error: nil, completion: completion)
-        } else {
-            StorageCompletionCallback(success: false, error: StorageError(message: "[Graph Error: iCloud is not supported."), completion: completion)
-        }
-        
-        File.createDirectoryAtPath(loc, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
-            if let e = error {
-                fatalError(e.localizedDescription)
-            }
-            
-            coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
-            
-            do {
-                switch type {
-                case NSSQLiteStoreType:
-                    loc = loc.URLByAppendingPathComponent("Graph.sqlite")
-                default:break
-                }
-                try coordinator.addPersistentStoreWithType(type, configuration: nil, URL: loc, options: options)
-            } catch {
-                fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
-            }
         }
         
         return coordinator

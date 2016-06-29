@@ -46,15 +46,15 @@ class GraphTests : XCTestCase {
     func testContext() {
         let g1 = Graph()
         XCTAssertTrue(g1.managedObjectContext.isKindOfClass(NSManagedObjectContext))
-        XCTAssertEqual(StorageDefaults.name, g1.name)
-        XCTAssertEqual(StorageDefaults.type, g1.type)
-        XCTAssertEqual(StorageDefaults.location, g1.location)
+        XCTAssertEqual(GraphDefaults.name, g1.name)
+        XCTAssertEqual(GraphDefaults.type, g1.type)
+        XCTAssertEqual(GraphDefaults.location, g1.location)
         
         let g2 = Graph(name: "marketing")
         XCTAssertTrue(g2.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("marketing", g2.name)
-        XCTAssertEqual(StorageDefaults.type, g2.type)
-        XCTAssertEqual(StorageDefaults.location, g2.location)
+        XCTAssertEqual(GraphDefaults.type, g2.type)
+        XCTAssertEqual(GraphDefaults.location, g2.location)
 
         asyncException = expectationWithDescription("[GraphTests Error: Async tests failed.]")
         
@@ -63,8 +63,8 @@ class GraphTests : XCTestCase {
             g3 = Graph(name: "async")
             XCTAssertTrue(g3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
             XCTAssertEqual("async", g3.name)
-            XCTAssertEqual(StorageDefaults.type, g3.type)
-            XCTAssertEqual(StorageDefaults.location, g3.location)
+            XCTAssertEqual(GraphDefaults.type, g3.type)
+            XCTAssertEqual(GraphDefaults.location, g3.location)
             self?.asyncException?.fulfill()
         }
         
@@ -72,7 +72,7 @@ class GraphTests : XCTestCase {
         
         XCTAssertTrue(g3.managedObjectContext.isKindOfClass(NSManagedObjectContext))
         XCTAssertEqual("async", g3.name)
-        XCTAssertEqual(StorageDefaults.type, g3.type)
-        XCTAssertEqual(StorageDefaults.location, g3.location)
+        XCTAssertEqual(GraphDefaults.type, g3.type)
+        XCTAssertEqual(GraphDefaults.location, g3.location)
     }
 }

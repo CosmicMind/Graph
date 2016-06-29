@@ -30,93 +30,162 @@
 
 import CoreData
 
-@objc(GraphDelegate)
-public protocol GraphDelegate {
-    optional func graphDidInsertEntity(graph: Graph, entity: Entity)
-    optional func graphDidDeleteEntity(graph: Graph, entity: Entity)
-    optional func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String)
-    optional func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String)
-    optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-    optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-    optional func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+internal struct GraphRegistry {
+    static var dispatchToken: dispatch_once_t = 0
+    static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
+    static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
+    static var workerManagedObjectContexts: [String: NSManagedObjectContext]!
+}
+
+/**
+ A helper method to ensure that the completion callback
+ is always called on the main thread.
+ - Parameter success: A boolean of whether the process
+ was successful or not.
+ - Parameter error: An optional error object to pass.
+ - Parameter completion: An Optional completion block.
+ */
+internal func GraphCompletionCallback(success success: Bool, error: NSError?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    if NSThread.isMainThread() {
+        completion?(success: success, error: error)
+    } else {
+        dispatch_sync(dispatch_get_main_queue()) {
+            completion?(success: success, error: error)
+        }
+    }
+}
+
+/**
+ A helper method to construct error messages.
+ - Parameter message: The message to pass.
+ - Returns: An NSError object.
+ */
+internal func GraphError(message message: String, domain: String = "io.cosmicmind.graph") -> NSError {
+    var info = [String: AnyObject]()
+    info[NSLocalizedDescriptionKey] = message
+    info[NSLocalizedFailureReasonErrorKey] = message
+    let error = NSError(domain: domain, code: 0001, userInfo: info)
+    info[NSUnderlyingErrorKey] = error
+    return error
+}
+
+public struct GraphDefaults {
+    /// Datastore name.
+    static let name: String = "default"
     
-    optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidUpdateRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidDeleteRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
-    optional func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
-    optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    optional func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
+    /// Graph type.
+    static let type: String = NSSQLiteStoreType
     
-    optional func graphDidInsertAction(graph: Graph, action: Action)
-    optional func graphDidUpdateAction(graph: Graph, action: Action)
-    optional func graphDidDeleteAction(graph: Graph, action: Action)
-    optional func graphDidInsertActionGroup(graph: Graph, action: Action, group: String)
-    optional func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String)
-    optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-    optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-    optional func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+    /// URL reference to where the Graph datastore will live.
+    static var location: NSURL {
+        return File.path(.DocumentDirectory, path: "Graph/")!
+    }
 }
 
 @objc(Graph)
-public class Graph: Storage {
-    /// A flag to connect to iCloud or not.
-    public internal(set) var cloud: Bool!
+public class Graph: NSObject {
+    /// Graph name.
+    public internal(set) var name: String!
+    
+    /// Graph type.
+    public internal(set) var type: String!
+    
+    /// Graph location.
+    public internal(set) var location: NSURL!
+    
+    /// Worker managedObjectContext.
+    public internal(set) var managedObjectContext: NSManagedObjectContext!
+    
+    /// A reference to the watch predicate.
+    public internal(set) var watchPredicate: NSPredicate?
+    
+    /// A reference to cache the watch values.
+    public internal(set) lazy var watchers = [String: [String]]()
+    
+    /// Number of items to return.
+    public var batchSize: Int = 0 // 0 == no limit
+    
+    /// Start the return results from this offset.
+    public var batchOffset: Int = 0
     
     /// A reference to a delagte object.
     public weak var delegate: GraphDelegate?
     
     /// A reference to the graph completion handler.
-    internal var completion: ((success: Bool, error: NSError?) -> Void)?
+    internal var completion: ((cloud: Bool, error: NSError?) -> Void)?
+    
+    /// Deinitializer that removes the Graph from NSNotificationCenter.
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
     /**
      Initializer to named Graph with optional type and location.
      - Parameter name: A name for the Graph.
-     - Parameter type: Storage type.
+     - Parameter type: Graph type.
      - Parameter location: A location for storage.
-     - Parameter cloud: A flag for cloud support.
-     - Parameter completion: An Optional completion block that is
      executed to determine if iCloud support is available or not.
      */
-    public init(name: String = StorageDefaults.name, type: String = StorageDefaults.type, location: NSURL = StorageDefaults.location, cloud: Bool = false, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public init(name: String = GraphDefaults.name, cloud: Bool = false, type: String = GraphDefaults.type, location: NSURL = GraphDefaults.location) {
         super.init()
         self.name = name
         self.type = type
         self.location = location
-        self.cloud = cloud
+        prepareGraphRegistry()
+        prepareManagedObjectContext()
+    }
+    
+    /**
+     Initializer to named Graph with optional type and location.
+     - Parameter name: A name for the Graph.
+     - Parameter type: Graph type.
+     - Parameter location: A location for storage.
+     - Parameter completion: An Optional completion block that is
+     executed to determine if iCloud support is available or not.
+     */
+    public init(cloud: Bool, name: String = GraphDefaults.name, location: NSURL = GraphDefaults.location, completion: ((cloud: Bool, error: NSError?) -> Void)? = nil) {
+        super.init()
+        self.name = name
+        self.type = GraphDefaults.type
+        self.location = location
         self.completion = completion
-        prepareStorageRegistry()
-        if cloud || true == StorageRegistry.cloud[name] {
-            prepareCloudManagedObjectContext()
-        } else {
-            self.cloud = false
-            prepareManagedObjectContext()
-        }
+        prepareGraphRegistry()
+        prepareCloudManagedObjectContext()
     }
     
     /// Prepares the registry.
-    internal func prepareStorageRegistry() {
-        dispatch_once(&StorageRegistry.dispatchToken) {
-            StorageRegistry.cloud = [String: Bool]()
-            StorageRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
-            StorageRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
-            StorageRegistry.workerManagedObjectContexts = [String: NSManagedObjectContext]()
+    internal func prepareGraphRegistry() {
+        dispatch_once(&GraphRegistry.dispatchToken) {
+            GraphRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
+            GraphRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
+            GraphRegistry.workerManagedObjectContexts = [String: NSManagedObjectContext]()
         }
     }
     
     /// Prapres the managedObjectContext.
     internal func prepareManagedObjectContext() {
-        guard let moc = StorageRegistry.workerManagedObjectContexts[name] else {
+        guard let moc = GraphRegistry.workerManagedObjectContexts[name] else {
             let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
-            privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createLocalPersistentStoreCoordinator(name, type: type, location: location)
-            StorageRegistry.privateManagedObjectContextss[name] = privateManagedObjectContexts
+            privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name: name, type: type, location: location)
+            
+            do {
+                switch type {
+                case NSSQLiteStoreType:
+                    location = location.URLByAppendingPathComponent("Graph.sqlite")
+                default:break
+                }
+                try privateManagedObjectContexts.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: nil)
+            } catch {
+                fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+            }
+            
+            GraphRegistry.privateManagedObjectContextss[self.name] = privateManagedObjectContexts
             
             let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
-            StorageRegistry.mainManagedObjectContexts[name] = mainContext
+            GraphRegistry.mainManagedObjectContexts[self.name] = mainContext
             
-            managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
-            StorageRegistry.workerManagedObjectContexts[name] = managedObjectContext
+            self.managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
+            GraphRegistry.workerManagedObjectContexts[self.name] = self.managedObjectContext
             
             return
         }
@@ -126,27 +195,54 @@ public class Graph: Storage {
     
     /// Prapres the managedObjectContext.
     internal func prepareCloudManagedObjectContext() {
-        guard let moc = StorageRegistry.workerManagedObjectContexts[name] else {
+        guard let moc = GraphRegistry.workerManagedObjectContexts[name] else {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
                 if let s = self {
-                    let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
-                    privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createCloudPersistentStoreCoordinator(s.name, type: s.type, location: s.location) { [weak self] (success: Bool, error: NSError?) in
-                        if let s = self {
-                            StorageRegistry.privateManagedObjectContextss[s.name] = privateManagedObjectContexts
-                            
-                            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
-                            StorageRegistry.mainManagedObjectContexts[s.name] = mainContext
-                            
-                            s.managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
-                            StorageRegistry.workerManagedObjectContexts[s.name] = s.managedObjectContext
-                            
-                            if success {
-                                s.prepareNotificationCenter()
-                                s.cloud = true
-                            }
-                            s.completion?(success: success, error: error)
-                        }
+                    var options = [NSObject: AnyObject]()
+                    var cloud: Bool = false
+                    if let cloudURL = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
+                        cloud = true
+                        
+                        options[NSMigratePersistentStoresAutomaticallyOption] = 1
+                        options[NSInferMappingModelAutomaticallyOption] = 1
+                        options[NSPersistentStoreUbiquitousContentNameKey] = s.name
+//                        options[NSPersistentStoreUbiquitousContentURLKey] = cloudURL.URLByAppendingPathComponent("\(s.name)")
+                        
+                        print(options)
                     }
+                   
+                    let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
+                    privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name: s.name, type: s.type, location: s.location, options: options)
+                    
+                    GraphRegistry.privateManagedObjectContextss[s.name] = privateManagedObjectContexts
+                    
+                    let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
+                    GraphRegistry.mainManagedObjectContexts[s.name] = mainContext
+                    
+                    s.managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
+                    GraphRegistry.workerManagedObjectContexts[s.name] = s.managedObjectContext
+                    
+                    if cloud {
+                        s.prepareNotificationCenter()
+                    }
+                    
+                    do {
+                        switch s.type {
+                        case NSSQLiteStoreType:
+                            s.location = s.location.URLByAppendingPathComponent("Graph.sqlite")
+                        default:break
+                        }
+                        try privateManagedObjectContexts.persistentStoreCoordinator?.addPersistentStoreWithType(s.type, configuration: nil, URL: s.location, options: options)
+                    } catch {
+                        fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+                    }
+                    
+                    if let loc = privateManagedObjectContexts.persistentStoreCoordinator?.persistentStores.first?.URL {
+                        s.location = loc
+                    }
+                    print(s.location)
+                    
+                    s.completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
                 }
             }
             return
@@ -156,11 +252,32 @@ public class Graph: Storage {
     }
     
     /**
-     Prepares the persistentStoreCoordinator to observe 
+     Prepares the persistentStoreCoordinator to observe
      changes from iCloud.
-    */
+     */
     internal func prepareNotificationCenter() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleCloudDidChange(_:)), name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: managedObjectContext!.parentContext!.parentContext!.persistentStoreCoordinator)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleCloudWillChange(_:)), name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: managedObjectContext!.parentContext!.parentContext!.persistentStoreCoordinator)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleCloudDidChange(_:)), name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object: managedObjectContext!.parentContext!.parentContext!.persistentStoreCoordinator)
+    }
+    
+    /**
+     Handler for cloud change notifications.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func handleCloudWillChange(notification: NSNotification) {
+        managedObjectContext!.parentContext!.parentContext!.reset()
+        print("RESET MANAGED OBJECT CONTEXT")
+        
+        /// Send delegate call here to disable usage with graph.
+//        if NSThread.isMainThread() {
+//            mergeChanges(notification)
+//        } else {
+//            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+//                self?.mergeChanges(notification)
+//            }
+//        }
     }
     
     /**
@@ -169,162 +286,186 @@ public class Graph: Storage {
      */
     @objc
     internal func handleCloudDidChange(notification: NSNotification) {
-        if NSThread.isMainThread() {
-            mergeChanges(notification)
-        } else {
-            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                self?.mergeChanges(notification)
+        print("CHANGED MANAGED OBJECT CONTEXT")
+        
+        /// send delegate call here to enable usage with graph.
+        //        if NSThread.isMainThread() {
+        //            mergeChanges(notification)
+        //        } else {
+        //            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+        //                self?.mergeChanges(notification)
+        //            }
+        //        }
+        //        guard let privateContext = managedObjectContext!.parentContext!.parentContext else {
+        //            return
+        //        }
+        //        privateContext.performBlock {
+        //            privateContext.mergeChangesFromContextDidSaveNotification(notification)
+        //        }
+    }
+
+    /**
+     Performs a save.
+     - Parameter completion: An Optional completion block that is
+     executed when the save operation is completed.
+     */
+    public func async(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+        guard managedObjectContext.hasChanges else {
+            GraphCompletionCallback(
+                success: false,
+                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
+                completion: completion)
+            return
+        }
+        
+        managedObjectContext.performBlock { [weak self] in
+            do {
+                try self?.managedObjectContext.save()
+                
+                guard let mainContext = self?.managedObjectContext.parentContext else {
+                    GraphCompletionCallback(
+                        success: false,
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),
+                        completion: completion)
+                    return
+                }
+                
+                guard mainContext.hasChanges else {
+                    GraphCompletionCallback(
+                        success: false,
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
+                        completion: completion)
+                    return
+                }
+                
+                mainContext.performBlock {
+                    do {
+                        try mainContext.save()
+                        
+                        guard let privateManagedObjectContexts = mainContext.parentContext else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
+                                completion: completion)
+                            return
+                        }
+                        
+                        guard privateManagedObjectContexts.hasChanges else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
+                                completion: completion)
+                            return
+                        }
+                        
+                        privateManagedObjectContexts.performBlock {
+                            do {
+                                try privateManagedObjectContexts.save()
+                                GraphCompletionCallback(success: true, error: nil, completion: completion)
+                            } catch let e as NSError {
+                                GraphCompletionCallback(success: false, error: e, completion: completion)
+                            }
+                        }
+                    } catch let e as NSError {
+                        GraphCompletionCallback(success: false, error: e, completion: completion)
+                    }
+                }
+            } catch let e as NSError {
+                GraphCompletionCallback(success: false, error: e, completion: completion)
             }
         }
     }
     
     /**
-     Merges the changes from iCloud.
-     - Parameter notification: NSNotification reference.
+     Performs a synchronous save.
+     - Parameter completion: An Optional completion block that is
+     executed when the save operation is completed.
      */
-    internal func mergeChanges(notification: NSNotification) {
-        managedObjectContext.performBlock { [weak self] in
-            self?.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+    public func sync(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+        guard managedObjectContext.hasChanges else {
+            GraphCompletionCallback(
+                success: false,
+                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
+                completion: completion)
+            return
+        }
+        
+        managedObjectContext.performBlockAndWait { [weak self] in
+            do {
+                try self?.managedObjectContext.save()
+                
+                guard let mainContext = self?.managedObjectContext.parentContext else {
+                    GraphCompletionCallback(
+                        success: false,
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),
+                        completion: completion)
+                    return
+                }
+                
+                guard mainContext.hasChanges else {
+                    GraphCompletionCallback(
+                        success: false,
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
+                        completion: completion)
+                    return
+                }
+                
+                mainContext.performBlockAndWait {
+                    do {
+                        try mainContext.save()
+                        
+                        guard let privateManagedObjectContexts = mainContext.parentContext else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
+                                completion: completion)
+                            return
+                        }
+                        
+                        guard privateManagedObjectContexts.hasChanges else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
+                                completion: completion)
+                            return
+                        }
+                        
+                        privateManagedObjectContexts.performBlockAndWait {
+                            do {
+                                try privateManagedObjectContexts.save()
+                                GraphCompletionCallback(success: true, error: nil, completion: completion)
+                            } catch let e as NSError {
+                                GraphCompletionCallback(success: false, error: e, completion: completion)
+                            }
+                        }
+                    } catch let e as NSError {
+                        GraphCompletionCallback(success: false, error: e, completion: completion)
+                    }
+                }
+            } catch let e as NSError {
+                GraphCompletionCallback(success: false, error: e, completion: completion)
+            }
         }
     }
-}
-
-public extension Graph {
+    
     /**
-     Notifies watchers of changes within the ManagedObjectContext.
-     - Parameter notification: An NSNotification passed from the
-     managedObjectContext save operation.
+     Clears all persisted data.
+     - Parameter completion: An Optional completion block that is
+     executed when the save operation is completed.
      */
-    internal override func notifyWatchers(notification: NSNotification) {
-        guard let info = notification.userInfo else {
-            return
+    public func clear(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+        for entity in searchForEntity(types: ["*"]) {
+            entity.delete()
         }
         
-        guard let predicate = watchPredicate else {
-            return
+        for action in searchForAction(types: ["*"]) {
+            action.delete()
         }
         
-        if let insertedSet = info[NSInsertedObjectsKey] as? NSSet {
-            let	inserted = insertedSet.mutableCopy() as! NSMutableSet
-            
-            inserted.filterUsingPredicate(predicate)
-            
-            (inserted.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntity_ManagedEntity_":
-                    self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
-                    
-                case "ManagedEntityGroup_ManagedEntityGroup_":
-                    let group = managedObject as! ManagedEntityGroup
-                    self.delegate?.graphDidInsertEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
-                    
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
-                    
-                case "ManagedActionGroup_ManagedActionGroup_":
-                    let group: ManagedActionGroup = managedObject as! ManagedActionGroup
-                    self.delegate?.graphDidInsertActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
-                    
-                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
-                    let group = managedObject as! ManagedRelationshipGroup
-                    self.delegate?.graphDidInsertRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
-            }
+        for relationship in searchForRelationship(types: ["*"]) {
+            relationship.delete()
         }
         
-        if let updatedSet = info[NSUpdatedObjectsKey] as? NSSet {
-            let	updated = updatedSet.mutableCopy() as! NSMutableSet
-            
-            updated.filterUsingPredicate(predicate)
-            
-            (updated.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphDidUpdateAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
-            }
-        }
-        
-        if let deletedSet = info[NSDeletedObjectsKey] as? NSSet {
-            let	deleted = deletedSet.mutableCopy() as! NSMutableSet
-            
-            deleted.filterUsingPredicate(predicate)
-            
-            (deleted.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntity_ManagedEntity_":
-                    self.delegate?.graphDidDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
-                    
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedEntityGroup_ManagedEntityGroup_":
-                    let group = managedObject as! ManagedEntityGroup
-                    self.delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphDidDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphDidDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedActionGroup_ManagedActionGroup_":
-                    let group = managedObject as! ManagedActionGroup
-                    self.delegate?.graphDidDeleteActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphDidDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphDidDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
-                    let group = managedObject as! ManagedRelationshipGroup
-                    self.delegate?.graphDidDeleteRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
-            }
-        }
+        sync(completion)
     }
 }

@@ -132,7 +132,7 @@ public class Action: NSObject, NodeType {
      - Parameter type: A reference to a type.
      */
     public convenience init(type: String) {
-        self.init(type: type, graph: Graph(name: StorageDefaults.name))
+        self.init(type: type, graph: GraphDefaults.name)
     }
     
     /**
