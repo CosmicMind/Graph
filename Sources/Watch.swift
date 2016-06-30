@@ -30,35 +30,6 @@
 
 import CoreData
 
-@objc(GraphDelegate)
-public protocol GraphDelegate {
-    optional func graphDidInsertEntity(graph: Graph, entity: Entity)
-    optional func graphDidDeleteEntity(graph: Graph, entity: Entity)
-    optional func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String)
-    optional func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String)
-    optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-    optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-    optional func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-    
-    optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidUpdateRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidDeleteRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
-    optional func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
-    optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    optional func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    
-    optional func graphDidInsertAction(graph: Graph, action: Action)
-    optional func graphDidUpdateAction(graph: Graph, action: Action)
-    optional func graphDidDeleteAction(graph: Graph, action: Action)
-    optional func graphDidInsertActionGroup(graph: Graph, action: Action, group: String)
-    optional func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String)
-    optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-    optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-    optional func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-}
-
 /// Storage Watch API.
 public extension Graph {
     /**
