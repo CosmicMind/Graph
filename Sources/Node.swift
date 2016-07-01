@@ -62,11 +62,7 @@ internal class Node <T: ManagedNode> {
     
     /// A reference to the ID.
     internal var id: String {
-        var result: String?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            result = self.managedNode.id
-        }
-        return result!
+        return managedNode.id
     }
     
     /// A reference to the createDate.
