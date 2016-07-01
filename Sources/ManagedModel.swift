@@ -33,7 +33,9 @@ import CoreData
 internal class ManagedModel: NSManagedObject {
     /// Marks node for deletion.
     internal func delete() {
-        managedObjectContext?.deleteObject(self)
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            self.managedObjectContext?.deleteObject(self)
+        }
     }
 }
 

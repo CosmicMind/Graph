@@ -86,14 +86,18 @@ public class Relationship: NSObject, NodeType {
     /// A reference to the subject Entity.
     public var subject: Entity? {
         didSet {
-            node.managedNode.object = subject?.node.managedNode
+            node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                self.node.managedNode.subject = self.subject?.node.managedNode
+            }
         }
     }
     
     /// A reference to the object Entity.
     public var object: Entity? {
         didSet {
-            node.managedNode.object = object?.node.managedNode
+            node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                self.node.managedNode.object = self.object?.node.managedNode
+            }
         }
     }
     
@@ -113,7 +117,12 @@ public class Relationship: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: String) {
-        self.init(managedNode: ManagedRelationship(type, managedObjectContext: Graph(name: graph).managedObjectContext))
+        let context = Graph(name: graph).managedObjectContext
+        var managedNode: ManagedRelationship?
+        context.performBlockAndWait {
+            managedNode = ManagedRelationship(type, managedObjectContext: context)
+        }
+        self.init(managedNode: managedNode!)
     }
     
     /**
@@ -124,7 +133,12 @@ public class Relationship: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: Graph) {
-        self.init(managedNode: ManagedRelationship(type, managedObjectContext: graph.managedObjectContext))
+        let context = graph.managedObjectContext
+        var managedNode: ManagedRelationship?
+        context.performBlockAndWait {
+            managedNode = ManagedRelationship(type, managedObjectContext: context)
+        }
+        self.init(managedNode: managedNode!)
     }
     
     /**
@@ -190,9 +204,11 @@ public class Relationship: NSObject, NodeType {
      and object relationships.
     */
     public func delete() {
-        node.managedNode.subject?.removeRelationshipSubjectSetObject(node.managedNode)
-        node.managedNode.object?.removeRelationshipObjectSetObject(node.managedNode)
-        node.managedNode.delete()
+        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            self.node.managedNode.subject?.removeRelationshipSubjectSetObject(self.node.managedNode)
+            self.node.managedNode.object?.removeRelationshipObjectSetObject(self.node.managedNode)
+            self.node.managedNode.delete()
+        }
     }
 }
 

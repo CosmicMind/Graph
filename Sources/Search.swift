@@ -73,10 +73,19 @@ public extension Graph {
                         i -= 1
                         continue
                     }
-                } else if let v = managedObjectContext.parentContext!.parentContext!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedEntity {
-                    if nil == seen.updateValue(true, forKey: v.id) {
-                        nodes[i] = Entity(managedNode: v)
-                        i -= 1
+                } else {
+                    let n = nodes[i]["node"]!
+                    var c: Bool? = false
+                    managedObjectContext.parentContext!.parentContext!.performBlockAndWait { [unowned self] in
+                        if let v = self.managedObjectContext.parentContext!.parentContext!.objectWithID(n! as! NSManagedObjectID) as? ManagedEntity {
+                            if nil == seen.updateValue(true, forKey: v.id) {
+                                nodes[i] = Entity(managedNode: v)
+                                i -= 1
+                                c = true
+                            }
+                        }
+                    }
+                    if true == c {
                         continue
                     }
                 }
@@ -87,10 +96,15 @@ public extension Graph {
         }
         
         return nodes.map {
-            if let n = $0 as? ManagedEntity {
-                return Entity(managedNode: n)
+            guard let n = $0 as? ManagedEntity else {
+                var managedNode: NSManagedObject?
+                let n = $0["node"]!
+                managedObjectContext.parentContext!.parentContext!.performBlockAndWait { [unowned self] in
+                    managedNode = self.managedObjectContext.parentContext!.parentContext!.objectWithID(n as! NSManagedObjectID)
+                }
+                return Entity(managedNode: managedNode as! ManagedEntity)
             }
-            return Entity(managedNode: managedObjectContext.parentContext!.parentContext!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedEntity)
+            return Entity(managedNode: n)
         } as [Entity]
     }
     
@@ -135,10 +149,19 @@ public extension Graph {
                         i -= 1
                         continue
                     }
-                } else if let v = managedObjectContext.parentContext!.parentContext!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedRelationship {
-                    if nil == seen.updateValue(true, forKey: v.id) {
-                        nodes[i] = Relationship(managedNode: v)
-                        i -= 1
+                } else {
+                    let n = nodes[i]["node"]!
+                    var c: Bool? = false
+                    managedObjectContext.parentContext!.parentContext!.performBlockAndWait { [unowned self] in
+                        if let v = self.managedObjectContext.parentContext!.parentContext!.objectWithID(n! as! NSManagedObjectID) as? ManagedRelationship {
+                            if nil == seen.updateValue(true, forKey: v.id) {
+                                nodes[i] = Relationship(managedNode: v)
+                                i -= 1
+                                c = true
+                            }
+                        }
+                    }
+                    if true == c {
                         continue
                     }
                 }
@@ -149,10 +172,15 @@ public extension Graph {
         }
         
         return nodes.map {
-            if let n = $0 as? ManagedRelationship {
-                return Relationship(managedNode: n)
+            guard let n = $0 as? ManagedRelationship else {
+                var managedNode: NSManagedObject?
+                let n = $0["node"]!
+                managedObjectContext.parentContext!.parentContext!.performBlockAndWait { [unowned self] in
+                    managedNode = self.managedObjectContext.parentContext!.parentContext!.objectWithID(n as! NSManagedObjectID)
+                }
+                return Relationship(managedNode: managedNode as! ManagedRelationship)
             }
-            return Relationship(managedNode: managedObjectContext.parentContext!.parentContext!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedRelationship)
+            return Relationship(managedNode: n)
         } as [Relationship]
     }
     
@@ -197,10 +225,19 @@ public extension Graph {
                         i -= 1
                         continue
                     }
-                } else if let v = managedObjectContext.parentContext!.parentContext!.objectWithID(nodes[i]["node"]! as! NSManagedObjectID) as? ManagedAction {
-                    if nil == seen.updateValue(true, forKey: v.id) {
-                        nodes[i] = Action(managedNode: v)
-                        i -= 1
+                } else {
+                    let n = nodes[i]["node"]!
+                    var c: Bool? = false
+                    managedObjectContext.parentContext!.parentContext!.performBlockAndWait { [unowned self] in
+                        if let v = self.managedObjectContext.parentContext!.parentContext!.objectWithID(n! as! NSManagedObjectID) as? ManagedAction {
+                            if nil == seen.updateValue(true, forKey: v.id) {
+                                nodes[i] = Action(managedNode: v)
+                                i -= 1
+                                c = true
+                            }
+                        }
+                    }
+                    if true == c {
                         continue
                     }
                 }
@@ -211,10 +248,15 @@ public extension Graph {
         }
         
         return nodes.map {
-            if let n = $0 as? ManagedAction {
-                return Action(managedNode: n)
+            guard let n = $0 as? ManagedAction else {
+                var managedNode: NSManagedObject?
+                let n = $0["node"]!
+                managedObjectContext.parentContext!.parentContext!.performBlockAndWait { [unowned self] in
+                    managedNode = self.managedObjectContext.parentContext!.parentContext!.objectWithID(n as! NSManagedObjectID)
+                }
+                return Action(managedNode: managedNode as! ManagedAction)
             }
-            return Action(managedNode: managedObjectContext.parentContext!.parentContext!.objectWithID($0["node"]! as! NSManagedObjectID) as! ManagedAction)
+            return Action(managedNode: n)
         } as [Action]
     }
     
@@ -239,7 +281,15 @@ public extension Graph {
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
         request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: true)]
         
-        return try? managedObjectContext.parentContext!.parentContext!.executeFetchRequest(request)
+        var result: [AnyObject]?
+        managedObjectContext.parentContext!.parentContext!.performBlockAndWait { [unowned self] in
+            do {
+                result = try self.managedObjectContext.parentContext!.parentContext!.executeFetchRequest(request)
+            } catch _ as NSError {
+                result = [AnyObject]()
+            }
+        }
+        return result!
     }
     
     /**
@@ -266,7 +316,15 @@ public extension Graph {
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: groupsPredicate)
         request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
-        return try? managedObjectContext.parentContext!.parentContext!.executeFetchRequest(request)
+        var result: [AnyObject]?
+        managedObjectContext.parentContext!.parentContext!.performBlockAndWait { [unowned self] in
+            do {
+                result = try self.managedObjectContext.parentContext!.parentContext!.executeFetchRequest(request)
+            } catch _ as NSError {
+                result = [AnyObject]()
+            }
+        }
+        return result!
     }
     
     /**
@@ -301,6 +359,14 @@ public extension Graph {
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: propertiesPredicate)
         request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
-        return try? managedObjectContext.parentContext!.parentContext!.executeFetchRequest(request)
+        var result: [AnyObject]?
+        managedObjectContext.parentContext!.parentContext!.performBlockAndWait { [unowned self] in
+            do {
+                result = try self.managedObjectContext.parentContext!.parentContext!.executeFetchRequest(request)
+            } catch _ as NSError {
+                result = [AnyObject]()
+            }
+        }
+        return result!
     }
 }

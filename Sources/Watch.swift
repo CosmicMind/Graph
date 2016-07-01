@@ -130,11 +130,134 @@ public extension Graph {
      */
     @objc
     internal func handleContextDidSave(notification: NSNotification) {
-        if NSThread.isMainThread() {
-            notifyWatchers(notification)
-        } else {
-            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                self?.notifyWatchers(notification)
+        guard let info = notification.userInfo else {
+            return
+        }
+        
+        guard let predicate = watchPredicate else {
+            return
+        }
+        
+        if let insertedSet = info[NSInsertedObjectsKey] as? NSSet {
+            let	inserted = insertedSet.mutableCopy() as! NSMutableSet
+            
+            inserted.filterUsingPredicate(predicate)
+            
+            (inserted.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
+                switch String.fromCString(object_getClassName(managedObject))! {
+                case "ManagedEntity_ManagedEntity_":
+                    self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
+                    
+                case "ManagedEntityGroup_ManagedEntityGroup_":
+                    let group = managedObject as! ManagedEntityGroup
+                    self.delegate?.graphDidInsertEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
+                    
+                case "ManagedEntityProperty_ManagedEntityProperty_":
+                    let property = managedObject as! ManagedEntityProperty
+                    self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedAction_ManagedAction_":
+                    self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
+                    
+                case "ManagedActionGroup_ManagedActionGroup_":
+                    let group: ManagedActionGroup = managedObject as! ManagedActionGroup
+                    self.delegate?.graphDidInsertActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
+                    
+                case "ManagedActionProperty_ManagedActionProperty_":
+                    let property = managedObject as! ManagedActionProperty
+                    self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedRelationship_ManagedRelationship_":
+                    self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
+                    
+                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
+                    let group = managedObject as! ManagedRelationshipGroup
+                    self.delegate?.graphDidInsertRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
+                    
+                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                    let property = managedObject as! ManagedRelationshipProperty
+                    self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
+                    
+                default:
+                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+                }
+            }
+        }
+        
+        if let updatedSet = info[NSUpdatedObjectsKey] as? NSSet {
+            let	updated = updatedSet.mutableCopy() as! NSMutableSet
+            
+            updated.filterUsingPredicate(predicate)
+            
+            (updated.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
+                switch String.fromCString(object_getClassName(managedObject))! {
+                case "ManagedEntityProperty_ManagedEntityProperty_":
+                    let property = managedObject as! ManagedEntityProperty
+                    self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedActionProperty_ManagedActionProperty_":
+                    let property = managedObject as! ManagedActionProperty
+                    self.delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                    let property = managedObject as! ManagedRelationshipProperty
+                    self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedAction_ManagedAction_":
+                    self.delegate?.graphDidUpdateAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
+                    
+                case "ManagedRelationship_ManagedRelationship_":
+                    self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
+                    
+                default:
+                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+                }
+            }
+        }
+        
+        if let deletedSet = info[NSDeletedObjectsKey] as? NSSet {
+            let	deleted = deletedSet.mutableCopy() as! NSMutableSet
+            
+            deleted.filterUsingPredicate(predicate)
+            
+            (deleted.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
+                switch String.fromCString(object_getClassName(managedObject))! {
+                case "ManagedEntity_ManagedEntity_":
+                    self.delegate?.graphDidDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
+                    
+                case "ManagedEntityProperty_ManagedEntityProperty_":
+                    let property = managedObject as! ManagedEntityProperty
+                    self.delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedEntityGroup_ManagedEntityGroup_":
+                    let group = managedObject as! ManagedEntityGroup
+                    self.delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
+                    
+                case "ManagedAction_ManagedAction_":
+                    self.delegate?.graphDidDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
+                    
+                case "ManagedActionProperty_ManagedActionProperty_":
+                    let property = managedObject as! ManagedActionProperty
+                    self.delegate?.graphDidDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedActionGroup_ManagedActionGroup_":
+                    let group = managedObject as! ManagedActionGroup
+                    self.delegate?.graphDidDeleteActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
+                    
+                case "ManagedRelationship_ManagedRelationship_":
+                    self.delegate?.graphDidDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
+                    
+                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                    let property = managedObject as! ManagedRelationshipProperty
+                    self.delegate?.graphDidDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
+                    let group = managedObject as! ManagedRelationshipGroup
+                    self.delegate?.graphDidDeleteRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
+                    
+                default:
+                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+                }
             }
         }
     }
@@ -312,144 +435,6 @@ public extension Graph {
         let defaultCenter = NSNotificationCenter.defaultCenter()
         defaultCenter.removeObserver(self)
         defaultCenter.addObserver(self, selector: #selector(handleContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
-    }
-    
-    /**
-     Notifies watchers of changes within the ManagedObjectContext.
-     - Parameter notification: An NSNotification passed from the
-     managedObjectContext save operation.
-     */
-    private func notifyWatchers(notification: NSNotification) {
-        guard let info = notification.userInfo else {
-            return
-        }
-        
-        guard let predicate = watchPredicate else {
-            return
-        }
-        
-        if let insertedSet = info[NSInsertedObjectsKey] as? NSSet {
-            let	inserted = insertedSet.mutableCopy() as! NSMutableSet
-            
-            inserted.filterUsingPredicate(predicate)
-            
-            (inserted.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntity_ManagedEntity_":
-                    self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
-                    
-                case "ManagedEntityGroup_ManagedEntityGroup_":
-                    let group = managedObject as! ManagedEntityGroup
-                    self.delegate?.graphDidInsertEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
-                    
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
-                    
-                case "ManagedActionGroup_ManagedActionGroup_":
-                    let group: ManagedActionGroup = managedObject as! ManagedActionGroup
-                    self.delegate?.graphDidInsertActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
-                    
-                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
-                    let group = managedObject as! ManagedRelationshipGroup
-                    self.delegate?.graphDidInsertRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
-            }
-        }
-        
-        if let updatedSet = info[NSUpdatedObjectsKey] as? NSSet {
-            let	updated = updatedSet.mutableCopy() as! NSMutableSet
-            
-            updated.filterUsingPredicate(predicate)
-            
-            (updated.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphDidUpdateAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
-            }
-        }
-        
-        if let deletedSet = info[NSDeletedObjectsKey] as? NSSet {
-            let	deleted = deletedSet.mutableCopy() as! NSMutableSet
-            
-            deleted.filterUsingPredicate(predicate)
-            
-            (deleted.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntity_ManagedEntity_":
-                    self.delegate?.graphDidDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
-                    
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedEntityGroup_ManagedEntityGroup_":
-                    let group = managedObject as! ManagedEntityGroup
-                    self.delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphDidDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphDidDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedActionGroup_ManagedActionGroup_":
-                    let group = managedObject as! ManagedActionGroup
-                    self.delegate?.graphDidDeleteActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphDidDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphDidDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
-                    let group = managedObject as! ManagedRelationshipGroup
-                    self.delegate?.graphDidDeleteRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
-            }
-        }
     }
 }
 

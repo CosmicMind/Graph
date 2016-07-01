@@ -85,16 +85,24 @@ public class Action: NSObject, NodeType {
     
     /// An Array of Entity subjects.
     public var subjects: [Entity] {
-        return node.managedNode.subjectSet.map {
-            return Entity(managedNode: $0 as! ManagedEntity)
-        } as [Entity]
+        var result: [Entity]?
+        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.node.managedNode.subjectSet.map {
+                return Entity(managedNode: $0 as! ManagedEntity)
+                } as [Entity]
+        }
+        return result!
     }
     
     /// An Array of Entity objects.
-    public var objects: Array<Entity> {
-        return node.managedNode.objectSet.map {
-            return Entity(managedNode: $0 as! ManagedEntity)
-        } as [Entity]
+    public var objects: [Entity] {
+        var result: [Entity]?
+        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.node.managedNode.objectSet.map {
+                return Entity(managedNode: $0 as! ManagedEntity)
+            } as [Entity]
+        }
+        return result!
     }
     
     /**
@@ -113,7 +121,12 @@ public class Action: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: String) {
-        self.init(managedNode: ManagedAction(type, managedObjectContext: Graph(name: graph).managedObjectContext))
+        let context = Graph(name: graph).managedObjectContext
+        var managedNode: ManagedAction?
+        context.performBlockAndWait {
+            managedNode = ManagedAction(type, managedObjectContext: context)
+        }
+        self.init(managedNode: managedNode!)
     }
     
     /**
@@ -124,7 +137,12 @@ public class Action: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: Graph) {
-        self.init(managedNode: ManagedAction(type, managedObjectContext: graph.managedObjectContext))
+        let context = graph.managedObjectContext
+        var managedNode: ManagedAction?
+        context.performBlockAndWait {
+            managedNode = ManagedAction(type, managedObjectContext: context)
+        }
+        self.init(managedNode: managedNode!)
     }
     
     /**
@@ -250,19 +268,21 @@ public class Action: NSObject, NodeType {
      the subject and object set.
     */
     public func delete() {
-        node.managedNode.subjectSet.forEach { [unowned self] (object: AnyObject) in
-            if let entity: ManagedEntity = object as? ManagedEntity {
-                (entity.actionSubjectSet as! NSMutableSet).removeObject(self.node.managedNode)
+        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            self.node.managedNode.subjectSet.forEach { [unowned self] (object: AnyObject) in
+                if let entity: ManagedEntity = object as? ManagedEntity {
+                    (entity.actionSubjectSet as! NSMutableSet).removeObject(self.node.managedNode)
+                }
             }
-        }
-        
-        node.managedNode.objectSet.forEach { [unowned self] (object: AnyObject) in
-            if let entity: ManagedEntity = object as? ManagedEntity {
-                (entity.actionObjectSet as! NSMutableSet).removeObject(self.node.managedNode)
+            
+            self.node.managedNode.objectSet.forEach { [unowned self] (object: AnyObject) in
+                if let entity: ManagedEntity = object as? ManagedEntity {
+                    (entity.actionObjectSet as! NSMutableSet).removeObject(self.node.managedNode)
+                }
             }
+            
+            self.node.managedNode.delete()
         }
-        
-        node.managedNode.delete()
     }
 }
 

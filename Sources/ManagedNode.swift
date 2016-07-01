@@ -39,10 +39,14 @@ internal class ManagedNode: ManagedModel {
     
     /// A reference to the Nodes unique ID.
     internal var id: String {
-        do {
-            try managedObjectContext?.obtainPermanentIDsForObjects([self])
-        } catch {}
-        return String(stringInterpolationSegment: nodeClass) + type + objectID.URIRepresentation().lastPathComponent!
+        var result: String?
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            do {
+                try self.managedObjectContext?.obtainPermanentIDsForObjects([self])
+            } catch {}
+            result = String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.URIRepresentation().lastPathComponent!
+        }
+        return result!
     }
     
     /**
@@ -61,18 +65,20 @@ internal class ManagedNode: ManagedModel {
     
     /// Deletes the relationships and actions before marking for deletion.
     internal override func delete() {
-        var set = groupSet as! NSMutableSet
-        groupSet.forEach { (object: AnyObject) in
-            if let group = object as? ManagedGroup {
-                group.delete()
-                set.removeObject(group)
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            var set = self.groupSet as! NSMutableSet
+            self.groupSet.forEach { (object: AnyObject) in
+                if let group = object as? ManagedGroup {
+                    group.delete()
+                    set.removeObject(group)
+                }
             }
-        }
-        set = propertySet as! NSMutableSet
-        propertySet.forEach { (object: AnyObject) in
-            if let property = object as? ManagedProperty {
-                property.delete()
-                set.removeObject(property)
+            set = self.propertySet as! NSMutableSet
+            self.propertySet.forEach { (object: AnyObject) in
+                if let property = object as? ManagedProperty {
+                    property.delete()
+                    set.removeObject(property)
+                }
             }
         }
         super.delete()
@@ -84,12 +90,16 @@ internal class ManagedNode: ManagedModel {
      - Returns: The optional AnyObject value.
      */
     internal subscript(name: String) -> AnyObject? {
-        for property in propertySet as! Set<ManagedProperty> {
-            if name == property.name {
-                return property.object
+        var object: AnyObject?
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            for property in self.propertySet {
+                if name == property.name {
+                    object = property.object
+                    return
+                }
             }
         }
-        return nil
+        return object
     }
     
     /**
@@ -109,12 +119,16 @@ internal class ManagedNode: ManagedModel {
      otherwise.
      */
     internal func memberOfGroup(name: String) -> Bool {
-        for group in groupSet as! Set<ManagedGroup> {
-            if name == group.name {
-                return true
+        var result: Bool?
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            for group in self.groupSet {
+                if name == group.name {
+                    result = true
+                    return
+                }
             }
         }
-        return false
+        return result ?? false
     }
     
     /**

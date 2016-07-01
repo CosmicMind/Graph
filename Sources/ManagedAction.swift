@@ -57,26 +57,28 @@ internal class ManagedAction: ManagedNode {
             return super[name]
         }
         set(value) {
-            guard let object = value else {
-                for property in propertySet as! Set<ManagedActionProperty> {
-                    if name == property.name {
-                        property.delete()
-                        (propertySet as! NSMutableSet).removeObject(property)
-                        break
+            managedObjectContext?.performBlockAndWait { [unowned self] in
+                guard let object = value else {
+                    for property in self.propertySet {
+                        if name == property.name {
+                            (property as? ManagedActionProperty)?.delete()
+                            (self.propertySet as! NSMutableSet).removeObject(property)
+                            break
+                        }
                     }
-                }
-                return
-            }
-            
-            for property in propertySet as! Set<ManagedActionProperty> {
-                if name == property.name {
-                    property.object = object
                     return
                 }
+                
+                for property in self.propertySet {
+                    if name == property.name {
+                        (property as? ManagedActionProperty)?.object = object
+                        return
+                    }
+                }
+                
+                let property = ManagedActionProperty(name: name, object: object, managedObjectContext: self.managedObjectContext!)
+                property.node = self
             }
-            
-            let property = ManagedActionProperty(name: name, object: object, managedObjectContext: managedObjectContext!)
-            property.node = self
         }
     }
     
@@ -87,12 +89,16 @@ internal class ManagedAction: ManagedNode {
      otherwise.
      */
     internal override func addToGroup(name: String) -> Bool {
-        if !memberOfGroup(name) {
-            let group = ManagedActionGroup(name: name, managedObjectContext: managedObjectContext!)
-            group.node = self
-            return true
+        var result: Bool? = false
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            if !self.memberOfGroup(name) {
+                let group = ManagedActionGroup(name: name, managedObjectContext: self.managedObjectContext!)
+                group.node = self
+                result = true
+                return
+            }
         }
-        return false
+        return result!
     }
     
     /**
@@ -101,9 +107,13 @@ internal class ManagedAction: ManagedNode {
      - Returns: A boolean of the result, true if added, false otherwise.
      */
     internal func addSubject(entity: ManagedEntity) -> Bool {
-        let count: Int = subjectSet.count
-        mutableSetValueForKey("subjectSet").addObject(entity)
-        return count != subjectSet.count
+        var result: Bool?
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            let count: Int = self.subjectSet.count
+            self.mutableSetValueForKey("subjectSet").addObject(entity)
+            result = count != self.subjectSet.count
+        }
+        return result!
     }
     
     /**
@@ -112,9 +122,13 @@ internal class ManagedAction: ManagedNode {
      - Returns: A boolean of the result, true if removed, false otherwise.
      */
     internal func removeSubject(entity: ManagedEntity) -> Bool {
-        let count: Int = subjectSet.count
-        mutableSetValueForKey("subjectSet").removeObject(entity)
-        return count != subjectSet.count
+        var result: Bool?
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            let count: Int = self.subjectSet.count
+            self.mutableSetValueForKey("subjectSet").removeObject(entity)
+            result = count != self.subjectSet.count
+        }
+        return result!
     }
     
     /**
@@ -123,9 +137,13 @@ internal class ManagedAction: ManagedNode {
      - Returns: A boolean of the result, true if added, false otherwise.
      */
     internal func addObject(entity: ManagedEntity) -> Bool {
-        let count: Int = objectSet.count
-        mutableSetValueForKey("objectSet").addObject(entity)
-        return count != objectSet.count
+        var result: Bool?
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            let count: Int = self.objectSet.count
+            self.mutableSetValueForKey("objectSet").addObject(entity)
+            result = count != self.objectSet.count
+        }
+        return result!
     }
     
     /**
@@ -134,9 +152,13 @@ internal class ManagedAction: ManagedNode {
      - Returns: A boolean of the result, true if removed, false otherwise.
      */
     internal func removeObject(entity: ManagedEntity) -> Bool {
-        let count: Int = objectSet.count
-        mutableSetValueForKey("objectSet").removeObject(entity)
-        return count != objectSet.count
+        var result: Bool?
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            let count: Int = self.objectSet.count
+            self.mutableSetValueForKey("objectSet").removeObject(entity)
+            result = count != self.objectSet.count
+        }
+        return result!
     }
 }
 

@@ -97,30 +97,42 @@ public class Entity: NSObject, NodeType {
     	:name:	relationships
      */
     public var relationships: [Relationship] {
-        var s = Set<ManagedRelationship>()
-        s.unionInPlace(node.managedNode.relationshipSubjectSet as! Set<ManagedRelationship>)
-        s.unionInPlace(node.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
-        return s.map {
-            return Relationship(managedNode: $0 as ManagedRelationship)
-        } as [Relationship]
+        var result: [Relationship]?
+        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            var s = Set<ManagedRelationship>()
+            s.unionInPlace(self.node.managedNode.relationshipSubjectSet as! Set<ManagedRelationship>)
+            s.unionInPlace(self.node.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
+            result = s.map {
+                return Relationship(managedNode: $0 as ManagedRelationship)
+            } as [Relationship]
+        }
+        return result!
     }
     
     /**
     	:name:	relationshipsWhenSubject
      */
     public var relationshipsWhenSubject: [Relationship] {
-        return node.managedNode.relationshipSubjectSet.map {
-            return Relationship(managedNode: $0 as! ManagedRelationship)
-        } as [Relationship]
+        var result: [Relationship]?
+        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.node.managedNode.relationshipSubjectSet.map {
+                return Relationship(managedNode: $0 as! ManagedRelationship)
+                } as [Relationship]
+        }
+        return result!
     }
     
     /**
     	:name:	relationshipsWhenObject
      */
     public var relationshipsWhenObject: [Relationship] {
-        return node.managedNode.relationshipObjectSet.map {
-            return Relationship(managedNode: $0 as! ManagedRelationship)
-        } as [Relationship]
+        var result: [Relationship]?
+        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.node.managedNode.relationshipObjectSet.map {
+                return Relationship(managedNode: $0 as! ManagedRelationship)
+            } as [Relationship]
+        }
+        return result!
     }
     
     /**
@@ -158,7 +170,12 @@ public class Entity: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: String) {
-        self.init(managedNode: ManagedEntity(type, managedObjectContext: Graph(name: graph).managedObjectContext))
+        let context = Graph(name: graph).managedObjectContext
+        var managedNode: ManagedEntity?
+        context.performBlockAndWait {
+            managedNode = ManagedEntity(type, managedObjectContext: context)
+        }
+        self.init(managedNode: managedNode!)
     }
     
     /**
@@ -169,7 +186,12 @@ public class Entity: NSObject, NodeType {
      */
     @nonobjc
     public convenience init(type: String, graph: Graph) {
-        self.init(managedNode: ManagedEntity(type, managedObjectContext: graph.managedObjectContext))
+        let context = graph.managedObjectContext
+        var managedNode: ManagedEntity?
+        context.performBlockAndWait {
+            managedNode = ManagedEntity(type, managedObjectContext: context)
+        }
+        self.init(managedNode: managedNode!)
     }
     
     /**

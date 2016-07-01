@@ -57,42 +57,48 @@ internal class ManagedRelationship: ManagedNode {
             return super[name]
         }
         set(value) {
-            guard let object = value else {
-                for property in propertySet as! Set<ManagedRelationshipProperty> {
-                    if name == property.name {
-                        property.delete()
-                        (propertySet as! NSMutableSet).removeObject(property)
-                        break
+            managedObjectContext?.performBlockAndWait { [unowned self] in
+                guard let object = value else {
+                    for property in self.propertySet {
+                        if name == property.name {
+                            (property as? ManagedRelationshipProperty)?.delete()
+                            (self.propertySet as! NSMutableSet).removeObject(property)
+                            break
+                        }
                     }
-                }
-                return
-            }
-            
-            for property in propertySet as! Set<ManagedRelationshipProperty> {
-                if name == property.name {
-                    property.object = object
                     return
                 }
+                
+                for property in self.propertySet {
+                    if name == property.name {
+                        (property as? ManagedEntityProperty)?.object = object
+                        return
+                    }
+                }
+                
+                let property = ManagedRelationshipProperty(name: name, object: object, managedObjectContext: self.managedObjectContext!)
+                property.node = self
             }
-            
-            let property = ManagedRelationshipProperty(name: name, object: object, managedObjectContext: managedObjectContext!)
-            property.node = self
         }
     }
     
     /**
-     Adds the ManagedRelationship to the group.
+     Adds the ManagedAction to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
     internal override func addToGroup(name: String) -> Bool {
-        if !memberOfGroup(name) {
-            let group = ManagedRelationshipGroup(name: name, managedObjectContext: managedObjectContext!)
-            group.node = self
-            return true
+        var result: Bool? = false
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            if !self.memberOfGroup(name) {
+                let group = ManagedRelationshipGroup(name: name, managedObjectContext: self.managedObjectContext!)
+                group.node = self
+                result = true
+                return
+            }
         }
-        return false
+        return result!
     }
 }
 

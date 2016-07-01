@@ -310,19 +310,27 @@ public class Graph: NSObject {
      executed when the save operation is completed.
      */
     public func async(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-        guard managedObjectContext.hasChanges else {
+        guard let workerContext = managedObjectContext else {
             GraphCompletionCallback(
                 success: false,
-                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
+                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not exist."),
                 completion: completion)
             return
         }
         
-        managedObjectContext.performBlock { [weak self] in
+        workerContext.performBlock {
+            guard workerContext.hasChanges else {
+                GraphCompletionCallback(
+                    success: false,
+                    error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
+                    completion: completion)
+                return
+            }
+            
             do {
-                try self?.managedObjectContext.save()
+                try workerContext.save()
                 
-                guard let mainContext = self?.managedObjectContext.parentContext else {
+                guard let mainContext = workerContext.parentContext else {
                     GraphCompletionCallback(
                         success: false,
                         error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),
@@ -330,15 +338,15 @@ public class Graph: NSObject {
                     return
                 }
                 
-                guard mainContext.hasChanges else {
-                    GraphCompletionCallback(
-                        success: false,
-                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
-                        completion: completion)
-                    return
-                }
-                
                 mainContext.performBlock {
+                    guard mainContext.hasChanges else {
+                        GraphCompletionCallback(
+                            success: false,
+                            error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
+                            completion: completion)
+                        return
+                    }
+                    
                     do {
                         try mainContext.save()
                         
@@ -350,15 +358,15 @@ public class Graph: NSObject {
                             return
                         }
                         
-                        guard privateManagedObjectContexts.hasChanges else {
-                            GraphCompletionCallback(
-                                success: false,
-                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
-                                completion: completion)
-                            return
-                        }
-                        
                         privateManagedObjectContexts.performBlock {
+                            guard privateManagedObjectContexts.hasChanges else {
+                                GraphCompletionCallback(
+                                    success: false,
+                                    error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
+                                    completion: completion)
+                                return
+                            }
+                            
                             do {
                                 try privateManagedObjectContexts.save()
                                 GraphCompletionCallback(success: true, error: nil, completion: completion)
@@ -382,19 +390,27 @@ public class Graph: NSObject {
      executed when the save operation is completed.
      */
     public func sync(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-        guard managedObjectContext.hasChanges else {
+        guard let workerContext = managedObjectContext else {
             GraphCompletionCallback(
                 success: false,
-                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
+                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not exist."),
                 completion: completion)
             return
         }
         
-        managedObjectContext.performBlockAndWait { [weak self] in
+        workerContext.performBlockAndWait {
+            guard workerContext.hasChanges else {
+                GraphCompletionCallback(
+                    success: false,
+                    error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
+                    completion: completion)
+                return
+            }
+            
             do {
-                try self?.managedObjectContext.save()
+                try workerContext.save()
                 
-                guard let mainContext = self?.managedObjectContext.parentContext else {
+                guard let mainContext = workerContext.parentContext else {
                     GraphCompletionCallback(
                         success: false,
                         error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),
@@ -402,15 +418,15 @@ public class Graph: NSObject {
                     return
                 }
                 
-                guard mainContext.hasChanges else {
-                    GraphCompletionCallback(
-                        success: false,
-                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
-                        completion: completion)
-                    return
-                }
-                
                 mainContext.performBlockAndWait {
+                    guard mainContext.hasChanges else {
+                        GraphCompletionCallback(
+                            success: false,
+                            error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
+                            completion: completion)
+                        return
+                    }
+                    
                     do {
                         try mainContext.save()
                         
@@ -422,15 +438,15 @@ public class Graph: NSObject {
                             return
                         }
                         
-                        guard privateManagedObjectContexts.hasChanges else {
-                            GraphCompletionCallback(
-                                success: false,
-                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
-                                completion: completion)
-                            return
-                        }
-                        
                         privateManagedObjectContexts.performBlockAndWait {
+                            guard privateManagedObjectContexts.hasChanges else {
+                                GraphCompletionCallback(
+                                    success: false,
+                                    error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
+                                    completion: completion)
+                                return
+                            }
+                            
                             do {
                                 try privateManagedObjectContexts.save()
                                 GraphCompletionCallback(success: true, error: nil, completion: completion)
