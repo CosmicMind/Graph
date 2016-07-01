@@ -44,38 +44,64 @@ internal class Node <T: ManagedNode> {
     
     /// A reference to the nodeClass.
     internal var nodeClass: NSNumber {
-        return managedNode.nodeClass
+        var result: NSNumber?
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.managedNode.nodeClass
+        }
+        return result!
     }
     
     /// A reference to the type.
     internal var type: String {
-        return managedNode.type
+        var result: String?
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.managedNode.type
+        }
+        return result!
     }
     
     /// A reference to the ID.
     internal var id: String {
-        return managedNode.id
+        var result: String?
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.managedNode.id
+        }
+        return result!
     }
     
     /// A reference to the createDate.
     internal var createdDate: NSDate {
-        return managedNode.createdDate
+        var result: NSDate?
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.managedNode.createdDate
+        }
+        return result!
     }
     
     /// A reference to the groups.
     internal var groups: [String] {
-        return managedNode.groupSet.map {
-            return $0.name
-        } as [String]
+        var g = [String]()
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            self.managedNode.groupSet.forEach { (object: AnyObject) in
+                if let group = object as? ManagedGroup {
+                    g.append(group.name)
+                }
+            }
+        }
+        return g
     }
     
     /// A reference to the properties.
     internal var properties: [String: AnyObject] {
-        var properties = [String: AnyObject]()
-        managedNode.propertySet.forEach { (property: AnyObject) in
-            properties[property.name] = property.object
+        var p = [String: AnyObject]()
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            self.managedNode.propertySet.forEach { (object: AnyObject) in
+                if let property = object as? ManagedProperty {
+                    p[property.name] = property.object
+                }
+            }
         }
-        return properties
+        return p
     }
     
     /**
