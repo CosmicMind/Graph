@@ -32,7 +32,7 @@ import CoreData
 
 internal struct GraphRegistry {
     static var dispatchToken: dispatch_once_t = 0
-    static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
+    static var privateContexts: [String: NSManagedObjectContext]!
     static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
     static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
@@ -156,7 +156,7 @@ public class Graph: NSObject {
     /// Prepares the registry.
     internal func prepareGraphRegistry() {
         dispatch_once(&GraphRegistry.dispatchToken) {
-            GraphRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
+            GraphRegistry.privateContexts = [String: NSManagedObjectContext]()
             GraphRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
             GraphRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
         }
@@ -179,7 +179,7 @@ public class Graph: NSObject {
                 fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
             }
             
-            GraphRegistry.privateManagedObjectContextss[self.name] = privateContext
+            GraphRegistry.privateContexts[self.name] = privateContext
             
             let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
             GraphRegistry.mainManagedObjectContexts[self.name] = mainContext
@@ -214,7 +214,7 @@ public class Graph: NSObject {
                     let privateContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
                     privateContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name: s.name, type: s.type, location: s.location, options: options)
                     
-                    GraphRegistry.privateManagedObjectContextss[s.name] = privateContext
+                    GraphRegistry.privateContexts[s.name] = privateContext
                     
                     let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
                     GraphRegistry.mainManagedObjectContexts[s.name] = mainContext
@@ -268,15 +268,6 @@ public class Graph: NSObject {
     internal func handleCloudWillChange(notification: NSNotification) {
         managedObjectContext!.parentContext!.parentContext!.reset()
         print("RESET MANAGED OBJECT CONTEXT")
-        
-        /// Send delegate call here to disable usage with graph.
-//        if NSThread.isMainThread() {
-//            mergeChanges(notification)
-//        } else {
-//            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-//                self?.mergeChanges(notification)
-//            }
-//        }
     }
     
     /**
@@ -286,21 +277,6 @@ public class Graph: NSObject {
     @objc
     internal func handleCloudDidChange(notification: NSNotification) {
         print("CHANGED MANAGED OBJECT CONTEXT")
-        
-        /// send delegate call here to enable usage with graph.
-        //        if NSThread.isMainThread() {
-        //            mergeChanges(notification)
-        //        } else {
-        //            dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-        //                self?.mergeChanges(notification)
-        //            }
-        //        }
-        //        guard let privateContext = managedObjectContext!.parentContext!.parentContext else {
-        //            return
-        //        }
-        //        privateContext.performBlock {
-        //            privateContext.mergeChangesFromContextDidSaveNotification(notification)
-        //        }
     }
 
     /**
@@ -318,14 +294,6 @@ public class Graph: NSObject {
         }
         
         moc.performBlock {
-            guard moc.hasChanges else {
-                GraphCompletionCallback(
-                    success: false,
-                    error: GraphError(message: "[Graph Error: ManagedObjectContext does not have any changes."),
-                    completion: completion)
-                return
-            }
-            
             do {
                 try moc.save()
                 
@@ -338,18 +306,10 @@ public class Graph: NSObject {
                 }
                 
                 mainContext.performBlock {
-                    guard mainContext.hasChanges else {
-                        GraphCompletionCallback(
-                            success: false,
-                            error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
-                            completion: completion)
-                        return
-                    }
-                    
                     do {
                         try mainContext.save()
                         
-                        guard let privateManagedObjectContexts = mainContext.parentContext else {
+                        guard let privateContext = mainContext.parentContext else {
                             GraphCompletionCallback(
                                 success: false,
                                 error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
@@ -357,17 +317,9 @@ public class Graph: NSObject {
                             return
                         }
                         
-                        privateManagedObjectContexts.performBlock {
-                            guard privateManagedObjectContexts.hasChanges else {
-                                GraphCompletionCallback(
-                                    success: false,
-                                    error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
-                                    completion: completion)
-                                return
-                            }
-                            
+                        privateContext.performBlock {
                             do {
-                                try privateManagedObjectContexts.save()
+                                try privateContext.save()
                                 GraphCompletionCallback(success: true, error: nil, completion: completion)
                             } catch let e as NSError {
                                 GraphCompletionCallback(success: false, error: e, completion: completion)
@@ -398,14 +350,6 @@ public class Graph: NSObject {
         }
         
         moc.performBlockAndWait {
-            guard moc.hasChanges else {
-                GraphCompletionCallback(
-                    success: false,
-                    error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
-                    completion: completion)
-                return
-            }
-            
             do {
                 try moc.save()
                 
@@ -418,18 +362,10 @@ public class Graph: NSObject {
                 }
                 
                 mainContext.performBlockAndWait {
-                    guard mainContext.hasChanges else {
-                        GraphCompletionCallback(
-                            success: false,
-                            error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not have any changes."),
-                            completion: completion)
-                        return
-                    }
-                    
                     do {
                         try mainContext.save()
                         
-                        guard let privateManagedObjectContexts = mainContext.parentContext else {
+                        guard let privateContext = mainContext.parentContext else {
                             GraphCompletionCallback(
                                 success: false,
                                 error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
@@ -437,17 +373,9 @@ public class Graph: NSObject {
                             return
                         }
                         
-                        privateManagedObjectContexts.performBlockAndWait {
-                            guard privateManagedObjectContexts.hasChanges else {
-                                GraphCompletionCallback(
-                                    success: false,
-                                    error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not have any changes."),
-                                    completion: completion)
-                                return
-                            }
-                            
+                        privateContext.performBlockAndWait {
                             do {
-                                try privateManagedObjectContexts.save()
+                                try privateContext.save()
                                 GraphCompletionCallback(success: true, error: nil, completion: completion)
                             } catch let e as NSError {
                                 GraphCompletionCallback(success: false, error: e, completion: completion)
