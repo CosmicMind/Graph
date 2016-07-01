@@ -304,7 +304,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
+    func graphWillDeleteRelationship(graph: Graph, relationship: Relationship) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
@@ -313,7 +313,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
+    func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", group)
@@ -322,7 +322,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         groupExpception?.fulfill()
     }
     
-    func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
+    func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", group)
@@ -351,7 +351,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+    func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)

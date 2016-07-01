@@ -156,7 +156,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         entityInsertException?.fulfill()
     }
     
-    func graphDidDeleteEntity(graph: Graph, entity: Entity) {
+    func graphWillDeleteEntity(graph: Graph, entity: Entity) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertNil(entity["P1"])
@@ -186,7 +186,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+    func graphWillDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         

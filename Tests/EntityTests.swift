@@ -209,7 +209,7 @@ class EntityTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidDeleteEntity(graph: Graph, entity: Entity) {
+    func graphWillDeleteEntity(graph: Graph, entity: Entity) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertNil(entity["P"])
@@ -218,7 +218,7 @@ class EntityTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
+    func graphDidAddEntityToGroup(graph: Graph, entity: Entity, group: String) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", group)
@@ -227,7 +227,7 @@ class EntityTests: XCTestCase, GraphDelegate {
         groupExpception?.fulfill()
     }
     
-    func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String) {
+    func graphWillRemoveEntityFromGroup(graph: Graph, entity: Entity, group: String) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", group)
@@ -256,7 +256,7 @@ class EntityTests: XCTestCase, GraphDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+    func graphWillDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)

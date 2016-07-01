@@ -308,7 +308,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidDeleteAction(graph: Graph, action: Action) {
+    func graphWillDeleteAction(graph: Graph, action: Action) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
@@ -317,7 +317,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidInsertActionGroup(graph: Graph, action: Action, group: String) {
+    func graphDidAddActionToGroup(graph: Graph, action: Action, group: String) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", group)
@@ -326,7 +326,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         groupExpception?.fulfill()
     }
     
-    func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String) {
+    func graphWillRemoveActionFromGroup(graph: Graph, action: Action, group: String) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", group)
@@ -355,7 +355,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
+    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)

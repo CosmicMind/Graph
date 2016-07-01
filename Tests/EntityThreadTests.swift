@@ -131,7 +131,7 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String) {
+    func graphDidAddEntityToGroup(graph: Graph, entity: Entity, group: String) {
         XCTAssertEqual("T", entity.type)
         XCTAssertEqual("G", group)
         XCTAssertTrue(entity.memberOfGroup(group))
@@ -149,7 +149,7 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graphDidDeleteEntity(graph: Graph, entity: Entity) {
+    func graphWillDeleteEntity(graph: Graph, entity: Entity) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertNil(entity["P"])
@@ -158,7 +158,7 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         deleteExpectation?.fulfill()
     }
     
-    func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
+    func graphWillDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)
@@ -168,7 +168,7 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         deletePropertyExpectation?.fulfill()
     }
     
-    func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String) {
+    func graphWillRemoveEntityFromGroup(graph: Graph, entity: Entity, group: String) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", group)

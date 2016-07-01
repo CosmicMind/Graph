@@ -131,7 +131,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
+    func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertEqual("G", group)
         XCTAssertTrue(relationship.memberOfGroup(group))
@@ -149,7 +149,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
+    func graphWillDeleteRelationship(graph: Graph, relationship: Relationship) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
@@ -158,7 +158,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         deleteExpectation?.fulfill()
     }
     
-    func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+    func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -168,7 +168,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         deletePropertyExpectation?.fulfill()
     }
     
-    func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String) {
+    func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", group)

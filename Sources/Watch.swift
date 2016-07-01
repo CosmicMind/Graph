@@ -33,30 +33,30 @@ import CoreData
 @objc(GraphDelegate)
 public protocol GraphDelegate {
     optional func graphDidInsertEntity(graph: Graph, entity: Entity)
-    optional func graphDidDeleteEntity(graph: Graph, entity: Entity)
-    optional func graphDidInsertEntityGroup(graph: Graph, entity: Entity, group: String)
-    optional func graphDidDeleteEntityGroup(graph: Graph, entity: Entity, group: String)
+    optional func graphWillDeleteEntity(graph: Graph, entity: Entity)
+    optional func graphDidAddEntityToGroup(graph: Graph, entity: Entity, group: String)
+    optional func graphWillRemoveEntityFromGroup(graph: Graph, entity: Entity, group: String)
     optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
     optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
-    optional func graphDidDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
+    optional func graphWillDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject)
     
     optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship)
     optional func graphDidUpdateRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidDeleteRelationship(graph: Graph, relationship: Relationship)
-    optional func graphDidInsertRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
-    optional func graphDidDeleteRelationshipGroup(graph: Graph, relationship: Relationship, group: String)
+    optional func graphWillDeleteRelationship(graph: Graph, relationship: Relationship)
+    optional func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String)
+    optional func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String)
     optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
     optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
-    optional func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
+    optional func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject)
     
     optional func graphDidInsertAction(graph: Graph, action: Action)
     optional func graphDidUpdateAction(graph: Graph, action: Action)
-    optional func graphDidDeleteAction(graph: Graph, action: Action)
-    optional func graphDidInsertActionGroup(graph: Graph, action: Action, group: String)
-    optional func graphDidDeleteActionGroup(graph: Graph, action: Action, group: String)
+    optional func graphWillDeleteAction(graph: Graph, action: Action)
+    optional func graphDidAddActionToGroup(graph: Graph, action: Action, group: String)
+    optional func graphWillRemoveActionFromGroup(graph: Graph, action: Action, group: String)
     optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
     optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
-    optional func graphDidDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
+    optional func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
 }
 
 /// Storage Watch API.
@@ -146,37 +146,37 @@ public extension Graph {
             (deleted.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
                 switch String.fromCString(object_getClassName(managedObject))! {
                 case "ManagedEntity_ManagedEntity_":
-                    self.delegate?.graphDidDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
+                    self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
                     
                 case "ManagedEntityProperty_ManagedEntityProperty_":
                     let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphDidDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
+                    self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
                     
                 case "ManagedEntityGroup_ManagedEntityGroup_":
                     let group = managedObject as! ManagedEntityGroup
-                    self.delegate?.graphDidDeleteEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
+                    self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
                     
                 case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphDidDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
+                    self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
                     
                 case "ManagedActionProperty_ManagedActionProperty_":
                     let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphDidDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
+                    self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
                     
                 case "ManagedActionGroup_ManagedActionGroup_":
                     let group = managedObject as! ManagedActionGroup
-                    self.delegate?.graphDidDeleteActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
+                    self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: group.node), group: group.name)
                     
                 case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphDidDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
+                    self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
                     
                 case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                     let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphDidDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
+                    self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
                     
                 case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                     let group = managedObject as! ManagedRelationshipGroup
-                    self.delegate?.graphDidDeleteRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
+                    self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
                     
                 default:
                     assert(false, "[Graph Error: Graph observed an object that is invalid.]")
@@ -212,7 +212,7 @@ public extension Graph {
                     
                 case "ManagedEntityGroup_ManagedEntityGroup_":
                     let group = managedObject as! ManagedEntityGroup
-                    self.delegate?.graphDidInsertEntityGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
+                    self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
                     
                 case "ManagedEntityProperty_ManagedEntityProperty_":
                     let property = managedObject as! ManagedEntityProperty
@@ -223,7 +223,7 @@ public extension Graph {
                     
                 case "ManagedActionGroup_ManagedActionGroup_":
                     let group: ManagedActionGroup = managedObject as! ManagedActionGroup
-                    self.delegate?.graphDidInsertActionGroup?(self, action: Action(managedNode: group.node), group: group.name)
+                    self.delegate?.graphDidAddActionToGroup?(self, action: Action(managedNode: group.node), group: group.name)
                     
                 case "ManagedActionProperty_ManagedActionProperty_":
                     let property = managedObject as! ManagedActionProperty
@@ -234,7 +234,7 @@ public extension Graph {
                     
                 case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                     let group = managedObject as! ManagedRelationshipGroup
-                    self.delegate?.graphDidInsertRelationshipGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
+                    self.delegate?.graphDidAddRelationshipToGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
                     
                 case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                     let property = managedObject as! ManagedRelationshipProperty

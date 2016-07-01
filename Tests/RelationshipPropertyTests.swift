@@ -156,7 +156,7 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         relationshipInsertException?.fulfill()
     }
     
-    func graphDidDeleteRelationship(graph: Graph, relationship: Relationship) {
+    func graphWillDeleteRelationship(graph: Graph, relationship: Relationship) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P1"])
@@ -186,7 +186,7 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func graphDidDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+    func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
