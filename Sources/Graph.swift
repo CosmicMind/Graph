@@ -34,7 +34,7 @@ internal struct GraphRegistry {
     static var dispatchToken: dispatch_once_t = 0
     static var privateManagedObjectContextss: [String: NSManagedObjectContext]!
     static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
-    static var workerManagedObjectContexts: [String: NSManagedObjectContext]!
+    static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
 
 /**
@@ -143,10 +143,10 @@ public class Graph: NSObject {
      - Parameter completion: An Optional completion block that is
      executed to determine if iCloud support is available or not.
      */
-    public init(cloud: Bool, name: String = GraphDefaults.name, location: NSURL = GraphDefaults.location, completion: ((cloud: Bool, error: NSError?) -> Void)? = nil) {
+    public init(cloud: String, location: NSURL = GraphDefaults.location, completion: ((cloud: Bool, error: NSError?) -> Void)? = nil) {
         super.init()
-        self.name = name
-        self.type = GraphDefaults.type
+        self.name = cloud
+        self.type = NSSQLiteStoreType
         self.location = location
         self.completion = completion
         prepareGraphRegistry()
@@ -158,15 +158,15 @@ public class Graph: NSObject {
         dispatch_once(&GraphRegistry.dispatchToken) {
             GraphRegistry.privateManagedObjectContextss = [String: NSManagedObjectContext]()
             GraphRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
-            GraphRegistry.workerManagedObjectContexts = [String: NSManagedObjectContext]()
+            GraphRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
         }
     }
     
     /// Prapres the managedObjectContext.
     internal func prepareManagedObjectContext() {
-        guard let moc = GraphRegistry.workerManagedObjectContexts[name] else {
-            let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
-            privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name: name, type: type, location: location)
+        guard let moc = GraphRegistry.managedObjectContexts[name] else {
+            let privateContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
+            privateContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name: name, type: type, location: location)
             
             do {
                 switch type {
@@ -174,18 +174,18 @@ public class Graph: NSObject {
                     location = location.URLByAppendingPathComponent("Graph.sqlite")
                 default:break
                 }
-                try privateManagedObjectContexts.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: nil)
+                try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: nil)
             } catch {
                 fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
             }
             
-            GraphRegistry.privateManagedObjectContextss[self.name] = privateManagedObjectContexts
+            GraphRegistry.privateManagedObjectContextss[self.name] = privateContext
             
-            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
+            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
             GraphRegistry.mainManagedObjectContexts[self.name] = mainContext
             
             self.managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
-            GraphRegistry.workerManagedObjectContexts[self.name] = self.managedObjectContext
+            GraphRegistry.managedObjectContexts[self.name] = self.managedObjectContext
             
             return
         }
@@ -195,12 +195,12 @@ public class Graph: NSObject {
     
     /// Prapres the managedObjectContext.
     internal func prepareCloudManagedObjectContext() {
-        guard let moc = GraphRegistry.workerManagedObjectContexts[name] else {
+        guard let moc = GraphRegistry.managedObjectContexts[name] else {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
                 if let s = self {
                     var options = [NSObject: AnyObject]()
                     var cloud: Bool = false
-                    if let cloudURL = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
+                    if let _ = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
                         cloud = true
                         
                         options[NSMigratePersistentStoresAutomaticallyOption] = 1
@@ -211,16 +211,16 @@ public class Graph: NSObject {
                         print(options)
                     }
                    
-                    let privateManagedObjectContexts = Context.createManagedContext(.PrivateQueueConcurrencyType)
-                    privateManagedObjectContexts.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name: s.name, type: s.type, location: s.location, options: options)
+                    let privateContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
+                    privateContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name: s.name, type: s.type, location: s.location, options: options)
                     
-                    GraphRegistry.privateManagedObjectContextss[s.name] = privateManagedObjectContexts
+                    GraphRegistry.privateManagedObjectContextss[s.name] = privateContext
                     
-                    let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateManagedObjectContexts)
+                    let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
                     GraphRegistry.mainManagedObjectContexts[s.name] = mainContext
                     
                     s.managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
-                    GraphRegistry.workerManagedObjectContexts[s.name] = s.managedObjectContext
+                    GraphRegistry.managedObjectContexts[s.name] = s.managedObjectContext
                     
                     if cloud {
                         s.prepareNotificationCenter()
@@ -232,15 +232,14 @@ public class Graph: NSObject {
                             s.location = s.location.URLByAppendingPathComponent("Graph.sqlite")
                         default:break
                         }
-                        try privateManagedObjectContexts.persistentStoreCoordinator?.addPersistentStoreWithType(s.type, configuration: nil, URL: s.location, options: options)
+                        try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(s.type, configuration: nil, URL: s.location, options: options)
                     } catch {
                         fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
                     }
                     
-                    if let loc = privateManagedObjectContexts.persistentStoreCoordinator?.persistentStores.first?.URL {
+                    if let loc = privateContext.persistentStoreCoordinator?.persistentStores.first?.URL {
                         s.location = loc
                     }
-                    print(s.location)
                     
                     s.completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
                 }
@@ -310,27 +309,27 @@ public class Graph: NSObject {
      executed when the save operation is completed.
      */
     public func async(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-        guard let workerContext = managedObjectContext else {
+        guard let moc = managedObjectContext else {
             GraphCompletionCallback(
                 success: false,
-                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not exist."),
+                error: GraphError(message: "[Graph Error: ManagedObjectContext does not exist."),
                 completion: completion)
             return
         }
         
-        workerContext.performBlock {
-            guard workerContext.hasChanges else {
+        moc.performBlock {
+            guard moc.hasChanges else {
                 GraphCompletionCallback(
                     success: false,
-                    error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
+                    error: GraphError(message: "[Graph Error: ManagedObjectContext does not have any changes."),
                     completion: completion)
                 return
             }
             
             do {
-                try workerContext.save()
+                try moc.save()
                 
-                guard let mainContext = workerContext.parentContext else {
+                guard let mainContext = moc.parentContext else {
                     GraphCompletionCallback(
                         success: false,
                         error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),
@@ -390,7 +389,7 @@ public class Graph: NSObject {
      executed when the save operation is completed.
      */
     public func sync(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-        guard let workerContext = managedObjectContext else {
+        guard let moc = managedObjectContext else {
             GraphCompletionCallback(
                 success: false,
                 error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not exist."),
@@ -398,8 +397,8 @@ public class Graph: NSObject {
             return
         }
         
-        workerContext.performBlockAndWait {
-            guard workerContext.hasChanges else {
+        moc.performBlockAndWait {
+            guard moc.hasChanges else {
                 GraphCompletionCallback(
                     success: false,
                     error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not have any changes."),
@@ -408,9 +407,9 @@ public class Graph: NSObject {
             }
             
             do {
-                try workerContext.save()
+                try moc.save()
                 
-                guard let mainContext = workerContext.parentContext else {
+                guard let mainContext = moc.parentContext else {
                     GraphCompletionCallback(
                         success: false,
                         error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),

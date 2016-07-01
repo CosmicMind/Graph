@@ -71,7 +71,7 @@ internal class ManagedRelationship: ManagedNode {
                 
                 for property in self.propertySet {
                     if name == property.name {
-                        (property as? ManagedEntityProperty)?.object = object
+                        (property as? ManagedRelationshipProperty)?.object = object
                         return
                     }
                 }
