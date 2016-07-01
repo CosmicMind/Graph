@@ -41,7 +41,7 @@ internal struct Coordinator {
 	*/
     static func createPersistentStoreCoordinator(name name: String, type: String, location: NSURL, options: [NSObject: AnyObject]? = nil) -> NSPersistentStoreCoordinator {
         var coordinator: NSPersistentStoreCoordinator!
-        File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
+        File.createDirectoryAtPath(location.URLByAppendingPathComponent(name), withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
             if let e = error {
                 fatalError(e.localizedDescription)
             }

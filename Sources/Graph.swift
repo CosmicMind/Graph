@@ -127,7 +127,7 @@ public class Graph: NSObject {
      - Parameter location: A location for storage.
      executed to determine if iCloud support is available or not.
      */
-    public init(name: String = GraphDefaults.name, cloud: Bool = false, type: String = GraphDefaults.type, location: NSURL = GraphDefaults.location) {
+    public init(name: String = GraphDefaults.name, type: String = GraphDefaults.type, location: NSURL = GraphDefaults.location) {
         super.init()
         self.name = name
         self.type = type
@@ -138,20 +138,20 @@ public class Graph: NSObject {
     
     /**
      Initializer to named Graph with optional type and location.
-     - Parameter name: A name for the Graph.
+     - Parameter cloud: A name for the Graph.
      - Parameter type: Graph type.
      - Parameter location: A location for storage.
      - Parameter completion: An Optional completion block that is
      executed to determine if iCloud support is available or not.
      */
-    public init(cloud: String, location: NSURL = GraphDefaults.location, completion: ((cloud: Bool, error: NSError?) -> Void)? = nil) {
+    public init(cloud: String, completion: ((cloud: Bool, error: NSError?) -> Void)? = nil) {
         super.init()
-        self.name = cloud
-        self.type = NSSQLiteStoreType
-        self.location = location
+        name = cloud
+        type = NSSQLiteStoreType
+        location = GraphDefaults.location
         self.completion = completion
         prepareGraphRegistry()
-        prepareManagedObjectContext(enableCloud: true)
+        prepareManagedObjectContext(enableCloud: false)
     }
     
     /// Prepares the registry.
@@ -170,35 +170,13 @@ public class Graph: NSObject {
     */
     internal func prepareManagedObjectContext(enableCloud enableCloud: Bool) {
         guard let moc = GraphRegistry.managedObjectContexts[name] else {
-            location = location.URLByAppendingPathComponent(name)
-            
             let privateContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
             privateContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name: name, type: type, location: location)
             
-            var options = [NSObject: AnyObject]()
-            var cloud: Bool = enableCloud
-            if cloud {
-                if let _ = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
-                    options[NSMigratePersistentStoresAutomaticallyOption] = 1
-                    options[NSInferMappingModelAutomaticallyOption] = 1
-                    options[NSPersistentStoreUbiquitousContentNameKey] = name
-                } else {
-                    cloud = false
-                }
-            }
-            
-            switch type {
-            case NSSQLiteStoreType:
-                location = location.URLByAppendingPathComponent("Graph.sqlite")
-            default:break
-            }
-            
-            if cloud {
-                prepareNotificationCenter()
-            }
+            location = location.URLByAppendingPathComponent(NSSQLiteStoreType == type ? "\(name)/Graph.sqlite" : name)
             
             do {
-                try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
+                try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: nil)
             } catch {
                 fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
             }
@@ -211,19 +189,75 @@ public class Graph: NSObject {
             managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
             GraphRegistry.managedObjectContexts[name] = managedObjectContext
             
+            let cloud = enableCloud
             GraphRegistry.cloud[name] = cloud
-            
-            location = privateContext.persistentStoreCoordinator?.persistentStores.first?.URL
             completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
-            
             return
         }
         
         managedObjectContext = moc
-        location = moc.parentContext!.parentContext!.persistentStoreCoordinator?.persistentStores.first?.URL
+        location = location.URLByAppendingPathComponent(NSSQLiteStoreType == type ? "\(name)/Graph.sqlite" : name)
         
         let cloud = GraphRegistry.cloud[name] ?? false
         completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+        
+//        guard let moc = GraphRegistry.managedObjectContexts[name] else {
+//            location = location.URLByAppendingPathComponent(name)
+//            
+//            let privateContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
+//            privateContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(name: name, type: type, location: location)
+//            
+//            var cloud: Bool = enableCloud
+//            var options: [NSObject: AnyObject]?
+//            
+//            if cloud {
+//                if let _ = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
+//                    options = [NSObject: AnyObject]()
+//                    options?[NSMigratePersistentStoresAutomaticallyOption] = 1
+//                    options?[NSInferMappingModelAutomaticallyOption] = 1
+//                    options?[NSPersistentStoreUbiquitousContentNameKey] = name
+//                } else {
+//                    cloud = false
+//                }
+//            }
+//            
+//            if NSSQLiteStoreType == type {
+//                location = location.URLByAppendingPathComponent("Graph.sqlite")
+//            }
+//            
+//            if cloud {
+//                prepareNotificationCenter()
+//            }
+//            
+//            do {
+//                try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
+//            } catch {
+//                fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+//            }
+//            
+//            GraphRegistry.privateContexts[name] = privateContext
+//            
+//            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
+//            GraphRegistry.mainManagedObjectContexts[name] = mainContext
+//            
+//            managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
+//            GraphRegistry.managedObjectContexts[name] = managedObjectContext
+//            
+//            GraphRegistry.cloud[name] = cloud
+//            
+//            location = privateContext.persistentStoreCoordinator?.persistentStores.first?.URL
+//            completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+//            
+//            return
+//        }
+//        
+//        managedObjectContext = moc
+//        location = moc.parentContext!.parentContext!.persistentStoreCoordinator?.persistentStores.first?.URL
+//        
+//        if let v = completion {
+//            let cloud = GraphRegistry.cloud[name] ?? false
+//            v(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+//        }
     }
         
     /**
