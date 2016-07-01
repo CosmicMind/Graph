@@ -172,18 +172,18 @@ internal extension ManagedEntity {
     }
     
     /**
-     :name:	addRelationshipSubjectSetObject
+     :name:	addRelationshipSubjectSetSubject
      :description:	Adds the Relationship to the relationshipSubjectSet for the Entity.
      */
-    func addRelationshipSubjectSetObject(value: ManagedRelationship) {
+    func addRelationshipSubjectSetSubject(value: ManagedRelationship) {
         (relationshipSubjectSet as! NSMutableSet).addObject(value)
     }
     
     /**
-     :name:	removeRelationshipSubjectSetObject
+     :name:	removeRelationshipSubjectSetSubject
      :description:	Removes the Relationship to the relationshipSubjectSet for the Entity.
      */
-    func removeRelationshipSubjectSetObject(value: ManagedRelationship) {
+    func removeRelationshipSubjectSetSubject(value: ManagedRelationship) {
         (relationshipSubjectSet as! NSMutableSet).removeObject(value)
     }
     

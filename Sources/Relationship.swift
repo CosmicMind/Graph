@@ -85,18 +85,40 @@ public class Relationship: NSObject, NodeType {
     
     /// A reference to the subject Entity.
     public var subject: Entity? {
-        didSet {
+        get {
+            var entity: Entity?
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                self.node.managedNode.subject = self.subject?.node.managedNode
+                guard let n = self.node.managedNode.subject else {
+                    return
+                }
+                entity = Entity(managedNode: n)
+            }
+            return entity
+        }
+        set(entity) {
+            node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                self.node.managedNode.subject?.removeRelationshipSubjectSetSubject(self.node.managedNode)
+                self.node.managedNode.subject = entity?.node.managedNode
             }
         }
     }
     
     /// A reference to the object Entity.
     public var object: Entity? {
-        didSet {
+        get {
+            var entity: Entity?
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                self.node.managedNode.object = self.object?.node.managedNode
+                guard let n = self.node.managedNode.object else {
+                    return
+                }
+                entity = Entity(managedNode: n)
+            }
+            return entity
+        }
+        set(entity) {
+            node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                self.node.managedNode.object?.removeRelationshipSubjectSetSubject(self.node.managedNode)
+                self.node.managedNode.object = entity?.node.managedNode
             }
         }
     }
@@ -205,7 +227,7 @@ public class Relationship: NSObject, NodeType {
     */
     public func delete() {
         node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            self.node.managedNode.subject?.removeRelationshipSubjectSetObject(self.node.managedNode)
+            self.node.managedNode.subject?.removeRelationshipSubjectSetSubject(self.node.managedNode)
             self.node.managedNode.object?.removeRelationshipObjectSetObject(self.node.managedNode)
             self.node.managedNode.delete()
         }
