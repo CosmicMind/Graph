@@ -76,28 +76,12 @@ internal class Node <T: ManagedNode> {
     
     /// A reference to the groups.
     internal var groups: [String] {
-        var g = [String]()
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            self.managedNode.groupSet.forEach { (object: AnyObject) in
-                if let group = object as? ManagedGroup {
-                    g.append(group.name)
-                }
-            }
-        }
-        return g
+        return managedNode.groups
     }
     
     /// A reference to the properties.
     internal var properties: [String: AnyObject] {
-        var p = [String: AnyObject]()
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            self.managedNode.propertySet.forEach { (object: AnyObject) in
-                if let property = object as? ManagedProperty {
-                    p[property.name] = property.object
-                }
-            }
-        }
-        return p
+        return managedNode.properties
     }
     
     /**

@@ -49,6 +49,32 @@ internal class ManagedNode: ManagedModel {
         return result!
     }
     
+    /// A reference to the groups.
+    internal var groups: [String] {
+        var g = [String]()
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            self.groupSet.forEach { (object: AnyObject) in
+                if let group = object as? ManagedGroup {
+                    g.append(group.name)
+                }
+            }
+        }
+        return g
+    }
+    
+    /// A reference to the properties.
+    internal var properties: [String: AnyObject] {
+        var p = [String: AnyObject]()
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            self.propertySet.forEach { (object: AnyObject) in
+                if let property = object as? ManagedProperty {
+                    p[property.name] = property.object
+                }
+            }
+        }
+        return p
+    }
+    
     /**
      Initializer that accepts an identifier, a type, and a NSManagedObjectContext.
      - Parameter identifier: A model identifier.
