@@ -125,73 +125,12 @@ public extension Graph {
     }
     
     /**
-     Handler for managedObjectContext save notifications. Only deletions are fired on this context.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func handleManagedObjectContextDidSave(notification: NSNotification) {
-        guard let info = notification.userInfo else {
-            return
-        }
-        
-        guard let predicate = watchPredicate else {
-            return
-        }
-        
-        if let deletedSet = info[NSDeletedObjectsKey] as? NSSet {
-            let	deleted = deletedSet.mutableCopy() as! NSMutableSet
-            
-            deleted.filterUsingPredicate(predicate)
-            
-            (deleted.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntity_ManagedEntity_":
-                    self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
-                    
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedEntityGroup_ManagedEntityGroup_":
-                    let group = managedObject as! ManagedEntityGroup
-                    self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedActionGroup_ManagedActionGroup_":
-                    let group = managedObject as! ManagedActionGroup
-                    self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: group.node), group: group.name)
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
-                    
-                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
-                    let group = managedObject as! ManagedRelationshipGroup
-                    self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
-            }
-        }
-    }
-    
-    /**
      Handler for private ManagedObejctContext save notifications. 
      Only insertions and updates are fired on this context.
      - Parameter notification: NSNotification reference.
      */
     @objc
-    internal func handlePrivateContextDidSave(notification: NSNotification) {
+    internal func handleDidModify(notification: NSNotification) {
         guard let info = notification.userInfo else {
             return
         }
@@ -270,6 +209,67 @@ public extension Graph {
                     
                 case "ManagedRelationship_ManagedRelationship_":
                     self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
+                    
+                default:
+                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+                }
+            }
+        }
+    }
+    
+    /**
+     Handler for managedObjectContext save notifications. Only deletions are fired on this context.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func handleWillDelete(notification: NSNotification) {
+        guard let info = notification.userInfo else {
+            return
+        }
+        
+        guard let predicate = watchPredicate else {
+            return
+        }
+        
+        if let deletedSet = info[NSDeletedObjectsKey] as? NSSet {
+            let	deleted = deletedSet.mutableCopy() as! NSMutableSet
+            
+            deleted.filterUsingPredicate(predicate)
+            
+            (deleted.allObjects as! [NSManagedObject]).forEach { [unowned self] (managedObject: NSManagedObject) in
+                switch String.fromCString(object_getClassName(managedObject))! {
+                case "ManagedEntity_ManagedEntity_":
+                    self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity))
+                    
+                case "ManagedEntityProperty_ManagedEntityProperty_":
+                    let property = managedObject as! ManagedEntityProperty
+                    self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedEntityGroup_ManagedEntityGroup_":
+                    let group = managedObject as! ManagedEntityGroup
+                    self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: group.node), group: group.name)
+                    
+                case "ManagedAction_ManagedAction_":
+                    self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction))
+                    
+                case "ManagedActionProperty_ManagedActionProperty_":
+                    let property = managedObject as! ManagedActionProperty
+                    self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedActionGroup_ManagedActionGroup_":
+                    let group = managedObject as! ManagedActionGroup
+                    self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: group.node), group: group.name)
+                    
+                case "ManagedRelationship_ManagedRelationship_":
+                    self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship))
+                    
+                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                    let property = managedObject as! ManagedRelationshipProperty
+                    self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object)
+                    
+                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
+                    let group = managedObject as! ManagedRelationshipGroup
+                    self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name)
                     
                 default:
                     assert(false, "[Graph Error: Graph observed an object that is invalid.]")
@@ -451,9 +451,8 @@ public extension Graph {
         let defaultCenter = NSNotificationCenter.defaultCenter()
         defaultCenter.removeObserver(self)
         
-        defaultCenter.addObserver(self, selector: #selector(handleManagedObjectContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
-        
-        defaultCenter.addObserver(self, selector: #selector(handlePrivateContextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
+        defaultCenter.addObserver(self, selector: #selector(handleDidModify(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
+        defaultCenter.addObserver(self, selector: #selector(handleWillDelete(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
     }
 }
 
