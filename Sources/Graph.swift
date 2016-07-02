@@ -204,25 +204,73 @@ public class Graph: NSObject {
             GraphRegistry.cloud[name] = cloud
             
             if cloud {
-                prepareNotificationCenter()
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self] in
-                    do {
-                        try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: self.location, options: options)
-                    } catch {
-                        fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+                let defaultCenter = NSNotificationCenter.defaultCenter()
+                
+                defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: privateContext.persistentStoreCoordinator, queue: NSOperationQueue.mainQueue(), usingBlock: { [weak self] (notification: NSNotification) in
+                    self?.managedObjectContext.performBlockAndWait { [weak self] in
+                        if true == self?.managedObjectContext.hasChanges {
+                            self?.async()
+                        } else {
+                            self?.managedObjectContext.reset()
+                            if NSThread.isMainThread() {
+                                self?.delegate?.graphWillPrepareCloudStorage?(self!)
+                            } else {
+                                dispatch_sync(dispatch_get_main_queue()) {
+                                    self?.delegate?.graphWillPrepareCloudStorage?(self!)
+                                }
+                            }
+                        }
                     }
-                    
+                })
+                
+                defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: privateContext.persistentStoreCoordinator, queue: NSOperationQueue.mainQueue(), usingBlock: { [weak self] (notification: NSNotification) in
+                    self?.managedObjectContext.performBlockAndWait { [weak self] in
+                        if NSThread.isMainThread() {
+                            self?.delegate?.graphDidPrepareCloudStorage?(self!)
+                        } else {
+                            dispatch_sync(dispatch_get_main_queue()) {
+                                self?.delegate?.graphDidPrepareCloudStorage?(self!)
+                            }
+                        }
+                    }
+                })
+                
+                defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: privateContext.persistentStoreCoordinator, queue: NSOperationQueue.mainQueue(), usingBlock: { [weak self] (notification: NSNotification) in
+                    self?.managedObjectContext.performBlockAndWait { [weak self] in
+                        self?.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+                        if NSThread.isMainThread() {
+                            self?.delegate?.graphDidImportCloudData?(self!)
+                        } else {
+                            dispatch_sync(dispatch_get_main_queue()) {
+                                self?.delegate?.graphDidImportCloudData?(self!)
+                            }
+                        }
+                    }
+                })
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self] in
+                    dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                        guard let s = self else {
+                            return
+                        }
+                        do {
+                            try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(s.type, configuration: nil, URL: s.location, options: options)
+                            s.location = privateContext.persistentStoreCoordinator?.persistentStores.first?.URL
+                            s.completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+                        } catch {
+                            fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+                        }
+                    }
                 }
             } else {
                 do {
                     try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
+                    location = privateContext.persistentStoreCoordinator?.persistentStores.first?.URL
+                    completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
                 } catch {
                     fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
                 }
             }
-            
-            location = privateContext.persistentStoreCoordinator?.persistentStores.first?.URL
-            completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
             
             return
         }
@@ -235,42 +283,7 @@ public class Graph: NSObject {
             v(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
         }
     }
-        
-    /**
-     Prepares the persistentStoreCoordinator to observe
-     changes from iCloud.
-     */
-    internal func prepareNotificationCenter() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleCloudWillChange(_:)), name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: managedObjectContext!.parentContext!.parentContext!.persistentStoreCoordinator)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleCloudDidChange(_:)), name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object: managedObjectContext!.parentContext!.parentContext!.persistentStoreCoordinator)
-    }
     
-    /**
-     Handler for cloud change notifications.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func handleCloudWillChange(notification: NSNotification) {
-        managedObjectContext?.performBlock { [weak self] in
-            self?.managedObjectContext.reset()
-            print("Persistent Store Coordinator Will Change")
-        }
-    }
-    
-    /**
-     Handler for cloud change notifications.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func handleCloudDidChange(notification: NSNotification) {
-        managedObjectContext?.performBlock { [weak self] in
-            self?.managedObjectContext.reset()
-            print("Persistent Store Coordinator Did Change")
-            self?.delegate?.graphDidPrepareCloudStorage?(self!)
-        }
-    }
-
     /**
      Performs a save.
      - Parameter completion: An Optional completion block that is

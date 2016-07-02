@@ -58,7 +58,9 @@ public protocol GraphDelegate {
     optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
     optional func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject)
     
+    optional func graphWillPrepareCloudStorage(graph: Graph)
     optional func graphDidPrepareCloudStorage(graph: Graph)
+    optional func graphDidImportCloudData(graph: Graph)
 }
 
 /// Storage Watch API.
