@@ -92,18 +92,16 @@ internal class ManagedNode: ManagedModel {
     /// Deletes the relationships and actions before marking for deletion.
     internal override func delete() {
         managedObjectContext?.performBlockAndWait { [unowned self] in
-            var set = self.groupSet as! NSMutableSet
-            self.groupSet.forEach { (object: AnyObject) in
+            self.groupSet.forEach { [unowned self]  (object: AnyObject) in
                 if let group = object as? ManagedGroup {
                     group.delete()
-                    set.removeObject(group)
+                    (self.groupSet as? NSMutableSet)?.removeObject(group)
                 }
             }
-            set = self.propertySet as! NSMutableSet
-            self.propertySet.forEach { (object: AnyObject) in
+            self.propertySet.forEach { [unowned self] (object: AnyObject) in
                 if let property = object as? ManagedProperty {
                     property.delete()
-                    set.removeObject(property)
+                    (self.propertySet as? NSMutableSet)?.removeObject(property)
                 }
             }
         }

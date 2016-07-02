@@ -271,13 +271,13 @@ public class Action: NSObject, NodeType {
         node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
             self.node.managedNode.subjectSet.forEach { [unowned self] (object: AnyObject) in
                 if let entity: ManagedEntity = object as? ManagedEntity {
-                    (entity.actionSubjectSet as! NSMutableSet).removeObject(self.node.managedNode)
+                    (entity.actionSubjectSet as? NSMutableSet)?.removeObject(self.node.managedNode)
                 }
             }
             
             self.node.managedNode.objectSet.forEach { [unowned self] (object: AnyObject) in
                 if let entity: ManagedEntity = object as? ManagedEntity {
-                    (entity.actionObjectSet as! NSMutableSet).removeObject(self.node.managedNode)
+                    (entity.actionObjectSet as? NSMutableSet)?.removeObject(self.node.managedNode)
                 }
             }
             

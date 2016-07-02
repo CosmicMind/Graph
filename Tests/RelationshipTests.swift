@@ -187,24 +187,33 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             print(relationship.subject)
             XCTAssertNotNil(relationship.subject)
             XCTAssertNotNil(relationship.object)
+            XCTAssertNotNil(relationship.subject)
+            XCTAssertNotNil(relationship.object)
             XCTAssertEqual(subject, relationship.subject)
+            XCTAssertEqual(1, relationship.subject?.relationships.count)
             XCTAssertEqual(object, relationship.object)
+            XCTAssertEqual(1, relationship.object?.relationships.count)
+            
             self?.saveException?.fulfill()
         }
         
-        XCTAssertNotNil(relationship.subject!)
+        XCTAssertNotNil(relationship.subject)
         XCTAssertNotNil(relationship.object)
         XCTAssertEqual(subject, relationship.subject)
+        XCTAssertEqual(1, relationship.subject?.relationships.count)
         XCTAssertEqual(object, relationship.object)
+        XCTAssertEqual(1, relationship.object?.relationships.count)
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
         relationship.delete()
         
-        XCTAssertNotNil(relationship.subject!)
+        XCTAssertNotNil(relationship.subject)
         XCTAssertNotNil(relationship.object)
         XCTAssertEqual(subject, relationship.subject)
+        XCTAssertEqual(0, relationship.subject?.relationships.count)
         XCTAssertEqual(object, relationship.object)
+        XCTAssertEqual(0, relationship.object?.relationships.count)
         
         saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
         delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
@@ -263,6 +272,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
+        XCTAssertEqual(subject, relationship.subject)
+        XCTAssertEqual(1, relationship.subject?.relationships.count)
+        
         waitForExpectationsWithTimeout(5, handler: nil)
         
         graph.clear()
@@ -306,6 +318,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
+        XCTAssertEqual(object, relationship.object)
+        XCTAssertEqual(1, relationship.object?.relationships.count)
+        
         waitForExpectationsWithTimeout(5, handler: nil)
         
         graph.clear()
@@ -334,8 +349,10 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
         XCTAssertFalse(relationship.memberOfGroup("G"))
-        XCTAssertNotNil(relationship.subject!)
+        XCTAssertNotNil(relationship.subject)
+        XCTAssertEqual(0, relationship.subject?.relationships.count)
         XCTAssertNotNil(relationship.object)
+        XCTAssertEqual(0, relationship.object?.relationships.count)
         
         delegateException?.fulfill()
     }
