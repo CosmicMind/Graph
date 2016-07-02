@@ -193,16 +193,6 @@ public class Graph: NSObject {
                 location = location.URLByAppendingPathComponent("Graph.sqlite")
             }
             
-            if cloud {
-                prepareNotificationCenter()
-            }
-            
-            do {
-                try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
-            } catch {
-                fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
-            }
-            
             GraphRegistry.privateContexts[name] = privateContext
             
             let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
@@ -212,6 +202,24 @@ public class Graph: NSObject {
             GraphRegistry.managedObjectContexts[name] = managedObjectContext
             
             GraphRegistry.cloud[name] = cloud
+            
+            if cloud {
+                prepareNotificationCenter()
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self] in
+                    do {
+                        try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: self.location, options: options)
+                    } catch {
+                        fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+                    }
+                    
+                }
+            } else {
+                do {
+                    try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
+                } catch {
+                    fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+                }
+            }
             
             location = privateContext.persistentStoreCoordinator?.persistentStores.first?.URL
             completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
@@ -244,8 +252,10 @@ public class Graph: NSObject {
      */
     @objc
     internal func handleCloudWillChange(notification: NSNotification) {
-        managedObjectContext!.parentContext!.parentContext!.reset()
-        print("RESET MANAGED OBJECT CONTEXT")
+        managedObjectContext?.performBlock { [weak self] in
+            self?.managedObjectContext.reset()
+            print("Persistent Store Coordinator Will Change")
+        }
     }
     
     /**
@@ -254,7 +264,11 @@ public class Graph: NSObject {
      */
     @objc
     internal func handleCloudDidChange(notification: NSNotification) {
-        print("CHANGED MANAGED OBJECT CONTEXT")
+        managedObjectContext?.performBlock { [weak self] in
+            self?.managedObjectContext.reset()
+            print("Persistent Store Coordinator Did Change")
+            self?.delegate?.graphDidPrepareCloudStorage?(self!)
+        }
     }
 
     /**
