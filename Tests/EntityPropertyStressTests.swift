@@ -60,9 +60,9 @@ class EntityPropertyStressTests: XCTestCase, GraphDelegate {
         let entity = Entity(type: "T")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -81,9 +81,9 @@ class EntityPropertyStressTests: XCTestCase, GraphDelegate {
             propertyInsertExpception = expectationWithDescription("[EntityPropertyStressTests Error: Property insert test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
             
             waitForExpectationsWithTimeout(5, handler: nil)
@@ -97,9 +97,9 @@ class EntityPropertyStressTests: XCTestCase, GraphDelegate {
             propertyUpdateExpception = expectationWithDescription("[EntityPropertyStressTests Error: Property update test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
             
             waitForExpectationsWithTimeout(5, handler: nil)
@@ -112,9 +112,9 @@ class EntityPropertyStressTests: XCTestCase, GraphDelegate {
             propertyDeleteExpception = expectationWithDescription("[EntityPropertyStressTests Error: Property delete test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
             
             waitForExpectationsWithTimeout(5, handler: nil)
@@ -126,9 +126,9 @@ class EntityPropertyStressTests: XCTestCase, GraphDelegate {
         entity.delete()
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)

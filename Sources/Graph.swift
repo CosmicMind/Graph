@@ -271,7 +271,7 @@ public class Graph: NSObject {
             return
         }
         
-        moc.performBlock {
+        moc.performBlockAndWait {
             do {
                 try moc.save()
                 

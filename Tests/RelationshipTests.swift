@@ -62,9 +62,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V", relationship["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -90,9 +90,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V", relationship["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -119,9 +119,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
         }
         
@@ -148,9 +148,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
         }
         
@@ -173,17 +173,38 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         relationship["P"] = "V"
         relationship.addToGroup("G")
         
+        let subject = Entity(type: "S")
+        relationship.subject = subject
+
+        let object = Entity(type: "O")
+        relationship.object = object
+        
         XCTAssertEqual("V", relationship["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            print(relationship.subject)
+            XCTAssertNotNil(relationship.subject)
+            XCTAssertNotNil(relationship.object)
+            XCTAssertEqual(subject, relationship.subject)
+            XCTAssertEqual(object, relationship.object)
+            self?.saveException?.fulfill()
         }
+        
+        XCTAssertNotNil(relationship.subject!)
+        XCTAssertNotNil(relationship.object)
+        XCTAssertEqual(subject, relationship.subject)
+        XCTAssertEqual(object, relationship.object)
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
         relationship.delete()
+        
+        XCTAssertNotNil(relationship.subject!)
+        XCTAssertNotNil(relationship.object)
+        XCTAssertEqual(subject, relationship.subject)
+        XCTAssertEqual(object, relationship.object)
         
         saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
         delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
@@ -191,8 +212,12 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         propertyExpception = expectationWithDescription("[RelationshipTests Error: Property test failed.]")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
+            XCTAssertNil(relationship.subject)
+            XCTAssertNil(relationship.object)
+            XCTAssertNotEqual(subject, relationship.subject)
+            XCTAssertNotEqual(object, relationship.object)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -217,9 +242,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V", relationship["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -233,9 +258,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual(subject, relationship.subject)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -260,9 +285,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V", relationship["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -276,9 +301,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual(object, relationship.object)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -309,6 +334,8 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
         XCTAssertFalse(relationship.memberOfGroup("G"))
+        XCTAssertNotNil(relationship.subject!)
+        XCTAssertNotNil(relationship.object)
         
         delegateException?.fulfill()
     }

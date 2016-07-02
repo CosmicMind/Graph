@@ -60,9 +60,9 @@ class RelationshipPropertyStressTests: XCTestCase, GraphDelegate {
         let relationship = Relationship(type: "T")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -81,9 +81,9 @@ class RelationshipPropertyStressTests: XCTestCase, GraphDelegate {
             propertyInsertExpception = expectationWithDescription("[RelationshipPropertyStressTests Error: Property insert test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
             
             waitForExpectationsWithTimeout(5, handler: nil)
@@ -97,9 +97,9 @@ class RelationshipPropertyStressTests: XCTestCase, GraphDelegate {
             propertyUpdateExpception = expectationWithDescription("[RelationshipPropertyStressTests Error: Property update test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
             
             waitForExpectationsWithTimeout(5, handler: nil)
@@ -112,9 +112,9 @@ class RelationshipPropertyStressTests: XCTestCase, GraphDelegate {
             propertyDeleteExpception = expectationWithDescription("[RelationshipPropertyStressTests Error: Property delete test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
             
             waitForExpectationsWithTimeout(5, handler: nil)
@@ -126,9 +126,9 @@ class RelationshipPropertyStressTests: XCTestCase, GraphDelegate {
         relationship.delete()
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)

@@ -86,14 +86,11 @@ public class Relationship: NSObject, NodeType {
     /// A reference to the subject Entity.
     public var subject: Entity? {
         get {
-            var entity: Entity?
+            var n: ManagedEntity?
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                guard let n = self.node.managedNode.subject else {
-                    return
-                }
-                entity = Entity(managedNode: n)
+                n = self.node.managedNode.subject
             }
-            return entity
+            return nil == n ? nil : Entity(managedNode: n!)
         }
         set(entity) {
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
@@ -106,14 +103,11 @@ public class Relationship: NSObject, NodeType {
     /// A reference to the object Entity.
     public var object: Entity? {
         get {
-            var entity: Entity?
+            var n: ManagedEntity?
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                guard let n = self.node.managedNode.object else {
-                    return
-                }
-                entity = Entity(managedNode: n)
+                n = self.node.managedNode.object
             }
-            return entity
+            return nil == n ? nil : Entity(managedNode: n!)
         }
         set(entity) {
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in

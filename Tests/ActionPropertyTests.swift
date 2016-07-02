@@ -64,9 +64,9 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V1", action["P1"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -83,9 +83,9 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         action["P1"] = "V1"
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -101,9 +101,9 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V2", action["P1"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -120,9 +120,9 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         action["P1"] = "V1"
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -138,9 +138,9 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         XCTAssertNil(action["P1"])
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)

@@ -62,9 +62,9 @@ class EntityTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V", entity["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -90,9 +90,9 @@ class EntityTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V", entity["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -119,9 +119,9 @@ class EntityTests: XCTestCase, GraphDelegate {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
         }
         
@@ -148,9 +148,9 @@ class EntityTests: XCTestCase, GraphDelegate {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
-                self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertEqual(nil, error)
+                self?.saveException?.fulfill()
             }
         }
         
@@ -176,9 +176,9 @@ class EntityTests: XCTestCase, GraphDelegate {
         XCTAssertEqual("V", entity["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
@@ -191,8 +191,8 @@ class EntityTests: XCTestCase, GraphDelegate {
         propertyExpception = expectationWithDescription("[EntityTests Error: Property test failed.]")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
-            self?.saveException?.fulfill()
             XCTAssertTrue(success)
+            self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
