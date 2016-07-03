@@ -454,7 +454,6 @@ public extension Graph {
     private func prepareForObservation() {
         let defaultCenter = NSNotificationCenter.defaultCenter()
         defaultCenter.removeObserver(self)
-        
         defaultCenter.addObserver(self, selector: #selector(handleDidModify(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
         defaultCenter.addObserver(self, selector: #selector(handleWillDelete(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
     }
