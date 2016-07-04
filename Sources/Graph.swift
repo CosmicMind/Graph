@@ -51,6 +51,14 @@ public struct GraphDefaults {
     }
 }
 
+@objc(GraphCloudStorageTransitionType)
+public enum GraphCloudStorageTransitionType: Int {
+    case accountAdded
+    case accountRemoved
+    case contentRemoved
+    case initialImportCompleted
+}
+
 @objc(Graph)
 public class Graph: NSObject {
     /// Graph name.
@@ -228,37 +236,60 @@ public class Graph: NSObject {
         let queue = NSOperationQueue.mainQueue()
         let defaultCenter = NSNotificationCenter.defaultCenter()
         
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [unowned self] (notification: NSNotification) in
-            self.managedObjectContext.performBlock { [unowned self] in
-                if true == self.managedObjectContext.hasChanges {
-                    self.sync { [unowned self] _ in
-                        self.reset()
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
+            guard let info = notification.userInfo else {
+                return
+            }
+            
+            guard let type = info[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
+                return
+            }
+            
+            print("DANIEL TYPE", type)
+            
+            self?.managedObjectContext.performBlock { [weak self] in
+                if true == self?.managedObjectContext.hasChanges {
+                    self?.sync { [weak self] _ in
+                        self?.reset()
                     }
                 } else {
-                    self.reset()
-                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
-                        self.delegate?.graphWillPrepareCloudStorage?(self)
+                    self?.reset()
+                    dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                        if let s = self {
+                            var t: GraphCloudStorageTransitionType
+                            switch type {
+                            case .AccountAdded:
+                                t = .accountAdded
+                            case .AccountRemoved:
+                                t = .accountRemoved
+                            case .ContentRemoved:
+                                t = .contentRemoved
+                            case .InitialImportCompleted:
+                                t = .initialImportCompleted
+                            }
+                            s.delegate?.graphWillPrepareCloudStorage?(s, transitionType: t)
+                        }
                     }
                 }
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [unowned self] (notification: NSNotification) in
-            self.managedObjectContext.performBlock { [unowned self] in
-                dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
-                    self.delegate?.graphDidPrepareCloudStorage?(self)
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
+            self?.managedObjectContext.performBlock { [weak self] in
+                dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                    if let s = self {
+                        s.delegate?.graphDidPrepareCloudStorage?(s)
+                    }
                 }
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [unowned self] (notification: NSNotification) in
-            self.managedObjectContext.performBlock { [unowned self] in
-                self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
-                dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
-                    self.notifyInsertWatchersFromCloud(notification)
-                    self.notifyUpdateWatchersFromCloud(notification)
-                    self.notifyDeleteWatchersFromCloud(notification)
-                }
+        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
+            self?.managedObjectContext.performBlock { [weak self] in
+                self?.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+                self?.notifyInsertWatchersFromCloud(notification)
+                self?.notifyUpdateWatchersFromCloud(notification)
+                self?.notifyDeleteWatchersFromCloud(notification)
             }
         }
     }

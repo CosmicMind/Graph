@@ -58,7 +58,7 @@ public protocol GraphDelegate {
     optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool)
     optional func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool)
     
-    optional func graphWillPrepareCloudStorage(graph: Graph)
+    optional func graphWillPrepareCloudStorage(graph: Graph, transitionType: GraphCloudStorageTransitionType)
     optional func graphDidPrepareCloudStorage(graph: Graph)
 }
 
@@ -199,14 +199,13 @@ public extension Graph {
         }
         
         if let inserted = info[NSInsertedObjectsKey] as? NSSet {
-            var objects = NSMutableSet()
-            (inserted.allObjects as! [NSManagedObjectID]).forEach { [unowned self] (objectID: NSManagedObjectID) in
-                self.managedObjectContext.performBlockAndWait { [unowned self] in
+            let objects = NSMutableSet()
+            self.managedObjectContext.performBlockAndWait { [unowned self] in
+                (inserted.allObjects as! [NSManagedObjectID]).forEach { [unowned self] (objectID: NSManagedObjectID) in
                     objects.addObject(self.managedObjectContext.objectWithID(objectID))
                 }
             }
-            let set = objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>
-            delegateToInsertWatchers(set, fromCloud: true)
+            delegateToInsertWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
         }
     }
     
@@ -226,13 +225,12 @@ public extension Graph {
         
         if let updated = info[NSUpdatedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
-            (updated.allObjects as! [NSManagedObjectID]).forEach { [unowned self] (objectID: NSManagedObjectID) in
-                self.managedObjectContext.performBlockAndWait { [unowned self] in
+            self.managedObjectContext.performBlockAndWait { [unowned self] in
+                (updated.allObjects as! [NSManagedObjectID]).forEach { [unowned self] (objectID: NSManagedObjectID) in
                     objects.addObject(self.managedObjectContext.objectWithID(objectID))
                 }
             }
-            let set = objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>
-            delegateToUpdateWatchers(set, fromCloud: true)
+            delegateToUpdateWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
         }
     }
     
@@ -252,13 +250,12 @@ public extension Graph {
         
         if let deleted = info[NSDeletedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
-            (deleted.allObjects as! [NSManagedObjectID]).forEach { [unowned self] (objectID: NSManagedObjectID) in
-                self.managedObjectContext.performBlockAndWait { [unowned self] in
+            self.managedObjectContext.performBlockAndWait { [unowned self] in
+                (deleted.allObjects as! [NSManagedObjectID]).forEach { [unowned self] (objectID: NSManagedObjectID) in
                     objects.addObject(self.managedObjectContext.objectWithID(objectID))
                 }
             }
-            let set = objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>
-            delegateToDeleteWatchers(set, fromCloud: true)
+            delegateToDeleteWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
         }
     }
     
@@ -270,38 +267,98 @@ public extension Graph {
         set.forEach { [unowned self] (managedObject: NSManagedObject) in
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntity_ManagedEntity_":
-                self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
-                
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
+                    }
+                }
             case "ManagedEntityGroup_ManagedEntityGroup_":
                 let group = managedObject as! ManagedEntityGroup
-                self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: group.node), group: group.name, fromCloud: fromCloud)
-                
+                let node = group.node
+                let name = group.name
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
-                self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
-                
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedAction_ManagedAction_":
-                self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
-                
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                    }
+                }
             case "ManagedActionGroup_ManagedActionGroup_":
                 let group: ManagedActionGroup = managedObject as! ManagedActionGroup
-                self.delegate?.graphDidAddActionToGroup?(self, action: Action(managedNode: group.node), group: group.name, fromCloud: fromCloud)
-                
+                let node = group.node
+                let name = group.name
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidAddActionToGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidAddActionToGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
-                self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
-                
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedRelationship_ManagedRelationship_":
-                self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
-                
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+                    }
+                }
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
-                self.delegate?.graphDidAddRelationshipToGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name, fromCloud: fromCloud)
-                
+                let node = group.node
+                let name = group.name
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidAddRelationshipToGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidAddRelationshipToGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
-                self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
-                
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                    }
+                }
             default:
                 assert(false, "[Graph Error: Graph observed an object that is invalid.]")
             }
@@ -317,22 +374,56 @@ public extension Graph {
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
-                self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
-                
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
-                self.delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
-                
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
-                self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
-                
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedAction_ManagedAction_":
-                self.delegate?.graphDidUpdateAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
-                
+                if NSThread.isMainThread() {
+                    self.delegate?.graphDidUpdateAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidUpdateAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                    }
+                }
             case "ManagedRelationship_ManagedRelationship_":
-                self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
-                
+                if NSThread.isMainThread() {
+                     self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+                    }
+                }
             default:
                 assert(false, "[Graph Error: Graph observed an object that is invalid.]")
             }
@@ -347,38 +438,94 @@ public extension Graph {
         set.forEach { [unowned self] (managedObject: NSManagedObject) in
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntity_ManagedEntity_":
-                self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
-                
+                dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                    self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
+                }
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
-                self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
-                
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                if NSThread.isMainThread() {
+                    self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedEntityGroup_ManagedEntityGroup_":
                 let group = managedObject as! ManagedEntityGroup
-                self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: group.node), group: group.name, fromCloud: fromCloud)
-                
+                let node = group.node
+                let name = group.name
+                if NSThread.isMainThread() {
+                    self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedAction_ManagedAction_":
-                self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
-                
+                if NSThread.isMainThread() {
+                    self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                    }
+                }
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
-                self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
-                
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                if NSThread.isMainThread() {
+                    self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedActionGroup_ManagedActionGroup_":
                 let group = managedObject as! ManagedActionGroup
-                self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: group.node), group: group.name, fromCloud: fromCloud)
-                
+                let node = group.node
+                let name = group.name
+                if NSThread.isMainThread() {
+                    self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedRelationship_ManagedRelationship_":
-                self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
-                
+                if NSThread.isMainThread() {
+                    self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+                    }
+                }
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
-                self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
-                
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                if NSThread.isMainThread() {
+                    self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+                    }
+                }
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
-                self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name, fromCloud: fromCloud)
-                
+                let node = group.node
+                let name = group.name
+                if NSThread.isMainThread() {
+                    self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
+                } else {
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
+                    }
+                }
             default:
                 assert(false, "[Graph Error: Graph observed an object that is invalid.]")
             }
