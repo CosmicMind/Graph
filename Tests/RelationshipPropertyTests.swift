@@ -148,7 +148,7 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         graph.clear()
     }
     
-    func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
+    func graphDidInsertRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V1", relationship["P1"] as? String)
@@ -156,7 +156,7 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         relationshipInsertException?.fulfill()
     }
     
-    func graphWillDeleteRelationship(graph: Graph, relationship: Relationship) {
+    func graphWillDeleteRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P1"])
@@ -164,7 +164,7 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         relationshipDeleteException?.fulfill()
     }
     
-    func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+    func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
@@ -175,7 +175,7 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         propertyInsertExpception?.fulfill()
     }
     
-    func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+    func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
@@ -186,7 +186,7 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject) {
+    func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         

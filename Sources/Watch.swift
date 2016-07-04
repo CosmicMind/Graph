@@ -32,31 +32,31 @@ import CoreData
 
 @objc(GraphDelegate)
 public protocol GraphDelegate {
-    optional func graphDidInsertEntity(graph: Graph, entity: Entity, cloud: Bool)
-    optional func graphWillDeleteEntity(graph: Graph, entity: Entity, cloud: Bool)
-    optional func graphDidAddEntityToGroup(graph: Graph, entity: Entity, group: String, cloud: Bool)
-    optional func graphWillRemoveEntityFromGroup(graph: Graph, entity: Entity, group: String, cloud: Bool)
-    optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject, cloud: Bool)
-    optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject, cloud: Bool)
-    optional func graphWillDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject, cloud: Bool)
+    optional func graphDidInsertEntity(graph: Graph, entity: Entity, fromCloud: Bool)
+    optional func graphWillDeleteEntity(graph: Graph, entity: Entity, fromCloud: Bool)
+    optional func graphDidAddEntityToGroup(graph: Graph, entity: Entity, group: String, fromCloud: Bool)
+    optional func graphWillRemoveEntityFromGroup(graph: Graph, entity: Entity, group: String, fromCloud: Bool)
+    optional func graphDidInsertEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject, fromCloud: Bool)
+    optional func graphDidUpdateEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject, fromCloud: Bool)
+    optional func graphWillDeleteEntityProperty(graph: Graph, entity: Entity, property: String, value: AnyObject, fromCloud: Bool)
     
-    optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship, cloud: Bool)
-    optional func graphDidUpdateRelationship(graph: Graph, relationship: Relationship, cloud: Bool)
-    optional func graphWillDeleteRelationship(graph: Graph, relationship: Relationship, cloud: Bool)
-    optional func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String, cloud: Bool)
-    optional func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String, cloud: Bool)
-    optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, cloud: Bool)
-    optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, cloud: Bool)
-    optional func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, cloud: Bool)
+    optional func graphDidInsertRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool)
+    optional func graphDidUpdateRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool)
+    optional func graphWillDeleteRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool)
+    optional func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool)
+    optional func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool)
+    optional func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool)
+    optional func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool)
+    optional func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool)
     
-    optional func graphDidInsertAction(graph: Graph, action: Action, cloud: Bool)
-    optional func graphDidUpdateAction(graph: Graph, action: Action, cloud: Bool)
-    optional func graphWillDeleteAction(graph: Graph, action: Action, cloud: Bool)
-    optional func graphDidAddActionToGroup(graph: Graph, action: Action, group: String, cloud: Bool)
-    optional func graphWillRemoveActionFromGroup(graph: Graph, action: Action, group: String, cloud: Bool)
-    optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, cloud: Bool)
-    optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, cloud: Bool)
-    optional func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, cloud: Bool)
+    optional func graphDidInsertAction(graph: Graph, action: Action, fromCloud: Bool)
+    optional func graphDidUpdateAction(graph: Graph, action: Action, fromCloud: Bool)
+    optional func graphWillDeleteAction(graph: Graph, action: Action, fromCloud: Bool)
+    optional func graphDidAddActionToGroup(graph: Graph, action: Action, group: String, fromCloud: Bool)
+    optional func graphWillRemoveActionFromGroup(graph: Graph, action: Action, group: String, fromCloud: Bool)
+    optional func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool)
+    optional func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool)
+    optional func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool)
     
     optional func graphWillPrepareCloudStorage(graph: Graph)
     optional func graphDidPrepareCloudStorage(graph: Graph)
@@ -128,12 +128,11 @@ public extension Graph {
     }
     
     /**
-     Handler for private ManagedObejctContext save notifications. 
-     Only insertions and updates are fired on this context.
+     Notifies insert watchers from local changes.
      - Parameter notification: NSNotification reference.
      */
     @objc
-    internal func handleDidModify(notification: NSNotification) {
+    internal func notifyInsertWatchers(notification: NSNotification) {
         guard let info = notification.userInfo else {
             return
         }
@@ -143,81 +142,35 @@ public extension Graph {
         }
         
         if let inserted = info[NSInsertedObjectsKey] as? NSSet {
-            (inserted.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntity_ManagedEntity_":
-                    self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), cloud: false)
-                    
-                case "ManagedEntityGroup_ManagedEntityGroup_":
-                    let group = managedObject as! ManagedEntityGroup
-                    self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: group.node), group: group.name, cloud: false)
-                    
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object, cloud: false)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction), cloud: false)
-                    
-                case "ManagedActionGroup_ManagedActionGroup_":
-                    let group: ManagedActionGroup = managedObject as! ManagedActionGroup
-                    self.delegate?.graphDidAddActionToGroup?(self, action: Action(managedNode: group.node), group: group.name, cloud: false)
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object, cloud: false)
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), cloud: false)
-                    
-                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
-                    let group = managedObject as! ManagedRelationshipGroup
-                    self.delegate?.graphDidAddRelationshipToGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name, cloud: false)
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object, cloud: false)
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
-            }
-        }
-        
-        if let updated = info[NSUpdatedObjectsKey] as? NSSet {
-            (updated.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object, cloud: false)
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object, cloud: false)
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object, cloud: false)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphDidUpdateAction?(self, action: Action(managedNode: managedObject as! ManagedAction), cloud: false)
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), cloud: false)
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
-            }
+            delegateToInsertWatchers(inserted.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
         }
     }
     
     /**
-     Handler for managedObjectContext save notifications. Only deletions are fired on this context.
+     Notifies update watchers from local changes.
      - Parameter notification: NSNotification reference.
      */
     @objc
-    internal func handleWillDelete(notification: NSNotification) {
+    internal func notifyUpdateWatchers(notification: NSNotification) {
+        guard let info = notification.userInfo else {
+            return
+        }
+        
+        guard let predicate = watchPredicate else {
+            return
+        }
+        
+        if let updated = info[NSUpdatedObjectsKey] as? NSSet {
+            delegateToUpdateWatchers(updated.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
+        }
+    }
+    
+    /**
+     Notifies delete watchers from local changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyDeleteWatchers(notification: NSNotification) {
         guard let info = notification.userInfo else {
             return
         }
@@ -227,44 +180,198 @@ public extension Graph {
         }
         
         if let deleted = info[NSDeletedObjectsKey] as? NSSet {
-            (deleted.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>).forEach { [unowned self] (managedObject: NSManagedObject) in
-                switch String.fromCString(object_getClassName(managedObject))! {
-                case "ManagedEntity_ManagedEntity_":
-                    self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), cloud: false)
-                    
-                case "ManagedEntityProperty_ManagedEntityProperty_":
-                    let property = managedObject as! ManagedEntityProperty
-                    self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object, cloud: false)
-                    
-                case "ManagedEntityGroup_ManagedEntityGroup_":
-                    let group = managedObject as! ManagedEntityGroup
-                    self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: group.node), group: group.name, cloud: false)
-                    
-                case "ManagedAction_ManagedAction_":
-                    self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction), cloud: false)
-                    
-                case "ManagedActionProperty_ManagedActionProperty_":
-                    let property = managedObject as! ManagedActionProperty
-                    self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object, cloud: false)
-                    
-                case "ManagedActionGroup_ManagedActionGroup_":
-                    let group = managedObject as! ManagedActionGroup
-                    self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: group.node), group: group.name, cloud: false)
-                    
-                case "ManagedRelationship_ManagedRelationship_":
-                    self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), cloud: false)
-                    
-                case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                    let property = managedObject as! ManagedRelationshipProperty
-                    self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object, cloud: false)
-                    
-                case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
-                    let group = managedObject as! ManagedRelationshipGroup
-                    self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name, cloud: false)
-                    
-                default:
-                    assert(false, "[Graph Error: Graph observed an object that is invalid.]")
-                }
+            delegateToDeleteWatchers(deleted.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
+        }
+    }
+    
+    /**
+     Notifies insert watchers from cloud changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyInsertWatchersFromCloud(notification: NSNotification) {
+        guard let info = notification.userInfo else {
+            return
+        }
+        
+        guard let predicate = watchPredicate else {
+            return
+        }
+        
+        if let inserted = info[NSInsertedObjectsKey] as? NSSet {
+            let objects = NSMutableSet()
+            (inserted.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
+                objects.addObject(managedObjectContext.objectWithID(objectID))
+            }
+            delegateToInsertWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+        }
+    }
+    
+    /**
+     Notifies update watchers from cloud changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyUpdateWatchersFromCloud(notification: NSNotification) {
+        guard let info = notification.userInfo else {
+            return
+        }
+        
+        guard let predicate = watchPredicate else {
+            return
+        }
+        
+        if let updated = info[NSUpdatedObjectsKey] as? NSSet {
+            let objects = NSMutableSet()
+            (updated.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
+                objects.addObject(managedObjectContext.objectWithID(objectID))
+            }
+            delegateToUpdateWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+        }
+    }
+    
+    /**
+     Notifies delete watchers from cloud changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyDeleteWatchersFromCloud(notification: NSNotification) {
+        guard let info = notification.userInfo else {
+            return
+        }
+        
+        guard let predicate = watchPredicate else {
+            return
+        }
+        
+        if let deleted = info[NSDeletedObjectsKey] as? NSSet {
+            let objects = NSMutableSet()
+            (deleted.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
+                objects.addObject(managedObjectContext.objectWithID(objectID))
+            }
+            delegateToDeleteWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+        }
+    }
+    
+    /**
+     Passes the handle to the insert notification delegates.
+     - Parameter set: A Set of NSManagedObjects to pass.
+     */
+    private func delegateToInsertWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
+        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+            switch String.fromCString(object_getClassName(managedObject))! {
+            case "ManagedEntity_ManagedEntity_":
+                self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
+                
+            case "ManagedEntityGroup_ManagedEntityGroup_":
+                let group = managedObject as! ManagedEntityGroup
+                self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: group.node), group: group.name, fromCloud: fromCloud)
+                
+            case "ManagedEntityProperty_ManagedEntityProperty_":
+                let property = managedObject as! ManagedEntityProperty
+                self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
+                
+            case "ManagedAction_ManagedAction_":
+                self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                
+            case "ManagedActionGroup_ManagedActionGroup_":
+                let group: ManagedActionGroup = managedObject as! ManagedActionGroup
+                self.delegate?.graphDidAddActionToGroup?(self, action: Action(managedNode: group.node), group: group.name, fromCloud: fromCloud)
+                
+            case "ManagedActionProperty_ManagedActionProperty_":
+                let property = managedObject as! ManagedActionProperty
+                self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
+                
+            case "ManagedRelationship_ManagedRelationship_":
+                self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+                
+            case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
+                let group = managedObject as! ManagedRelationshipGroup
+                self.delegate?.graphDidAddRelationshipToGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name, fromCloud: fromCloud)
+                
+            case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                let property = managedObject as! ManagedRelationshipProperty
+                self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
+                
+            default:
+                assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+            }
+        }
+    }
+    
+    /**
+     Passes the handle to the update notification delegates.
+     - Parameter set: A Set of NSManagedObjects to pass.
+     */
+    private func delegateToUpdateWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
+        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+            switch String.fromCString(object_getClassName(managedObject))! {
+            case "ManagedEntityProperty_ManagedEntityProperty_":
+                let property = managedObject as! ManagedEntityProperty
+                self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
+                
+            case "ManagedActionProperty_ManagedActionProperty_":
+                let property = managedObject as! ManagedActionProperty
+                self.delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
+                
+            case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                let property = managedObject as! ManagedRelationshipProperty
+                self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
+                
+            case "ManagedAction_ManagedAction_":
+                self.delegate?.graphDidUpdateAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                
+            case "ManagedRelationship_ManagedRelationship_":
+                self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+                
+            default:
+                assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+            }
+        }
+    }
+    
+    /**
+     Passes the handle to the delete notification delegates.
+     - Parameter set: A Set of NSManagedObjects to pass.
+     */
+    private func delegateToDeleteWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
+        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+            switch String.fromCString(object_getClassName(managedObject))! {
+            case "ManagedEntity_ManagedEntity_":
+                self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
+                
+            case "ManagedEntityProperty_ManagedEntityProperty_":
+                let property = managedObject as! ManagedEntityProperty
+                self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
+                
+            case "ManagedEntityGroup_ManagedEntityGroup_":
+                let group = managedObject as! ManagedEntityGroup
+                self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: group.node), group: group.name, fromCloud: fromCloud)
+                
+            case "ManagedAction_ManagedAction_":
+                self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                
+            case "ManagedActionProperty_ManagedActionProperty_":
+                let property = managedObject as! ManagedActionProperty
+                self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
+                
+            case "ManagedActionGroup_ManagedActionGroup_":
+                let group = managedObject as! ManagedActionGroup
+                self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: group.node), group: group.name, fromCloud: fromCloud)
+                
+            case "ManagedRelationship_ManagedRelationship_":
+                self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+                
+            case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                let property = managedObject as! ManagedRelationshipProperty
+                self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: property.node), property: property.name, value: property.object, fromCloud: fromCloud)
+                
+            case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
+                let group = managedObject as! ManagedRelationshipGroup
+                self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: group.node), group: group.name, fromCloud: fromCloud)
+                
+            default:
+                assert(false, "[Graph Error: Graph observed an object that is invalid.]")
             }
         }
     }
@@ -441,8 +548,9 @@ public extension Graph {
     private func prepareForObservation() {
         let defaultCenter = NSNotificationCenter.defaultCenter()
         defaultCenter.removeObserver(self)
-        defaultCenter.addObserver(self, selector: #selector(handleDidModify(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
-        defaultCenter.addObserver(self, selector: #selector(handleWillDelete(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
+        defaultCenter.addObserver(self, selector: #selector(notifyInsertWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
+        defaultCenter.addObserver(self, selector: #selector(notifyUpdateWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
+        defaultCenter.addObserver(self, selector: #selector(notifyDeleteWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
     }
 }
 
