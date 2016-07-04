@@ -254,6 +254,7 @@ public extension Graph {
                 (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
                     objects.addObject(self.managedObjectContext.objectWithID(objectID))
                 }
+                print(objects, objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>)
                 self.delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
             }
         }
@@ -603,7 +604,14 @@ public extension Graph {
         let defaultCenter = NSNotificationCenter.defaultCenter()
         defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: privateContext)
         defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: privateContext)
+        
+        defaultCenter.addObserver(self, selector: #selector(didChange(_:)), name: NSManagedObjectContextObjectsDidChangeNotification, object: privateContext)
         defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
+    }
+    
+    @objc
+    internal func didChange(notification: NSNotification) {
+        print(notification)
     }
 }
 

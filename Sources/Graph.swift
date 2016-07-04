@@ -249,7 +249,7 @@ public class Graph: NSObject {
                     self?.async()
                 } else {
                     self?.reset()
-                    dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                    dispatch_async(dispatch_get_main_queue()) { [weak self] in
                         if let s = self {
                             var t: GraphCloudStorageTransitionType
                             switch type {
@@ -271,7 +271,7 @@ public class Graph: NSObject {
         
         defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
             self?.managedObjectContext.performBlock { [weak self] in
-                dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                dispatch_async(dispatch_get_main_queue()) { [weak self] in
                     if let s = self {
                         s.delegate?.graphDidPrepareCloudStorage?(s)
                     }
@@ -280,10 +280,12 @@ public class Graph: NSObject {
         }
         
         defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
-            self?.managedObjectContext.performBlockAndWait { [weak self] in
+            self?.managedObjectContext.performBlock { [weak self] in
                 privateContext.performBlockAndWait {
                     privateContext.mergeChangesFromContextDidSaveNotification(notification)
+                    self?.managedObjectContext.reset()
                 }
+                self?.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
                 self?.managedObjectContext.reset()
                 self?.notifyInsertedWatchersFromCloud(notification)
                 self?.notifyUpdatedWatchersFromCloud(notification)
