@@ -43,7 +43,7 @@ internal struct Coordinator {
         var coordinator: NSPersistentStoreCoordinator!
         File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
             if let e = error {
-                fatalError(e.localizedDescription)
+                fatalError("[Graph Error: \(e.localizedDescription)]")
             }
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
         }

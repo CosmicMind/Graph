@@ -182,15 +182,14 @@ public class Graph: NSObject {
             return
         }
         
-        if true == GraphRegistry.cloud[name] {
-            preparePersistentStoreCoordinatorNotificationHandlers()
-        }
-        
         managedObjectContext = moc
-        location = moc.parentContext!.parentContext!.persistentStoreCoordinator?.persistentStores.first?.URL
+        location = moc.parentContext?.parentContext?.persistentStoreCoordinator?.persistentStores.first?.URL
         
         if let v = completion {
             let cloud = GraphRegistry.cloud[name] ?? false
+            if cloud {
+                preparePersistentStoreCoordinatorNotificationHandlers()
+            }
             v(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
         }
     }
@@ -245,8 +244,6 @@ public class Graph: NSObject {
                 return
             }
             
-            print("DANIEL TYPE", type)
-            
             self?.managedObjectContext.performBlock { [weak self] in
                 if true == self?.managedObjectContext.hasChanges {
                     self?.sync { [weak self] _ in
@@ -285,11 +282,11 @@ public class Graph: NSObject {
         }
         
         defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
-            self?.managedObjectContext.performBlock { [weak self] in
-                self?.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
-                self?.notifyInsertWatchersFromCloud(notification)
-                self?.notifyUpdateWatchersFromCloud(notification)
-                self?.notifyDeleteWatchersFromCloud(notification)
+            privateContext.performBlock { [weak self] in
+                privateContext.mergeChangesFromContextDidSaveNotification(notification)
+                self?.notifyInsertedWatchersFromCloud(notification)
+                self?.notifyUpdatedWatchersFromCloud(notification)
+                self?.notifyDeletedWatchersFromCloud(notification)
             }
         }
     }
