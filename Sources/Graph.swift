@@ -163,8 +163,8 @@ public class Graph: NSObject {
                 preparePersistentStoreCoordinatorNotificationHandlers()
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self] in
-                    dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                        self?.addPersistentStore(cloud)
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.addPersistentStore(cloud)
                     }
                 }
             } else {
@@ -210,13 +210,12 @@ public class Graph: NSObject {
                 cloud = false
             }
         }
-        
         do {
             try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
             location = privateContext.persistentStoreCoordinator?.persistentStores.first?.URL
             completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
-        } catch {
-            fatalError("[Graph Error: There was an error creating or loading the application's saved data.]")
+        } catch let e as NSError {
+            fatalError("[Graph Error: \(e.localizedDescription)]")
         }
     }
     
@@ -229,48 +228,36 @@ public class Graph: NSObject {
         let queue = NSOperationQueue.mainQueue()
         let defaultCenter = NSNotificationCenter.defaultCenter()
         
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
-            self?.managedObjectContext.performBlockAndWait { [weak self] in
-                if true == self?.managedObjectContext.hasChanges {
-                    self?.async()
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [unowned self] (notification: NSNotification) in
+            self.managedObjectContext.performBlock { [unowned self] in
+                if true == self.managedObjectContext.hasChanges {
+                    self.sync { [unowned self] _ in
+                        self.reset()
+                    }
                 } else {
-                    self?.managedObjectContext.reset()
-                    if NSThread.isMainThread() {
-                        self?.delegate?.graphWillPrepareCloudStorage?(self!)
-                    } else {
-                        dispatch_sync(dispatch_get_main_queue()) {
-                            self?.delegate?.graphWillPrepareCloudStorage?(self!)
-                        }
+                    self.reset()
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        self.delegate?.graphWillPrepareCloudStorage?(self)
                     }
                 }
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
-            self?.managedObjectContext.performBlockAndWait { [weak self] in
-                if NSThread.isMainThread() {
-                    self?.delegate?.graphDidPrepareCloudStorage?(self!)
-                } else {
-                    dispatch_sync(dispatch_get_main_queue()) {
-                        self?.delegate?.graphDidPrepareCloudStorage?(self!)
-                    }
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [unowned self] (notification: NSNotification) in
+            self.managedObjectContext.performBlock { [unowned self] in
+                dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                    self.delegate?.graphDidPrepareCloudStorage?(self)
                 }
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
-            self?.managedObjectContext.performBlockAndWait { [weak self] in
-                self?.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
-                if NSThread.isMainThread() {
-                    self?.notifyInsertWatchersFromCloud(notification)
-                    self?.notifyUpdateWatchersFromCloud(notification)
-                    self?.notifyDeleteWatchersFromCloud(notification)
-                } else {
-                    dispatch_sync(dispatch_get_main_queue()) {
-                        self?.notifyInsertWatchersFromCloud(notification)
-                        self?.notifyUpdateWatchersFromCloud(notification)
-                        self?.notifyDeleteWatchersFromCloud(notification)
-                    }
+        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [unowned self] (notification: NSNotification) in
+            self.managedObjectContext.performBlock { [unowned self] in
+                self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+                dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                    self.notifyInsertWatchersFromCloud(notification)
+                    self.notifyUpdateWatchersFromCloud(notification)
+                    self.notifyDeleteWatchersFromCloud(notification)
                 }
             }
         }

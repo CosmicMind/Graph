@@ -195,4 +195,11 @@ public extension Graph {
         
         sync(completion)
     }
+    
+    /// Reset the storage.
+    public func reset() {
+        managedObjectContext.performBlockAndWait { [unowned self] in
+            self.managedObjectContext.reset()
+        }
+    }
 }

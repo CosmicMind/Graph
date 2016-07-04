@@ -72,16 +72,16 @@ public extension Graph {
      - Returns: An Array of Entities.
      */
     public func watchForEntity(types types: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-        types?.forEach { [weak self] (type: String) in
-            self?.watch(Entity: type)
+        types?.forEach { [unowned self] (type: String) in
+            self.watch(Entity: type)
         }
         
-        groups?.forEach { [weak self] (group: String) in
-            self?.watch(EntityGroup: group)
+        groups?.forEach { [unowned self] (group: String) in
+            self.watch(EntityGroup: group)
         }
         
-        properties?.forEach { [weak self] (property: String) in
-            self?.watch(EntityProperty: property)
+        properties?.forEach { [unowned self] (property: String) in
+            self.watch(EntityProperty: property)
         }
     }
     
@@ -93,16 +93,16 @@ public extension Graph {
      - Returns: An Array of Relationships.
      */
     public func watchForRelationship(types types: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-        types?.forEach { [weak self] (type: String) in
-            self?.watch(Relationship: type)
+        types?.forEach { [unowned self] (type: String) in
+            self.watch(Relationship: type)
         }
         
-        groups?.forEach { [weak self] (group: String) in
-            self?.watch(RelationshipGroup: group)
+        groups?.forEach { [unowned self] (group: String) in
+            self.watch(RelationshipGroup: group)
         }
         
-        properties?.forEach { [weak self] (property: String) in
-            self?.watch(RelationshipProperty: property)
+        properties?.forEach { [unowned self] (property: String) in
+            self.watch(RelationshipProperty: property)
         }
     }
     
@@ -114,16 +114,16 @@ public extension Graph {
      - Returns: An Array of Actions.
      */
     public func watchForAction(types types: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-        types?.forEach { [weak self] (type: String) in
-            self?.watch(Action: type)
+        types?.forEach { [unowned self] (type: String) in
+            self.watch(Action: type)
         }
         
-        groups?.forEach { [weak self] (group: String) in
-            self?.watch(ActionGroup: group)
+        groups?.forEach { [unowned self] (group: String) in
+            self.watch(ActionGroup: group)
         }
         
-        properties?.forEach { [weak self] (property: String) in
-            self?.watch(ActionProperty: property)
+        properties?.forEach { [unowned self] (property: String) in
+            self.watch(ActionProperty: property)
         }
     }
     
@@ -199,11 +199,14 @@ public extension Graph {
         }
         
         if let inserted = info[NSInsertedObjectsKey] as? NSSet {
-            let objects = NSMutableSet()
-            (inserted.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                objects.addObject(managedObjectContext.objectWithID(objectID))
+            var objects = NSMutableSet()
+            (inserted.allObjects as! [NSManagedObjectID]).forEach { [unowned self] (objectID: NSManagedObjectID) in
+                self.managedObjectContext.performBlockAndWait { [unowned self] in
+                    objects.addObject(self.managedObjectContext.objectWithID(objectID))
+                }
             }
-            delegateToInsertWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+            let set = objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>
+            delegateToInsertWatchers(set, fromCloud: true)
         }
     }
     
@@ -223,10 +226,13 @@ public extension Graph {
         
         if let updated = info[NSUpdatedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
-            (updated.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                objects.addObject(managedObjectContext.objectWithID(objectID))
+            (updated.allObjects as! [NSManagedObjectID]).forEach { [unowned self] (objectID: NSManagedObjectID) in
+                self.managedObjectContext.performBlockAndWait { [unowned self] in
+                    objects.addObject(self.managedObjectContext.objectWithID(objectID))
+                }
             }
-            delegateToUpdateWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+            let set = objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>
+            delegateToUpdateWatchers(set, fromCloud: true)
         }
     }
     
@@ -246,10 +252,13 @@ public extension Graph {
         
         if let deleted = info[NSDeletedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
-            (deleted.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                objects.addObject(managedObjectContext.objectWithID(objectID))
+            (deleted.allObjects as! [NSManagedObjectID]).forEach { [unowned self] (objectID: NSManagedObjectID) in
+                self.managedObjectContext.performBlockAndWait { [unowned self] in
+                    objects.addObject(self.managedObjectContext.objectWithID(objectID))
+                }
             }
-            delegateToDeleteWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+            let set = objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>
+            delegateToDeleteWatchers(set, fromCloud: true)
         }
     }
     

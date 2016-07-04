@@ -99,10 +99,10 @@ public class Entity: NSObject, NodeType {
     public var relationships: [Relationship] {
         var result: [Relationship]?
         node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            var s = Set<ManagedRelationship>()
-            s.unionInPlace(self.node.managedNode.relationshipSubjectSet as! Set<ManagedRelationship>)
-            s.unionInPlace(self.node.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
-            result = s.map {
+            var set = Set<ManagedRelationship>()
+            set.unionInPlace(self.node.managedNode.relationshipSubjectSet as! Set<ManagedRelationship>)
+            set.unionInPlace(self.node.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
+            result = set.map {
                 return Relationship(managedNode: $0 as ManagedRelationship)
             } as [Relationship]
         }
@@ -117,7 +117,7 @@ public class Entity: NSObject, NodeType {
         node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
             result = self.node.managedNode.relationshipSubjectSet.map {
                 return Relationship(managedNode: $0 as! ManagedRelationship)
-                } as [Relationship]
+            } as [Relationship]
         }
         return result!
     }
