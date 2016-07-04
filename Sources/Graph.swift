@@ -245,10 +245,8 @@ public class Graph: NSObject {
             }
             
             self?.managedObjectContext.performBlock { [weak self] in
-                if true == self?.managedObjectContext.hasChanges {
-                    self?.sync { [weak self] _ in
-                        self?.reset()
-                    }
+                if true == privateContext.hasChanges {
+                    self?.async()
                 } else {
                     self?.reset()
                     dispatch_sync(dispatch_get_main_queue()) { [weak self] in
@@ -282,8 +280,11 @@ public class Graph: NSObject {
         }
         
         defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
-            privateContext.performBlock { [weak self] in
-                privateContext.mergeChangesFromContextDidSaveNotification(notification)
+            self?.managedObjectContext.performBlockAndWait { [weak self] in
+                privateContext.performBlockAndWait {
+                    privateContext.mergeChangesFromContextDidSaveNotification(notification)
+                }
+                self?.managedObjectContext.reset()
                 self?.notifyInsertedWatchersFromCloud(notification)
                 self?.notifyUpdatedWatchersFromCloud(notification)
                 self?.notifyDeletedWatchersFromCloud(notification)

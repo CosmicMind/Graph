@@ -198,11 +198,8 @@ public extension Graph {
     
     /// Reset the storage.
     public func reset() {
-        guard let privateContext = GraphRegistry.privateContexts[name] else {
-            return
-        }
-        privateContext.performBlockAndWait {
-            privateContext.reset()
+        managedObjectContext.performBlockAndWait { [unowned self] in
+            self.managedObjectContext.reset()
         }
     }
 }

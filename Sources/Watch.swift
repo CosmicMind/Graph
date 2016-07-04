@@ -198,18 +198,13 @@ public extension Graph {
             return
         }
         
-        guard let privateContext = GraphRegistry.privateContexts[name] else {
-            return
-        }
-        
         if let objectIDs = info[NSInsertedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
-            privateContext.performBlockAndWait { [weak self] in
+            managedObjectContext.performBlockAndWait { [unowned self, unowned objects] in
                 (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                    objects.addObject(privateContext.objectWithID(objectID))
+                    objects.addObject(self.managedObjectContext.objectWithID(objectID))
                 }
-                
-                self?.delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+                self.delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
             }
         }
     }
@@ -234,12 +229,11 @@ public extension Graph {
         
         if let objectIDs = info[NSUpdatedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
-            privateContext.performBlockAndWait { [weak self] in
+            managedObjectContext.performBlockAndWait { [unowned self, unowned objects] in
                 (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                    objects.addObject(privateContext.objectWithID(objectID))
+                    objects.addObject(self.managedObjectContext.objectWithID(objectID))
                 }
-                
-                self?.delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+                self.delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
             }
         }
     }
@@ -264,12 +258,11 @@ public extension Graph {
         
         if let objectIDs = info[NSDeletedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
-            privateContext.performBlockAndWait { [weak self] in
+            managedObjectContext.performBlockAndWait { [unowned self, unowned objects] in
                 (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                    objects.addObject(privateContext.objectWithID(objectID))
+                    objects.addObject(self.managedObjectContext.objectWithID(objectID))
                 }
-                
-                self?.delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+                self.delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
             }
         }
     }
@@ -289,7 +282,7 @@ public extension Graph {
                 let node = group.node
                 let name = group.name
                 self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
-            
+
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
                 let node = property.node
@@ -615,6 +608,14 @@ public extension Graph {
         defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
         defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
         defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
+        
+        defaultCenter.addObserver(self, selector: #selector(testChange(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
+        
+    }
+    
+    @objc
+    internal func testChange(notification: NSNotification) {
+        print(notification)
     }
 }
 
