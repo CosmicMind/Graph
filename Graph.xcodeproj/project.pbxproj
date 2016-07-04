@@ -83,8 +83,8 @@
 		96A1E8CC1D1A5ED700FAC2F9 /* EntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8C81D1A5E6000FAC2F9 /* EntityTests.swift */; };
 		96E0F4B41D238F1600E627D3 /* CloudTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E0F4B31D238F1600E627D3 /* CloudTests.swift */; };
 		96E0F4B51D238F1600E627D3 /* CloudTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E0F4B31D238F1600E627D3 /* CloudTests.swift */; };
-		96E0F4DF1D29F2F100E627D3 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E0F4DE1D29F2F100E627D3 /* Persistence.swift */; };
-		96E0F4E01D29F2F100E627D3 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E0F4DE1D29F2F100E627D3 /* Persistence.swift */; };
+		96E0F4DF1D29F2F100E627D3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E0F4DE1D29F2F100E627D3 /* Storage.swift */; };
+		96E0F4E01D29F2F100E627D3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E0F4DE1D29F2F100E627D3 /* Storage.swift */; };
 		96F6B5131D19C81C00EDF830 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5121D19C81C00EDF830 /* GraphTests.swift */; };
 		96F6B5141D19C81C00EDF830 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5121D19C81C00EDF830 /* GraphTests.swift */; };
 		96F6B5161D19C8D200EDF830 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5151D19C8D200EDF830 /* Context.swift */; };
@@ -159,7 +159,7 @@
 		96A1E8C81D1A5E6000FAC2F9 /* EntityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityTests.swift; sourceTree = "<group>"; };
 		96D4E4EE1BA76FAF00672E38 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96E0F4B31D238F1600E627D3 /* CloudTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudTests.swift; sourceTree = "<group>"; };
-		96E0F4DE1D29F2F100E627D3 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		96E0F4DE1D29F2F100E627D3 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		96F6B5121D19C81C00EDF830 /* GraphTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphTests.swift; sourceTree = "<group>"; };
 		96F6B5151D19C8D200EDF830 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
 		96F6B51B1D19CE3700EDF830 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 				96F6B5211D19D56B00EDF830 /* Model.swift */,
 				962EA8CB1D1DBB1C003890F7 /* Search.swift */,
 				962EA8C81D1DBAA9003890F7 /* Watch.swift */,
-				96E0F4DE1D29F2F100E627D3 /* Persistence.swift */,
+				96E0F4DE1D29F2F100E627D3 /* Storage.swift */,
 				96A1E8941D1A4A4D00FAC2F9 /* ManagedModel.swift */,
 				96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */,
 				96A1E8981D1A512700FAC2F9 /* ManagedGroup.swift */,
@@ -511,7 +511,7 @@
 				96F6B51D1D19CE3700EDF830 /* File.swift in Sources */,
 				962EA8C11D1DAD1D003890F7 /* ManagedActionProperty.swift in Sources */,
 				962EA8BE1D1DAD12003890F7 /* ManagedActionGroup.swift in Sources */,
-				96E0F4E01D29F2F100E627D3 /* Persistence.swift in Sources */,
+				96E0F4E01D29F2F100E627D3 /* Storage.swift in Sources */,
 				96A1E8A71D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */,
 				962EA8CA1D1DBAA9003890F7 /* Watch.swift in Sources */,
 				96A1E88D1D1A489300FAC2F9 /* Node.swift in Sources */,
@@ -567,7 +567,7 @@
 				96A1E8A61D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */,
 				962EA8C01D1DAD1D003890F7 /* ManagedActionProperty.swift in Sources */,
 				962EA8BD1D1DAD12003890F7 /* ManagedActionGroup.swift in Sources */,
-				96E0F4DF1D29F2F100E627D3 /* Persistence.swift in Sources */,
+				96E0F4DF1D29F2F100E627D3 /* Storage.swift in Sources */,
 				96F6B51F1D19D3FF00EDF830 /* Coordinator.swift in Sources */,
 				96F6B5161D19C8D200EDF830 /* Context.swift in Sources */,
 				962EA8C91D1DBAA9003890F7 /* Watch.swift in Sources */,

@@ -184,7 +184,6 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
             XCTAssertEqual(nil, error)
-            print(relationship.subject)
             XCTAssertNotNil(relationship.subject)
             XCTAssertNotNil(relationship.object)
             XCTAssertNotNil(relationship.subject)

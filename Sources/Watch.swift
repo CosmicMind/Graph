@@ -223,10 +223,6 @@ public extension Graph {
             return
         }
         
-        guard let privateContext = GraphRegistry.privateContexts[name] else {
-            return
-        }
-        
         if let objectIDs = info[NSUpdatedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
             managedObjectContext.performBlockAndWait { [unowned self, unowned objects] in
@@ -249,10 +245,6 @@ public extension Graph {
         }
         
         guard let predicate = watchPredicate else {
-            return
-        }
-        
-        guard let privateContext = GraphRegistry.privateContexts[name] else {
             return
         }
         
@@ -604,18 +596,14 @@ public extension Graph {
             return
         }
         
+        guard let privateContext = managedObjectContext.parentContext else {
+            return
+        }
+        
         let defaultCenter = NSNotificationCenter.defaultCenter()
-        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
-        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
+        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: privateContext)
+        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: privateContext)
         defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
-        
-        defaultCenter.addObserver(self, selector: #selector(testChange(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext.parentContext!.parentContext!)
-        
-    }
-    
-    @objc
-    internal func testChange(notification: NSNotification) {
-        print(notification)
     }
 }
 

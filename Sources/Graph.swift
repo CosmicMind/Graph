@@ -157,10 +157,10 @@ public class Graph: NSObject {
             
             GraphRegistry.privateContexts[name] = privateContext
             
-            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
-            GraphRegistry.mainManagedObjectContexts[name] = mainContext
+//            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
+//            GraphRegistry.mainManagedObjectContexts[name] = mainContext
             
-            managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: mainContext)
+            managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
             GraphRegistry.managedObjectContexts[name] = managedObjectContext
             
             let cloud = nil != NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)
@@ -183,7 +183,7 @@ public class Graph: NSObject {
         }
         
         managedObjectContext = moc
-        location = moc.parentContext?.parentContext?.persistentStoreCoordinator?.persistentStores.first?.URL
+        location = moc.parentContext?.persistentStoreCoordinator?.persistentStores.first?.URL
         
         if let v = completion {
             let cloud = GraphRegistry.cloud[name] ?? false
