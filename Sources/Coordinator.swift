@@ -159,15 +159,13 @@ public extension Graph {
                 s.delegate?.graphWillResetFromCloudStorage?(s)
                 moc?.mergeChangesFromContextDidSaveNotification(notification)
                 moc?.reset()
+                s.notifyInsertedWatchersFromCloud(notification)
+                s.notifyUpdatedWatchersFromCloud(notification)
+                s.notifyDeletedWatchersFromCloud(notification)
                 poc?.performBlockAndWait { [weak self, weak poc] in
                     poc?.mergeChangesFromContextDidSaveNotification(notification)
                     poc?.reset()
-                    dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                        guard let s = self else {
-                            return
-                        }
-                        s.delegate?.graphDidResetFromCloudStorage?(s)
-                    }
+                    s.delegate?.graphDidResetFromCloudStorage?(s)
                 }
             }
         }
