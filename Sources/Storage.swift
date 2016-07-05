@@ -77,21 +77,36 @@ public extension Graph {
             return
         }
         
-        moc.performBlock { [weak moc] in
+        moc.performBlockAndWait { [weak moc] in
             do {
                 try moc?.save()
-                guard let poc = moc?.parentContext else {
+                guard let mmoc = moc?.parentContext else {
                     GraphCompletionCallback(
                         success: false,
-                        error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),
                         completion: completion)
                     return
                 }
                 
-                poc.performBlock { [weak poc] in
+                mmoc.performBlock { [weak mmoc] in
                     do {
-                        try poc?.save()
-                        GraphCompletionCallback(success: true, error: nil, completion: completion)
+                        try mmoc?.save()
+                        guard let poc = mmoc?.parentContext else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
+                                completion: completion)
+                            return
+                        }
+                        
+                        poc.performBlock { [weak poc] in
+                            do {
+                                try poc?.save()
+                                GraphCompletionCallback(success: true, error: nil, completion: completion)
+                            } catch let e as NSError {
+                                GraphCompletionCallback(success: false, error: e, completion: completion)
+                            }
+                        }
                     } catch let e as NSError {
                         GraphCompletionCallback(success: false, error: e, completion: completion)
                     }
@@ -111,26 +126,41 @@ public extension Graph {
         guard let moc = managedObjectContext else {
             GraphCompletionCallback(
                 success: false,
-                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not exist."),
+                error: GraphError(message: "[Graph Error: ManagedObjectContext does not exist."),
                 completion: completion)
             return
         }
         
-        moc.performBlockAndWait { [unowned moc] in
+        moc.performBlockAndWait { [weak moc] in
             do {
-                try moc.save()
-                guard let poc = moc.parentContext else {
+                try moc?.save()
+                guard let mmoc = moc?.parentContext else {
                     GraphCompletionCallback(
                         success: false,
-                        error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
+                        error: GraphError(message: "[Graph Error: Main ManagedObjectContext does not exist."),
                         completion: completion)
                     return
                 }
-        
-                poc.performBlockAndWait { [unowned poc] in
+                
+                mmoc.performBlockAndWait { [weak mmoc] in
                     do {
-                        try poc.save()
-                        GraphCompletionCallback(success: true, error: nil, completion: completion)
+                        try mmoc?.save()
+                        guard let poc = mmoc?.parentContext else {
+                            GraphCompletionCallback(
+                                success: false,
+                                error: GraphError(message: "[Graph Error: Private ManagedObjectContext does not exist."),
+                                completion: completion)
+                            return
+                        }
+                        
+                        poc.performBlockAndWait { [weak poc] in
+                            do {
+                                try poc?.save()
+                                GraphCompletionCallback(success: true, error: nil, completion: completion)
+                            } catch let e as NSError {
+                                GraphCompletionCallback(success: false, error: e, completion: completion)
+                            }
+                        }
                     } catch let e as NSError {
                         GraphCompletionCallback(success: false, error: e, completion: completion)
                     }

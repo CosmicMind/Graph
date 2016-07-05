@@ -40,7 +40,7 @@ public extension Graph {
      - Returns: An Array of Entities.
      */
     public func searchForEntity(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Entity] {
-        guard let poc = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext?.parentContext else {
             return [Entity]()
         }
         
@@ -121,7 +121,7 @@ public extension Graph {
      - Returns: An Array of Relationships.
      */
     public func searchForRelationship(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Relationship] {
-        guard let poc = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext?.parentContext else {
             return [Relationship]()
         }
         
@@ -202,7 +202,7 @@ public extension Graph {
      - Returns: An Array of Actions.
      */
     public func searchForAction(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Action] {
-        guard let poc = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext?.parentContext else {
             return [Action]()
         }
         
@@ -282,7 +282,7 @@ public extension Graph {
      - Returns: An optional Array of AnyObjects.
      */
     internal func search(typeDescriptionName: String, types: [String]) -> [AnyObject]? {
-        guard let poc = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext?.parentContext else {
             return nil
         }
         
@@ -292,7 +292,7 @@ public extension Graph {
             typesPredicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
         }
         
-        let entityDescription = NSEntityDescription.entityForName(typeDescriptionName, inManagedObjectContext: managedObjectContext.parentContext!)!
+        let entityDescription = NSEntityDescription.entityForName(typeDescriptionName, inManagedObjectContext: poc)!
         let request = NSFetchRequest()
         request.entity = entityDescription
         request.fetchBatchSize = batchSize
@@ -319,7 +319,7 @@ public extension Graph {
      - Returns: An optional Array of AnyObjects.
      */
     internal func search(groupDescriptionName: String, groups: [String]) -> [AnyObject]? {
-        guard let poc = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext?.parentContext else {
             return nil
         }
         
@@ -329,7 +329,7 @@ public extension Graph {
             groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
         }
         
-        let entityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: managedObjectContext.parentContext!)!
+        let entityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: poc)!
         let request = NSFetchRequest()
         request.entity = entityDescription
         request.fetchBatchSize = batchSize
@@ -359,7 +359,7 @@ public extension Graph {
      - Returns: An optional Array of AnyObjects.
      */
     internal func search(propertyDescriptionName: String, properties: [(key: String, value: AnyObject?)]) -> [AnyObject]? {
-        guard let poc = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext?.parentContext else {
             return nil
         }
         
@@ -377,7 +377,7 @@ public extension Graph {
             }
         }
         
-        let entityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: managedObjectContext.parentContext!)!
+        let entityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: poc)!
         let request = NSFetchRequest()
         request.entity = entityDescription
         request.fetchBatchSize = batchSize

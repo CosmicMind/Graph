@@ -115,7 +115,7 @@ internal class ManagedRelationship: ManagedNode {
                     (group as? ManagedRelationshipGroup)?.delete()
                     (self.groupSet as? NSMutableSet)?.removeObject(group)
                     result = true
-                    return
+                    break
                 }
             }
         }
