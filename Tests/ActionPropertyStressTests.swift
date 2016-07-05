@@ -136,7 +136,7 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
         graph.clear()
     }
     
-    func graphDidInsertAction(graph: Graph, action: Action, fromCloud: Bool) {
+    func graphDidInsertAction(graph: Graph, action: Action) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(0, action.properties.count)
@@ -144,7 +144,7 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
         actionInsertException?.fulfill()
     }
     
-    func graphWillDeleteAction(graph: Graph, action: Action, fromCloud: Bool) {
+    func graphWillDeleteAction(graph: Graph, action: Action) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(0, action.properties.count)
@@ -152,21 +152,21 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
         actionDeleteException?.fulfill()
     }
     
-    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
         propertyInsertExpception?.fulfill()
     }
     
-    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
         propertyUpdateExpception?.fulfill()
     }
     
-    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         

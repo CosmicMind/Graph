@@ -71,27 +71,23 @@ public extension Graph {
      storage is used, true if yes, false otherwise.
      */
     internal func addPersistentStore(enableCloud: Bool) {
-        guard let poc = GraphContextRegistry.privateManagedObjectContexts[name] else {
+        guard let poc = managedObjectContext.parentContext else {
             return
         }
         
-        var cloud: Bool = enableCloud
         var options: [NSObject: AnyObject]?
         
-        if cloud {
-            if let _ = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
-                options = [NSObject: AnyObject]()
-                options?[NSMigratePersistentStoresAutomaticallyOption] = 1
-                options?[NSInferMappingModelAutomaticallyOption] = 1
-                options?[NSPersistentStoreUbiquitousContentNameKey] = name
-            } else {
-                cloud = false
-            }
+        if enableCloud {
+            options = [NSObject: AnyObject]()
+            options?[NSMigratePersistentStoresAutomaticallyOption] = 1
+            options?[NSInferMappingModelAutomaticallyOption] = 1
+            options?[NSPersistentStoreUbiquitousContentNameKey] = name
         }
+        
         do {
             try poc.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
             location = poc.persistentStoreCoordinator?.persistentStores.first?.URL
-            completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+            completion?(cloud: enableCloud, error: enableCloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
         } catch let e as NSError {
             fatalError("[Graph Error: \(e.localizedDescription)]")
         }
@@ -99,11 +95,11 @@ public extension Graph {
     
     /// Prepares the persistentStoreCoordinator notification handlers.
     internal func preparePersistentStoreCoordinatorNotificationHandlers() {
-        guard let moc = GraphContextRegistry.managedObjectContexts[name] else {
+        guard let moc = managedObjectContext else {
             return
         }
         
-        guard let poc = GraphContextRegistry.privateManagedObjectContexts[name] else {
+        guard let poc = moc.parentContext else {
             return
         }
         
@@ -147,27 +143,30 @@ public extension Graph {
         defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak poc] (notification: NSNotification) in
             poc?.performBlock { [weak self] in
                 dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                    if let s = self {
-                        s.delegate?.graphDidPrepareCloudStorage?(s)
+                    guard let s = self else {
+                        return
                     }
+                    s.delegate?.graphDidPrepareCloudStorage?(s)
                 }
             }
         }
         
         defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak poc] (notification: NSNotification) in
-            moc?.performBlock { [weak self, weak poc] in
+            moc?.performBlockAndWait { [weak self, weak moc, weak poc] in
+                guard let s = self else {
+                    return
+                }
+                s.delegate?.graphWillResetFromCloudStorage?(s)
                 moc?.mergeChangesFromContextDidSaveNotification(notification)
                 moc?.reset()
-                dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                    self?.notifyDeletedWatchersFromCloud(notification)
-                    
-                    poc?.performBlock { [weak self, weak moc, weak poc] in
-                        poc?.mergeChangesFromContextDidSaveNotification(notification)
-                        poc?.reset()
-                        dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                            self?.notifyInsertedWatchersFromCloud(notification)
-                            self?.notifyUpdatedWatchersFromCloud(notification)
+                poc?.performBlockAndWait { [weak self, weak poc] in
+                    poc?.mergeChangesFromContextDidSaveNotification(notification)
+                    poc?.reset()
+                    dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                        guard let s = self else {
+                            return
                         }
+                        s.delegate?.graphDidResetFromCloudStorage?(s)
                     }
                 }
             }

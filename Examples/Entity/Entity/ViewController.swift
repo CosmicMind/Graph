@@ -64,13 +64,13 @@ class ViewController: UIViewController {
 		person["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
 		
 		/*
-		The graph.save call triggers an asynchronous callback
+		The graph.async call triggers an asynchronous callback
 		that may be used for various benefits. As well, since
 		the graph is watching Person Entities, the
 		graphDidInsertEntity delegate method is executed once
 		the save has completed.
 		*/
-		graph.save { (success: Bool, error: NSError?) in
+		graph.async { (success: Bool, error: NSError?) in
 			if let e: NSError = error {
 				print(e)
 			}
@@ -111,18 +111,18 @@ class ViewController: UIViewController {
 			elon["lastName"] = "Musk"
 			elon["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
 			
-			/*
-			The graph.save call triggers an asynchronous callback
-			that may be used for various benefits. As well, since
-			the graph is watching Person Entities, the
-			graphDidInsertEntity delegate method is executed once
-			the save has completed.
-			*/
-			graph.save { (success: Bool, error: NSError?) in
-				if let e: NSError = error {
-					print(e)
-				}
-			}
+            /*
+             The graph.async call triggers an asynchronous callback
+             that may be used for various benefits. As well, since
+             the graph is watching Person Entities, the
+             graphDidInsertEntity delegate method is executed once
+             the save has completed.
+             */
+            graph.async { (success: Bool, error: NSError?) in
+                if let e: NSError = error {
+                    print(e)
+                }
+            }
 		}
 	}
 	

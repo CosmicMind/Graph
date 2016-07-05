@@ -249,7 +249,11 @@ public class Entity: NSObject, NodeType {
      - Parameter name: The group name.
      */
     public func toggleGroupMembership(name: String) {
-        memberOfGroup(name) ? removeFromGroup(name) : addToGroup(name)
+        if memberOfGroup(name) {
+            removeFromGroup(name)
+        } else {
+            addToGroup(name)
+        }
     }
     
     /// Marks the Entity for deletion.

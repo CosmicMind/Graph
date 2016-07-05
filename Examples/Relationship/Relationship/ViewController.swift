@@ -80,18 +80,18 @@ class ViewController: UIViewController {
 		employee.subject = person
 		employee.object = company
 		
-		/*
-		The graph.save call triggers an asynchronous callback
-		that may be used for various benefits. As well, since
-		the graph is watching Employee Relationships, the
-		graphDidInsertRelationship delegate method is executed once
-		the save has completed.
-		*/
-		graph.save { (success: Bool, error: NSError?) in
-			if let e: NSError = error {
-				print(e)
-			}
-		}
+        /*
+         The graph.async call triggers an asynchronous callback
+         that may be used for various benefits. As well, since
+         the graph is watching Person Entities, the
+         graphDidInsertEntity delegate method is executed once
+         the save has completed.
+         */
+        graph.async { (success: Bool, error: NSError?) in
+            if let e: NSError = error {
+                print(e)
+            }
+        }
 	}
 	
 	/// Prepares the Graph instance.
@@ -153,18 +153,18 @@ class ViewController: UIViewController {
 			employee3.subject = elon
 			employee3.object = tesla
 			
-			/*
-			The graph.save call triggers an asynchronous callback
-			that may be used for various benefits. As well, since
-			the graph is watching Employee Relationships, the
-			graphDidInsertRelationship delegate method is executed once
-			the save has completed.
-			*/
-			graph.save { (success: Bool, error: NSError?) in
-				if let e: NSError = error {
-					print(e)
-				}
-			}
+            /*
+             The graph.async call triggers an asynchronous callback
+             that may be used for various benefits. As well, since
+             the graph is watching Person Entities, the
+             graphDidInsertEntity delegate method is executed once
+             the save has completed.
+             */
+            graph.async { (success: Bool, error: NSError?) in
+                if let e: NSError = error {
+                    print(e)
+                }
+            }
 		}
 	}
 	

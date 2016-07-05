@@ -85,8 +85,13 @@ public extension Graph {
      - Parameter iCloud: A boolean to enable iCloud.
      */
     internal func prepareManagedObjectContext(enableCloud enableCloud: Bool) {
-        guard let moc = GraphContextRegistry.managedObjectContexts[name] else {
-            location = location.URLByAppendingPathComponent(name)
+        let route = enableCloud ? "Cloud/\(name)" : "Local/\(name)"
+        
+        guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
+            let cloud = enableCloud && nil != NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)
+            GraphContextRegistry.cloud[route] = cloud
+            
+            location = location.URLByAppendingPathComponent(route)
             
             let poc = Context.createManagedContext(.PrivateQueueConcurrencyType)
             poc.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(type: type, location: location)
@@ -95,25 +100,21 @@ public extension Graph {
                 location = location.URLByAppendingPathComponent("Graph.sqlite")
             }
             
-            GraphContextRegistry.privateManagedObjectContexts[name] = poc
+            GraphContextRegistry.privateManagedObjectContexts[route] = poc
             
             managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: poc)
-            GraphContextRegistry.managedObjectContexts[name] = managedObjectContext
-            
-            let cloud = nil != NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)
-            
-            GraphContextRegistry.cloud[name] = cloud
+            GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
             
             if cloud {
                 preparePersistentStoreCoordinatorNotificationHandlers()
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
                     dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                        self?.addPersistentStore(cloud)
+                        self?.addPersistentStore(true)
                     }
                 }
             } else {
-                addPersistentStore(cloud)
+                addPersistentStore(false)
             }
             
             return
@@ -123,7 +124,7 @@ public extension Graph {
         location = moc.parentContext?.persistentStoreCoordinator?.persistentStores.first?.URL
         
         if let v = completion {
-            let cloud = GraphContextRegistry.cloud[name] ?? false
+            let cloud = GraphContextRegistry.cloud[route] ?? false
             if cloud {
                 preparePersistentStoreCoordinatorNotificationHandlers()
             }

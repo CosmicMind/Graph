@@ -109,18 +109,18 @@ class ViewController: UIViewController {
 			acquisition2.addSubject(facebook)
 			acquisition2.addObject(whatsapp)
 			
-			/*
-			The graph.save call triggers an asynchronous callback
-			that may be used for various benefits. As well, since
-			the graph is watching Acquired Actions, the
-			graphDidInsertAction delegate method is executed once
-			the save has completed.
-			*/
-			graph.save { (success: Bool, error: NSError?) in
-				if let e: NSError = error {
-					print(e)
-				}
-			}
+            /*
+             The graph.async call triggers an asynchronous callback
+             that may be used for various benefits. As well, since
+             the graph is watching Person Entities, the
+             graphDidInsertEntity delegate method is executed once
+             the save has completed.
+             */
+            graph.async { (success: Bool, error: NSError?) in
+                if let e: NSError = error {
+                    print(e)
+                }
+            }
 		}
 	}
 	

@@ -62,7 +62,7 @@ internal class ManagedAction: ManagedNode {
                     for property in self.propertySet {
                         if name == property.name {
                             (property as? ManagedActionProperty)?.delete()
-                            (self.propertySet as! NSMutableSet).removeObject(property)
+                            (self.propertySet as? NSMutableSet)?.removeObject(property)
                             break
                         }
                     }
@@ -96,6 +96,27 @@ internal class ManagedAction: ManagedNode {
                 group.node = self
                 result = true
                 return
+            }
+        }
+        return result!
+    }
+    
+    /**
+     Removes the ManagedAction from the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    internal override func removeFromGroup(name: String) -> Bool {
+        var result: Bool? = false
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            for group in self.groupSet {
+                if name == group.name {
+                    (group as? ManagedActionGroup)?.delete()
+                    (self.groupSet as? NSMutableSet)?.removeObject(group)
+                    result = true
+                    return
+                }
             }
         }
         return result!

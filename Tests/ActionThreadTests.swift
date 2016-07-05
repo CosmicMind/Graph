@@ -112,7 +112,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         graph.clear()
     }
     
-    func graphDidInsertAction(graph: Graph, action: Action, fromCloud: Bool) {
+    func graphDidInsertAction(graph: Graph, action: Action) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(111, action["P"] as? Int)
@@ -121,7 +121,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         insertExpectation?.fulfill()
     }
     
-    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -131,7 +131,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graphDidAddActionToGroup(graph: Graph, action: Action, group: String, fromCloud: Bool) {
+    func graphDidAddActionToGroup(graph: Graph, action: Action, group: String) {
         XCTAssertEqual("T", action.type)
         XCTAssertEqual("G", group)
         XCTAssertTrue(action.memberOfGroup(group))
@@ -139,7 +139,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         insertGroupExpectation?.fulfill()
     }
     
-    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -149,7 +149,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graphWillDeleteAction(graph: Graph, action: Action, fromCloud: Bool) {
+    func graphWillDeleteAction(graph: Graph, action: Action) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
@@ -158,7 +158,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         deleteExpectation?.fulfill()
     }
     
-    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -168,7 +168,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         deletePropertyExpectation?.fulfill()
     }
     
-    func graphWillRemoveActionFromGroup(graph: Graph, action: Action, group: String, fromCloud: Bool) {
+    func graphWillRemoveActionFromGroup(graph: Graph, action: Action, group: String) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", group)

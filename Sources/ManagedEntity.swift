@@ -66,7 +66,7 @@ internal class ManagedEntity: ManagedNode {
                     for property in self.propertySet {
                         if name == property.name {
                             (property as? ManagedEntityProperty)?.delete()
-                            (self.propertySet as! NSMutableSet).removeObject(property)
+                            (self.propertySet as? NSMutableSet)?.removeObject(property)
                             break
                         }
                     }
@@ -87,7 +87,7 @@ internal class ManagedEntity: ManagedNode {
     }
     
     /**
-     Adds the ManagedAction to the group.
+     Adds the ManagedEntity to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -100,6 +100,27 @@ internal class ManagedEntity: ManagedNode {
                 group.node = self
                 result = true
                 return
+            }
+        }
+        return result!
+    }
+    
+    /**
+     Removes the ManagedEntity from the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    internal override func removeFromGroup(name: String) -> Bool {
+        var result: Bool? = false
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            for group in self.groupSet {
+                if name == group.name {
+                    (group as? ManagedEntityGroup)?.delete()
+                    (self.groupSet as? NSMutableSet)?.removeObject(group)
+                    result = true
+                    return
+                }
             }
         }
         return result!

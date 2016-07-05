@@ -162,17 +162,6 @@ internal class ManagedNode: ManagedModel {
      otherwise.
      */
     internal func removeFromGroup(name: String) -> Bool {
-        var result: Bool?
-        managedObjectContext?.performBlockAndWait { [unowned self] in
-            for group in self.groupSet {
-                if name == group.name {
-                    group.delete()
-                    (self.groupSet as! NSMutableSet).removeObject(group)
-                    result = true
-                    return
-                }
-            }
-        }
-        return result ?? false
+        return false
     }
 }
