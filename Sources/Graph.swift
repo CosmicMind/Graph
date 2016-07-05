@@ -39,7 +39,7 @@ public struct GraphDefaults {
     
     /// URL reference to where the Graph datastore will live.
     static var location: NSURL {
-        return File.path(.DocumentDirectory, path: "Graph/")!
+        return File.path(.DocumentDirectory, path: "CosmicMind/Graph/")!
     }
 }
 

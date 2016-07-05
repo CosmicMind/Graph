@@ -108,8 +108,6 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {

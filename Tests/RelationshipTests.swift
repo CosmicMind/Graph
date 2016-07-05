@@ -68,8 +68,6 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testNamedGraphSave() {
@@ -96,8 +94,6 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testReferenceGraphSave() {
@@ -126,8 +122,6 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testAsyncGraphSave() {
@@ -155,8 +149,6 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testAsyncGraphDelete() {
@@ -229,8 +221,6 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testSubject() {
@@ -275,8 +265,6 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual(1, relationship.subject?.relationships.count)
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testObject() {
@@ -321,8 +309,6 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual(1, relationship.object?.relationships.count)
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {

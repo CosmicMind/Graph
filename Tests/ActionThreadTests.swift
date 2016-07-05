@@ -108,8 +108,6 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func graphDidInsertAction(graph: Graph, action: Action) {

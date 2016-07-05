@@ -132,8 +132,6 @@ class EntityPropertyStressTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func graphDidInsertEntity(graph: Graph, entity: Entity) {

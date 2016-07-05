@@ -70,8 +70,6 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testPropertyUpdate() {
@@ -107,8 +105,6 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testPropertyDelete() {
@@ -144,8 +140,6 @@ class RelationshipPropertyTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {

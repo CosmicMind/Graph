@@ -68,8 +68,6 @@ class ActionTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testNamedGraphSave() {
@@ -96,8 +94,6 @@ class ActionTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testReferenceGraphSave() {
@@ -126,8 +122,6 @@ class ActionTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testAsyncGraphSave() {
@@ -155,8 +149,6 @@ class ActionTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testAsyncGraphDelete() {
@@ -196,8 +188,6 @@ class ActionTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testSubjects() {
@@ -241,8 +231,6 @@ class ActionTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testObjects() {
@@ -286,8 +274,6 @@ class ActionTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func graphDidInsertAction(graph: Graph, action: Action) {

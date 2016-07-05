@@ -68,8 +68,6 @@ class EntityTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testNamedGraphSave() {
@@ -96,8 +94,6 @@ class EntityTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testReferenceGraphSave() {
@@ -126,8 +122,6 @@ class EntityTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testAsyncGraphSave() {
@@ -155,8 +149,6 @@ class EntityTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func testAsyncGraphDelete() {
@@ -196,8 +188,6 @@ class EntityTests: XCTestCase, GraphDelegate {
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        
-        graph.clear()
     }
     
     func graphDidInsertEntity(graph: Graph, entity: Entity) {
