@@ -30,13 +30,6 @@
 
 import CoreData
 
-internal struct GraphRegistry {
-    static var dispatchToken: dispatch_once_t = 0
-    static var cloud: [String: Bool]!
-    static var privateManagedObjectContexts: [String: NSManagedObjectContext]!
-    static var managedObjectContexts: [String: NSManagedObjectContext]!
-}
-
 public struct GraphDefaults {
     /// Datastore name.
     static let name: String = "default"
@@ -48,18 +41,6 @@ public struct GraphDefaults {
     static var location: NSURL {
         return File.path(.DocumentDirectory, path: "Graph/")!
     }
-}
-
-/**
- Cloud stroage transition types for when changes happen
- to the iCloud account directly.
- */
-@objc(GraphCloudStorageTransitionType)
-public enum GraphCloudStorageTransitionType: Int {
-    case accountAdded
-    case accountRemoved
-    case contentRemoved
-    case initialImportCompleted
 }
 
 @objc(Graph)
@@ -111,7 +92,7 @@ public class Graph: NSObject {
         self.name = name
         self.type = type
         self.location = location
-        prepareGraphRegistry()
+        prepareGraphContextRegistry()
         prepareManagedObjectContext(enableCloud: false)
     }
     
@@ -129,167 +110,7 @@ public class Graph: NSObject {
         type = NSSQLiteStoreType
         location = GraphDefaults.location
         self.completion = completion
-        prepareGraphRegistry()
+        prepareGraphContextRegistry()
         prepareManagedObjectContext(enableCloud: true)
-    }
-    
-    /// Prepares the registry.
-    private func prepareGraphRegistry() {
-        dispatch_once(&GraphRegistry.dispatchToken) {
-            GraphRegistry.cloud = [String: Bool]()
-            GraphRegistry.privateManagedObjectContexts = [String: NSManagedObjectContext]()
-            GraphRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
-        }
-    }
-    
-    /**
-     Prapres the managedObjectContext.
-     - Parameter iCloud: A boolean to enable iCloud.
-    */
-    private func prepareManagedObjectContext(enableCloud enableCloud: Bool) {
-        guard let moc = GraphRegistry.managedObjectContexts[name] else {
-            location = location.URLByAppendingPathComponent(name)
-            
-            let poc = Context.createManagedContext(.PrivateQueueConcurrencyType)
-            poc.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(type: type, location: location)
-            
-            if NSSQLiteStoreType == type {
-                location = location.URLByAppendingPathComponent("Graph.sqlite")
-            }
-            
-            GraphRegistry.privateManagedObjectContexts[name] = poc
-            
-            managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: poc)
-            GraphRegistry.managedObjectContexts[name] = managedObjectContext
-            
-            let cloud = nil != NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)
-            
-            GraphRegistry.cloud[name] = cloud
-            
-            if cloud {
-                preparePersistentStoreCoordinatorNotificationHandlers()
-                
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-                    dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                        self?.addPersistentStore(cloud)
-                    }
-                }
-            } else {
-                addPersistentStore(cloud)
-            }
-            
-            return
-        }
-        
-        managedObjectContext = moc
-        location = moc.parentContext?.persistentStoreCoordinator?.persistentStores.first?.URL
-        
-        if let v = completion {
-            let cloud = GraphRegistry.cloud[name] ?? false
-            if cloud {
-                preparePersistentStoreCoordinatorNotificationHandlers()
-            }
-            v(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
-        }
-    }
-    
-    /**
-     Adds the persistentStore to the persistentStoreCoordinator. 
-     - Parameter enableCloud: A boolean indicating whether cloud 
-     storage is used, true if yes, false otherwise.
-    */
-    private func addPersistentStore(enableCloud: Bool) {
-        guard let poc = GraphRegistry.privateManagedObjectContexts[name] else {
-            return
-        }
-        
-        var cloud: Bool = enableCloud
-        var options: [NSObject: AnyObject]?
-        
-        if cloud {
-            if let _ = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
-                options = [NSObject: AnyObject]()
-                options?[NSMigratePersistentStoresAutomaticallyOption] = 1
-                options?[NSInferMappingModelAutomaticallyOption] = 1
-                options?[NSPersistentStoreUbiquitousContentNameKey] = name
-            } else {
-                cloud = false
-            }
-        }
-        do {
-            try poc.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
-            location = poc.persistentStoreCoordinator?.persistentStores.first?.URL
-            completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
-        } catch let e as NSError {
-            fatalError("[Graph Error: \(e.localizedDescription)]")
-        }
-    }
-    
-    /// Prepares the persistentStoreCoordinator notification handlers.
-    private func preparePersistentStoreCoordinatorNotificationHandlers() {
-        guard let moc = GraphRegistry.managedObjectContexts[name] else {
-            return
-        }
-        
-        guard let poc = GraphRegistry.privateManagedObjectContexts[name] else {
-            return
-        }
-        
-        let queue = NSOperationQueue.mainQueue()
-        let defaultCenter = NSNotificationCenter.defaultCenter()
-        
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak poc] (notification: NSNotification) in
-            guard let info = notification.userInfo else {
-                return
-            }
-            
-            guard let type = info[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
-                return
-            }
-            
-            moc?.performBlock { [weak self, weak poc] in
-                if true == poc?.hasChanges {
-                    self?.async()
-                } else {
-                    self?.reset()
-                    dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                        if let s = self {
-                            var t: GraphCloudStorageTransitionType
-                            switch type {
-                            case .AccountAdded:
-                                t = .accountAdded
-                            case .AccountRemoved:
-                                t = .accountRemoved
-                            case .ContentRemoved:
-                                t = .contentRemoved
-                            case .InitialImportCompleted:
-                                t = .initialImportCompleted
-                            }
-                            s.delegate?.graphWillPrepareCloudStorage?(s, transitionType: t)
-                        }
-                    }
-                }
-            }
-        }
-        
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
-            moc?.performBlock { [weak self] in
-                dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                    if let s = self {
-                        s.delegate?.graphDidPrepareCloudStorage?(s)
-                    }
-                }
-            }
-        }
-        
-        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak poc] (notification: NSNotification) in
-            moc?.performBlock { [weak self, weak poc] in
-                poc?.performBlockAndWait { [weak poc] in
-                    poc?.mergeChangesFromContextDidSaveNotification(notification)
-                }
-                moc?.mergeChangesFromContextDidSaveNotification(notification)
-                self?.reset()
-            }
-        }
     }
 }

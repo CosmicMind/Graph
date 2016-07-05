@@ -30,6 +30,13 @@
 
 import CoreData
 
+internal struct GraphContextRegistry {
+    static var dispatchToken: dispatch_once_t = 0
+    static var cloud: [String: Bool]!
+    static var privateManagedObjectContexts: [String: NSManagedObjectContext]!
+    static var managedObjectContexts: [String: NSManagedObjectContext]!
+}
+
 internal struct Context {
     /**
      Creates a NSManagedContext. The method will ensure that  any workerManagedObjectContexts that have
@@ -59,5 +66,68 @@ internal struct Context {
         }
         
         return moc
+    }
+}
+
+/// NSManagedObjectContext extension.
+public extension Graph {
+    /// Prepares the registry.
+    internal func prepareGraphContextRegistry() {
+        dispatch_once(&GraphContextRegistry.dispatchToken) {
+            GraphContextRegistry.cloud = [String: Bool]()
+            GraphContextRegistry.privateManagedObjectContexts = [String: NSManagedObjectContext]()
+            GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
+        }
+    }
+    
+    /**
+     Prapres the managedObjectContext.
+     - Parameter iCloud: A boolean to enable iCloud.
+     */
+    internal func prepareManagedObjectContext(enableCloud enableCloud: Bool) {
+        guard let moc = GraphContextRegistry.managedObjectContexts[name] else {
+            location = location.URLByAppendingPathComponent(name)
+            
+            let poc = Context.createManagedContext(.PrivateQueueConcurrencyType)
+            poc.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(type: type, location: location)
+            
+            if NSSQLiteStoreType == type {
+                location = location.URLByAppendingPathComponent("Graph.sqlite")
+            }
+            
+            GraphContextRegistry.privateManagedObjectContexts[name] = poc
+            
+            managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: poc)
+            GraphContextRegistry.managedObjectContexts[name] = managedObjectContext
+            
+            let cloud = nil != NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)
+            
+            GraphContextRegistry.cloud[name] = cloud
+            
+            if cloud {
+                preparePersistentStoreCoordinatorNotificationHandlers()
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+                    dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                        self?.addPersistentStore(cloud)
+                    }
+                }
+            } else {
+                addPersistentStore(cloud)
+            }
+            
+            return
+        }
+        
+        managedObjectContext = moc
+        location = moc.parentContext?.persistentStoreCoordinator?.persistentStores.first?.URL
+        
+        if let v = completion {
+            let cloud = GraphContextRegistry.cloud[name] ?? false
+            if cloud {
+                preparePersistentStoreCoordinatorNotificationHandlers()
+            }
+            v(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+        }
     }
 }

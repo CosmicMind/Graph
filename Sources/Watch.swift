@@ -205,7 +205,7 @@ public extension Graph {
         if let objectIDs = info[NSInsertedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
             moc.performBlockAndWait { [unowned self, unowned moc, unowned objects] in
-                (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
+                (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
                     objects.addObject(moc.objectWithID(objectID))
                 }
                 self.delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
@@ -234,7 +234,7 @@ public extension Graph {
         if let objectIDs = info[NSUpdatedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
             moc.performBlockAndWait { [unowned self, unowned moc, unowned objects] in
-                (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
+                (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
                     objects.addObject(moc.objectWithID(objectID))
                 }
                 self.delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
@@ -260,13 +260,24 @@ public extension Graph {
             return
         }
         
+        guard let poc = managedObjectContext.parentContext else {
+            return
+        }
+        
         if let objectIDs = info[NSDeletedObjectsKey] as? NSSet {
             let objects = NSMutableSet()
-            moc.performBlockAndWait { [unowned self, unowned moc, unowned objects] in
-                (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
+            moc.performBlockAndWait { [unowned self, unowned moc, weak poc, unowned objects] in
+                (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
                     objects.addObject(moc.objectWithID(objectID))
                 }
-                self.delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+                let set = objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>
+                if 0 < set.count {
+                    poc?.performBlockAndWait { [weak self, weak poc] in
+                        
+                    }
+                }
+                print("SET SET SET", set)
+                self.delegateToDeletedWatchers(set, fromCloud: true)
             }
         }
     }
@@ -617,23 +628,9 @@ public extension Graph {
         }
         
         let defaultCenter = NSNotificationCenter.defaultCenter()
-//        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: poc)
-//        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: poc)
-        
-        defaultCenter.addObserver(self, selector: #selector(didChangeP(_:)), name: NSManagedObjectContextObjectsDidChangeNotification, object: poc)
-        defaultCenter.addObserver(self, selector: #selector(didChangeM(_:)), name: NSManagedObjectContextObjectsDidChangeNotification, object: moc)
-//        defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: managedObjectContext)
-    }
-    
-    @objc
-    internal func didChangeP(notification: NSNotification) {
-        notifyInsertedWatchers(notification)
-        notifyUpdatedWatchers(notification)
-    }
-    
-    @objc
-    internal func didChangeM(notification: NSNotification) {
-        notifyDeletedWatchers(notification)
+        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: poc)
+        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: poc)
+        defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSManagedObjectContextDidSaveNotification, object: moc)
     }
 }
 

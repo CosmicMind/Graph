@@ -30,6 +30,18 @@
 
 import CoreData
 
+/**
+ Cloud stroage transition types for when changes happen
+ to the iCloud account directly.
+ */
+@objc(GraphCloudStorageTransitionType)
+public enum GraphCloudStorageTransitionType: Int {
+    case accountAdded
+    case accountRemoved
+    case contentRemoved
+    case initialImportCompleted
+}
+
 internal struct Coordinator {
 	/**
      Creates a NSPersistentStoreCoordinator.
@@ -48,5 +60,117 @@ internal struct Coordinator {
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
         }
         return coordinator!
+    }
+}
+
+/// NSPersistentStoreCoordinator extension.
+public extension Graph {
+    /**
+     Adds the persistentStore to the persistentStoreCoordinator.
+     - Parameter enableCloud: A boolean indicating whether cloud
+     storage is used, true if yes, false otherwise.
+     */
+    internal func addPersistentStore(enableCloud: Bool) {
+        guard let poc = GraphContextRegistry.privateManagedObjectContexts[name] else {
+            return
+        }
+        
+        var cloud: Bool = enableCloud
+        var options: [NSObject: AnyObject]?
+        
+        if cloud {
+            if let _ = NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil) {
+                options = [NSObject: AnyObject]()
+                options?[NSMigratePersistentStoresAutomaticallyOption] = 1
+                options?[NSInferMappingModelAutomaticallyOption] = 1
+                options?[NSPersistentStoreUbiquitousContentNameKey] = name
+            } else {
+                cloud = false
+            }
+        }
+        do {
+            try poc.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
+            location = poc.persistentStoreCoordinator?.persistentStores.first?.URL
+            completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+        } catch let e as NSError {
+            fatalError("[Graph Error: \(e.localizedDescription)]")
+        }
+    }
+    
+    /// Prepares the persistentStoreCoordinator notification handlers.
+    internal func preparePersistentStoreCoordinatorNotificationHandlers() {
+        guard let moc = GraphContextRegistry.managedObjectContexts[name] else {
+            return
+        }
+        
+        guard let poc = GraphContextRegistry.privateManagedObjectContexts[name] else {
+            return
+        }
+        
+        let queue = NSOperationQueue.mainQueue()
+        let defaultCenter = NSNotificationCenter.defaultCenter()
+        
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak poc] (notification: NSNotification) in
+            guard let info = notification.userInfo else {
+                return
+            }
+            
+            guard let type = info[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
+                return
+            }
+            
+            poc?.performBlock { [weak self, weak poc] in
+                if true == poc?.hasChanges {
+                    self?.async()
+                } else {
+                    self?.reset()
+                    dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                        if let s = self {
+                            var t: GraphCloudStorageTransitionType
+                            switch type {
+                            case .AccountAdded:
+                                t = .accountAdded
+                            case .AccountRemoved:
+                                t = .accountRemoved
+                            case .ContentRemoved:
+                                t = .contentRemoved
+                            case .InitialImportCompleted:
+                                t = .initialImportCompleted
+                            }
+                            s.delegate?.graphWillPrepareCloudStorage?(s, transitionType: t)
+                        }
+                    }
+                }
+            }
+        }
+        
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak poc] (notification: NSNotification) in
+            poc?.performBlock { [weak self] in
+                dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                    if let s = self {
+                        s.delegate?.graphDidPrepareCloudStorage?(s)
+                    }
+                }
+            }
+        }
+        
+        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak poc] (notification: NSNotification) in
+            moc?.performBlock { [weak self, weak poc] in
+                moc?.mergeChangesFromContextDidSaveNotification(notification)
+                moc?.reset()
+                dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                    self?.notifyDeletedWatchersFromCloud(notification)
+                    
+                    poc?.performBlock { [weak self, weak moc, weak poc] in
+                        poc?.mergeChangesFromContextDidSaveNotification(notification)
+                        poc?.reset()
+                        dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                            self?.notifyInsertedWatchersFromCloud(notification)
+                            self?.notifyUpdatedWatchersFromCloud(notification)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
