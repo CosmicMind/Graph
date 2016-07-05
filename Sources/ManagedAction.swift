@@ -115,7 +115,7 @@ internal class ManagedAction: ManagedNode {
                     (group as? ManagedActionGroup)?.delete()
                     (self.groupSet as? NSMutableSet)?.removeObject(group)
                     result = true
-                    break
+                    return
                 }
             }
         }

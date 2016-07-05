@@ -181,7 +181,6 @@ public extension Graph {
             return
         }
         
-        print(info)
         if let objects = info[NSDeletedObjectsKey] as? NSSet {
             delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>)
         }
@@ -528,7 +527,7 @@ public extension Graph {
             return
         }
         
-        guard let poc = moc.parentContext?.parentContext else {
+        guard let poc = moc.parentContext else {
             return
         }
         

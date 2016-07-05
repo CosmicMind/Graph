@@ -71,7 +71,7 @@ public extension Graph {
      storage is used, true if yes, false otherwise.
      */
     internal func addPersistentStore(enableCloud: Bool) {
-        guard let poc = managedObjectContext.parentContext?.parentContext else {
+        guard let poc = managedObjectContext.parentContext else {
             return
         }
         
@@ -99,11 +99,7 @@ public extension Graph {
             return
         }
         
-        guard let mmoc = moc.parentContext else {
-            return
-        }
-        
-        guard let poc = mmoc.parentContext else {
+        guard let poc = moc.parentContext else {
             return
         }
         
@@ -155,26 +151,22 @@ public extension Graph {
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak mmoc, weak poc] (notification: NSNotification) in
-            moc?.performBlockAndWait { [weak self, weak moc, weak mmoc, weak poc] in
+        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak poc] (notification: NSNotification) in
+            moc?.performBlockAndWait { [weak self, weak moc, weak poc] in
                 guard let s = self else {
                     return
                 }
+                s.delegate?.graphWillResetFromCloudStorage?(s)
                 moc?.mergeChangesFromContextDidSaveNotification(notification)
                 moc?.reset()
-                s.delegate?.graphWillResetFromCloudStorage?(s)
-                mmoc?.performBlockAndWait { [weak self, weak mmoc, weak poc] in
-                    mmoc?.mergeChangesFromContextDidSaveNotification(notification)
-                    mmoc?.reset()
-                    poc?.performBlockAndWait { [weak self, weak poc] in
-                        poc?.mergeChangesFromContextDidSaveNotification(notification)
-                        poc?.reset()
-                        dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                            guard let s = self else {
-                                return
-                            }
-                            s.delegate?.graphDidResetFromCloudStorage?(s)
+                poc?.performBlockAndWait { [weak self, weak poc] in
+                    poc?.mergeChangesFromContextDidSaveNotification(notification)
+                    poc?.reset()
+                    dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                        guard let s = self else {
+                            return
                         }
+                        s.delegate?.graphDidResetFromCloudStorage?(s)
                     }
                 }
             }

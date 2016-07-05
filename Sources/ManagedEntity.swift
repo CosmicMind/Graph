@@ -119,7 +119,7 @@ internal class ManagedEntity: ManagedNode {
                     (group as? ManagedEntityGroup)?.delete()
                     (self.groupSet as? NSMutableSet)?.removeObject(group)
                     result = true
-                    break
+                    return
                 }
             }
         }

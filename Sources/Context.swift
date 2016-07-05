@@ -34,7 +34,6 @@ internal struct GraphContextRegistry {
     static var dispatchToken: dispatch_once_t = 0
     static var cloud: [String: Bool]!
     static var privateManagedObjectContexts: [String: NSManagedObjectContext]!
-    static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
     static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
 
@@ -77,7 +76,6 @@ public extension Graph {
         dispatch_once(&GraphContextRegistry.dispatchToken) {
             GraphContextRegistry.cloud = [String: Bool]()
             GraphContextRegistry.privateManagedObjectContexts = [String: NSManagedObjectContext]()
-            GraphContextRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
             GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
         }
     }
@@ -104,10 +102,7 @@ public extension Graph {
             
             GraphContextRegistry.privateManagedObjectContexts[route] = poc
             
-            let moc = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: poc)
-            GraphContextRegistry.mainManagedObjectContexts[route] = moc
-            
-            managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType, parentContext: moc)
+            managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: poc)
             GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
             
             if cloud {
