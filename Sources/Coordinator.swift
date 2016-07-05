@@ -40,13 +40,13 @@ internal struct Coordinator {
      - Returns: An instance of NSPersistentStoreCoordinator.
 	*/
     static func createPersistentStoreCoordinator(type type: String, location: NSURL, options: [NSObject: AnyObject]? = nil) -> NSPersistentStoreCoordinator {
-        var coordinator: NSPersistentStoreCoordinator!
+        var coordinator: NSPersistentStoreCoordinator?
         File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
             if let e = error {
                 fatalError("[Graph Error: \(e.localizedDescription)]")
             }
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
         }
-        return coordinator
+        return coordinator!
     }
 }

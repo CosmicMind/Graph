@@ -41,7 +41,7 @@ internal struct Context {
     static func createManagedContext(concurrencyType: NSManagedObjectContextConcurrencyType, parentContext: NSManagedObjectContext? = nil) -> NSManagedObjectContext {
         var moc: NSManagedObjectContext!
         
-        let makeContext: () -> Void = {
+        let makeContext = { [weak parentContext] in
             moc = NSManagedObjectContext(concurrencyType: concurrencyType)
             moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
             

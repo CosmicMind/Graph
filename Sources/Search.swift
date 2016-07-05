@@ -40,7 +40,7 @@ public extension Graph {
      - Returns: An Array of Entities.
      */
     public func searchForEntity(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Entity] {
-        guard let privateContext = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext else {
             return [Entity]()
         }
         
@@ -78,12 +78,13 @@ public extension Graph {
                         continue
                     }
                 } else {
-                    let n = nodes[i]["node"]!
+                    let n = nodes[i]["node"]
                     var c: Bool? = false
-                    privateContext.performBlockAndWait {
-                        if let v = privateContext.objectWithID(n! as! NSManagedObjectID) as? ManagedEntity {
+                    var weakNodes: [AnyObject]? = nodes
+                    poc.performBlockAndWait { [weak poc] in
+                        if let v = poc?.objectWithID(n! as! NSManagedObjectID) as? ManagedEntity {
                             if nil == seen.updateValue(true, forKey: v.id) {
-                                nodes[i] = Entity(managedNode: v)
+                                weakNodes?[i] = Entity(managedNode: v)
                                 i -= 1
                                 c = true
                             }
@@ -99,12 +100,12 @@ public extension Graph {
             return nodes as! [Entity]
         }
         
-        return nodes.map {
+        return nodes.map { [weak poc] in
             guard let n = $0 as? ManagedEntity else {
                 var managedNode: NSManagedObject?
-                let n = $0["node"]!
-                privateContext.performBlockAndWait {
-                    managedNode = privateContext.objectWithID(n as! NSManagedObjectID)
+                let n = $0["node"]
+                poc?.performBlockAndWait { [weak poc] in
+                    managedNode = poc?.objectWithID(n! as! NSManagedObjectID)
                 }
                 return Entity(managedNode: managedNode as! ManagedEntity)
             }
@@ -120,7 +121,7 @@ public extension Graph {
      - Returns: An Array of Relationships.
      */
     public func searchForRelationship(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Relationship] {
-        guard let privateContext = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext else {
             return [Relationship]()
         }
         
@@ -158,12 +159,13 @@ public extension Graph {
                         continue
                     }
                 } else {
-                    let n = nodes[i]["node"]!
+                    let n = nodes[i]["node"]
                     var c: Bool? = false
-                    privateContext.performBlockAndWait {
-                        if let v = privateContext.objectWithID(n! as! NSManagedObjectID) as? ManagedRelationship {
+                    var weakNodes: [AnyObject]? = nodes
+                    poc.performBlockAndWait { [weak poc] in
+                        if let v = poc?.objectWithID(n! as! NSManagedObjectID) as? ManagedRelationship {
                             if nil == seen.updateValue(true, forKey: v.id) {
-                                nodes[i] = Relationship(managedNode: v)
+                                weakNodes?[i] = Relationship(managedNode: v)
                                 i -= 1
                                 c = true
                             }
@@ -179,12 +181,12 @@ public extension Graph {
             return nodes as! [Relationship]
         }
         
-        return nodes.map {
+        return nodes.map { [weak poc] in
             guard let n = $0 as? ManagedRelationship else {
                 var managedNode: NSManagedObject?
-                let n = $0["node"]!
-                privateContext.performBlockAndWait {
-                    managedNode = privateContext.objectWithID(n as! NSManagedObjectID)
+                let n = $0["node"]
+                poc?.performBlockAndWait { [weak poc] in
+                    managedNode = poc?.objectWithID(n! as! NSManagedObjectID)
                 }
                 return Relationship(managedNode: managedNode as! ManagedRelationship)
             }
@@ -200,7 +202,7 @@ public extension Graph {
      - Returns: An Array of Actions.
      */
     public func searchForAction(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Action] {
-        guard let privateContext = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext else {
             return [Action]()
         }
         
@@ -238,12 +240,13 @@ public extension Graph {
                         continue
                     }
                 } else {
-                    let n = nodes[i]["node"]!
+                    let n = nodes[i]["node"]
                     var c: Bool? = false
-                    privateContext.performBlockAndWait {
-                        if let v = privateContext.objectWithID(n! as! NSManagedObjectID) as? ManagedAction {
+                    var weakNodes: [AnyObject]? = nodes
+                    poc.performBlockAndWait { [weak poc] in
+                        if let v = poc?.objectWithID(n! as! NSManagedObjectID) as? ManagedAction {
                             if nil == seen.updateValue(true, forKey: v.id) {
-                                nodes[i] = Action(managedNode: v)
+                                weakNodes?[i] = Action(managedNode: v)
                                 i -= 1
                                 c = true
                             }
@@ -259,12 +262,12 @@ public extension Graph {
             return nodes as! [Action]
         }
         
-        return nodes.map {
+        return nodes.map { [weak poc] in
             guard let n = $0 as? ManagedAction else {
                 var managedNode: NSManagedObject?
-                let n = $0["node"]!
-                privateContext.performBlockAndWait {
-                    managedNode = privateContext.objectWithID(n as! NSManagedObjectID)
+                let n = $0["node"]
+                poc?.performBlockAndWait { [weak poc] in
+                    managedNode = poc?.objectWithID(n! as! NSManagedObjectID)
                 }
                 return Action(managedNode: managedNode as! ManagedAction)
             }
@@ -279,7 +282,7 @@ public extension Graph {
      - Returns: An optional Array of AnyObjects.
      */
     internal func search(typeDescriptionName: String, types: [String]) -> [AnyObject]? {
-        guard let privateContext = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext else {
             return nil
         }
         
@@ -299,10 +302,10 @@ public extension Graph {
         request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: true)]
         
         var result: [AnyObject]?
-        privateContext.performBlockAndWait {
+        poc.performBlockAndWait { [weak poc] in
             do {
-                result = try privateContext.executeFetchRequest(request)
-            } catch _ as NSError {
+                result = try poc?.executeFetchRequest(request)
+            } catch {
                 result = [AnyObject]()
             }
         }
@@ -316,7 +319,7 @@ public extension Graph {
      - Returns: An optional Array of AnyObjects.
      */
     internal func search(groupDescriptionName: String, groups: [String]) -> [AnyObject]? {
-        guard let privateContext = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext else {
             return nil
         }
         
@@ -339,10 +342,10 @@ public extension Graph {
         request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
-        privateContext.performBlockAndWait {
+        poc.performBlockAndWait { [weak poc] in
             do {
-                result = try privateContext.executeFetchRequest(request)
-            } catch _ as NSError {
+                result = try poc?.executeFetchRequest(request)
+            } catch {
                 result = [AnyObject]()
             }
         }
@@ -356,7 +359,7 @@ public extension Graph {
      - Returns: An optional Array of AnyObjects.
      */
     internal func search(propertyDescriptionName: String, properties: [(key: String, value: AnyObject?)]) -> [AnyObject]? {
-        guard let privateContext = managedObjectContext.parentContext else {
+        guard let poc = managedObjectContext.parentContext else {
             return nil
         }
         
@@ -387,10 +390,10 @@ public extension Graph {
         request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
-        privateContext.performBlockAndWait {
+        poc.performBlockAndWait { [weak poc] in
             do {
-                result = try privateContext.executeFetchRequest(request)
-            } catch _ as NSError {
+                result = try poc?.executeFetchRequest(request)
+            } catch {
                 result = [AnyObject]()
             }
         }

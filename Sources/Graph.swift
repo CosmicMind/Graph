@@ -33,8 +33,7 @@ import CoreData
 internal struct GraphRegistry {
     static var dispatchToken: dispatch_once_t = 0
     static var cloud: [String: Bool]!
-    static var privateContexts: [String: NSManagedObjectContext]!
-    static var mainManagedObjectContexts: [String: NSManagedObjectContext]!
+    static var privateManagedObjectContexts: [String: NSManagedObjectContext]!
     static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
 
@@ -51,6 +50,10 @@ public struct GraphDefaults {
     }
 }
 
+/**
+ Cloud stroage transition types for when changes happen
+ to the iCloud account directly.
+ */
 @objc(GraphCloudStorageTransitionType)
 public enum GraphCloudStorageTransitionType: Int {
     case accountAdded
@@ -134,8 +137,7 @@ public class Graph: NSObject {
     private func prepareGraphRegistry() {
         dispatch_once(&GraphRegistry.dispatchToken) {
             GraphRegistry.cloud = [String: Bool]()
-            GraphRegistry.privateContexts = [String: NSManagedObjectContext]()
-            GraphRegistry.mainManagedObjectContexts = [String: NSManagedObjectContext]()
+            GraphRegistry.privateManagedObjectContexts = [String: NSManagedObjectContext]()
             GraphRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
         }
     }
@@ -148,19 +150,16 @@ public class Graph: NSObject {
         guard let moc = GraphRegistry.managedObjectContexts[name] else {
             location = location.URLByAppendingPathComponent(name)
             
-            let privateContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
-            privateContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(type: type, location: location)
+            let poc = Context.createManagedContext(.PrivateQueueConcurrencyType)
+            poc.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(type: type, location: location)
             
             if NSSQLiteStoreType == type {
                 location = location.URLByAppendingPathComponent("Graph.sqlite")
             }
             
-            GraphRegistry.privateContexts[name] = privateContext
+            GraphRegistry.privateManagedObjectContexts[name] = poc
             
-//            let mainContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
-//            GraphRegistry.mainManagedObjectContexts[name] = mainContext
-            
-            managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: privateContext)
+            managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: poc)
             GraphRegistry.managedObjectContexts[name] = managedObjectContext
             
             let cloud = nil != NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)
@@ -170,9 +169,9 @@ public class Graph: NSObject {
             if cloud {
                 preparePersistentStoreCoordinatorNotificationHandlers()
                 
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self] in
-                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
-                        self.addPersistentStore(cloud)
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+                    dispatch_sync(dispatch_get_main_queue()) { [weak self] in
+                        self?.addPersistentStore(cloud)
                     }
                 }
             } else {
@@ -200,7 +199,7 @@ public class Graph: NSObject {
      storage is used, true if yes, false otherwise.
     */
     private func addPersistentStore(enableCloud: Bool) {
-        guard let privateContext = GraphRegistry.privateContexts[name] else {
+        guard let poc = GraphRegistry.privateManagedObjectContexts[name] else {
             return
         }
         
@@ -218,8 +217,8 @@ public class Graph: NSObject {
             }
         }
         do {
-            try privateContext.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
-            location = privateContext.persistentStoreCoordinator?.persistentStores.first?.URL
+            try poc.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
+            location = poc.persistentStoreCoordinator?.persistentStores.first?.URL
             completion?(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
         } catch let e as NSError {
             fatalError("[Graph Error: \(e.localizedDescription)]")
@@ -228,14 +227,18 @@ public class Graph: NSObject {
     
     /// Prepares the persistentStoreCoordinator notification handlers.
     private func preparePersistentStoreCoordinatorNotificationHandlers() {
-        guard let privateContext = GraphRegistry.privateContexts[name] else {
+        guard let moc = GraphRegistry.managedObjectContexts[name] else {
+            return
+        }
+        
+        guard let poc = GraphRegistry.privateManagedObjectContexts[name] else {
             return
         }
         
         let queue = NSOperationQueue.mainQueue()
         let defaultCenter = NSNotificationCenter.defaultCenter()
         
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak poc] (notification: NSNotification) in
             guard let info = notification.userInfo else {
                 return
             }
@@ -244,8 +247,8 @@ public class Graph: NSObject {
                 return
             }
             
-            self?.managedObjectContext.performBlock { [weak self] in
-                if true == privateContext.hasChanges {
+            moc?.performBlock { [weak self, weak poc] in
+                if true == poc?.hasChanges {
                     self?.async()
                 } else {
                     self?.reset()
@@ -269,8 +272,8 @@ public class Graph: NSObject {
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
-            self?.managedObjectContext.performBlock { [weak self] in
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
+            moc?.performBlock { [weak self] in
                 dispatch_async(dispatch_get_main_queue()) { [weak self] in
                     if let s = self {
                         s.delegate?.graphDidPrepareCloudStorage?(s)
@@ -279,17 +282,13 @@ public class Graph: NSObject {
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: privateContext.persistentStoreCoordinator, queue: queue) { [weak self] (notification: NSNotification) in
-            self?.managedObjectContext.performBlock { [weak self] in
-                privateContext.performBlockAndWait {
-                    privateContext.mergeChangesFromContextDidSaveNotification(notification)
-                    self?.managedObjectContext.reset()
+        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak poc] (notification: NSNotification) in
+            moc?.performBlock { [weak self, weak poc] in
+                poc?.performBlockAndWait { [weak poc] in
+                    poc?.mergeChangesFromContextDidSaveNotification(notification)
                 }
-                self?.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
-                self?.managedObjectContext.reset()
-                self?.notifyInsertedWatchersFromCloud(notification)
-                self?.notifyUpdatedWatchersFromCloud(notification)
-                self?.notifyDeletedWatchersFromCloud(notification)
+                moc?.mergeChangesFromContextDidSaveNotification(notification)
+                self?.reset()
             }
         }
     }
