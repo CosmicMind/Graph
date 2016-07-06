@@ -2,10 +2,12 @@
 
 ## Welcome to Graph
 
-Graph is a data-driven framework that allows engineers to easily model data in a meaningful way.
+Graph is a data-driven framework for CoreData. It comes complete with iCloud support and the ability to create as many local and cloud instances as you would like.
 
 ## Features
 
+- [x] iCloud Support
+- [x] Multi Storage Support
 - [x] Thread Safe
 - [x] Store Any Data Type, Including Binary Data
 - [x] Relationship Modeling
@@ -51,8 +53,8 @@ Graph is a growing project and will encounter changes throughout its development
 * [Entity](#entity)
 * [Relationship](#relationship)
 * [Action](#action)
-* [Data Driven](#datadriven)
-* [Faceted Search](#facetedsearch)
+* [Data Driven](#data-driven)
+* [Faceted Search](#faceted-search)
 
 <a name="entity"></a>
 ## Entity
@@ -62,9 +64,9 @@ An Entity is a model object that represents a person, place, or thing. It may st
 For example, creating a Person Entity:
 
 ```swift
-let graph: Graph = Graph()
+let graph = Graph()
 
-let person: Entity = Entity(type: "Person")
+let person = Entity(type: "Person")
 person["firstName"] = "Elon"
 person["lastName"] = "Musk"
 person["age"] = 41
@@ -72,7 +74,7 @@ person["age"] = 41
 person.addToGroup("Male")
 person.addToGroup("Inspiring")
 
-graph.save()
+graph.sync()
 ```
 
 [Learn More About Entities](http://www.cosmicmind.io/graph/entity)
@@ -83,13 +85,13 @@ graph.save()
 A Relationship is a model object that forms a connection between two Entities. It may store property values and be a member of groups.
 
 ```swift
-let graph: Graph = Graph()
+let graph = Graph()
 
-let person: Entity = Entity(type: "Person")
+let person = Entity(type: "Person")
 person["firstName"] = "Mark"
 person["lastName"] = "Zuckerberg"
 
-let company: Entity = Entity(type: "Company")
+let company = Entity(type: "Company")
 company["name"] = "Facebook"
 
 let employee: Relationship = Relationship(type: "Employee")
@@ -100,7 +102,7 @@ employee.addToGroup("Founder")
 employee.subject = person
 employee.object = company
 
-graph.save()
+graph.sync()
 ```
 
 [Learn More About Relationships](http://www.cosmicmind.io/graph/relationship)
@@ -131,31 +133,32 @@ purchase.addSubject(user)
 purchase.addObject(book1)
 purchase.addObject(book2)
 
-graph.save()
+graph.sync()
 ```
 
 [Learn More About Actions](http://www.cosmicmind.io/graph/action)
 
-<a name="datadriven"></a>
+<a name="data-driven"></a>
 ## Data Driven
 
-As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User Clicked a Button".
+As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User purchases a book".
 
 ```swift
 // Set the UIViewController's Protocol to GraphDelegate.
-let graph: Graph = Graph()
+
+let graph = Graph()
 graph.delegate = self
 
-graph.watchForAction(types: ["Clicked"])
+graph.watchForAction(types: ["Purchased"])
 
-let user: Entity = Entity(type: "User")
-let clicked: Action = Action(type: "Clicked")
-let button: Entity = Entity(type: "Button")
+let user = Entity(type: "User")
+let purchased = Action(type: "Purchased")
+let book = Entity(type: "Book")
 
-clicked.addSubject(user)
-clicked.addObject(button)
+purchased.addSubject(user)
+purchased.addObject(book)
 
-graph.save()
+graph.sync()
 
 // Delegate method.
 func graphDidInsertAction(graph: Graph, action: Action) {
@@ -163,14 +166,14 @@ func graphDidInsertAction(graph: Graph, action: Action) {
     case "Clicked":
       print(action.subjects.first?.type) // User
       print(action.objects.first?.type) // Button
-    case "Swiped":
+    case "Purchased":
       // Handle swipe.
     default:break
     }
  }
 ```
 
-<a name="facetedsearch"></a>
+<a name="faceted-search"></a>
 ## Faceted Search
 
 To explore the intricate relationships within Graph, the search API adopts a faceted design. The below examples show how to use the _Graph_ search API:
@@ -178,40 +181,40 @@ To explore the intricate relationships within Graph, the search API adopts a fac
 Searching multiple Entity types.
 
 ```swift
-let graph: Graph = Graph()
-let collection: Array<Entity> = graph.searchForEntity(types: ["Photo", "Video"])
+let graph = Graph()
+let collection = graph.searchForEntity(types: ["Photo", "Video"])
 ```
 
 Searching multiple Entity groups.
 
 ```swift
-let graph: Graph = Graph()
-let collection: Array<Entity> = graph.searchForEntity(groups: ["Media", "Favorites"])
+let graph = Graph()
+let collection = graph.searchForEntity(groups: ["Media", "Favorites"])
 ```
 
 Searching multiple Entity properties.
 
 ```swift
-let graph: Graph = Graph()
-let collection: Array<Entity> = graph.searchForEntity(properties: [(key: "name", value: "Eve"), ("age", 27)])
+let graph = Graph()
+let collection = graph.searchForEntity(properties: [(key: "name", value: "Eve"), ("age", 27)])
 ```
 
 Searching multiple facets simultaneously will aggregate all results into a single collection.
 
 ```swift
-let graph: Graph = Graph()
-let collection: Array<Entity> = graph.searchForEntity(types: ["Photo", "Friends"], groups: ["Media", "Favorites"])
+let graph = Graph()
+let collection = graph.searchForEntity(types: ["Photo", "Friends"], groups: ["Media", "Favorites"])
 ```
 
 Filters may be used to narrow in on a search result. For example, searching a book title and group within purchases.
 
 ```swift
-let graph: Graph = Graph()
+let graph = Graph()
 
-let collection: Array<Action> = graph.searchForAction(types: ["Purchased"]).filter { (action: Action) -> Bool in
-	if let entity: Entity = action.objects.first {
+let collection = graph.searchForAction(types: ["Purchased"]).filter { (action: Action) -> Bool in
+	if let entity = action.objects.first {
 		if "Book" == entity.type && "The Holographic Universe" == entity["title"] as? String  {
-			return entity.hasGroup("Physics")
+			return entity.memberOfGroup("Physics")
 		}
 	}
 	return false
