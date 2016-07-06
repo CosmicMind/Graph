@@ -34,8 +34,8 @@ import CoreData
  Cloud stroage transition types for when changes happen
  to the iCloud account directly.
  */
-@objc(GraphCloudStorageTransitionType)
-public enum GraphCloudStorageTransitionType: Int {
+@objc(GraphCloudStorageTransition)
+public enum GraphCloudStorageTransition: Int {
     case accountAdded
     case accountRemoved
     case contentRemoved
@@ -122,7 +122,7 @@ public extension Graph {
                     self?.reset()
                     dispatch_async(dispatch_get_main_queue()) { [weak self] in
                         if let s = self {
-                            var t: GraphCloudStorageTransitionType
+                            var t: GraphCloudStorageTransition
                             switch type {
                             case .AccountAdded:
                                 t = .accountAdded
@@ -133,7 +133,7 @@ public extension Graph {
                             case .InitialImportCompleted:
                                 t = .initialImportCompleted
                             }
-                            s.delegate?.graphWillPrepareCloudStorage?(s, transitionType: t)
+                            s.delegate?.graphWillPrepareCloudStorage?(s, transition: t)
                         }
                     }
                 }
@@ -159,10 +159,11 @@ public extension Graph {
                 s.delegate?.graphWillResetFromCloudStorage?(s)
                 moc?.mergeChangesFromContextDidSaveNotification(notification)
                 moc?.reset()
-                s.notifyInsertedWatchersFromCloud(notification)
-                s.notifyUpdatedWatchersFromCloud(notification)
-                s.notifyDeletedWatchersFromCloud(notification)
+                
                 poc?.performBlockAndWait { [weak self, weak poc] in
+                    guard let s = self else {
+                        return
+                    }
                     poc?.mergeChangesFromContextDidSaveNotification(notification)
                     poc?.reset()
                     s.delegate?.graphDidResetFromCloudStorage?(s)
