@@ -170,7 +170,7 @@ internal struct Model {
             propertySetRelationship.minCount = 0
             propertySetRelationship.maxCount = 0
             propertySetRelationship.optional = false
-            propertySetRelationship.deleteRule = .CascadeDeleteRule
+            propertySetRelationship.deleteRule = .NoActionDeleteRule
             propertyRelationship.inverseRelationship = propertySetRelationship
             propertySetRelationship.inverseRelationship = propertyRelationship
             
@@ -209,7 +209,7 @@ internal struct Model {
             groupSetRelationship.minCount = 0
             groupSetRelationship.maxCount = 0
             groupSetRelationship.optional = false
-            groupSetRelationship.deleteRule = .CascadeDeleteRule
+            groupSetRelationship.deleteRule = .NoActionDeleteRule
             groupRelationship.inverseRelationship = groupSetRelationship
             groupSetRelationship.inverseRelationship = groupRelationship
             
@@ -242,7 +242,7 @@ internal struct Model {
             actionSubjectRelationship.minCount = 0
             actionSubjectRelationship.maxCount = 0
             actionSubjectRelationship.optional = false
-            actionSubjectRelationship.deleteRule = .CascadeDeleteRule
+            actionSubjectRelationship.deleteRule = .NoActionDeleteRule
             actionSubjectRelationship.destinationEntity = actionDescription
             actionSubjectRelationship.inverseRelationship = actionSubjectSetRelationship
             actionSubjectSetRelationship.inverseRelationship = actionSubjectRelationship
@@ -265,7 +265,7 @@ internal struct Model {
             actionObjectRelationship.minCount = 0
             actionObjectRelationship.maxCount = 0
             actionObjectRelationship.optional = false
-            actionObjectRelationship.deleteRule = .CascadeDeleteRule
+            actionObjectRelationship.deleteRule = .NoActionDeleteRule
             actionObjectRelationship.destinationEntity = actionDescription
             actionObjectRelationship.inverseRelationship = actionObjectSetRelationship
             actionObjectSetRelationship.inverseRelationship = actionObjectRelationship
@@ -288,7 +288,7 @@ internal struct Model {
             relationshipSubjectRelationship.minCount = 0
             relationshipSubjectRelationship.maxCount = 0
             relationshipSubjectRelationship.optional = false
-            relationshipSubjectRelationship.deleteRule = .CascadeDeleteRule
+            relationshipSubjectRelationship.deleteRule = .NoActionDeleteRule
             relationshipSubjectRelationship.destinationEntity = relationshipDescription
             
             relationshipSubjectRelationship.inverseRelationship = relationshipSubjectSetRelationship
@@ -312,7 +312,7 @@ internal struct Model {
             relationshipObjectRelationship.minCount = 0
             relationshipObjectRelationship.maxCount = 0
             relationshipObjectRelationship.optional = false
-            relationshipObjectRelationship.deleteRule = .CascadeDeleteRule
+            relationshipObjectRelationship.deleteRule = .NoActionDeleteRule
             relationshipObjectRelationship.destinationEntity = relationshipDescription
             relationshipObjectRelationship.inverseRelationship = relationshipObjectSetRelationship
             relationshipObjectSetRelationship.inverseRelationship = relationshipObjectRelationship
