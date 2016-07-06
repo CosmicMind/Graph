@@ -95,7 +95,7 @@ internal class ManagedEntity: ManagedNode {
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
-    internal override func addToGroup(name: String) -> Bool {
+    internal func addToGroup(name: String) -> Bool {
         var result: Bool? = false
         managedObjectContext?.performBlockAndWait { [unowned self] in
             if !self.memberOfGroup(name) {
@@ -115,7 +115,7 @@ internal class ManagedEntity: ManagedNode {
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
-    internal override func removeFromGroup(name: String) -> Bool {
+    internal func removeFromGroup(name: String) -> Bool {
         var result: Bool? = false
         managedObjectContext?.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
