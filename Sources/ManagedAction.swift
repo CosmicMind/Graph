@@ -61,8 +61,10 @@ internal class ManagedAction: ManagedNode {
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
-                            (property as? ManagedActionProperty)?.delete()
-                            (self.propertySet as? NSMutableSet)?.removeObject(property)
+                            if let p = property as? ManagedActionProperty {
+                                p.delete()
+                                self.removePropertySetObject(p)
+                            }
                             break
                         }
                     }
@@ -78,6 +80,7 @@ internal class ManagedAction: ManagedNode {
                 
                 let property = ManagedActionProperty(name: name, object: object, managedObjectContext: self.managedObjectContext!)
                 property.node = self
+                self.addPropertySetObject(property)
             }
         }
     }
@@ -94,6 +97,7 @@ internal class ManagedAction: ManagedNode {
             if !self.memberOfGroup(name) {
                 let group = ManagedActionGroup(name: name, managedObjectContext: self.managedObjectContext!)
                 group.node = self
+                self.addGroupSetObject(group)
                 result = true
                 return
             }
@@ -112,9 +116,11 @@ internal class ManagedAction: ManagedNode {
         managedObjectContext?.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
-                    (group as? ManagedActionGroup)?.delete()
-                    (self.groupSet as? NSMutableSet)?.removeObject(group)
-                    result = true
+                    if let g = group as? ManagedActionGroup {
+                        g.delete()
+                        self.removeGroupSetObject(g)
+                        result = true
+                    }
                     return
                 }
             }
@@ -180,6 +186,25 @@ internal class ManagedAction: ManagedNode {
             result = count != self.objectSet.count
         }
         return result!
+    }
+    
+    /// Deletes the groups and properties before marking for deletion.
+    internal override func delete() {
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            self.groupSet.forEach { [unowned self] (object: AnyObject) in
+                if let group = object as? ManagedActionGroup {
+                    group.delete()
+                    self.removeGroupSetObject(group)
+                }
+            }
+            self.propertySet.forEach { [unowned self] (object: AnyObject) in
+                if let property = object as? ManagedActionProperty {
+                    property.delete()
+                    self.removePropertySetObject(property)
+                }
+            }
+        }
+        super.delete()
     }
 }
 

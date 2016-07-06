@@ -89,25 +89,6 @@ internal class ManagedNode: ManagedModel {
         groupSet = NSSet()
     }
     
-    /// Deletes the relationships and actions before marking for deletion.
-    internal override func delete() {
-        managedObjectContext?.performBlockAndWait { [unowned self] in
-            self.groupSet.forEach { [unowned self] (object: AnyObject) in
-                if let group = object as? ManagedGroup {
-                    group.delete()
-                    (self.groupSet as? NSMutableSet)?.removeObject(group)
-                }
-            }
-            self.propertySet.forEach { [unowned self] (object: AnyObject) in
-                if let property = object as? ManagedProperty {
-                    property.delete()
-                    (self.propertySet as? NSMutableSet)?.removeObject(property)
-                }
-            }
-        }
-        super.delete()
-    }
-    
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.

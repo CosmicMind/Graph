@@ -65,8 +65,10 @@ internal class ManagedEntity: ManagedNode {
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
-                            (property as? ManagedEntityProperty)?.delete()
-                            (self.propertySet as? NSMutableSet)?.removeObject(property)
+                            if let p = property as? ManagedEntityProperty {
+                                p.delete()
+                                self.removePropertySetObject(p)
+                            }
                             break
                         }
                     }
@@ -82,6 +84,7 @@ internal class ManagedEntity: ManagedNode {
                 
                 let property = ManagedEntityProperty(name: name, object: object, managedObjectContext: self.managedObjectContext!)
                 property.node = self
+                self.addPropertySetObject(property)
             }
         }
     }
@@ -98,6 +101,7 @@ internal class ManagedEntity: ManagedNode {
             if !self.memberOfGroup(name) {
                 let group = ManagedEntityGroup(name: name, managedObjectContext: self.managedObjectContext!)
                 group.node = self
+                self.addGroupSetObject(group)
                 result = true
                 return
             }
@@ -116,14 +120,35 @@ internal class ManagedEntity: ManagedNode {
         managedObjectContext?.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
-                    (group as? ManagedEntityGroup)?.delete()
-                    (self.groupSet as? NSMutableSet)?.removeObject(group)
-                    result = true
+                    if let g = group as? ManagedEntityGroup {
+                        g.delete()
+                        self.removeGroupSetObject(g)
+                        result = true
+                    }
                     return
                 }
             }
         }
         return result!
+    }
+    
+    /// Deletes the groups and properties before marking for deletion.
+    internal override func delete() {
+        managedObjectContext?.performBlockAndWait { [unowned self] in
+            self.groupSet.forEach { [unowned self] (object: AnyObject) in
+                if let group = object as? ManagedEntityGroup {
+                    group.delete()
+                    self.removeGroupSetObject(group)
+                }
+            }
+            self.propertySet.forEach { [unowned self] (object: AnyObject) in
+                if let property = object as? ManagedEntityProperty {
+                    property.delete()
+                    self.removePropertySetObject(property)
+                }
+            }
+        }
+        super.delete()
     }
 }
 
