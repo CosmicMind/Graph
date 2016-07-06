@@ -183,7 +183,7 @@ public class Relationship: NSObject, NodeType {
      otherwise.
      */
     public func addToGroup(name: String) -> Bool {
-        return (node.managedNode as ManagedRelationship).addToGroup(name)
+        return node.addToGroup(name)
     }
     
     /**
@@ -193,7 +193,7 @@ public class Relationship: NSObject, NodeType {
      otherwise.
      */
     public func memberOfGroup(name: String) -> Bool {
-        return (node.managedNode as ManagedRelationship).memberOfGroup(name)
+        return node.memberOfGroup(name)
     }
     
     /**
@@ -203,7 +203,7 @@ public class Relationship: NSObject, NodeType {
      otherwise.
      */
     public func removeFromGroup(name: String) -> Bool {
-        return (node.managedNode as ManagedRelationship).removeFromGroup(name)
+        return node.removeFromGroup(name)
     }
     
     /**

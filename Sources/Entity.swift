@@ -220,7 +220,7 @@ public class Entity: NSObject, NodeType {
      otherwise.
      */
     public func addToGroup(name: String) -> Bool {
-        return (node.managedNode as ManagedEntity).addToGroup(name)
+        return node.addToGroup(name)
     }
     
     /**
@@ -230,7 +230,7 @@ public class Entity: NSObject, NodeType {
      otherwise.
      */
     public func memberOfGroup(name: String) -> Bool {
-        return (node.managedNode as ManagedEntity).memberOfGroup(name)
+        return node.memberOfGroup(name)
     }
     
     /**
@@ -240,7 +240,7 @@ public class Entity: NSObject, NodeType {
      otherwise.
      */
     public func removeFromGroup(name: String) -> Bool {
-        return (node.managedNode as ManagedEntity).removeFromGroup(name)
+        return node.removeFromGroup(name)
     }
     
     /**

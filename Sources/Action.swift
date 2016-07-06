@@ -171,7 +171,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func addToGroup(name: String) -> Bool {
-        return (node.managedNode as ManagedAction).addToGroup(name)
+        return node.addToGroup(name)
     }
     
     /**
@@ -181,7 +181,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func memberOfGroup(name: String) -> Bool {
-        return (node.managedNode as ManagedAction).memberOfGroup(name)
+        return node.memberOfGroup(name)
     }
     
     /**
@@ -191,7 +191,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func removeFromGroup(name: String) -> Bool {
-        return (node.managedNode as ManagedAction).removeFromGroup(name)
+        return node.removeFromGroup(name)
     }
     
     /**

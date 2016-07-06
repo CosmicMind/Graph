@@ -100,4 +100,34 @@ internal class Node <T: ManagedNode> {
     internal subscript(name: String) -> AnyObject? {
         return managedNode[name]
     }
+    
+    /**
+     Adds the ManagedNode to the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if added, false
+     otherwise.
+     */
+    internal func addToGroup(name: String) -> Bool {
+        return managedNode.addToGroup(name)
+    }
+    
+    /**
+     Checks if the ManagedNode to a part group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    internal func memberOfGroup(name: String) -> Bool {
+        return managedNode.memberOfGroup(name)
+    }
+    
+    /**
+     Removes the ManagedNode from the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    internal func removeFromGroup(name: String) -> Bool {
+        return managedNode.removeFromGroup(name)
+    }
 }

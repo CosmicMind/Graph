@@ -108,6 +108,16 @@ internal class ManagedNode: ManagedModel {
     }
     
     /**
+     Adds the ManagedNode to the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if added, false
+     otherwise.
+     */
+    internal func addToGroup(name: String) -> Bool {
+        return false
+    }
+    
+    /**
      Checks if the ManagedNode to a part group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if a member, false
@@ -124,5 +134,15 @@ internal class ManagedNode: ManagedModel {
             }
         }
         return result ?? false
+    }
+    
+    /**
+     Removes the ManagedNode from the group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    internal func removeFromGroup(name: String) -> Bool {
+        return false
     }
 }
