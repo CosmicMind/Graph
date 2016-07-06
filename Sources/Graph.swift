@@ -45,9 +45,6 @@ public struct GraphDefaults {
 
 @objc(Graph)
 public class Graph: NSObject {
-    /// A boolean indicating if cloud is available.
-    public internal(set) var cloud: Bool = false
-    
     /// Graph name.
     public internal(set) var name: String!
     

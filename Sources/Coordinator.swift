@@ -70,14 +70,14 @@ public extension Graph {
      - Parameter enableCloud: A boolean indicating whether cloud
      storage is used, true if yes, false otherwise.
      */
-    internal func addPersistentStore(cloud: Bool) {
+    internal func addPersistentStore(enableCloud: Bool) {
         guard let poc = managedObjectContext.parentContext else {
             return
         }
         
         var options: [NSObject: AnyObject]?
         
-        if cloud {
+        if enableCloud {
             options = [NSObject: AnyObject]()
             options?[NSMigratePersistentStoresAutomaticallyOption] = 1
             options?[NSInferMappingModelAutomaticallyOption] = 1
@@ -87,10 +87,7 @@ public extension Graph {
         do {
             try poc.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
             location = poc.persistentStoreCoordinator?.persistentStores.first?.URL
-            self.cloud = cloud
-            if !cloud {
-                completion?(cloud: false, error: GraphError(message: "[Graph Error: iCloud is not supported.]"))
-            }
+            completion?(cloud: enableCloud, error: enableCloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
         } catch let e as NSError {
             fatalError("[Graph Error: \(e.localizedDescription)]")
         }
@@ -149,7 +146,6 @@ public extension Graph {
                     guard let s = self else {
                         return
                     }
-                    s.completion?(cloud: s.cloud, error: s.cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
                     s.delegate?.graphDidPrepareCloudStorage?(s)
                 }
             }
@@ -160,9 +156,11 @@ public extension Graph {
                 guard let s = self else {
                     return
                 }
+                
                 s.delegate?.graphWillResetFromCloudStorage?(s)
                 
                 moc?.mergeChangesFromContextDidSaveNotification(notification)
+                
                 s.notifyDeletedWatchersFromCloud(notification)
                 
                 poc?.performBlockAndWait { [weak self, weak poc] in
