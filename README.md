@@ -94,7 +94,7 @@ person["lastName"] = "Zuckerberg"
 let company = Entity(type: "Company")
 company["name"] = "Facebook"
 
-let employee: Relationship = Relationship(type: "Employee")
+let employee = Relationship(type: "Employee")
 employee["startDate"] = "February 4, 2004"
 employee.addToGroup("CEO")
 employee.addToGroup("Founder")
@@ -126,12 +126,12 @@ let book2 = Entity(type: "Book")
 book2["title"] = "The Holographic Universe"
 book2.addToGroup("Physics")
 
-let purchase = Action(type: "Purchase")
-purchase.addToGroup("Pending")
+let purchased = Action(type: "Purchased")
+purchased.addToGroup("Pending")
 
-purchase.addSubject(user)
-purchase.addObject(book1)
-purchase.addObject(book2)
+purchased.addSubject(user)
+purchased.addObject(book1)
+purchased.addObject(book2)
 
 graph.sync()
 ```
@@ -141,24 +141,24 @@ graph.sync()
 <a name="data-driven"></a>
 ## Data Driven
 
-As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User purchases a book".
+As data moves through your application, the state of information may be observed to create a reactive experience. Below is an example of watching when a "User Clicked a Button".
 
 ```swift
-// Set the UIViewController's Protocol to GraphDelegate.
+// Set Protocol to GraphDelegate.
 
 let graph = Graph()
 graph.delegate = self
 
-graph.watchForAction(types: ["Purchased"])
+graph.watchForAction(types: ["Clicked"])
 
-let user = Entity(type: "User")
-let purchased = Action(type: "Purchased")
-let book = Entity(type: "Book")
+let user: Entity = Entity(type: "User")
+let clicked = Action(type: "Clicked")
+let button = Entity(type: "Button")
 
-purchased.addSubject(user)
-purchased.addObject(book)
+clicked.addSubject(user)
+clicked.addObject(button)
 
-graph.sync()
+graph.save()
 
 // Delegate method.
 func graphDidInsertAction(graph: Graph, action: Action) {
@@ -166,7 +166,7 @@ func graphDidInsertAction(graph: Graph, action: Action) {
     case "Clicked":
       print(action.subjects.first?.type) // User
       print(action.objects.first?.type) // Button
-    case "Purchased":
+    case "Swiped":
       // Handle swipe.
     default:break
     }
