@@ -156,15 +156,23 @@ public extension Graph {
                 guard let s = self else {
                     return
                 }
+                
                 s.delegate?.graphWillResetFromCloudStorage?(s)
+                
                 moc?.mergeChangesFromContextDidSaveNotification(notification)
-                moc?.reset()
+                
+                s.notifyDeletedWatchersFromCloud(notification)
+                
                 poc?.performBlockAndWait { [weak self, weak poc] in
                     guard let s = self else {
                         return
                     }
+                    
                     poc?.mergeChangesFromContextDidSaveNotification(notification)
-                    poc?.reset()
+                    
+                    s.notifyInsertedWatchersFromCloud(notification)
+                    s.notifyUpdatedWatchersFromCloud(notification)
+                    
                     s.delegate?.graphDidResetFromCloudStorage?(s)
                 }
             }
