@@ -45,13 +45,13 @@ import Graph
 
 class ViewController: UIViewController {
 	/// Access the Graph persistence layer.
-	private lazy var graph: Graph = Graph()
+	private lazy var graph = Graph()
 	
 	/// A tableView used to display Action entries.
-	private let tableView: UITableView = UITableView()
+	private let tableView = UITableView()
 	
 	/// A list of all the acquisition Actions.
-	private var acquisitions: Array<Action> = Array<Action>()
+	private var acquisitions = [Action]()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -79,27 +79,27 @@ class ViewController: UIViewController {
 		// Add Acquired Actions if none exist.
 		if 0 == acquisitions.count {
 			// Create Company Entities.
-			let apple: Entity = Entity(type: "Company")
+			let apple = Entity(type: "Company")
 			apple["name"] = "Apple"
 			apple["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Apple", ofType: "png")!)
 			
-			let beats: Entity = Entity(type: "Company")
+			let beats = Entity(type: "Company")
 			beats["name"] = "Beats Electronics"
 			beats["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Beats", ofType: "png")!)
 			
-			let facebook: Entity = Entity(type: "Company")
+			let facebook = Entity(type: "Company")
 			facebook["name"] = "Facebook"
 			facebook["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Facebook", ofType: "png")!)
 			
-			let whatsapp: Entity = Entity(type: "Company")
+			let whatsapp = Entity(type: "Company")
 			whatsapp["name"] = "WhatsApp"
 			whatsapp["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("WhatsApp", ofType: "png")!)
 			
 			// Create Acquired Actions.
-			let acquisition1: Action = Action(type: "Acquired")
+			let acquisition1 = Action(type: "Acquired")
 			acquisition1["acquisitionDate"] = "May 28, 2014"
 			
-			let acquisition2: Action = Action(type: "Acquired")
+			let acquisition2 = Action(type: "Acquired")
 			acquisition2["acquisitionDate"] = "February 19, 2014"
 			
 			// Form relationships.
@@ -137,7 +137,7 @@ class ViewController: UIViewController {
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
 	/// GraphDelegate delegation method that is executed on Action inserts.
-	func graphDidInsertAction(graph: Graph, action: Action) {
+    func graphDidInsertAction(graph: Graph, action: Action, fromCloud: Bool) {
 		acquisitions.append(action)
 		tableView.reloadData()
 	}
@@ -158,34 +158,34 @@ extension ViewController: UITableViewDataSource {
 	
 	/// Prepares the cells within the tableView.
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
+		let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
 		
 		if 0 == indexPath.section {
 			// Get the Action.
-			let acquisition: Action = acquisitions[indexPath.row]
+			let acquisition = acquisitions[indexPath.row]
 			
 			// Set the Company details.
-			if let company: Entity = acquisition.subjects.first {
+			if let company = acquisition.subjects.first {
 				cell.textLabel?.text = company["name"] as? String
 				cell.imageView?.image = company["photo"] as? UIImage
 			}
 			
 			// Set the Company details.
-			if let company: Entity = acquisition.objects.first {
+			if let company = acquisition.objects.first {
 				cell.detailTextLabel?.text = "Bought: " + (company["name"] as! String)
 			}
 		} else {
 			// Get the Action.
-			let acquisition: Action = acquisitions[indexPath.row]
+			let acquisition = acquisitions[indexPath.row]
 			
 			// Set the Company details.
-			if let company: Entity = acquisition.objects.first {
+			if let company = acquisition.objects.first {
 				cell.textLabel?.text = company["name"] as? String
 				cell.imageView?.image = company["photo"] as? UIImage
 			}
 			
 			// Set the Company details.
-			if let company: Entity = acquisition.subjects.first {
+			if let company = acquisition.subjects.first {
 				cell.detailTextLabel?.text = "Sold To: " + (company["name"] as! String)
 			}
 		}
@@ -198,7 +198,7 @@ extension ViewController: UITableViewDataSource {
 		let header = UIView(frame: CGRectMake(0, 0, view.bounds.width, 48))
 		header.backgroundColor = .whiteColor()
 		
-		let label: UILabel = UILabel(frame: CGRectMake(16, 0, view.bounds.width - 32, 48))
+		let label = UILabel(frame: CGRectMake(16, 0, view.bounds.width - 32, 48))
 		label.textColor = .grayColor()
 		label.text = 0 == section ? "Buyer" : "Seller"
 		

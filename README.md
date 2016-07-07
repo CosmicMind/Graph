@@ -74,7 +74,7 @@ person["age"] = 41
 person.addToGroup("Male")
 person.addToGroup("Inspiring")
 
-graph.sync()
+graph.async()
 ```
 
 [Learn More About Entities](http://www.cosmicmind.io/graph/entity)
@@ -102,7 +102,7 @@ employee.addToGroup("Founder")
 employee.subject = person
 employee.object = company
 
-graph.sync()
+graph.async()
 ```
 
 [Learn More About Relationships](http://www.cosmicmind.io/graph/relationship)
@@ -133,7 +133,7 @@ purchased.addSubject(user)
 purchased.addObject(book1)
 purchased.addObject(book2)
 
-graph.sync()
+graph.async()
 ```
 
 [Learn More About Actions](http://www.cosmicmind.io/graph/action)
@@ -158,10 +158,10 @@ let button = Entity(type: "Button")
 clicked.addSubject(user)
 clicked.addObject(button)
 
-graph.save()
+graph.async()
 
 // Delegate method.
-func graphDidInsertAction(graph: Graph, action: Action) {
+func graphDidInsertAction(graph: Graph, action: Action, fromCloud: Bool) {
     switch(action.type) {
     case "Clicked":
       print(action.subjects.first?.type) // User

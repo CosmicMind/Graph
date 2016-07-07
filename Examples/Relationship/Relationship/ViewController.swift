@@ -45,13 +45,13 @@ import Graph
 
 class ViewController: UIViewController {
 	/// Access the Graph persistence layer.
-	private lazy var graph: Graph = Graph()
+	private lazy var graph = Graph()
 	
 	/// A tableView used to display Relationship entries.
-	private let tableView: UITableView = UITableView()
+	private let tableView = UITableView()
 	
 	/// A list of all the Employee Relationships.
-	private var employees: Array<Relationship> = Array<Relationship>()
+	private var employees = [Relationship]()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -64,13 +64,13 @@ class ViewController: UIViewController {
 	/// Handles the add button event.
 	internal func handleAddButton(sender: UIBarButtonItem) {
 		// Create a Person Entity.
-		let person: Entity = Entity(type: "Person")
+		let person = Entity(type: "Person")
 		person["firstName"] = "First"
 		person["lastName"] = "Last"
 		person["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
 		
 		// Create a Company Entity.
-		let company: Entity = Entity(type: "Company")
+		let company = Entity(type: "Company")
 		company["name"] = "Company"
 		
 		// Create an Employee Relationship.
@@ -113,35 +113,35 @@ class ViewController: UIViewController {
 		// Add Employee Relationships if none exist.
 		if 0 == employees.count {
 			// Create Person Entities.
-			let tim: Entity = Entity(type: "Person")
+			let tim = Entity(type: "Person")
 			tim["firstName"] = "Tim"
 			tim["lastName"] = "Cook"
 			tim["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("TimCook", ofType: "png")!)
 			
-			let mark: Entity = Entity(type: "Person")
+			let mark = Entity(type: "Person")
 			mark["firstName"] = "Mark"
 			mark["lastName"] = "Zuckerberg"
 			mark["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!)
 			
-			let elon: Entity = Entity(type: "Person")
+			let elon = Entity(type: "Person")
 			elon["firstName"] = "Elon"
 			elon["lastName"] = "Musk"
 			elon["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
 			
 			// Create Company Entities.
-			let apple: Entity = Entity(type: "Company")
+			let apple = Entity(type: "Company")
 			apple["name"] = "Apple"
 			
-			let facebook: Entity = Entity(type: "Company")
+			let facebook = Entity(type: "Company")
 			facebook["name"] = "Facebook"
 			
-			let tesla: Entity = Entity(type: "Company")
+			let tesla = Entity(type: "Company")
 			tesla["name"] = "Tesla Motors"
 			
 			// Create Employee Relationships.
-			let employee1: Relationship = Relationship(type: "Employee")
-			let employee2: Relationship = Relationship(type: "Employee")
-			let employee3: Relationship = Relationship(type: "Employee")
+			let employee1 = Relationship(type: "Employee")
+			let employee2 = Relationship(type: "Employee")
+			let employee3 = Relationship(type: "Employee")
 			
 			// Form relationships.
 			employee1.subject = tim
@@ -186,7 +186,7 @@ class ViewController: UIViewController {
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
 	/// GraphDelegate delegation method that is executed on Relationship inserts.
-	func graphDidInsertRelationship(graph: Graph, relationship: Relationship) {
+    func graphDidInsertRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool) {
 		employees.append(relationship)
 		tableView.reloadData()
 	}
@@ -207,19 +207,19 @@ extension ViewController: UITableViewDataSource {
 	
 	/// Prepares the cells within the tableView.
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
+		let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
 		
 		// Get the Relationship.
-		let employee: Relationship = employees[indexPath.row]
+		let employee = employees[indexPath.row]
 		
 		// Set the Person details.
-		if let person: Entity = employee.subject {
+		if let person = employee.subject {
 			cell.textLabel?.text = (person["firstName"] as! String) + " " + (person["lastName"] as! String)
 			cell.imageView?.image = person["photo"] as? UIImage
 		}
 		
 		// Set the Company details.
-		if let company: Entity = employee.object {
+		if let company = employee.object {
 			cell.detailTextLabel?.text = "Works At: " + (company["name"] as! String)
 		}
 		
@@ -231,7 +231,7 @@ extension ViewController: UITableViewDataSource {
 		let header = UIView(frame: CGRectMake(0, 0, view.bounds.width, 48))
 		header.backgroundColor = .whiteColor()
 		
-		let label: UILabel = UILabel(frame: CGRectMake(16, 0, view.bounds.width - 32, 48))
+		let label = UILabel(frame: CGRectMake(16, 0, view.bounds.width - 32, 48))
 		label.textColor = .grayColor()
 		label.text = "Employees"
 		

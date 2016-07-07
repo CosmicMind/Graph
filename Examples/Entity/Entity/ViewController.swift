@@ -39,13 +39,13 @@ import Graph
 
 class ViewController: UIViewController {
 	/// Access the Graph persistence layer.
-	private lazy var graph: Graph = Graph()
+	private lazy var graph = Graph()
 	
 	/// A tableView used to display Entity entries.
-	private let tableView: UITableView = UITableView()
+	private let tableView = UITableView()
 	
 	/// A list of all the Person Entities.
-	private var people: Array<Entity> = Array<Entity>()
+	private var people = [Entity]()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -58,7 +58,7 @@ class ViewController: UIViewController {
 	/// Handles the add button event.
 	internal func handleAddButton(sender: UIBarButtonItem) {
 		// Create a Person Entity.
-		let person: Entity = Entity(type: "Person")
+		let person = Entity(type: "Person")
 		person["firstName"] = "First"
 		person["lastName"] = "Last"
 		person["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("Avatar", ofType: "png")!)
@@ -96,17 +96,17 @@ class ViewController: UIViewController {
 		// Add People if none exist.
 		if 0 == people.count {
 			// Create Person Entities.
-			let tim: Entity = Entity(type: "Person")
+			let tim = Entity(type: "Person")
 			tim["firstName"] = "Tim"
 			tim["lastName"] = "Cook"
 			tim["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("TimCook", ofType: "png")!)
 			
-			let mark: Entity = Entity(type: "Person")
+			let mark = Entity(type: "Person")
 			mark["firstName"] = "Mark"
 			mark["lastName"] = "Zuckerberg"
 			mark["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("MarkZuckerberg", ofType: "png")!)
 			
-			let elon: Entity = Entity(type: "Person")
+			let elon = Entity(type: "Person")
 			elon["firstName"] = "Elon"
 			elon["lastName"] = "Musk"
 			elon["photo"] = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("ElonMusk", ofType: "png")!)
@@ -144,7 +144,7 @@ class ViewController: UIViewController {
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
 	/// GraphDelegate delegation method that is executed on Entity inserts.
-	func graphDidInsertEntity(graph: Graph, entity: Entity) {
+    func graphDidInsertEntity(graph: Graph, entity: Entity, fromCloud: Bool) {
 		people.append(entity)
 		tableView.reloadData()
 	}
@@ -165,10 +165,10 @@ extension ViewController: UITableViewDataSource {
 	
 	/// Prepares the cells within the tableView.
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell")! as UITableViewCell
+		let cell = tableView.dequeueReusableCellWithIdentifier("Cell")! as UITableViewCell
 		
 		// Get the Person Entity.
-		let person: Entity = people[indexPath.row]
+		let person = people[indexPath.row]
 		
 		// Set the Person details.
 		cell.textLabel?.text = (person["firstName"] as! String) + " " + (person["lastName"] as! String)
@@ -182,7 +182,7 @@ extension ViewController: UITableViewDataSource {
 		let header = UIView(frame: CGRectMake(0, 0, view.bounds.width, 48))
 		header.backgroundColor = .whiteColor()
 		
-		let label: UILabel = UILabel(frame: CGRectMake(16, 0, view.bounds.width - 32, 48))
+		let label = UILabel(frame: CGRectMake(16, 0, view.bounds.width - 32, 48))
 		label.textColor = .grayColor()
 		label.text = "People"
 		
