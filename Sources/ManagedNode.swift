@@ -52,7 +52,10 @@ internal class ManagedNode: ManagedModel {
     /// A reference to the groups.
     internal var groups: [String] {
         var g = [String]()
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        guard let moc = managedObjectContext else {
+            return g
+        }
+        moc.performBlockAndWait { [unowned self] in
             self.groupSet.forEach { (object: AnyObject) in
                 if let group = object as? ManagedGroup {
                     g.append(group.name)
@@ -91,17 +94,20 @@ internal class ManagedNode: ManagedModel {
     
     /// Deletes the relationships and actions before marking for deletion.
     internal override func delete() {
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        guard let moc = managedObjectContext else {
+            return
+        }
+        moc.performBlockAndWait { [unowned self] in
             self.groupSet.forEach { [unowned self] (object: AnyObject) in
                 if let group = object as? ManagedGroup {
                     group.delete()
-                    (self.groupSet as? NSMutableSet)?.removeObject(group)
+                    self.mutableSetValueForKey("groupSet").removeObject(group)
                 }
             }
             self.propertySet.forEach { [unowned self] (object: AnyObject) in
                 if let property = object as? ManagedProperty {
                     property.delete()
-                    (self.propertySet as? NSMutableSet)?.removeObject(property)
+                    self.mutableSetValueForKey("propertySet").removeObject(property)
                 }
             }
         }
@@ -115,53 +121,17 @@ internal class ManagedNode: ManagedModel {
      */
     internal subscript(name: String) -> AnyObject? {
         var object: AnyObject?
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        guard let moc = managedObjectContext else {
+            return object
+        }
+        moc.performBlockAndWait { [unowned self] in
             for property in self.propertySet {
                 if name == property.name {
                     object = property.object
-                    return
+                    break
                 }
             }
         }
         return object
-    }
-    
-    /**
-     Adds the ManagedNode to the group.
-     - Parameter name: The group name.
-     - Returns: A boolean of the result, true if added, false
-     otherwise.
-     */
-    internal func addToGroup(name: String) -> Bool {
-        return false
-    }
-    
-    /**
-     Checks if the ManagedNode to a part group.
-     - Parameter name: The group name.
-     - Returns: A boolean of the result, true if a member, false
-     otherwise.
-     */
-    internal func memberOfGroup(name: String) -> Bool {
-        var result: Bool?
-        managedObjectContext?.performBlockAndWait { [unowned self] in
-            for group in self.groupSet {
-                if name == group.name {
-                    result = true
-                    return
-                }
-            }
-        }
-        return result ?? false
-    }
-    
-    /**
-     Removes the ManagedNode from the group.
-     - Parameter name: The group name.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
-     */
-    internal func removeFromGroup(name: String) -> Bool {
-        return false
     }
 }

@@ -45,6 +45,9 @@ public struct GraphDefaults {
 
 @objc(Graph)
 public class Graph: NSObject {
+    /// Graph rouute/
+    public internal(set) var route: String!
+    
     /// Graph name.
     public internal(set) var name: String!
     
@@ -72,8 +75,12 @@ public class Graph: NSObject {
     /// A reference to a delagte object.
     public weak var delegate: GraphDelegate?
     
-    /// A reference to the graph completion handler.
-    internal var completion: ((cloud: Bool, error: NSError?) -> Void)?
+    /**
+     A reference to the graph completion handler.
+     - Parameter success: A boolean indicating if the cloud connection
+     is possible or not.
+     */
+    internal var completion: ((supported: Bool, error: NSError?) -> Void)?
     
     /// Deinitializer that removes the Graph from NSNotificationCenter.
     deinit {
@@ -89,6 +96,7 @@ public class Graph: NSObject {
      */
     public init(name: String = GraphDefaults.name, type: String = GraphDefaults.type, location: NSURL = GraphDefaults.location) {
         super.init()
+        route = "Local/\(name)"
         self.name = name
         self.type = type
         self.location = location
@@ -104,8 +112,9 @@ public class Graph: NSObject {
      - Parameter completion: An Optional completion block that is
      executed to determine if iCloud support is available or not.
      */
-    public init(cloud: String, completion: ((cloud: Bool, error: NSError?) -> Void)? = nil) {
+    public init(cloud: String, completion: ((supported: Bool, error: NSError?) -> Void)? = nil) {
         super.init()
+        route = "Cloud/\(cloud)"
         name = cloud
         type = NSSQLiteStoreType
         location = GraphDefaults.location

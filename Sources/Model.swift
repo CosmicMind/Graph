@@ -170,7 +170,7 @@ internal struct Model {
             propertySetRelationship.minCount = 0
             propertySetRelationship.maxCount = 0
             propertySetRelationship.optional = false
-            propertySetRelationship.deleteRule = .NoActionDeleteRule
+            propertySetRelationship.deleteRule = .CascadeDeleteRule
             propertyRelationship.inverseRelationship = propertySetRelationship
             propertySetRelationship.inverseRelationship = propertyRelationship
             
@@ -209,7 +209,7 @@ internal struct Model {
             groupSetRelationship.minCount = 0
             groupSetRelationship.maxCount = 0
             groupSetRelationship.optional = false
-            groupSetRelationship.deleteRule = .NoActionDeleteRule
+            groupSetRelationship.deleteRule = .CascadeDeleteRule
             groupRelationship.inverseRelationship = groupSetRelationship
             groupSetRelationship.inverseRelationship = groupRelationship
             
@@ -234,7 +234,7 @@ internal struct Model {
             actionSubjectSetRelationship.minCount = 0
             actionSubjectSetRelationship.maxCount = 0
             actionSubjectSetRelationship.optional = false
-            actionSubjectSetRelationship.deleteRule = .NoActionDeleteRule
+            actionSubjectSetRelationship.deleteRule = .NullifyDeleteRule
             actionSubjectSetRelationship.destinationEntity = entityDescription
             
             let actionSubjectRelationship = NSRelationshipDescription()
@@ -242,7 +242,7 @@ internal struct Model {
             actionSubjectRelationship.minCount = 0
             actionSubjectRelationship.maxCount = 0
             actionSubjectRelationship.optional = false
-            actionSubjectRelationship.deleteRule = .NoActionDeleteRule
+            actionSubjectRelationship.deleteRule = .CascadeDeleteRule
             actionSubjectRelationship.destinationEntity = actionDescription
             actionSubjectRelationship.inverseRelationship = actionSubjectSetRelationship
             actionSubjectSetRelationship.inverseRelationship = actionSubjectRelationship
@@ -257,7 +257,7 @@ internal struct Model {
             actionObjectSetRelationship.minCount = 0
             actionObjectSetRelationship.maxCount = 0
             actionObjectSetRelationship.optional = false
-            actionObjectSetRelationship.deleteRule = .NoActionDeleteRule
+            actionObjectSetRelationship.deleteRule = .NullifyDeleteRule
             actionObjectSetRelationship.destinationEntity = entityDescription
             
             let actionObjectRelationship = NSRelationshipDescription()
@@ -265,7 +265,7 @@ internal struct Model {
             actionObjectRelationship.minCount = 0
             actionObjectRelationship.maxCount = 0
             actionObjectRelationship.optional = false
-            actionObjectRelationship.deleteRule = .NoActionDeleteRule
+            actionObjectRelationship.deleteRule = .CascadeDeleteRule
             actionObjectRelationship.destinationEntity = actionDescription
             actionObjectRelationship.inverseRelationship = actionObjectSetRelationship
             actionObjectSetRelationship.inverseRelationship = actionObjectRelationship
@@ -280,7 +280,7 @@ internal struct Model {
             relationshipSubjectSetRelationship.minCount = 1
             relationshipSubjectSetRelationship.maxCount = 1
             relationshipSubjectSetRelationship.optional = true
-            relationshipSubjectSetRelationship.deleteRule = .NoActionDeleteRule
+            relationshipSubjectSetRelationship.deleteRule = .NullifyDeleteRule
             relationshipSubjectSetRelationship.destinationEntity = entityDescription
             
             let relationshipSubjectRelationship = NSRelationshipDescription()
@@ -288,7 +288,7 @@ internal struct Model {
             relationshipSubjectRelationship.minCount = 0
             relationshipSubjectRelationship.maxCount = 0
             relationshipSubjectRelationship.optional = false
-            relationshipSubjectRelationship.deleteRule = .NoActionDeleteRule
+            relationshipSubjectRelationship.deleteRule = .CascadeDeleteRule
             relationshipSubjectRelationship.destinationEntity = relationshipDescription
             
             relationshipSubjectRelationship.inverseRelationship = relationshipSubjectSetRelationship
@@ -304,7 +304,7 @@ internal struct Model {
             relationshipObjectSetRelationship.minCount = 1
             relationshipObjectSetRelationship.maxCount = 1
             relationshipObjectSetRelationship.optional = true
-            relationshipObjectSetRelationship.deleteRule = .NoActionDeleteRule
+            relationshipObjectSetRelationship.deleteRule = .NullifyDeleteRule
             relationshipObjectSetRelationship.destinationEntity = entityDescription
             
             let relationshipObjectRelationship = NSRelationshipDescription()
@@ -312,7 +312,7 @@ internal struct Model {
             relationshipObjectRelationship.minCount = 0
             relationshipObjectRelationship.maxCount = 0
             relationshipObjectRelationship.optional = false
-            relationshipObjectRelationship.deleteRule = .NoActionDeleteRule
+            relationshipObjectRelationship.deleteRule = .CascadeDeleteRule
             relationshipObjectRelationship.destinationEntity = relationshipDescription
             relationshipObjectRelationship.inverseRelationship = relationshipObjectSetRelationship
             relationshipObjectSetRelationship.inverseRelationship = relationshipObjectRelationship

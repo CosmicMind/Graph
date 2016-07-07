@@ -32,7 +32,7 @@ import CoreData
 
 internal struct GraphContextRegistry {
     static var dispatchToken: dispatch_once_t = 0
-    static var cloud: [String: Bool]!
+    static var supported: [String: Bool]!
     static var privateManagedObjectContexts: [String: NSManagedObjectContext]!
     static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
@@ -74,7 +74,7 @@ public extension Graph {
     /// Prepares the registry.
     internal func prepareGraphContextRegistry() {
         dispatch_once(&GraphContextRegistry.dispatchToken) {
-            GraphContextRegistry.cloud = [String: Bool]()
+            GraphContextRegistry.supported = [String: Bool]()
             GraphContextRegistry.privateManagedObjectContexts = [String: NSManagedObjectContext]()
             GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
         }
@@ -85,11 +85,9 @@ public extension Graph {
      - Parameter iCloud: A boolean to enable iCloud.
      */
     internal func prepareManagedObjectContext(enableCloud enableCloud: Bool) {
-        let route = enableCloud ? "Cloud/\(name)" : "Local/\(name)"
-        
         guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
-            let cloud = enableCloud && nil != NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)
-            GraphContextRegistry.cloud[route] = cloud
+            let supported = enableCloud && nil != NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)
+            GraphContextRegistry.supported[route] = supported
             
             location = location.URLByAppendingPathComponent(route)
             
@@ -105,16 +103,16 @@ public extension Graph {
             managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: poc)
             GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
             
-            if cloud {
+            if supported {
                 preparePersistentStoreCoordinatorNotificationHandlers()
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
                     dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                        self?.addPersistentStore(true)
+                        self?.addPersistentStore(supported: true)
                     }
                 }
             } else {
-                addPersistentStore(false)
+                addPersistentStore(supported: false)
             }
             
             return
@@ -124,11 +122,11 @@ public extension Graph {
         location = moc.parentContext?.persistentStoreCoordinator?.persistentStores.first?.URL
         
         if let v = completion {
-            let cloud = GraphContextRegistry.cloud[route] ?? false
-            if cloud {
+            let supported = GraphContextRegistry.supported[route] ?? false
+            if supported {
                 preparePersistentStoreCoordinatorNotificationHandlers()
             }
-            v(cloud: cloud, error: cloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+            v(supported: supported, error: supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
         }
     }
 }

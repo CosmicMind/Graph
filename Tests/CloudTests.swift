@@ -46,8 +46,8 @@ class CloudTests : XCTestCase {
     func testContext() {
         cloudException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
         
-        let g1 = Graph(cloud: "marketing") { [weak self] (cloud: Bool, error: NSError?) in
-            XCTAssertFalse(cloud)
+        let g1 = Graph(cloud: "marketing") { [weak self] (supported: Bool, error: NSError?) in
+            XCTAssertFalse(supported)
             XCTAssertNotNil(error)
             self?.cloudException?.fulfill()
         }
@@ -61,8 +61,8 @@ class CloudTests : XCTestCase {
         
         cloudException = expectationWithDescription("[CloudTests Error: Async tests failed.]")
         
-        let g2 = Graph(cloud: "async") { [weak self] (cloud: Bool, error: NSError?) in
-            XCTAssertFalse(cloud)
+        let g2 = Graph(cloud: "async") { [weak self] (supported: Bool, error: NSError?) in
+            XCTAssertFalse(supported)
             XCTAssertNotNil(error)
             self?.cloudException?.fulfill()
         }
@@ -78,8 +78,8 @@ class CloudTests : XCTestCase {
         
         var g3: Graph!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            g3 = Graph(cloud: "test") { [weak self] (cloud: Bool, error: NSError?) in
-                XCTAssertFalse(cloud)
+            g3 = Graph(cloud: "test") { [weak self] (supported: Bool, error: NSError?) in
+                XCTAssertFalse(supported)
                 XCTAssertNotNil(error)
                 self?.cloudException?.fulfill()
             }

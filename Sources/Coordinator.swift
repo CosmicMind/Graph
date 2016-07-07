@@ -67,17 +67,17 @@ internal struct Coordinator {
 public extension Graph {
     /**
      Adds the persistentStore to the persistentStoreCoordinator.
-     - Parameter enableCloud: A boolean indicating whether cloud
-     storage is used, true if yes, false otherwise.
+     - Parameter supported: A boolean indicating whether cloud
+     storage is supported.
      */
-    internal func addPersistentStore(enableCloud: Bool) {
+    internal func addPersistentStore(supported supported: Bool) {
         guard let poc = managedObjectContext.parentContext else {
             return
         }
         
         var options: [NSObject: AnyObject]?
         
-        if enableCloud {
+        if supported {
             options = [NSObject: AnyObject]()
             options?[NSMigratePersistentStoresAutomaticallyOption] = 1
             options?[NSInferMappingModelAutomaticallyOption] = 1
@@ -87,7 +87,9 @@ public extension Graph {
         do {
             try poc.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
             location = poc.persistentStoreCoordinator?.persistentStores.first?.URL
-            completion?(cloud: enableCloud, error: enableCloud ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+            if !supported {
+                completion?(supported: supported, error: supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+            }
         } catch let e as NSError {
             fatalError("[Graph Error: \(e.localizedDescription)]")
         }
@@ -146,13 +148,16 @@ public extension Graph {
                     guard let s = self else {
                         return
                     }
+                    let supported = GraphContextRegistry.supported[s.route] ?? false
+                    s.completion?(supported: supported, error: supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
                     s.delegate?.graphDidPrepareCloudStorage?(s)
                 }
             }
         }
         
         defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
-            moc?.performBlockAndWait { [weak self, weak moc] in
+            print(notification)
+            moc?.performBlockAndWait { [weak self, weak moc, weak poc] in
                 guard let s = self else {
                     return
                 }
@@ -160,21 +165,21 @@ public extension Graph {
                 s.delegate?.graphWillResetFromCloudStorage?(s)
                 
                 moc?.mergeChangesFromContextDidSaveNotification(notification)
-                moc?.reset()
+                
+                s.notifyDeletedWatchersFromCloud(notification)
+                
+                poc?.performBlockAndWait { [weak self, weak poc] in
+                    guard let s = self else {
+                        return
+                    }
+                    
+                    poc?.mergeChangesFromContextDidSaveNotification(notification)
+                    
+                    s.delegate?.graphDidResetFromCloudStorage?(s)
+                }
                 
                 s.notifyInsertedWatchersFromCloud(notification)
                 s.notifyUpdatedWatchersFromCloud(notification)
-                s.notifyDeletedWatchersFromCloud(notification)
-                
-//                poc?.performBlockAndWait { [weak self, weak poc] in
-//                    guard let s = self else {
-//                        return
-//                    }
-//                    
-//                    poc?.mergeChangesFromContextDidSaveNotification(notification)
-//                    
-//                    s.delegate?.graphDidResetFromCloudStorage?(s)
-//                }
             }
         }
     }

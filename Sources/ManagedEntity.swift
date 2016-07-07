@@ -61,28 +61,35 @@ internal class ManagedEntity: ManagedNode {
             return super[name]
         }
         set(value) {
-            managedObjectContext?.performBlockAndWait { [unowned self] in
+            guard let moc = managedObjectContext else {
+                return
+            }
+            moc.performBlockAndWait { [unowned self, unowned moc] in
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
                             (property as? ManagedEntityProperty)?.delete()
-                            (self.propertySet as? NSMutableSet)?.removeObject(property)
+                            self.mutableSetValueForKey("propertySet").removeObject(property)
                             break
                         }
                     }
                     return
                 }
                 
+                var hasProperty: Bool = false
                 for property in self.propertySet {
                     if name == property.name {
                         (property as? ManagedEntityProperty)?.object = object
-                        return
+                        hasProperty = true
+                        break
                     }
                 }
                 
-                let property = ManagedEntityProperty(name: name, object: object, managedObjectContext: self.managedObjectContext!)
-                property.node = self
-                (self.propertySet as? NSMutableSet)?.addObject(property)
+                if !hasProperty {
+                    let property = ManagedEntityProperty(name: name, object: object, managedObjectContext: moc)
+                    property.node = self
+                    self.mutableSetValueForKey("propertySet").addObject(property)
+                }
             }
         }
     }
@@ -93,17 +100,42 @@ internal class ManagedEntity: ManagedNode {
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
-    internal override func addToGroup(name: String) -> Bool {
+    internal func addToGroup(name: String) -> Bool {
+        guard let moc = managedObjectContext else {
+            return false
+        }
         var result: Bool? = false
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        moc.performBlockAndWait { [unowned self, unowned moc] in
             if !self.memberOfGroup(name) {
-                let group = ManagedEntityGroup(name: name, managedObjectContext: self.managedObjectContext!)
+                let group = ManagedEntityGroup(name: name, managedObjectContext: moc)
                 group.node = self
-                (self.groupSet as? NSMutableSet)?.addObject(group)
+                self.mutableSetValueForKey("groupSet").addObject(group)
                 result = true
             }
         }
         return result!
+    }
+    
+    /**
+     Checks if the ManagedNode to a part group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    internal func memberOfGroup(name: String) -> Bool {
+        guard let moc = managedObjectContext else {
+            return false
+        }
+        var result: Bool?
+        moc.performBlockAndWait { [unowned self] in
+            for group in self.groupSet {
+                if name == group.name {
+                    result = true
+                    break
+                }
+            }
+        }
+        return result ?? false
     }
     
     /**
@@ -112,15 +144,18 @@ internal class ManagedEntity: ManagedNode {
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
-    internal override func removeFromGroup(name: String) -> Bool {
+    internal func removeFromGroup(name: String) -> Bool {
+        guard let moc = managedObjectContext else {
+            return false
+        }
         var result: Bool? = false
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        moc.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
                     (group as? ManagedEntityGroup)?.delete()
-                    (self.groupSet as? NSMutableSet)?.removeObject(group)
+                    self.mutableSetValueForKey("groupSet").removeObject(group)
                     result = true
-                    return
+                    break
                 }
             }
         }

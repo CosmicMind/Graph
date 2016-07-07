@@ -57,7 +57,10 @@ internal class ManagedRelationship: ManagedNode {
             return super[name]
         }
         set(value) {
-            managedObjectContext?.performBlockAndWait { [unowned self] in
+            guard let moc = managedObjectContext else {
+                return
+            }
+            moc.performBlockAndWait { [unowned self, unowned moc] in
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
@@ -69,53 +72,86 @@ internal class ManagedRelationship: ManagedNode {
                     return
                 }
                 
+                var hasProperty: Bool = false
                 for property in self.propertySet {
                     if name == property.name {
                         (property as? ManagedRelationshipProperty)?.object = object
-                        return
+                        hasProperty = true
+                        break
                     }
                 }
                 
-                let property = ManagedRelationshipProperty(name: name, object: object, managedObjectContext: self.managedObjectContext!)
-                property.node = self
+                if !hasProperty {
+                    let property = ManagedRelationshipProperty(name: name, object: object, managedObjectContext: moc)
+                    property.node = self
+                    (self.propertySet as? NSMutableSet)?.addObject(property)
+                }
             }
         }
     }
     
     /**
-     Adds the ManagedRelationship to the group.
+     Adds the ManagedEntity to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
-    internal override func addToGroup(name: String) -> Bool {
+    internal func addToGroup(name: String) -> Bool {
+        guard let moc = managedObjectContext else {
+            return false
+        }
         var result: Bool? = false
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        moc.performBlockAndWait { [unowned self, unowned moc] in
             if !self.memberOfGroup(name) {
-                let group = ManagedRelationshipGroup(name: name, managedObjectContext: self.managedObjectContext!)
+                let group = ManagedRelationshipGroup(name: name, managedObjectContext: moc)
                 group.node = self
+                (self.groupSet as? NSMutableSet)?.addObject(group)
                 result = true
-                return
             }
         }
         return result!
     }
     
     /**
-     Removes the ManagedRelationship from the group.
+     Checks if the ManagedNode to a part group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    internal func memberOfGroup(name: String) -> Bool {
+        guard let moc = managedObjectContext else {
+            return false
+        }
+        var result: Bool?
+        moc.performBlockAndWait { [unowned self] in
+            for group in self.groupSet {
+                if name == group.name {
+                    result = true
+                    break
+                }
+            }
+        }
+        return result ?? false
+    }
+    
+    /**
+     Removes the ManagedEntity from the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
-    internal override func removeFromGroup(name: String) -> Bool {
+    internal func removeFromGroup(name: String) -> Bool {
+        guard let moc = managedObjectContext else {
+            return false
+        }
         var result: Bool? = false
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        moc.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
                     (group as? ManagedRelationshipGroup)?.delete()
                     (self.groupSet as? NSMutableSet)?.removeObject(group)
                     result = true
-                    return
+                    break
                 }
             }
         }

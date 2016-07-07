@@ -334,10 +334,10 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
         XCTAssertFalse(relationship.memberOfGroup("G"))
-        XCTAssertNotNil(relationship.subject)
-        XCTAssertEqual(0, relationship.subject?.relationships.count)
-        XCTAssertNotNil(relationship.object)
-        XCTAssertEqual(0, relationship.object?.relationships.count)
+        XCTAssertNil(relationship.subject)
+        XCTAssertNil(relationship.subject?.relationships.count)
+        XCTAssertNil(relationship.object)
+        XCTAssertNil(relationship.object?.relationships.count)
         
         delegateException?.fulfill()
     }
