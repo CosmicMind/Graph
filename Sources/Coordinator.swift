@@ -151,8 +151,8 @@ public extension Graph {
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak poc] (notification: NSNotification) in
-            moc?.performBlockAndWait { [weak self, weak moc, weak poc] in
+        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
+            moc?.performBlockAndWait { [weak self, weak moc] in
                 guard let s = self else {
                     return
                 }
@@ -160,21 +160,21 @@ public extension Graph {
                 s.delegate?.graphWillResetFromCloudStorage?(s)
                 
                 moc?.mergeChangesFromContextDidSaveNotification(notification)
+                moc?.reset()
                 
+                s.notifyInsertedWatchersFromCloud(notification)
+                s.notifyUpdatedWatchersFromCloud(notification)
                 s.notifyDeletedWatchersFromCloud(notification)
                 
-                poc?.performBlockAndWait { [weak self, weak poc] in
-                    guard let s = self else {
-                        return
-                    }
-                    
-                    poc?.mergeChangesFromContextDidSaveNotification(notification)
-                    
-                    s.notifyInsertedWatchersFromCloud(notification)
-                    s.notifyUpdatedWatchersFromCloud(notification)
-                    
-                    s.delegate?.graphDidResetFromCloudStorage?(s)
-                }
+//                poc?.performBlockAndWait { [weak self, weak poc] in
+//                    guard let s = self else {
+//                        return
+//                    }
+//                    
+//                    poc?.mergeChangesFromContextDidSaveNotification(notification)
+//                    
+//                    s.delegate?.graphDidResetFromCloudStorage?(s)
+//                }
             }
         }
     }

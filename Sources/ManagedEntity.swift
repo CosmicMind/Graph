@@ -82,6 +82,7 @@ internal class ManagedEntity: ManagedNode {
                 
                 let property = ManagedEntityProperty(name: name, object: object, managedObjectContext: self.managedObjectContext!)
                 property.node = self
+                (self.propertySet as? NSMutableSet)?.addObject(property)
             }
         }
     }
@@ -98,8 +99,8 @@ internal class ManagedEntity: ManagedNode {
             if !self.memberOfGroup(name) {
                 let group = ManagedEntityGroup(name: name, managedObjectContext: self.managedObjectContext!)
                 group.node = self
+                (self.groupSet as? NSMutableSet)?.addObject(group)
                 result = true
-                return
             }
         }
         return result!
