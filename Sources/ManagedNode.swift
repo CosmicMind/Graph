@@ -68,7 +68,10 @@ internal class ManagedNode: ManagedModel {
     /// A reference to the properties.
     internal var properties: [String: AnyObject] {
         var p = [String: AnyObject]()
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        guard let moc = managedObjectContext else {
+            return p
+        }
+        moc.performBlockAndWait { [unowned self] in
             self.propertySet.forEach { (object: AnyObject) in
                 if let property = object as? ManagedProperty {
                     p[property.name] = property.object
@@ -133,5 +136,27 @@ internal class ManagedNode: ManagedModel {
             }
         }
         return object
+    }
+    
+    /**
+     Checks if the ManagedNode to a part group.
+     - Parameter name: The group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    internal func memberOfGroup(name: String) -> Bool {
+        guard let moc = managedObjectContext else {
+            return false
+        }
+        var result: Bool?
+        moc.performBlockAndWait { [unowned self] in
+            for group in self.groupSet {
+                if name == group.name {
+                    result = true
+                    break
+                }
+            }
+        }
+        return result ?? false
     }
 }

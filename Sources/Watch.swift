@@ -60,8 +60,8 @@ public protocol GraphDelegate {
     
     optional func graphWillPrepareCloudStorage(graph: Graph, transition: GraphCloudStorageTransition)
     optional func graphDidPrepareCloudStorage(graph: Graph)
-    optional func graphWillResetFromCloudStorage(graph: Graph)
-    optional func graphDidResetFromCloudStorage(graph: Graph)
+    optional func graphWillUpdateFromCloudStorage(graph: Graph)
+    optional func graphDidUpdateFromCloudStorage(graph: Graph)
 }
 
 /// Storage Watch API.
@@ -262,10 +262,57 @@ public extension Graph {
     }
     
     /**
+     Prepares the relationships between groups and properties for incoming
+     cloud data.
+     - Parameter set: A Set of NSManagedObjects to pass.
+     */
+    private func prepareCloudDataForInsertedWatchers(set: Set<NSManagedObject>) {
+        set.forEach { (managedObject: NSManagedObject) in
+            switch String.fromCString(object_getClassName(managedObject))! {
+            case "ManagedEntityGroup_ManagedEntityGroup_":
+                let group = managedObject as! ManagedEntityGroup
+                let node = group.node
+                node.addGroupSetObject(group)
+                
+            case "ManagedEntityProperty_ManagedEntityProperty_":
+                let property = managedObject as! ManagedEntityProperty
+                let node = property.node
+                node.addPropertySetObject(property)
+                
+            case "ManagedActionGroup_ManagedActionGroup_":
+                let group: ManagedActionGroup = managedObject as! ManagedActionGroup
+                let node = group.node
+                node.addGroupSetObject(group)
+                
+            case "ManagedActionProperty_ManagedActionProperty_":
+                let property = managedObject as! ManagedActionProperty
+                let node = property.node
+                node.addPropertySetObject(property)
+                
+            case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
+                let group = managedObject as! ManagedRelationshipGroup
+                let node = group.node
+                node.addGroupSetObject(group)
+                
+            case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                let property = managedObject as! ManagedRelationshipProperty
+                let node = property.node
+                node.addPropertySetObject(property)
+                
+            default:
+                assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+            }
+        }
+    }
+    
+    /**
      Passes the handle to the inserted notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
      */
     private func delegateToInsertedWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
+        if fromCloud {
+            prepareCloudDataForInsertedWatchers(set)
+        }
         set.forEach { [unowned self] (managedObject: NSManagedObject) in
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntity_ManagedEntity_":
@@ -363,14 +410,67 @@ public extension Graph {
     }
     
     /**
+     Prepares the relationships between groups and properties for incoming
+     cloud data.
+     - Parameter set: A Set of NSManagedObjects to pass.
+     */
+    private func prepareCloudDataForDeletedWatchers(set: Set<NSManagedObject>) {
+        set.forEach { (managedObject: NSManagedObject) in
+            switch String.fromCString(object_getClassName(managedObject))! {
+            case "ManagedEntityGroup_ManagedEntityGroup_":
+                let group = managedObject as! ManagedEntityGroup
+                let node = group.node
+                node.removeGroupSetObject(group)
+                
+            case "ManagedEntityProperty_ManagedEntityProperty_":
+                let property = managedObject as! ManagedEntityProperty
+                let node = property.node
+                node.removePropertySetObject(property)
+                
+            case "ManagedActionGroup_ManagedActionGroup_":
+                let group = managedObject as! ManagedActionGroup
+                let node = group.node
+                node.removeGroupSetObject(group)
+                
+            case "ManagedActionProperty_ManagedActionProperty_":
+                let property = managedObject as! ManagedActionProperty
+                let node = property.node
+                node.removePropertySetObject(property)
+                
+            case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
+                let group = managedObject as! ManagedRelationshipGroup
+                let node = group.node
+                node.removeGroupSetObject(group)
+                
+            case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                let property = managedObject as! ManagedRelationshipProperty
+                let node = property.node
+                node.removePropertySetObject(property)
+                
+            default:
+                assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+            }
+        }
+    }
+    
+    /**
      Passes the handle to the deleted notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
      */
     private func delegateToDeletedWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
+        if fromCloud {
+            prepareCloudDataForDeletedWatchers(set)
+        }
         set.forEach { [unowned self] (managedObject: NSManagedObject) in
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntity_ManagedEntity_":
                 self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
+                
+            case "ManagedEntityGroup_ManagedEntityGroup_":
+                let group = managedObject as! ManagedEntityGroup
+                let node = group.node
+                let name = group.name
+                self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
                 
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
@@ -379,14 +479,14 @@ public extension Graph {
                 let object = property.object
                 self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
                 
-            case "ManagedEntityGroup_ManagedEntityGroup_":
-                let group = managedObject as! ManagedEntityGroup
-                let node = group.node
-                let name = group.name
-                self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
-                
             case "ManagedAction_ManagedAction_":
                 self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+                
+            case "ManagedActionGroup_ManagedActionGroup_":
+                let group = managedObject as! ManagedActionGroup
+                let node = group.node
+                let name = group.name
+                self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
                 
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
@@ -395,28 +495,22 @@ public extension Graph {
                 let object = property.object
                 self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
                 
-            case "ManagedActionGroup_ManagedActionGroup_":
-                let group = managedObject as! ManagedActionGroup
-                let node = group.node
-                let name = group.name
-                self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
-                
             case "ManagedRelationship_ManagedRelationship_":
                 self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
-                
-            case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
-                let property = managedObject as! ManagedRelationshipProperty
-                let node = property.node
-                let name = property.name
-                let object = property.object
-                self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
                 
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
                 let node = group.node
                 let name = group.name
                 self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
-                
+            
+            case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
+                let property = managedObject as! ManagedRelationshipProperty
+                let node = property.node
+                let name = property.name
+                let object = property.object
+                self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+            
             default:
                 assert(false, "[Graph Error: Graph observed an object that is invalid.]")
             }

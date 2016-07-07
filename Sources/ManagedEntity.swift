@@ -68,9 +68,11 @@ internal class ManagedEntity: ManagedNode {
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
-                            (property as? ManagedEntityProperty)?.delete()
-                            self.mutableSetValueForKey("propertySet").removeObject(property)
-                            break
+                            if let p = property as? ManagedEntityProperty {
+                                p.delete()
+                                self.removePropertySetObject(p)
+                                break
+                            }
                         }
                     }
                     return
@@ -88,7 +90,7 @@ internal class ManagedEntity: ManagedNode {
                 if !hasProperty {
                     let property = ManagedEntityProperty(name: name, object: object, managedObjectContext: moc)
                     property.node = self
-                    self.mutableSetValueForKey("propertySet").addObject(property)
+                    self.addPropertySetObject(property)
                 }
             }
         }
@@ -109,33 +111,11 @@ internal class ManagedEntity: ManagedNode {
             if !self.memberOfGroup(name) {
                 let group = ManagedEntityGroup(name: name, managedObjectContext: moc)
                 group.node = self
-                self.mutableSetValueForKey("groupSet").addObject(group)
+                self.addGroupSetObject(group)
                 result = true
             }
         }
         return result!
-    }
-    
-    /**
-     Checks if the ManagedNode to a part group.
-     - Parameter name: The group name.
-     - Returns: A boolean of the result, true if a member, false
-     otherwise.
-     */
-    internal func memberOfGroup(name: String) -> Bool {
-        guard let moc = managedObjectContext else {
-            return false
-        }
-        var result: Bool?
-        moc.performBlockAndWait { [unowned self] in
-            for group in self.groupSet {
-                if name == group.name {
-                    result = true
-                    break
-                }
-            }
-        }
-        return result ?? false
     }
     
     /**
@@ -152,10 +132,12 @@ internal class ManagedEntity: ManagedNode {
         moc.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
-                    (group as? ManagedEntityGroup)?.delete()
-                    self.mutableSetValueForKey("groupSet").removeObject(group)
-                    result = true
-                    break
+                    if let g = group as? ManagedEntityGroup {
+                        g.delete()
+                        self.removeGroupSetObject(g)
+                        result = true
+                        break
+                    }
                 }
             }
         }

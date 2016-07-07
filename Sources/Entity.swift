@@ -65,6 +65,25 @@ public class Entity: NSObject, NodeType {
         return node.groups
     }
     
+    /**
+     Access properties using the subscript operator.
+     - Parameter name: A property name value.
+     - Returns: The optional AnyObject value.
+     */
+    public subscript(name: String) -> AnyObject? {
+        get {
+            return node.managedNode[name]
+        }
+        set(value) {
+            node.managedNode[name] = value
+        }
+    }
+    
+    /// A reference to the properties Dictionary.
+    public var properties: [String: AnyObject] {
+        return node.properties
+    }
+    
     /// A reference to all the Actions that the Entity is a part of.
     public var actions: [Action] {
         var s = Set<ManagedAction>()
@@ -133,25 +152,6 @@ public class Entity: NSObject, NodeType {
             } as [Relationship]
         }
         return result!
-    }
-    
-    /**
-     Access properties using the subscript operator.
-     - Parameter name: A property name value.
-     - Returns: The optional AnyObject value.
-     */
-    public subscript(name: String) -> AnyObject? {
-        get {
-            return node.managedNode[name]
-        }
-        set(value) {
-            node.managedNode[name] = value
-        }
-    }
-    
-    /// A reference to the properties Dictionary.
-    public var properties: [String: AnyObject] {
-        return node.properties
     }
     
     /**

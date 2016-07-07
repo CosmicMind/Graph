@@ -64,9 +64,11 @@ internal class ManagedAction: ManagedNode {
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
-                            (property as? ManagedActionProperty)?.delete()
-                            (self.propertySet as? NSMutableSet)?.removeObject(property)
-                            break
+                            if let p = property as? ManagedActionProperty {
+                                p.delete()
+                                self.removePropertySetObject(p)
+                                break
+                            }
                         }
                     }
                     return
@@ -84,14 +86,14 @@ internal class ManagedAction: ManagedNode {
                 if !hasProperty {
                     let property = ManagedActionProperty(name: name, object: object, managedObjectContext: moc)
                     property.node = self
-                    (self.propertySet as? NSMutableSet)?.addObject(property)
+                    self.addPropertySetObject(property)
                 }
             }
         }
     }
     
     /**
-     Adds the ManagedEntity to the group.
+     Adds the ManagedAction to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -105,7 +107,7 @@ internal class ManagedAction: ManagedNode {
             if !self.memberOfGroup(name) {
                 let group = ManagedActionGroup(name: name, managedObjectContext: moc)
                 group.node = self
-                (self.groupSet as? NSMutableSet)?.addObject(group)
+                self.addGroupSetObject(group)
                 result = true
             }
         }
@@ -113,29 +115,7 @@ internal class ManagedAction: ManagedNode {
     }
     
     /**
-     Checks if the ManagedNode to a part group.
-     - Parameter name: The group name.
-     - Returns: A boolean of the result, true if a member, false
-     otherwise.
-     */
-    internal func memberOfGroup(name: String) -> Bool {
-        guard let moc = managedObjectContext else {
-            return false
-        }
-        var result: Bool?
-        moc.performBlockAndWait { [unowned self] in
-            for group in self.groupSet {
-                if name == group.name {
-                    result = true
-                    break
-                }
-            }
-        }
-        return result ?? false
-    }
-    
-    /**
-     Removes the ManagedEntity from the group.
+     Removes the ManagedAction from the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
@@ -148,10 +128,12 @@ internal class ManagedAction: ManagedNode {
         moc.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
-                    (group as? ManagedActionGroup)?.delete()
-                    (self.groupSet as? NSMutableSet)?.removeObject(group)
-                    result = true
-                    break
+                    if let g = group as? ManagedActionGroup {
+                        g.delete()
+                        self.removeGroupSetObject(g)
+                        result = true
+                        break
+                    }
                 }
             }
         }
