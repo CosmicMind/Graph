@@ -299,8 +299,7 @@ public extension Graph {
                 let node = property.node
                 node.addPropertySetObject(property)
                 
-            default:
-                assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+            default:break
             }
         }
     }
@@ -447,8 +446,7 @@ public extension Graph {
                 let node = property.node
                 node.removePropertySetObject(property)
                 
-            default:
-                assert(false, "[Graph Error: Graph observed an object that is invalid.]")
+            default:break
             }
         }
     }
