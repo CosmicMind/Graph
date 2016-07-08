@@ -70,7 +70,6 @@ internal class ManagedEntity: ManagedNode {
                         if name == property.name {
                             if let p = property as? ManagedEntityProperty {
                                 p.delete()
-                                self.removePropertySetObject(p)
                                 break
                             }
                         }
@@ -90,14 +89,13 @@ internal class ManagedEntity: ManagedNode {
                 if !hasProperty {
                     let property = ManagedEntityProperty(name: name, object: object, managedObjectContext: moc)
                     property.node = self
-                    self.addPropertySetObject(property)
                 }
             }
         }
     }
     
     /**
-     Adds the ManagedEntity to the group.
+     Adds the ManagedAction to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -111,7 +109,6 @@ internal class ManagedEntity: ManagedNode {
             if !self.memberOfGroup(name) {
                 let group = ManagedEntityGroup(name: name, managedObjectContext: moc)
                 group.node = self
-                self.addGroupSetObject(group)
                 result = true
             }
         }
@@ -119,7 +116,7 @@ internal class ManagedEntity: ManagedNode {
     }
     
     /**
-     Removes the ManagedEntity from the group.
+     Removes the ManagedAction from the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
@@ -134,7 +131,6 @@ internal class ManagedEntity: ManagedNode {
                 if name == group.name {
                     if let g = group as? ManagedEntityGroup {
                         g.delete()
-                        self.removeGroupSetObject(g)
                         result = true
                         break
                     }
@@ -142,6 +138,61 @@ internal class ManagedEntity: ManagedNode {
             }
         }
         return result!
+    }
+    
+    /// Marks the Entity for deletion and clears all its relationships.
+    internal override func delete() {
+        guard let moc = self.managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self] in
+            self.groupSet.forEach { (object: AnyObject) in
+                guard let group = object as? ManagedEntityGroup else {
+                    return
+                }
+                group.delete()
+            }
+            
+            self.propertySet.forEach { (object: AnyObject) in
+                guard let property = object as? ManagedEntityProperty else {
+                    return
+                }
+                property.delete()
+            }
+            
+            self.actionSubjectSet.forEach { [unowned self] (object: AnyObject) in
+                guard let action = object as? ManagedAction else {
+                    return
+                }
+                action.delete()
+                action.mutableSetValueForKey("subjectSet").removeObject(self)
+            }
+            
+            self.actionObjectSet.forEach { [unowned self] (object: AnyObject) in
+                guard let action = object as? ManagedAction else {
+                    return
+                }
+                action.delete()
+                action.mutableSetValueForKey("objectSet").removeObject(self)
+            }
+            
+            self.relationshipSubjectSet.forEach { (object: AnyObject) in
+                guard let relationship = object as? ManagedRelationship else {
+                    return
+                }
+                relationship.delete()
+            }
+            
+            self.relationshipObjectSet.forEach { (object: AnyObject) in
+                guard let relationship = object as? ManagedRelationship else {
+                    return
+                }
+                relationship.delete()
+            }
+        }
+        
+        super.delete()
     }
 }
 
@@ -179,64 +230,64 @@ internal extension ManagedEntity {
     }
     
     /**
-     :name:	addActionSubjectSetObject
-     :description:	Adds the Action to the actionSubjectSet for the Entity.
+     Adds a ManagedAction to the actionSubjectSet.
+     - Parameter value: A ManagedAction.
      */
     func addActionSubjectSetObject(value: ManagedAction) {
         (actionSubjectSet as! NSMutableSet).addObject(value)
     }
     
     /**
-     :name:	removeActionSubjectSetObject
-     :description:	Removes the Action to the actionSubjectSet for the Entity.
+     Removes a ManagedAction from the actionSubjectSet.
+     - Parameter value: A ManagedAction.
      */
     func removeActionSubjectSetObject(value: ManagedAction) {
         (actionSubjectSet as! NSMutableSet).removeObject(value)
     }
     
     /**
-     :name:	addActionObjectSetObject
-     :description:	Adds the Action to the actionObjectSet for the Entity.
+     Adds a ManagedAction to the actionObjectSet.
+     - Parameter value: A ManagedAction.
      */
     func addActionObjectSetObject(value: ManagedAction) {
         (actionObjectSet as! NSMutableSet).addObject(value)
     }
     
     /**
-     :name:	removeActionObjectSetObject
-     :description:	Removes the Action to the actionObjectSet for the Entity.
+     Removes a ManagedAction from the actionObjectSet.
+     - Parameter value: A ManagedAction.
      */
     func removeActionObjectSetObject(value: ManagedAction) {
         (actionObjectSet as! NSMutableSet).removeObject(value)
     }
     
     /**
-     :name:	addRelationshipSubjectSetSubject
-     :description:	Adds the Relationship to the relationshipSubjectSet for the Entity.
+     Adds a ManagedRelationship to the relationshipSubjectSet.
+     - Parameter value: A ManagedRelationship.
      */
-    func addRelationshipSubjectSetSubject(value: ManagedRelationship) {
+    func addRelationshipSubjectSetObject(value: ManagedRelationship) {
         (relationshipSubjectSet as! NSMutableSet).addObject(value)
     }
     
     /**
-     :name:	removeRelationshipSubjectSetSubject
-     :description:	Removes the Relationship to the relationshipSubjectSet for the Entity.
+     Removes a ManagedRelationship from the relationshipSubjectSet.
+     - Parameter value: A ManagedRelationship.
      */
-    func removeRelationshipSubjectSetSubject(value: ManagedRelationship) {
+    func removeRelationshipSubjectSetObject(value: ManagedRelationship) {
         (relationshipSubjectSet as! NSMutableSet).removeObject(value)
     }
     
     /**
-     :name:	addRelationshipObjectSetObject
-     :description:	Adds the Relationship to the relationshipObjectSet for the Entity.
+     Adds a ManagedRelationship to the relationshipObjectSet.
+     - Parameter value: A ManagedRelationship.
      */
     func addRelationshipObjectSetObject(value: ManagedRelationship) {
         (relationshipObjectSet as! NSMutableSet).addObject(value)
     }
     
     /**
-     :name:	removeRelationshipObjectSetObject
-     :description:	Removes the Relationship to the relationshipObjectSet for the Entity.
+     Removes a ManagedRelationship from the relationshipObjectSet.
+     - Parameter value: A ManagedRelationship.
      */
     func removeRelationshipObjectSetObject(value: ManagedRelationship) {
         (relationshipObjectSet as! NSMutableSet).removeObject(value)

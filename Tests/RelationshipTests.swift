@@ -200,11 +200,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         relationship.delete()
         
         XCTAssertNotNil(relationship.subject)
+        XCTAssertEqual(1, relationship.subject?.relationships.count)
         XCTAssertNotNil(relationship.object)
-        XCTAssertEqual(subject, relationship.subject)
-        XCTAssertEqual(0, relationship.subject?.relationships.count)
-        XCTAssertEqual(object, relationship.object)
-        XCTAssertEqual(0, relationship.object?.relationships.count)
+        XCTAssertEqual(1, relationship.object?.relationships.count)
         
         saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
         delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
@@ -335,9 +333,9 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertNil(relationship["P"])
         XCTAssertFalse(relationship.memberOfGroup("G"))
         XCTAssertNotNil(relationship.subject)
-        XCTAssertEqual(0, relationship.subject?.relationships.count)
+        XCTAssertEqual(1, relationship.subject?.relationships.count)
         XCTAssertNotNil(relationship.object)
-        XCTAssertEqual(0, relationship.object?.relationships.count)
+        XCTAssertEqual(1, relationship.object?.relationships.count)
         
         delegateException?.fulfill()
     }

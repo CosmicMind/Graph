@@ -66,7 +66,6 @@ internal class ManagedAction: ManagedNode {
                         if name == property.name {
                             if let p = property as? ManagedActionProperty {
                                 p.delete()
-                                self.removePropertySetObject(p)
                                 break
                             }
                         }
@@ -86,7 +85,6 @@ internal class ManagedAction: ManagedNode {
                 if !hasProperty {
                     let property = ManagedActionProperty(name: name, object: object, managedObjectContext: moc)
                     property.node = self
-                    self.addPropertySetObject(property)
                 }
             }
         }
@@ -107,7 +105,6 @@ internal class ManagedAction: ManagedNode {
             if !self.memberOfGroup(name) {
                 let group = ManagedActionGroup(name: name, managedObjectContext: moc)
                 group.node = self
-                self.addGroupSetObject(group)
                 result = true
             }
         }
@@ -130,7 +127,6 @@ internal class ManagedAction: ManagedNode {
                 if name == group.name {
                     if let g = group as? ManagedActionGroup {
                         g.delete()
-                        self.removeGroupSetObject(g)
                         result = true
                         break
                     }
@@ -142,14 +138,15 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Adds a ManagedEntity to the subjectSet.
-     - Parameter entity: A ManagedEntity to add.
+     - Parameter managedEntity: A ManagedEntity to add.
      - Returns: A boolean of the result, true if added, false otherwise.
      */
-    internal func addSubject(entity: ManagedEntity) -> Bool {
+    internal func addSubject(managedEntity: ManagedEntity) -> Bool {
         var result: Bool?
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.subjectSet.count
-            self.mutableSetValueForKey("subjectSet").addObject(entity)
+            self.mutableSetValueForKey("subjectSet").addObject(managedEntity)
+            managedEntity.mutableSetValueForKey("actionSubjectSet").addObject(self)
             result = count != self.subjectSet.count
         }
         return result!
@@ -157,14 +154,15 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Removes a ManagedEntity from the subjectSet.
-     - Parameter entity: A ManagedEntity to remove.
+     - Parameter managedEntity: A ManagedEntity to remove.
      - Returns: A boolean of the result, true if removed, false otherwise.
      */
-    internal func removeSubject(entity: ManagedEntity) -> Bool {
+    internal func removeSubject(managedEntity: ManagedEntity) -> Bool {
         var result: Bool?
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.subjectSet.count
-            self.mutableSetValueForKey("subjectSet").removeObject(entity)
+            self.mutableSetValueForKey("subjectSet").removeObject(managedEntity)
+            managedEntity.mutableSetValueForKey("actionSubjectSet").removeObject(self)
             result = count != self.subjectSet.count
         }
         return result!
@@ -172,14 +170,15 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Adds a ManagedEntity to the objectSet.
-     - Parameter entity: A ManagedEntity to add.
+     - Parameter managedEntity: A ManagedEntity to add.
      - Returns: A boolean of the result, true if added, false otherwise.
      */
-    internal func addObject(entity: ManagedEntity) -> Bool {
+    internal func addObject(managedEntity: ManagedEntity) -> Bool {
         var result: Bool?
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.objectSet.count
-            self.mutableSetValueForKey("objectSet").addObject(entity)
+            self.mutableSetValueForKey("objectSet").addObject(managedEntity)
+            managedEntity.mutableSetValueForKey("actionObjectSet").addObject(self)
             result = count != self.objectSet.count
         }
         return result!
@@ -187,21 +186,94 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Removes a ManagedEntity from the objectSet.
-     - Parameter entity: A ManagedEntity to remove.
+     - Parameter managedEntity: A ManagedEntity to remove.
      - Returns: A boolean of the result, true if removed, false otherwise.
      */
-    internal func removeObject(entity: ManagedEntity) -> Bool {
+    internal func removeObject(managedEntity: ManagedEntity) -> Bool {
         var result: Bool?
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.objectSet.count
-            self.mutableSetValueForKey("objectSet").removeObject(entity)
+            self.mutableSetValueForKey("objectSet").removeObject(managedEntity)
+            managedEntity.mutableSetValueForKey("actionObjectSet").removeObject(self)
             result = count != self.objectSet.count
         }
         return result!
     }
+    
+    /// Marks the Action for deletion and clears all its relationships.
+    internal override func delete() {
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self] in
+            self.groupSet.forEach { (object: AnyObject) in
+                guard let group = object as? ManagedActionGroup else {
+                    return
+                }
+                group.delete()
+            }
+            
+            self.propertySet.forEach { (object: AnyObject) in
+                guard let property = object as? ManagedActionProperty else {
+                    return
+                }
+                property.delete()
+            }
+            
+            self.subjectSet.forEach { [unowned self] (object: AnyObject) in
+                guard let entity: ManagedEntity = object as? ManagedEntity else {
+                    return
+                }
+                
+                entity.mutableSetValueForKey("actionSubjectSet").removeObject(self)
+            }
+            
+            self.objectSet.forEach { [unowned self] (object: AnyObject) in
+                guard let entity: ManagedEntity = object as? ManagedEntity else {
+                    return
+                }
+                entity.mutableSetValueForKey("actionObjectSet").removeObject(self)
+            }
+        }
+        
+        super.delete()
+    }
 }
 
 internal extension ManagedAction {
+    /**
+     Adds a ManagedEntity to the subjectSet.
+     - Parameter value: A reference to a ManagedEntity.
+     */
+    func addSubjectSetObject(value: ManagedEntity) {
+        (subjectSet as! NSMutableSet).addObject(value)
+    }
+    
+    /**
+     Removes a ManagedEntity from the subjectSet.
+     - Parameter value: A reference to a ManagedEntity.
+     */
+    func removeSubjectSetObject(value: ManagedEntity) {
+        (subjectSet as! NSMutableSet).removeObject(value)
+    }
+
+    /**
+     Adds a ManagedEntity to the objectSet.
+     - Parameter value: A reference to a ManagedEntity.
+     */
+    func addObjectSetObject(value: ManagedEntity) {
+        (objectSet as! NSMutableSet).addObject(value)
+    }
+    
+    /**
+     Removes a ManagedEntity from the objectSet.
+     - Parameter value: A reference to a ManagedEntity.
+     */
+    func removeObjectSetObject(value: ManagedEntity) {
+        (objectSet as! NSMutableSet).removeObject(value)
+    }
+    
     /**
      Adds the relationship between ActionProperty and ManagedAction.
      - Parameter value: A reference to a ManagedActionProperty.

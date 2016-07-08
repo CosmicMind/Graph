@@ -88,13 +88,14 @@ public class Relationship: NSObject, NodeType {
         get {
             var n: ManagedEntity?
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                self.node.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").addObject(self.node.managedNode)
                 n = self.node.managedNode.subject
             }
             return nil == n ? nil : Entity(managedNode: n!)
         }
         set(entity) {
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                self.node.managedNode.subject?.removeRelationshipSubjectSetSubject(self.node.managedNode)
+                self.node.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self.node.managedNode)
                 self.node.managedNode.subject = entity?.node.managedNode
             }
         }
@@ -105,13 +106,14 @@ public class Relationship: NSObject, NodeType {
         get {
             var n: ManagedEntity?
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                self.node.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").addObject(self.node.managedNode)
                 n = self.node.managedNode.object
             }
             return nil == n ? nil : Entity(managedNode: n!)
         }
         set(entity) {
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                self.node.managedNode.object?.removeRelationshipSubjectSetSubject(self.node.managedNode)
+                self.node.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self.node.managedNode)
                 self.node.managedNode.object = entity?.node.managedNode
             }
         }
@@ -215,16 +217,9 @@ public class Relationship: NSObject, NodeType {
         memberOfGroup(name) ? removeFromGroup(name) : addToGroup(name)
     }
     
-    /**
-     Marks the Relationship for deletion and removes the subject 
-     and object relationships.
-    */
+    /// Marks the Relationship for deletion.
     public func delete() {
-        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            self.node.managedNode.subject?.removeRelationshipSubjectSetSubject(self.node.managedNode)
-            self.node.managedNode.object?.removeRelationshipObjectSetObject(self.node.managedNode)
-            self.node.managedNode.delete()
-        }
+        node.managedNode.delete()
     }
 }
 

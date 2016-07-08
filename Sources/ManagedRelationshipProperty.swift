@@ -44,4 +44,17 @@ internal class ManagedRelationshipProperty: ManagedProperty {
     internal convenience init(name: String, object: AnyObject, managedObjectContext: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.relationshipPropertyDescriptionName, name: name, object: object, managedObjectContext: managedObjectContext)
     }
+    
+    /// Marks node for deletion.
+    internal override func delete() {
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self] in
+            self.node.mutableSetValueForKey("propertySet").removeObject(self)
+        }
+        
+        super.delete()
+    }
 }

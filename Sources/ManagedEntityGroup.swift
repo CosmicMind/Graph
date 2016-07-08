@@ -43,4 +43,17 @@ internal class ManagedEntityGroup: ManagedGroup {
     internal convenience init(name: String, managedObjectContext: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.entityGroupDescriptionName, name: name, managedObjectContext: managedObjectContext)
     }
+    
+    /// Marks node for deletion.
+    internal override func delete() {
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self] in
+            self.node.mutableSetValueForKey("groupSet").removeObject(self)
+        }
+        
+        super.delete()
+    }
 }

@@ -66,7 +66,6 @@ internal class ManagedRelationship: ManagedNode {
                         if name == property.name {
                             if let p = property as? ManagedRelationshipProperty {
                                 p.delete()
-                                self.removePropertySetObject(p)
                                 break
                             }
                         }
@@ -86,14 +85,13 @@ internal class ManagedRelationship: ManagedNode {
                 if !hasProperty {
                     let property = ManagedRelationshipProperty(name: name, object: object, managedObjectContext: moc)
                     property.node = self
-                    self.addPropertySetObject(property)
                 }
             }
         }
     }
     
     /**
-     Adds the ManagedRelationship to the group.
+     Adds the ManagedAction to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -107,7 +105,6 @@ internal class ManagedRelationship: ManagedNode {
             if !self.memberOfGroup(name) {
                 let group = ManagedRelationshipGroup(name: name, managedObjectContext: moc)
                 group.node = self
-                self.addGroupSetObject(group)
                 result = true
             }
         }
@@ -115,7 +112,7 @@ internal class ManagedRelationship: ManagedNode {
     }
     
     /**
-     Removes the ManagedRelationship from the group.
+     Removes the ManagedAction from the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
@@ -130,7 +127,6 @@ internal class ManagedRelationship: ManagedNode {
                 if name == group.name {
                     if let g = group as? ManagedRelationshipGroup {
                         g.delete()
-                        self.removeGroupSetObject(g)
                         result = true
                         break
                     }
@@ -138,6 +134,34 @@ internal class ManagedRelationship: ManagedNode {
             }
         }
         return result!
+    }
+    
+    /// Marks the Relationship for deletion and clears all its relationships.
+    internal override func delete() {
+        guard let moc = self.managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self] in
+            self.groupSet.forEach { (object: AnyObject) in
+                guard let group = object as? ManagedRelationshipGroup else {
+                    return
+                }
+                group.delete()
+            }
+            
+            self.propertySet.forEach { (object: AnyObject) in
+                guard let property = object as? ManagedRelationshipProperty else {
+                    return
+                }
+                property.delete()
+            }
+            
+            self.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self)
+            self.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self)
+        }
+        
+        super.delete()
     }
 }
 

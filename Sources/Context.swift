@@ -123,10 +123,6 @@ public extension Graph {
         managedObjectContext = moc
         location = moc.parentContext?.persistentStoreCoordinator?.persistentStores.first?.URL
         
-        guard let callback = completion else {
-            return
-        }
-        
         guard let supported = GraphContextRegistry.supported[route] else {
             return
         }

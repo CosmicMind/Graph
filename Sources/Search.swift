@@ -81,8 +81,8 @@ public extension Graph {
                     let n = nodes[i]["node"]
                     var c: Bool? = false
                     var weakNodes: [AnyObject]? = nodes
-                    moc.performBlockAndWait { [weak moc] in
-                        if let v = moc?.objectWithID(n! as! NSManagedObjectID) as? ManagedEntity {
+                    moc.performBlockAndWait { [unowned moc] in
+                        if let v = moc.objectWithID(n! as! NSManagedObjectID) as? ManagedEntity {
                             if nil == seen.updateValue(true, forKey: v.id) {
                                 weakNodes?[i] = Entity(managedNode: v)
                                 i -= 1
@@ -162,8 +162,8 @@ public extension Graph {
                     let n = nodes[i]["node"]
                     var c: Bool? = false
                     var weakNodes: [AnyObject]? = nodes
-                    moc.performBlockAndWait { [weak moc] in
-                        if let v = moc?.objectWithID(n! as! NSManagedObjectID) as? ManagedRelationship {
+                    moc.performBlockAndWait { [unowned moc] in
+                        if let v = moc.objectWithID(n! as! NSManagedObjectID) as? ManagedRelationship {
                             if nil == seen.updateValue(true, forKey: v.id) {
                                 weakNodes?[i] = Relationship(managedNode: v)
                                 i -= 1
@@ -243,8 +243,8 @@ public extension Graph {
                     let n = nodes[i]["node"]
                     var c: Bool? = false
                     var weakNodes: [AnyObject]? = nodes
-                    moc.performBlockAndWait { [weak moc] in
-                        if let v = moc?.objectWithID(n! as! NSManagedObjectID) as? ManagedAction {
+                    moc.performBlockAndWait { [unowned moc] in
+                        if let v = moc.objectWithID(n! as! NSManagedObjectID) as? ManagedAction {
                             if nil == seen.updateValue(true, forKey: v.id) {
                                 weakNodes?[i] = Action(managedNode: v)
                                 i -= 1

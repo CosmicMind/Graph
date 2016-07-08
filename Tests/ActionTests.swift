@@ -215,7 +215,6 @@ class ActionTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
         
         saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
         
         action.addSubject(Entity(type: "T"))
         action.addSubject(Entity(type: "T"))
@@ -258,7 +257,6 @@ class ActionTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
         
         saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
         
         action.addObject(Entity(type: "T"))
         action.addObject(Entity(type: "T"))
@@ -277,15 +275,6 @@ class ActionTests: XCTestCase, GraphDelegate {
     }
     
     func graphDidInsertAction(graph: Graph, action: Action, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual("V", action["P"] as? String)
-        XCTAssertTrue(action.memberOfGroup("G"))
-        
-        delegateException?.fulfill()
-    }
-    
-    func graphDidUpdateAction(graph: Graph, action: Action, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("V", action["P"] as? String)

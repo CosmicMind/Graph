@@ -43,7 +43,9 @@ internal class ManagedNode: ManagedModel {
         managedObjectContext?.performBlockAndWait { [unowned self] in
             do {
                 try self.managedObjectContext?.obtainPermanentIDsForObjects([self])
-            } catch {}
+            } catch let e as NSError {
+                fatalError("[Graph Error: Cannot obtain permanent objectID - \(e.localizedDescription)")
+            }
             result = String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.URIRepresentation().lastPathComponent!
         }
         return result!
@@ -93,28 +95,6 @@ internal class ManagedNode: ManagedModel {
         createdDate = NSDate()
         propertySet = NSSet()
         groupSet = NSSet()
-    }
-    
-    /// Deletes the relationships and actions before marking for deletion.
-    internal override func delete() {
-        guard let moc = managedObjectContext else {
-            return
-        }
-        moc.performBlockAndWait { [unowned self] in
-            self.groupSet.forEach { [unowned self] (object: AnyObject) in
-                if let group = object as? ManagedGroup {
-                    group.delete()
-                    self.mutableSetValueForKey("groupSet").removeObject(group)
-                }
-            }
-            self.propertySet.forEach { [unowned self] (object: AnyObject) in
-                if let property = object as? ManagedProperty {
-                    property.delete()
-                    self.mutableSetValueForKey("propertySet").removeObject(property)
-                }
-            }
-        }
-        super.delete()
     }
     
     /**
