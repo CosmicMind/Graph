@@ -108,49 +108,49 @@ public extension Graph {
         let queue = NSOperationQueue.mainQueue()
         let defaultCenter = NSNotificationCenter.defaultCenter()
         
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak poc] (notification: NSNotification) in
-            guard let info = notification.userInfo else {
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
+            guard let type = notification.userInfo?[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
                 return
             }
             
-            guard let type = info[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
-                return
-            }
-            
-            poc?.performBlock { [weak self, weak poc] in
-                if true == poc?.hasChanges {
-                    self?.async()
+            moc?.performBlockAndWait { [weak self, weak moc] in
+                if true == moc?.hasChanges {
+                    self?.sync()
                 } else {
-                    self?.reset()
-                    dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                        if let s = self {
-                            var t: GraphCloudStorageTransition
-                            switch type {
-                            case .AccountAdded:
-                                t = .accountAdded
-                            case .AccountRemoved:
-                                t = .accountRemoved
-                            case .ContentRemoved:
-                                t = .contentRemoved
-                            case .InitialImportCompleted:
-                                t = .initialImportCompleted
-                            }
-                            s.delegate?.graphWillPrepareCloudStorage?(s, transition: t)
-                        }
+                    guard let s = self else {
+                        return
                     }
+                    
+                    s.reset()
+                    
+                    var t: GraphCloudStorageTransition
+                    
+                    switch type {
+                    case .AccountAdded:
+                        t = .accountAdded
+                    case .AccountRemoved:
+                        t = .accountRemoved
+                    case .ContentRemoved:
+                        t = .contentRemoved
+                    case .InitialImportCompleted:
+                        t = .initialImportCompleted
+                    }
+                    
+                    s.delegate?.graphWillPrepareCloudStorage?(s, transition: t)
                 }
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak poc] (notification: NSNotification) in
-            poc?.performBlock { [weak self] in
-                dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                    guard let s = self else {
-                        return
-                    }
-                    s.completion?(supported: true, error: nil)
-                    s.delegate?.graphDidPrepareCloudStorage?(s)
+        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
+            moc?.performBlockAndWait { [weak self] in
+                guard let s = self else {
+                    return
                 }
+                
+                GraphContextRegistry.added[s.route] = true
+                
+                s.completion?(supported: true, error: nil)
+                s.delegate?.graphDidPrepareCloudStorage?(s)
             }
         }
         

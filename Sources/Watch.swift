@@ -135,7 +135,7 @@ public extension Graph {
      */
     @objc
     internal func notifyInsertedWatchers(notification: NSNotification) {
-        guard let info = notification.userInfo else {
+        guard let objects = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
             return
         }
         
@@ -143,9 +143,7 @@ public extension Graph {
             return
         }
         
-        if let objects = info[NSInsertedObjectsKey] as? NSSet {
-            delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
-        }
+        delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
     }
     
     /**
@@ -154,7 +152,7 @@ public extension Graph {
      */
     @objc
     internal func notifyUpdatedWatchers(notification: NSNotification) {
-        guard let info = notification.userInfo else {
+        guard let objects = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
             return
         }
         
@@ -162,9 +160,7 @@ public extension Graph {
             return
         }
         
-        if let objects = info[NSUpdatedObjectsKey] as? NSSet {
-            delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
-        }
+        delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
     }
     
     /**
@@ -173,7 +169,7 @@ public extension Graph {
      */
     @objc
     internal func notifyDeletedWatchers(notification: NSNotification) {
-        guard let info = notification.userInfo else {
+        guard let objects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
             return
         }
         
@@ -181,9 +177,7 @@ public extension Graph {
             return
         }
         
-        if let objects = info[NSDeletedObjectsKey] as? NSSet {
-            delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
-        }
+        delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
     }
     
     /**
@@ -192,7 +186,7 @@ public extension Graph {
      */
     @objc
     internal func notifyInsertedWatchersFromCloud(notification: NSNotification) {
-        guard let info = notification.userInfo else {
+        guard let objectIDs = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
             return
         }
         
@@ -200,14 +194,16 @@ public extension Graph {
             return
         }
         
-        if let objectIDs = info[NSInsertedObjectsKey] as? NSSet {
-            let objects = NSMutableSet()
-            managedObjectContext.performBlockAndWait { [unowned self, unowned objects] in
-                (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                    objects.addObject(self.managedObjectContext.objectWithID(objectID))
-                }
-                self.delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        let objects = NSMutableSet()
+        moc.performBlockAndWait { [unowned self, unowned moc, unowned objects] in
+            (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
+                objects.addObject(moc.objectWithID(objectID))
             }
+            self.delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
         }
     }
     
@@ -217,7 +213,7 @@ public extension Graph {
      */
     @objc
     internal func notifyUpdatedWatchersFromCloud(notification: NSNotification) {
-        guard let info = notification.userInfo else {
+        guard let objectIDs = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
             return
         }
         
@@ -225,14 +221,16 @@ public extension Graph {
             return
         }
         
-        if let objectIDs = info[NSUpdatedObjectsKey] as? NSSet {
-            let objects = NSMutableSet()
-            managedObjectContext.performBlockAndWait { [unowned self, unowned objects] in
-                (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                    objects.addObject(self.managedObjectContext.objectWithID(objectID))
-                }
-                self.delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        let objects = NSMutableSet()
+        moc.performBlockAndWait { [unowned self, unowned moc, unowned objects] in
+            (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
+                objects.addObject(moc.objectWithID(objectID))
             }
+            self.delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
         }
     }
     
@@ -242,7 +240,7 @@ public extension Graph {
      */
     @objc
     internal func notifyDeletedWatchersFromCloud(notification: NSNotification) {
-        guard let info = notification.userInfo else {
+        guard let objectIDs = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
             return
         }
         
@@ -250,14 +248,16 @@ public extension Graph {
             return
         }
         
-        if let objectIDs = info[NSDeletedObjectsKey] as? NSSet {
-            let objects = NSMutableSet()
-            managedObjectContext.performBlockAndWait { [unowned self, unowned objects] in
-                (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                    objects.addObject(self.managedObjectContext.objectWithID(objectID))
-                }
-                self.delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        let objects = NSMutableSet()
+        moc.performBlockAndWait { [unowned self, unowned moc, unowned objects] in
+            (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
+                objects.addObject(moc.objectWithID(objectID))
             }
+            self.delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
         }
     }
     
@@ -312,6 +312,7 @@ public extension Graph {
         if fromCloud {
             prepareCloudDataForInsertedWatchers(set)
         }
+        
         set.forEach { [unowned self] (managedObject: NSManagedObject) in
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntity_ManagedEntity_":
@@ -459,6 +460,7 @@ public extension Graph {
         if fromCloud {
             prepareCloudDataForDeletedWatchers(set)
         }
+        
         set.forEach { [unowned self] (managedObject: NSManagedObject) in
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntity_ManagedEntity_":
