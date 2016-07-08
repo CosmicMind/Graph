@@ -73,18 +73,17 @@ internal class ManagedRelationship: ManagedNode {
                     return
                 }
                 
-                var hasProperty: Bool = false
+                var exists: Bool = false
                 for property in self.propertySet {
                     if name == property.name {
                         (property as? ManagedRelationshipProperty)?.object = object
-                        hasProperty = true
+                        exists = true
                         break
                     }
                 }
                 
-                if !hasProperty {
-                    let property = ManagedRelationshipProperty(name: name, object: object, managedObjectContext: moc)
-                    property.node = self
+                if !exists {
+                    _ = ManagedRelationshipProperty(name: name, object: object, node: self, managedObjectContext: moc)
                 }
             }
         }
@@ -103,8 +102,7 @@ internal class ManagedRelationship: ManagedNode {
         var result: Bool? = false
         moc.performBlockAndWait { [unowned self, unowned moc] in
             if !self.memberOfGroup(name) {
-                let group = ManagedRelationshipGroup(name: name, managedObjectContext: moc)
-                group.node = self
+                _ = ManagedRelationshipGroup(name: name, node: self, managedObjectContext: moc)
                 result = true
             }
         }

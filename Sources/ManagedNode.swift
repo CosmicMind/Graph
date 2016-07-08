@@ -125,18 +125,6 @@ internal class ManagedNode: ManagedModel {
      otherwise.
      */
     internal func memberOfGroup(name: String) -> Bool {
-        guard let moc = managedObjectContext else {
-            return false
-        }
-        var result: Bool?
-        moc.performBlockAndWait { [unowned self] in
-            for group in self.groupSet {
-                if name == group.name {
-                    result = true
-                    break
-                }
-            }
-        }
-        return result ?? false
+        return groups.contains(name)
     }
 }

@@ -297,7 +297,7 @@ public extension Graph {
         request.entity = entityDescription
         request.fetchBatchSize = batchSize
         request.fetchOffset = batchOffset
-        request.returnsObjectsAsFaults = true
+        request.returnsObjectsAsFaults = false
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
         request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: true)]
         
@@ -337,7 +337,7 @@ public extension Graph {
         request.resultType = .DictionaryResultType
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
-        request.returnsObjectsAsFaults = true
+        request.returnsObjectsAsFaults = false
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: groupsPredicate)
         request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
@@ -385,7 +385,7 @@ public extension Graph {
         request.resultType = .DictionaryResultType
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
-        request.returnsObjectsAsFaults = true
+        request.returnsObjectsAsFaults = false
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: propertiesPredicate)
         request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         

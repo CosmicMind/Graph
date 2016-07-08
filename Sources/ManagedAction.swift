@@ -73,18 +73,17 @@ internal class ManagedAction: ManagedNode {
                     return
                 }
                 
-                var hasProperty: Bool = false
+                var exists: Bool = false
                 for property in self.propertySet {
                     if name == property.name {
                         (property as? ManagedActionProperty)?.object = object
-                        hasProperty = true
+                        exists = true
                         break
                     }
                 }
                 
-                if !hasProperty {
-                    let property = ManagedActionProperty(name: name, object: object, managedObjectContext: moc)
-                    property.node = self
+                if !exists {
+                    _ = ManagedActionProperty(name: name, object: object, node: self, managedObjectContext: moc)
                 }
             }
         }
@@ -103,8 +102,7 @@ internal class ManagedAction: ManagedNode {
         var result: Bool? = false
         moc.performBlockAndWait { [unowned self, unowned moc] in
             if !self.memberOfGroup(name) {
-                let group = ManagedActionGroup(name: name, managedObjectContext: moc)
-                group.node = self
+                _ = ManagedActionGroup(name: name, node: self, managedObjectContext: moc)
                 result = true
             }
         }

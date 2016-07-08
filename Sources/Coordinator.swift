@@ -177,3 +177,27 @@ public extension Graph {
         }
     }
 }
+
+//extension NSManagedObjectContext {
+//    func mergeChangesFromSaveNotification(notification: NSNotification) {
+//        
+//    }
+//}
+
+//- (void)mergeChangesFromSaveNotification:(NSNotification *)notification
+//intoContext:(NSManagedObjectContext *)context {
+//    
+//    // NSManagedObjectContext's merge routine ignores updated objects which aren't
+//    // currently faulted in. To force it to notify interested clients that such
+//    // objects have been refreshed (e.g. NSFetchedResultsController) we need to
+//    // force them to be faulted in ahead of the merge
+//    
+//    NSSet *updated = [notification.userInfo objectForKey:NSUpdatedObjectsKey];
+//    for (NSManagedObject *anObject in updated) {
+//        // The objects can't be a fault. -existingObjectWithID:error: is a
+//        // nice easy way to achieve that in a single swoop.
+//        [context existingObjectWithID:anObject.objectID error:NULL];
+//    }
+//    
+//    [context mergeChangesFromContextDidSaveNotification:notification];
+//}

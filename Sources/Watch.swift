@@ -271,32 +271,32 @@ public extension Graph {
             case "ManagedEntityGroup_ManagedEntityGroup_":
                 let group = managedObject as! ManagedEntityGroup
                 let node = group.node
-                node.mutableSetValueForKey("groupSet").addObject(group)
+                node.addGroupSetObject(group)
                 
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
                 let node = property.node
-                node.mutableSetValueForKey("propertySet").addObject(property)
+                node.addPropertySetObject(property)
                 
             case "ManagedActionGroup_ManagedActionGroup_":
                 let group: ManagedActionGroup = managedObject as! ManagedActionGroup
                 let node = group.node
-                node.mutableSetValueForKey("groupSet").addObject(group)
+                node.addGroupSetObject(group)
                 
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
                 let node = property.node
-                node.mutableSetValueForKey("propertySet").addObject(property)
+                node.addPropertySetObject(property)
                 
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
                 let node = group.node
-                node.mutableSetValueForKey("groupSet").addObject(group)
+                node.addGroupSetObject(group)
                 
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
                 let node = property.node
-                node.mutableSetValueForKey("propertySet").addObject(property)
+                node.addPropertySetObject(property)
                 
             default:break
             }
@@ -309,7 +309,7 @@ public extension Graph {
      */
     private func delegateToInsertedWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
         if fromCloud {
-            prepareCloudDataForInsertedWatchers(set)
+//            prepareCloudDataForInsertedWatchers(set)
         }
         
         let nodes = set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in
@@ -463,32 +463,32 @@ public extension Graph {
             case "ManagedEntityGroup_ManagedEntityGroup_":
                 let group = managedObject as! ManagedEntityGroup
                 let node = group.node
-                node.mutableSetValueForKey("groupSet").removeObject(group)
+                node.removeGroupSetObject(group)
                 
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
                 let node = property.node
-                node.mutableSetValueForKey("propertySet").removeObject(property)
+                node.removePropertySetObject(property)
                 
             case "ManagedActionGroup_ManagedActionGroup_":
                 let group = managedObject as! ManagedActionGroup
                 let node = group.node
-                node.mutableSetValueForKey("groupSet").removeObject(group)
+                node.removeGroupSetObject(group)
                 
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
                 let node = property.node
-                node.mutableSetValueForKey("propertySet").removeObject(property)
+                node.removePropertySetObject(property)
                 
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
                 let node = group.node
-                node.mutableSetValueForKey("groupSet").removeObject(group)
+                node.removeGroupSetObject(group)
                 
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
                 let node = property.node
-                node.mutableSetValueForKey("propertySet").removeObject(property)
+                node.removePropertySetObject(property)
                 
             default:break
             }
@@ -501,7 +501,7 @@ public extension Graph {
      */
     private func delegateToDeletedWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
         if fromCloud {
-            prepareCloudDataForDeletedWatchers(set)
+//            prepareCloudDataForDeletedWatchers(set)
         }
         
         let nodes = set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in

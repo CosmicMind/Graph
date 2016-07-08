@@ -35,13 +35,16 @@ internal class ManagedEntityGroup: ManagedGroup {
     @NSManaged internal var node: ManagedEntity
     
     /**
-     Initializer that accepts a group name and a 
+     Initializer that accepts a group name and a
      NSManagedObjectContext.
      - Parameter name: A group name.
+     - Parameter node: A ManagedEntity.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-    */
-    internal convenience init(name: String, managedObjectContext: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.entityGroupDescriptionName, name: name, managedObjectContext: managedObjectContext)
+     */
+    internal convenience init(name: String, node: ManagedEntity, managedObjectContext: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(ModelIdentifier.entityGroupDescriptionName, inManagedObjectContext: managedObjectContext)!, insertIntoManagedObjectContext: managedObjectContext)
+        self.name = name
+        self.node = node
     }
     
     /// Marks node for deletion.
