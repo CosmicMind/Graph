@@ -416,32 +416,32 @@ public extension Graph {
             case "ManagedEntityGroup_ManagedEntityGroup_":
                 let group = managedObject as! ManagedEntityGroup
                 let node = group.node
-                node.mutableSetValueForKey("groupSet").addObject(group)
+                node.mutableSetValueForKey("groupSet").removeObject(group)
                 
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
                 let node = property.node
-                node.mutableSetValueForKey("propertySet").addObject(property)
+                node.mutableSetValueForKey("propertySet").removeObject(property)
                 
             case "ManagedActionGroup_ManagedActionGroup_":
                 let group = managedObject as! ManagedActionGroup
                 let node = group.node
-                node.mutableSetValueForKey("groupSet").addObject(group)
+                node.mutableSetValueForKey("groupSet").removeObject(group)
                 
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
                 let node = property.node
-                node.mutableSetValueForKey("propertySet").addObject(property)
+                node.mutableSetValueForKey("propertySet").removeObject(property)
                 
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
                 let node = group.node
-                node.mutableSetValueForKey("groupSet").addObject(group)
+                node.mutableSetValueForKey("groupSet").removeObject(group)
                 
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
                 let node = property.node
-                node.mutableSetValueForKey("propertySet").addObject(property)
+                node.mutableSetValueForKey("propertySet").removeObject(property)
                 
             default:break
             }
@@ -692,7 +692,7 @@ public extension Graph {
             return
         }
         
-        guard let poc = moc.parentContext else {
+        guard let poc = managedObjectContext.parentContext else {
             return
         }
         

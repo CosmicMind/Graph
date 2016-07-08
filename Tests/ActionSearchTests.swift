@@ -46,10 +46,10 @@ class ActionSearchTests : XCTestCase, GraphDelegate {
         
         for i in 0..<100 {
             let n: Action = Action(type: "T1")
-//            n["P1"] = 0 == i % 2 ? "V1" : 1
-//            n["P2"] = "V2"
-//            n.addToGroup("G1")
-//            n.addToGroup("G2")
+            n["P1"] = 0 == i % 2 ? "V1" : 1
+            n["P2"] = "V2"
+            n.addToGroup("G1")
+            n.addToGroup("G2")
         }
         
         for _ in 0..<200 {

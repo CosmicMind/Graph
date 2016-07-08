@@ -165,6 +165,16 @@ class ActionTests: XCTestCase, GraphDelegate {
         action["P"] = "V"
         action.addToGroup("G")
         
+        action.addSubject(Entity(type: "T"))
+        action.addSubject(Entity(type: "T"))
+        
+        XCTAssertEqual(2, action.subjects.count)
+        
+        action.addObject(Entity(type: "T"))
+        action.addObject(Entity(type: "T"))
+        
+        XCTAssertEqual(2, action.objects.count)
+        
         XCTAssertEqual("V", action["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
@@ -288,6 +298,12 @@ class ActionTests: XCTestCase, GraphDelegate {
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
         XCTAssertFalse(action.memberOfGroup("G"))
+        XCTAssertEqual(2, action.subjects.count)
+        XCTAssertEqual(2, action.objects.count)
+        XCTAssertEqual(0, action.subjects.first?.actionsWhenObject.count)
+        XCTAssertEqual(0, action.subjects.last?.actionsWhenObject.count)
+        XCTAssertEqual(0, action.objects.first?.actionsWhenObject.count)
+        XCTAssertEqual(0, action.objects.last?.actionsWhenObject.count)
         
         delegateException?.fulfill()
     }

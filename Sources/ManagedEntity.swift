@@ -161,20 +161,18 @@ internal class ManagedEntity: ManagedNode {
                 property.delete()
             }
             
-            self.actionSubjectSet.forEach { [unowned self] (object: AnyObject) in
+            self.actionSubjectSet.forEach { (object: AnyObject) in
                 guard let action = object as? ManagedAction else {
                     return
                 }
                 action.delete()
-                action.mutableSetValueForKey("subjectSet").removeObject(self)
             }
             
-            self.actionObjectSet.forEach { [unowned self] (object: AnyObject) in
+            self.actionObjectSet.forEach { (object: AnyObject) in
                 guard let action = object as? ManagedAction else {
                     return
                 }
                 action.delete()
-                action.mutableSetValueForKey("objectSet").removeObject(self)
             }
             
             self.relationshipSubjectSet.forEach { (object: AnyObject) in
