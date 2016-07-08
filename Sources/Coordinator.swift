@@ -154,8 +154,8 @@ public extension Graph {
             }
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
-            moc?.performBlockAndWait { [weak self, weak moc, weak poc] in
+        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: poc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc, weak poc] (notification: NSNotification) in
+            moc?.performBlockAndWait { [weak self, weak moc, weak poc, notification = notification] in
                 guard let s = self else {
                     return
                 }
@@ -164,13 +164,16 @@ public extension Graph {
                 
                 moc?.mergeChangesFromContextDidSaveNotification(notification)
                 
-                poc?.performBlockAndWait { [weak poc] in
+                poc?.performBlockAndWait { [weak self, weak poc, notification = notification] in
+                    guard let s = self else {
+                        return
+                    }
                     poc?.mergeChangesFromContextDidSaveNotification(notification)
+                    
+                    s.notifyInsertedWatchersFromCloud(notification)
+                    s.notifyUpdatedWatchersFromCloud(notification)
+                    s.notifyDeletedWatchersFromCloud(notification)
                 }
-                
-                s.notifyInsertedWatchersFromCloud(notification)
-                s.notifyUpdatedWatchersFromCloud(notification)
-                s.notifyDeletedWatchersFromCloud(notification)
                 
                 s.delegate?.graphDidUpdateFromCloudStorage?(s)
             }
