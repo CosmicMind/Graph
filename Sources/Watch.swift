@@ -312,14 +312,18 @@ public extension Graph {
             prepareCloudDataForInsertedWatchers(set)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        let nodes = set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in
+            return (a as? ManagedNode)?.id < (b as? ManagedNode)?.id
+        }
+        
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntity_ManagedEntity_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
             self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntityGroup_ManagedEntityGroup_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -329,7 +333,7 @@ public extension Graph {
             self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntityProperty_ManagedEntityProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -340,14 +344,14 @@ public extension Graph {
             self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedRelationship_ManagedRelationship_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
             self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedRelationshipGroup_ManagedRelationshipGroup_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -357,7 +361,7 @@ public extension Graph {
             self.delegate?.graphDidAddRelationshipToGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedRelationshipProperty_ManagedRelationshipProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -368,14 +372,14 @@ public extension Graph {
             self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedAction_ManagedAction_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
             self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedActionGroup_ManagedActionGroup_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -385,7 +389,7 @@ public extension Graph {
             self.delegate?.graphDidAddActionToGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedActionProperty_ManagedActionProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -402,7 +406,11 @@ public extension Graph {
      - Parameter set: A Set of NSManagedObjects to pass.
      */
     private func delegateToUpdatedWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        let nodes = set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in
+            return (a as? ManagedNode)?.id < (b as? ManagedNode)?.id
+        }
+        
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntityProperty_ManagedEntityProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -414,14 +422,14 @@ public extension Graph {
             
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedRelationship_ManagedRelationship_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
             self.delegate?.graphDidUpdateRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedRelationshipProperty_ManagedRelationshipProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -432,7 +440,7 @@ public extension Graph {
             self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedActionProperty_ManagedActionProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -496,24 +504,11 @@ public extension Graph {
             prepareCloudDataForDeletedWatchers(set)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
-            guard "ManagedEntity_ManagedEntity_" == String.fromCString(object_getClassName(managedObject))! else {
-                return
-            }
-            self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
+        let nodes = set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in
+            return (a as? ManagedNode)?.id < (b as? ManagedNode)?.id
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
-            guard "ManagedEntityGroup_ManagedEntityGroup_" == String.fromCString(object_getClassName(managedObject))! else {
-                return
-            }
-            let group = managedObject as! ManagedEntityGroup
-            let node = group.node
-            let name = group.name
-            self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
-        }
-        
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntityProperty_ManagedEntityProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -524,24 +519,24 @@ public extension Graph {
             self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
-            guard "ManagedRelationship_ManagedRelationship_" == String.fromCString(object_getClassName(managedObject))! else {
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
+            guard "ManagedEntityGroup_ManagedEntityGroup_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
-            self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
-        }
-        
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
-            guard "ManagedRelationshipGroup_ManagedRelationshipGroup_" == String.fromCString(object_getClassName(managedObject))! else {
-                return
-            }
-            let group = managedObject as! ManagedRelationshipGroup
+            let group = managedObject as! ManagedEntityGroup
             let node = group.node
             let name = group.name
-            self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
+            self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
+            guard "ManagedEntity_ManagedEntity_" == String.fromCString(object_getClassName(managedObject))! else {
+                return
+            }
+            self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
+        }
+        
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedRelationshipProperty_ManagedRelationshipProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -552,14 +547,35 @@ public extension Graph {
             self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
-            guard "ManagedAction_ManagedAction_" == String.fromCString(object_getClassName(managedObject))! else {
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
+            guard "ManagedRelationshipGroup_ManagedRelationshipGroup_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
-            self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+            let group = managedObject as! ManagedRelationshipGroup
+            let node = group.node
+            let name = group.name
+            self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
+            guard "ManagedRelationship_ManagedRelationship_" == String.fromCString(object_getClassName(managedObject))! else {
+                return
+            }
+            self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+        }
+        
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
+            guard "ManagedActionProperty_ManagedActionProperty_" == String.fromCString(object_getClassName(managedObject))! else {
+                return
+            }
+            let property = managedObject as! ManagedActionProperty
+            let node = property.node
+            let name = property.name
+            let object = property.object
+            self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+        }
+        
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedActionGroup_ManagedActionGroup_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -569,15 +585,11 @@ public extension Graph {
             self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
-        set.forEach { [unowned self] (managedObject: NSManagedObject) in
-            guard "ManagedActionProperty_ManagedActionProperty_" == String.fromCString(object_getClassName(managedObject))! else {
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
+            guard "ManagedAction_ManagedAction_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
-            let property = managedObject as! ManagedActionProperty
-            let node = property.node
-            let name = property.name
-            let object = property.object
-            self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
+            self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
         }
     }
     
