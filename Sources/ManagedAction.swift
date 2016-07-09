@@ -35,6 +35,22 @@ internal class ManagedAction: ManagedNode {
     @NSManaged internal var subjectSet: NSSet
     @NSManaged internal var objectSet: NSSet
     
+    /// A reference to the groups.
+    internal override var groups: [String] {
+        var g = [String]()
+        guard let moc = managedObjectContext else {
+            return g
+        }
+        moc.performBlockAndWait { [unowned self] in
+            self.groupSet.forEach { (object: AnyObject) in
+                if let group = object as? ManagedActionGroup {
+                    g.append(group.name)
+                }
+            }
+        }
+        return g
+    }
+    
     /**
      Initializer that accepts a type and a NSManagedObjectContext.
      - Parameter type: A reference to the Action type.
@@ -64,10 +80,8 @@ internal class ManagedAction: ManagedNode {
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
-                            if let p = property as? ManagedActionProperty {
-                                p.delete()
-                                break
-                            }
+                            (property as? ManagedActionProperty)?.delete()
+                            break
                         }
                     }
                     return
@@ -123,11 +137,9 @@ internal class ManagedAction: ManagedNode {
         moc.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
-                    if let g = group as? ManagedActionGroup {
-                        g.delete()
-                        result = true
-                        break
-                    }
+                    (group as? ManagedActionGroup)?.delete()
+                    result = true
+                    break
                 }
             }
         }
@@ -277,7 +289,7 @@ internal extension ManagedAction {
      - Parameter value: A reference to a ManagedActionProperty.
      */
     func addPropertySetObject(value: ManagedActionProperty) {
-        (propertySet as! NSMutableSet).addObject(value)
+        (propertySet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -285,7 +297,7 @@ internal extension ManagedAction {
      - Parameter value: A reference to a ManagedActionProperty.
      */
     func removePropertySetObject(value: ManagedActionProperty) {
-        (propertySet as! NSMutableSet).removeObject(value)
+        (propertySet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
@@ -293,7 +305,7 @@ internal extension ManagedAction {
      - Parameter value: A reference to a ManagedActionGroup.
      */
     func addGroupSetObject(value: ManagedActionGroup) {
-        (groupSet as! NSMutableSet).addObject(value)
+        (groupSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -301,6 +313,6 @@ internal extension ManagedAction {
      - Parameter value: A reference to a ManagedActionGroup.
      */
     func removeGroupSetObject(value: ManagedActionGroup) {
-        (groupSet as! NSMutableSet).removeObject(value)
+        (groupSet as? NSMutableSet)?.removeObject(value)
     }
 }

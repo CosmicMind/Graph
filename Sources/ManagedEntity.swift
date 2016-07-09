@@ -198,7 +198,7 @@ internal extension ManagedEntity {
      - Parameter value: A reference to a ManagedEntityProperty.
      */
     func addPropertySetObject(value: ManagedEntityProperty) {
-        (propertySet as! NSMutableSet).addObject(value)
+        (propertySet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -206,7 +206,7 @@ internal extension ManagedEntity {
      - Parameter value: A reference to a ManagedEntityProperty.
      */
     func removePropertySetObject(value: ManagedEntityProperty) {
-        (propertySet as! NSMutableSet).removeObject(value)
+        (propertySet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
@@ -214,7 +214,7 @@ internal extension ManagedEntity {
      - Parameter value: A reference to a ManagedEntityGroup.
      */
     func addGroupSetObject(value: ManagedEntityGroup) {
-        (groupSet as! NSMutableSet).addObject(value)
+        (groupSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -222,7 +222,7 @@ internal extension ManagedEntity {
      - Parameter value: A reference to a ManagedEntityGroup.
      */
     func removeGroupSetObject(value: ManagedEntityGroup) {
-        (groupSet as! NSMutableSet).removeObject(value)
+        (groupSet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
@@ -230,7 +230,7 @@ internal extension ManagedEntity {
      - Parameter value: A ManagedAction.
      */
     func addActionSubjectSetObject(value: ManagedAction) {
-        (actionSubjectSet as! NSMutableSet).addObject(value)
+        (actionSubjectSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -238,7 +238,7 @@ internal extension ManagedEntity {
      - Parameter value: A ManagedAction.
      */
     func removeActionSubjectSetObject(value: ManagedAction) {
-        (actionSubjectSet as! NSMutableSet).removeObject(value)
+        (actionSubjectSet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
@@ -246,7 +246,7 @@ internal extension ManagedEntity {
      - Parameter value: A ManagedAction.
      */
     func addActionObjectSetObject(value: ManagedAction) {
-        (actionObjectSet as! NSMutableSet).addObject(value)
+        (actionObjectSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -254,7 +254,7 @@ internal extension ManagedEntity {
      - Parameter value: A ManagedAction.
      */
     func removeActionObjectSetObject(value: ManagedAction) {
-        (actionObjectSet as! NSMutableSet).removeObject(value)
+        (actionObjectSet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
@@ -262,7 +262,7 @@ internal extension ManagedEntity {
      - Parameter value: A ManagedRelationship.
      */
     func addRelationshipSubjectSetObject(value: ManagedRelationship) {
-        (relationshipSubjectSet as! NSMutableSet).addObject(value)
+        (relationshipSubjectSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -270,7 +270,7 @@ internal extension ManagedEntity {
      - Parameter value: A ManagedRelationship.
      */
     func removeRelationshipSubjectSetObject(value: ManagedRelationship) {
-        (relationshipSubjectSet as! NSMutableSet).removeObject(value)
+        (relationshipSubjectSet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
@@ -278,7 +278,7 @@ internal extension ManagedEntity {
      - Parameter value: A ManagedRelationship.
      */
     func addRelationshipObjectSetObject(value: ManagedRelationship) {
-        (relationshipObjectSet as! NSMutableSet).addObject(value)
+        (relationshipObjectSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -286,6 +286,6 @@ internal extension ManagedEntity {
      - Parameter value: A ManagedRelationship.
      */
     func removeRelationshipObjectSetObject(value: ManagedRelationship) {
-        (relationshipObjectSet as! NSMutableSet).removeObject(value)
+        (relationshipObjectSet as? NSMutableSet)?.removeObject(value)
     }
 }

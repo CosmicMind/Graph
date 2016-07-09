@@ -49,14 +49,7 @@ internal class ManagedActionGroup: ManagedGroup {
     
     /// Marks node for deletion.
     internal override func delete() {
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        moc.performBlockAndWait { [unowned self] in
-            self.node.mutableSetValueForKey("groupSet").removeObject(self)
-        }
-        
+        self.node.removeGroupSetObject(self)
         super.delete()
     }
 }

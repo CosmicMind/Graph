@@ -169,7 +169,7 @@ internal extension ManagedRelationship {
      - Parameter value: A reference to a ManagedRelationshipProperty.
      */
     func addPropertySetObject(value: ManagedRelationshipProperty) {
-        (propertySet as! NSMutableSet).addObject(value)
+        (propertySet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -177,7 +177,7 @@ internal extension ManagedRelationship {
      - Parameter value: A reference to a ManagedRelationshipProperty.
      */
     func removePropertySetObject(value: ManagedRelationshipProperty) {
-        (propertySet as! NSMutableSet).removeObject(value)
+        (propertySet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
@@ -185,7 +185,7 @@ internal extension ManagedRelationship {
      - Parameter value: A reference to a ManagedRelationshipGroup.
      */
     func addGroupSetObject(value: ManagedRelationshipGroup) {
-        (groupSet as! NSMutableSet).addObject(value)
+        (groupSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -193,6 +193,6 @@ internal extension ManagedRelationship {
      - Parameter value: A reference to a ManagedRelationshipGroup.
      */
     func removeGroupSetObject(value: ManagedRelationshipGroup) {
-        (groupSet as! NSMutableSet).removeObject(value)
+        (groupSet as? NSMutableSet)?.removeObject(value)
     }
 }

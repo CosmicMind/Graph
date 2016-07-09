@@ -65,7 +65,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -82,7 +82,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -100,7 +100,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -117,7 +117,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -135,7 +135,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         

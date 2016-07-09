@@ -49,14 +49,7 @@ internal class ManagedEntityProperty: ManagedProperty {
     
     /// Marks node for deletion.
     internal override func delete() {
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        moc.performBlockAndWait { [unowned self] in
-            self.node.mutableSetValueForKey("propertySet").removeObject(self)
-        }
-        
+        self.node.mutableSetValueForKey("propertySet").removeObject(self)
         super.delete()
     }
 }

@@ -63,7 +63,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -89,7 +89,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -116,7 +116,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
-                XCTAssertEqual(nil, error)
+                XCTAssertNil(error)
                 self?.saveException?.fulfill()
             }
         }
@@ -143,7 +143,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
-                XCTAssertEqual(nil, error)
+                XCTAssertNil(error)
                 self?.saveException?.fulfill()
             }
         }
@@ -175,7 +175,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             XCTAssertNotNil(relationship.subject)
             XCTAssertNotNil(relationship.object)
             XCTAssertNotNil(relationship.subject)
@@ -239,7 +239,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -255,7 +255,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -283,7 +283,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -299,7 +299,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         

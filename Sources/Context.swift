@@ -34,7 +34,6 @@ internal struct GraphContextRegistry {
     static var dispatchToken: dispatch_once_t = 0
     static var added: [String: Bool]!
     static var supported: [String: Bool]!
-    static var privateManagedObjectContexts: [String: NSManagedObjectContext]!
     static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
 
@@ -77,7 +76,6 @@ public extension Graph {
         dispatch_once(&GraphContextRegistry.dispatchToken) {
             GraphContextRegistry.added = [String: Bool]()
             GraphContextRegistry.supported = [String: Bool]()
-            GraphContextRegistry.privateManagedObjectContexts = [String: NSManagedObjectContext]()
             GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
         }
     }
@@ -93,16 +91,13 @@ public extension Graph {
             
             location = location.URLByAppendingPathComponent(route)
             
-            let poc = Context.createManagedContext(.PrivateQueueConcurrencyType)
-            poc.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(type: type, location: location)
+            managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
+            managedObjectContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(type: type, location: location)
             
             if NSSQLiteStoreType == type {
                 location = location.URLByAppendingPathComponent("Graph.sqlite")
             }
-            
-            GraphContextRegistry.privateManagedObjectContexts[route] = poc
-            
-            managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType, parentContext: poc)
+
             GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
             
             if supported {
@@ -121,7 +116,7 @@ public extension Graph {
         }
         
         managedObjectContext = moc
-        location = moc.parentContext?.persistentStoreCoordinator?.persistentStores.first?.URL
+        location = moc.persistentStoreCoordinator?.persistentStores.first?.URL
         
         guard let supported = GraphContextRegistry.supported[route] else {
             return
