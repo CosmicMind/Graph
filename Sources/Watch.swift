@@ -272,83 +272,37 @@ public extension Graph {
      - Parameter set: A Set of NSManagedObjects to pass.
      */
     private func prepareCloudDataForInsertedWatchers(set: Set<NSManagedObject>) {
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        set.forEach { [unowned moc] (managedObject: NSManagedObject) in
+        set.forEach { (managedObject: NSManagedObject) in
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntityGroup_ManagedEntityGroup_":
                 let group = managedObject as! ManagedEntityGroup
                 let node = group.node
-                _ = group.name
-//                let set = node.mutableSetValueForKeyPath("groupSet")
-//                if !set.containsObject(group) && !node.memberOfGroup(name) {
-//                    set.addObject(group)
-//                }
-                
                 node.addGroupSetObject(group)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
                 let node = property.node
-                _ = property.name
-//                let set = node.mutableSetValueForKeyPath("propertySet")
-//                if !set.containsObject(property) && nil == node[name] {
-//                    set.addObject(property)
-//                }
-                
                 node.addPropertySetObject(property)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedActionGroup_ManagedActionGroup_":
                 let group: ManagedActionGroup = managedObject as! ManagedActionGroup
                 let node = group.node
-                _ = group.name
-//                let set = node.mutableSetValueForKeyPath("groupSet")
-//                if !set.containsObject(group) && !node.memberOfGroup(name) {
-//                    set.addObject(group)
-//                }
-                
                 node.addGroupSetObject(group)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
                 let node = property.node
-                _ = property.name
-//                let set = node.mutableSetValueForKeyPath("propertySet")
-//                if !set.containsObject(property) && nil == node[name] {
-//                    set.addObject(property)
-//                }
-                
                 node.addPropertySetObject(property)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
                 let node = group.node
-                _ = group.name
-//                let set = node.mutableSetValueForKeyPath("groupSet")
-//                if !set.containsObject(group) && !node.memberOfGroup(name) {
-//                    set.addObject(group)
-//                }
-                
                 node.addGroupSetObject(group)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
                 let node = property.node
-                _ = property.name
-//                let set = node.mutableSetValueForKeyPath("propertySet")
-//                if !set.containsObject(property) && nil == node[name] {
-//                    set.addObject(property)
-//                }
-                
                 node.addPropertySetObject(property)
-                moc.refreshObject(node, mergeChanges: true)
                 
             default:break
             }
@@ -364,9 +318,7 @@ public extension Graph {
             prepareCloudDataForInsertedWatchers(set)
         }
         
-        let nodes = set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in
-            return (a as? ManagedNode)?.id < (b as? ManagedNode)?.id
-        }
+        let nodes = sortToArray(set)
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntity_ManagedEntity_" == String.fromCString(object_getClassName(managedObject))! else {
@@ -458,9 +410,7 @@ public extension Graph {
      - Parameter set: A Set of NSManagedObjects to pass.
      */
     private func delegateToUpdatedWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
-        let nodes = set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in
-            return (a as? ManagedNode)?.id < (b as? ManagedNode)?.id
-        }
+        let nodes = sortToArray(set)
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntityProperty_ManagedEntityProperty_" == String.fromCString(object_getClassName(managedObject))! else {
@@ -510,58 +460,37 @@ public extension Graph {
      - Parameter set: A Set of NSManagedObjects to pass.
      */
     private func prepareCloudDataForDeletedWatchers(set: Set<NSManagedObject>) {
-        guard let moc = managedObjectContext else {
-            return
-        }
-        set.forEach { [unowned moc] (managedObject: NSManagedObject) in
+        set.forEach { (managedObject: NSManagedObject) in
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntityGroup_ManagedEntityGroup_":
                 let group = managedObject as! ManagedEntityGroup
                 let node = group.node
-                _ = group.name
-//                node.removeFromGroup(name)
                 node.removeGroupSetObject(group)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
                 let node = property.node
-                _ = property.name
-//                node[name] = nil
                 node.removePropertySetObject(property)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedActionGroup_ManagedActionGroup_":
                 let group = managedObject as! ManagedActionGroup
                 let node = group.node
-                _ = group.name
-//                node.removeFromGroup(name)
                 node.removeGroupSetObject(group)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
                 let node = property.node
-                _ = property.name
-//                node[name] = nil
                 node.removePropertySetObject(property)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
                 let node = group.node
-                _ = group.name
-//                node.removeFromGroup(name)
                 node.removeGroupSetObject(group)
-                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
                 let node = property.node
-                _ = property.name
-//                node[name] = nil
                 node.removePropertySetObject(property)
-                moc.refreshObject(node, mergeChanges: true)
                 
             default:break
             }
@@ -577,8 +506,16 @@ public extension Graph {
             prepareCloudDataForDeletedWatchers(set)
         }
         
-        let nodes = set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in
-            return (a as? ManagedNode)?.id < (b as? ManagedNode)?.id
+        let nodes = sortToArray(set)
+        
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
+            guard "ManagedEntityGroup_ManagedEntityGroup_" == String.fromCString(object_getClassName(managedObject))! else {
+                return
+            }
+            let group = managedObject as! ManagedEntityGroup
+            let node = group.node
+            let name = group.name
+            self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -593,20 +530,20 @@ public extension Graph {
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
-            guard "ManagedEntityGroup_ManagedEntityGroup_" == String.fromCString(object_getClassName(managedObject))! else {
-                return
-            }
-            let group = managedObject as! ManagedEntityGroup
-            let node = group.node
-            let name = group.name
-            self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
-        }
-        
-        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntity_ManagedEntity_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
             self.delegate?.graphWillDeleteEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
+        }
+        
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
+            guard "ManagedRelationshipGroup_ManagedRelationshipGroup_" == String.fromCString(object_getClassName(managedObject))! else {
+                return
+            }
+            let group = managedObject as! ManagedRelationshipGroup
+            let node = group.node
+            let name = group.name
+            self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -621,20 +558,20 @@ public extension Graph {
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
-            guard "ManagedRelationshipGroup_ManagedRelationshipGroup_" == String.fromCString(object_getClassName(managedObject))! else {
-                return
-            }
-            let group = managedObject as! ManagedRelationshipGroup
-            let node = group.node
-            let name = group.name
-            self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
-        }
-        
-        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedRelationship_ManagedRelationship_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
             self.delegate?.graphWillDeleteRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
+        }
+        
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
+            guard "ManagedActionGroup_ManagedActionGroup_" == String.fromCString(object_getClassName(managedObject))! else {
+                return
+            }
+            let group: ManagedActionGroup = managedObject as! ManagedActionGroup
+            let node = group.node
+            let name = group.name
+            self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -649,20 +586,21 @@ public extension Graph {
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
-            guard "ManagedActionGroup_ManagedActionGroup_" == String.fromCString(object_getClassName(managedObject))! else {
-                return
-            }
-            let group: ManagedActionGroup = managedObject as! ManagedActionGroup
-            let node = group.node
-            let name = group.name
-            self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
-        }
-        
-        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedAction_ManagedAction_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
             self.delegate?.graphWillDeleteAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
+        }
+    }
+    
+    /**
+     Sort nodes.
+     - Parameter set: A Set of NSManagedObjects.
+     - Returns: A Set of NSManagedObjects in sorted order.
+    */
+    private func sortToArray(set: Set<NSManagedObject>) -> [NSManagedObject] {
+        return set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in
+            return (a as? ManagedNode)?.id < (b as? ManagedNode)?.id
         }
     }
     

@@ -68,10 +68,8 @@ internal class ManagedEntity: ManagedNode {
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
-                            if let p = property as? ManagedEntityProperty {
-                                p.delete()
-                                break
-                            }
+                            (property as? ManagedEntityProperty)?.delete()
+                            break
                         }
                     }
                     return
@@ -127,11 +125,9 @@ internal class ManagedEntity: ManagedNode {
         moc.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
-                    if let g = group as? ManagedEntityGroup {
-                        g.delete()
-                        result = true
-                        break
-                    }
+                    (group as? ManagedEntityGroup)?.delete()
+                    result = true
+                    break
                 }
             }
         }

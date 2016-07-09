@@ -158,8 +158,6 @@ public extension Graph {
                 
                 s.delegate?.graphWillUpdateFromCloudStorage?(s)
                 
-                moc?.mergeChangesFromContextDidSaveNotification(notification)
-                
                 s.notifyInsertedWatchersFromCloud(notification)
                 s.notifyUpdatedWatchersFromCloud(notification)
                 s.notifyDeletedWatchersFromCloud(notification)

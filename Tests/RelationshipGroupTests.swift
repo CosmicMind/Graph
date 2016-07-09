@@ -54,10 +54,10 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         graph.delegate = self
         graph.watchForRelationship(types: ["T"], groups: ["G1"])
         
-        let action = Relationship(type: "T")
-        action.addToGroup("G1")
+        let relationship = Relationship(type: "T")
+        relationship.addToGroup("G1")
         
-        XCTAssertTrue(action.memberOfGroup("G1"))
+        XCTAssertTrue(relationship.memberOfGroup("G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -73,8 +73,8 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         
-        let action = Relationship(type: "T")
-        action.addToGroup("G2")
+        let relationship = Relationship(type: "T")
+        relationship.addToGroup("G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -91,11 +91,11 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         graph.delegate = self
         graph.watchForRelationship(groups: ["G1", "G2"])
         
-        action.addToGroup("G1")
-        action.removeFromGroup("G2")
+        relationship.addToGroup("G1")
+        relationship.removeFromGroup("G2")
         
-        XCTAssertTrue(action.memberOfGroup("G1"))
-        XCTAssertFalse(action.memberOfGroup("G2"))
+        XCTAssertTrue(relationship.memberOfGroup("G1"))
+        XCTAssertFalse(relationship.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -111,10 +111,10 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         
-        let action = Relationship(type: "T")
-        action.addToGroup("G2")
+        let relationship = Relationship(type: "T")
+        relationship.addToGroup("G2")
         
-        XCTAssertTrue(action.memberOfGroup("G2"))
+        XCTAssertTrue(relationship.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -130,9 +130,9 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         graph.delegate = self
         graph.watchForRelationship(groups: ["G2"])
         
-        action.removeFromGroup("G2")
+        relationship.removeFromGroup("G2")
         
-        XCTAssertFalse(action.memberOfGroup("G2"))
+        XCTAssertFalse(relationship.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -143,22 +143,22 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    func graphDidAddRelationshipToGroup(graph: Graph, action: Relationship, group: String, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+        XCTAssertTrue("T" == relationship.type)
+        XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G1", group)
-        XCTAssertTrue(action.memberOfGroup(group))
-        XCTAssertEqual(1, action.groups.count)
-        XCTAssertTrue(action.groups.contains(group))
+        XCTAssertTrue(relationship.memberOfGroup(group))
+        XCTAssertEqual(1, relationship.groups.count)
+        XCTAssertTrue(relationship.groups.contains(group))
         
         groupAddExpception?.fulfill()
     }
     
-    func graphWillRemoveRelationshipFromGroup(graph: Graph, action: Relationship, group: String, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+        XCTAssertTrue("T" == relationship.type)
+        XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G2", group)
-        XCTAssertFalse(action.memberOfGroup(group))
+        XCTAssertFalse(relationship.memberOfGroup(group))
         
         groupRemoveExpception?.fulfill()
     }

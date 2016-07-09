@@ -91,7 +91,7 @@ public extension Graph {
             
             location = location.URLByAppendingPathComponent(route)
             
-            managedObjectContext = Context.createManagedContext(.PrivateQueueConcurrencyType)
+            managedObjectContext = Context.createManagedContext(.MainQueueConcurrencyType)
             managedObjectContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(type: type, location: location)
             
             if NSSQLiteStoreType == type {

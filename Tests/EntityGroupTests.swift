@@ -54,10 +54,10 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
         graph.delegate = self
         graph.watchForEntity(types: ["T"], groups: ["G1"])
         
-        let action = Entity(type: "T")
-        action.addToGroup("G1")
+        let entity = Entity(type: "T")
+        entity.addToGroup("G1")
         
-        XCTAssertTrue(action.memberOfGroup("G1"))
+        XCTAssertTrue(entity.memberOfGroup("G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -73,8 +73,8 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         
-        let action = Entity(type: "T")
-        action.addToGroup("G2")
+        let entity = Entity(type: "T")
+        entity.addToGroup("G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -91,11 +91,11 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
         graph.delegate = self
         graph.watchForEntity(groups: ["G1", "G2"])
         
-        action.addToGroup("G1")
-        action.removeFromGroup("G2")
+        entity.addToGroup("G1")
+        entity.removeFromGroup("G2")
         
-        XCTAssertTrue(action.memberOfGroup("G1"))
-        XCTAssertFalse(action.memberOfGroup("G2"))
+        XCTAssertTrue(entity.memberOfGroup("G1"))
+        XCTAssertFalse(entity.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -111,10 +111,10 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
         
         let graph = Graph()
         
-        let action = Entity(type: "T")
-        action.addToGroup("G2")
+        let entity = Entity(type: "T")
+        entity.addToGroup("G2")
         
-        XCTAssertTrue(action.memberOfGroup("G2"))
+        XCTAssertTrue(entity.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -130,9 +130,9 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
         graph.delegate = self
         graph.watchForEntity(groups: ["G2"])
         
-        action.removeFromGroup("G2")
+        entity.removeFromGroup("G2")
         
-        XCTAssertFalse(action.memberOfGroup("G2"))
+        XCTAssertFalse(entity.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -143,22 +143,22 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    func graphDidAddEntityToGroup(graph: Graph, action: Entity, group: String, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func graphDidAddEntityToGroup(graph: Graph, entity: Entity, group: String, fromCloud: Bool) {
+        XCTAssertTrue("T" == entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G1", group)
-        XCTAssertTrue(action.memberOfGroup(group))
-        XCTAssertEqual(1, action.groups.count)
-        XCTAssertTrue(action.groups.contains(group))
+        XCTAssertTrue(entity.memberOfGroup(group))
+        XCTAssertEqual(1, entity.groups.count)
+        XCTAssertTrue(entity.groups.contains(group))
         
         groupAddExpception?.fulfill()
     }
     
-    func graphWillRemoveEntityFromGroup(graph: Graph, action: Entity, group: String, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func graphWillRemoveEntityFromGroup(graph: Graph, entity: Entity, group: String, fromCloud: Bool) {
+        XCTAssertTrue("T" == entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G2", group)
-        XCTAssertFalse(action.memberOfGroup(group))
+        XCTAssertFalse(entity.memberOfGroup(group))
         
         groupRemoveExpception?.fulfill()
     }
