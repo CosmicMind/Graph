@@ -68,36 +68,31 @@ internal class ManagedEntity: ManagedNode {
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
-                            if let p = property as? ManagedEntityProperty {
-                                p.delete()
-                                self.removePropertySetObject(p)
-                                break
-                            }
+                            (property as? ManagedEntityProperty)?.delete()
+                            break
                         }
                     }
                     return
                 }
                 
-                var hasProperty: Bool = false
+                var exists: Bool = false
                 for property in self.propertySet {
                     if name == property.name {
                         (property as? ManagedEntityProperty)?.object = object
-                        hasProperty = true
+                        exists = true
                         break
                     }
                 }
                 
-                if !hasProperty {
-                    let property = ManagedEntityProperty(name: name, object: object, managedObjectContext: moc)
-                    property.node = self
-                    self.addPropertySetObject(property)
+                if !exists {
+                    _ = ManagedEntityProperty(name: name, object: object, node: self, managedObjectContext: moc)
                 }
             }
         }
     }
     
     /**
-     Adds the ManagedEntity to the group.
+     Adds the ManagedAction to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -109,9 +104,7 @@ internal class ManagedEntity: ManagedNode {
         var result: Bool? = false
         moc.performBlockAndWait { [unowned self, unowned moc] in
             if !self.memberOfGroup(name) {
-                let group = ManagedEntityGroup(name: name, managedObjectContext: moc)
-                group.node = self
-                self.addGroupSetObject(group)
+                _ = ManagedEntityGroup(name: name, node: self, managedObjectContext: moc)
                 result = true
             }
         }
@@ -119,7 +112,7 @@ internal class ManagedEntity: ManagedNode {
     }
     
     /**
-     Removes the ManagedEntity from the group.
+     Removes the ManagedAction from the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
@@ -132,16 +125,66 @@ internal class ManagedEntity: ManagedNode {
         moc.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
-                    if let g = group as? ManagedEntityGroup {
-                        g.delete()
-                        self.removeGroupSetObject(g)
-                        result = true
-                        break
-                    }
+                    (group as? ManagedEntityGroup)?.delete()
+                    result = true
+                    break
                 }
             }
         }
         return result!
+    }
+    
+    /// Marks the Entity for deletion and clears all its relationships.
+    internal override func delete() {
+        guard let moc = self.managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self] in
+            self.groupSet.forEach { (object: AnyObject) in
+                guard let group = object as? ManagedEntityGroup else {
+                    return
+                }
+                group.delete()
+            }
+            
+            self.propertySet.forEach { (object: AnyObject) in
+                guard let property = object as? ManagedEntityProperty else {
+                    return
+                }
+                property.delete()
+            }
+            
+            self.actionSubjectSet.forEach { (object: AnyObject) in
+                guard let action = object as? ManagedAction else {
+                    return
+                }
+                action.delete()
+            }
+            
+            self.actionObjectSet.forEach { (object: AnyObject) in
+                guard let action = object as? ManagedAction else {
+                    return
+                }
+                action.delete()
+            }
+            
+            self.relationshipSubjectSet.forEach { (object: AnyObject) in
+                guard let relationship = object as? ManagedRelationship else {
+                    return
+                }
+                relationship.delete()
+            }
+            
+            self.relationshipObjectSet.forEach { (object: AnyObject) in
+                guard let relationship = object as? ManagedRelationship else {
+                    return
+                }
+                relationship.delete()
+            }
+        }
+        
+        super.delete()
     }
 }
 
@@ -151,7 +194,7 @@ internal extension ManagedEntity {
      - Parameter value: A reference to a ManagedEntityProperty.
      */
     func addPropertySetObject(value: ManagedEntityProperty) {
-        (propertySet as! NSMutableSet).addObject(value)
+        (propertySet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -159,7 +202,7 @@ internal extension ManagedEntity {
      - Parameter value: A reference to a ManagedEntityProperty.
      */
     func removePropertySetObject(value: ManagedEntityProperty) {
-        (propertySet as! NSMutableSet).removeObject(value)
+        (propertySet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
@@ -167,7 +210,7 @@ internal extension ManagedEntity {
      - Parameter value: A reference to a ManagedEntityGroup.
      */
     func addGroupSetObject(value: ManagedEntityGroup) {
-        (groupSet as! NSMutableSet).addObject(value)
+        (groupSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -175,70 +218,70 @@ internal extension ManagedEntity {
      - Parameter value: A reference to a ManagedEntityGroup.
      */
     func removeGroupSetObject(value: ManagedEntityGroup) {
-        (groupSet as! NSMutableSet).removeObject(value)
+        (groupSet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
-     :name:	addActionSubjectSetObject
-     :description:	Adds the Action to the actionSubjectSet for the Entity.
+     Adds a ManagedAction to the actionSubjectSet.
+     - Parameter value: A ManagedAction.
      */
     func addActionSubjectSetObject(value: ManagedAction) {
-        (actionSubjectSet as! NSMutableSet).addObject(value)
+        (actionSubjectSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
-     :name:	removeActionSubjectSetObject
-     :description:	Removes the Action to the actionSubjectSet for the Entity.
+     Removes a ManagedAction from the actionSubjectSet.
+     - Parameter value: A ManagedAction.
      */
     func removeActionSubjectSetObject(value: ManagedAction) {
-        (actionSubjectSet as! NSMutableSet).removeObject(value)
+        (actionSubjectSet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
-     :name:	addActionObjectSetObject
-     :description:	Adds the Action to the actionObjectSet for the Entity.
+     Adds a ManagedAction to the actionObjectSet.
+     - Parameter value: A ManagedAction.
      */
     func addActionObjectSetObject(value: ManagedAction) {
-        (actionObjectSet as! NSMutableSet).addObject(value)
+        (actionObjectSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
-     :name:	removeActionObjectSetObject
-     :description:	Removes the Action to the actionObjectSet for the Entity.
+     Removes a ManagedAction from the actionObjectSet.
+     - Parameter value: A ManagedAction.
      */
     func removeActionObjectSetObject(value: ManagedAction) {
-        (actionObjectSet as! NSMutableSet).removeObject(value)
+        (actionObjectSet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
-     :name:	addRelationshipSubjectSetSubject
-     :description:	Adds the Relationship to the relationshipSubjectSet for the Entity.
+     Adds a ManagedRelationship to the relationshipSubjectSet.
+     - Parameter value: A ManagedRelationship.
      */
-    func addRelationshipSubjectSetSubject(value: ManagedRelationship) {
-        (relationshipSubjectSet as! NSMutableSet).addObject(value)
+    func addRelationshipSubjectSetObject(value: ManagedRelationship) {
+        (relationshipSubjectSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
-     :name:	removeRelationshipSubjectSetSubject
-     :description:	Removes the Relationship to the relationshipSubjectSet for the Entity.
+     Removes a ManagedRelationship from the relationshipSubjectSet.
+     - Parameter value: A ManagedRelationship.
      */
-    func removeRelationshipSubjectSetSubject(value: ManagedRelationship) {
-        (relationshipSubjectSet as! NSMutableSet).removeObject(value)
+    func removeRelationshipSubjectSetObject(value: ManagedRelationship) {
+        (relationshipSubjectSet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
-     :name:	addRelationshipObjectSetObject
-     :description:	Adds the Relationship to the relationshipObjectSet for the Entity.
+     Adds a ManagedRelationship to the relationshipObjectSet.
+     - Parameter value: A ManagedRelationship.
      */
     func addRelationshipObjectSetObject(value: ManagedRelationship) {
-        (relationshipObjectSet as! NSMutableSet).addObject(value)
+        (relationshipObjectSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
-     :name:	removeRelationshipObjectSetObject
-     :description:	Removes the Relationship to the relationshipObjectSet for the Entity.
+     Removes a ManagedRelationship from the relationshipObjectSet.
+     - Parameter value: A ManagedRelationship.
      */
     func removeRelationshipObjectSetObject(value: ManagedRelationship) {
-        (relationshipObjectSet as! NSMutableSet).removeObject(value)
+        (relationshipObjectSet as? NSMutableSet)?.removeObject(value)
     }
 }

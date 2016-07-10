@@ -39,9 +39,17 @@ internal class ManagedRelationshipProperty: ManagedProperty {
      a NSManagedObjectContext.
      - Parameter name: A property name.
      - Parameter object: A reference to the object value.
+     - Parameter node: A ManagedRelationship.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(name: String, object: AnyObject, managedObjectContext: NSManagedObjectContext) {
+    internal convenience init(name: String, object: AnyObject, node: ManagedRelationship, managedObjectContext: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.relationshipPropertyDescriptionName, name: name, object: object, managedObjectContext: managedObjectContext)
+        self.node = node
+    }
+    
+    /// Marks node for deletion.
+    internal override func delete() {
+        self.node.mutableSetValueForKey("propertySet").removeObject(self)
+        super.delete()
     }
 }

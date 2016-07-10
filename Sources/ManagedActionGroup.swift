@@ -38,9 +38,17 @@ internal class ManagedActionGroup: ManagedGroup {
      Initializer that accepts a group name and a
      NSManagedObjectContext.
      - Parameter name: A group name.
+     - Parameter node: A ManagedAction.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(name: String, managedObjectContext: NSManagedObjectContext) {
+    internal convenience init(name: String, node: ManagedAction, managedObjectContext: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.actionGroupDescriptionName, name: name, managedObjectContext: managedObjectContext)
+        self.node = node
+    }
+    
+    /// Marks node for deletion.
+    internal override func delete() {
+        self.node.mutableSetValueForKey("groupSet").removeObject(self)
+        super.delete()
     }
 }

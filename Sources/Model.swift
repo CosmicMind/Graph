@@ -189,13 +189,13 @@ internal struct Model {
             relationshipPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
             relationshipProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
             
-            let group = NSAttributeDescription()
-            group.name = "name"
-            group.attributeType = .StringAttributeType
-            group.optional = false
-            entityGroupProperties.append(group.copy() as! NSAttributeDescription)
-            actionGroupProperties.append(group.copy() as! NSAttributeDescription)
-            relationshipGroupProperties.append(group.copy() as! NSAttributeDescription)
+            let groupName = NSAttributeDescription()
+            groupName.name = "name"
+            groupName.attributeType = .StringAttributeType
+            groupName.optional = false
+            entityGroupProperties.append(groupName.copy() as! NSAttributeDescription)
+            actionGroupProperties.append(groupName.copy() as! NSAttributeDescription)
+            relationshipGroupProperties.append(groupName.copy() as! NSAttributeDescription)
             
             let groupRelationship = NSRelationshipDescription()
             groupRelationship.name = "node"

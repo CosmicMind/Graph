@@ -61,7 +61,7 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -82,7 +82,7 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
-                XCTAssertEqual(nil, error)
+                XCTAssertNil(error)
                 self?.saveException?.fulfill()
             }
             
@@ -98,7 +98,7 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
-                XCTAssertEqual(nil, error)
+                XCTAssertNil(error)
                 self?.saveException?.fulfill()
             }
             
@@ -114,7 +114,7 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 self?.saveException?.fulfill()
                 XCTAssertTrue(success)
-                XCTAssertEqual(nil, error)
+                XCTAssertNil(error)
             }
             
             waitForExpectationsWithTimeout(5, handler: nil)
@@ -127,7 +127,7 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         

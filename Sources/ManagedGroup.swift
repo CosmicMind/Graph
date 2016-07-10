@@ -30,14 +30,15 @@
 
 import CoreData
 
+@objc(ManagedGroup)
 internal class ManagedGroup: ManagedModel {
     @NSManaged internal var name: String
     
     /**
-     Initializer that accepts an identifier, a group name and a
-     NSManagedObjectContext.
+     Initializer that accepts an identifier, property name, value and
+     a NSManagedObjectContext.
      - Parameter identifier: A model identifier.
-     - Parameter name: A group name.
+     - Parameter name: A property name.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
     internal convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {

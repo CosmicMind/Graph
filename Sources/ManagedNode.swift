@@ -30,6 +30,7 @@
 
 import CoreData
 
+@objc(ManagedNode)
 internal class ManagedNode: ManagedModel {
     @NSManaged internal var nodeClass: NSNumber
     @NSManaged internal var type: String
@@ -43,22 +44,24 @@ internal class ManagedNode: ManagedModel {
         managedObjectContext?.performBlockAndWait { [unowned self] in
             do {
                 try self.managedObjectContext?.obtainPermanentIDsForObjects([self])
-            } catch {}
+            } catch let e as NSError {
+                fatalError("[Graph Error: Cannot obtain permanent objectID - \(e.localizedDescription)")
+            }
             result = String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.URIRepresentation().lastPathComponent!
         }
         return result!
     }
     
     /// A reference to the groups.
-    internal var groups: [String] {
-        var g = [String]()
+    internal var groups: Set<String> {
+        var g = Set<String>()
         guard let moc = managedObjectContext else {
             return g
         }
         moc.performBlockAndWait { [unowned self] in
             self.groupSet.forEach { (object: AnyObject) in
                 if let group = object as? ManagedGroup {
-                    g.append(group.name)
+                    g.insert(group.name)
                 }
             }
         }
@@ -95,47 +98,28 @@ internal class ManagedNode: ManagedModel {
         groupSet = NSSet()
     }
     
-    /// Deletes the relationships and actions before marking for deletion.
-    internal override func delete() {
-        guard let moc = managedObjectContext else {
-            return
-        }
-        moc.performBlockAndWait { [unowned self] in
-            self.groupSet.forEach { [unowned self] (object: AnyObject) in
-                if let group = object as? ManagedGroup {
-                    group.delete()
-                    self.mutableSetValueForKey("groupSet").removeObject(group)
-                }
-            }
-            self.propertySet.forEach { [unowned self] (object: AnyObject) in
-                if let property = object as? ManagedProperty {
-                    property.delete()
-                    self.mutableSetValueForKey("propertySet").removeObject(property)
-                }
-            }
-        }
-        super.delete()
-    }
-    
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
      - Returns: The optional AnyObject value.
      */
     internal subscript(name: String) -> AnyObject? {
-        var object: AnyObject?
-        guard let moc = managedObjectContext else {
-            return object
-        }
-        moc.performBlockAndWait { [unowned self] in
-            for property in self.propertySet {
-                if name == property.name {
-                    object = property.object
-                    break
+        get {
+            var object: AnyObject?
+            guard let moc = managedObjectContext else {
+                return object
+            }
+            moc.performBlockAndWait { [unowned self] in
+                for property in self.propertySet {
+                    if name == property.name {
+                        object = property.object
+                        break
+                    }
                 }
             }
+            return object
         }
-        return object
+        set(object) {}
     }
     
     /**
@@ -148,7 +132,7 @@ internal class ManagedNode: ManagedModel {
         guard let moc = managedObjectContext else {
             return false
         }
-        var result: Bool?
+        var result: Bool? = false
         moc.performBlockAndWait { [unowned self] in
             for group in self.groupSet {
                 if name == group.name {
@@ -157,6 +141,6 @@ internal class ManagedNode: ManagedModel {
                 }
             }
         }
-        return result ?? false
+        return result!
     }
 }

@@ -63,7 +63,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -89,7 +89,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -116,7 +116,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
-                XCTAssertEqual(nil, error)
+                XCTAssertNil(error)
                 self?.saveException?.fulfill()
             }
         }
@@ -143,7 +143,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
-                XCTAssertEqual(nil, error)
+                XCTAssertNil(error)
                 self?.saveException?.fulfill()
             }
         }
@@ -165,11 +165,21 @@ class ActionTests: XCTestCase, GraphDelegate {
         action["P"] = "V"
         action.addToGroup("G")
         
+        action.addSubject(Entity(type: "T"))
+        action.addSubject(Entity(type: "T"))
+        
+        XCTAssertEqual(2, action.subjects.count)
+        
+        action.addObject(Entity(type: "T"))
+        action.addObject(Entity(type: "T"))
+        
+        XCTAssertEqual(2, action.objects.count)
+        
         XCTAssertEqual("V", action["P"] as? String)
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -208,14 +218,13 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
         saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
         
         action.addSubject(Entity(type: "T"))
         action.addSubject(Entity(type: "T"))
@@ -226,7 +235,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -251,14 +260,13 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
         saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
         
         action.addObject(Entity(type: "T"))
         action.addObject(Entity(type: "T"))
@@ -269,7 +277,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
-            XCTAssertEqual(nil, error)
+            XCTAssertNil(error)
             self?.saveException?.fulfill()
         }
         
@@ -285,20 +293,17 @@ class ActionTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidUpdateAction(graph: Graph, action: Action, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual("V", action["P"] as? String)
-        XCTAssertTrue(action.memberOfGroup("G"))
-        
-        delegateException?.fulfill()
-    }
-    
     func graphWillDeleteAction(graph: Graph, action: Action, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
         XCTAssertFalse(action.memberOfGroup("G"))
+        XCTAssertEqual(2, action.subjects.count)
+        XCTAssertEqual(2, action.objects.count)
+        XCTAssertEqual(0, action.subjects.first?.actionsWhenObject.count)
+        XCTAssertEqual(0, action.subjects.last?.actionsWhenObject.count)
+        XCTAssertEqual(0, action.objects.first?.actionsWhenObject.count)
+        XCTAssertEqual(0, action.objects.last?.actionsWhenObject.count)
         
         delegateException?.fulfill()
     }

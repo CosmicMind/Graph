@@ -60,7 +60,7 @@ public class Relationship: NSObject, NodeType {
     }
     
     /// A reference to groups.
-    public var groups: [String] {
+    public var groups: Set<String> {
         return node.groups
     }
     
@@ -71,10 +71,10 @@ public class Relationship: NSObject, NodeType {
      */
     public subscript(name: String) -> AnyObject? {
         get {
-            return node.managedNode[name]
+            return node[name]
         }
         set(value) {
-            node.managedNode[name] = value
+            node[name] = value
         }
     }
     
@@ -94,8 +94,14 @@ public class Relationship: NSObject, NodeType {
         }
         set(entity) {
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                self.node.managedNode.subject?.removeRelationshipSubjectSetSubject(self.node.managedNode)
-                self.node.managedNode.subject = entity?.node.managedNode
+                if let e = entity?.node.managedNode {
+                    self.node.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self.node.managedNode)
+                    self.node.managedNode.subject = e
+                    e.mutableSetValueForKey("relationshipSubjectSet").addObject(self.node.managedNode)
+                } else {
+                    self.node.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self.node.managedNode)
+                    self.node.managedNode.subject = nil
+                }
             }
         }
     }
@@ -111,8 +117,14 @@ public class Relationship: NSObject, NodeType {
         }
         set(entity) {
             node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                self.node.managedNode.object?.removeRelationshipSubjectSetSubject(self.node.managedNode)
-                self.node.managedNode.object = entity?.node.managedNode
+                if let e = entity?.node.managedNode {
+                    self.node.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self.node.managedNode)
+                    self.node.managedNode.object = e
+                    e.mutableSetValueForKey("relationshipObjectSet").addObject(self.node.managedNode)
+                } else {
+                    self.node.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self.node.managedNode)
+                    self.node.managedNode.object = nil
+                }
             }
         }
     }
@@ -215,16 +227,9 @@ public class Relationship: NSObject, NodeType {
         memberOfGroup(name) ? removeFromGroup(name) : addToGroup(name)
     }
     
-    /**
-     Marks the Relationship for deletion and removes the subject 
-     and object relationships.
-    */
+    /// Marks the Relationship for deletion.
     public func delete() {
-        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            self.node.managedNode.subject?.removeRelationshipSubjectSetSubject(self.node.managedNode)
-            self.node.managedNode.object?.removeRelationshipObjectSetObject(self.node.managedNode)
-            self.node.managedNode.delete()
-        }
+        node.managedNode.delete()
     }
 }
 

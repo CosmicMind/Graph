@@ -31,12 +31,12 @@
 import XCTest
 @testable import Graph
 
-class ActionPropertyTests: XCTestCase, GraphDelegate {
+class RelationshipGroupTests: XCTestCase, GraphDelegate {
     var saveException: XCTestExpectation?
     
-    var propertyInsertExpception: XCTestExpectation?
-    var propertyUpdateExpception: XCTestExpectation?
-    var propertyDeleteExpception: XCTestExpectation?
+    var groupAddExpception: XCTestExpectation?
+    var groupUpdateExpception: XCTestExpectation?
+    var groupRemoveExpception: XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -46,18 +46,18 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         super.tearDown()
     }
     
-    func testPropertyInsert() {
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        propertyInsertExpception = expectationWithDescription("[ActionTests Error: Property insert test failed.]")
+    func testGroupAdd() {
+        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
+        groupAddExpception = expectationWithDescription("[RelationshipTests Error: Group add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(properties: ["P1"])
+        graph.watchForRelationship(types: ["T"], groups: ["G1"])
         
-        let action = Action(type: "T")
-        action["P1"] = "V1"
+        let relationship = Relationship(type: "T")
+        relationship.addToGroup("G1")
         
-        XCTAssertEqual("V1", action["P1"] as? String)
+        XCTAssertTrue(relationship.memberOfGroup("G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -68,13 +68,13 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    func testPropertyUpdate() {
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
+    func testGroupUpdate() {
+        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let action = Action(type: "T")
-        action["P1"] = "V1"
+        let relationship = Relationship(type: "T")
+        relationship.addToGroup("G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -84,15 +84,18 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        propertyUpdateExpception = expectationWithDescription("[ActionTests Error: Property update test failed.]")
+        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
+        groupAddExpception = expectationWithDescription("[RelationshipTests Error: Group add test failed.]")
+        groupRemoveExpception = expectationWithDescription("[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(properties: ["P1"])
+        graph.watchForRelationship(groups: ["G1", "G2"])
         
-        action["P1"] = "V2"
+        relationship.addToGroup("G1")
+        relationship.removeFromGroup("G2")
         
-        XCTAssertEqual("V2", action["P1"] as? String)
+        XCTAssertTrue(relationship.memberOfGroup("G1"))
+        XCTAssertFalse(relationship.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -103,13 +106,15 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    func testPropertyDelete() {
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
+    func testGroupDelete() {
+        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let action = Action(type: "T")
-        action["P1"] = "V1"
+        let relationship = Relationship(type: "T")
+        relationship.addToGroup("G2")
+        
+        XCTAssertTrue(relationship.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -119,15 +124,15 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         
         waitForExpectationsWithTimeout(5, handler: nil)
         
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        propertyDeleteExpception = expectationWithDescription("[ActionTests Error: Property delete test failed.]")
+        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
+        groupRemoveExpception = expectationWithDescription("[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(properties: ["P1"])
+        graph.watchForRelationship(groups: ["G2"])
         
-        action["P1"] = nil
+        relationship.removeFromGroup("G2")
         
-        XCTAssertNil(action["P1"])
+        XCTAssertFalse(relationship.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -138,36 +143,23 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+        XCTAssertTrue("T" == relationship.type)
+        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertEqual("G1", group)
+        XCTAssertTrue(relationship.memberOfGroup(group))
+        XCTAssertEqual(1, relationship.groups.count)
+        XCTAssertTrue(relationship.groups.contains(group))
         
-        XCTAssertEqual("P1", property)
-        XCTAssertEqual("V1", value as? String)
-        XCTAssertEqual(value as? String, action[property] as? String)
-        
-        propertyInsertExpception?.fulfill()
+        groupAddExpception?.fulfill()
     }
     
-    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+        XCTAssertTrue("T" == relationship.type)
+        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertEqual("G2", group)
+        XCTAssertFalse(relationship.memberOfGroup(group))
         
-        XCTAssertEqual("P1", property)
-        XCTAssertEqual("V2", value as? String)
-        XCTAssertEqual(value as? String, action[property] as? String)
-        
-        propertyUpdateExpception?.fulfill()
-    }
-    
-    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
-        
-        XCTAssertEqual("P1", property)
-        XCTAssertEqual("V1", value as? String)
-        XCTAssertNil(action[property])
-        
-        propertyDeleteExpception?.fulfill()
+        groupRemoveExpception?.fulfill()
     }
 }

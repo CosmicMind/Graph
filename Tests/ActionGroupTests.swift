@@ -31,12 +31,12 @@
 import XCTest
 @testable import Graph
 
-class ActionPropertyTests: XCTestCase, GraphDelegate {
+class ActionGroupTests: XCTestCase, GraphDelegate {
     var saveException: XCTestExpectation?
     
-    var propertyInsertExpception: XCTestExpectation?
-    var propertyUpdateExpception: XCTestExpectation?
-    var propertyDeleteExpception: XCTestExpectation?
+    var groupAddExpception: XCTestExpectation?
+    var groupUpdateExpception: XCTestExpectation?
+    var groupRemoveExpception: XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -46,18 +46,18 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         super.tearDown()
     }
     
-    func testPropertyInsert() {
+    func testGroupAdd() {
         saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        propertyInsertExpception = expectationWithDescription("[ActionTests Error: Property insert test failed.]")
+        groupAddExpception = expectationWithDescription("[ActionTests Error: Group add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(properties: ["P1"])
+        graph.watchForAction(types: ["T"], groups: ["G1"])
         
         let action = Action(type: "T")
-        action["P1"] = "V1"
+        action.addToGroup("G1")
         
-        XCTAssertEqual("V1", action["P1"] as? String)
+        XCTAssertTrue(action.memberOfGroup("G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -68,48 +68,13 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    func testPropertyUpdate() {
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        
-        let graph = Graph()
-        
-        let action = Action(type: "T")
-        action["P1"] = "V1"
-        
-        graph.async { [weak self] (success: Bool, error: NSError?) in
-            XCTAssertTrue(success)
-            XCTAssertNil(error)
-            self?.saveException?.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(5, handler: nil)
-        
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        propertyUpdateExpception = expectationWithDescription("[ActionTests Error: Property update test failed.]")
-        
-        graph.delegate = self
-        graph.watchForAction(properties: ["P1"])
-        
-        action["P1"] = "V2"
-        
-        XCTAssertEqual("V2", action["P1"] as? String)
-        
-        graph.async { [weak self] (success: Bool, error: NSError?) in
-            XCTAssertTrue(success)
-            XCTAssertNil(error)
-            self?.saveException?.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(5, handler: nil)
-    }
-    
-    func testPropertyDelete() {
+    func testGroupUpdate() {
         saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
         let action = Action(type: "T")
-        action["P1"] = "V1"
+        action.addToGroup("G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -120,14 +85,17 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
         
         saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        propertyDeleteExpception = expectationWithDescription("[ActionTests Error: Property delete test failed.]")
+        groupAddExpception = expectationWithDescription("[ActionTests Error: Group add test failed.]")
+        groupRemoveExpception = expectationWithDescription("[ActionTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(properties: ["P1"])
+        graph.watchForAction(groups: ["G1", "G2"])
         
-        action["P1"] = nil
+        action.addToGroup("G1")
+        action.removeFromGroup("G2")
         
-        XCTAssertNil(action["P1"])
+        XCTAssertTrue(action.memberOfGroup("G1"))
+        XCTAssertFalse(action.memberOfGroup("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -138,36 +106,60 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func testGroupDelete() {
+        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
         
-        XCTAssertEqual("P1", property)
-        XCTAssertEqual("V1", value as? String)
-        XCTAssertEqual(value as? String, action[property] as? String)
+        let graph = Graph()
         
-        propertyInsertExpception?.fulfill()
+        let action = Action(type: "T")
+        action.addToGroup("G2")
+        
+        XCTAssertTrue(action.memberOfGroup("G2"))
+        
+        graph.async { [weak self] (success: Bool, error: NSError?) in
+            XCTAssertTrue(success)
+            XCTAssertNil(error)
+            self?.saveException?.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
+        
+        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
+        groupRemoveExpception = expectationWithDescription("[ActionTests Error: Group remove test failed.]")
+        
+        graph.delegate = self
+        graph.watchForAction(groups: ["G2"])
+        
+        action.removeFromGroup("G2")
+        
+        XCTAssertFalse(action.memberOfGroup("G2"))
+        
+        graph.async { [weak self] (success: Bool, error: NSError?) in
+            XCTAssertTrue(success)
+            XCTAssertNil(error)
+            self?.saveException?.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
     }
     
-    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidAddActionToGroup(graph: Graph, action: Action, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertEqual("G1", group)
+        XCTAssertTrue(action.memberOfGroup(group))
+        XCTAssertEqual(1, action.groups.count)
+        XCTAssertTrue(action.groups.contains(group))
         
-        XCTAssertEqual("P1", property)
-        XCTAssertEqual("V2", value as? String)
-        XCTAssertEqual(value as? String, action[property] as? String)
-        
-        propertyUpdateExpception?.fulfill()
+        groupAddExpception?.fulfill()
     }
     
-    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphWillRemoveActionFromGroup(graph: Graph, action: Action, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertEqual("G2", group)
+        XCTAssertFalse(action.memberOfGroup(group))
         
-        XCTAssertEqual("P1", property)
-        XCTAssertEqual("V1", value as? String)
-        XCTAssertNil(action[property])
-        
-        propertyDeleteExpception?.fulfill()
+        groupRemoveExpception?.fulfill()
     }
 }

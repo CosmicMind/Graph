@@ -66,7 +66,6 @@ internal class ManagedRelationship: ManagedNode {
                         if name == property.name {
                             if let p = property as? ManagedRelationshipProperty {
                                 p.delete()
-                                self.removePropertySetObject(p)
                                 break
                             }
                         }
@@ -74,26 +73,24 @@ internal class ManagedRelationship: ManagedNode {
                     return
                 }
                 
-                var hasProperty: Bool = false
+                var exists: Bool = false
                 for property in self.propertySet {
                     if name == property.name {
                         (property as? ManagedRelationshipProperty)?.object = object
-                        hasProperty = true
+                        exists = true
                         break
                     }
                 }
                 
-                if !hasProperty {
-                    let property = ManagedRelationshipProperty(name: name, object: object, managedObjectContext: moc)
-                    property.node = self
-                    self.addPropertySetObject(property)
+                if !exists {
+                    _ = ManagedRelationshipProperty(name: name, object: object, node: self, managedObjectContext: moc)
                 }
             }
         }
     }
     
     /**
-     Adds the ManagedRelationship to the group.
+     Adds the ManagedAction to the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -105,9 +102,7 @@ internal class ManagedRelationship: ManagedNode {
         var result: Bool? = false
         moc.performBlockAndWait { [unowned self, unowned moc] in
             if !self.memberOfGroup(name) {
-                let group = ManagedRelationshipGroup(name: name, managedObjectContext: moc)
-                group.node = self
-                self.addGroupSetObject(group)
+                _ = ManagedRelationshipGroup(name: name, node: self, managedObjectContext: moc)
                 result = true
             }
         }
@@ -115,7 +110,7 @@ internal class ManagedRelationship: ManagedNode {
     }
     
     /**
-     Removes the ManagedRelationship from the group.
+     Removes the ManagedAction from the group.
      - Parameter name: The group name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
@@ -130,7 +125,6 @@ internal class ManagedRelationship: ManagedNode {
                 if name == group.name {
                     if let g = group as? ManagedRelationshipGroup {
                         g.delete()
-                        self.removeGroupSetObject(g)
                         result = true
                         break
                     }
@@ -138,6 +132,34 @@ internal class ManagedRelationship: ManagedNode {
             }
         }
         return result!
+    }
+    
+    /// Marks the Relationship for deletion and clears all its relationships.
+    internal override func delete() {
+        guard let moc = self.managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self] in
+            self.groupSet.forEach { (object: AnyObject) in
+                guard let group = object as? ManagedRelationshipGroup else {
+                    return
+                }
+                group.delete()
+            }
+            
+            self.propertySet.forEach { (object: AnyObject) in
+                guard let property = object as? ManagedRelationshipProperty else {
+                    return
+                }
+                property.delete()
+            }
+            
+            self.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self)
+            self.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self)
+        }
+        
+        super.delete()
     }
 }
 
@@ -147,7 +169,7 @@ internal extension ManagedRelationship {
      - Parameter value: A reference to a ManagedRelationshipProperty.
      */
     func addPropertySetObject(value: ManagedRelationshipProperty) {
-        (propertySet as! NSMutableSet).addObject(value)
+        (propertySet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -155,7 +177,7 @@ internal extension ManagedRelationship {
      - Parameter value: A reference to a ManagedRelationshipProperty.
      */
     func removePropertySetObject(value: ManagedRelationshipProperty) {
-        (propertySet as! NSMutableSet).removeObject(value)
+        (propertySet as? NSMutableSet)?.removeObject(value)
     }
     
     /**
@@ -163,7 +185,7 @@ internal extension ManagedRelationship {
      - Parameter value: A reference to a ManagedRelationshipGroup.
      */
     func addGroupSetObject(value: ManagedRelationshipGroup) {
-        (groupSet as! NSMutableSet).addObject(value)
+        (groupSet as? NSMutableSet)?.addObject(value)
     }
     
     /**
@@ -171,6 +193,6 @@ internal extension ManagedRelationship {
      - Parameter value: A reference to a ManagedRelationshipGroup.
      */
     func removeGroupSetObject(value: ManagedRelationshipGroup) {
-        (groupSet as! NSMutableSet).removeObject(value)
+        (groupSet as? NSMutableSet)?.removeObject(value)
     }
 }

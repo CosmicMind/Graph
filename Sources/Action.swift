@@ -60,7 +60,7 @@ public class Action: NSObject, NodeType {
     }
     
     /// A reference to groups.
-    public var groups: [String] {
+    public var groups: Set<String> {
         return node.groups
     }
     
@@ -85,24 +85,34 @@ public class Action: NSObject, NodeType {
     
     /// An Array of Entity subjects.
     public var subjects: [Entity] {
-        var result: [Entity]?
-        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            result = self.node.managedNode.subjectSet.map {
+        guard let moc = node.managedNode.managedObjectContext else {
+            return [Entity]()
+        }
+        
+        
+        var s: [Entity]?
+        moc.performBlockAndWait { [unowned node] in
+            s = node.managedNode.subjectSet.map {
                 return Entity(managedNode: $0 as! ManagedEntity)
             } as [Entity]
         }
-        return result!
+        return s!
     }
     
     /// An Array of Entity objects.
     public var objects: [Entity] {
-        var result: [Entity]?
-        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            result = self.node.managedNode.objectSet.map {
+        guard let moc = node.managedNode.managedObjectContext else {
+            return [Entity]()
+        }
+        
+        
+        var o: [Entity]?
+        moc.performBlockAndWait { [unowned node] in
+            o = node.managedNode.objectSet.map {
                 return Entity(managedNode: $0 as! ManagedEntity)
             } as [Entity]
         }
-        return result!
+        return o!
     }
     
     /**
@@ -263,26 +273,9 @@ public class Action: NSObject, NodeType {
         return objects.contains(entity)
     }
     
-    /**
-     Marks the Action for deletion and removes the Entities from
-     the subject and object set.
-    */
+    /// Marks the Action for deletion.
     public func delete() {
-        node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            self.node.managedNode.subjectSet.forEach { (object: AnyObject) in
-                if let entity: ManagedEntity = object as? ManagedEntity {
-                    (entity.actionSubjectSet as? NSMutableSet)?.removeObject(self.node.managedNode)
-                }
-            }
-            
-            self.node.managedNode.objectSet.forEach { (object: AnyObject) in
-                if let entity: ManagedEntity = object as? ManagedEntity {
-                    (entity.actionObjectSet as? NSMutableSet)?.removeObject(self.node.managedNode)
-                }
-            }
-            
-            self.node.managedNode.delete()
-        }
+        node.managedNode.delete()
     }
 }
 
