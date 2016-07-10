@@ -48,7 +48,7 @@ internal class ManagedRelationshipGroup: ManagedGroup {
 
     /// Marks node for deletion.
     internal override func delete() {
-        self.node.mutableSetValueForKey("groupSet").removeObject(self)
+        node.removeGroupSetObject(self)
         super.delete()
     }
 }

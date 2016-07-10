@@ -139,8 +139,8 @@ internal class ManagedAction: ManagedNode {
         var result: Bool?
         managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.subjectSet.count
-            self.mutableSetValueForKey("subjectSet").addObject(managedEntity)
-            managedEntity.mutableSetValueForKey("actionSubjectSet").addObject(self)
+            self.addSubjectSetObject(managedEntity)
+            managedEntity.addActionSubjectSetObject(self)
             result = count != self.subjectSet.count
         }
         return result!
@@ -155,8 +155,8 @@ internal class ManagedAction: ManagedNode {
         var result: Bool?
         managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.subjectSet.count
-            self.mutableSetValueForKey("subjectSet").removeObject(managedEntity)
-            managedEntity.mutableSetValueForKey("actionSubjectSet").removeObject(self)
+            self.removeSubjectSetObject(managedEntity)
+            managedEntity.removeActionSubjectSetObject(self)
             result = count != self.subjectSet.count
         }
         return result!
@@ -171,8 +171,8 @@ internal class ManagedAction: ManagedNode {
         var result: Bool?
         managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.objectSet.count
-            self.mutableSetValueForKey("objectSet").addObject(managedEntity)
-            managedEntity.mutableSetValueForKey("actionObjectSet").addObject(self)
+            self.addObjectSetObject(managedEntity)
+            managedEntity.addActionObjectSetObject(self)
             result = count != self.objectSet.count
         }
         return result!
@@ -187,8 +187,8 @@ internal class ManagedAction: ManagedNode {
         var result: Bool?
         managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.objectSet.count
-            self.mutableSetValueForKey("objectSet").removeObject(managedEntity)
-            managedEntity.mutableSetValueForKey("actionObjectSet").removeObject(self)
+            self.removeObjectSetObject(managedEntity)
+            managedEntity.removeActionObjectSetObject(self)
             result = count != self.objectSet.count
         }
         return result!
@@ -216,18 +216,17 @@ internal class ManagedAction: ManagedNode {
             }
             
             self.subjectSet.forEach { [unowned self] (object: AnyObject) in
-                guard let entity: ManagedEntity = object as? ManagedEntity else {
+                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
                     return
                 }
-                
-                entity.mutableSetValueForKey("actionSubjectSet").removeObject(self)
+                managedEntity.removeActionSubjectSetObject(self)
             }
             
             self.objectSet.forEach { [unowned self] (object: AnyObject) in
-                guard let entity: ManagedEntity = object as? ManagedEntity else {
+                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
                     return
                 }
-                entity.mutableSetValueForKey("actionObjectSet").removeObject(self)
+                managedEntity.removeActionObjectSetObject(self)
             }
         }
         

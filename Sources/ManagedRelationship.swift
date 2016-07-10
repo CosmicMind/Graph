@@ -155,8 +155,8 @@ internal class ManagedRelationship: ManagedNode {
                 property.delete()
             }
             
-            self.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self)
-            self.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self)
+            self.subject?.removeRelationshipSubjectSetObject(self)
+            self.object?.removeRelationshipObjectSetObject(self)
         }
         
         super.delete()
