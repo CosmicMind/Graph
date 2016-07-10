@@ -79,8 +79,6 @@ public extension Graph {
         
         if supported {
             options = [NSObject: AnyObject]()
-            options?[NSMigratePersistentStoresAutomaticallyOption] = 1
-            options?[NSInferMappingModelAutomaticallyOption] = 1
             options?[NSPersistentStoreUbiquitousContentNameKey] = name
         }
         
@@ -105,40 +103,39 @@ public extension Graph {
         let defaultCenter = NSNotificationCenter.defaultCenter()
         
         defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: moc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
+            moc?.performBlockAndWait { [weak self, weak moc] in
+                if true == moc?.hasChanges {
+                    self?.sync()
+                }
+                self?.reset()
+            }
+            
             guard let type = notification.userInfo?[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
                 return
             }
             
-            moc?.performBlockAndWait { [weak self, weak moc] in
-                if true == moc?.hasChanges {
-                    self?.sync()
-                } else {
-                    guard let s = self else {
-                        return
-                    }
-                    
-                    s.reset()
-                    
-                    var t: GraphCloudStorageTransition
-                    
-                    switch type {
-                    case .AccountAdded:
-                        t = .accountAdded
-                    case .AccountRemoved:
-                        t = .accountRemoved
-                    case .ContentRemoved:
-                        t = .contentRemoved
-                    case .InitialImportCompleted:
-                        t = .initialImportCompleted
-                    }
-                    
-                    s.delegate?.graphWillPrepareCloudStorage?(s, transition: t)
-                }
+            var t: GraphCloudStorageTransition
+            
+            switch type {
+            case .AccountAdded:
+                t = .accountAdded
+            case .AccountRemoved:
+                t = .accountRemoved
+            case .ContentRemoved:
+                t = .contentRemoved
+            case .InitialImportCompleted:
+                t = .initialImportCompleted
             }
+            
+            guard let s = self else {
+                return
+            }
+            
+            s.delegate?.graphWillPrepareCloudStorage?(s, transition: t)
         }
         
         defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: moc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
-            moc?.performBlockAndWait { [weak self] in
+            moc?.performBlock { [weak self] in
                 guard let s = self else {
                     return
                 }
@@ -151,13 +148,15 @@ public extension Graph {
         }
         
         defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: moc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
-            moc?.performBlockAndWait { [weak self, weak moc, notification = notification] in
+            moc?.performBlock{ [weak self, weak moc, notification = notification] in
                 guard let s = self else {
                     return
                 }
                 
                 s.delegate?.graphWillUpdateFromCloudStorage?(s)
                 
+                moc?.mergeChangesFromContextDidSaveNotification(notification)
+                                
                 s.notifyInsertedWatchersFromCloud(notification)
                 s.notifyUpdatedWatchersFromCloud(notification)
                 s.notifyDeletedWatchersFromCloud(notification)
@@ -167,27 +166,3 @@ public extension Graph {
         }
     }
 }
-
-//extension NSManagedObjectContext {
-//    func mergeChangesFromSaveNotification(notification: NSNotification) {
-//        
-//    }
-//}
-
-//- (void)mergeChangesFromSaveNotification:(NSNotification *)notification
-//intoContext:(NSManagedObjectContext *)context {
-//    
-//    // NSManagedObjectContext's merge routine ignores updated objects which aren't
-//    // currently faulted in. To force it to notify interested clients that such
-//    // objects have been refreshed (e.g. NSFetchedResultsController) we need to
-//    // force them to be faulted in ahead of the merge
-//    
-//    NSSet *updated = [notification.userInfo objectForKey:NSUpdatedObjectsKey];
-//    for (NSManagedObject *anObject in updated) {
-//        // The objects can't be a fault. -existingObjectWithID:error: is a
-//        // nice easy way to achieve that in a single swoop.
-//        [context existingObjectWithID:anObject.objectID error:NULL];
-//    }
-//    
-//    [context mergeChangesFromContextDidSaveNotification:notification];
-//}

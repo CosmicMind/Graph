@@ -42,8 +42,7 @@ internal class ManagedRelationshipGroup: ManagedGroup {
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
     internal convenience init(name: String, node: ManagedRelationship, managedObjectContext: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(ModelIdentifier.relationshipGroupDescriptionName, inManagedObjectContext: managedObjectContext)!, insertIntoManagedObjectContext: managedObjectContext)
-        self.name = name
+        self.init(identifier: ModelIdentifier.relationshipGroupDescriptionName, name: name, managedObjectContext: managedObjectContext)
         self.node = node
     }
 

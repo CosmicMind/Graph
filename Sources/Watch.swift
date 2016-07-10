@@ -142,7 +142,13 @@ public extension Graph {
             return
         }
         
-        delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self, unowned objects] in
+            self.delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
+        }
     }
     
     /**
@@ -159,7 +165,13 @@ public extension Graph {
             return
         }
         
-        delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self, unowned objects] in
+            self.delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
+        }
     }
     
     /**
@@ -176,7 +188,13 @@ public extension Graph {
             return
         }
         
-        delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        moc.performBlockAndWait { [unowned self, unowned objects] in
+            self.delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: false)
+        }
     }
     
     /**
@@ -198,14 +216,10 @@ public extension Graph {
         }
         
         let objects = NSMutableSet()
-        moc.performBlockAndWait { [unowned moc, unowned objects] in
-            (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                let object = moc.objectWithID(objectID)
-                moc.refreshObject(object, mergeChanges: true)
-                objects.addObject(object)
-            }
+        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
+            objects.addObject(moc.objectWithID(objectID))
         }
-        delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+        self.delegateToInsertedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
     }
     
     /**
@@ -227,14 +241,10 @@ public extension Graph {
         }
         
         let objects = NSMutableSet()
-        moc.performBlockAndWait { [unowned moc, unowned objects] in
-            (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                let object = moc.objectWithID(objectID)
-                moc.refreshObject(object, mergeChanges: true)
-                objects.addObject(object)
-            }
+        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
+            objects.addObject(moc.objectWithID(objectID))
         }
-        delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+        self.delegateToUpdatedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
     }
     
     /**
@@ -256,14 +266,10 @@ public extension Graph {
         }
         
         let objects = NSMutableSet()
-        moc.performBlockAndWait { [unowned moc, unowned objects] in
-            (objectIDs.allObjects as! [NSManagedObjectID]).forEach { (objectID: NSManagedObjectID) in
-                let object = moc.objectWithID(objectID)
-                moc.refreshObject(object, mergeChanges: true)
-                objects.addObject(object)
-            }
+        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
+            objects.addObject(moc.objectWithID(objectID))
         }
-        delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
+        self.delegateToDeletedWatchers(objects.filteredSetUsingPredicate(predicate) as! Set<NSManagedObject>, fromCloud: true)
     }
     
     /**
@@ -272,37 +278,47 @@ public extension Graph {
      - Parameter set: A Set of NSManagedObjects to pass.
      */
     private func prepareCloudDataForInsertedWatchers(set: Set<NSManagedObject>) {
-        set.forEach { (managedObject: NSManagedObject) in
+        guard let moc = managedObjectContext else {
+            return
+        }
+        set.forEach { [unowned moc] (managedObject: NSManagedObject) in
+            String.fromCString(object_getClassName(managedObject))!
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntityGroup_ManagedEntityGroup_":
                 let group = managedObject as! ManagedEntityGroup
                 let node = group.node
-                node.addGroupSetObject(group)
+//                node.addGroupSetObject(group)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
                 let node = property.node
-                node.addPropertySetObject(property)
+//                node.addPropertySetObject(property)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedActionGroup_ManagedActionGroup_":
                 let group: ManagedActionGroup = managedObject as! ManagedActionGroup
                 let node = group.node
-                node.addGroupSetObject(group)
+//                node.addGroupSetObject(group)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
                 let node = property.node
-                node.addPropertySetObject(property)
+//                node.addPropertySetObject(property)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
                 let node = group.node
-                node.addGroupSetObject(group)
+//                node.addGroupSetObject(group)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
                 let node = property.node
-                node.addPropertySetObject(property)
+//                node.addPropertySetObject(property)
+                moc.refreshObject(node, mergeChanges: true)
                 
             default:break
             }
@@ -315,7 +331,7 @@ public extension Graph {
      */
     private func delegateToInsertedWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
         if fromCloud {
-            prepareCloudDataForInsertedWatchers(set)
+//            prepareCloudDataForInsertedWatchers(set)
         }
         
         let nodes = sortToArray(set)
@@ -460,37 +476,47 @@ public extension Graph {
      - Parameter set: A Set of NSManagedObjects to pass.
      */
     private func prepareCloudDataForDeletedWatchers(set: Set<NSManagedObject>) {
-        set.forEach { (managedObject: NSManagedObject) in
+        guard let moc = managedObjectContext else {
+            return
+        }
+        set.forEach { [unowned moc] (managedObject: NSManagedObject) in
+            print(String.fromCString(object_getClassName(managedObject))!)
             switch String.fromCString(object_getClassName(managedObject))! {
             case "ManagedEntityGroup_ManagedEntityGroup_":
                 let group = managedObject as! ManagedEntityGroup
                 let node = group.node
-                node.removeGroupSetObject(group)
+//                node.removeGroupSetObject(group)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedEntityProperty_ManagedEntityProperty_":
                 let property = managedObject as! ManagedEntityProperty
                 let node = property.node
-                node.removePropertySetObject(property)
+//                node.removePropertySetObject(property)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedActionGroup_ManagedActionGroup_":
                 let group = managedObject as! ManagedActionGroup
                 let node = group.node
-                node.removeGroupSetObject(group)
+//                node.removeGroupSetObject(group)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedActionProperty_ManagedActionProperty_":
                 let property = managedObject as! ManagedActionProperty
                 let node = property.node
-                node.removePropertySetObject(property)
+//                node.removePropertySetObject(property)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedRelationshipGroup_ManagedRelationshipGroup_":
                 let group = managedObject as! ManagedRelationshipGroup
                 let node = group.node
-                node.removeGroupSetObject(group)
+//                node.removeGroupSetObject(group)
+                moc.refreshObject(node, mergeChanges: true)
                 
             case "ManagedRelationshipProperty_ManagedRelationshipProperty_":
                 let property = managedObject as! ManagedRelationshipProperty
                 let node = property.node
-                node.removePropertySetObject(property)
+//                node.removePropertySetObject(property)
+                moc.refreshObject(node, mergeChanges: true)
                 
             default:break
             }
@@ -503,7 +529,7 @@ public extension Graph {
      */
     private func delegateToDeletedWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
         if fromCloud {
-            prepareCloudDataForDeletedWatchers(set)
+//            prepareCloudDataForInsertedWatchers(set)
         }
         
         let nodes = sortToArray(set)
@@ -597,7 +623,7 @@ public extension Graph {
      Sort nodes.
      - Parameter set: A Set of NSManagedObjects.
      - Returns: A Set of NSManagedObjects in sorted order.
-    */
+     */
     private func sortToArray(set: Set<NSManagedObject>) -> [NSManagedObject] {
         return set.sort { (a: NSManagedObject, b: NSManagedObject) -> Bool in
             return (a as? ManagedNode)?.id < (b as? ManagedNode)?.id

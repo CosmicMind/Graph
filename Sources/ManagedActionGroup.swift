@@ -42,14 +42,13 @@ internal class ManagedActionGroup: ManagedGroup {
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
     internal convenience init(name: String, node: ManagedAction, managedObjectContext: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(ModelIdentifier.actionGroupDescriptionName, inManagedObjectContext: managedObjectContext)!, insertIntoManagedObjectContext: managedObjectContext)
-        self.name = name
+        self.init(identifier: ModelIdentifier.actionGroupDescriptionName, name: name, managedObjectContext: managedObjectContext)
         self.node = node
     }
     
     /// Marks node for deletion.
     internal override func delete() {
-        self.node.removeGroupSetObject(self)
+        self.node.mutableSetValueForKey("groupSet").removeObject(self)
         super.delete()
     }
 }

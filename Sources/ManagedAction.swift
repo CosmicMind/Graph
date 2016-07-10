@@ -35,22 +35,6 @@ internal class ManagedAction: ManagedNode {
     @NSManaged internal var subjectSet: NSSet
     @NSManaged internal var objectSet: NSSet
     
-    /// A reference to the groups.
-    internal override var groups: [String] {
-        var g = [String]()
-        guard let moc = managedObjectContext else {
-            return g
-        }
-        moc.performBlockAndWait { [unowned self] in
-            self.groupSet.forEach { (object: AnyObject) in
-                if let group = object as? ManagedActionGroup {
-                    g.append(group.name)
-                }
-            }
-        }
-        return g
-    }
-    
     /**
      Initializer that accepts a type and a NSManagedObjectContext.
      - Parameter type: A reference to the Action type.

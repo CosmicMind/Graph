@@ -60,7 +60,7 @@ public class Action: NSObject, NodeType {
     }
     
     /// A reference to groups.
-    public var groups: [String] {
+    public var groups: Set<String> {
         return node.groups
     }
     

@@ -75,7 +75,7 @@ internal class Node <T: ManagedNode> {
     }
     
     /// A reference to the groups.
-    internal var groups: [String] {
+    internal var groups: Set<String> {
         return managedNode.groups
     }
     
@@ -98,6 +98,11 @@ internal class Node <T: ManagedNode> {
      - Returns: The optional AnyObject value.
      */
     internal subscript(name: String) -> AnyObject? {
-        return managedNode[name]
+        get {
+            return managedNode[name]
+        }
+        set(object) {
+            managedNode[name] = object
+        }
     }
 }

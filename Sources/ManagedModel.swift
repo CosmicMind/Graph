@@ -30,6 +30,7 @@
 
 import CoreData
 
+@objc(ManagedModel)
 internal class ManagedModel: NSManagedObject {
     /// Marks node for deletion.
     internal func delete() {

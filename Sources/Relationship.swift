@@ -60,7 +60,7 @@ public class Relationship: NSObject, NodeType {
     }
     
     /// A reference to groups.
-    public var groups: [String] {
+    public var groups: Set<String> {
         return node.groups
     }
     
@@ -71,10 +71,10 @@ public class Relationship: NSObject, NodeType {
      */
     public subscript(name: String) -> AnyObject? {
         get {
-            return node.managedNode[name]
+            return node[name]
         }
         set(value) {
-            node.managedNode[name] = value
+            node[name] = value
         }
     }
     

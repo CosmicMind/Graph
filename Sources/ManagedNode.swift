@@ -30,6 +30,7 @@
 
 import CoreData
 
+@objc(ManagedNode)
 internal class ManagedNode: ManagedModel {
     @NSManaged internal var nodeClass: NSNumber
     @NSManaged internal var type: String
@@ -52,15 +53,15 @@ internal class ManagedNode: ManagedModel {
     }
     
     /// A reference to the groups.
-    internal var groups: [String] {
-        var g = [String]()
+    internal var groups: Set<String> {
+        var g = Set<String>()
         guard let moc = managedObjectContext else {
             return g
         }
         moc.performBlockAndWait { [unowned self] in
             self.groupSet.forEach { (object: AnyObject) in
                 if let group = object as? ManagedGroup {
-                    g.append(group.name)
+                    g.insert(group.name)
                 }
             }
         }
@@ -103,19 +104,22 @@ internal class ManagedNode: ManagedModel {
      - Returns: The optional AnyObject value.
      */
     internal subscript(name: String) -> AnyObject? {
-        var object: AnyObject?
-        guard let moc = managedObjectContext else {
-            return object
-        }
-        moc.performBlockAndWait { [unowned self] in
-            for property in self.propertySet {
-                if name == property.name {
-                    object = property.object
-                    break
+        get {
+            var object: AnyObject?
+            guard let moc = managedObjectContext else {
+                return object
+            }
+            moc.performBlockAndWait { [unowned self] in
+                for property in self.propertySet {
+                    if name == property.name {
+                        object = property.object
+                        break
+                    }
                 }
             }
+            return object
         }
-        return object
+        set(object) {}
     }
     
     /**
@@ -125,6 +129,18 @@ internal class ManagedNode: ManagedModel {
      otherwise.
      */
     internal func memberOfGroup(name: String) -> Bool {
-        return groups.contains(name)
+        guard let moc = managedObjectContext else {
+            return false
+        }
+        var result: Bool? = false
+        moc.performBlockAndWait { [unowned self] in
+            for group in self.groupSet {
+                if name == group.name {
+                    result = true
+                    break
+                }
+            }
+        }
+        return result!
     }
 }
