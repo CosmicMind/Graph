@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = 'Graph'
-    s.version = '1.2.2'
+    s.version = '1.2.3'
     s.license = 'BSD-3-Clause'
     s.summary = 'Graph is a data-driven framework for CoreData. It comes complete with iCloud support.'
     s.homepage = 'http://cosmicmind.io'

@@ -105,10 +105,8 @@ public extension Graph {
             if supported {
                 preparePersistentStoreCoordinatorNotificationHandlers()
                 
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-                    dispatch_sync(dispatch_get_main_queue()) { [weak self] in
-                        self?.addPersistentStore(supported: true)
-                    }
+                managedObjectContext.performBlock { [weak self] in
+                    self?.addPersistentStore(supported: true)
                 }
             } else {
                 addPersistentStore(supported: false)
@@ -124,19 +122,14 @@ public extension Graph {
             return
         }
         
-        guard true == GraphContextRegistry.added[route] else {
-            preparePersistentStoreCoordinatorNotificationHandlers()
-            return
-        }
+        preparePersistentStoreCoordinatorNotificationHandlers()
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self, supported = supported] in
-            dispatch_sync(dispatch_get_main_queue()) { [weak self, supported = supported] in
-                guard let s = self else {
-                    return
-                }
-                s.completion?(supported: supported, error: supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
-                s.delegate?.graphDidPrepareCloudStorage?(s)
+        managedObjectContext.performBlock { [weak self, supported = supported] in
+            guard let s = self else {
+                return
             }
+            s.completion?(supported: supported, error: supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+            s.delegate?.graphDidPrepareCloudStorage?(s)
         }
     }
 }
