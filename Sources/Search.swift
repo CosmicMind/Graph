@@ -110,7 +110,7 @@ public extension Graph {
                 return Entity(managedNode: managedNode as! ManagedEntity)
             }
             return Entity(managedNode: n)
-        } as [Entity]
+            } as [Entity]
     }
     
     /**

@@ -17,8 +17,6 @@
 		961FCF051D21A1D9003D9634 /* EntityPropertyStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF031D21A1D9003D9634 /* EntityPropertyStressTests.swift */; };
 		961FCF071D21AD4B003D9634 /* ActionPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF061D21AD4B003D9634 /* ActionPropertyTests.swift */; };
 		961FCF081D21AD4B003D9634 /* ActionPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF061D21AD4B003D9634 /* ActionPropertyTests.swift */; };
-		961FCF0A1D21AD57003D9634 /* ActionPropertyStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF091D21AD57003D9634 /* ActionPropertyStressTests.swift */; };
-		961FCF0B1D21AD57003D9634 /* ActionPropertyStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF091D21AD57003D9634 /* ActionPropertyStressTests.swift */; };
 		961FCF0D1D21AD63003D9634 /* RelationshipPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF0C1D21AD63003D9634 /* RelationshipPropertyTests.swift */; };
 		961FCF0E1D21AD63003D9634 /* RelationshipPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF0C1D21AD63003D9634 /* RelationshipPropertyTests.swift */; };
 		961FCF101D21AD71003D9634 /* RelationshipPropertyStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961FCF0F1D21AD71003D9634 /* RelationshipPropertyStressTests.swift */; };
@@ -91,6 +89,8 @@
 		96E0F4B51D238F1600E627D3 /* CloudTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E0F4B31D238F1600E627D3 /* CloudTests.swift */; };
 		96E0F4DF1D29F2F100E627D3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E0F4DE1D29F2F100E627D3 /* Storage.swift */; };
 		96E0F4E01D29F2F100E627D3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E0F4DE1D29F2F100E627D3 /* Storage.swift */; };
+		96F223561D332FDB0046CD14 /* ActionPropertyStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F223541D332FDB0046CD14 /* ActionPropertyStressTests.swift */; };
+		96F223571D332FDB0046CD14 /* ActionPropertyStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F223541D332FDB0046CD14 /* ActionPropertyStressTests.swift */; };
 		96F6B5131D19C81C00EDF830 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5121D19C81C00EDF830 /* GraphTests.swift */; };
 		96F6B5141D19C81C00EDF830 /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5121D19C81C00EDF830 /* GraphTests.swift */; };
 		96F6B5161D19C8D200EDF830 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F6B5151D19C8D200EDF830 /* Context.swift */; };
@@ -128,7 +128,6 @@
 		961FCF001D219BE6003D9634 /* EntityPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityPropertyTests.swift; sourceTree = "<group>"; };
 		961FCF031D21A1D9003D9634 /* EntityPropertyStressTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityPropertyStressTests.swift; sourceTree = "<group>"; };
 		961FCF061D21AD4B003D9634 /* ActionPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionPropertyTests.swift; sourceTree = "<group>"; };
-		961FCF091D21AD57003D9634 /* ActionPropertyStressTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionPropertyStressTests.swift; sourceTree = "<group>"; };
 		961FCF0C1D21AD63003D9634 /* RelationshipPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipPropertyTests.swift; sourceTree = "<group>"; };
 		961FCF0F1D21AD71003D9634 /* RelationshipPropertyStressTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipPropertyStressTests.swift; sourceTree = "<group>"; };
 		961FCF121D21AD84003D9634 /* ActionThreadTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionThreadTests.swift; sourceTree = "<group>"; };
@@ -169,6 +168,7 @@
 		96D4E4EE1BA76FAF00672E38 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96E0F4B31D238F1600E627D3 /* CloudTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudTests.swift; sourceTree = "<group>"; };
 		96E0F4DE1D29F2F100E627D3 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		96F223541D332FDB0046CD14 /* ActionPropertyStressTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionPropertyStressTests.swift; sourceTree = "<group>"; };
 		96F6B5121D19C81C00EDF830 /* GraphTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphTests.swift; sourceTree = "<group>"; };
 		96F6B5151D19C8D200EDF830 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
 		96F6B51B1D19CE3700EDF830 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
@@ -320,7 +320,7 @@
 				962EA8C21D1DB993003890F7 /* ActionTests.swift */,
 				9639B2C81D316B81003FDC83 /* ActionGroupTests.swift */,
 				961FCF061D21AD4B003D9634 /* ActionPropertyTests.swift */,
-				961FCF091D21AD57003D9634 /* ActionPropertyStressTests.swift */,
+				96F223541D332FDB0046CD14 /* ActionPropertyStressTests.swift */,
 				961FCF121D21AD84003D9634 /* ActionThreadTests.swift */,
 				961FCF1C1D22D1F7003D9634 /* ActionSearchTests.swift */,
 				962EA8C51D1DB9B4003890F7 /* RelationshipTests.swift */,
@@ -540,7 +540,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				961FCF0B1D21AD57003D9634 /* ActionPropertyStressTests.swift in Sources */,
+				96F223571D332FDB0046CD14 /* ActionPropertyStressTests.swift in Sources */,
 				962EA8C41D1DB993003890F7 /* ActionTests.swift in Sources */,
 				961FCF051D21A1D9003D9634 /* EntityPropertyStressTests.swift in Sources */,
 				961FCF241D22D807003D9634 /* RelationshipSearchTests.swift in Sources */,
@@ -599,7 +599,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				961FCF0A1D21AD57003D9634 /* ActionPropertyStressTests.swift in Sources */,
+				96F223561D332FDB0046CD14 /* ActionPropertyStressTests.swift in Sources */,
 				962EA8C31D1DB993003890F7 /* ActionTests.swift in Sources */,
 				961FCF041D21A1D9003D9634 /* EntityPropertyStressTests.swift in Sources */,
 				961FCF231D22D807003D9634 /* RelationshipSearchTests.swift in Sources */,
@@ -687,7 +687,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-OSX-Tests";
 				PRODUCT_NAME = "Graph OSX Tests";
 				SDKROOT = macosx;
@@ -703,7 +703,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.cosmicmind.Graph-OSX-Tests";
 				PRODUCT_NAME = "Graph OSX Tests";
 				SDKROOT = macosx;

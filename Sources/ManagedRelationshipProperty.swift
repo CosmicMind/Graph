@@ -49,7 +49,7 @@ internal class ManagedRelationshipProperty: ManagedProperty {
     
     /// Marks node for deletion.
     internal override func delete() {
-        node.removePropertySetObject(self)
+        node.mutableSetValueForKey("propertySet").removeObject(self)
         super.delete()
     }
 }

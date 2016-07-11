@@ -155,44 +155,44 @@ internal class ManagedRelationship: ManagedNode {
                 property.delete()
             }
             
-            self.subject?.removeRelationshipSubjectSetObject(self)
-            self.object?.removeRelationshipObjectSetObject(self)
+            self.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self)
+            self.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self)
         }
         
         super.delete()
     }
 }
 
-internal extension ManagedRelationship {
-    /**
-     Adds the relationship between RelationshipProperty and ManagedRelationship.
-     - Parameter value: A reference to a ManagedRelationshipProperty.
-     */
-    func addPropertySetObject(value: ManagedRelationshipProperty) {
-        (propertySet as? NSMutableSet)?.addObject(value)
-    }
-    
-    /**
-     Removes the relationship between RelationshipProperty and ManagedRelationship.
-     - Parameter value: A reference to a ManagedRelationshipProperty.
-     */
-    func removePropertySetObject(value: ManagedRelationshipProperty) {
-        (propertySet as? NSMutableSet)?.removeObject(value)
-    }
-    
-    /**
-     Adds the relationship between RelationshipGroup and ManagedRelationship.
-     - Parameter value: A reference to a ManagedRelationshipGroup.
-     */
-    func addGroupSetObject(value: ManagedRelationshipGroup) {
-        (groupSet as? NSMutableSet)?.addObject(value)
-    }
-    
-    /**
-     Removes the relationship between RelationshipGroup and ManagedRelationship.
-     - Parameter value: A reference to a ManagedRelationshipGroup.
-     */
-    func removeGroupSetObject(value: ManagedRelationshipGroup) {
-        (groupSet as? NSMutableSet)?.removeObject(value)
-    }
-}
+//internal extension ManagedRelationship {
+//    /**
+//     Adds the relationship between RelationshipProperty and ManagedRelationship.
+//     - Parameter value: A reference to a ManagedRelationshipProperty.
+//     */
+//    func addPropertySetObject(value: ManagedRelationshipProperty) {
+//        (propertySet as? NSMutableSet)?.addObject(value)
+//    }
+//    
+//    /**
+//     Removes the relationship between RelationshipProperty and ManagedRelationship.
+//     - Parameter value: A reference to a ManagedRelationshipProperty.
+//     */
+//    func removePropertySetObject(value: ManagedRelationshipProperty) {
+//        (propertySet as? NSMutableSet)?.removeObject(value)
+//    }
+//    
+//    /**
+//     Adds the relationship between RelationshipGroup and ManagedRelationship.
+//     - Parameter value: A reference to a ManagedRelationshipGroup.
+//     */
+//    func addGroupSetObject(value: ManagedRelationshipGroup) {
+//        (groupSet as? NSMutableSet)?.addObject(value)
+//    }
+//    
+//    /**
+//     Removes the relationship between RelationshipGroup and ManagedRelationship.
+//     - Parameter value: A reference to a ManagedRelationshipGroup.
+//     */
+//    func removeGroupSetObject(value: ManagedRelationshipGroup) {
+//        (groupSet as? NSMutableSet)?.removeObject(value)
+//    }
+//}

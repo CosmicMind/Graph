@@ -149,15 +149,20 @@ public extension Graph {
             return
         }
         
-        self.delegate?.graphWillUpdateFromCloudStorage?(self)
-        
         moc.performBlock { [weak self, weak moc, notification = notification] in
+            guard let s = self else {
+                return
+            }
+            
+            s.delegate?.graphWillUpdateFromCloudStorage?(s)
+            
             moc?.mergeChangesFromContextDidSaveNotification(notification)
-            self?.notifyInsertedWatchersFromCloud(notification)
-            self?.notifyUpdatedWatchersFromCloud(notification)
-            self?.notifyDeletedWatchersFromCloud(notification)
+            
+            s.notifyInsertedWatchersFromCloud(notification)
+            s.notifyUpdatedWatchersFromCloud(notification)
+            s.notifyDeletedWatchersFromCloud(notification)
+            
+            s.delegate?.graphDidUpdateFromCloudStorage?(s)
         }
-        
-        self.delegate?.graphDidUpdateFromCloudStorage?(self)
     }
 }

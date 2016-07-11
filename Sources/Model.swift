@@ -86,21 +86,6 @@ internal struct Model {
             relationshipDescription.name = ModelIdentifier.relationshipDescriptionName
             relationshipDescription.managedObjectClassName = ModelIdentifier.relationshipObjectClassName
             
-            let entityPropertyDescription = NSEntityDescription()
-            var entityPropertyProperties = [AnyObject]()
-            entityPropertyDescription.name = ModelIdentifier.entityPropertyDescriptionName
-            entityPropertyDescription.managedObjectClassName = ModelIdentifier.entityPropertyObjectClassName
-            
-            let actionPropertyDescription = NSEntityDescription()
-            var actionPropertyProperties = [AnyObject]()
-            actionPropertyDescription.name = ModelIdentifier.actionPropertyDescriptionName
-            actionPropertyDescription.managedObjectClassName = ModelIdentifier.actionPropertyObjectClassName
-            
-            let relationshipPropertyDescription = NSEntityDescription()
-            var relationshipPropertyProperties = [AnyObject]()
-            relationshipPropertyDescription.name = ModelIdentifier.relationshipPropertyDescriptionName
-            relationshipPropertyDescription.managedObjectClassName = ModelIdentifier.relationshipPropertyObjectClassName
-            
             let entityGroupDescription = NSEntityDescription()
             var entityGroupProperties = [AnyObject]()
             entityGroupDescription.name = ModelIdentifier.entityGroupDescriptionName
@@ -115,6 +100,21 @@ internal struct Model {
             var relationshipGroupProperties = [AnyObject]()
             relationshipGroupDescription.name = ModelIdentifier.relationshipGroupDescriptionName
             relationshipGroupDescription.managedObjectClassName = ModelIdentifier.relationshipGroupObjectClassName
+            
+            let entityPropertyDescription = NSEntityDescription()
+            var entityPropertyProperties = [AnyObject]()
+            entityPropertyDescription.name = ModelIdentifier.entityPropertyDescriptionName
+            entityPropertyDescription.managedObjectClassName = ModelIdentifier.entityPropertyObjectClassName
+            
+            let actionPropertyDescription = NSEntityDescription()
+            var actionPropertyProperties = [AnyObject]()
+            actionPropertyDescription.name = ModelIdentifier.actionPropertyDescriptionName
+            actionPropertyDescription.managedObjectClassName = ModelIdentifier.actionPropertyObjectClassName
+            
+            let relationshipPropertyDescription = NSEntityDescription()
+            var relationshipPropertyProperties = [AnyObject]()
+            relationshipPropertyDescription.name = ModelIdentifier.relationshipPropertyDescriptionName
+            relationshipPropertyDescription.managedObjectClassName = ModelIdentifier.relationshipPropertyObjectClassName
             
             let nodeClass = NSAttributeDescription()
             nodeClass.name = "nodeClass"

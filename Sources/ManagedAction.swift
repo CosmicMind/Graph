@@ -139,8 +139,7 @@ internal class ManagedAction: ManagedNode {
         var result: Bool?
         managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.subjectSet.count
-            self.addSubjectSetObject(managedEntity)
-            managedEntity.addActionSubjectSetObject(self)
+            self.mutableSetValueForKey("subjectSet").addObject(managedEntity)
             result = count != self.subjectSet.count
         }
         return result!
@@ -155,8 +154,7 @@ internal class ManagedAction: ManagedNode {
         var result: Bool?
         managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.subjectSet.count
-            self.removeSubjectSetObject(managedEntity)
-            managedEntity.removeActionSubjectSetObject(self)
+            self.mutableSetValueForKey("subjectSet").removeObject(managedEntity)
             result = count != self.subjectSet.count
         }
         return result!
@@ -171,8 +169,7 @@ internal class ManagedAction: ManagedNode {
         var result: Bool?
         managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.objectSet.count
-            self.addObjectSetObject(managedEntity)
-            managedEntity.addActionObjectSetObject(self)
+            self.mutableSetValueForKey("objectSet").addObject(managedEntity)
             result = count != self.objectSet.count
         }
         return result!
@@ -187,8 +184,7 @@ internal class ManagedAction: ManagedNode {
         var result: Bool?
         managedObjectContext?.performBlockAndWait { [unowned self, unowned managedEntity] in
             let count: Int = self.objectSet.count
-            self.removeObjectSetObject(managedEntity)
-            managedEntity.removeActionObjectSetObject(self)
+            self.mutableSetValueForKey("objectSet").removeObject(managedEntity)
             result = count != self.objectSet.count
         }
         return result!
@@ -219,14 +215,14 @@ internal class ManagedAction: ManagedNode {
                 guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
                     return
                 }
-                managedEntity.removeActionSubjectSetObject(self)
+                self.mutableSetValueForKey("subjectSet").removeObject(managedEntity)
             }
             
             self.objectSet.forEach { [unowned self] (object: AnyObject) in
                 guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
                     return
                 }
-                managedEntity.removeActionObjectSetObject(self)
+                self.mutableSetValueForKey("objectSet").removeObject(managedEntity)
             }
         }
         
@@ -234,68 +230,68 @@ internal class ManagedAction: ManagedNode {
     }
 }
 
-internal extension ManagedAction {
-    /**
-     Adds a ManagedEntity to the subjectSet.
-     - Parameter value: A reference to a ManagedEntity.
-     */
-    func addSubjectSetObject(value: ManagedEntity) {
-        (subjectSet as! NSMutableSet).addObject(value)
-    }
-    
-    /**
-     Removes a ManagedEntity from the subjectSet.
-     - Parameter value: A reference to a ManagedEntity.
-     */
-    func removeSubjectSetObject(value: ManagedEntity) {
-        (subjectSet as! NSMutableSet).removeObject(value)
-    }
-
-    /**
-     Adds a ManagedEntity to the objectSet.
-     - Parameter value: A reference to a ManagedEntity.
-     */
-    func addObjectSetObject(value: ManagedEntity) {
-        (objectSet as! NSMutableSet).addObject(value)
-    }
-    
-    /**
-     Removes a ManagedEntity from the objectSet.
-     - Parameter value: A reference to a ManagedEntity.
-     */
-    func removeObjectSetObject(value: ManagedEntity) {
-        (objectSet as! NSMutableSet).removeObject(value)
-    }
-    
-    /**
-     Adds the relationship between ActionProperty and ManagedAction.
-     - Parameter value: A reference to a ManagedActionProperty.
-     */
-    func addPropertySetObject(value: ManagedActionProperty) {
-        (propertySet as? NSMutableSet)?.addObject(value)
-    }
-    
-    /**
-     Removes the relationship between ActionProperty and ManagedAction.
-     - Parameter value: A reference to a ManagedActionProperty.
-     */
-    func removePropertySetObject(value: ManagedActionProperty) {
-        (propertySet as? NSMutableSet)?.removeObject(value)
-    }
-    
-    /**
-     Adds the relationship between ActionGroup and ManagedAction.
-     - Parameter value: A reference to a ManagedActionGroup.
-     */
-    func addGroupSetObject(value: ManagedActionGroup) {
-        (groupSet as? NSMutableSet)?.addObject(value)
-    }
-    
-    /**
-     Removes the relationship between ActionGroup and ManagedAction.
-     - Parameter value: A reference to a ManagedActionGroup.
-     */
-    func removeGroupSetObject(value: ManagedActionGroup) {
-        (groupSet as? NSMutableSet)?.removeObject(value)
-    }
-}
+//internal extension ManagedAction {
+//    /**
+//     Adds a ManagedEntity to the subjectSet.
+//     - Parameter value: A reference to a ManagedEntity.
+//     */
+//    func addSubjectSetObject(value: ManagedEntity) {
+//        (subjectSet as! NSMutableSet).addObject(value)
+//    }
+//    
+//    /**
+//     Removes a ManagedEntity from the subjectSet.
+//     - Parameter value: A reference to a ManagedEntity.
+//     */
+//    func removeSubjectSetObject(value: ManagedEntity) {
+//        (subjectSet as! NSMutableSet).removeObject(value)
+//    }
+//
+//    /**
+//     Adds a ManagedEntity to the objectSet.
+//     - Parameter value: A reference to a ManagedEntity.
+//     */
+//    func addObjectSetObject(value: ManagedEntity) {
+//        (objectSet as! NSMutableSet).addObject(value)
+//    }
+//    
+//    /**
+//     Removes a ManagedEntity from the objectSet.
+//     - Parameter value: A reference to a ManagedEntity.
+//     */
+//    func removeObjectSetObject(value: ManagedEntity) {
+//        (objectSet as! NSMutableSet).removeObject(value)
+//    }
+//    
+//    /**
+//     Adds the relationship between ActionProperty and ManagedAction.
+//     - Parameter value: A reference to a ManagedActionProperty.
+//     */
+//    func addPropertySetObject(value: ManagedActionProperty) {
+//        (propertySet as? NSMutableSet)?.addObject(value)
+//    }
+//    
+//    /**
+//     Removes the relationship between ActionProperty and ManagedAction.
+//     - Parameter value: A reference to a ManagedActionProperty.
+//     */
+//    func removePropertySetObject(value: ManagedActionProperty) {
+//        (propertySet as? NSMutableSet)?.removeObject(value)
+//    }
+//    
+//    /**
+//     Adds the relationship between ActionGroup and ManagedAction.
+//     - Parameter value: A reference to a ManagedActionGroup.
+//     */
+//    func addGroupSetObject(value: ManagedActionGroup) {
+//        (groupSet as? NSMutableSet)?.addObject(value)
+//    }
+//    
+//    /**
+//     Removes the relationship between ActionGroup and ManagedAction.
+//     - Parameter value: A reference to a ManagedActionGroup.
+//     */
+//    func removeGroupSetObject(value: ManagedActionGroup) {
+//        (groupSet as? NSMutableSet)?.removeObject(value)
+//    }
+//}
