@@ -65,10 +65,10 @@
 		9639B2CD1D318FDF003FDC83 /* EntityGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639B2CB1D318FDF003FDC83 /* EntityGroupTests.swift */; };
 		9639B2CF1D319011003FDC83 /* RelationshipGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639B2CE1D319011003FDC83 /* RelationshipGroupTests.swift */; };
 		9639B2D01D319011003FDC83 /* RelationshipGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639B2CE1D319011003FDC83 /* RelationshipGroupTests.swift */; };
+		96484BD11D3323DF00D72102 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96484BD01D3323DF00D72102 /* Node.swift */; };
+		96484BD21D3323DF00D72102 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96484BD01D3323DF00D72102 /* Node.swift */; };
 		9677B4431BA78A9200C82BBB /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4391BA78A9200C82BBB /* Graph.framework */; };
 		9677B45F1BA78AA600C82BBB /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9677B4551BA78AA600C82BBB /* Graph.framework */; };
-		96A1E88C1D1A489300FAC2F9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E88B1D1A489300FAC2F9 /* Node.swift */; };
-		96A1E88D1D1A489300FAC2F9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E88B1D1A489300FAC2F9 /* Node.swift */; };
 		96A1E8921D1A4A2100FAC2F9 /* ManagedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */; };
 		96A1E8931D1A4A2100FAC2F9 /* ManagedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */; };
 		96A1E8951D1A4A4D00FAC2F9 /* ManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E8941D1A4A4D00FAC2F9 /* ManagedModel.swift */; };
@@ -152,11 +152,11 @@
 		9639B2C81D316B81003FDC83 /* ActionGroupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionGroupTests.swift; sourceTree = "<group>"; };
 		9639B2CB1D318FDF003FDC83 /* EntityGroupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityGroupTests.swift; sourceTree = "<group>"; };
 		9639B2CE1D319011003FDC83 /* RelationshipGroupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipGroupTests.swift; sourceTree = "<group>"; };
+		96484BD01D3323DF00D72102 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		9677B4391BA78A9200C82BBB /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B4421BA78A9200C82BBB /* Graph OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B4551BA78AA600C82BBB /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9677B45E1BA78AA600C82BBB /* Graph iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		96A1E88B1D1A489300FAC2F9 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNode.swift; sourceTree = "<group>"; };
 		96A1E8941D1A4A4D00FAC2F9 /* ManagedModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedModel.swift; sourceTree = "<group>"; };
 		96A1E8981D1A512700FAC2F9 /* ManagedGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedGroup.swift; sourceTree = "<group>"; };
@@ -236,6 +236,7 @@
 		961F9BC71C10ED8000ACF5DD /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				96484BD01D3323DF00D72102 /* Node.swift */,
 				961FCF551D2323F4003D9634 /* Graph.swift */,
 				96F6B5151D19C8D200EDF830 /* Context.swift */,
 				96F6B51E1D19D3FF00EDF830 /* Coordinator.swift */,
@@ -247,7 +248,6 @@
 				96A1E8911D1A4A2100FAC2F9 /* ManagedNode.swift */,
 				96A1E8981D1A512700FAC2F9 /* ManagedGroup.swift */,
 				96A1E89B1D1A514300FAC2F9 /* ManagedProperty.swift */,
-				96A1E88B1D1A489300FAC2F9 /* Node.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
@@ -509,6 +509,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				962EA8BB1D1DAD07003890F7 /* ManagedAction.swift in Sources */,
+				96484BD21D3323DF00D72102 /* Node.swift in Sources */,
 				962EA8AF1D1DABE6003890F7 /* Relationship.swift in Sources */,
 				96F6B5231D19D56B00EDF830 /* Model.swift in Sources */,
 				96A1E8A41D1A546A00FAC2F9 /* ManagedEntityGroup.swift in Sources */,
@@ -526,7 +527,6 @@
 				96E0F4E01D29F2F100E627D3 /* Storage.swift in Sources */,
 				96A1E8A71D1A547B00FAC2F9 /* ManagedEntityProperty.swift in Sources */,
 				962EA8CA1D1DBAA9003890F7 /* Watch.swift in Sources */,
-				96A1E88D1D1A489300FAC2F9 /* Node.swift in Sources */,
 				962EA8AC1D1DABDB003890F7 /* ManagedRelationship.swift in Sources */,
 				96A1E8B71D1A54F500FAC2F9 /* Entity.swift in Sources */,
 				962EA8B21D1DABF8003890F7 /* ManagedRelationshipGroup.swift in Sources */,
@@ -568,6 +568,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96A1E8991D1A512700FAC2F9 /* ManagedGroup.swift in Sources */,
+				96484BD11D3323DF00D72102 /* Node.swift in Sources */,
 				962EA8BA1D1DAD07003890F7 /* ManagedAction.swift in Sources */,
 				962EA8AE1D1DABE6003890F7 /* Relationship.swift in Sources */,
 				96A1E8951D1A4A4D00FAC2F9 /* ManagedModel.swift in Sources */,
@@ -590,7 +591,6 @@
 				962EA8AB1D1DABDB003890F7 /* ManagedRelationship.swift in Sources */,
 				96F6B51C1D19CE3700EDF830 /* File.swift in Sources */,
 				962EA8B11D1DABF8003890F7 /* ManagedRelationshipGroup.swift in Sources */,
-				96A1E88C1D1A489300FAC2F9 /* Node.swift in Sources */,
 				961FCF561D2323F4003D9634 /* Graph.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -158,7 +158,6 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G2", group)
-        print(entity.memberOfGroup(group), entity)
         XCTAssertFalse(entity.memberOfGroup(group))
         
         groupRemoveExpception?.fulfill()

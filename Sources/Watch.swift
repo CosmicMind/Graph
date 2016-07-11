@@ -299,7 +299,8 @@ public extension Graph {
             let name = group.name
             
             moc?.performBlockAndWait { [unowned self, group = group, node = node, name = name] in
-                node.addGroupSetObject(group)
+//                node.addGroupSetObject(group)
+//                moc?.refreshObject(node, mergeChanges: true)
                 self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
             }
         }
@@ -314,7 +315,8 @@ public extension Graph {
             let object = property.object
             
             moc?.performBlockAndWait { [unowned self, property = property, node = node, name = name, object = object] in
-                node.addPropertySetObject(property)
+//                node.addPropertySetObject(property)
+//                moc?.refreshObject(property, mergeChanges: true)
                 self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
             }
         }
@@ -335,7 +337,7 @@ public extension Graph {
             let name = group.name
             
             moc?.performBlockAndWait { [unowned self, group = group, node = node, name = name] in
-                node.addGroupSetObject(group)
+//                node.addGroupSetObject(group)
                 self.delegate?.graphDidAddRelationshipToGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
             }
         }
@@ -350,7 +352,7 @@ public extension Graph {
             let object = property.object
             
             moc?.performBlockAndWait { [unowned self, property = property, node = node, name = name] in
-                node.addPropertySetObject(property)
+//                node.addPropertySetObject(property)
                 self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
             }
         }
@@ -371,7 +373,7 @@ public extension Graph {
             let name = group.name
             
             moc?.performBlockAndWait { [unowned self, group = group, node = node, name = name] in
-                node.addGroupSetObject(group)
+//                node.addGroupSetObject(group)
                 self.delegate?.graphDidAddActionToGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
             }
         }
@@ -386,7 +388,7 @@ public extension Graph {
             let object = property.object
             
             moc?.performBlockAndWait { [unowned self, property = property, node = node, name = name] in
-                node.addPropertySetObject(property)
+//                node.addPropertySetObject(property)
                 self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
             }
         }
@@ -460,7 +462,8 @@ public extension Graph {
             let name = group.name
             
             moc?.performBlockAndWait { [unowned self, group = group, node = node, name = name] in
-                node.removeGroupSetObject(group)
+//                node.removeGroupSetObject(group)
+//                moc?.refreshObject(node, mergeChanges: true)
                 self.delegate?.graphWillRemoveEntityFromGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
             }
         }
@@ -475,7 +478,8 @@ public extension Graph {
             let object = property.object
             
             moc?.performBlockAndWait { [unowned self, property = property, node = node, name = name, object = object] in
-                node.removePropertySetObject(property)
+//                node.removePropertySetObject(property)
+//                moc?.refreshObject(node, mergeChanges: true)
                 self.delegate?.graphWillDeleteEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
             }
         }
@@ -496,7 +500,7 @@ public extension Graph {
             let name = group.name
             
             moc?.performBlockAndWait { [unowned self, group = group, node = node, name = name] in
-                node.removeGroupSetObject(group)
+//                node.removeGroupSetObject(group)
                 self.delegate?.graphWillRemoveRelationshipFromGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
             }
         }
@@ -511,7 +515,7 @@ public extension Graph {
             let object = property.object
             
             moc?.performBlockAndWait { [unowned self, property = property, node = node, name = name, object = object] in
-                node.removePropertySetObject(property)
+//                node.removePropertySetObject(property)
                 self.delegate?.graphWillDeleteRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
             }
         }
@@ -528,12 +532,11 @@ public extension Graph {
                 return
             }
             let group: ManagedActionGroup = managedObject as! ManagedActionGroup
-            print(group)
             let node = group.node
             let name = group.name
             
             moc?.performBlockAndWait { [unowned self, group = group, node = node, name = name] in
-                node.removeGroupSetObject(group)
+//                node.removeGroupSetObject(group)
                 self.delegate?.graphWillRemoveActionFromGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
             }
         }
@@ -548,7 +551,7 @@ public extension Graph {
             let object = property.object
             
             moc?.performBlockAndWait { [unowned self, property = property, node = node, name = name, object = object] in
-                node.removePropertySetObject(property)
+//                node.removePropertySetObject(property)
                 self.delegate?.graphWillDeleteActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
             }
         }

@@ -32,8 +32,8 @@ import Foundation
 
 @objc(Relationship)
 public class Relationship: NSObject, NodeType {
-    /// A reference to the node.
-    internal let node: Node<ManagedRelationship>
+    /// A reference to the 
+    internal let managedNode: ManagedRelationship
     
     public override var description: String {
         return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
@@ -46,22 +46,30 @@ public class Relationship: NSObject, NodeType {
     
     /// A reference to the type.
     public var type: String {
-        return node.type
+        var result: String?
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.managedNode.type
+        }
+        return result!
     }
     
     /// A reference to the ID.
     public var id: String {
-        return node.id
+        return managedNode.id
     }
     
     /// A reference to the createDate.
     public var createdDate: NSDate {
-        return node.createdDate
+        var result: NSDate?
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.managedNode.createdDate
+        }
+        return result!
     }
     
     /// A reference to groups.
     public var groups: Set<String> {
-        return node.groups
+        return managedNode.groups
     }
     
     /**
@@ -71,36 +79,36 @@ public class Relationship: NSObject, NodeType {
      */
     public subscript(name: String) -> AnyObject? {
         get {
-            return node[name]
+            return managedNode[name]
         }
         set(value) {
-            node[name] = value
+            managedNode[name] = value
         }
     }
     
     /// A reference to the properties Dictionary.
     public var properties: [String: AnyObject] {
-        return node.properties
+        return managedNode.properties
     }
     
     /// A reference to the subject Entity.
     public var subject: Entity? {
         get {
             var n: ManagedEntity?
-            node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                n = self.node.managedNode.subject
+            managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                n = self.managedNode.subject
             }
             return nil == n ? nil : Entity(managedNode: n!)
         }
         set(entity) {
-            node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                if let e = entity?.node.managedNode {
-                    self.node.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self.node.managedNode)
-                    self.node.managedNode.subject = e
-                    e.mutableSetValueForKey("relationshipSubjectSet").addObject(self.node.managedNode)
+            managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                if let e = entity?.managedNode {
+                    self.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self.managedNode)
+                    self.managedNode.subject = e
+                    e.mutableSetValueForKey("relationshipSubjectSet").addObject(self.managedNode)
                 } else {
-                    self.node.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self.node.managedNode)
-                    self.node.managedNode.subject = nil
+                    self.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self.managedNode)
+                    self.managedNode.subject = nil
                 }
             }
         }
@@ -110,20 +118,20 @@ public class Relationship: NSObject, NodeType {
     public var object: Entity? {
         get {
             var n: ManagedEntity?
-            node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                n = self.node.managedNode.object
+            managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                n = self.managedNode.object
             }
             return nil == n ? nil : Entity(managedNode: n!)
         }
         set(entity) {
-            node.managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-                if let e = entity?.node.managedNode {
-                    self.node.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self.node.managedNode)
-                    self.node.managedNode.object = e
-                    e.mutableSetValueForKey("relationshipObjectSet").addObject(self.node.managedNode)
+            managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+                if let e = entity?.managedNode {
+                    self.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self.managedNode)
+                    self.managedNode.object = e
+                    e.mutableSetValueForKey("relationshipObjectSet").addObject(self.managedNode)
                 } else {
-                    self.node.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self.node.managedNode)
-                    self.node.managedNode.object = nil
+                    self.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self.managedNode)
+                    self.managedNode.object = nil
                 }
             }
         }
@@ -134,7 +142,7 @@ public class Relationship: NSObject, NodeType {
      - Parameter managedNode: A reference to a ManagedRelationship.
      */
     internal init(managedNode: ManagedRelationship) {
-        node = Node<ManagedRelationship>(managedNode: managedNode)
+        self.managedNode = managedNode
     }
     
     /**
@@ -195,7 +203,7 @@ public class Relationship: NSObject, NodeType {
      otherwise.
      */
     public func addToGroup(name: String) -> Bool {
-        return node.managedNode.addToGroup(name)
+        return managedNode.addToGroup(name)
     }
     
     /**
@@ -205,7 +213,7 @@ public class Relationship: NSObject, NodeType {
      otherwise.
      */
     public func memberOfGroup(name: String) -> Bool {
-        return node.managedNode.memberOfGroup(name)
+        return managedNode.memberOfGroup(name)
     }
     
     /**
@@ -215,7 +223,7 @@ public class Relationship: NSObject, NodeType {
      otherwise.
      */
     public func removeFromGroup(name: String) -> Bool {
-        return node.managedNode.removeFromGroup(name)
+        return managedNode.removeFromGroup(name)
     }
     
     /**
@@ -229,7 +237,7 @@ public class Relationship: NSObject, NodeType {
     
     /// Marks the Relationship for deletion.
     public func delete() {
-        node.managedNode.delete()
+        managedNode.delete()
     }
 }
 

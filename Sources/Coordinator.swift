@@ -99,70 +99,65 @@ public extension Graph {
             return
         }
         
-        let queue = NSOperationQueue.mainQueue()
         let defaultCenter = NSNotificationCenter.defaultCenter()
-        
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: moc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
-            moc?.performBlockAndWait { [weak self, weak moc] in
-                if true == moc?.hasChanges {
-                    self?.sync()
-                }
-                self?.reset()
-            }
-            
-            guard let type = notification.userInfo?[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
-                return
-            }
-            
-            var t: GraphCloudStorageTransition
-            
-            switch type {
-            case .AccountAdded:
-                t = .accountAdded
-            case .AccountRemoved:
-                t = .accountRemoved
-            case .ContentRemoved:
-                t = .contentRemoved
-            case .InitialImportCompleted:
-                t = .initialImportCompleted
-            }
-            
-            guard let s = self else {
-                return
-            }
-            
-            s.delegate?.graphWillPrepareCloudStorage?(s, transition: t)
+        defaultCenter.addObserver(self, selector: #selector(persistentStoreWillChange(_:)), name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: moc.persistentStoreCoordinator)
+        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidChange(_:)), name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object: moc.persistentStoreCoordinator)
+        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidImportUbiquitousContentChanges(_:)), name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: moc.persistentStoreCoordinator)
+    }
+    
+    internal func persistentStoreWillChange(notification: NSNotification) {
+        guard let moc = managedObjectContext else {
+            return
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: moc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
-            moc?.performBlock { [weak self] in
-                guard let s = self else {
-                    return
-                }
-                
-                GraphContextRegistry.added[s.route] = true
-                
-                s.completion?(supported: true, error: nil)
-                s.delegate?.graphDidPrepareCloudStorage?(s)
+        moc.performBlockAndWait { [weak self, weak moc] in
+            if true == moc?.hasChanges {
+                self?.sync()
             }
+            self?.reset()
         }
         
-        defaultCenter.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: moc.persistentStoreCoordinator, queue: queue) { [weak self, weak moc] (notification: NSNotification) in
-            moc?.performBlock { [weak self, weak moc, notification = notification] in
-                guard let s = self else {
-                    return
-                }
-                
-                s.delegate?.graphWillUpdateFromCloudStorage?(s)
-                
-                moc?.mergeChangesFromContextDidSaveNotification(notification)
-                
-                s.notifyInsertedWatchersFromCloud(notification)
-                s.notifyUpdatedWatchersFromCloud(notification)
-                s.notifyDeletedWatchersFromCloud(notification)
-                
-                s.delegate?.graphDidUpdateFromCloudStorage?(s)
-            }
+        guard let type = notification.userInfo?[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
+            return
         }
+        
+        var t: GraphCloudStorageTransition
+        
+        switch type {
+        case .AccountAdded:
+            t = .accountAdded
+        case .AccountRemoved:
+            t = .accountRemoved
+        case .ContentRemoved:
+            t = .contentRemoved
+        case .InitialImportCompleted:
+            t = .initialImportCompleted
+        }
+        
+        self.delegate?.graphWillPrepareCloudStorage?(self, transition: t)
+    }
+    
+    internal func persistentStoreDidChange(notification: NSNotification) {
+        GraphContextRegistry.added[self.route] = true
+
+        self.completion?(supported: true, error: nil)
+        self.delegate?.graphDidPrepareCloudStorage?(self)
+    }
+    
+    internal func persistentStoreDidImportUbiquitousContentChanges(notification: NSNotification) {
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        self.delegate?.graphWillUpdateFromCloudStorage?(self)
+        
+        moc.performBlock { [weak self, weak moc, notification = notification] in
+            moc?.mergeChangesFromContextDidSaveNotification(notification)
+            self?.notifyInsertedWatchersFromCloud(notification)
+            self?.notifyUpdatedWatchersFromCloud(notification)
+            self?.notifyDeletedWatchersFromCloud(notification)
+        }
+        
+        self.delegate?.graphDidUpdateFromCloudStorage?(self)
     }
 }

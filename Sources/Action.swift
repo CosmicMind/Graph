@@ -32,8 +32,8 @@ import Foundation
 
 @objc(Action)
 public class Action: NSObject, NodeType {
-    /// A reference to the node.
-    internal let node: Node<ManagedAction>
+    /// A reference to the 
+    internal let managedNode: ManagedAction
     
     public override var description: String {
         return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
@@ -46,22 +46,30 @@ public class Action: NSObject, NodeType {
     
     /// A reference to the type.
     public var type: String {
-        return node.type
+        var result: String?
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.managedNode.type
+        }
+        return result!
     }
     
     /// A reference to the ID.
     public var id: String {
-        return node.id
+        return managedNode.id
     }
     
     /// A reference to the createDate.
     public var createdDate: NSDate {
-        return node.createdDate
+        var result: NSDate?
+        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            result = self.managedNode.createdDate
+        }
+        return result!
     }
     
     /// A reference to groups.
     public var groups: Set<String> {
-        return node.groups
+        return managedNode.groups
     }
     
     /**
@@ -71,28 +79,27 @@ public class Action: NSObject, NodeType {
      */
     public subscript(name: String) -> AnyObject? {
         get {
-            return node.managedNode[name]
+            return managedNode[name]
         }
         set(value) {
-            node.managedNode[name] = value
+            managedNode[name] = value
         }
     }
     
     /// A reference to the properties Dictionary.
     public var properties: [String: AnyObject] {
-        return node.properties
+        return managedNode.properties
     }
     
     /// An Array of Entity subjects.
     public var subjects: [Entity] {
-        guard let moc = node.managedNode.managedObjectContext else {
+        guard let moc = managedNode.managedObjectContext else {
             return [Entity]()
         }
         
-        
         var s: [Entity]?
-        moc.performBlockAndWait { [unowned node] in
-            s = node.managedNode.subjectSet.map {
+        moc.performBlockAndWait { [unowned managedNode] in
+            s = managedNode.subjectSet.map {
                 return Entity(managedNode: $0 as! ManagedEntity)
             } as [Entity]
         }
@@ -101,14 +108,14 @@ public class Action: NSObject, NodeType {
     
     /// An Array of Entity objects.
     public var objects: [Entity] {
-        guard let moc = node.managedNode.managedObjectContext else {
+        guard let moc = managedNode.managedObjectContext else {
             return [Entity]()
         }
         
         
         var o: [Entity]?
-        moc.performBlockAndWait { [unowned node] in
-            o = node.managedNode.objectSet.map {
+        moc.performBlockAndWait { [unowned managedNode] in
+            o = managedNode.objectSet.map {
                 return Entity(managedNode: $0 as! ManagedEntity)
             } as [Entity]
         }
@@ -120,7 +127,7 @@ public class Action: NSObject, NodeType {
      - Parameter managedNode: A reference to a ManagedAction.
      */
     internal init(managedNode: ManagedAction) {
-        node = Node<ManagedAction>(managedNode: managedNode)
+        self.managedNode = managedNode
     }
     
     /**
@@ -181,7 +188,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func addToGroup(name: String) -> Bool {
-        return node.managedNode.addToGroup(name)
+        return managedNode.addToGroup(name)
     }
     
     /**
@@ -191,7 +198,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func memberOfGroup(name: String) -> Bool {
-        return node.managedNode.memberOfGroup(name)
+        return managedNode.memberOfGroup(name)
     }
     
     /**
@@ -201,7 +208,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func removeFromGroup(name: String) -> Bool {
-        return node.managedNode.removeFromGroup(name)
+        return managedNode.removeFromGroup(name)
     }
     
     /**
@@ -220,7 +227,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func addSubject(entity: Entity) -> Bool {
-        return node.managedNode.addSubject(entity.node.managedNode)
+        return managedNode.addSubject(entity.managedNode)
     }
     
     /**
@@ -230,7 +237,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func removeSubject(entity: Entity) -> Bool {
-        return node.managedNode.removeSubject(entity.node.managedNode)
+        return managedNode.removeSubject(entity.managedNode)
     }
     
     /**
@@ -250,7 +257,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func addObject(entity: Entity) -> Bool {
-        return node.managedNode.addObject(entity.node.managedNode)
+        return managedNode.addObject(entity.managedNode)
     }
     
     /**
@@ -260,7 +267,7 @@ public class Action: NSObject, NodeType {
      otherwise.
      */
     public func removeObject(entity: Entity) -> Bool {
-        return node.managedNode.removeObject(entity.node.managedNode)
+        return managedNode.removeObject(entity.managedNode)
     }
     
     /**
@@ -275,7 +282,7 @@ public class Action: NSObject, NodeType {
     
     /// Marks the Action for deletion.
     public func delete() {
-        node.managedNode.delete()
+        managedNode.delete()
     }
 }
 
