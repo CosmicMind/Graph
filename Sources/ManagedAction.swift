@@ -211,19 +211,19 @@ internal class ManagedAction: ManagedNode {
                 property.delete()
             }
             
-            self.subjectSet.forEach { [unowned self] (object: AnyObject) in
-                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
-                    return
-                }
-                self.mutableSetValueForKey("subjectSet").removeObject(managedEntity)
-            }
-            
-            self.objectSet.forEach { [unowned self] (object: AnyObject) in
-                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
-                    return
-                }
-                self.mutableSetValueForKey("objectSet").removeObject(managedEntity)
-            }
+//            self.subjectSet.forEach { [unowned self] (object: AnyObject) in
+//                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
+//                    return
+//                }
+//                self.mutableSetValueForKey("subjectSet").removeObject(managedEntity)
+//            }
+//            
+//            self.objectSet.forEach { [unowned self] (object: AnyObject) in
+//                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
+//                    return
+//                }
+//                self.mutableSetValueForKey("objectSet").removeObject(managedEntity)
+//            }
         }
         
         super.delete()
