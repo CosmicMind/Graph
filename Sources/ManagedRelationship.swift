@@ -162,37 +162,3 @@ internal class ManagedRelationship: ManagedNode {
         super.delete()
     }
 }
-
-//internal extension ManagedRelationship {
-//    /**
-//     Adds the relationship between RelationshipProperty and ManagedRelationship.
-//     - Parameter value: A reference to a ManagedRelationshipProperty.
-//     */
-//    func addPropertySetObject(value: ManagedRelationshipProperty) {
-//        (propertySet as? NSMutableSet)?.addObject(value)
-//    }
-//    
-//    /**
-//     Removes the relationship between RelationshipProperty and ManagedRelationship.
-//     - Parameter value: A reference to a ManagedRelationshipProperty.
-//     */
-//    func removePropertySetObject(value: ManagedRelationshipProperty) {
-//        (propertySet as? NSMutableSet)?.removeObject(value)
-//    }
-//    
-//    /**
-//     Adds the relationship between RelationshipGroup and ManagedRelationship.
-//     - Parameter value: A reference to a ManagedRelationshipGroup.
-//     */
-//    func addGroupSetObject(value: ManagedRelationshipGroup) {
-//        (groupSet as? NSMutableSet)?.addObject(value)
-//    }
-//    
-//    /**
-//     Removes the relationship between RelationshipGroup and ManagedRelationship.
-//     - Parameter value: A reference to a ManagedRelationshipGroup.
-//     */
-//    func removeGroupSetObject(value: ManagedRelationshipGroup) {
-//        (groupSet as? NSMutableSet)?.removeObject(value)
-//    }
-//}

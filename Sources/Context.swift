@@ -37,7 +37,8 @@ internal struct GraphContextRegistry {
     static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
 
-internal struct Context {
+internal struct Context
+{
     /**
      Creates a NSManagedContext. The method will ensure that  any workerManagedObjectContexts that have
      a concurrency type of .MainQueueConcurrencyType are always created on the main 

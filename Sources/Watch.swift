@@ -286,10 +286,6 @@ public extension Graph {
      - Parameter set: A Set of NSManagedObjects to pass.
      */
     private func delegateToInsertedWatchers(set: Set<NSManagedObject>, fromCloud: Bool) {
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
         let nodes = sortToArray(set)
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -299,7 +295,7 @@ public extension Graph {
             self.delegate?.graphDidInsertEntity?(self, entity: Entity(managedNode: managedObject as! ManagedEntity), fromCloud: fromCloud)
         }
         
-        nodes.forEach { [unowned self, weak moc] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntityGroup_ManagedEntityGroup_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -307,12 +303,10 @@ public extension Graph {
             let node = group.node
             let name = group.name
             
-//                node.addGroupSetObject(group)
-//            moc?.refreshObject(group, mergeChanges: false)
             self.delegate?.graphDidAddEntityToGroup?(self, entity: Entity(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
-        nodes.forEach { [unowned self, weak moc] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedEntityProperty_ManagedEntityProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -321,8 +315,6 @@ public extension Graph {
             let name = property.name
             let object = property.object
             
-//                node.addPropertySetObject(property)
-//            moc?.refreshObject(node, mergeChanges: false)
             self.delegate?.graphDidInsertEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
         
@@ -333,19 +325,18 @@ public extension Graph {
             self.delegate?.graphDidInsertRelationship?(self, relationship: Relationship(managedNode: managedObject as! ManagedRelationship), fromCloud: fromCloud)
         }
         
-        nodes.forEach { [unowned self, weak moc] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedRelationshipGroup_ManagedRelationshipGroup_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
             let group = managedObject as! ManagedRelationshipGroup
             let node = group.node
             let name = group.name
-            
-//                node.addGroupSetObject(group)
+
             self.delegate?.graphDidAddRelationshipToGroup?(self, relationship: Relationship(managedNode: node), group: name, fromCloud: fromCloud)
         }
         
-        nodes.forEach { [unowned self, weak moc] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedRelationshipProperty_ManagedRelationshipProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -353,8 +344,7 @@ public extension Graph {
             let node = property.node
             let name = property.name
             let object = property.object
-            
-//                node.addPropertySetObject(property)
+
             self.delegate?.graphDidInsertRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
         
@@ -365,19 +355,18 @@ public extension Graph {
             self.delegate?.graphDidInsertAction?(self, action: Action(managedNode: managedObject as! ManagedAction), fromCloud: fromCloud)
         }
         
-        nodes.forEach { [unowned self, weak moc] (managedObject: NSManagedObject) in
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedActionGroup_ManagedActionGroup_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
             let group: ManagedActionGroup = managedObject as! ManagedActionGroup
             let node = group.node
             let name = group.name
-            
-//               node.addGroupSetObject(group)
+
             self.delegate?.graphDidAddActionToGroup?(self, action: Action(managedNode: node), group: name, fromCloud: fromCloud)
         }
-        
-        nodes.forEach { [unowned self, weak moc] (managedObject: NSManagedObject) in
+     
+        nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
             guard "ManagedActionProperty_ManagedActionProperty_" == String.fromCString(object_getClassName(managedObject))! else {
                 return
             }
@@ -385,8 +374,7 @@ public extension Graph {
             let node = property.node
             let name = property.name
             let object = property.object
-            
-//                node.addPropertySetObject(property)
+
             self.delegate?.graphDidInsertActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
     }
@@ -406,6 +394,7 @@ public extension Graph {
             let node = property.node
             let name = property.name
             let object = property.object
+            
             self.delegate?.graphDidUpdateEntityProperty?(self, entity: Entity(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
         
@@ -424,6 +413,7 @@ public extension Graph {
             let node = property.node
             let name = property.name
             let object = property.object
+            
             self.delegate?.graphDidUpdateRelationshipProperty?(self, relationship: Relationship(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
         
@@ -435,6 +425,7 @@ public extension Graph {
             let node = property.node
             let name = property.name
             let object = property.object
+            
             self.delegate?.graphDidUpdateActionProperty?(self, action: Action(managedNode: node), property: name, value: object, fromCloud: fromCloud)
         }
     }
@@ -453,7 +444,7 @@ public extension Graph {
             
             let group = managedObject as! ManagedEntityGroup
             
-            guard let node = group.changedValuesForCurrentEvent()["node"] as? ManagedEntity else {
+            guard let node = fromCloud ? group.node : group.changedValuesForCurrentEvent()["node"] as? ManagedEntity else {
                 return
             }
             
@@ -468,8 +459,8 @@ public extension Graph {
             }
             
             let property = managedObject as! ManagedEntityProperty
-            
-            guard let node = property.changedValuesForCurrentEvent()["node"] as? ManagedEntity else {
+
+            guard let node = fromCloud ? property.node : property.changedValuesForCurrentEvent()["node"] as? ManagedEntity else {
                 return
             }
             
@@ -492,8 +483,8 @@ public extension Graph {
             }
             
             let group = managedObject as! ManagedRelationshipGroup
-            
-            guard let node = group.changedValuesForCurrentEvent()["node"] as? ManagedRelationship else {
+
+            guard let node = fromCloud ? group.node : group.changedValuesForCurrentEvent()["node"] as? ManagedRelationship else {
                 return
             }
             
@@ -508,8 +499,8 @@ public extension Graph {
             }
             
             let property = managedObject as! ManagedRelationshipProperty
-            
-            guard let node = property.changedValuesForCurrentEvent()["node"] as? ManagedRelationship else {
+
+            guard let node = fromCloud ? property.node : property.changedValuesForCurrentEvent()["node"] as? ManagedRelationship else {
                 return
             }
             
@@ -532,8 +523,8 @@ public extension Graph {
             }
             
             let group: ManagedActionGroup = managedObject as! ManagedActionGroup
-            
-            guard let node = group.changedValuesForCurrentEvent()["node"] as? ManagedAction else {
+
+            guard let node = fromCloud ? group.node : group.changedValuesForCurrentEvent()["node"] as? ManagedAction else {
                 return
             }
             
@@ -549,7 +540,7 @@ public extension Graph {
             
             let property = managedObject as! ManagedActionProperty
             
-            guard let node = property.changedValuesForCurrentEvent()["node"] as? ManagedAction else {
+            guard let node = fromCloud ? property.node : property.changedValuesForCurrentEvent()["node"] as? ManagedAction else {
                 return
             }
             
