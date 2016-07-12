@@ -7,7 +7,7 @@ Graph is a data-driven framework for CoreData. It comes complete with iCloud sup
 ## Features
 
 - [x] iCloud Support
-- [x] Multi Storage Support
+- [x] Multi Local & Cloud Graphs
 - [x] Thread Safe
 - [x] Store Any Data Type, Including Binary Data
 - [x] Relationship Modeling
@@ -50,11 +50,22 @@ Graph is a growing project and will encounter changes throughout its development
 
 ## A Tour  
 
+* [What is Graph & Why It Was Built](#what-is-graph-and-why-it-was-built)
 * [Entity](#entity)
 * [Relationship](#relationship)
 * [Action](#action)
 * [Data Driven](#data-driven)
 * [Faceted Search](#faceted-search)
+
+<a name="what-is-graph-and-why-it-was-built"></a>
+
+## What is Graph & Why It Was Built
+
+A developer will typically be a part of many projects throughout their career, where each project will have its own challenges. One of the major challenges is data. Everything about data seems like effort and is usually left to the end in favor of working on UI and animations -- the parts that excite the user. What if we could think of it differently? What if data wasn't a challenge, and instead a foundation to guide our application? This is the driving force behind Graph.
+
+Graph is a framework that focuses on the structure of information rather than its definition. It does this using 3 model objects -- an Entity, a Relationship, and an Action. Each object has its own utility that when used together or by themselves, instantly builds the informational architecture that guides your application.
+
+Let's go a bit further. Developers are not the only members of a team. Designers, data scientists, and architects need to contribute their ideas as well, and once again, this is where data usually finds itself complicating the situation. With Graph, this is solved by referring back to the 3 model objects. Each member of the team can describe the relationships between entities and the actions that entities participate in. This provides a clear map for developers to program the application, designers to build out the user experience, and for data scientists to prepare their algorithms and reports.
 
 <a name="entity"></a>
 ## Entity
@@ -162,7 +173,11 @@ graph.async()
 
 // Delegate method.
 func graphDidInsertAction(graph: Graph, action: Action, fromCloud: Bool) {
-    switch(action.type) {
+    if fromCloud {
+        // Is this update from iCloud?
+    }
+
+    switch action.type {
     case "Clicked":
       print(action.subjects.first?.type) // User
       print(action.objects.first?.type) // Button
