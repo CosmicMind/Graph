@@ -46,7 +46,7 @@ Graph is a growing project and will encounter changes throughout its development
 
 ## Examples
 
-* Visit the Examples directory to see example projects using Graph.
+* Visit the [Examples](https://github.com/CosmicMind/Graph/tree/development/Examples) directory to see example projects using Graph.
 
 ## A Tour  
 
@@ -56,6 +56,7 @@ Graph is a growing project and will encounter changes throughout its development
 * [Action](#action)
 * [Data Driven](#data-driven)
 * [Faceted Search](#faceted-search)
+* [iCloud](#icloud)
 
 <a name="what-is-graph-and-why-it-was-built"></a>
 
@@ -235,6 +236,11 @@ let collection = graph.searchForAction(types: ["Purchased"]).filter { (action: A
 	return false
 }
 ```
+
+<a name="icloud"></a>
+## iCloud
+
+To connect Graph to iCloud, setup the iCloud entitlements with the iCloud
 
 ## License
 
