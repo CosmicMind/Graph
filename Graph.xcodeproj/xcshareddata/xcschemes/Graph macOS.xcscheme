@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0710"
+   LastUpgradeVersion = "0800"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9677B4381BA78A9200C82BBB"
+               BlueprintIdentifier = "96E3C3D31D3AB5280086A024"
                BuildableName = "Graph.framework"
-               BlueprintName = "Graph OSX"
+               BlueprintName = "Graph macOS"
                ReferencedContainer = "container:Graph.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9677B4411BA78A9200C82BBB"
-               BuildableName = "Graph OSX Tests.xctest"
-               BlueprintName = "Graph OSX Tests"
+               BlueprintIdentifier = "96E3C3DC1D3AB5280086A024"
+               BuildableName = "Graph macOS Tests.xctest"
+               BlueprintName = "Graph macOS Tests"
                ReferencedContainer = "container:Graph.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9677B4381BA78A9200C82BBB"
+            BlueprintIdentifier = "96E3C3D31D3AB5280086A024"
             BuildableName = "Graph.framework"
-            BlueprintName = "Graph OSX"
+            BlueprintName = "Graph macOS"
             ReferencedContainer = "container:Graph.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,9 +64,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9677B4381BA78A9200C82BBB"
+            BlueprintIdentifier = "96E3C3D31D3AB5280086A024"
             BuildableName = "Graph.framework"
-            BlueprintName = "Graph OSX"
+            BlueprintName = "Graph macOS"
             ReferencedContainer = "container:Graph.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -88,9 +88,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9677B4381BA78A9200C82BBB"
+            BlueprintIdentifier = "96E3C3D31D3AB5280086A024"
             BuildableName = "Graph.framework"
-            BlueprintName = "Graph OSX"
+            BlueprintName = "Graph macOS"
             ReferencedContainer = "container:Graph.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

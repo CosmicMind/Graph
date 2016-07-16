@@ -43,13 +43,13 @@ internal class ManagedEntityProperty: ManagedProperty {
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
     internal convenience init(name: String, object: AnyObject, node: ManagedEntity, managedObjectContext: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.entityPropertyDescriptionName, name: name, object: object, managedObjectContext: managedObjectContext)
+        self.init(identifier: ModelIdentifier.entityPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
         self.node = node
     }
     
     /// Marks node for deletion.
     internal override func delete() {
-        node.mutableSetValueForKey("propertySet").removeObject(self)
+        node.mutableSetValue(forKey: "propertySet").remove(self)
         super.delete()
     }
 }

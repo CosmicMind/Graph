@@ -52,14 +52,14 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
     }
     
     func testAll() {
-        insertSaveExpectation = expectationWithDescription("Test: Save did not pass.")
-        insertExpectation = expectationWithDescription("Test: Insert did not pass.")
-        insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
-        insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
+        insertSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
+        insertExpectation = expectation(withDescription: "Test: Insert did not pass.")
+        insertPropertyExpectation = expectation(withDescription: "Test: Insert property did not pass.")
+        insertGroupExpectation = expectation(withDescription: "Test: Insert group did not pass.")
         
-        let q1 = dispatch_queue_create("io.cosmicmind.graph.thread.1", DISPATCH_QUEUE_SERIAL)
-        let q2 = dispatch_queue_create("io.cosmicmind.graph.thread.2", DISPATCH_QUEUE_SERIAL)
-        let q3 = dispatch_queue_create("io.cosmicmind.graph.thread.3", DISPATCH_QUEUE_SERIAL)
+        let q1 = DispatchQueue(label: "io.cosmicmind.graph.thread.1", attributes: DispatchQueueAttributes.serial)
+        let q2 = DispatchQueue(label: "io.cosmicmind.graph.thread.2", attributes: DispatchQueueAttributes.serial)
+        let q3 = DispatchQueue(label: "io.cosmicmind.graph.thread.3", attributes: DispatchQueueAttributes.serial)
         
         let graph = Graph()
         graph.delegate = self
@@ -67,7 +67,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         
         let relationship = Relationship(type: "T")
         
-        dispatch_async(q1) { [weak self] in
+        q1.async { [weak self] in
             relationship["P"] = 111
             relationship.addToGroup("G")
             
@@ -77,12 +77,12 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        updateSaveExpectation = expectationWithDescription("Test: Save did not pass.")
-        updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
+        updateSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
+        updatePropertyExpectation = expectation(withDescription: "Test: Update did not pass.")
         
-        dispatch_async(q2) { [weak self] in
+        q2.async { [weak self] in
             relationship["P"] = 222
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
@@ -91,14 +91,14 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        deleteSaveExpectation = expectationWithDescription("Test: Save did not pass.")
-        deleteExpectation = expectationWithDescription("Test: Delete did not pass.")
-        deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
-        deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
+        deleteSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
+        deleteExpectation = expectation(withDescription: "Test: Delete did not pass.")
+        deletePropertyExpectation = expectation(withDescription: "Test: Delete property did not pass.")
+        deleteGroupExpectation = expectation(withDescription: "Test: Delete group did not pass.")
         
-        dispatch_async(q3) { [weak self] in
+        q3.async { [weak self] in
             relationship.delete()
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
@@ -107,10 +107,10 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidInsertRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool) {
+    func graphDidInsertRelationship(_ graph: Graph, relationship: Relationship, fromCloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual(111, relationship["P"] as? Int)
@@ -119,7 +119,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         insertExpectation?.fulfill()
     }
     
-    func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidInsertRelationshipProperty(_ graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -129,7 +129,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+    func graphDidAddRelationshipToGroup(_ graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertEqual("G", group)
         XCTAssertTrue(relationship.memberOfGroup(group))
@@ -137,7 +137,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         insertGroupExpectation?.fulfill()
     }
     
-    func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidUpdateRelationshipProperty(_ graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -147,7 +147,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graphWillDeleteRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool) {
+    func graphWillDeleteRelationship(_ graph: Graph, relationship: Relationship, fromCloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
@@ -156,7 +156,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         deleteExpectation?.fulfill()
     }
     
-    func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphWillDeleteRelationshipProperty(_ graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -166,7 +166,7 @@ class RelationshipThreadTests : XCTestCase, GraphDelegate {
         deletePropertyExpectation?.fulfill()
     }
     
-    func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+    func graphWillRemoveRelationshipFromGroup(_ graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", group)

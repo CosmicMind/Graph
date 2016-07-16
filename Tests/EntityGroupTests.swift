@@ -47,8 +47,8 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
     }
     
     func testGroupAdd() {
-        saveException = expectationWithDescription("[EntityTests Error: Graph save test failed.]")
-        groupAddExpception = expectationWithDescription("[EntityTests Error: Group add test failed.]")
+        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
+        groupAddExpception = expectation(withDescription: "[EntityTests Error: Group add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,11 +65,11 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testGroupUpdate() {
-        saveException = expectationWithDescription("[EntityTests Error: Graph save test failed.]")
+        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -82,11 +82,11 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[EntityTests Error: Graph save test failed.]")
-        groupAddExpception = expectationWithDescription("[EntityTests Error: Group add test failed.]")
-        groupRemoveExpception = expectationWithDescription("[EntityTests Error: Group remove test failed.]")
+        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
+        groupAddExpception = expectation(withDescription: "[EntityTests Error: Group add test failed.]")
+        groupRemoveExpception = expectation(withDescription: "[EntityTests Error: Group remove test failed.]")
         
         graph.delegate = self
         graph.watchForEntity(groups: ["G1", "G2"])
@@ -103,11 +103,11 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testGroupDelete() {
-        saveException = expectationWithDescription("[EntityTests Error: Graph save test failed.]")
+        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -122,10 +122,10 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[EntityTests Error: Graph save test failed.]")
-        groupRemoveExpception = expectationWithDescription("[EntityTests Error: Group remove test failed.]")
+        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
+        groupRemoveExpception = expectation(withDescription: "[EntityTests Error: Group remove test failed.]")
         
         graph.delegate = self
         graph.watchForEntity(groups: ["G2"])
@@ -140,10 +140,10 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidAddEntityToGroup(graph: Graph, entity: Entity, group: String, fromCloud: Bool) {
+    func graphDidAddEntityToGroup(_ graph: Graph, entity: Entity, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G1", group)
@@ -154,7 +154,7 @@ class EntityGroupTests: XCTestCase, GraphDelegate {
         groupAddExpception?.fulfill()
     }
     
-    func graphWillRemoveEntityFromGroup(graph: Graph, entity: Entity, group: String, fromCloud: Bool) {
+    func graphWillRemoveEntityFromGroup(_ graph: Graph, entity: Entity, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G2", group)

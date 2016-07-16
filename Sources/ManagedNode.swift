@@ -31,37 +31,37 @@
 import CoreData
 
 @objc(ManagedNode)
-internal class ManagedNode: ManagedModel {
+internal class ManagedNode: ManagedObject {
     @NSManaged internal var nodeClass: NSNumber
     @NSManaged internal var type: String
-    @NSManaged internal var createdDate: NSDate
+    @NSManaged internal var createdDate: Date
     @NSManaged internal var propertySet: NSSet
-    @NSManaged internal var groupSet: NSSet
+    @NSManaged internal var tagSet: NSSet
     
     /// A reference to the Nodes unique ID.
     internal var id: String {
         var result: String?
-        managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedObjectContext?.performAndWait { [unowned self] in
             do {
-                try self.managedObjectContext?.obtainPermanentIDsForObjects([self])
+                try self.managedObjectContext?.obtainPermanentIDs(for: [self])
             } catch let e as NSError {
                 fatalError("[Graph Error: Cannot obtain permanent objectID - \(e.localizedDescription)")
             }
-            result = String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.URIRepresentation().lastPathComponent!
+            result = String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.uriRepresentation().lastPathComponent!
         }
         return result!
     }
     
-    /// A reference to the groups.
-    internal var groups: Set<String> {
+    /// A reference to the tags.
+    internal var tags: Set<String> {
         var g = Set<String>()
         guard let moc = managedObjectContext else {
             return g
         }
-        moc.performBlockAndWait { [unowned self] in
-            self.groupSet.forEach { (object: AnyObject) in
-                if let group = object as? ManagedGroup {
-                    g.insert(group.name)
+        moc.performAndWait { [unowned self] in
+            self.tagSet.forEach { (object: AnyObject) in
+                if let tag = object as? ManagedTag {
+                    g.insert(tag.name)
                 }
             }
         }
@@ -74,7 +74,7 @@ internal class ManagedNode: ManagedModel {
         guard let moc = managedObjectContext else {
             return p
         }
-        moc.performBlockAndWait { [unowned self] in
+        moc.performAndWait { [unowned self] in
             self.propertySet.forEach { (object: AnyObject) in
                 if let property = object as? ManagedProperty {
                     p[property.name] = property.object
@@ -91,11 +91,11 @@ internal class ManagedNode: ManagedModel {
      - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
      */
     internal convenience init(identifier: String, type: String, managedObjectContext: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(identifier, inManagedObjectContext: managedObjectContext)!, insertIntoManagedObjectContext: managedObjectContext)
+        self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
         self.type = type
-        createdDate = NSDate()
+        createdDate = Date()
         propertySet = NSSet()
-        groupSet = NSSet()
+        tagSet = NSSet()
     }
     
     /**
@@ -109,7 +109,7 @@ internal class ManagedNode: ManagedModel {
             guard let moc = managedObjectContext else {
                 return object
             }
-            moc.performBlockAndWait { [unowned self] in
+            moc.performAndWait { [unowned self] in
                 for property in self.propertySet {
                     if name == property.name {
                         object = property.object
@@ -123,19 +123,19 @@ internal class ManagedNode: ManagedModel {
     }
     
     /**
-     Checks if the ManagedNode to a part group.
-     - Parameter name: The group name.
+     Checks if the ManagedNode to a part tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    internal func memberOfGroup(name: String) -> Bool {
+    internal func tagged(_ name: String) -> Bool {
         guard let moc = managedObjectContext else {
             return false
         }
         var result: Bool? = false
-        moc.performBlockAndWait { [unowned self] in
-            for group in self.groupSet {
-                if name == group.name {
+        moc.performAndWait { [unowned self] in
+            for tag in self.tagSet {
+                if name == tag.name {
                     result = true
                     break
                 }

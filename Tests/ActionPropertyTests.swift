@@ -47,8 +47,8 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
     }
     
     func testPropertyInsert() {
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        propertyInsertExpception = expectationWithDescription("[ActionTests Error: Property insert test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
+        propertyInsertExpception = expectation(withDescription: "[ActionTests Error: Property insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,11 +65,11 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testPropertyUpdate() {
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -82,10 +82,10 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        propertyUpdateExpception = expectationWithDescription("[ActionTests Error: Property update test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
+        propertyUpdateExpception = expectation(withDescription: "[ActionTests Error: Property update test failed.]")
         
         graph.delegate = self
         graph.watchForAction(properties: ["P1"])
@@ -100,11 +100,11 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testPropertyDelete() {
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -117,10 +117,10 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[ActionTests Error: Graph save test failed.]")
-        propertyDeleteExpception = expectationWithDescription("[ActionTests Error: Property delete test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
+        propertyDeleteExpception = expectation(withDescription: "[ActionTests Error: Property delete test failed.]")
         
         graph.delegate = self
         graph.watchForAction(properties: ["P1"])
@@ -135,10 +135,10 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidInsertActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
@@ -149,7 +149,7 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         propertyInsertExpception?.fulfill()
     }
     
-    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidUpdateActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
@@ -160,7 +160,7 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphWillDeleteActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         

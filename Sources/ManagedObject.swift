@@ -30,22 +30,17 @@
 
 import CoreData
 
-@objc(ManagedProperty)
-internal class ManagedProperty: ManagedObject{
-    @NSManaged internal var name: String
-    @NSManaged internal var object: AnyObject
-    
-    /**
-     Initializer that accepts an identifier, property name, value and
-     a NSManagedObjectContext.
-     - Parameter identifier: A model identifier.
-     - Parameter name: A property name.
-     - Parameter object: A reference to the object value.
-     - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-     */
-    internal convenience init(identifier: String, name: String, object: AnyObject, managedObjectContext: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
-        self.name = name
-        self.object = object
+@objc(ManagedObject)
+internal class ManagedObject: NSManagedObject {
+    /// Marks for deletion.
+    internal func delete() {
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        moc.performAndWait { [unowned self, unowned moc] in
+            moc.delete(self)
+        }
     }
 }
+

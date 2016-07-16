@@ -52,14 +52,14 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
     }
     
     func testAll() {
-        insertSaveExpectation = expectationWithDescription("Test: Save did not pass.")
-        insertExpectation = expectationWithDescription("Test: Insert did not pass.")
-        insertPropertyExpectation = expectationWithDescription("Test: Insert property did not pass.")
-        insertGroupExpectation = expectationWithDescription("Test: Insert group did not pass.")
+        insertSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
+        insertExpectation = expectation(withDescription: "Test: Insert did not pass.")
+        insertPropertyExpectation = expectation(withDescription: "Test: Insert property did not pass.")
+        insertGroupExpectation = expectation(withDescription: "Test: Insert group did not pass.")
         
-        let q1 = dispatch_queue_create("io.cosmicmind.graph.thread.1", DISPATCH_QUEUE_SERIAL)
-        let q2 = dispatch_queue_create("io.cosmicmind.graph.thread.2", DISPATCH_QUEUE_SERIAL)
-        let q3 = dispatch_queue_create("io.cosmicmind.graph.thread.3", DISPATCH_QUEUE_SERIAL)
+        let q1 = DispatchQueue(label: "io.cosmicmind.graph.thread.1", attributes: DispatchQueueAttributes.serial)
+        let q2 = DispatchQueue(label: "io.cosmicmind.graph.thread.2", attributes: DispatchQueueAttributes.serial)
+        let q3 = DispatchQueue(label: "io.cosmicmind.graph.thread.3", attributes: DispatchQueueAttributes.serial)
         
         let graph = Graph()
         graph.delegate = self
@@ -67,7 +67,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         
         let action = Action(type: "T")
         
-        dispatch_async(q1) { [weak self] in
+        q1.async { [weak self] in
             action["P"] = 111
             action.addToGroup("G")
             
@@ -77,12 +77,12 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        updateSaveExpectation = expectationWithDescription("Test: Save did not pass.")
-        updatePropertyExpectation = expectationWithDescription("Test: Update did not pass.")
+        updateSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
+        updatePropertyExpectation = expectation(withDescription: "Test: Update did not pass.")
         
-        dispatch_async(q2) { [weak self] in
+        q2.async { [weak self] in
             action["P"] = 222
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
@@ -91,14 +91,14 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        deleteSaveExpectation = expectationWithDescription("Test: Save did not pass.")
-        deleteExpectation = expectationWithDescription("Test: Delete did not pass.")
-        deletePropertyExpectation = expectationWithDescription("Test: Delete property did not pass.")
-        deleteGroupExpectation = expectationWithDescription("Test: Delete group did not pass.")
+        deleteSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
+        deleteExpectation = expectation(withDescription: "Test: Delete did not pass.")
+        deletePropertyExpectation = expectation(withDescription: "Test: Delete property did not pass.")
+        deleteGroupExpectation = expectation(withDescription: "Test: Delete group did not pass.")
         
-        dispatch_async(q3) { [weak self] in
+        q3.async { [weak self] in
             action.delete()
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
@@ -107,10 +107,10 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidInsertAction(graph: Graph, action: Action, fromCloud: Bool) {
+    func graphDidInsertAction(_ graph: Graph, action: Action, fromCloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(111, action["P"] as? Int)
@@ -119,7 +119,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         insertExpectation?.fulfill()
     }
     
-    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidInsertActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -129,7 +129,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graphDidAddActionToGroup(graph: Graph, action: Action, group: String, fromCloud: Bool) {
+    func graphDidAddActionToGroup(_ graph: Graph, action: Action, group: String, fromCloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertEqual("G", group)
         XCTAssertTrue(action.memberOfGroup(group))
@@ -137,7 +137,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         insertGroupExpectation?.fulfill()
     }
     
-    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidUpdateActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -147,7 +147,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graphWillDeleteAction(graph: Graph, action: Action, fromCloud: Bool) {
+    func graphWillDeleteAction(_ graph: Graph, action: Action, fromCloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
@@ -156,7 +156,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         deleteExpectation?.fulfill()
     }
     
-    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphWillDeleteActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -166,7 +166,7 @@ class ActionThreadTests : XCTestCase, GraphDelegate {
         deletePropertyExpectation?.fulfill()
     }
     
-    func graphWillRemoveActionFromGroup(graph: Graph, action: Action, group: String, fromCloud: Bool) {
+    func graphWillRemoveActionFromGroup(_ graph: Graph, action: Action, group: String, fromCloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", group)

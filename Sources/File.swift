@@ -32,9 +32,9 @@ import Foundation
 
 /// Video extension types.
 public enum VideoExtension {
-    case MOV
-    case M4V
-    case MP4
+    case mov
+    case m4v
+    case mp4
 }
 
 /**
@@ -42,24 +42,24 @@ public enum VideoExtension {
  - Parameter type: A VideoExtension type.
  - Returns: A String representation of the VideoExtension.
  */
-public func VideoExtensionToString(type: VideoExtension) -> String {
+public func VideoExtensionToString(_ type: VideoExtension) -> String {
     switch type {
-    case .MOV:
+    case .mov:
         return "mov"
-    case .M4V:
+    case .m4v:
         return "m4v"
-    case .MP4:
+    case .mp4:
         return "mp4"
     }
 }
 
 /// Image extension types.
 public enum ImageExtension {
-    case PNG
-    case JPG
-    case JPEG
-    case TIFF
-    case GIF
+    case png
+    case jpg
+    case jpeg
+    case tiff
+    case gif
 }
 
 /**
@@ -67,26 +67,26 @@ public enum ImageExtension {
  - Parameter type: A ImageExtension type.
  - Returns: A String representation of the ImageExtension.
  */
-public func ImageExtensionToString(type: ImageExtension) -> String {
+public func ImageExtensionToString(_ type: ImageExtension) -> String {
     switch type {
-    case .PNG:
+    case .png:
         return "png"
-    case .JPG:
+    case .jpg:
         return "jpg"
-    case .JPEG:
+    case .jpeg:
         return "jpeg"
-    case .TIFF:
+    case .tiff:
         return "tiff"
-    case .GIF:
+    case .gif:
         return "gif"
     }
 }
 
 /// Text extension types.
 public enum TextExtension {
-    case TXT
-    case RTF
-    case HTML
+    case txt
+    case rtf
+    case html
 }
 
 /**
@@ -94,21 +94,21 @@ public enum TextExtension {
  - Parameter type: A TextExtension type.
  - Returns: A String representation of the TextExtension.
  */
-public func TextExtensionToString(type: TextExtension) -> String {
+public func TextExtensionToString(_ type: TextExtension) -> String {
     switch type {
-    case .TXT:
+    case .txt:
         return "txt"
-    case .RTF:
+    case .rtf:
         return "rtf"
-    case .HTML:
+    case .html:
         return "html"
     }
 }
 
 /// SQLite extension types.
 public enum SQLiteExtension {
-    case SQLite
-    case SQLiteSHM
+    case sqLite
+    case sqLiteSHM
 }
 
 /**
@@ -116,11 +116,11 @@ public enum SQLiteExtension {
  - Parameter type: A SQLiteExtension type.
  - Returns: A String representation of the SQLiteExtension.
  */
-public func SQLiteExtensionToString(type: SQLiteExtension) -> String {
+public func SQLiteExtensionToString(_ type: SQLiteExtension) -> String {
     switch type {
-    case .SQLite:
+    case .sqLite:
         return "sqlite"
-    case .SQLiteSHM:
+    case .sqLiteSHM:
         return "sqlite-shm"
     }
 }
@@ -132,39 +132,39 @@ public struct Schema {
 
 /// A result type.
 public enum Result {
-    case Success
-    case Failure(error: NSError)
+    case success
+    case failure(error: NSError)
 }
 
 /// File types.
 public enum FileType {
-    case Directory
-    case Image
-    case Video
-    case Text
-    case SQLite
-    case Unknown
+    case directory
+    case image
+    case video
+    case text
+    case sqLite
+    case unknown
 }
 
 public struct File {
     /// A reference to the DocumentDirectory.
-    public static let documentDirectoryPath: NSURL? = File.pathForDirectory(.DocumentDirectory)
+    public static let documentDirectoryPath: URL? = File.pathForDirectory(.documentDirectory)
     
     /// A reference to the LibraryDirectory.
-    public static let libraryDirectoryPath: NSURL? = File.pathForDirectory(.LibraryDirectory)
+    public static let libraryDirectoryPath: URL? = File.pathForDirectory(.libraryDirectory)
     
     /// A reference to the ApplicationSupportDirectory.
-    public static let applicationSupportDirectoryPath: NSURL? = File.pathForDirectory(.ApplicationSupportDirectory)
+    public static let applicationSupportDirectoryPath: URL? = File.pathForDirectory(.applicationSupportDirectory)
     
     /// A reference to the CachesDirectory.
-    public static let cachesDirectoryPath: NSURL? = File.pathForDirectory(.CachesDirectory)
+    public static let cachesDirectoryPath: URL? = File.pathForDirectory(.cachesDirectory)
     
     /// A reference to the rootPath.
-    public static var rootPath: NSURL? {
+    public static var rootPath: URL? {
         let path = File.documentDirectoryPath
         var pathComponents = path?.pathComponents
         pathComponents?.removeLast()
-        return NSURL(string: Schema.File.stringByAppendingString((pathComponents?.joinWithSeparator("/"))!))
+        return URL(string: Schema.File + (pathComponents?.joined(separator: "/"))!)
     }
     
     /**
@@ -172,8 +172,8 @@ public struct File {
      - Parameter path: A NSURL to check.
      - Returns: A boolean of the result, true if exists, false otherwise.
     */
-    public static func fileExistsAtPath(path: NSURL) -> Bool {
-        return NSFileManager.defaultManager().fileExistsAtPath(path.path!)
+    public static func fileExistsAtPath(_ path: URL) -> Bool {
+        return FileManager.default().fileExists(atPath: path.path!)
     }
     
     /**
@@ -182,8 +182,8 @@ public struct File {
      - Parameter andPath: A comparison path.
      - Returns: A boolean of the result, true if equal, false otherwise.
      */
-    public static func contentsEqualAtPath(path: NSURL, andPath: NSURL) -> Bool {
-        return NSFileManager.defaultManager().contentsEqualAtPath(path.path!, andPath: andPath.path!)
+    public static func contentsEqualAtPath(_ path: URL, andPath: URL) -> Bool {
+        return FileManager.default().contentsEqual(atPath: path.path!, andPath: andPath.path!)
     }
     
     /**
@@ -191,8 +191,8 @@ public struct File {
      - Parameter path: A NSURL to check.
      - Returns: A boolean of the result, true if writable, false otherwise.
      */
-    public static func isWritableFileAtPath(path: NSURL) -> Bool {
-        return NSFileManager.defaultManager().isWritableFileAtPath(path.path!)
+    public static func isWritableFileAtPath(_ path: URL) -> Bool {
+        return FileManager.default().isWritableFile(atPath: path.path!)
     }
     
     /**
@@ -201,9 +201,9 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func removeItemAtPath(path: NSURL, completion: ((removed: Bool?, error: NSError?) -> Void)? = nil) {
+    public static func removeItemAtPath(_ path: URL, completion: ((removed: Bool?, error: NSError?) -> Void)? = nil) {
         do {
-            try NSFileManager.defaultManager().removeItemAtPath(path.path!)
+            try FileManager.default().removeItem(atPath: path.path!)
             completion?(removed: true, error: nil)
         } catch let e as NSError {
             completion?(removed: nil, error: e)
@@ -218,9 +218,9 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func createDirectoryAtPath(path: NSURL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public static func createDirectoryAtPath(_ path: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(path.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
+            try FileManager.default().createDirectory(atPath: path.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
             completion?(success: true, error: nil)
         } catch let e as NSError {
             completion?(success: false, error: e)
@@ -233,9 +233,9 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func removeDirectoryAtPath(path: NSURL, completion: ((success: Bool, error: NSError?) -> Void)?  = nil)  {
+    public static func removeDirectoryAtPath(_ path: URL, completion: ((success: Bool, error: NSError?) -> Void)?  = nil)  {
         do {
-            try NSFileManager.defaultManager().removeItemAtURL(path)
+            try FileManager.default().removeItem(at: path)
             completion?(success: true, error: nil)
         } catch let e as NSError {
             completion?(success: false, error: e)
@@ -249,9 +249,9 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func contentsOfDirectoryAtPath(path: NSURL, shouldSkipHiddenFiles skip: Bool = false, completion: ((contents: [NSURL]?, error: NSError?) -> Void)) {
+    public static func contentsOfDirectoryAtPath(_ path: URL, shouldSkipHiddenFiles skip: Bool = false, completion: ((contents: [URL]?, error: NSError?) -> Void)) {
         do {
-            let contents = try NSFileManager.defaultManager().contentsOfDirectoryAtURL(path, includingPropertiesForKeys: nil, options: skip == true ? NSDirectoryEnumerationOptions.SkipsHiddenFiles : NSDirectoryEnumerationOptions(rawValue: 0))
+            let contents = try FileManager.default().contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: skip == true ? FileManager.DirectoryEnumerationOptions.skipsHiddenFiles : FileManager.DirectoryEnumerationOptions(rawValue: 0))
             completion(contents: contents, error: nil)
         } catch let e as NSError {
             return completion(contents: nil, error: e)
@@ -266,9 +266,9 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func writeToPath(path: NSURL, name: String, value: String, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public static func writeToPath(_ path: URL, name: String, value: String, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         do{
-            try value.writeToURL(path.URLByAppendingPathComponent("/\(name)"), atomically: true, encoding: NSUTF8StringEncoding)
+            try value.write(to: try! path.appendingPathComponent("/\(name)"), atomically: true, encoding: String.Encoding.utf8)
             completion?(success: true, error: nil)
         } catch let e as NSError {
             completion?(success: false, error: e)
@@ -281,9 +281,9 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func readFromPath(path: NSURL, completion: ((string: String?, error: NSError?) -> Void)) {
-        if let data = NSData(contentsOfURL: path) {
-            completion(string: String(data: data, encoding: NSUTF8StringEncoding), error: nil)
+    public static func readFromPath(_ path: URL, completion: ((string: String?, error: NSError?) -> Void)) {
+        if let data = try? Data(contentsOf: path) {
+            completion(string: String(data: data, encoding: String.Encoding.utf8), error: nil)
         } else {
             completion(string: nil, error: NSError(domain: "io.graph.File", code: 0, userInfo: nil))
         }
@@ -295,22 +295,22 @@ public struct File {
      - Parameter path: A given path to search from in the directory.
      - Returns: An optional NSURL to return if possible.
      */
-    public static func path(searchPathDirectory: NSSearchPathDirectory, path: String) -> NSURL? {
-        var URL: NSURL?
+    public static func path(_ searchPathDirectory: FileManager.SearchPathDirectory, path: String) -> URL? {
+        var URL: Foundation.URL?
         switch searchPathDirectory {
-        case .DocumentDirectory:
+        case .documentDirectory:
             URL = File.documentDirectoryPath
-        case .LibraryDirectory:
+        case .libraryDirectory:
             URL = File.libraryDirectoryPath
-        case .CachesDirectory:
+        case .cachesDirectory:
             URL = File.cachesDirectoryPath
-        case .ApplicationSupportDirectory:
+        case .applicationSupportDirectory:
             URL = File.applicationSupportDirectoryPath
         default:
             URL = nil
             break
         }
-        return URL?.URLByAppendingPathComponent(path)
+        return try! URL?.appendingPathComponent(path)
     }
     
     /**
@@ -319,8 +319,8 @@ public struct File {
      - Parameter searchPathDirectory: A search directory.
      - Returns: An optional NSURL to return if possible.
      */
-    public static func pathForDirectory(searchPathDirectory: NSSearchPathDirectory) -> NSURL? {
-        return try? NSFileManager.defaultManager().URLForDirectory(searchPathDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
+    public static func pathForDirectory(_ searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
+        return try? FileManager.default().urlForDirectory(searchPathDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     }
     
     /**
@@ -328,36 +328,36 @@ public struct File {
      - Parameter path: A search path.
      - Returns: An optional NSURL to return if possible.
      */
-    public static func fileType(path: NSURL) -> FileType {
+    public static func fileType(_ path: URL) -> FileType {
         var isDirectory = false
-        File.contentsOfDirectoryAtPath(path) { (contents: [NSURL]?, error: NSError?) -> Void in
+        File.contentsOfDirectoryAtPath(path) { (contents: [URL]?, error: NSError?) -> Void in
             isDirectory = nil == error
         }
         if isDirectory {
-            return .Directory
+            return .directory
         }
         if let v = path.pathExtension {
             switch v {
-            case ImageExtensionToString(.PNG),
-                 ImageExtensionToString(.JPG),
-                 ImageExtensionToString(.JPEG),
-                 ImageExtensionToString(.GIF):
-                return .Image
-            case TextExtensionToString(.TXT),
-                 TextExtensionToString(.RTF),
-                 TextExtensionToString(.HTML):
-                return .Text
-            case VideoExtensionToString(.MOV),
-                 VideoExtensionToString(.M4V),
-                 VideoExtensionToString(.MP4):
-                return .Video
-            case SQLiteExtensionToString(.SQLite),
-                 SQLiteExtensionToString(.SQLiteSHM):
-                return .SQLite
+            case ImageExtensionToString(.png),
+                 ImageExtensionToString(.jpg),
+                 ImageExtensionToString(.jpeg),
+                 ImageExtensionToString(.gif):
+                return .image
+            case TextExtensionToString(.txt),
+                 TextExtensionToString(.rtf),
+                 TextExtensionToString(.html):
+                return .text
+            case VideoExtensionToString(.mov),
+                 VideoExtensionToString(.m4v),
+                 VideoExtensionToString(.mp4):
+                return .video
+            case SQLiteExtensionToString(.sqLite),
+                 SQLiteExtensionToString(.sqLiteSHM):
+                return .sqLite
             default:
                 break
             }
         }
-        return .Unknown
+        return .unknown
     }
 }

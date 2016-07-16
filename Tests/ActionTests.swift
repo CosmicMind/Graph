@@ -46,10 +46,10 @@ class ActionTests: XCTestCase, GraphDelegate {
     }
     
     func testDefaultGraph() {
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[ActionTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -67,14 +67,14 @@ class ActionTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testNamedGraphSave() {
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[ActionTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph(name: "ActionTests-testNamedGraphSave")
         
@@ -93,14 +93,14 @@ class ActionTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testReferenceGraphSave() {
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[ActionTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph(name: "ActionTests-testReferenceGraphSave")
         
@@ -113,7 +113,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
@@ -121,14 +121,14 @@ class ActionTests: XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testAsyncGraphSave() {
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[ActionTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph(name: "ActionTests-testAsyncGraphSave")
         graph.delegate = self
@@ -140,7 +140,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
@@ -148,14 +148,14 @@ class ActionTests: XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testAsyncGraphDelete() {
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[ActionTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -183,28 +183,28 @@ class ActionTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
         action.delete()
         
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[ActionTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testSubjects() {
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[ActionTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -222,9 +222,9 @@ class ActionTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         
         action.addSubject(Entity(type: "T"))
         action.addSubject(Entity(type: "T"))
@@ -239,14 +239,14 @@ class ActionTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testObjects() {
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[ActionTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[ActionTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[ActionTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -264,9 +264,9 @@ class ActionTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[ActionTests Error: Save test failed.]")
+        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         
         action.addObject(Entity(type: "T"))
         action.addObject(Entity(type: "T"))
@@ -281,10 +281,10 @@ class ActionTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidInsertAction(graph: Graph, action: Action, fromCloud: Bool) {
+    func graphDidInsertAction(_ graph: Graph, action: Action, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("V", action["P"] as? String)
@@ -293,7 +293,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphWillDeleteAction(graph: Graph, action: Action, fromCloud: Bool) {
+    func graphWillDeleteAction(_ graph: Graph, action: Action, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
@@ -308,7 +308,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidAddActionToGroup(graph: Graph, action: Action, group: String, fromCloud: Bool) {
+    func graphDidAddActionToGroup(_ graph: Graph, action: Action, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", group)
@@ -317,7 +317,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         groupExpception?.fulfill()
     }
     
-    func graphWillRemoveActionFromGroup(graph: Graph, action: Action, group: String, fromCloud: Bool) {
+    func graphWillRemoveActionFromGroup(_ graph: Graph, action: Action, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", group)
@@ -326,7 +326,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         groupExpception?.fulfill()
     }
     
-    func graphDidInsertActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidInsertActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -336,7 +336,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graphDidUpdateActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidUpdateActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -346,7 +346,7 @@ class ActionTests: XCTestCase, GraphDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graphWillDeleteActionProperty(graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphWillDeleteActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)

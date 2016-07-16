@@ -43,21 +43,21 @@ public enum GraphCloudStorageTransition: Int {
 }
 
 internal struct Coordinator {
-	/**
+    /**
      Creates a NSPersistentStoreCoordinator.
      - Parameter name: Storage name.
      - Parameter type: Storage type.
      - Parameter location: Storage location.
      - Parameter options: Additional options.
      - Returns: An instance of NSPersistentStoreCoordinator.
-	*/
-    static func createPersistentStoreCoordinator(type type: String, location: NSURL, options: [NSObject: AnyObject]? = nil) -> NSPersistentStoreCoordinator {
+     */
+    static func createPersistentStoreCoordinator(type: String, location: URL, options: [NSObject: AnyObject]? = nil) -> NSPersistentStoreCoordinator {
         var coordinator: NSPersistentStoreCoordinator?
         File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
             if let e = error {
                 fatalError("[Graph Error: \(e.localizedDescription)]")
             }
-            coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.createManagedObjectModel())
+            coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.create())
         }
         return coordinator!
     }
@@ -70,7 +70,7 @@ public extension Graph {
      - Parameter supported: A boolean indicating whether cloud
      storage is supported.
      */
-    internal func addPersistentStore(supported supported: Bool) {
+    internal func addPersistentStore(supported: Bool) {
         guard let moc = managedObjectContext else {
             return
         }
@@ -83,8 +83,8 @@ public extension Graph {
         }
         
         do {
-            try moc.persistentStoreCoordinator?.addPersistentStoreWithType(type, configuration: nil, URL: location, options: options)
-            location = moc.persistentStoreCoordinator?.persistentStores.first?.URL
+            try moc.persistentStoreCoordinator?.addPersistentStore(ofType: type, configurationName: nil, at: location, options: options)
+            location = moc.persistentStoreCoordinator?.persistentStores.first?.url
             if !supported {
                 completion?(supported: false, error: GraphError(message: "[Graph Error: iCloud is not supported.]"))
             }
@@ -99,70 +99,70 @@ public extension Graph {
             return
         }
         
-        let defaultCenter = NSNotificationCenter.defaultCenter()
-        defaultCenter.addObserver(self, selector: #selector(persistentStoreWillChange(_:)), name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: moc.persistentStoreCoordinator)
-        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidChange(_:)), name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object: moc.persistentStoreCoordinator)
-        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidImportUbiquitousContentChanges(_:)), name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: moc.persistentStoreCoordinator)
+        let defaultCenter = NotificationCenter.default()
+        defaultCenter.addObserver(self, selector: #selector(persistentStoreWillChange(_:)), name: NSNotification.Name.NSPersistentStoreCoordinatorStoresWillChange, object: moc.persistentStoreCoordinator)
+        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidChange(_:)), name: NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange, object: moc.persistentStoreCoordinator)
+        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidImportUbiquitousContentChanges(_:)), name: NSNotification.Name.NSPersistentStoreDidImportUbiquitousContentChanges, object: moc.persistentStoreCoordinator)
     }
     
-    internal func persistentStoreWillChange(notification: NSNotification) {
+    internal func persistentStoreWillChange(_ notification: Notification) {
         guard let moc = managedObjectContext else {
             return
         }
         
-        moc.performBlockAndWait { [weak self, weak moc] in
+        moc.performAndWait { [weak self, weak moc] in
             if true == moc?.hasChanges {
                 self?.sync()
             }
             self?.reset()
         }
         
-        guard let type = notification.userInfo?[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
+        guard let type = (notification as NSNotification).userInfo?[NSPersistentStoreUbiquitousTransitionTypeKey] as? NSPersistentStoreUbiquitousTransitionType else {
             return
         }
         
         var t: GraphCloudStorageTransition
         
         switch type {
-        case .AccountAdded:
+        case .accountAdded:
             t = .accountAdded
-        case .AccountRemoved:
+        case .accountRemoved:
             t = .accountRemoved
-        case .ContentRemoved:
+        case .contentRemoved:
             t = .contentRemoved
-        case .InitialImportCompleted:
+        case .initialImportCompleted:
             t = .initialImportCompleted
         }
         
-        self.delegate?.graphWillPrepareCloudStorage?(self, transition: t)
+        (self.delegate as? GraphCloudDelegate)?.graphWillPrepareCloudStorage?(self, transition: t)
     }
     
-    internal func persistentStoreDidChange(notification: NSNotification) {
+    internal func persistentStoreDidChange(_ notification: Notification) {
         GraphContextRegistry.added[self.route] = true
-
+        
         self.completion?(supported: true, error: nil)
-        self.delegate?.graphDidPrepareCloudStorage?(self)
+        (self.delegate as? GraphCloudDelegate)?.graphDidPrepareCloudStorage?(self)
     }
     
-    internal func persistentStoreDidImportUbiquitousContentChanges(notification: NSNotification) {
+    internal func persistentStoreDidImportUbiquitousContentChanges(_ notification: Notification) {
         guard let moc = managedObjectContext else {
             return
         }
         
-        moc.performBlock { [weak self, weak moc, notification = notification] in
+        moc.perform { [weak self, weak moc, notification = notification] in
             guard let s = self else {
                 return
             }
             
-            s.delegate?.graphWillUpdateFromCloudStorage?(s)
+            (s.delegate as? GraphCloudDelegate)?.graphWillUpdateFromCloudStorage?(s)
             
-            moc?.mergeChangesFromContextDidSaveNotification(notification)
+            moc?.mergeChanges(fromContextDidSave: notification)
             
             s.notifyInsertedWatchersFromCloud(notification)
             s.notifyUpdatedWatchersFromCloud(notification)
             s.notifyDeletedWatchersFromCloud(notification)
             
-            s.delegate?.graphDidUpdateFromCloudStorage?(s)
+            (s.delegate as? GraphCloudDelegate)?.graphDidUpdateFromCloudStorage?(s)
         }
     }
 }

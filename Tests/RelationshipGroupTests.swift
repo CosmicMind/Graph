@@ -47,8 +47,8 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
     }
     
     func testGroupAdd() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
-        groupAddExpception = expectationWithDescription("[RelationshipTests Error: Group add test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        groupAddExpception = expectation(withDescription: "[RelationshipTests Error: Group add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,11 +65,11 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testGroupUpdate() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -82,11 +82,11 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
-        groupAddExpception = expectationWithDescription("[RelationshipTests Error: Group add test failed.]")
-        groupRemoveExpception = expectationWithDescription("[RelationshipTests Error: Group remove test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        groupAddExpception = expectation(withDescription: "[RelationshipTests Error: Group add test failed.]")
+        groupRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
         graph.watchForRelationship(groups: ["G1", "G2"])
@@ -103,11 +103,11 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testGroupDelete() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -122,10 +122,10 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[RelationshipTests Error: Graph save test failed.]")
-        groupRemoveExpception = expectationWithDescription("[RelationshipTests Error: Group remove test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        groupRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
         graph.watchForRelationship(groups: ["G2"])
@@ -140,10 +140,10 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+    func graphDidAddRelationshipToGroup(_ graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G1", group)
@@ -154,7 +154,7 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         groupAddExpception?.fulfill()
     }
     
-    func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+    func graphWillRemoveRelationshipFromGroup(_ graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G2", group)

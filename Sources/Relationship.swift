@@ -36,18 +36,18 @@ public class Relationship: NSObject, NodeType {
     internal let managedNode: ManagedRelationship
     
     public override var description: String {
-        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
+        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
     }
     
     /// A reference to the nodeClass.
     public var nodeClass: NodeClass {
-        return .Relationship
+        return .relationship
     }
     
     /// A reference to the type.
     public var type: String {
         var result: String?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedNode.managedObjectContext?.performAndWait { [unowned self] in
             result = self.managedNode.type
         }
         return result!
@@ -59,17 +59,17 @@ public class Relationship: NSObject, NodeType {
     }
     
     /// A reference to the createDate.
-    public var createdDate: NSDate {
-        var result: NSDate?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            result = self.managedNode.createdDate
+    public var createdDate: Date {
+        var result: Date?
+        managedNode.managedObjectContext?.performAndWait { [unowned self] in
+            result = self.managedNode.createdDate as Date
         }
         return result!
     }
     
-    /// A reference to groups.
-    public var groups: Set<String> {
-        return managedNode.groups
+    /// A reference to tags.
+    public var tags: Set<String> {
+        return managedNode.tags
     }
     
     /**
@@ -95,19 +95,19 @@ public class Relationship: NSObject, NodeType {
     public var subject: Entity? {
         get {
             var n: ManagedEntity?
-            managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            managedNode.managedObjectContext?.performAndWait { [unowned self] in
                 n = self.managedNode.subject
             }
             return nil == n ? nil : Entity(managedNode: n!)
         }
         set(entity) {
-            managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            managedNode.managedObjectContext?.performAndWait { [unowned self] in
                 if let e = entity?.managedNode {
-                    self.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self.managedNode)
+                    self.managedNode.subject?.mutableSetValue(forKey: "relationshipSubjectSet").remove(self.managedNode)
                     self.managedNode.subject = e
-                    e.mutableSetValueForKey("relationshipSubjectSet").addObject(self.managedNode)
+                    e.mutableSetValue(forKey: "relationshipSubjectSet").add(self.managedNode)
                 } else {
-                    self.managedNode.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self.managedNode)
+                    self.managedNode.subject?.mutableSetValue(forKey: "relationshipSubjectSet").remove(self.managedNode)
                     self.managedNode.subject = nil
                 }
             }
@@ -118,19 +118,19 @@ public class Relationship: NSObject, NodeType {
     public var object: Entity? {
         get {
             var n: ManagedEntity?
-            managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            managedNode.managedObjectContext?.performAndWait { [unowned self] in
                 n = self.managedNode.object
             }
             return nil == n ? nil : Entity(managedNode: n!)
         }
         set(entity) {
-            managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+            managedNode.managedObjectContext?.performAndWait { [unowned self] in
                 if let e = entity?.managedNode {
-                    self.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self.managedNode)
+                    self.managedNode.object?.mutableSetValue(forKey: "relationshipObjectSet").remove(self.managedNode)
                     self.managedNode.object = e
-                    e.mutableSetValueForKey("relationshipObjectSet").addObject(self.managedNode)
+                    e.mutableSetValue(forKey: "relationshipObjectSet").add(self.managedNode)
                 } else {
-                    self.managedNode.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self.managedNode)
+                    self.managedNode.object?.mutableSetValue(forKey: "relationshipObjectSet").remove(self.managedNode)
                     self.managedNode.object = nil
                 }
             }
@@ -155,8 +155,8 @@ public class Relationship: NSObject, NodeType {
     public convenience init(type: String, graph: String) {
         let context = Graph(name: graph).managedObjectContext
         var managedNode: ManagedRelationship?
-        context.performBlockAndWait {
-            managedNode = ManagedRelationship(type, managedObjectContext: context)
+        context?.performAndWait {
+            managedNode = ManagedRelationship(type, managedObjectContext: context!)
         }
         self.init(managedNode: managedNode!)
     }
@@ -171,8 +171,8 @@ public class Relationship: NSObject, NodeType {
     public convenience init(type: String, graph: Graph) {
         let context = graph.managedObjectContext
         var managedNode: ManagedRelationship?
-        context.performBlockAndWait {
-            managedNode = ManagedRelationship(type, managedObjectContext: context)
+        context?.performAndWait {
+            managedNode = ManagedRelationship(type, managedObjectContext: context!)
         }
         self.init(managedNode: managedNode!)
     }
@@ -192,47 +192,47 @@ public class Relationship: NSObject, NodeType {
      - Returns: A boolean of the result, true if equal, false
      otherwise.
      */
-    public override func isEqual(object: AnyObject?) -> Bool {
+    public override func isEqual(_ object: AnyObject?) -> Bool {
         return id == (object as? Relationship)?.id
     }
     
     /**
-     Adds the Relationship to the group.
-     - Parameter name: The group name.
+     Adds the Relationship to the tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
-    public func addToGroup(name: String) -> Bool {
-        return managedNode.addToGroup(name)
+    public func add(_ name: String) {
+        managedNode.add(name)
     }
     
     /**
-     Checks membership in a group.
-     - Parameter name: The group name.
+     Checks membership in a tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    public func memberOfGroup(name: String) -> Bool {
-        return managedNode.memberOfGroup(name)
+    public func tagged(_ name: String) -> Bool {
+        return managedNode.tagged(name)
     }
     
     /**
-     Removes the Relationship from a group.
-     - Parameter name: The group name.
+     Removes the Relationship from a tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
-    public func removeFromGroup(name: String) -> Bool {
-        return managedNode.removeFromGroup(name)
+    public func remove(_ name: String) {
+        managedNode.remove(name)
     }
     
     /**
-     Adds the Relationship to the group if it is not a member, or
+     Adds the Relationship to the tag if it is not a member, or
      removes it if it is a member.
-     - Parameter name: The group name.
+     - Parameter name: The tag name.
      */
-    public func toggleGroupMembership(name: String) {
-        memberOfGroup(name) ? removeFromGroup(name) : addToGroup(name)
+    public func toggleTagMembership(_ name: String) {
+        _ = tagged(name) ? remove(name) : add(name)
     }
     
     /// Marks the Relationship for deletion.

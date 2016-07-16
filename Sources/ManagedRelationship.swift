@@ -41,8 +41,8 @@ internal class ManagedRelationship: ManagedNode {
      - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
      */
     internal convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.relationshipDescriptionName, type: type, managedObjectContext: managedObjectContext)
-        nodeClass = NodeClass.Relationship.rawValue
+        self.init(identifier: ModelIdentifier.relationshipName, type: type, managedObjectContext: managedObjectContext)
+        nodeClass = NodeClass.relationship.rawValue
         subject = nil
         object = nil
     }
@@ -60,7 +60,7 @@ internal class ManagedRelationship: ManagedNode {
             guard let moc = managedObjectContext else {
                 return
             }
-            moc.performBlockAndWait { [unowned self, unowned moc] in
+            moc.performAndWait { [unowned self, unowned moc] in
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
@@ -90,48 +90,38 @@ internal class ManagedRelationship: ManagedNode {
     }
     
     /**
-     Adds the ManagedAction to the group.
-     - Parameter name: The group name.
-     - Returns: A boolean of the result, true if added, false
-     otherwise.
+     Adds the ManagedAction to the tag.
+     - Parameter name: The tag name.
      */
-    internal func addToGroup(name: String) -> Bool {
+    internal func add(_ name: String) {
         guard let moc = managedObjectContext else {
-            return false
+            return
         }
-        var result: Bool? = false
-        moc.performBlockAndWait { [unowned self, unowned moc] in
-            if !self.memberOfGroup(name) {
-                _ = ManagedRelationshipGroup(name: name, node: self, managedObjectContext: moc)
-                result = true
+        moc.performAndWait { [unowned self, unowned moc] in
+            if !self.tagged(name) {
+                _ = ManagedRelationshipTag(name: name, node: self, managedObjectContext: moc)
             }
         }
-        return result!
     }
     
     /**
-     Removes the ManagedAction from the group.
-     - Parameter name: The group name.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
+     Removes the ManagedAction from the tag.
+     - Parameter name: The tag name.
      */
-    internal func removeFromGroup(name: String) -> Bool {
+    internal func remove(_ name: String) {
         guard let moc = managedObjectContext else {
-            return false
+            return
         }
-        var result: Bool? = false
-        moc.performBlockAndWait { [unowned self] in
-            for group in self.groupSet {
-                if name == group.name {
-                    if let g = group as? ManagedRelationshipGroup {
+        moc.performAndWait { [unowned self] in
+            for tag in self.tagSet {
+                if name == tag.name {
+                    if let g = tag as? ManagedRelationshipTag {
                         g.delete()
-                        result = true
                         break
                     }
                 }
             }
         }
-        return result!
     }
     
     /// Marks the Relationship for deletion and clears all its relationships.
@@ -140,12 +130,12 @@ internal class ManagedRelationship: ManagedNode {
             return
         }
         
-        moc.performBlockAndWait { [unowned self] in
-            self.groupSet.forEach { (object: AnyObject) in
-                guard let group = object as? ManagedRelationshipGroup else {
+        moc.performAndWait { [unowned self] in
+            self.tagSet.forEach { (object: AnyObject) in
+                guard let tag = object as? ManagedRelationshipTag else {
                     return
                 }
-                group.delete()
+                tag.delete()
             }
             
             self.propertySet.forEach { (object: AnyObject) in

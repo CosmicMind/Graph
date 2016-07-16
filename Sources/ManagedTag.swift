@@ -30,25 +30,19 @@
 
 import CoreData
 
-@objc(ManagedActionGroup)
-internal class ManagedActionGroup: ManagedGroup {
-    @NSManaged internal var node: ManagedAction
+@objc(ManagedTag)
+internal class ManagedTag: ManagedObject {
+    @NSManaged internal var name: String
     
     /**
-     Initializer that accepts a group name and a
-     NSManagedObjectContext.
-     - Parameter name: A group name.
-     - Parameter node: A ManagedAction.
+     Initializer that accepts an identifier, property name, value and
+     a NSManagedObjectContext.
+     - Parameter identifier: A model identifier.
+     - Parameter name: A property name.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(name: String, node: ManagedAction, managedObjectContext: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.actionGroupDescriptionName, name: name, managedObjectContext: managedObjectContext)
-        self.node = node
-    }
-    
-    /// Marks node for deletion.
-    internal override func delete() {
-        node.mutableSetValueForKey("groupSet").removeObject(self)
-        super.delete()
+    internal convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
+        self.name = name
     }
 }

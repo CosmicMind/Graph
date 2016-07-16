@@ -46,10 +46,10 @@ class RelationshipTests: XCTestCase, GraphDelegate {
     }
     
     func testDefaultGraph() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[RelationshipTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[RelationshipTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -67,14 +67,14 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testNamedGraphSave() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[RelationshipTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[RelationshipTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph(name: "RelationshipTests-testNamedGraphSave")
         
@@ -93,14 +93,14 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testReferenceGraphSave() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[RelationshipTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[RelationshipTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph(name: "RelationshipTests-testReferenceGraphSave")
         
@@ -113,7 +113,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
@@ -121,14 +121,14 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testAsyncGraphSave() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[RelationshipTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[RelationshipTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph(name: "RelationshipTests-testAsyncGraphSave")
         graph.delegate = self
@@ -140,7 +140,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
@@ -148,14 +148,14 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             }
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testAsyncGraphDelete() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[RelationshipTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[RelationshipTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -195,7 +195,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual(object, relationship.object)
         XCTAssertEqual(1, relationship.object?.relationships.count)
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
         relationship.delete()
         
@@ -204,10 +204,10 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual(object, relationship.object)
         XCTAssertEqual(1, relationship.object?.relationships.count)
         
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[RelationshipTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[RelationshipTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -218,14 +218,14 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testSubject() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[RelationshipTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[RelationshipTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -243,10 +243,10 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
         
         let subject = Entity(type: "T")
         relationship.subject = subject
@@ -262,14 +262,14 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual(subject, relationship.subject)
         XCTAssertEqual(1, relationship.subject?.relationships.count)
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
     func testObject() {
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
-        groupExpception = expectationWithDescription("[RelationshipTests Error: Group test failed.]")
-        propertyExpception = expectationWithDescription("[RelationshipTests Error: Property test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
+        groupExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -287,10 +287,10 @@ class RelationshipTests: XCTestCase, GraphDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectationWithDescription("[RelationshipTests Error: Save test failed.]")
-        delegateException = expectationWithDescription("[RelationshipTests Error: Delegate test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
+        delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
         
         let object = Entity(type: "T")
         relationship.object = object
@@ -306,10 +306,10 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         XCTAssertEqual(object, relationship.object)
         XCTAssertEqual(1, relationship.object?.relationships.count)
         
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidInsertRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool) {
+    func graphDidInsertRelationship(_ graph: Graph, relationship: Relationship, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
@@ -318,7 +318,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidUpdateRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool) {
+    func graphDidUpdateRelationship(_ graph: Graph, relationship: Relationship, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
@@ -327,7 +327,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphWillDeleteRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool) {
+    func graphWillDeleteRelationship(_ graph: Graph, relationship: Relationship, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
@@ -340,7 +340,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         delegateException?.fulfill()
     }
     
-    func graphDidAddRelationshipToGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+    func graphDidAddRelationshipToGroup(_ graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", group)
@@ -349,7 +349,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         groupExpception?.fulfill()
     }
     
-    func graphWillRemoveRelationshipFromGroup(graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+    func graphWillRemoveRelationshipFromGroup(_ graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", group)
@@ -358,7 +358,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         groupExpception?.fulfill()
     }
     
-    func graphDidInsertRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidInsertRelationshipProperty(_ graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -368,7 +368,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graphDidUpdateRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphDidUpdateRelationshipProperty(_ graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -378,7 +378,7 @@ class RelationshipTests: XCTestCase, GraphDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graphWillDeleteRelationshipProperty(graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
+    func graphWillDeleteRelationshipProperty(_ graph: Graph, relationship: Relationship, property: String, value: AnyObject, fromCloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)

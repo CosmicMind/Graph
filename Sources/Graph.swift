@@ -38,8 +38,8 @@ public struct GraphDefaults {
     static let type: String = NSSQLiteStoreType
     
     /// URL reference to where the Graph datastore will live.
-    static var location: NSURL {
-        return File.path(.DocumentDirectory, path: "CosmicMind/Graph/")!
+    static var location: URL {
+        return File.path(.documentDirectory, path: "CosmicMind/Graph/")!
     }
 }
 
@@ -55,13 +55,13 @@ public class Graph: NSObject {
     public internal(set) var type: String!
     
     /// Graph location.
-    public internal(set) var location: NSURL!
+    public internal(set) var location: URL!
     
     /// Worker managedObjectContext.
     public internal(set) var managedObjectContext: NSManagedObjectContext!
     
     /// A reference to the watch predicate.
-    public internal(set) var watchPredicate: NSPredicate?
+    public internal(set) var watchPredicate: Predicate?
     
     /// A reference to cache the watch values.
     public internal(set) lazy var watchers = [String: [String]]()
@@ -84,7 +84,7 @@ public class Graph: NSObject {
     
     /// Deinitializer that removes the Graph from NSNotificationCenter.
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default().removeObserver(self)
     }
     
     /**
@@ -94,7 +94,7 @@ public class Graph: NSObject {
      - Parameter location: A location for storage.
      executed to determine if iCloud support is available or not.
      */
-    public init(name: String = GraphDefaults.name, type: String = GraphDefaults.type, location: NSURL = GraphDefaults.location) {
+    public init(name: String = GraphDefaults.name, type: String = GraphDefaults.type, location: URL = GraphDefaults.location) {
         super.init()
         route = "Local/\(name)"
         self.name = name

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0710"
+   LastUpgradeVersion = "0800"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9677B4541BA78AA600C82BBB"
+               BlueprintIdentifier = "96E3C3A81D3AB41F0086A024"
                BuildableName = "Graph.framework"
                BlueprintName = "Graph iOS"
                ReferencedContainer = "container:Graph.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9677B45D1BA78AA600C82BBB"
+               BlueprintIdentifier = "96E3C3B21D3AB41F0086A024"
                BuildableName = "Graph iOS Tests.xctest"
                BlueprintName = "Graph iOS Tests"
                ReferencedContainer = "container:Graph.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9677B4541BA78AA600C82BBB"
+            BlueprintIdentifier = "96E3C3A81D3AB41F0086A024"
             BuildableName = "Graph.framework"
             BlueprintName = "Graph iOS"
             ReferencedContainer = "container:Graph.xcodeproj">
@@ -64,7 +64,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9677B4541BA78AA600C82BBB"
+            BlueprintIdentifier = "96E3C3A81D3AB41F0086A024"
             BuildableName = "Graph.framework"
             BlueprintName = "Graph iOS"
             ReferencedContainer = "container:Graph.xcodeproj">
@@ -88,7 +88,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9677B4541BA78AA600C82BBB"
+            BlueprintIdentifier = "96E3C3A81D3AB41F0086A024"
             BuildableName = "Graph.framework"
             BlueprintName = "Graph iOS"
             ReferencedContainer = "container:Graph.xcodeproj">

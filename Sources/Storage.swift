@@ -38,11 +38,11 @@ import CoreData
  - Parameter error: An optional error object to pass.
  - Parameter completion: An Optional completion block.
  */
-internal func GraphCompletionCallback(success success: Bool, error: NSError?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-    if NSThread.isMainThread() {
+internal func GraphCompletionCallback(success: Bool, error: NSError?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    if Thread.isMainThread() {
         completion?(success: success, error: error)
     } else {
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             completion?(success: success, error: error)
         }
     }
@@ -53,7 +53,7 @@ internal func GraphCompletionCallback(success success: Bool, error: NSError?, co
  - Parameter message: The message to pass.
  - Returns: An NSError object.
  */
-internal func GraphError(message message: String, domain: String = "io.cosmicmind.graph") -> NSError {
+internal func GraphError(message: String, domain: String = "io.cosmicmind.graph") -> NSError {
     var info = [String: AnyObject]()
     info[NSLocalizedDescriptionKey] = message
     info[NSLocalizedFailureReasonErrorKey] = message
@@ -68,7 +68,7 @@ public extension Graph {
      - Parameter completion: An Optional completion block that is
      executed when the save operation is completed.
      */
-    public func async(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public func async(_ completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         guard let moc = managedObjectContext else {
             GraphCompletionCallback(
                 success: false,
@@ -77,7 +77,7 @@ public extension Graph {
             return
         }
         
-        moc.performBlock { [weak moc] in
+        moc.perform { [weak moc] in
             do {
                 try moc?.save()
                 GraphCompletionCallback(success: true, error: nil, completion: completion)
@@ -92,7 +92,7 @@ public extension Graph {
      - Parameter completion: An Optional completion block that is
      executed when the save operation is completed.
      */
-    public func sync(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public func sync(_ completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         guard let moc = managedObjectContext else {
             GraphCompletionCallback(
                 success: false,
@@ -101,7 +101,7 @@ public extension Graph {
             return
         }
         
-        moc.performBlockAndWait { [unowned moc] in
+        moc.performAndWait { [unowned moc] in
             do {
                 try moc.save()
                 GraphCompletionCallback(success: true, error: nil, completion: completion)
@@ -116,16 +116,16 @@ public extension Graph {
      - Parameter completion: An Optional completion block that is
      executed when the save operation is completed.
      */
-    public func clear(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-        for entity in searchForEntity(types: ["*"]) {
+    public func clear(_ completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+        for entity in search(forEntity: ["*"]) {
             entity.delete()
         }
         
-        for action in searchForAction(types: ["*"]) {
+        for action in search(forAction: ["*"]) {
             action.delete()
         }
         
-        for relationship in searchForRelationship(types: ["*"]) {
+        for relationship in search(forRelationship: ["*"]) {
             relationship.delete()
         }
         
@@ -137,7 +137,7 @@ public extension Graph {
         guard let moc = managedObjectContext else {
             return
         }
-        moc.performBlockAndWait { [unowned moc] in
+        moc.performAndWait { [unowned moc] in
             moc.reset()
         }
     }

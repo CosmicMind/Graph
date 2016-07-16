@@ -31,9 +31,9 @@
 import Foundation
 
 public enum NodeClass: NSNumber {
-    case Entity = 1
-    case Relationship = 2
-    case Action = 3
+    case entity = 1
+    case relationship = 2
+    case action = 3
 }
 
 public protocol NodeType: Comparable {}

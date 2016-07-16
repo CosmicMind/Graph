@@ -30,17 +30,29 @@
 
 import CoreData
 
-@objc(ManagedModel)
-internal class ManagedModel: NSManagedObject {
-    /// Marks node for deletion.
-    internal func delete() {
-        guard let moc = managedObjectContext else {
-            return
+public struct Container {
+    /// A static reference to the persistentContainer.
+    static var persistentContainer: NSPersistentContainer?
+    
+    /**
+     Creates a NSPersistentStoreCoordinator.
+     - Parameter name: Storage name.
+     - Parameter type: Storage type.
+     - Parameter location: Storage location.
+     - Parameter options: Additional options.
+     - Returns: An instance of NSPersistentStoreCoordinator.
+     */
+    static func create(name: String, completion: ((NSPersistentStoreDescription, NSError?) -> Void)? = nil) -> NSPersistentContainer {
+        guard nil == persistentContainer else {
+            return persistentContainer!
         }
         
-        moc.performBlockAndWait { [unowned self, unowned moc] in
-            moc.deleteObject(self)
+        let container = NSPersistentContainer(name: name, managedObjectModel: Model.create())
+        guard let handler = completion else {
+            return container
         }
+        container.loadPersistentStores(completionHandler: handler)
+        persistentContainer = container
+        return container
     }
 }
-

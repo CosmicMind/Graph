@@ -36,18 +36,18 @@ public class Action: NSObject, NodeType {
     internal let managedNode: ManagedAction
     
     public override var description: String {
-        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
+        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
     }
     
     /// A reference to the nodeClass.
     public var nodeClass: NodeClass {
-        return .Action
+        return .action
     }
     
     /// A reference to the type.
     public var type: String {
         var result: String?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedNode.managedObjectContext?.performAndWait { [unowned self] in
             result = self.managedNode.type
         }
         return result!
@@ -59,17 +59,17 @@ public class Action: NSObject, NodeType {
     }
     
     /// A reference to the createDate.
-    public var createdDate: NSDate {
-        var result: NSDate?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            result = self.managedNode.createdDate
+    public var createdDate: Date {
+        var result: Date?
+        managedNode.managedObjectContext?.performAndWait { [unowned self] in
+            result = self.managedNode.createdDate as Date
         }
         return result!
     }
     
-    /// A reference to groups.
-    public var groups: Set<String> {
-        return managedNode.groups
+    /// A reference to tags.
+    public var tags: Set<String> {
+        return managedNode.tags
     }
     
     /**
@@ -98,7 +98,7 @@ public class Action: NSObject, NodeType {
         }
         
         var s: [Entity]?
-        moc.performBlockAndWait { [unowned managedNode] in
+        moc.performAndWait { [unowned managedNode] in
             s = managedNode.subjectSet.map {
                 return Entity(managedNode: $0 as! ManagedEntity)
             } as [Entity]
@@ -114,7 +114,7 @@ public class Action: NSObject, NodeType {
         
         
         var o: [Entity]?
-        moc.performBlockAndWait { [unowned managedNode] in
+        moc.performAndWait { [unowned managedNode] in
             o = managedNode.objectSet.map {
                 return Entity(managedNode: $0 as! ManagedEntity)
             } as [Entity]
@@ -140,8 +140,8 @@ public class Action: NSObject, NodeType {
     public convenience init(type: String, graph: String) {
         let context = Graph(name: graph).managedObjectContext
         var managedNode: ManagedAction?
-        context.performBlockAndWait {
-            managedNode = ManagedAction(type, managedObjectContext: context)
+        context?.performAndWait {
+            managedNode = ManagedAction(type, managedObjectContext: context!)
         }
         self.init(managedNode: managedNode!)
     }
@@ -156,8 +156,8 @@ public class Action: NSObject, NodeType {
     public convenience init(type: String, graph: Graph) {
         let context = graph.managedObjectContext
         var managedNode: ManagedAction?
-        context.performBlockAndWait {
-            managedNode = ManagedAction(type, managedObjectContext: context)
+        context?.performAndWait {
+            managedNode = ManagedAction(type, managedObjectContext: context!)
         }
         self.init(managedNode: managedNode!)
     }
@@ -177,47 +177,47 @@ public class Action: NSObject, NodeType {
      - Returns: A boolean of the result, true if equal, false
      otherwise.
      */
-    public override func isEqual(object: AnyObject?) -> Bool {
+    public override func isEqual(_ object: AnyObject?) -> Bool {
         return id == (object as? Action)?.id
     }
     
     /**
-     Adds the Action to the group.
-     - Parameter name: The group name.
+     Adds the Action to the tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
-    public func addToGroup(name: String) -> Bool {
-        return managedNode.addToGroup(name)
+    public func add(_ name: String) {
+        managedNode.add(name)
     }
     
     /**
-     Checks membership in a group.
-     - Parameter name: The group name.
+     Checks membership in a tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    public func memberOfGroup(name: String) -> Bool {
-        return managedNode.memberOfGroup(name)
+    public func tagged(_ name: String) -> Bool {
+        return managedNode.tagged(name)
     }
     
     /**
-     Removes the Action from a group.
-     - Parameter name: The group name.
+     Removes the Action from a tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
-    public func removeFromGroup(name: String) -> Bool {
-        return managedNode.removeFromGroup(name)
+    public func remove(_ name: String) {
+        managedNode.remove(name)
     }
     
     /**
-     Adds the Action to the group if it is not a member, or
+     Adds the Action to the tag if it is not a member, or
      removes it if it is a member.
-     - Parameter name: The group name.
+     - Parameter name: The tag name.
      */
-    public func toggleGroupMembership(name: String) {
-        memberOfGroup(name) ? removeFromGroup(name) : addToGroup(name)
+    public func toggleTagMembership(_ name: String) {
+        _ = tagged(name) ? remove(name) : add(name)
     }
     
     /**
@@ -226,7 +226,7 @@ public class Action: NSObject, NodeType {
      - Returns: A boolean of the result, true if added, false 
      otherwise.
      */
-    public func addSubject(entity: Entity) -> Bool {
+    public func addSubject(_ entity: Entity) -> Bool {
         return managedNode.addSubject(entity.managedNode)
     }
     
@@ -236,7 +236,7 @@ public class Action: NSObject, NodeType {
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
-    public func removeSubject(entity: Entity) -> Bool {
+    public func removeSubject(_ entity: Entity) -> Bool {
         return managedNode.removeSubject(entity.managedNode)
     }
     
@@ -246,7 +246,7 @@ public class Action: NSObject, NodeType {
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    public func memberOfSubjects(entity: Entity) -> Bool {
+    public func memberOfSubjects(_ entity: Entity) -> Bool {
         return subjects.contains(entity)
     }
     
@@ -256,7 +256,7 @@ public class Action: NSObject, NodeType {
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
-    public func addObject(entity: Entity) -> Bool {
+    public func addObject(_ entity: Entity) -> Bool {
         return managedNode.addObject(entity.managedNode)
     }
     
@@ -266,7 +266,7 @@ public class Action: NSObject, NodeType {
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
-    public func removeObject(entity: Entity) -> Bool {
+    public func removeObject(_ entity: Entity) -> Bool {
         return managedNode.removeObject(entity.managedNode)
     }
     
@@ -276,7 +276,7 @@ public class Action: NSObject, NodeType {
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    public func memberOfObjects(entity: Entity) -> Bool {
+    public func memberOfObjects(_ entity: Entity) -> Bool {
         return objects.contains(entity)
     }
     

@@ -37,18 +37,18 @@ public class Entity: NSObject, NodeType {
     
     /// A string representation of the Entity.
     public override var description: String {
-        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
+        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), properties: \(properties), createdDate: \(createdDate)]"
     }
     
     /// A reference to the nodeClass.
     public var nodeClass: NodeClass {
-        return .Entity
+        return .entity
     }
     
     /// A reference to the type.
     public var type: String {
         var result: String?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedNode.managedObjectContext?.performAndWait { [unowned self] in
             result = self.managedNode.type
         }
         return result!
@@ -60,17 +60,17 @@ public class Entity: NSObject, NodeType {
     }
     
     /// A reference to the createDate.
-    public var createdDate: NSDate {
-        var result: NSDate?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
-            result = self.managedNode.createdDate
+    public var createdDate: Date {
+        var result: Date?
+        managedNode.managedObjectContext?.performAndWait { [unowned self] in
+            result = self.managedNode.createdDate as Date
         }
         return result!
     }
     
-    /// A reference to groups.
-    public var groups: Set<String> {
-        return managedNode.groups
+    /// A reference to tags.
+    public var tags: Set<String> {
+        return managedNode.tags
     }
     
     /**
@@ -95,11 +95,11 @@ public class Entity: NSObject, NodeType {
     /// A reference to all the Actions that the Entity is a part of.
     public var actions: [Action] {
         var s = Set<ManagedAction>()
-        s.unionInPlace(managedNode.actionSubjectSet as! Set<ManagedAction>)
-        s.unionInPlace(managedNode.actionObjectSet as! Set<ManagedAction>)
+        s.formUnion(managedNode.actionSubjectSet as! Set<ManagedAction>)
+        s.formUnion(managedNode.actionObjectSet as! Set<ManagedAction>)
         return s.map {
             return Action(managedNode: $0 as ManagedAction)
-        } as [Action]
+            } as [Action]
     }
     
     /**
@@ -108,7 +108,7 @@ public class Entity: NSObject, NodeType {
     public var actionsWhenSubject: [Action] {
         return managedNode.actionSubjectSet.map {
             return Action(managedNode: $0 as! ManagedAction)
-        } as [Action]
+            } as [Action]
     }
     
     /**
@@ -117,7 +117,7 @@ public class Entity: NSObject, NodeType {
     public var actionsWhenObject: [Action] {
         return managedNode.actionObjectSet.map {
             return Action(managedNode: $0 as! ManagedAction)
-        } as [Action]
+            } as [Action]
     }
     
     /**
@@ -125,13 +125,13 @@ public class Entity: NSObject, NodeType {
      */
     public var relationships: [Relationship] {
         var result: [Relationship]?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedNode.managedObjectContext?.performAndWait { [unowned self] in
             var set = Set<ManagedRelationship>()
-            set.unionInPlace(self.managedNode.relationshipSubjectSet as! Set<ManagedRelationship>)
-            set.unionInPlace(self.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
+            set.formUnion(self.managedNode.relationshipSubjectSet as! Set<ManagedRelationship>)
+            set.formUnion(self.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
             result = set.map {
                 return Relationship(managedNode: $0 as ManagedRelationship)
-            } as [Relationship]
+                } as [Relationship]
         }
         return result!
     }
@@ -141,10 +141,10 @@ public class Entity: NSObject, NodeType {
      */
     public var relationshipsWhenSubject: [Relationship] {
         var result: [Relationship]?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedNode.managedObjectContext?.performAndWait { [unowned self] in
             result = self.managedNode.relationshipSubjectSet.map {
                 return Relationship(managedNode: $0 as! ManagedRelationship)
-            } as [Relationship]
+                } as [Relationship]
         }
         return result!
     }
@@ -154,10 +154,10 @@ public class Entity: NSObject, NodeType {
      */
     public var relationshipsWhenObject: [Relationship] {
         var result: [Relationship]?
-        managedNode.managedObjectContext?.performBlockAndWait { [unowned self] in
+        managedNode.managedObjectContext?.performAndWait { [unowned self] in
             result = self.managedNode.relationshipObjectSet.map {
                 return Relationship(managedNode: $0 as! ManagedRelationship)
-            } as [Relationship]
+                } as [Relationship]
         }
         return result!
     }
@@ -180,8 +180,8 @@ public class Entity: NSObject, NodeType {
     public convenience init(type: String, graph: String) {
         let context = Graph(name: graph).managedObjectContext
         var managedNode: ManagedEntity?
-        context.performBlockAndWait {
-            managedNode = ManagedEntity(type, managedObjectContext: context)
+        context?.performAndWait {
+            managedNode = ManagedEntity(type, managedObjectContext: context!)
         }
         self.init(managedNode: managedNode!)
     }
@@ -196,8 +196,8 @@ public class Entity: NSObject, NodeType {
     public convenience init(type: String, graph: Graph) {
         let context = graph.managedObjectContext
         var managedNode: ManagedEntity?
-        context.performBlockAndWait {
-            managedNode = ManagedEntity(type, managedObjectContext: context)
+        context?.performAndWait {
+            managedNode = ManagedEntity(type, managedObjectContext: context!)
         }
         self.init(managedNode: managedNode!)
     }
@@ -217,51 +217,47 @@ public class Entity: NSObject, NodeType {
      - Returns: A boolean of the result, true if equal, false
      otherwise.
      */
-    public override func isEqual(object: AnyObject?) -> Bool {
+    public override func isEqual(_ object: AnyObject?) -> Bool {
         return id == (object as? Entity)?.id
     }
     
     /**
-     Adds the Entity to the group.
-     - Parameter name: The group name.
+     Adds the Entity to the tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
-    public func addToGroup(name: String) -> Bool {
-        return managedNode.addToGroup(name)
+    public func add(_ name: String) {
+        managedNode.add(name)
     }
     
     /**
-     Checks membership in a group.
-     - Parameter name: The group name.
+     Checks membership in a tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    public func memberOfGroup(name: String) -> Bool {
-        return managedNode.memberOfGroup(name)
+    public func tagged(_ name: String) -> Bool {
+        return managedNode.tagged(name)
     }
     
     /**
-     Removes the Entity from a group.
-     - Parameter name: The group name.
+     Removes the Entity from a tag.
+     - Parameter name: The tag name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
-    public func removeFromGroup(name: String) -> Bool {
-        return managedNode.removeFromGroup(name)
+    public func remove(_ name: String) {
+        managedNode.remove(name)
     }
     
     /**
-     Adds the Entity to the group if it is not a member, or
+     Adds the Entity to the tag if it is not a member, or
      removes it if it is a member.
-     - Parameter name: The group name.
+     - Parameter name: The tag name.
      */
-    public func toggleGroupMembership(name: String) {
-        if memberOfGroup(name) {
-            removeFromGroup(name)
-        } else {
-            addToGroup(name)
-        }
+    public func toggleTagMembership(_ name: String) {
+        _ = tagged(name) ? remove(name) : add(name)
     }
     
     /// Marks the Entity for deletion.

@@ -43,13 +43,13 @@ internal class ManagedActionProperty: ManagedProperty {
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
     internal convenience init(name: String, object: AnyObject, node: ManagedAction, managedObjectContext: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.actionPropertyDescriptionName, name: name, object: object, managedObjectContext: managedObjectContext)
+        self.init(identifier: ModelIdentifier.actionPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
         self.node = node
     }
     
     /// Marks node for deletion.
     internal override func delete() {
-        node.mutableSetValueForKey("propertySet").removeObject(self)
+        node.mutableSetValue(forKey: "propertySet").remove(self)
         super.delete()
     }
 }

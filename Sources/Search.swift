@@ -32,14 +32,30 @@ import CoreData
 
 /// Storage Search API.
 public extension Graph {
+    public func search(forEntity types: [String]) -> [Entity] {
+        return searchForEntity(types: types)
+    }
+    
+    public func search(forEntity types: [String], tagged tags: [String]) -> [Entity] {
+        return searchForEntity(types: types, tags: tags)
+    }
+    
+    public func search(forEntity types: [String], where properties: [(name: String, value: AnyObject?)]) -> [Entity] {
+        return searchForEntity(types: types, properties: properties)
+    }
+    
+    public func search(forEntity types: [String], tagged tags: [String], where properties: [(name: String, value: AnyObject?)]) -> [Entity] {
+        return searchForEntity(types: types, tags: tags, properties: properties)
+    }
+    
     /**
      Searches for Entities that fall into any of the specified facets.
      - Parameter types: An Array of Entity types.
-     - Parameter groups: An Array of groups.
+     - Parameter tags: An Array of tags.
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
-    public func searchForEntity(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Entity] {
+    internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, properties: [(name: String, value: AnyObject?)]? = nil) -> [Entity] {
         guard let moc = managedObjectContext else {
             return [Entity]()
         }
@@ -48,22 +64,22 @@ public extension Graph {
         var toFilter: Bool = false
         
         if let v = types {
-            if let n = search(ModelIdentifier.entityDescriptionName, types: v) {
-                nodes.appendContentsOf(n)
+            if let n = search(forEntityName: ModelIdentifier.entityName, types: v) {
+                nodes.append(contentsOf: n)
             }
         }
         
-        if let v = groups {
-            if let n = search(ModelIdentifier.entityGroupDescriptionName, groups: v) {
+        if let v = tags {
+            if let n = search(forEntityName: ModelIdentifier.entityTagName, tags: v) {
                 toFilter = 0 < nodes.count
-                nodes.appendContentsOf(n)
+                nodes.append(contentsOf: n)
             }
         }
         
         if let v = properties {
-            if let n = search(ModelIdentifier.entityPropertyDescriptionName, properties: v) {
+            if let n = search(forEntityName: ModelIdentifier.entityPropertyName, properties: v) {
                 toFilter = 0 < nodes.count
-                nodes.appendContentsOf(n)
+                nodes.append(contentsOf: n)
             }
         }
         
@@ -81,8 +97,8 @@ public extension Graph {
                     let n = nodes[i]["node"]
                     var c: Bool? = false
                     var weakNodes: [AnyObject]? = nodes
-                    moc.performBlockAndWait { [unowned moc] in
-                        if let v = moc.objectWithID(n! as! NSManagedObjectID) as? ManagedEntity {
+                    moc.performAndWait { [unowned moc] in
+                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedEntity {
                             if nil == seen.updateValue(true, forKey: v.id) {
                                 weakNodes?[i] = Entity(managedNode: v)
                                 i -= 1
@@ -94,7 +110,7 @@ public extension Graph {
                         continue
                     }
                 }
-                nodes.removeAtIndex(i)
+                nodes.remove(at: i)
                 i -= 1
             }
             return nodes as! [Entity]
@@ -104,8 +120,8 @@ public extension Graph {
             guard let n = $0 as? ManagedEntity else {
                 var managedNode: NSManagedObject?
                 let n = $0["node"]
-                moc?.performBlockAndWait { [weak moc] in
-                    managedNode = moc?.objectWithID(n! as! NSManagedObjectID)
+                moc?.performAndWait { [weak moc] in
+                    managedNode = moc?.object(with: n! as! NSManagedObjectID)
                 }
                 return Entity(managedNode: managedNode as! ManagedEntity)
             }
@@ -116,11 +132,11 @@ public extension Graph {
     /**
      Searches for Relationships that fall into any of the specified facets.
      - Parameter types: An Array of Relationship types.
-     - Parameter groups: An Array of groups.
+     - Parameter tags: An Array of tags.
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    public func searchForRelationship(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Relationship] {
+    public func search(forRelationship types: [String]? = nil, in tags: [String]? = nil, where properties: [(name: String, value: AnyObject?)]? = nil) -> [Relationship] {
         guard let moc = managedObjectContext else {
             return [Relationship]()
         }
@@ -129,22 +145,22 @@ public extension Graph {
         var toFilter: Bool = false
         
         if let v = types {
-            if let n = search(ModelIdentifier.relationshipDescriptionName, types: v) {
-                nodes.appendContentsOf(n)
+            if let n = search(forEntityName: ModelIdentifier.relationshipName, types: v) {
+                nodes.append(contentsOf: n)
             }
         }
         
-        if let v = groups {
-            if let n = search(ModelIdentifier.relationshipGroupDescriptionName, groups: v) {
+        if let v = tags {
+            if let n = search(forEntityName: ModelIdentifier.relationshipTagName, tags: v) {
                 toFilter = 0 < nodes.count
-                nodes.appendContentsOf(n)
+                nodes.append(contentsOf: n)
             }
         }
         
         if let v = properties {
-            if let n = search(ModelIdentifier.relationshipPropertyDescriptionName, properties: v) {
+            if let n = search(forEntityName: ModelIdentifier.relationshipPropertyName, properties: v) {
                 toFilter = 0 < nodes.count
-                nodes.appendContentsOf(n)
+                nodes.append(contentsOf: n)
             }
         }
         
@@ -162,8 +178,8 @@ public extension Graph {
                     let n = nodes[i]["node"]
                     var c: Bool? = false
                     var weakNodes: [AnyObject]? = nodes
-                    moc.performBlockAndWait { [unowned moc] in
-                        if let v = moc.objectWithID(n! as! NSManagedObjectID) as? ManagedRelationship {
+                    moc.performAndWait { [unowned moc] in
+                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedRelationship {
                             if nil == seen.updateValue(true, forKey: v.id) {
                                 weakNodes?[i] = Relationship(managedNode: v)
                                 i -= 1
@@ -175,7 +191,7 @@ public extension Graph {
                         continue
                     }
                 }
-                nodes.removeAtIndex(i)
+                nodes.remove(at: i)
                 i -= 1
             }
             return nodes as! [Relationship]
@@ -185,8 +201,8 @@ public extension Graph {
             guard let n = $0 as? ManagedRelationship else {
                 var managedNode: NSManagedObject?
                 let n = $0["node"]
-                moc?.performBlockAndWait { [weak moc] in
-                    managedNode = moc?.objectWithID(n! as! NSManagedObjectID)
+                moc?.performAndWait { [weak moc] in
+                    managedNode = moc?.object(with: n! as! NSManagedObjectID)
                 }
                 return Relationship(managedNode: managedNode as! ManagedRelationship)
             }
@@ -197,11 +213,11 @@ public extension Graph {
     /**
      Searches for Actions that fall into any of the specified facets.
      - Parameter types: An Array of Action types.
-     - Parameter groups: An Array of groups.
+     - Parameter tags: An Array of tags.
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    public func searchForAction(types types: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: AnyObject?)]? = nil) -> [Action] {
+    public func search(forAction types: [String]? = nil, in tags: [String]? = nil, where properties: [(name: String, value: AnyObject?)]? = nil) -> [Action] {
         guard let moc = managedObjectContext else {
             return [Action]()
         }
@@ -210,22 +226,22 @@ public extension Graph {
         var toFilter: Bool = false
         
         if let v = types {
-            if let n = search(ModelIdentifier.actionDescriptionName, types: v) {
-                nodes.appendContentsOf(n)
+            if let n = search(forEntityName: ModelIdentifier.actionName, types: v) {
+                nodes.append(contentsOf: n)
             }
         }
         
-        if let v = groups {
-            if let n = search(ModelIdentifier.actionGroupDescriptionName, groups: v) {
+        if let v = tags {
+            if let n = search(forEntityName: ModelIdentifier.actionTagName, tags: v) {
                 toFilter = 0 < nodes.count
-                nodes.appendContentsOf(n)
+                nodes.append(contentsOf: n)
             }
         }
         
         if let v = properties {
-            if let n = search(ModelIdentifier.actionPropertyDescriptionName, properties: v) {
+            if let n = search(forEntityName: ModelIdentifier.actionPropertyName, properties: v) {
                 toFilter = 0 < nodes.count
-                nodes.appendContentsOf(n)
+                nodes.append(contentsOf: n)
             }
         }
         
@@ -243,8 +259,8 @@ public extension Graph {
                     let n = nodes[i]["node"]
                     var c: Bool? = false
                     var weakNodes: [AnyObject]? = nodes
-                    moc.performBlockAndWait { [unowned moc] in
-                        if let v = moc.objectWithID(n! as! NSManagedObjectID) as? ManagedAction {
+                    moc.performAndWait { [unowned moc] in
+                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedAction {
                             if nil == seen.updateValue(true, forKey: v.id) {
                                 weakNodes?[i] = Action(managedNode: v)
                                 i -= 1
@@ -256,7 +272,7 @@ public extension Graph {
                         continue
                     }
                 }
-                nodes.removeAtIndex(i)
+                nodes.remove(at: i)
                 i -= 1
             }
             return nodes as! [Action]
@@ -266,8 +282,8 @@ public extension Graph {
             guard let n = $0 as? ManagedAction else {
                 var managedNode: NSManagedObject?
                 let n = $0["node"]
-                moc?.performBlockAndWait { [weak moc] in
-                    managedNode = moc?.objectWithID(n! as! NSManagedObjectID)
+                moc?.performAndWait { [weak moc] in
+                    managedNode = moc?.object(with: n! as! NSManagedObjectID)
                 }
                 return Action(managedNode: managedNode as! ManagedAction)
             }
@@ -277,33 +293,33 @@ public extension Graph {
     
     /**
      Searches based on type value.
-     - Parameter typeDescriptionName: An entity type description.
+     - Parameter forEntityName: An entity type name.
      - Parameter types: An Array of types.
      - Returns: An optional Array of AnyObjects.
      */
-    internal func search(typeDescriptionName: String, types: [String]) -> [AnyObject]? {
+    internal func search(forEntityName: String, types: [String]) -> [AnyObject]? {
         guard let moc = managedObjectContext else {
             return nil
         }
         
-        var typesPredicate = [NSPredicate]()
+        var predicate = [Predicate]()
         
         for v in types {
-            typesPredicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
+            predicate.append(Predicate(format: "type LIKE[cd] %@", v))
         }
         
-        let entityDescription = NSEntityDescription.entityForName(typeDescriptionName, inManagedObjectContext: moc)!
-        let request = NSFetchRequest()
+        let entityDescription = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
+        let request = NSFetchRequest<ManagedNode>()
         request.entity = entityDescription
         request.fetchBatchSize = batchSize
         request.fetchOffset = batchOffset
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: typesPredicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: true)]
+        request.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicate)
+        request.sortDescriptors = [SortDescriptor(key: "createdDate", ascending: true)]
         
         var result: [AnyObject]?
-        moc.performBlockAndWait { [weak moc] in
+        moc.performAndWait { [unowned request] in
             do {
-                result = try moc?.executeFetchRequest(request)
+                result = try request.execute()
             } catch {
                 result = [AnyObject]()
             }
@@ -312,37 +328,37 @@ public extension Graph {
     }
     
     /**
-     Searches based on group value.
-     - Parameter groupDescriptionName: An entity type description.
-     - Parameter groups: An Array of groups.
+     Searches based on tag value.
+     - Parameter forEntityName: An entity type name.
+     - Parameter tags: An Array of tags.
      - Returns: An optional Array of AnyObjects.
      */
-    internal func search(groupDescriptionName: String, groups: [String]) -> [AnyObject]? {
+    internal func search(forEntityName: String, tags: [String]) -> [AnyObject]? {
         guard let moc = managedObjectContext else {
             return nil
         }
         
-        var groupsPredicate = [NSPredicate]()
+        var predicate = [Predicate]()
         
-        for v in groups {
-            groupsPredicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
+        for v in tags {
+            predicate.append(Predicate(format: "name LIKE[cd] %@", v))
         }
         
-        let entityDescription = NSEntityDescription.entityForName(groupDescriptionName, inManagedObjectContext: moc)!
-        let request = NSFetchRequest()
+        let entityDescription = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
+        let request = NSFetchRequest<ManagedTag>()
         request.entity = entityDescription
         request.fetchBatchSize = batchSize
         request.fetchOffset = batchOffset
-        request.resultType = .DictionaryResultType
+        request.resultType = .dictionaryResultType
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: groupsPredicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
+        request.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicate)
+        request.sortDescriptors = [SortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
-        moc.performBlockAndWait { [weak moc] in
+        moc.performAndWait { [unowned request] in
             do {
-                result = try moc?.executeFetchRequest(request)
+                result = try request.execute()
             } catch {
                 result = [AnyObject]()
             }
@@ -352,44 +368,44 @@ public extension Graph {
     
     /**
      Searches based on property value.
-     - Parameter propertyDescriptionName: An entity type description.
+     - Parameter forEntityName: An entity type name.
      - Parameter properties: An Array of property tuples.
      - Returns: An optional Array of AnyObjects.
      */
-    internal func search(propertyDescriptionName: String, properties: [(key: String, value: AnyObject?)]) -> [AnyObject]? {
+    internal func search(forEntityName: String, properties: [(name: String, value: AnyObject?)]) -> [AnyObject]? {
         guard let moc = managedObjectContext else {
             return nil
         }
         
-        var propertiesPredicate = [NSPredicate]()
+        var predicate = [Predicate]()
         
         for (k, v) in properties {
             if let x = v {
                 if let a = x as? String {
-                    propertiesPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
+                    predicate.append(CompoundPredicate(andPredicateWithSubpredicates: [Predicate(format: "name LIKE[cd] %@", k), Predicate(format: "object = %@", a)]))
                 } else if let a: NSNumber = x as? NSNumber {
-                    propertiesPredicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
+                    predicate.append(CompoundPredicate(andPredicateWithSubpredicates: [Predicate(format: "name LIKE[cd] %@", k), Predicate(format: "object = %@", a)]))
                 }
             } else {
-                propertiesPredicate.append(NSPredicate(format: "name LIKE[cd] %@", k))
+                predicate.append(Predicate(format: "name LIKE[cd] %@", k))
             }
         }
         
-        let entityDescription = NSEntityDescription.entityForName(propertyDescriptionName, inManagedObjectContext: moc)!
-        let request = NSFetchRequest()
+        let entityDescription = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
+        let request = NSFetchRequest<ManagedProperty>()
         request.entity = entityDescription
         request.fetchBatchSize = batchSize
         request.fetchOffset = batchOffset
-        request.resultType = .DictionaryResultType
+        request.resultType = .dictionaryResultType
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: propertiesPredicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
+        request.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicate)
+        request.sortDescriptors = [SortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
-        moc.performBlockAndWait { [weak moc] in
+        moc.performAndWait { [unowned request] in
             do {
-                result = try moc?.executeFetchRequest(request)
+                result = try request.execute()
             } catch {
                 result = [AnyObject]()
             }
