@@ -37,11 +37,6 @@
                BlueprintName = "Graph macOS Tests"
                ReferencedContainer = "container:Graph.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "GraphTests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

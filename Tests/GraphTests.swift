@@ -25,13 +25,11 @@ class GraphTests: XCTestCase {
         XCTAssertTrue(g1.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual(GraphStoreDescription.name, g1.name)
         XCTAssertEqual(GraphStoreDescription.type, g1.type)
-        XCTAssertEqual("\(GraphStoreDescription.location)Local/\(g1.name)/Graph.sqlite", String(g1.location))
         
         let g2 = Graph(name: "marketing")
         XCTAssertTrue(g2.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("marketing", g2.name)
         XCTAssertEqual(GraphStoreDescription.type, g2.type)
-        XCTAssertEqual("\(GraphStoreDescription.location)Local/\(g2.name)/Graph.sqlite", String(g2.location))
         
         graphException = expectation(withDescription: "[GraphTests Error: Async tests failed.]")
         
@@ -41,7 +39,6 @@ class GraphTests: XCTestCase {
             XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
             XCTAssertEqual("async", g3.name)
             XCTAssertEqual(GraphStoreDescription.type, g3.type)
-            XCTAssertEqual("\(GraphStoreDescription.location)Local/\(g3.name)/Graph.sqlite", String(g3.location))
             self?.graphException?.fulfill()
         }
         
@@ -50,7 +47,6 @@ class GraphTests: XCTestCase {
         XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("async", g3.name)
         XCTAssertEqual(GraphStoreDescription.type, g3.type)
-        XCTAssertEqual("\(GraphStoreDescription.location)Local/\(g3.name)/Graph.sqlite", String(g3.location))
     }
     
     func testCloud() {
@@ -67,7 +63,6 @@ class GraphTests: XCTestCase {
         XCTAssertTrue(g1.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("marketing", g1.name)
         XCTAssertEqual(GraphStoreDescription.type, g1.type)
-        XCTAssertEqual("\(GraphStoreDescription.location)Cloud/\(g1.name)/Graph.sqlite", String(g1.location))
         
         graphException = expectation(withDescription: "[CloudTests Error: Async tests failed.]")
         
@@ -82,7 +77,6 @@ class GraphTests: XCTestCase {
         XCTAssertTrue(g2.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("async", g2.name)
         XCTAssertEqual(GraphStoreDescription.type, g2.type)
-        XCTAssertEqual("\(GraphStoreDescription.location)Cloud/\(g2.name)/Graph.sqlite", String(g2.location))
         
         graphException = expectation(withDescription: "[CloudTests Error: Async tests failed.]")
         
@@ -100,6 +94,5 @@ class GraphTests: XCTestCase {
         XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("test", g3.name)
         XCTAssertEqual(GraphStoreDescription.type, g3.type)
-        XCTAssertEqual("\(GraphStoreDescription.location)Cloud/\(g3.name)/Graph.sqlite", String(g3.location))
     }
 }

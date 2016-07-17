@@ -329,11 +329,11 @@
 		96E3C4A31D3B0AEF0086A024 /* Action */ = {
 			isa = PBXGroup;
 			children = (
-				96E3C4611D3AFB890086A024 /* ActionGroupTests.swift */,
-				96E3C4621D3AFB890086A024 /* ActionPropertyStressTests.swift */,
-				96E3C4631D3AFB890086A024 /* ActionPropertyTests.swift */,
-				96E3C4641D3AFB890086A024 /* ActionSearchTests.swift */,
 				96E3C4651D3AFB890086A024 /* ActionTests.swift */,
+				96E3C4611D3AFB890086A024 /* ActionGroupTests.swift */,
+				96E3C4631D3AFB890086A024 /* ActionPropertyTests.swift */,
+				96E3C4621D3AFB890086A024 /* ActionPropertyStressTests.swift */,
+				96E3C4641D3AFB890086A024 /* ActionSearchTests.swift */,
 				96E3C4661D3AFB890086A024 /* ActionThreadTests.swift */,
 			);
 			name = Action;
@@ -342,11 +342,11 @@
 		96E3C4A41D3B0AFB0086A024 /* Relationship */ = {
 			isa = PBXGroup;
 			children = (
-				96E3C46F1D3AFB890086A024 /* RelationshipGroupTests.swift */,
-				96E3C4701D3AFB890086A024 /* RelationshipPropertyStressTests.swift */,
-				96E3C4711D3AFB890086A024 /* RelationshipPropertyTests.swift */,
-				96E3C4721D3AFB890086A024 /* RelationshipSearchTests.swift */,
 				96E3C4731D3AFB890086A024 /* RelationshipTests.swift */,
+				96E3C46F1D3AFB890086A024 /* RelationshipGroupTests.swift */,
+				96E3C4711D3AFB890086A024 /* RelationshipPropertyTests.swift */,
+				96E3C4701D3AFB890086A024 /* RelationshipPropertyStressTests.swift */,
+				96E3C4721D3AFB890086A024 /* RelationshipSearchTests.swift */,
 				96E3C4741D3AFB890086A024 /* RelationshipThreadTests.swift */,
 			);
 			name = Relationship;
@@ -355,11 +355,11 @@
 		96E3C4A51D3B0B080086A024 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				96E3C4681D3AFB890086A024 /* EntityGroupTests.swift */,
-				96E3C4691D3AFB890086A024 /* EntityPropertyStressTests.swift */,
-				96E3C46A1D3AFB890086A024 /* EntityPropertyTests.swift */,
-				96E3C46B1D3AFB890086A024 /* EntitySearchTests.swift */,
 				96E3C46C1D3AFB890086A024 /* EntityTests.swift */,
+				96E3C4681D3AFB890086A024 /* EntityGroupTests.swift */,
+				96E3C46A1D3AFB890086A024 /* EntityPropertyTests.swift */,
+				96E3C4691D3AFB890086A024 /* EntityPropertyStressTests.swift */,
+				96E3C46B1D3AFB890086A024 /* EntitySearchTests.swift */,
 				96E3C46D1D3AFB890086A024 /* EntityThreadTests.swift */,
 			);
 			name = Entity;
