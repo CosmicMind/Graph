@@ -51,7 +51,7 @@ internal struct Coordinator {
      - Parameter options: Additional options.
      - Returns: An instance of NSPersistentStoreCoordinator.
      */
-    static func createPersistentStoreCoordinator(type: String, location: URL, options: [NSObject: AnyObject]? = nil) -> NSPersistentStoreCoordinator {
+    static func create(type: String, location: URL, options: [NSObject: AnyObject]? = nil) -> NSPersistentStoreCoordinator {
         var coordinator: NSPersistentStoreCoordinator?
         File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: NSError?) in
             if let e = error {

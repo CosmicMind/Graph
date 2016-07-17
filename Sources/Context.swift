@@ -46,7 +46,7 @@ internal struct Context
      - Parameter concurrencyType: A concurrency type to use.
      - Parameter parentContext: An optional parent context.
      */
-    static func createManagedContext(_ concurrencyType: NSManagedObjectContextConcurrencyType, parentContext: NSManagedObjectContext? = nil) -> NSManagedObjectContext {
+    static func create(_ concurrencyType: NSManagedObjectContextConcurrencyType, parentContext: NSManagedObjectContext? = nil) -> NSManagedObjectContext {
         var moc: NSManagedObjectContext!
         
         let makeContext = { [weak parentContext] in
@@ -95,8 +95,8 @@ public extension Graph {
             
             location = try! location.appendingPathComponent(route)
             
-            managedObjectContext = Context.createManagedContext(.mainQueueConcurrencyType)
-            managedObjectContext.persistentStoreCoordinator = Coordinator.createPersistentStoreCoordinator(type: type, location: location)
+            managedObjectContext = Context.create(.mainQueueConcurrencyType)
+            managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
             
             if NSSQLiteStoreType == type {
                 location = try! location.appendingPathComponent("Graph.sqlite")
