@@ -68,9 +68,6 @@ class EntitySearchTests : XCTestCase {
             XCTAssertTrue(success, "\(error)")
         }
         
-        let users = graph.search(forEntity: ["User"], tags: [])
-        print(users)
-        
         XCTAssertEqual(0, graph.search(forEntity: []).count)
         
         XCTAssertEqual(100, graph.search(forEntity: ["T1"]).count)

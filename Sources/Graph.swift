@@ -39,7 +39,7 @@ public struct GraphStoreDescription {
     
     /// URL reference to where the Graph datastore will live.
     static var location: URL {
-        return File.path(.documentDirectory, path: "CosmicMind/Graph/")!
+        return File.path(.applicationSupportDirectory, path: "CosmicMind/Graph/")!
     }
 }
 
@@ -53,7 +53,6 @@ public class Graph: NSObject {
     
     /// Graph type.
     public internal(set) var type: String
-    
     
     /// Graph location.
     public internal(set) var location: URL

@@ -82,6 +82,8 @@ public extension Graph {
             options?[NSPersistentStoreUbiquitousContentNameKey] = name
         }
         
+        prepareSQLite()
+        
         do {
             try moc.persistentStoreCoordinator?.addPersistentStore(ofType: type, configurationName: nil, at: location, options: options)
             location = moc.persistentStoreCoordinator!.persistentStores.first!.url!

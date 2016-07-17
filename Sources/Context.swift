@@ -92,17 +92,13 @@ public extension Graph {
         guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
             let supported = enableCloud && nil != FileManager.default().urlForUbiquityContainerIdentifier(nil)
             GraphContextRegistry.supported[route] = supported
+            location = try! GraphStoreDescription.location.appendingPathComponent(route)
             
             guard !enableCloud, #available(iOS 10.0, OSX 10.12, *) else {
-                location = try! GraphStoreDescription.location.appendingPathComponent(route)
                 
                 managedObjectContext = Context.create(.mainQueueConcurrencyType)
                 managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
                 GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
-                
-                if NSSQLiteStoreType == type {
-                    location = try! location.appendingPathComponent("Graph.sqlite")
-                }
                 
                 if supported {
                     preparePersistentStoreCoordinatorNotificationHandlers()
@@ -138,10 +134,20 @@ public extension Graph {
         }
     }
     
+    /// Prepares the SQLight file if needed.
+    internal func prepareSQLite() {
+        if NSSQLiteStoreType == type {
+            location = try! location.appendingPathComponent("Graph.sqlite")
+        }
+    }
+    
     @available(iOS 10.0, OSX 10.12, *)
     private func prepareContextContainer() {
+        prepareSQLite()
+        
         let storeDescription = NSPersistentStoreDescription()
         storeDescription.shouldAddStoreAsynchronously = false
+        storeDescription.url = location
         
         let container = Container.create(name: name, storeDescription: storeDescription)
         container.loadPersistentStores { [unowned self] (storeDescription, error) in
