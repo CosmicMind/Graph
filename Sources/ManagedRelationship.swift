@@ -91,31 +91,31 @@ internal class ManagedRelationship: ManagedNode {
     
     /**
      Adds the ManagedAction to the tag.
-     - Parameter name: The tag name.
+     - Parameter tag: The tag name.
      */
-    internal func add(_ name: String) {
+    internal func add(tag: String) {
         guard let moc = managedObjectContext else {
             return
         }
         moc.performAndWait { [unowned self, unowned moc] in
-            if !self.tagged(name) {
-                _ = ManagedRelationshipTag(name: name, node: self, managedObjectContext: moc)
+            if !self.has(tag: tag) {
+                _ = ManagedRelationshipTag(name: tag, node: self, managedObjectContext: moc)
             }
         }
     }
     
     /**
      Removes the ManagedAction from the tag.
-     - Parameter name: The tag name.
+     - Parameter tag: The tag name.
      */
-    internal func remove(_ name: String) {
+    internal func remove(tag: String) {
         guard let moc = managedObjectContext else {
             return
         }
         moc.performAndWait { [unowned self] in
-            for tag in self.tagSet {
-                if name == tag.name {
-                    if let g = tag as? ManagedRelationshipTag {
+            for t in self.tagSet {
+                if tag == t.name {
+                    if let g = t as? ManagedRelationshipTag {
                         g.delete()
                         break
                     }

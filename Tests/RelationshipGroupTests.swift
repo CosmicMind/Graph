@@ -55,9 +55,9 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         graph.watchForRelationship(types: ["T"], tags: ["G1"])
         
         let relationship = Relationship(type: "T")
-        relationship.add("G1")
+        relationship.add(tag: "G1")
         
-        XCTAssertTrue(relationship.tagged("G1"))
+        XCTAssertTrue(relationship.has(tag: "G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -74,7 +74,7 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         let graph = Graph()
         
         let relationship = Relationship(type: "T")
-        relationship.add("G2")
+        relationship.add(tag: "G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -91,11 +91,11 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         graph.delegate = self
         graph.watchForRelationship(tags: ["G1", "G2"])
         
-        relationship.add("G1")
-        relationship.remove("G2")
+        relationship.add(tag: "G1")
+        relationship.remove(tag: "G2")
         
-        XCTAssertTrue(relationship.tagged("G1"))
-        XCTAssertFalse(relationship.tagged("G2"))
+        XCTAssertTrue(relationship.has(tag: "G1"))
+        XCTAssertFalse(relationship.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -112,9 +112,9 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         let graph = Graph()
         
         let relationship = Relationship(type: "T")
-        relationship.add("G2")
+        relationship.add(tag: "G2")
         
-        XCTAssertTrue(relationship.tagged("G2"))
+        XCTAssertTrue(relationship.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -130,9 +130,9 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         graph.delegate = self
         graph.watchForRelationship(tags: ["G2"])
         
-        relationship.remove("G2")
+        relationship.remove(tag: "G2")
         
-        XCTAssertFalse(relationship.tagged("G2"))
+        XCTAssertFalse(relationship.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -147,7 +147,7 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G1", tag)
-        XCTAssertTrue(relationship.tagged(tag))
+        XCTAssertTrue(relationship.has(tag: tag))
         XCTAssertEqual(1, relationship.tags.count)
         XCTAssertTrue(relationship.tags.contains(tag))
         
@@ -158,7 +158,7 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G2", tag)
-        XCTAssertFalse(relationship.tagged(tag))
+        XCTAssertFalse(relationship.has(tag: tag))
         
         tagRemoveExpception?.fulfill()
     }

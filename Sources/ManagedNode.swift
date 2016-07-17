@@ -123,18 +123,18 @@ internal class ManagedNode: ManagedObject {
     
     /**
      Checks if the ManagedNode to a part tag.
-     - Parameter name: The tag name.
+     - Parameter tag: The tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    internal func tagged(_ name: String) -> Bool {
+    internal func has(tag: String) -> Bool {
         guard let moc = managedObjectContext else {
             return false
         }
         var result: Bool? = false
         moc.performAndWait { [unowned self] in
-            for tag in self.tagSet {
-                if name == tag.name {
+            for t in self.tagSet {
+                if tag == t.name {
                     result = true
                     break
                 }

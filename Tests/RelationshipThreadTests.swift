@@ -69,7 +69,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         
         q1.async { [weak self] in
             relationship["P"] = 111
-            relationship.add("G")
+            relationship.add(tag: "G")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success, "\(error)")
@@ -114,7 +114,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual(111, relationship["P"] as? Int)
-        XCTAssertTrue(relationship.tagged("G"))
+        XCTAssertTrue(relationship.has(tag: "G"))
         
         insertExpectation?.fulfill()
     }
@@ -123,7 +123,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
-        XCTAssertFalse(relationship.tagged("G"))
+        XCTAssertFalse(relationship.has(tag: "G"))
         
         deleteExpectation?.fulfill()
     }
@@ -131,7 +131,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
     func graph(graph: Graph, relationship: Relationship, added tag: String, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(relationship.tagged(tag))
+        XCTAssertTrue(relationship.has(tag: tag))
         
         insertGroupExpectation?.fulfill()
     }
@@ -140,7 +140,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(relationship.tagged("G"))
+        XCTAssertFalse(relationship.has(tag: "G"))
         
         deleteGroupExpectation?.fulfill()
     }

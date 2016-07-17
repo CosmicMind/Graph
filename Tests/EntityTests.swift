@@ -57,7 +57,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         let entity = Entity(type: "T")
         entity["P"] = "V"
-        entity.add("G")
+        entity.add(tag: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -83,7 +83,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         let entity = Entity(type: "T", graph: "EntityTests-testNamedGraphSave")
         entity["P"] = "V"
-        entity.add("G")
+        entity.add(tag: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -109,7 +109,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
-        entity.add("G")
+        entity.add(tag: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -136,7 +136,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
-        entity.add("G")
+        entity.add(tag: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -163,7 +163,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         let entity = Entity(type: "T")
         entity["P"] = "V"
-        entity.add("G")
+        entity.add(tag: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -194,7 +194,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("V", entity["P"] as? String)
-        XCTAssertTrue(entity.tagged("G"))
+        XCTAssertTrue(entity.has(tag: "G"))
         
         delegateException?.fulfill()
     }
@@ -203,7 +203,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertNil(entity["P"])
-        XCTAssertFalse(entity.tagged("G"))
+        XCTAssertFalse(entity.has(tag: "G"))
         
         delegateException?.fulfill()
     }
@@ -212,7 +212,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(entity.tagged(tag))
+        XCTAssertTrue(entity.has(tag: tag))
         
         tagExpception?.fulfill()
     }
@@ -221,7 +221,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(entity.tagged(tag))
+        XCTAssertFalse(entity.has(tag: tag))
         
         tagExpception?.fulfill()
     }

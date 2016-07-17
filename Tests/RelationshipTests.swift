@@ -57,7 +57,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
-        relationship.add("G")
+        relationship.add(tag: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -83,7 +83,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         let relationship = Relationship(type: "T", graph: "RelationshipTests-testNamedGraphSave")
         relationship["P"] = "V"
-        relationship.add("G")
+        relationship.add(tag: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -109,7 +109,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         let relationship = Relationship(type: "T", graph: graph)
         relationship["P"] = "V"
-        relationship.add("G")
+        relationship.add(tag: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -136,7 +136,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         let relationship = Relationship(type: "T", graph: graph)
         relationship["P"] = "V"
-        relationship.add("G")
+        relationship.add(tag: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -163,7 +163,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
-        relationship.add("G")
+        relationship.add(tag: "G")
         
         let subject = Entity(type: "S")
         relationship.subject = subject
@@ -233,7 +233,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
-        relationship.add("G")
+        relationship.add(tag: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -277,7 +277,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
-        relationship.add("G")
+        relationship.add(tag: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -313,7 +313,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
-        XCTAssertTrue(relationship.tagged("G"))
+        XCTAssertTrue(relationship.has(tag: "G"))
         
         delegateException?.fulfill()
     }
@@ -322,7 +322,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
-        XCTAssertTrue(relationship.tagged("G"))
+        XCTAssertTrue(relationship.has(tag: "G"))
         
         delegateException?.fulfill()
     }
@@ -331,7 +331,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
-        XCTAssertFalse(relationship.tagged("G"))
+        XCTAssertFalse(relationship.has(tag: "G"))
         XCTAssertNotNil(relationship.subject)
         XCTAssertEqual(1, relationship.subject?.relationships.count)
         XCTAssertNotNil(relationship.object)
@@ -344,7 +344,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(relationship.tagged(tag))
+        XCTAssertTrue(relationship.has(tag: tag))
         
         tagExpception?.fulfill()
     }
@@ -353,7 +353,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(relationship.tagged(tag))
+        XCTAssertFalse(relationship.has(tag: tag))
         
         tagExpception?.fulfill()
     }

@@ -55,9 +55,9 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         graph.watchForAction(types: ["T"], tags: ["G1"])
         
         let action = Action(type: "T")
-        action.add("G1")
+        action.add(tag: "G1")
         
-        XCTAssertTrue(action.tagged("G1"))
+        XCTAssertTrue(action.has(tag: "G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -74,7 +74,7 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         let graph = Graph()
         
         let action = Action(type: "T")
-        action.add("G2")
+        action.add(tag: "G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -91,11 +91,11 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         graph.delegate = self
         graph.watchForAction(tags: ["G1", "G2"])
         
-        action.add("G1")
-        action.remove("G2")
+        action.add(tag: "G1")
+        action.remove(tag: "G2")
         
-        XCTAssertTrue(action.tagged("G1"))
-        XCTAssertFalse(action.tagged("G2"))
+        XCTAssertTrue(action.has(tag: "G1"))
+        XCTAssertFalse(action.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -112,9 +112,9 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         let graph = Graph()
         
         let action = Action(type: "T")
-        action.add("G2")
+        action.add(tag: "G2")
         
-        XCTAssertTrue(action.tagged("G2"))
+        XCTAssertTrue(action.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -130,9 +130,9 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         graph.delegate = self
         graph.watchForAction(tags: ["G2"])
         
-        action.remove("G2")
+        action.remove(tag: "G2")
         
-        XCTAssertFalse(action.tagged("G2"))
+        XCTAssertFalse(action.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -147,7 +147,7 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G1", tag)
-        XCTAssertTrue(action.tagged(tag))
+        XCTAssertTrue(action.has(tag: tag))
         XCTAssertEqual(1, action.tags.count)
         XCTAssertTrue(action.tags.contains(tag))
         
@@ -158,7 +158,7 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G2", tag)
-        XCTAssertFalse(action.tagged(tag))
+        XCTAssertFalse(action.has(tag: tag))
         
         tagRemoveExpception?.fulfill()
     }

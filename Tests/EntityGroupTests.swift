@@ -55,9 +55,9 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         graph.watchForEntity(types: ["T"], tags: ["G1"])
         
         let entity = Entity(type: "T")
-        entity.add("G1")
+        entity.add(tag: "G1")
         
-        XCTAssertTrue(entity.tagged("G1"))
+        XCTAssertTrue(entity.has(tag: "G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -74,7 +74,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         let graph = Graph()
         
         let entity = Entity(type: "T")
-        entity.add("G2")
+        entity.add(tag: "G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -91,11 +91,11 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         graph.delegate = self
         graph.watchForEntity(tags: ["G1", "G2"])
         
-        entity.add("G1")
-        entity.remove("G2")
+        entity.add(tag: "G1")
+        entity.remove(tag: "G2")
         
-        XCTAssertTrue(entity.tagged("G1"))
-        XCTAssertFalse(entity.tagged("G2"))
+        XCTAssertTrue(entity.has(tag: "G1"))
+        XCTAssertFalse(entity.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -112,9 +112,9 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         let graph = Graph()
         
         let entity = Entity(type: "T")
-        entity.add("G2")
+        entity.add(tag: "G2")
         
-        XCTAssertTrue(entity.tagged("G2"))
+        XCTAssertTrue(entity.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -130,9 +130,9 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         graph.delegate = self
         graph.watchForEntity(tags: ["G2"])
         
-        entity.remove("G2")
+        entity.remove(tag: "G2")
         
-        XCTAssertFalse(entity.tagged("G2"))
+        XCTAssertFalse(entity.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -147,7 +147,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G1", tag)
-        XCTAssertTrue(entity.tagged(tag))
+        XCTAssertTrue(entity.has(tag: tag))
         XCTAssertEqual(1, entity.tags.count)
         XCTAssertTrue(entity.tags.contains(tag))
         
@@ -158,7 +158,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G2", tag)
-        XCTAssertFalse(entity.tagged(tag))
+        XCTAssertFalse(entity.has(tag: tag))
         
         tagRemoveExpception?.fulfill()
     }

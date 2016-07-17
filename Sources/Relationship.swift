@@ -198,32 +198,32 @@ public class Relationship: NSObject, NodeType {
     
     /**
      Adds the Relationship to the tag.
-     - Parameter name: The tag name.
+     - Parameter tag: The tag name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
-    public func add(_ name: String) {
-        managedNode.add(name)
+    public func add(tag: String) {
+        managedNode.add(tag: tag)
     }
     
     /**
      Checks membership in a tag.
-     - Parameter name: The tag name.
+     - Parameter tag: The tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    public func tagged(_ name: String) -> Bool {
-        return managedNode.tagged(name)
+    public func has(tag: String) -> Bool {
+        return managedNode.has(tag: tag)
     }
     
     /**
      Removes the Relationship from a tag.
-     - Parameter name: The tag name.
+     - Parameter tag: The tag name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
-    public func remove(_ name: String) {
-        managedNode.remove(name)
+    public func remove(tag: String) {
+        managedNode.remove(tag: tag)
     }
     
     /**
@@ -231,8 +231,8 @@ public class Relationship: NSObject, NodeType {
      removes it if it is a member.
      - Parameter name: The tag name.
      */
-    public func toggle(_ name: String) {
-        tagged(name) ? remove(name) : add(name)
+    public func toggle(tag: String) {
+        has(tag: tag) ? remove(tag: tag) : add(tag: tag)
     }
     
     /// Marks the Relationship for deletion.

@@ -69,7 +69,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         
         q1.async { [weak self] in
             action["P"] = 111
-            action.add("G")
+            action.add(tag: "G")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success, "\(error)")
@@ -114,7 +114,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(111, action["P"] as? Int)
-        XCTAssertTrue(action.tagged("G"))
+        XCTAssertTrue(action.has(tag: "G"))
         
         insertExpectation?.fulfill()
     }
@@ -123,7 +123,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
-        XCTAssertFalse(action.tagged("G"))
+        XCTAssertFalse(action.has(tag: "G"))
         
         deleteExpectation?.fulfill()
     }
@@ -131,7 +131,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
     func graph(graph: Graph, action: Action, added tag: String, cloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(action.tagged(tag))
+        XCTAssertTrue(action.has(tag: tag))
         
         insertGroupExpectation?.fulfill()
     }
@@ -140,7 +140,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(action.tagged("G"))
+        XCTAssertFalse(action.has(tag: "G"))
         
         deleteGroupExpectation?.fulfill()
     }

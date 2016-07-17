@@ -129,7 +129,7 @@ public extension Graph {
             relationship.delete()
         }
         
-        sync(completion)
+        async(completion)
     }
     
     /// Reset the storage.

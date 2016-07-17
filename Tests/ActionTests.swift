@@ -57,7 +57,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let action = Action(type: "T")
         action["P"] = "V"
-        action.add("G")
+        action.add(tag: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -83,7 +83,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let action = Action(type: "T", graph: "ActionTests-testNamedGraphSave")
         action["P"] = "V"
-        action.add("G")
+        action.add(tag: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -109,7 +109,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let action = Action(type: "T", graph: graph)
         action["P"] = "V"
-        action.add("G")
+        action.add(tag: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -136,7 +136,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let action = Action(type: "T", graph: graph)
         action["P"] = "V"
-        action.add("G")
+        action.add(tag: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -163,7 +163,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let action = Action(type: "T")
         action["P"] = "V"
-        action.add("G")
+        action.add(tag: "G")
         
         action.addSubject(Entity(type: "T"))
         action.addSubject(Entity(type: "T"))
@@ -212,7 +212,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let action = Action(type: "T")
         action["P"] = "V"
-        action.add("G")
+        action.add(tag: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -254,7 +254,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let action = Action(type: "T")
         action["P"] = "V"
-        action.add("G")
+        action.add(tag: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -288,7 +288,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("V", action["P"] as? String)
-        XCTAssertTrue(action.tagged("G"))
+        XCTAssertTrue(action.has(tag: "G"))
         
         delegateException?.fulfill()
     }
@@ -297,7 +297,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
-        XCTAssertFalse(action.tagged("G"))
+        XCTAssertFalse(action.has(tag: "G"))
         XCTAssertEqual(2, action.subjects.count)
         XCTAssertEqual(2, action.objects.count)
         XCTAssertEqual(1, action.subjects.first?.actionsWhenSubject.count)
@@ -312,7 +312,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(action.tagged(tag))
+        XCTAssertTrue(action.has(tag: tag))
         
         tagExpception?.fulfill()
     }
@@ -321,7 +321,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(action.tagged(tag))
+        XCTAssertFalse(action.has(tag: tag))
         
         tagExpception?.fulfill()
     }
