@@ -222,8 +222,8 @@ public class Entity: NSObject, NodeType {
     }
     
     /**
-     Adds the Entity to the tag.
-     - Parameter tag: The tag name.
+     Adds a given tag to an Entity.
+     - Parameter tag: A tag name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
@@ -232,8 +232,8 @@ public class Entity: NSObject, NodeType {
     }
     
     /**
-     Checks membership in a tag.
-     - Parameter tag: The tag name.
+     Checks if an Entity has a given tag.
+     - Parameter tag: A tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
@@ -242,8 +242,8 @@ public class Entity: NSObject, NodeType {
     }
     
     /**
-     Removes the Entity from a tag.
-     - Parameter tag: The tag name.
+     Removes a given tag from an Entity.
+     - Parameter tag: A tag name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
@@ -252,12 +252,50 @@ public class Entity: NSObject, NodeType {
     }
     
     /**
-     Adds the Entity to the tag if it is not a member, or
-     removes it if it is a member.
-     - Parameter tag: The tag name.
+     Adds a given tag to an Entity or removes it, based on its previous state.
+     - Parameter tag: A tag name.
      */
     public func toggle(tag: String) {
         has(tag: tag) ? remove(tag: tag) : add(tag: tag)
+    }
+    
+    /**
+     Adds an Entity to a given group.
+     - Parameter to group: A group name.
+     - Returns: A boolean of the result, true if added, false
+     otherwise.
+     */
+    public func add(to group: String) {
+        managedNode.add(to: group)
+    }
+    
+    /**
+     Checks if an Entity is a member of a given group.
+     - Parameter of group: A group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    public func member(of group: String) -> Bool {
+        return managedNode.member(of: group)
+    }
+    
+    /**
+     Removes an Entity from a given group.
+     - Parameter from group: A group name.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    public func remove(from group: String) {
+        managedNode.remove(from: group)
+    }
+    
+    /**
+     Adds an Entity to a given group, or removes it, based on its previous
+     state.
+     - Parameter group: A group name.
+     */
+    public func toggle(group: String) {
+        member(of: group) ? remove(from: group) : add(to: group)
     }
     
     /// Marks the Entity for deletion.

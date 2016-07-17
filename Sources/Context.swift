@@ -59,7 +59,7 @@ internal struct Context
             }
         }
         
-        if concurrencyType == .mainQueueConcurrencyType && !Thread.isMainThread() {
+        if concurrencyType == .mainQueueConcurrencyType && !Thread.isMainThread {
             DispatchQueue.main.sync {
                 makeContext()
             }
@@ -90,7 +90,7 @@ public extension Graph {
      */
     internal func prepareManagedObjectContext(enableCloud: Bool) {
         guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
-            let supported = enableCloud && nil != FileManager.default().urlForUbiquityContainerIdentifier(nil)
+            let supported = enableCloud && nil != FileManager.default.urlForUbiquityContainerIdentifier(nil)
             GraphContextRegistry.supported[route] = supported
             location = try! GraphStoreDescription.location.appendingPathComponent(route)
             

@@ -197,8 +197,8 @@ public class Relationship: NSObject, NodeType {
     }
     
     /**
-     Adds the Relationship to the tag.
-     - Parameter tag: The tag name.
+     Adds a given tag to a Relationship.
+     - Parameter tag: A tag name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
      */
@@ -207,8 +207,8 @@ public class Relationship: NSObject, NodeType {
     }
     
     /**
-     Checks membership in a tag.
-     - Parameter tag: The tag name.
+     Checks if a Relationship has a given tag.
+     - Parameter tag: A tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
@@ -217,8 +217,8 @@ public class Relationship: NSObject, NodeType {
     }
     
     /**
-     Removes the Relationship from a tag.
-     - Parameter tag: The tag name.
+     Removes a given tag from a Relationship.
+     - Parameter tag: A tag name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
      */
@@ -227,12 +227,51 @@ public class Relationship: NSObject, NodeType {
     }
     
     /**
-     Adds the Relationship to the tag if it is not a member, or
-     removes it if it is a member.
-     - Parameter name: The tag name.
+     Adds a given tag to an Relationship or removes it, based on its 
+     previous state.
+     - Parameter tag: A tag name.
      */
     public func toggle(tag: String) {
         has(tag: tag) ? remove(tag: tag) : add(tag: tag)
+    }
+    
+    /**
+     Adds a Relationship to a given group.
+     - Parameter to group: A group name.
+     - Returns: A boolean of the result, true if added, false
+     otherwise.
+     */
+    public func add(to group: String) {
+        managedNode.add(to: group)
+    }
+    
+    /**
+     Checks if a Relationship is a member of a given group.
+     - Parameter of group: A group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    public func member(of group: String) -> Bool {
+        return managedNode.member(of: group)
+    }
+    
+    /**
+     Removes a Relationship from a given group.
+     - Parameter from group: A group name.
+     - Returns: A boolean of the result, true if removed, false
+     otherwise.
+     */
+    public func remove(from group: String) {
+        managedNode.remove(from: group)
+    }
+    
+    /**
+     Adds a Relationship to a given group, or removes it, based on its previous
+     state.
+     - Parameter group: A group name.
+     */
+    public func toggle(group: String) {
+        member(of: group) ? remove(from: group) : add(to: group)
     }
     
     /// Marks the Relationship for deletion.

@@ -30,14 +30,14 @@
 
 import CoreData
 
-@objc(ManagedTag)
-internal class ManagedTag: ManagedObject {
+@objc(ManagedGroup)
+internal class ManagedGroup: ManagedObject {
     @NSManaged internal var name: String
     
     /**
-     Initializer that accepts an identifier, tag name and a NSManagedObjectContext.
+     Initializer that accepts an identifier, group name and a NSManagedObjectContext.
      - Parameter identifier: A model identifier.
-     - Parameter name: A tag name.
+     - Parameter name: A group name.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
     internal convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {

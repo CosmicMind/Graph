@@ -173,7 +173,7 @@ public struct File {
      - Returns: A boolean of the result, true if exists, false otherwise.
     */
     public static func fileExistsAtPath(_ path: URL) -> Bool {
-        return FileManager.default().fileExists(atPath: path.path!)
+        return FileManager.default.fileExists(atPath: path.path!)
     }
     
     /**
@@ -183,7 +183,7 @@ public struct File {
      - Returns: A boolean of the result, true if equal, false otherwise.
      */
     public static func contentsEqualAtPath(_ path: URL, andPath: URL) -> Bool {
-        return FileManager.default().contentsEqual(atPath: path.path!, andPath: andPath.path!)
+        return FileManager.default.contentsEqual(atPath: path.path!, andPath: andPath.path!)
     }
     
     /**
@@ -192,7 +192,7 @@ public struct File {
      - Returns: A boolean of the result, true if writable, false otherwise.
      */
     public static func isWritableFileAtPath(_ path: URL) -> Bool {
-        return FileManager.default().isWritableFile(atPath: path.path!)
+        return FileManager.default.isWritableFile(atPath: path.path!)
     }
     
     /**
@@ -203,7 +203,7 @@ public struct File {
      */
     public static func removeItemAtPath(_ path: URL, completion: ((removed: Bool?, error: NSError?) -> Void)? = nil) {
         do {
-            try FileManager.default().removeItem(atPath: path.path!)
+            try FileManager.default.removeItem(atPath: path.path!)
             completion?(removed: true, error: nil)
         } catch let e as NSError {
             completion?(removed: nil, error: e)
@@ -220,7 +220,7 @@ public struct File {
      */
     public static func createDirectoryAtPath(_ path: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         do {
-            try FileManager.default().createDirectory(atPath: path.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
+            try FileManager.default.createDirectory(atPath: path.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
             completion?(success: true, error: nil)
         } catch let e as NSError {
             completion?(success: false, error: e)
@@ -235,7 +235,7 @@ public struct File {
      */
     public static func removeDirectoryAtPath(_ path: URL, completion: ((success: Bool, error: NSError?) -> Void)?  = nil)  {
         do {
-            try FileManager.default().removeItem(at: path)
+            try FileManager.default.removeItem(at: path)
             completion?(success: true, error: nil)
         } catch let e as NSError {
             completion?(success: false, error: e)
@@ -251,7 +251,7 @@ public struct File {
      */
     public static func contentsOfDirectoryAtPath(_ path: URL, shouldSkipHiddenFiles skip: Bool = false, completion: ((contents: [URL]?, error: NSError?) -> Void)) {
         do {
-            let contents = try FileManager.default().contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: skip == true ? FileManager.DirectoryEnumerationOptions.skipsHiddenFiles : FileManager.DirectoryEnumerationOptions(rawValue: 0))
+            let contents = try FileManager.default.contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: skip == true ? FileManager.DirectoryEnumerationOptions.skipsHiddenFiles : FileManager.DirectoryEnumerationOptions(rawValue: 0))
             completion(contents: contents, error: nil)
         } catch let e as NSError {
             return completion(contents: nil, error: e)
@@ -320,7 +320,7 @@ public struct File {
      - Returns: An optional NSURL to return if possible.
      */
     public static func pathForDirectory(_ searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
-        return try? FileManager.default().urlForDirectory(searchPathDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        return try? FileManager.default.urlForDirectory(searchPathDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     }
     
     /**

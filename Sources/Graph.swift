@@ -39,7 +39,7 @@ public struct GraphStoreDescription {
     
     /// URL reference to where the Graph datastore will live.
     static var location: URL {
-        return File.path(.applicationSupportDirectory, path: "CosmicMind/Graph/")!
+        return File.path(.documentDirectory, path: "CosmicMind/Graph/")!
     }
 }
 
@@ -84,7 +84,7 @@ public class Graph: NSObject {
     
     /// Deinitializer that removes the Graph from NSNotificationCenter.
     deinit {
-        NotificationCenter.default().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     /**

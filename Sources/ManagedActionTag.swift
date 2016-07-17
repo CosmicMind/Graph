@@ -35,8 +35,7 @@ internal class ManagedActionTag: ManagedTag {
     @NSManaged internal var node: ManagedAction
     
     /**
-     Initializer that accepts a tag name and a
-     NSManagedObjectContext.
+     Initializer that accepts a tag name and a NSManagedObjectContext.
      - Parameter name: A tag name.
      - Parameter node: A ManagedAction.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.

@@ -35,8 +35,7 @@ internal class ManagedEntityTag: ManagedTag {
     @NSManaged internal var node: ManagedEntity
     
     /**
-     Initializer that accepts a tag name and a
-     NSManagedObjectContext.
+     Initializer that accepts a tag name and a NSManagedObjectContext.
      - Parameter name: A tag name.
      - Parameter node: A ManagedEntity.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.

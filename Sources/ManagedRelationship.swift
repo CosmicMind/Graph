@@ -90,8 +90,8 @@ internal class ManagedRelationship: ManagedNode {
     }
     
     /**
-     Adds the ManagedAction to the tag.
-     - Parameter tag: The tag name.
+     Adds a tag to the ManagedRelationship.
+     - Parameter tag: A tag name.
      */
     internal func add(tag: String) {
         guard let moc = managedObjectContext else {
@@ -105,8 +105,8 @@ internal class ManagedRelationship: ManagedNode {
     }
     
     /**
-     Removes the ManagedAction from the tag.
-     - Parameter tag: The tag name.
+     Removes a tag from a ManagedRelationship.
+     - Parameter tag: A tag name.
      */
     internal func remove(tag: String) {
         guard let moc = managedObjectContext else {
@@ -115,10 +115,41 @@ internal class ManagedRelationship: ManagedNode {
         moc.performAndWait { [unowned self] in
             for t in self.tagSet {
                 if tag == t.name {
-                    if let g = t as? ManagedRelationshipTag {
-                        g.delete()
-                        break
-                    }
+                    (t as? ManagedRelationshipTag)?.delete()
+                    break
+                }
+            }
+        }
+    }
+    
+    /**
+     Adds the ManagedRelationship to a given group.
+     - Parameter to group: A group name.
+     */
+    internal func add(to group: String) {
+        guard let moc = managedObjectContext else {
+            return
+        }
+        moc.performAndWait { [unowned self, unowned moc] in
+            if !self.member(of: group) {
+                _ = ManagedRelationshipGroup(name: group, node: self, managedObjectContext: moc)
+            }
+        }
+    }
+    
+    /**
+     Removes the ManagedRelationship from a given group.
+     - Parameter from group: A group name.
+     */
+    internal func remove(from group: String) {
+        guard let moc = managedObjectContext else {
+            return
+        }
+        moc.performAndWait { [unowned self] in
+            for g in self.groupSet {
+                if group == g.name {
+                    (g as? ManagedRelationshipGroup)?.delete()
+                    break
                 }
             }
         }
@@ -126,28 +157,14 @@ internal class ManagedRelationship: ManagedNode {
     
     /// Marks the Relationship for deletion and clears all its relationships.
     internal override func delete() {
-        guard let moc = self.managedObjectContext else {
-            return
-        }
+//        guard let moc = self.managedObjectContext else {
+//            return
+//        }
         
-        moc.performAndWait { [unowned self] in
-            self.tagSet.forEach { (object: AnyObject) in
-                guard let tag = object as? ManagedRelationshipTag else {
-                    return
-                }
-                tag.delete()
-            }
-            
-            self.propertySet.forEach { (object: AnyObject) in
-                guard let property = object as? ManagedRelationshipProperty else {
-                    return
-                }
-                property.delete()
-            }
-            
+//        moc.performAndWait { [unowned self] in
 //            self.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self)
 //            self.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self)
-        }
+//        }
         
         super.delete()
     }

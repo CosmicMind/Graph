@@ -33,14 +33,17 @@ import CoreData
 internal struct ModelIdentifier {
     static let entityName: String = "ManagedEntity"
     static let entityTagName: String = "ManagedEntityTag"
+    static let entityGroupName: String = "ManagedEntityGroup"
     static let entityPropertyName: String = "ManagedEntityProperty"
     
     static let actionName: String = "ManagedAction"
     static let actionTagName: String = "ManagedActionTag"
+    static let actionGroupName: String = "ManagedActionGroup"
     static let actionPropertyName: String = "ManagedActionProperty"
     
     static let relationshipName: String = "ManagedRelationship"
     static let relationshipTagName: String = "ManagedRelationshipTag"
+    static let relationshipGroupName: String = "ManagedRelationshipGroup"
     static let relationshipPropertyName: String = "ManagedRelationshipProperty"
 }
 
@@ -85,6 +88,21 @@ internal struct Model {
         var relationshipTagProperties = [AnyObject]()
         relationshipTagDescription.name = ModelIdentifier.relationshipTagName
         relationshipTagDescription.managedObjectClassName = ModelIdentifier.relationshipTagName
+        
+        let entityGroupDescription = NSEntityDescription()
+        var entityGroupProperties = [AnyObject]()
+        entityGroupDescription.name = ModelIdentifier.entityGroupName
+        entityGroupDescription.managedObjectClassName = ModelIdentifier.entityGroupName
+        
+        let actionGroupDescription = NSEntityDescription()
+        var actionGroupProperties = [AnyObject]()
+        actionGroupDescription.name = ModelIdentifier.actionGroupName
+        actionGroupDescription.managedObjectClassName = ModelIdentifier.actionGroupName
+        
+        let relationshipGroupDescription = NSEntityDescription()
+        var relationshipGroupProperties = [AnyObject]()
+        relationshipGroupDescription.name = ModelIdentifier.relationshipGroupName
+        relationshipGroupDescription.managedObjectClassName = ModelIdentifier.relationshipGroupName
         
         let entityPropertyDescription = NSEntityDescription()
         var entityPropertyProperties = [AnyObject]()
@@ -213,7 +231,38 @@ internal struct Model {
         relationshipTagProperties.append(tagRelationship.copy() as! NSRelationshipDescription)
         relationshipProperties.append(tagSetRelationship.copy() as! NSRelationshipDescription)
         
-        //          Inverse relationship for Subjects -- B.
+        let groupRelationship = NSRelationshipDescription()
+        groupRelationship.name = "node"
+        groupRelationship.minCount = 1
+        groupRelationship.maxCount = 1
+        groupRelationship.isOptional = false
+        groupRelationship.deleteRule = .noActionDeleteRule
+        
+        let groupSetRelationship = NSRelationshipDescription()
+        groupSetRelationship.name = "groupSet"
+        groupSetRelationship.minCount = 0
+        groupSetRelationship.maxCount = 0
+        groupSetRelationship.isOptional = false
+        groupSetRelationship.deleteRule = .noActionDeleteRule
+        groupRelationship.inverseRelationship = groupSetRelationship
+        groupSetRelationship.inverseRelationship = groupRelationship
+        
+        groupRelationship.destinationEntity = entityDescription
+        groupSetRelationship.destinationEntity = entityGroupDescription
+        entityGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+        entityProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
+        
+        groupRelationship.destinationEntity = actionDescription
+        groupSetRelationship.destinationEntity = actionGroupDescription
+        actionGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+        actionProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
+        
+        groupRelationship.destinationEntity = relationshipDescription
+        groupSetRelationship.destinationEntity = relationshipGroupDescription
+        relationshipGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+        relationshipProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
+        
+        // Inverse relationship for Subjects -- B.
         let actionSubjectSetRelationship = NSRelationshipDescription()
         actionSubjectSetRelationship.name = "subjectSet"
         actionSubjectSetRelationship.minCount = 0
@@ -234,9 +283,9 @@ internal struct Model {
         
         entityProperties.append(actionSubjectRelationship.copy() as! NSRelationshipDescription)
         actionProperties.append(actionSubjectSetRelationship.copy() as! NSRelationshipDescription)
-//      Inverse relationship for Subjects -- E.
+        // Inverse relationship for Subjects -- E.
 
-//      Inverse relationship for Objects -- B.
+        // Inverse relationship for Objects -- B.
         let actionObjectSetRelationship = NSRelationshipDescription()
         actionObjectSetRelationship.name = "objectSet"
         actionObjectSetRelationship.minCount = 0
@@ -257,9 +306,9 @@ internal struct Model {
         
         entityProperties.append(actionObjectRelationship.copy() as! NSRelationshipDescription)
         actionProperties.append(actionObjectSetRelationship.copy() as! NSRelationshipDescription)
-//      Inverse relationship for Objects -- E.
+        // Inverse relationship for Objects -- E.
 
-//      Inverse relationship for Subjects -- B.
+        // Inverse relationship for Subjects -- B.
         let relationshipSubjectSetRelationship = NSRelationshipDescription()
         relationshipSubjectSetRelationship.name = "subject"
         relationshipSubjectSetRelationship.minCount = 1
@@ -281,9 +330,9 @@ internal struct Model {
         
         entityProperties.append(relationshipSubjectRelationship.copy() as! NSRelationshipDescription)
         relationshipProperties.append(relationshipSubjectSetRelationship.copy() as! NSRelationshipDescription)
-//      Inverse relationship for Subjects -- E.
+        // Inverse relationship for Subjects -- E.
 
-//      Inverse relationship for Objects -- B.
+        // Inverse relationship for Objects -- B.
         let relationshipObjectSetRelationship = NSRelationshipDescription()
         relationshipObjectSetRelationship.name = "object"
         relationshipObjectSetRelationship.minCount = 1
@@ -304,7 +353,7 @@ internal struct Model {
         
         entityProperties.append(relationshipObjectRelationship.copy() as! NSRelationshipDescription)
         relationshipProperties.append(relationshipObjectSetRelationship.copy() as! NSRelationshipDescription)
-//      Inverse relationship for Objects -- E.
+        // Inverse relationship for Objects -- E.
         
         entityDescription.properties = entityProperties as! [NSPropertyDescription]
         entityTagDescription.properties = entityTagProperties as! [NSPropertyDescription]
@@ -322,14 +371,17 @@ internal struct Model {
         Model.managedObjectModel?.entities = [
             entityDescription,
             entityTagDescription,
+            entityGroupDescription,
             entityPropertyDescription,
             
             actionDescription,
             actionTagDescription,
+            actionGroupDescription,
             actionPropertyDescription,
             
             relationshipDescription,
             relationshipTagDescription,
+            relationshipGroupDescription,
             relationshipPropertyDescription
         ]
     }()

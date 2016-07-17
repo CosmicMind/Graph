@@ -88,8 +88,8 @@ internal class ManagedAction: ManagedNode {
     }
     
     /**
-     Adds the ManagedAction to the tag.
-     - Parameter tag: The tag name.
+     Adds a tag to the ManagedAction.
+     - Parameter tag: A tag name.
      */
     internal func add(tag: String) {
         guard let moc = managedObjectContext else {
@@ -103,8 +103,8 @@ internal class ManagedAction: ManagedNode {
     }
     
     /**
-     Removes the ManagedAction from the tag.
-     - Parameter tag: The tag name.
+     Removes a tag from a ManagedAction.
+     - Parameter tag: A tag name.
      */
     internal func remove(tag: String) {
         guard let moc = managedObjectContext else {
@@ -114,6 +114,39 @@ internal class ManagedAction: ManagedNode {
             for t in self.tagSet {
                 if tag == t.name {
                     (t as? ManagedActionTag)?.delete()
+                    break
+                }
+            }
+        }
+    }
+    
+    /**
+     Adds the ManagedAction to a given group.
+     - Parameter to group: A group name.
+     */
+    internal func add(to group: String) {
+        guard let moc = managedObjectContext else {
+            return
+        }
+        moc.performAndWait { [unowned self, unowned moc] in
+            if !self.member(of: group) {
+                _ = ManagedActionGroup(name: group, node: self, managedObjectContext: moc)
+            }
+        }
+    }
+    
+    /**
+     Removes the ManagedAction from a given group.
+     - Parameter from group: A group name.
+     */
+    internal func remove(from group: String) {
+        guard let moc = managedObjectContext else {
+            return
+        }
+        moc.performAndWait { [unowned self] in
+            for g in self.groupSet {
+                if group == g.name {
+                    (g as? ManagedActionGroup)?.delete()
                     break
                 }
             }
@@ -162,25 +195,11 @@ internal class ManagedAction: ManagedNode {
     
     /// Marks the Action for deletion and clears all its relationships.
     internal override func delete() {
-        guard let moc = managedObjectContext else {
-            return
-        }
+//        guard let moc = managedObjectContext else {
+//            return
+//        }
         
-        moc.performAndWait { [unowned self] in
-            self.tagSet.forEach { (object: AnyObject) in
-                guard let tag = object as? ManagedActionTag else {
-                    return
-                }
-                tag.delete()
-            }
-            
-            self.propertySet.forEach { (object: AnyObject) in
-                guard let property = object as? ManagedActionProperty else {
-                    return
-                }
-                property.delete()
-            }
-            
+//        moc.performAndWait { [unowned self] in
 //            self.subjectSet.forEach { [unowned self] (object: AnyObject) in
 //                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
 //                    return
@@ -194,7 +213,7 @@ internal class ManagedAction: ManagedNode {
 //                }
 //                self.mutableSetValueForKey("objectSet").removeObject(managedEntity)
 //            }
-        }
+//        }
         
         super.delete()
     }

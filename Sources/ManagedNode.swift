@@ -37,6 +37,7 @@ internal class ManagedNode: ManagedObject {
     @NSManaged internal var createdDate: Date
     @NSManaged internal var propertySet: NSSet
     @NSManaged internal var tagSet: NSSet
+    @NSManaged internal var groupSet: NSSet
     
     /// A reference to the Nodes unique ID.
     internal var id: String {
@@ -54,14 +55,30 @@ internal class ManagedNode: ManagedObject {
     
     /// A reference to the tags.
     internal var tags: Set<String> {
+        var t = Set<String>()
+        guard let moc = managedObjectContext else {
+            return t
+        }
+        moc.performAndWait { [unowned self] in
+            self.tagSet.forEach { (object: AnyObject) in
+                if let tag = object as? ManagedTag {
+                    t.insert(tag.name)
+                }
+            }
+        }
+        return t
+    }
+    
+    /// A reference to the groups.
+    internal var groups: Set<String> {
         var g = Set<String>()
         guard let moc = managedObjectContext else {
             return g
         }
         moc.performAndWait { [unowned self] in
-            self.tagSet.forEach { (object: AnyObject) in
-                if let tag = object as? ManagedTag {
-                    g.insert(tag.name)
+            self.groupSet.forEach { (object: AnyObject) in
+                if let group = object as? ManagedTag {
+                    g.insert(group.name)
                 }
             }
         }
@@ -96,6 +113,7 @@ internal class ManagedNode: ManagedObject {
         createdDate = Date()
         propertySet = NSSet()
         tagSet = NSSet()
+        groupSet = NSSet()
     }
     
     /**
@@ -122,8 +140,8 @@ internal class ManagedNode: ManagedObject {
     }
     
     /**
-     Checks if the ManagedNode to a part tag.
-     - Parameter tag: The tag name.
+     Checks if the ManagedNode has a given tag.
+     - Parameter tag: A tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
@@ -141,5 +159,59 @@ internal class ManagedNode: ManagedObject {
             }
         }
         return result!
+    }
+    
+    /**
+     Checks if the ManagedNode is a member of a group.
+     - Parameter of group: A group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    internal func member(of group: String) -> Bool {
+        guard let moc = managedObjectContext else {
+            return false
+        }
+        var result: Bool? = false
+        moc.performAndWait { [unowned self] in
+            for g in self.groupSet {
+                if group == g.name {
+                    result = true
+                    break
+                }
+            }
+        }
+        return result!
+    }
+    
+    /// Marks a Node for deletion and clears all its relationships.
+    internal override func delete() {
+        guard let moc = self.managedObjectContext else {
+            return
+        }
+        
+        moc.performAndWait { [unowned self] in
+            self.tagSet.forEach { (object: AnyObject) in
+                guard let tag = object as? ManagedEntityTag else {
+                    return
+                }
+                tag.delete()
+            }
+            
+            self.groupSet.forEach { (object: AnyObject) in
+                guard let group = object as? ManagedEntityGroup else {
+                    return
+                }
+                group.delete()
+            }
+            
+            self.propertySet.forEach { (object: AnyObject) in
+                guard let property = object as? ManagedEntityProperty else {
+                    return
+                }
+                property.delete()
+            }
+        }
+        
+        super.delete()
     }
 }

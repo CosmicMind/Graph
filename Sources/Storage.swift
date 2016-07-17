@@ -39,7 +39,7 @@ import CoreData
  - Parameter completion: An Optional completion block.
  */
 internal func GraphCompletionCallback(success: Bool, error: NSError?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-    if Thread.isMainThread() {
+    if Thread.isMainThread {
         completion?(success: success, error: error)
     } else {
         DispatchQueue.main.async {

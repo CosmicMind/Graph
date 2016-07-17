@@ -30,22 +30,24 @@
 
 import CoreData
 
-@objc(ManagedTag)
-internal class ManagedTag: ManagedObject {
-    @NSManaged internal var name: String
+@objc(ManagedEntityGroup)
+internal class ManagedEntityGroup: ManagedGroup {
+    @NSManaged internal var node: ManagedEntity
     
     /**
-     Initializer that accepts an identifier, tag name and a NSManagedObjectContext.
-     - Parameter identifier: A model identifier.
-     - Parameter name: A tag name.
+     Initializer that accepts a group name and a NSManagedObjectContext.
+     - Parameter name: A group name.
+     - Parameter node: A ManagedEntity.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {
-        if #available(iOS 10.0, OSX 10.12, *) {
-            self.init(context: managedObjectContext)
-        } else {
-            self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
-        }
-        self.name = name
+    internal convenience init(name: String, node: ManagedEntity, managedObjectContext: NSManagedObjectContext) {
+        self.init(identifier: ModelIdentifier.entityGroupName, name: name, managedObjectContext: managedObjectContext)
+        self.node = node
+    }
+    
+    /// Marks node for deletion.
+    internal override func delete() {
+        node.mutableSetValue(forKey: "groupSet").remove(self)
+        super.delete()
     }
 }

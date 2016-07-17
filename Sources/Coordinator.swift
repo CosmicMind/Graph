@@ -101,7 +101,7 @@ public extension Graph {
             return
         }
         
-        let defaultCenter = NotificationCenter.default()
+        let defaultCenter = NotificationCenter.default
         defaultCenter.addObserver(self, selector: #selector(persistentStoreWillChange(_:)), name: NSNotification.Name.NSPersistentStoreCoordinatorStoresWillChange, object: moc.persistentStoreCoordinator)
         defaultCenter.addObserver(self, selector: #selector(persistentStoreDidChange(_:)), name: NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange, object: moc.persistentStoreCoordinator)
         defaultCenter.addObserver(self, selector: #selector(persistentStoreDidImportUbiquitousContentChanges(_:)), name: NSNotification.Name.NSPersistentStoreDidImportUbiquitousContentChanges, object: moc.persistentStoreCoordinator)

@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		968672071D3BE6C2000CD904 /* ManagedGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968672061D3BE6C2000CD904 /* ManagedGroup.swift */; };
+		968672081D3BE6C2000CD904 /* ManagedGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968672061D3BE6C2000CD904 /* ManagedGroup.swift */; };
+		9686720A1D3BE9BA000CD904 /* ManagedEntityGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968672091D3BE9BA000CD904 /* ManagedEntityGroup.swift */; };
+		9686720B1D3BE9BA000CD904 /* ManagedEntityGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968672091D3BE9BA000CD904 /* ManagedEntityGroup.swift */; };
+		9686720D1D3BEA50000CD904 /* ManagedRelationshipGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686720C1D3BEA50000CD904 /* ManagedRelationshipGroup.swift */; };
+		9686720E1D3BEA50000CD904 /* ManagedRelationshipGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686720C1D3BEA50000CD904 /* ManagedRelationshipGroup.swift */; };
+		968672101D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; };
+		968672111D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; };
 		96E3C3B41D3AB41F0086A024 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E3C3A91D3AB41F0086A024 /* Graph.framework */; };
 		96E3C3C81D3AB4860086A024 /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3C61D3AB4860086A024 /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E3C3DE1D3AB5280086A024 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E3C3D41D3AB5280086A024 /* Graph.framework */; };
@@ -121,6 +129,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		968672061D3BE6C2000CD904 /* ManagedGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedGroup.swift; sourceTree = "<group>"; };
+		968672091D3BE9BA000CD904 /* ManagedEntityGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntityGroup.swift; sourceTree = "<group>"; };
+		9686720C1D3BEA50000CD904 /* ManagedRelationshipGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedRelationshipGroup.swift; sourceTree = "<group>"; };
+		9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedActionGroup.swift; sourceTree = "<group>"; };
 		96E3C3A91D3AB41F0086A024 /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E3C3B31D3AB41F0086A024 /* Graph iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E3C3C61D3AB4860086A024 /* Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graph.h; sourceTree = "<group>"; };
@@ -264,6 +276,7 @@
 				96E3C4021D3ABFCE0086A024 /* Entity.swift */,
 				96E3C4081D3AC07D0086A024 /* ManagedEntity.swift */,
 				96E3C4091D3AC07D0086A024 /* ManagedEntityTag.swift */,
+				968672091D3BE9BA000CD904 /* ManagedEntityGroup.swift */,
 				96E3C40A1D3AC07D0086A024 /* ManagedEntityProperty.swift */,
 			);
 			name = Entity;
@@ -275,6 +288,7 @@
 				96E3C4111D3AC0960086A024 /* Action.swift */,
 				96E3C4121D3AC0960086A024 /* ManagedAction.swift */,
 				96E3C4131D3AC0960086A024 /* ManagedActionTag.swift */,
+				9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */,
 				96E3C4141D3AC0960086A024 /* ManagedActionProperty.swift */,
 			);
 			name = Action;
@@ -286,6 +300,7 @@
 				96E3C4201D3AC0A20086A024 /* Relationship.swift */,
 				96E3C41D1D3AC0A20086A024 /* ManagedRelationship.swift */,
 				96E3C41E1D3AC0A20086A024 /* ManagedRelationshipTag.swift */,
+				9686720C1D3BEA50000CD904 /* ManagedRelationshipGroup.swift */,
 				96E3C41F1D3AC0A20086A024 /* ManagedRelationshipProperty.swift */,
 			);
 			name = Relationship;
@@ -313,6 +328,7 @@
 				96E3C3F61D3ABE560086A024 /* ManagedObject.swift */,
 				96E3C3FF1D3ABECE0086A024 /* ManagedNode.swift */,
 				96E3C3F91D3ABE880086A024 /* ManagedTag.swift */,
+				968672061D3BE6C2000CD904 /* ManagedGroup.swift */,
 				96E3C3FC1D3ABEA80086A024 /* ManagedProperty.swift */,
 			);
 			name = Managed;
@@ -572,6 +588,7 @@
 				96E3C4361D3AC6F20086A024 /* ManagedObject.swift in Sources */,
 				96E3C4441D3AC7E40086A024 /* ManagedRelationshipTag.swift in Sources */,
 				96E3C3F41D3AB8B00086A024 /* Model.swift in Sources */,
+				968672101D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */,
 				96E3C4451D3AC7E40086A024 /* ManagedRelationshipProperty.swift in Sources */,
 				96E3C4341D3AC6CF0086A024 /* ManagedNode.swift in Sources */,
 				96E3C3EE1D3AB6160086A024 /* Node.swift in Sources */,
@@ -580,6 +597,9 @@
 				96E3C4531D3AD5CA0086A024 /* Watch.swift in Sources */,
 				96E3C4421D3AC7E40086A024 /* Relationship.swift in Sources */,
 				96E3C4561D3AD6930086A024 /* Storage.swift in Sources */,
+				9686720D1D3BEA50000CD904 /* ManagedRelationshipGroup.swift in Sources */,
+				968672071D3BE6C2000CD904 /* ManagedGroup.swift in Sources */,
+				9686720A1D3BE9BA000CD904 /* ManagedEntityGroup.swift in Sources */,
 				96E3C4491D3AC7E40086A024 /* ManagedActionProperty.swift in Sources */,
 				96E3C42E1D3AC6BD0086A024 /* ManagedEntity.swift in Sources */,
 				96E3C43E1D3AC7A00086A024 /* File.swift in Sources */,
@@ -631,6 +651,7 @@
 				96E3C4391D3AC6F30086A024 /* ManagedObject.swift in Sources */,
 				96E3C44C1D3AC7E50086A024 /* ManagedRelationshipTag.swift in Sources */,
 				96E3C3F51D3AB8B00086A024 /* Model.swift in Sources */,
+				968672111D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */,
 				96E3C44D1D3AC7E50086A024 /* ManagedRelationshipProperty.swift in Sources */,
 				96E3C4351D3AC6D00086A024 /* ManagedNode.swift in Sources */,
 				96E3C3EF1D3AB6160086A024 /* Node.swift in Sources */,
@@ -639,6 +660,9 @@
 				96E3C4541D3AD5CA0086A024 /* Watch.swift in Sources */,
 				96E3C44A1D3AC7E50086A024 /* Relationship.swift in Sources */,
 				96E3C4571D3AD6930086A024 /* Storage.swift in Sources */,
+				9686720E1D3BEA50000CD904 /* ManagedRelationshipGroup.swift in Sources */,
+				968672081D3BE6C2000CD904 /* ManagedGroup.swift in Sources */,
+				9686720B1D3BE9BA000CD904 /* ManagedEntityGroup.swift in Sources */,
 				96E3C4511D3AC7E50086A024 /* ManagedActionProperty.swift in Sources */,
 				96E3C4311D3AC6BE0086A024 /* ManagedEntity.swift in Sources */,
 				96E3C43F1D3AC7A00086A024 /* File.swift in Sources */,
