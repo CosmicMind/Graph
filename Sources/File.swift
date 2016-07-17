@@ -354,8 +354,7 @@ public struct File {
             case SQLiteExtensionToString(.sqLite),
                  SQLiteExtensionToString(.sqLiteSHM):
                 return .sqLite
-            default:
-                break
+            default:break
             }
         }
         return .unknown

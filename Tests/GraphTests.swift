@@ -10,7 +10,7 @@ import XCTest
 @testable import Graph
 
 class GraphTests: XCTestCase {
-    var containerExpectation: XCTestExpectation?
+    var graphException: XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -20,28 +20,86 @@ class GraphTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        containerExpectation = expectation(withDescription: "[GraphTests Error: Container tests failed.]")
+    func testLocal() {
+        let g1 = Graph()
+        XCTAssertTrue(g1.managedObjectContext.isKind(of: NSManagedObjectContext.self))
+        XCTAssertEqual(GraphDefaults.name, g1.name)
+        XCTAssertEqual(GraphDefaults.type, g1.type)
+        XCTAssertEqual("\(GraphDefaults.location)Local/\(g1.name)/Graph.sqlite", String(g1.location))
         
-        let graph = Graph()
-        graph.clear()
+        let g2 = Graph(name: "marketing")
+        XCTAssertTrue(g2.managedObjectContext.isKind(of: NSManagedObjectContext.self))
+        XCTAssertEqual("marketing", g2.name)
+        XCTAssertEqual(GraphDefaults.type, g2.type)
+        XCTAssertEqual("\(GraphDefaults.location)Local/\(g2.name)/Graph.sqlite", String(g2.location))
         
-        let e1 = Entity(type: "User")
-        e1["name"] = "Joe"
-        e1.add("Human")
-        if e1.tagged("Human") {
-            e1.remove("Human")
+        graphException = expectation(withDescription: "[GraphTests Error: Async tests failed.]")
+        
+        var g3: Graph!
+        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
+            g3 = Graph(name: "async")
+            XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
+            XCTAssertEqual("async", g3.name)
+            XCTAssertEqual(GraphDefaults.type, g3.type)
+            XCTAssertEqual("\(GraphDefaults.location)Local/\(g3.name)/Graph.sqlite", String(g3.location))
+            self?.graphException?.fulfill()
         }
         
-        let e2 = Entity(type: "Book")
-        e2["name"] = "Hologram"
-        e2.add("Physics")
+       waitForExpectations(withTimeout: 5, handler: nil)
         
-        graph.async()
+        XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
+        XCTAssertEqual("async", g3.name)
+        XCTAssertEqual(GraphDefaults.type, g3.type)
+        XCTAssertEqual("\(GraphDefaults.location)Local/\(g3.name)/Graph.sqlite", String(g3.location))
+    }
+    
+    func testCloud() {
+        graphException = expectation(withDescription: "[CloudTests Error: Async tests failed.]")
         
-        print(graph.search(forEntity: ["Book"], tagged: ["Physics2"]))
-//        print(graph.search(forEntity: ["*"]))
-        containerExpectation?.fulfill()
+        let g1 = Graph(cloud: "marketing") { [weak self] (supported: Bool, error: NSError?) in
+            XCTAssertFalse(supported)
+            XCTAssertNotNil(error)
+            self?.graphException?.fulfill()
+        }
+        
         waitForExpectations(withTimeout: 5, handler: nil)
+        
+        XCTAssertTrue(g1.managedObjectContext.isKind(of: NSManagedObjectContext.self))
+        XCTAssertEqual("marketing", g1.name)
+        XCTAssertEqual(GraphDefaults.type, g1.type)
+        XCTAssertEqual("\(GraphDefaults.location)Cloud/\(g1.name)/Graph.sqlite", String(g1.location))
+        
+        graphException = expectation(withDescription: "[CloudTests Error: Async tests failed.]")
+        
+        let g2 = Graph(cloud: "async") { [weak self] (supported: Bool, error: NSError?) in
+            XCTAssertFalse(supported)
+            XCTAssertNotNil(error)
+            self?.graphException?.fulfill()
+        }
+        
+        waitForExpectations(withTimeout: 5, handler: nil)
+        
+        XCTAssertTrue(g2.managedObjectContext.isKind(of: NSManagedObjectContext.self))
+        XCTAssertEqual("async", g2.name)
+        XCTAssertEqual(GraphDefaults.type, g2.type)
+        XCTAssertEqual("\(GraphDefaults.location)Cloud/\(g2.name)/Graph.sqlite", String(g2.location))
+        
+        graphException = expectation(withDescription: "[CloudTests Error: Async tests failed.]")
+        
+        var g3: Graph!
+        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
+            g3 = Graph(cloud: "test") { [weak self] (supported: Bool, error: NSError?) in
+                XCTAssertFalse(supported)
+                XCTAssertNotNil(error)
+                self?.graphException?.fulfill()
+            }
+        }
+        
+        waitForExpectations(withTimeout: 5, handler: nil)
+        
+        XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
+        XCTAssertEqual("test", g3.name)
+        XCTAssertEqual(GraphDefaults.type, g3.type)
+        XCTAssertEqual("\(GraphDefaults.location)Cloud/\(g3.name)/Graph.sqlite", String(g3.location))
     }
 }

@@ -113,7 +113,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        DispatchQueue.global().async { [weak self] in
+        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
