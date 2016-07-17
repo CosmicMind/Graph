@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class ActionGroupTests: XCTestCase, GraphActionDelegate {
+class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
     var saveException: XCTestExpectation?
     
     var tagAddExpception: XCTestExpectation?
@@ -46,18 +46,18 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         super.tearDown()
     }
     
-    func testGroupAdd() {
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[ActionTests Error: Group add test failed.]")
+    func testTagAdd() {
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(withDescription: "[RelationshipTests Error: Tag add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G1"])
+        graph.watchForRelationship(types: ["T"], tags: ["G1"])
         
-        let action = Action(type: "T")
-        action.add(tag: "G1")
+        let relationship = Relationship(type: "T")
+        relationship.add(tag: "G1")
         
-        XCTAssertTrue(action.has(tag: "G1"))
+        XCTAssertTrue(relationship.has(tag: "G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -68,13 +68,13 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func testGroupUpdate() {
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
+    func testTagUpdate() {
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let action = Action(type: "T")
-        action.add(tag: "G2")
+        let relationship = Relationship(type: "T")
+        relationship.add(tag: "G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -84,18 +84,18 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         
         waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[ActionTests Error: Group add test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[ActionTests Error: Group remove test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(withDescription: "[RelationshipTests Error: Tag add test failed.]")
+        tagRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Tag remove test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(tags: ["G1", "G2"])
+        graph.watchForRelationship(tags: ["G1", "G2"])
         
-        action.add(tag: "G1")
-        action.remove(tag: "G2")
+        relationship.add(tag: "G1")
+        relationship.remove(tag: "G2")
         
-        XCTAssertTrue(action.has(tag: "G1"))
-        XCTAssertFalse(action.has(tag: "G2"))
+        XCTAssertTrue(relationship.has(tag: "G1"))
+        XCTAssertFalse(relationship.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -106,15 +106,15 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func testGroupDelete() {
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
+    func testTagDelete() {
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let action = Action(type: "T")
-        action.add(tag: "G2")
+        let relationship = Relationship(type: "T")
+        relationship.add(tag: "G2")
         
-        XCTAssertTrue(action.has(tag: "G2"))
+        XCTAssertTrue(relationship.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -124,15 +124,15 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         
         waitForExpectations(withTimeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[ActionTests Error: Group remove test failed.]")
+        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        tagRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Tag remove test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(tags: ["G2"])
+        graph.watchForRelationship(tags: ["G2"])
         
-        action.remove(tag: "G2")
+        relationship.remove(tag: "G2")
         
-        XCTAssertFalse(action.has(tag: "G2"))
+        XCTAssertFalse(relationship.has(tag: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -143,22 +143,22 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, action: Action, added tag: String, cloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func graph(graph: Graph, relationship: Relationship, added tag: String, cloud: Bool) {
+        XCTAssertTrue("T" == relationship.type)
+        XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G1", tag)
-        XCTAssertTrue(action.has(tag: tag))
-        XCTAssertEqual(1, action.tags.count)
-        XCTAssertTrue(action.tags.contains(tag))
+        XCTAssertTrue(relationship.has(tag: tag))
+        XCTAssertEqual(1, relationship.tags.count)
+        XCTAssertTrue(relationship.tags.contains(tag))
         
         tagAddExpception?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, removed tag: String, cloud: Bool) {
-        XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func graph(graph: Graph, relationship: Relationship, removed tag: String, cloud: Bool) {
+        XCTAssertTrue("T" == relationship.type)
+        XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G2", tag)
-        XCTAssertFalse(action.has(tag: tag))
+        XCTAssertFalse(relationship.has(tag: tag))
         
         tagRemoveExpception?.fulfill()
     }

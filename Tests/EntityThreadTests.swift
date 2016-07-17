@@ -35,13 +35,13 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
     var insertSaveExpectation: XCTestExpectation?
     var insertExpectation: XCTestExpectation?
     var insertPropertyExpectation: XCTestExpectation?
-    var insertGroupExpectation: XCTestExpectation?
+    var insertTagExpectation: XCTestExpectation?
     var updateSaveExpectation: XCTestExpectation?
     var updatePropertyExpectation: XCTestExpectation?
     var deleteSaveExpectation: XCTestExpectation?
     var deleteExpectation: XCTestExpectation?
     var deletePropertyExpectation: XCTestExpectation?
-    var deleteGroupExpectation: XCTestExpectation?
+    var deleteTagExpectation: XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -55,7 +55,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         insertSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
         insertExpectation = expectation(withDescription: "Test: Insert did not pass.")
         insertPropertyExpectation = expectation(withDescription: "Test: Insert property did not pass.")
-        insertGroupExpectation = expectation(withDescription: "Test: Insert tag did not pass.")
+        insertTagExpectation = expectation(withDescription: "Test: Insert tag did not pass.")
         
         let q1 = DispatchQueue(label: "io.cosmicmind.graph.thread.1", attributes: DispatchQueueAttributes.serial)
         let q2 = DispatchQueue(label: "io.cosmicmind.graph.thread.2", attributes: DispatchQueueAttributes.serial)
@@ -96,7 +96,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         deleteSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
         deleteExpectation = expectation(withDescription: "Test: Delete did not pass.")
         deletePropertyExpectation = expectation(withDescription: "Test: Delete property did not pass.")
-        deleteGroupExpectation = expectation(withDescription: "Test: Delete tag did not pass.")
+        deleteTagExpectation = expectation(withDescription: "Test: Delete tag did not pass.")
         
         q3.async { [weak self] in
             entity.delete()
@@ -133,7 +133,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         XCTAssertEqual("G", tag)
         XCTAssertTrue(entity.has(tag: tag))
         
-        insertGroupExpectation?.fulfill()
+        insertTagExpectation?.fulfill()
     }
     
     func graph(graph: Graph, entity: Entity, removed tag: String, cloud: Bool) {
@@ -142,7 +142,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         XCTAssertEqual("G", tag)
         XCTAssertFalse(entity.has(tag: "G"))
         
-        deleteGroupExpectation?.fulfill()
+        deleteTagExpectation?.fulfill()
     }
     
     func graph(graph: Graph, entity: Entity, added property: String, with value: AnyObject, cloud: Bool) {

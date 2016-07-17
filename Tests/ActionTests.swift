@@ -48,7 +48,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     func testDefaultGraph() {
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
@@ -73,7 +73,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     func testNamedGraphSave() {
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph(name: "ActionTests-testNamedGraphSave")
@@ -99,7 +99,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     func testReferenceGraphSave() {
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph(name: "ActionTests-testReferenceGraphSave")
@@ -127,7 +127,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     func testAsyncGraphSave() {
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph(name: "ActionTests-testAsyncGraphSave")
@@ -154,7 +154,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     func testAsyncGraphDelete() {
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
@@ -189,7 +189,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
@@ -203,7 +203,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     func testSubjects() {
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
@@ -245,7 +245,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     func testObjects() {
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()

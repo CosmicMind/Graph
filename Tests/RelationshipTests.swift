@@ -48,7 +48,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     func testDefaultGraph() {
         saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[RelationshipTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
@@ -73,7 +73,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     func testNamedGraphSave() {
         saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[RelationshipTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph(name: "RelationshipTests-testNamedGraphSave")
@@ -99,7 +99,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     func testReferenceGraphSave() {
         saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[RelationshipTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph(name: "RelationshipTests-testReferenceGraphSave")
@@ -127,7 +127,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     func testAsyncGraphSave() {
         saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[RelationshipTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph(name: "RelationshipTests-testAsyncGraphSave")
@@ -154,7 +154,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     func testAsyncGraphDelete() {
         saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[RelationshipTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
@@ -206,7 +206,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[RelationshipTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
@@ -224,7 +224,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     func testSubject() {
         saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[RelationshipTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
@@ -268,7 +268,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     func testObject() {
         saveException = expectation(withDescription: "[RelationshipTests Error: Save test failed.]")
         delegateException = expectation(withDescription: "[RelationshipTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[RelationshipTests Error: Group test failed.]")
+        tagExpception = expectation(withDescription: "[RelationshipTests Error: Tag test failed.]")
         propertyExpception = expectation(withDescription: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()

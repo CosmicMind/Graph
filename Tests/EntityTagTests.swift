@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class EntityGroupTests: XCTestCase, GraphEntityDelegate {
+class EntityTagTests: XCTestCase, GraphEntityDelegate {
     var saveException: XCTestExpectation?
     
     var tagAddExpception: XCTestExpectation?
@@ -46,9 +46,9 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         super.tearDown()
     }
     
-    func testGroupAdd() {
+    func testTagAdd() {
         saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[EntityTests Error: Group add test failed.]")
+        tagAddExpception = expectation(withDescription: "[EntityTests Error: Tag add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -68,7 +68,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func testGroupUpdate() {
+    func testTagUpdate() {
         saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
         
         let graph = Graph()
@@ -85,8 +85,8 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
         
         saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[EntityTests Error: Group add test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[EntityTests Error: Group remove test failed.]")
+        tagAddExpception = expectation(withDescription: "[EntityTests Error: Tag add test failed.]")
+        tagRemoveExpception = expectation(withDescription: "[EntityTests Error: Tag remove test failed.]")
         
         graph.delegate = self
         graph.watchForEntity(tags: ["G1", "G2"])
@@ -106,7 +106,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func testGroupDelete() {
+    func testTagDelete() {
         saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
         
         let graph = Graph()
@@ -125,7 +125,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
         
         saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[EntityTests Error: Group remove test failed.]")
+        tagRemoveExpception = expectation(withDescription: "[EntityTests Error: Tag remove test failed.]")
         
         graph.delegate = self
         graph.watchForEntity(tags: ["G2"])
