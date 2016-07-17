@@ -91,7 +91,7 @@ internal class ManagedNode: ManagedObject {
      - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
      */
     internal convenience init(identifier: String, type: String, managedObjectContext: NSManagedObjectContext) {
-        self.init(context: managedObjectContext)
+        self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
         self.type = type
         createdDate = Date()
         propertySet = NSSet()
@@ -119,7 +119,6 @@ internal class ManagedNode: ManagedObject {
             }
             return object
         }
-        set(object) {}
     }
     
     /**

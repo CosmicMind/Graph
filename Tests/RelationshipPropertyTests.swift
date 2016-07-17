@@ -138,7 +138,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, relationship: Relationship, added property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, added property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
@@ -149,7 +149,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         propertyInsertExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
@@ -160,7 +160,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         

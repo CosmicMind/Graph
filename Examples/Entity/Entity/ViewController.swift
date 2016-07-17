@@ -144,7 +144,7 @@ class ViewController: UIViewController {
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
 	/// GraphDelegate delegation method that is executed on Entity inserts.
-    func graphDidInsertEntity(graph: Graph, entity: Entity, from: Bool) {
+    func graphDidInsertEntity(graph: Graph, entity: Entity, cloud: Bool) {
 		people.append(entity)
 		tableView.reloadData()
 	}

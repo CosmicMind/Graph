@@ -110,7 +110,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, inserted entity: Entity, from: Bool) {
+    func graph(graph: Graph, inserted entity: Entity, cloud: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual(111, entity["P"] as? Int)
@@ -119,7 +119,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         insertExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, deleted entity: Entity, from: Bool) {
+    func graph(graph: Graph, deleted entity: Entity, cloud: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertNil(entity["P"])
@@ -128,7 +128,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         deleteExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, added tag: String, from: Bool) {
+    func graph(graph: Graph, entity: Entity, added tag: String, cloud: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertEqual("G", tag)
         XCTAssertTrue(entity.tagged(tag))
@@ -136,7 +136,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         insertGroupExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, removed tag: String, from: Bool) {
+    func graph(graph: Graph, entity: Entity, removed tag: String, cloud: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", tag)
@@ -145,7 +145,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         deleteGroupExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, added property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, entity: Entity, added property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)
@@ -155,7 +155,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, updated property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, entity: Entity, updated property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)
@@ -165,7 +165,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, removed property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, entity: Entity, removed property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)

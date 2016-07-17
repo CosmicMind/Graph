@@ -93,27 +93,32 @@ public extension Graph {
             let supported = enableCloud && nil != FileManager.default().urlForUbiquityContainerIdentifier(nil)
             GraphContextRegistry.supported[route] = supported
             
-            location = try! location.appendingPathComponent(route)
-            
-            managedObjectContext = Context.create(.mainQueueConcurrencyType)
-            managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
-            
-            if NSSQLiteStoreType == type {
-                location = try! location.appendingPathComponent("Graph.sqlite")
-            }
-            
-            GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
-            
-            if supported {
-                preparePersistentStoreCoordinatorNotificationHandlers()
+            guard #available(iOS 10.0, OSX 10.12, *) else {
+                location = try! GraphStoreDescription.location.appendingPathComponent(route)
                 
-                managedObjectContext.perform { [weak self] in
-                    self?.addPersistentStore(supported: true)
+                managedObjectContext = Context.create(.mainQueueConcurrencyType)
+                managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
+                GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
+                
+                if NSSQLiteStoreType == type {
+                    location = try! location.appendingPathComponent("Graph.sqlite")
                 }
-            } else {
-                addPersistentStore(supported: false)
+                
+                print("LOCATION", location)
+                
+                if supported {
+                    preparePersistentStoreCoordinatorNotificationHandlers()
+                    
+                    managedObjectContext.perform { [weak self] in
+                        self?.addPersistentStore(supported: true)
+                    }
+                } else {
+                    addPersistentStore(supported: false)
+                }
+                return
             }
             
+            prepareContextContainer()
             return
         }
         
@@ -132,6 +137,18 @@ public extension Graph {
             }
             s.completion?(supported: supported, error: supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
             (s.delegate as? GraphCloudDelegate)?.graphDidPrepareCloudStorage?(graph: s)
+        }
+    }
+    
+    @available(iOS 10.0, OSX 10.12, *)
+    private func prepareContextContainer() {
+        let storeDescription = NSPersistentStoreDescription()
+        storeDescription.shouldAddStoreAsynchronously = false
+        
+        let container = Container.create(name: name, storeDescription: storeDescription)
+        container.loadPersistentStores { [unowned self] (storeDescription, error) in
+            self.managedObjectContext = container.viewContext
+            GraphContextRegistry.managedObjectContexts[self.route] = self.managedObjectContext
         }
     }
 }

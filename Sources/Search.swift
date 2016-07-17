@@ -421,9 +421,13 @@ public extension Graph {
         request.sortDescriptors = [SortDescriptor(key: "createdDate", ascending: true)]
         
         var result: [AnyObject]?
-        moc.performAndWait { [unowned request] in
+        moc.performAndWait { [unowned moc, unowned request] in
             do {
-                result = try request.execute()
+                if #available(iOS 10.0, OSX 10.12, *) {
+                    result = try request.execute()
+                } else {
+                    result = try moc.fetch(request)
+                }
             } catch {
                 result = [AnyObject]()
             }
@@ -462,7 +466,11 @@ public extension Graph {
         var result: [AnyObject]?
         moc.performAndWait { [unowned request] in
             do {
-                result = try request.execute()
+                if #available(iOS 10.0, OSX 10.12, *) {
+                    result = try request.execute()
+                } else {
+                    result = try moc.fetch(request)
+                }
             } catch {
                 result = [AnyObject]()
             }
@@ -509,7 +517,11 @@ public extension Graph {
         var result: [AnyObject]?
         moc.performAndWait { [unowned request] in
             do {
-                result = try request.execute()
+                if #available(iOS 10.0, OSX 10.12, *) {
+                    result = try request.execute()
+                } else {
+                    result = try moc.fetch(request)
+                }
             } catch {
                 result = [AnyObject]()
             }

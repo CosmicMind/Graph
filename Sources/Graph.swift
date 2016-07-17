@@ -30,7 +30,7 @@
 
 import CoreData
 
-public struct GraphDefaults {
+public struct GraphStoreDescription {
     /// Datastore name.
     static let name: String = "default"
     
@@ -53,6 +53,7 @@ public class Graph: NSObject {
     
     /// Graph type.
     public internal(set) var type: String
+    
     
     /// Graph location.
     public internal(set) var location: URL
@@ -94,11 +95,11 @@ public class Graph: NSObject {
      - Parameter location: A location for storage.
      executed to determine if iCloud support is available or not.
      */
-    public init(name: String = GraphDefaults.name, type: String = GraphDefaults.type, location: URL = GraphDefaults.location) {
+    public init(name: String = GraphStoreDescription.name, type: String = GraphStoreDescription.type) {
         route = "Local/\(name)"
         self.name = name
         self.type = type
-        self.location = location
+        self.location = GraphStoreDescription.location
         super.init()
         prepareGraphContextRegistry()
         prepareManagedObjectContext(enableCloud: false)
@@ -116,7 +117,7 @@ public class Graph: NSObject {
         route = "Cloud/\(cloud)"
         name = cloud
         type = NSSQLiteStoreType
-        location = GraphDefaults.location
+        location = GraphStoreDescription.location
         super.init()
         self.completion = completion
         prepareGraphContextRegistry()

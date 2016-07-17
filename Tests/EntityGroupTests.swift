@@ -143,7 +143,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, entity: Entity, added tag: String, from: Bool) {
+    func graph(graph: Graph, entity: Entity, added tag: String, cloud: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G1", tag)
@@ -154,7 +154,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         tagAddExpception?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, removed tag: String, from: Bool) {
+    func graph(graph: Graph, entity: Entity, removed tag: String, cloud: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G2", tag)

@@ -182,7 +182,7 @@ public class Relationship: NSObject, NodeType {
      - Parameter type: A reference to a type.
      */
     public convenience init(type: String) {
-        self.init(type: type, graph: GraphDefaults.name)
+        self.init(type: type, graph: GraphStoreDescription.name)
     }
     
     /**

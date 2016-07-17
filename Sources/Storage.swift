@@ -137,6 +137,7 @@ public extension Graph {
         guard let moc = managedObjectContext else {
             return
         }
+        
         moc.performAndWait { [unowned moc] in
             moc.reset()
         }

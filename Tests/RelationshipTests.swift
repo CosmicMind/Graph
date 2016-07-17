@@ -309,7 +309,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, inserted relationship: Relationship, from: Bool) {
+    func graph(graph: Graph, inserted relationship: Relationship, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
@@ -318,7 +318,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         delegateException?.fulfill()
     }
     
-    func graph(graph: Graph, updated relationship: Relationship, from: Bool) {
+    func graph(graph: Graph, updated relationship: Relationship, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
@@ -327,7 +327,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         delegateException?.fulfill()
     }
     
-    func graph(graph: Graph, deleted relationship: Relationship, from: Bool) {
+    func graph(graph: Graph, deleted relationship: Relationship, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
@@ -340,7 +340,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         delegateException?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, added tag: String, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, added tag: String, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
@@ -349,7 +349,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         tagExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed tag: String, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removed tag: String, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
@@ -358,7 +358,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         tagExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, added property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, added property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -368,7 +368,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -378,7 +378,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)

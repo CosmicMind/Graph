@@ -143,7 +143,7 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, action: Action, added tag: String, from: Bool) {
+    func graph(graph: Graph, action: Action, added tag: String, cloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G1", tag)
@@ -154,7 +154,7 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         tagAddExpception?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, removed tag: String, from: Bool) {
+    func graph(graph: Graph, action: Action, removed tag: String, cloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G2", tag)

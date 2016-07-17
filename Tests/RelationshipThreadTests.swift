@@ -110,7 +110,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, inserted relationship: Relationship, from: Bool) {
+    func graph(graph: Graph, inserted relationship: Relationship, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual(111, relationship["P"] as? Int)
@@ -119,7 +119,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         insertExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, deleted relationship: Relationship, from: Bool) {
+    func graph(graph: Graph, deleted relationship: Relationship, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
@@ -128,7 +128,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         deleteExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, added tag: String, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, added tag: String, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertEqual("G", tag)
         XCTAssertTrue(relationship.tagged(tag))
@@ -136,7 +136,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         insertGroupExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed tag: String, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removed tag: String, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
@@ -145,7 +145,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         deleteGroupExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, added property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, added property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -155,7 +155,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -165,7 +165,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: AnyObject, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: AnyObject, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)

@@ -30,6 +30,7 @@
 
 import CoreData
 
+@available(iOS 10.0, OSX 10.12, *)
 public struct Container {
     /**
      Creates a NSPersistentStoreCoordinator.

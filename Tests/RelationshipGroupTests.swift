@@ -143,7 +143,7 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, relationship: Relationship, added tag: String, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, added tag: String, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G1", tag)
@@ -154,7 +154,7 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         tagAddExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed tag: String, from: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removed tag: String, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G2", tag)
