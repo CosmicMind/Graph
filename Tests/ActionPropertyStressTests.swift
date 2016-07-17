@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class ActionPropertyStressTests: XCTestCase, GraphDelegate {
+class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
     var saveException: XCTestExpectation?
     
     var actionInsertException: XCTestExpectation?
@@ -134,7 +134,7 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidInsertAction(_ graph: Graph, action: Action, fromCloud: Bool) {
+    func graph(graph: Graph, inserted action: Action, from: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(0, action.properties.count)
@@ -142,7 +142,7 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
         actionInsertException?.fulfill()
     }
     
-    func graphWillDeleteAction(_ graph: Graph, action: Action, fromCloud: Bool) {
+    func graph(graph: Graph, deleted action: Action, from: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(0, action.properties.count)
@@ -150,21 +150,21 @@ class ActionPropertyStressTests: XCTestCase, GraphDelegate {
         actionDeleteException?.fulfill()
     }
     
-    func graphDidInsertActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, action: Action, added property: String, with value: AnyObject, from: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
         propertyInsertExpception?.fulfill()
     }
     
-    func graphDidUpdateActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, action: Action, updated property: String, with value: AnyObject, from: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
         propertyUpdateExpception?.fulfill()
     }
     
-    func graphWillDeleteActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, action: Action, removed property: String, with value: AnyObject, from: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         

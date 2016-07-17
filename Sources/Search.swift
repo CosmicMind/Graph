@@ -32,18 +32,42 @@ import CoreData
 
 /// Storage Search API.
 public extension Graph {
+    /**
+     Search API that accepts types.
+     - Parameter forEntity: An Array of Strings.
+     - Returns: An Array of Entities.
+    */
     public func search(forEntity types: [String]) -> [Entity] {
         return searchForEntity(types: types)
     }
     
+    /**
+     Search API that accepts types and tags.
+     - Parameter forEntity: An Array of Strings.
+     - Parameter tagged: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
     public func search(forEntity types: [String], tagged tags: [String]) -> [Entity] {
         return searchForEntity(types: types, tags: tags)
     }
     
+    /**
+     Search API that accepts types and properties.
+     - Parameter forEntity: An Array of Strings.
+     - Parameter where: An Array of property tuples.
+     - Returns: An Array of Entities.
+     */
     public func search(forEntity types: [String], where properties: [(name: String, value: AnyObject?)]) -> [Entity] {
         return searchForEntity(types: types, properties: properties)
     }
     
+    /**
+     Search API that accepts types, tags, and properties.
+     - Parameter forEntity: An Array of Strings.
+     - Parameter tagged: An Array of Strings.
+     - Parameter where: An Array of property tuples.
+     - Returns: An Array of Entities.
+     */
     public func search(forEntity types: [String], tagged tags: [String], where properties: [(name: String, value: AnyObject?)]) -> [Entity] {
         return searchForEntity(types: types, tags: tags, properties: properties)
     }
@@ -130,13 +154,53 @@ public extension Graph {
     }
     
     /**
-     Searches for Relationships that fall into any of the specified facets.
-     - Parameter types: An Array of Relationship types.
+     Search API that accepts types.
+     - Parameter forEntity: An Array of Strings.
+     - Returns: An Array of Relationships.
+     */
+    public func search(forRelationship types: [String]) -> [Relationship] {
+        return searchForRelationship(types: types)
+    }
+    
+    /**
+     Search API that accepts types and tags.
+     - Parameter forEntity: An Array of Strings.
+     - Parameter tagged: An Array of Strings.
+     - Returns: An Array of Relationships.
+     */
+    public func search(forRelationship types: [String], tagged tags: [String]) -> [Relationship] {
+        return searchForRelationship(types: types, tags: tags)
+    }
+    
+    /**
+     Search API that accepts types and properties.
+     - Parameter forEntity: An Array of Strings.
+     - Parameter where: An Array of property tuples.
+     - Returns: An Array of Relationships.
+     */
+    public func search(forRelationship types: [String], where properties: [(name: String, value: AnyObject?)]) -> [Relationship] {
+        return searchForRelationship(types: types, properties: properties)
+    }
+    
+    /**
+     Search API that accepts types, tags, and properties.
+     - Parameter forEntity: An Array of Strings.
+     - Parameter tagged: An Array of Strings.
+     - Parameter where: An Array of property tuples.
+     - Returns: An Array of Relationships.
+     */
+    public func search(forRelationship types: [String], tagged tags: [String], where properties: [(name: String, value: AnyObject?)]) -> [Relationship] {
+        return searchForRelationship(types: types, tags: tags, properties: properties)
+    }
+    
+    /**
+     Searches for Entities that fall into any of the specified facets.
+     - Parameter types: An Array of Entity types.
      - Parameter tags: An Array of tags.
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    public func search(forRelationship types: [String]? = nil, in tags: [String]? = nil, where properties: [(name: String, value: AnyObject?)]? = nil) -> [Relationship] {
+    internal func searchForRelationship(types: [String]? = nil, tags: [String]? = nil, properties: [(name: String, value: AnyObject?)]? = nil) -> [Relationship] {
         guard let moc = managedObjectContext else {
             return [Relationship]()
         }
@@ -211,13 +275,53 @@ public extension Graph {
     }
     
     /**
-     Searches for Actions that fall into any of the specified facets.
-     - Parameter types: An Array of Action types.
+     Search API that accepts types.
+     - Parameter forEntity: An Array of Strings.
+     - Returns: An Array of Actions.
+     */
+    public func search(forAction types: [String]) -> [Action] {
+        return searchForAction(types: types)
+    }
+    
+    /**
+     Search API that accepts types and tags.
+     - Parameter forEntity: An Array of Strings.
+     - Parameter tagged: An Array of Strings.
+     - Returns: An Array of Actions.
+     */
+    public func search(forAction types: [String], tagged tags: [String]) -> [Action] {
+        return searchForAction(types: types, tags: tags)
+    }
+    
+    /**
+     Search API that accepts types and properties.
+     - Parameter forEntity: An Array of Strings.
+     - Parameter where: An Array of property tuples.
+     - Returns: An Array of Actions.
+     */
+    public func search(forAction types: [String], where properties: [(name: String, value: AnyObject?)]) -> [Action] {
+        return searchForAction(types: types, properties: properties)
+    }
+    
+    /**
+     Search API that accepts types, tags, and properties.
+     - Parameter forEntity: An Array of Strings.
+     - Parameter tagged: An Array of Strings.
+     - Parameter where: An Array of property tuples.
+     - Returns: An Array of Actions.
+     */
+    public func search(forAction types: [String], tagged tags: [String], where properties: [(name: String, value: AnyObject?)]) -> [Action] {
+        return searchForAction(types: types, tags: tags, properties: properties)
+    }
+    
+    /**
+     Searches for Entities that fall into any of the specified facets.
+     - Parameter types: An Array of Entity types.
      - Parameter tags: An Array of tags.
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    public func search(forAction types: [String]? = nil, in tags: [String]? = nil, where properties: [(name: String, value: AnyObject?)]? = nil) -> [Action] {
+    internal func searchForAction(types: [String]? = nil, tags: [String]? = nil, properties: [(name: String, value: AnyObject?)]? = nil) -> [Action] {
         guard let moc = managedObjectContext else {
             return [Action]()
         }

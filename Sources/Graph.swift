@@ -46,16 +46,16 @@ public struct GraphDefaults {
 @objc(Graph)
 public class Graph: NSObject {
     /// Graph rouute/
-    public internal(set) var route: String!
+    public internal(set) var route: String
     
     /// Graph name.
-    public internal(set) var name: String!
+    public internal(set) var name: String
     
     /// Graph type.
-    public internal(set) var type: String!
+    public internal(set) var type: String
     
     /// Graph location.
-    public internal(set) var location: URL!
+    public internal(set) var location: URL
     
     /// Worker managedObjectContext.
     public internal(set) var managedObjectContext: NSManagedObjectContext!
@@ -95,11 +95,11 @@ public class Graph: NSObject {
      executed to determine if iCloud support is available or not.
      */
     public init(name: String = GraphDefaults.name, type: String = GraphDefaults.type, location: URL = GraphDefaults.location) {
-        super.init()
         route = "Local/\(name)"
         self.name = name
         self.type = type
         self.location = location
+        super.init()
         prepareGraphContextRegistry()
         prepareManagedObjectContext(enableCloud: false)
     }
@@ -113,11 +113,11 @@ public class Graph: NSObject {
      executed to determine if iCloud support is available or not.
      */
     public init(cloud: String, completion: ((supported: Bool, error: NSError?) -> Void)? = nil) {
-        super.init()
         route = "Cloud/\(cloud)"
         name = cloud
         type = NSSQLiteStoreType
         location = GraphDefaults.location
+        super.init()
         self.completion = completion
         prepareGraphContextRegistry()
         prepareManagedObjectContext(enableCloud: true)

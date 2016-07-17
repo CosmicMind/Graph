@@ -31,12 +31,12 @@
 import XCTest
 @testable import Graph
 
-class RelationshipGroupTests: XCTestCase, GraphDelegate {
+class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
     var saveException: XCTestExpectation?
     
-    var groupAddExpception: XCTestExpectation?
-    var groupUpdateExpception: XCTestExpectation?
-    var groupRemoveExpception: XCTestExpectation?
+    var tagAddExpception: XCTestExpectation?
+    var tagUpdateExpception: XCTestExpectation?
+    var tagRemoveExpception: XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -48,16 +48,16 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
     
     func testGroupAdd() {
         saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
-        groupAddExpception = expectation(withDescription: "[RelationshipTests Error: Group add test failed.]")
+        tagAddExpception = expectation(withDescription: "[RelationshipTests Error: Group add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForRelationship(types: ["T"], groups: ["G1"])
+        graph.watchForRelationship(types: ["T"], tags: ["G1"])
         
         let relationship = Relationship(type: "T")
-        relationship.addToGroup("G1")
+        relationship.add("G1")
         
-        XCTAssertTrue(relationship.memberOfGroup("G1"))
+        XCTAssertTrue(relationship.tagged("G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -74,7 +74,7 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         let graph = Graph()
         
         let relationship = Relationship(type: "T")
-        relationship.addToGroup("G2")
+        relationship.add("G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -85,17 +85,17 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
         
         saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
-        groupAddExpception = expectation(withDescription: "[RelationshipTests Error: Group add test failed.]")
-        groupRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Group remove test failed.]")
+        tagAddExpception = expectation(withDescription: "[RelationshipTests Error: Group add test failed.]")
+        tagRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForRelationship(groups: ["G1", "G2"])
+        graph.watchForRelationship(tags: ["G1", "G2"])
         
-        relationship.addToGroup("G1")
-        relationship.removeFromGroup("G2")
+        relationship.add("G1")
+        relationship.remove("G2")
         
-        XCTAssertTrue(relationship.memberOfGroup("G1"))
-        XCTAssertFalse(relationship.memberOfGroup("G2"))
+        XCTAssertTrue(relationship.tagged("G1"))
+        XCTAssertFalse(relationship.tagged("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -112,9 +112,9 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         let graph = Graph()
         
         let relationship = Relationship(type: "T")
-        relationship.addToGroup("G2")
+        relationship.add("G2")
         
-        XCTAssertTrue(relationship.memberOfGroup("G2"))
+        XCTAssertTrue(relationship.tagged("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -125,14 +125,14 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
         
         saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
-        groupRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Group remove test failed.]")
+        tagRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForRelationship(groups: ["G2"])
+        graph.watchForRelationship(tags: ["G2"])
         
-        relationship.removeFromGroup("G2")
+        relationship.remove("G2")
         
-        XCTAssertFalse(relationship.memberOfGroup("G2"))
+        XCTAssertFalse(relationship.tagged("G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -143,23 +143,23 @@ class RelationshipGroupTests: XCTestCase, GraphDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidAddRelationshipToGroup(_ graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, added tag: String, from: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
-        XCTAssertEqual("G1", group)
-        XCTAssertTrue(relationship.memberOfGroup(group))
-        XCTAssertEqual(1, relationship.groups.count)
-        XCTAssertTrue(relationship.groups.contains(group))
+        XCTAssertEqual("G1", tag)
+        XCTAssertTrue(relationship.tagged(tag))
+        XCTAssertEqual(1, relationship.tags.count)
+        XCTAssertTrue(relationship.tags.contains(tag))
         
-        groupAddExpception?.fulfill()
+        tagAddExpception?.fulfill()
     }
     
-    func graphWillRemoveRelationshipFromGroup(_ graph: Graph, relationship: Relationship, group: String, fromCloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removed tag: String, from: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
-        XCTAssertEqual("G2", group)
-        XCTAssertFalse(relationship.memberOfGroup(group))
+        XCTAssertEqual("G2", tag)
+        XCTAssertFalse(relationship.tagged(tag))
         
-        groupRemoveExpception?.fulfill()
+        tagRemoveExpception?.fulfill()
     }
 }

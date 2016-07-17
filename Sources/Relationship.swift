@@ -231,8 +231,8 @@ public class Relationship: NSObject, NodeType {
      removes it if it is a member.
      - Parameter name: The tag name.
      */
-    public func toggleTagMembership(_ name: String) {
-        _ = tagged(name) ? remove(name) : add(name)
+    public func toggle(_ name: String) {
+        tagged(name) ? remove(name) : add(name)
     }
     
     /// Marks the Relationship for deletion.

@@ -31,11 +31,8 @@
 import XCTest
 @testable import Graph
 
-class EntityPropertyTests: XCTestCase, GraphDelegate {
+class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
     var saveException: XCTestExpectation?
-    
-    var entityInsertException: XCTestExpectation?
-    var entityDeleteException: XCTestExpectation?
     
     var propertyInsertExpception: XCTestExpectation?
     var propertyUpdateExpception: XCTestExpectation?
@@ -51,12 +48,11 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
     
     func testPropertyInsert() {
         saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
-        entityInsertException = expectation(withDescription: "[EntityTests Error: Entity insert test failed.]")
         propertyInsertExpception = expectation(withDescription: "[EntityTests Error: Property insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], properties: ["P1"])
+        graph.watchForEntity(properties: ["P1"])
         
         let entity = Entity(type: "T")
         entity["P1"] = "V1"
@@ -106,7 +102,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         
         waitForExpectations(withTimeout: 5, handler: nil)
     }
-
+    
     func testPropertyDelete() {
         saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
         
@@ -142,23 +138,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidInsertEntity(_ graph: Graph, entity: Entity, fromCloud: Bool) {
-        XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("V1", entity["P1"] as? String)
-        
-        entityInsertException?.fulfill()
-    }
-    
-    func graphWillDeleteEntity(_ graph: Graph, entity: Entity, fromCloud: Bool) {
-        XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertNil(entity["P1"])
-        
-        entityDeleteException?.fulfill()
-    }
-    
-    func graphDidInsertEntityProperty(_ graph: Graph, entity: Entity, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, entity: Entity, added property: String, with value: AnyObject, from: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         
@@ -169,7 +149,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         propertyInsertExpception?.fulfill()
     }
     
-    func graphDidUpdateEntityProperty(_ graph: Graph, entity: Entity, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, entity: Entity, updated property: String, with value: AnyObject, from: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         
@@ -180,7 +160,7 @@ class EntityPropertyTests: XCTestCase, GraphDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func graphWillDeleteEntityProperty(_ graph: Graph, entity: Entity, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, entity: Entity, removed property: String, with value: AnyObject, from: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         

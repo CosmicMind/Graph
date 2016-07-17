@@ -54,7 +54,7 @@ class CloudTests : XCTestCase {
         
         waitForExpectations(withTimeout: 5, handler: nil)
         
-        XCTAssertTrue(g1.managedObjectContext.isKind(of: NSManagedObjectContext))
+        XCTAssertTrue(g1.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("marketing", g1.name)
         XCTAssertEqual(GraphDefaults.type, g1.type)
         XCTAssertEqual("\(GraphDefaults.location)Cloud/\(g1.name)/Graph.sqlite", String(g1.location))
@@ -69,7 +69,7 @@ class CloudTests : XCTestCase {
         
         waitForExpectations(withTimeout: 5, handler: nil)
 
-        XCTAssertTrue(g2.managedObjectContext.isKind(of: NSManagedObjectContext))
+        XCTAssertTrue(g2.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("async", g2.name)
         XCTAssertEqual(GraphDefaults.type, g2.type)
         XCTAssertEqual("\(GraphDefaults.location)Cloud/\(g2.name)/Graph.sqlite", String(g2.location))
@@ -87,7 +87,7 @@ class CloudTests : XCTestCase {
         
         waitForExpectations(withTimeout: 5, handler: nil)
         
-        XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext))
+        XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("test", g3.name)
         XCTAssertEqual(GraphDefaults.type, g3.type)
         XCTAssertEqual("\(GraphDefaults.location)Cloud/\(g3.name)/Graph.sqlite", String(g3.location))

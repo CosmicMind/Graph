@@ -186,7 +186,7 @@ class ViewController: UIViewController {
 /// GraphDelegate delegation methods.
 extension ViewController: GraphDelegate {
 	/// GraphDelegate delegation method that is executed on Relationship inserts.
-    func graphDidInsertRelationship(graph: Graph, relationship: Relationship, fromCloud: Bool) {
+    func graphDidInsertRelationship(graph: Graph, relationship: Relationship, from: Bool) {
 		employees.append(relationship)
 		tableView.reloadData()
 	}

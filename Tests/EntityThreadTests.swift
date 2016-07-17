@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class EntityThreadTests : XCTestCase, GraphDelegate {
+class EntityThreadTests : XCTestCase, GraphEntityDelegate {
     var insertSaveExpectation: XCTestExpectation?
     var insertExpectation: XCTestExpectation?
     var insertPropertyExpectation: XCTestExpectation?
@@ -55,7 +55,7 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         insertSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
         insertExpectation = expectation(withDescription: "Test: Insert did not pass.")
         insertPropertyExpectation = expectation(withDescription: "Test: Insert property did not pass.")
-        insertGroupExpectation = expectation(withDescription: "Test: Insert group did not pass.")
+        insertGroupExpectation = expectation(withDescription: "Test: Insert tag did not pass.")
         
         let q1 = DispatchQueue(label: "io.cosmicmind.graph.thread.1", attributes: DispatchQueueAttributes.serial)
         let q2 = DispatchQueue(label: "io.cosmicmind.graph.thread.2", attributes: DispatchQueueAttributes.serial)
@@ -63,13 +63,13 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], groups: ["G"], properties: ["P"])
+        graph.watchForEntity(types: ["T"], tags: ["G"], properties: ["P"])
         
         let entity = Entity(type: "T")
         
         q1.async { [weak self] in
             entity["P"] = 111
-            entity.addToGroup("G")
+            entity.add("G")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success, "\(error)")
@@ -96,7 +96,7 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         deleteSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
         deleteExpectation = expectation(withDescription: "Test: Delete did not pass.")
         deletePropertyExpectation = expectation(withDescription: "Test: Delete property did not pass.")
-        deleteGroupExpectation = expectation(withDescription: "Test: Delete group did not pass.")
+        deleteGroupExpectation = expectation(withDescription: "Test: Delete tag did not pass.")
         
         q3.async { [weak self] in
             entity.delete()
@@ -110,16 +110,42 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidInsertEntity(_ graph: Graph, entity: Entity, fromCloud: Bool) {
+    func graph(graph: Graph, inserted entity: Entity, from: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual(111, entity["P"] as? Int)
-        XCTAssertTrue(entity.memberOfGroup("G"))
+        XCTAssertTrue(entity.tagged("G"))
         
         insertExpectation?.fulfill()
     }
     
-    func graphDidInsertEntityProperty(_ graph: Graph, entity: Entity, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, deleted entity: Entity, from: Bool) {
+        XCTAssertEqual("T", entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertNil(entity["P"])
+        XCTAssertFalse(entity.tagged("G"))
+        
+        deleteExpectation?.fulfill()
+    }
+    
+    func graph(graph: Graph, entity: Entity, added tag: String, from: Bool) {
+        XCTAssertEqual("T", entity.type)
+        XCTAssertEqual("G", tag)
+        XCTAssertTrue(entity.tagged(tag))
+        
+        insertGroupExpectation?.fulfill()
+    }
+    
+    func graph(graph: Graph, entity: Entity, removed tag: String, from: Bool) {
+        XCTAssertEqual("T", entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertEqual("G", tag)
+        XCTAssertFalse(entity.tagged("G"))
+        
+        deleteGroupExpectation?.fulfill()
+    }
+    
+    func graph(graph: Graph, entity: Entity, added property: String, with value: AnyObject, from: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)
@@ -129,15 +155,7 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graphDidAddEntityToGroup(_ graph: Graph, entity: Entity, group: String, fromCloud: Bool) {
-        XCTAssertEqual("T", entity.type)
-        XCTAssertEqual("G", group)
-        XCTAssertTrue(entity.memberOfGroup(group))
-        
-        insertGroupExpectation?.fulfill()
-    }
-    
-    func graphDidUpdateEntityProperty(_ graph: Graph, entity: Entity, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, entity: Entity, updated property: String, with value: AnyObject, from: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)
@@ -147,16 +165,7 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graphWillDeleteEntity(_ graph: Graph, entity: Entity, fromCloud: Bool) {
-        XCTAssertEqual("T", entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertNil(entity["P"])
-        XCTAssertFalse(entity.memberOfGroup("G"))
-        
-        deleteExpectation?.fulfill()
-    }
-    
-    func graphWillDeleteEntityProperty(_ graph: Graph, entity: Entity, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, entity: Entity, removed property: String, with value: AnyObject, from: Bool) {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)
@@ -164,14 +173,5 @@ class EntityThreadTests : XCTestCase, GraphDelegate {
         XCTAssertNil(entity[property])
         
         deletePropertyExpectation?.fulfill()
-    }
-    
-    func graphWillRemoveEntityFromGroup(_ graph: Graph, entity: Entity, group: String, fromCloud: Bool) {
-        XCTAssertEqual("T", entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("G", group)
-        XCTAssertFalse(entity.memberOfGroup("G"))
-        
-        deleteGroupExpectation?.fulfill()
     }
 }

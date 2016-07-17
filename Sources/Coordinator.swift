@@ -84,7 +84,7 @@ public extension Graph {
         
         do {
             try moc.persistentStoreCoordinator?.addPersistentStore(ofType: type, configurationName: nil, at: location, options: options)
-            location = moc.persistentStoreCoordinator?.persistentStores.first?.url
+            location = moc.persistentStoreCoordinator!.persistentStores.first!.url!
             if !supported {
                 completion?(supported: false, error: GraphError(message: "[Graph Error: iCloud is not supported.]"))
             }
@@ -134,14 +134,14 @@ public extension Graph {
             t = .initialImportCompleted
         }
         
-        (self.delegate as? GraphCloudDelegate)?.graphWillPrepareCloudStorage?(self, transition: t)
+        (self.delegate as? GraphCloudDelegate)?.graphWillPrepareCloudStorage?(graph: self, transition: t)
     }
     
     internal func persistentStoreDidChange(_ notification: Notification) {
         GraphContextRegistry.added[self.route] = true
         
         self.completion?(supported: true, error: nil)
-        (self.delegate as? GraphCloudDelegate)?.graphDidPrepareCloudStorage?(self)
+        (self.delegate as? GraphCloudDelegate)?.graphDidPrepareCloudStorage?(graph: self)
     }
     
     internal func persistentStoreDidImportUbiquitousContentChanges(_ notification: Notification) {
@@ -154,7 +154,7 @@ public extension Graph {
                 return
             }
             
-            (s.delegate as? GraphCloudDelegate)?.graphWillUpdateFromCloudStorage?(s)
+            (s.delegate as? GraphCloudDelegate)?.graphWillUpdateFromCloudStorage?(graph: s)
             
             moc?.mergeChanges(fromContextDidSave: notification)
             
@@ -162,7 +162,7 @@ public extension Graph {
             s.notifyUpdatedWatchersFromCloud(notification)
             s.notifyDeletedWatchersFromCloud(notification)
             
-            (s.delegate as? GraphCloudDelegate)?.graphDidUpdateFromCloudStorage?(s)
+            (s.delegate as? GraphCloudDelegate)?.graphDidUpdateFromCloudStorage?(graph: s)
         }
     }
 }

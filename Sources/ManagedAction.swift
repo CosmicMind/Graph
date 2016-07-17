@@ -123,61 +123,41 @@ internal class ManagedAction: ManagedNode {
     /**
      Adds a ManagedEntity to the subjectSet.
      - Parameter managedEntity: A ManagedEntity to add.
-     - Returns: A boolean of the result, true if added, false otherwise.
      */
-    internal func addSubject(_ managedEntity: ManagedEntity) -> Bool {
-        var result: Bool?
+    internal func addSubject(_ managedEntity: ManagedEntity) {
         managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
-            let count: Int = self.subjectSet.count
             self.mutableSetValue(forKey: "subjectSet").add(managedEntity)
-            result = count != self.subjectSet.count
         }
-        return result!
     }
     
     /**
      Removes a ManagedEntity from the subjectSet.
      - Parameter managedEntity: A ManagedEntity to remove.
-     - Returns: A boolean of the result, true if removed, false otherwise.
      */
-    internal func removeSubject(_ managedEntity: ManagedEntity) -> Bool {
-        var result: Bool?
+    internal func removeSubject(_ managedEntity: ManagedEntity) {
         managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
-            let count: Int = self.subjectSet.count
             self.mutableSetValue(forKey: "subjectSet").remove(managedEntity)
-            result = count != self.subjectSet.count
         }
-        return result!
     }
     
     /**
      Adds a ManagedEntity to the objectSet.
      - Parameter managedEntity: A ManagedEntity to add.
-     - Returns: A boolean of the result, true if added, false otherwise.
      */
-    internal func addObject(_ managedEntity: ManagedEntity) -> Bool {
-        var result: Bool?
+    internal func addObject(_ managedEntity: ManagedEntity) {
         managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
-            let count: Int = self.objectSet.count
             self.mutableSetValue(forKey: "objectSet").add(managedEntity)
-            result = count != self.objectSet.count
         }
-        return result!
     }
     
     /**
      Removes a ManagedEntity from the objectSet.
      - Parameter managedEntity: A ManagedEntity to remove.
-     - Returns: A boolean of the result, true if removed, false otherwise.
      */
-    internal func removeObject(_ managedEntity: ManagedEntity) -> Bool {
-        var result: Bool?
+    internal func removeObject(_ managedEntity: ManagedEntity) {
         managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
-            let count: Int = self.objectSet.count
             self.mutableSetValue(forKey: "objectSet").remove(managedEntity)
-            result = count != self.objectSet.count
         }
-        return result!
     }
     
     /// Marks the Action for deletion and clears all its relationships.

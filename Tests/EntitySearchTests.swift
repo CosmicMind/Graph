@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class EntitySearchTests : XCTestCase, GraphDelegate {
+class EntitySearchTests : XCTestCase {
     override func setUp() {
         super.setUp()
     }
@@ -48,66 +48,66 @@ class EntitySearchTests : XCTestCase, GraphDelegate {
             let n: Entity = Entity(type: "T1")
             n["P1"] = 0 == i % 2 ? "V1" : 1
             n["P2"] = "V2"
-            n.addToGroup("G1")
-            n.addToGroup("G2")
+            n.add("G1")
+            n.add("G2")
         }
         
         for _ in 0..<200 {
             let n: Entity = Entity(type: "T2")
             n["P2"] = "V2"
-            n.addToGroup("G2")
+            n.add("G2")
         }
         
         for _ in 0..<300 {
             let n: Entity = Entity(type: "T3")
             n["P3"] = "V3"
-            n.addToGroup("G3")
+            n.add("G3")
         }
         
         graph.sync { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "\(error)")
         }
         
-        XCTAssertEqual(0, graph.searchForEntity().count)
+        XCTAssertEqual(0, graph.search(forEntity: []).count)
         
-        XCTAssertEqual(100, graph.searchForEntity(types: ["T1"]).count)
-        XCTAssertEqual(300, graph.searchForEntity(types: ["T1", "T2"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["T1", "T2", "T3"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["*"]).count)
+        XCTAssertEqual(100, graph.search(forEntity: ["T1"]).count)
+        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["*"]).count)
         
-        XCTAssertEqual(0, graph.searchForEntity(groups: ["NONE"]).count)
-        XCTAssertEqual(100, graph.searchForEntity(groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.searchForEntity(groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(groups: ["*"]).count)
+        XCTAssertEqual(0, graph.search(forEntity: [], tagged: ["NONE"]).count)
+        XCTAssertEqual(100, graph.search(forEntity: [], tagged: ["G1"]).count)
+        XCTAssertEqual(300, graph.search(forEntity: [], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: [], tagged: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: [], tagged: ["*"]).count)
         
-        XCTAssertEqual(100, graph.searchForEntity(types: ["T1"], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.searchForEntity(types: ["T1"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["T1"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(300, graph.searchForEntity(types: ["T1", "T2"], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.searchForEntity(types: ["T1", "T2"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["T1", "T2"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["T1", "T2", "T3"], groups: ["G1"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["T1", "T2", "T3"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["T1", "T2", "T3"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["*"], groups: ["G1"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["*"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["*"], groups: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(100, graph.search(forEntity: ["T1"], tagged: ["G1"]).count)
+        XCTAssertEqual(300, graph.search(forEntity: ["T1"], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["T1"], tagged: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"], tagged: ["G1"]).count)
+        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2"], tagged: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], tagged: ["G1"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], tagged: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["*"], tagged: ["G1"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["*"], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["*"], tagged: ["G1", "G2", "G3"]).count)
         
-        XCTAssertEqual(100, graph.searchForEntity(properties: [("P1", nil)]).count)
-        XCTAssertEqual(50, graph.searchForEntity(properties: [("P1", "V1")]).count)
-        XCTAssertEqual(50, graph.searchForEntity(properties: [("P1", 1)]).count)
-        XCTAssertEqual(50, graph.searchForEntity(properties: [("*", "V1")]).count)
-        XCTAssertEqual(50, graph.searchForEntity(properties: [("*", 1)]).count)
-        XCTAssertEqual(100, graph.searchForEntity(properties: [("P1", "V1"), ("P1", 1)]).count)
-        XCTAssertEqual(300, graph.searchForEntity(properties: [("P1", nil), ("P2", "V2")]).count)
-        XCTAssertEqual(600, graph.searchForEntity(properties: [("P1", nil), ("P2", "V2"), ("P3", "V3")]).count)
-        XCTAssertEqual(600, graph.searchForEntity(properties: [("P1", nil), ("P2", nil), ("P3", nil)]).count)
-        XCTAssertEqual(600, graph.searchForEntity(properties: [("*", nil)]).count)
+        XCTAssertEqual(100, graph.search(forEntity:[], where: [("P1", nil)]).count)
+        XCTAssertEqual(50, graph.search(forEntity:[], where: [("P1", "V1")]).count)
+        XCTAssertEqual(50, graph.search(forEntity:[], where: [("P1", 1)]).count)
+        XCTAssertEqual(50, graph.search(forEntity:[], where: [("*", "V1")]).count)
+        XCTAssertEqual(50, graph.search(forEntity:[], where: [("*", 1)]).count)
+        XCTAssertEqual(100, graph.search(forEntity:[], where: [("P1", "V1"), ("P1", 1)]).count)
+        XCTAssertEqual(300, graph.search(forEntity:[], where: [("P1", nil), ("P2", "V2")]).count)
+        XCTAssertEqual(600, graph.search(forEntity:[], where: [("P1", nil), ("P2", "V2"), ("P3", "V3")]).count)
+        XCTAssertEqual(600, graph.search(forEntity:[], where: [("P1", nil), ("P2", nil), ("P3", nil)]).count)
+        XCTAssertEqual(600, graph.search(forEntity:[], where: [("*", nil)]).count)
         
-        XCTAssertEqual(300, graph.searchForEntity(types: ["T1"], properties: [("P1", nil), ("P2", nil)]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["T1"], groups: ["G3"], properties: [("P1", nil), ("P2", nil)]).count)
-        XCTAssertEqual(600, graph.searchForEntity(types: ["*"], groups: ["*"], properties: [("*", nil)]).count)
+        XCTAssertEqual(300, graph.search(forEntity: ["T1"], where: [("P1", nil), ("P2", nil)]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["T1"], tagged: ["G3"], where: [("P1", nil), ("P2", nil)]).count)
+        XCTAssertEqual(600, graph.search(forEntity: ["*"], tagged: ["*"], where: [("*", nil)]).count)
         
         graph.clear()
     }

@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class RelationshipSearchTests : XCTestCase, GraphDelegate {
+class RelationshipSearchTests : XCTestCase {
     override func setUp() {
         super.setUp()
     }
@@ -48,66 +48,66 @@ class RelationshipSearchTests : XCTestCase, GraphDelegate {
             let n: Relationship = Relationship(type: "T1")
             n["P1"] = 0 == i % 2 ? "V1" : 1
             n["P2"] = "V2"
-            n.addToGroup("G1")
-            n.addToGroup("G2")
+            n.add("G1")
+            n.add("G2")
         }
         
         for _ in 0..<200 {
             let n: Relationship = Relationship(type: "T2")
             n["P2"] = "V2"
-            n.addToGroup("G2")
+            n.add("G2")
         }
         
         for _ in 0..<300 {
             let n: Relationship = Relationship(type: "T3")
             n["P3"] = "V3"
-            n.addToGroup("G3")
+            n.add("G3")
         }
         
         graph.sync { (success: Bool, error: NSError?) in
             XCTAssertTrue(success, "\(error)")
         }
         
-        XCTAssertEqual(0, graph.searchForRelationship().count)
+        XCTAssertEqual(0, graph.search(forRelationship: []).count)
         
-        XCTAssertEqual(100, graph.searchForRelationship(types: ["T1"]).count)
-        XCTAssertEqual(300, graph.searchForRelationship(types: ["T1", "T2"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["T1", "T2", "T3"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["*"]).count)
+        XCTAssertEqual(100, graph.search(forRelationship: ["T1"]).count)
+        XCTAssertEqual(300, graph.search(forRelationship: ["T1", "T2"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["T1", "T2", "T3"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["*"]).count)
         
-        XCTAssertEqual(0, graph.searchForRelationship(groups: ["NONE"]).count)
-        XCTAssertEqual(100, graph.searchForRelationship(groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.searchForRelationship(groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(groups: ["*"]).count)
+        XCTAssertEqual(0, graph.search(forRelationship: [], tagged: ["NONE"]).count)
+        XCTAssertEqual(100, graph.search(forRelationship: [], tagged: ["G1"]).count)
+        XCTAssertEqual(300, graph.search(forRelationship: [], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: [], tagged: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: [], tagged: ["*"]).count)
         
-        XCTAssertEqual(100, graph.searchForRelationship(types: ["T1"], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.searchForRelationship(types: ["T1"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["T1"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(300, graph.searchForRelationship(types: ["T1", "T2"], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.searchForRelationship(types: ["T1", "T2"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["T1", "T2"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["T1", "T2", "T3"], groups: ["G1"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["T1", "T2", "T3"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["T1", "T2", "T3"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["*"], groups: ["G1"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["*"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["*"], groups: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(100, graph.search(forRelationship: ["T1"], tagged: ["G1"]).count)
+        XCTAssertEqual(300, graph.search(forRelationship: ["T1"], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["T1"], tagged: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(300, graph.search(forRelationship: ["T1", "T2"], tagged: ["G1"]).count)
+        XCTAssertEqual(300, graph.search(forRelationship: ["T1", "T2"], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["T1", "T2"], tagged: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["T1", "T2", "T3"], tagged: ["G1"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["T1", "T2", "T3"], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["T1", "T2", "T3"], tagged: ["G1", "G2", "G3"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["*"], tagged: ["G1"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["*"], tagged: ["G1", "G2"]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["*"], tagged: ["G1", "G2", "G3"]).count)
         
-        XCTAssertEqual(100, graph.searchForRelationship(properties: [("P1", nil)]).count)
-        XCTAssertEqual(50, graph.searchForRelationship(properties: [("P1", "V1")]).count)
-        XCTAssertEqual(50, graph.searchForRelationship(properties: [("P1", 1)]).count)
-        XCTAssertEqual(50, graph.searchForRelationship(properties: [("*", "V1")]).count)
-        XCTAssertEqual(50, graph.searchForRelationship(properties: [("*", 1)]).count)
-        XCTAssertEqual(100, graph.searchForRelationship(properties: [("P1", "V1"), ("P1", 1)]).count)
-        XCTAssertEqual(300, graph.searchForRelationship(properties: [("P1", nil), ("P2", "V2")]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(properties: [("P1", nil), ("P2", "V2"), ("P3", "V3")]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(properties: [("P1", nil), ("P2", nil), ("P3", nil)]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(properties: [("*", nil)]).count)
+        XCTAssertEqual(100, graph.search(forRelationship:[], where: [("P1", nil)]).count)
+        XCTAssertEqual(50, graph.search(forRelationship:[], where: [("P1", "V1")]).count)
+        XCTAssertEqual(50, graph.search(forRelationship:[], where: [("P1", 1)]).count)
+        XCTAssertEqual(50, graph.search(forRelationship:[], where: [("*", "V1")]).count)
+        XCTAssertEqual(50, graph.search(forRelationship:[], where: [("*", 1)]).count)
+        XCTAssertEqual(100, graph.search(forRelationship:[], where: [("P1", "V1"), ("P1", 1)]).count)
+        XCTAssertEqual(300, graph.search(forRelationship:[], where: [("P1", nil), ("P2", "V2")]).count)
+        XCTAssertEqual(600, graph.search(forRelationship:[], where: [("P1", nil), ("P2", "V2"), ("P3", "V3")]).count)
+        XCTAssertEqual(600, graph.search(forRelationship:[], where: [("P1", nil), ("P2", nil), ("P3", nil)]).count)
+        XCTAssertEqual(600, graph.search(forRelationship:[], where: [("*", nil)]).count)
         
-        XCTAssertEqual(300, graph.searchForRelationship(types: ["T1"], properties: [("P1", nil), ("P2", nil)]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["T1"], groups: ["G3"], properties: [("P1", nil), ("P2", nil)]).count)
-        XCTAssertEqual(600, graph.searchForRelationship(types: ["*"], groups: ["*"], properties: [("*", nil)]).count)
+        XCTAssertEqual(300, graph.search(forRelationship: ["T1"], where: [("P1", nil), ("P2", nil)]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["T1"], tagged: ["G3"], where: [("P1", nil), ("P2", nil)]).count)
+        XCTAssertEqual(600, graph.search(forRelationship: ["*"], tagged: ["*"], where: [("*", nil)]).count)
         
         graph.clear()
     }

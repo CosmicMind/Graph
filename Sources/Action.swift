@@ -216,28 +216,24 @@ public class Action: NSObject, NodeType {
      removes it if it is a member.
      - Parameter name: The tag name.
      */
-    public func toggleTagMembership(_ name: String) {
-        _ = tagged(name) ? remove(name) : add(name)
+    public func toggle(_ name: String) {
+        tagged(name) ? remove(name) : add(name)
     }
     
     /**
      Adds an Entity to the subject set.
      - Parameter entity: An Entity to add.
-     - Returns: A boolean of the result, true if added, false 
-     otherwise.
      */
-    public func addSubject(_ entity: Entity) -> Bool {
-        return managedNode.addSubject(entity.managedNode)
+    public func addSubject(_ entity: Entity) {
+        managedNode.addSubject(entity.managedNode)
     }
     
     /**
      Removes an Entity from the subject set.
      - Parameter entity: An Entity to remove.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
      */
-    public func removeSubject(_ entity: Entity) -> Bool {
-        return managedNode.removeSubject(entity.managedNode)
+    public func removeSubject(_ entity: Entity) {
+        managedNode.removeSubject(entity.managedNode)
     }
     
     /**
@@ -253,21 +249,17 @@ public class Action: NSObject, NodeType {
     /**
      Adds an Entity to the object set.
      - Parameter entity: An Entity to add.
-     - Returns: A boolean of the result, true if added, false
-     otherwise.
      */
-    public func addObject(_ entity: Entity) -> Bool {
-        return managedNode.addObject(entity.managedNode)
+    public func addObject(_ entity: Entity) {
+        managedNode.addObject(entity.managedNode)
     }
     
     /**
      Removes an Entity from the object set.
      - Parameter entity: An Entity to remove.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
      */
-    public func removeObject(_ entity: Entity) -> Bool {
-        return managedNode.removeObject(entity.managedNode)
+    public func removeObject(_ entity: Entity) {
+        managedNode.removeObject(entity.managedNode)
     }
     
     /**

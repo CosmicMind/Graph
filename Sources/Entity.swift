@@ -256,8 +256,8 @@ public class Entity: NSObject, NodeType {
      removes it if it is a member.
      - Parameter name: The tag name.
      */
-    public func toggleTagMembership(_ name: String) {
-        _ = tagged(name) ? remove(name) : add(name)
+    public func toggle(_ name: String) {
+        tagged(name) ? remove(name) : add(name)
     }
     
     /// Marks the Entity for deletion.

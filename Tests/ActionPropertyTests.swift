@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class ActionPropertyTests: XCTestCase, GraphDelegate {
+class ActionPropertyTests: XCTestCase, GraphActionDelegate {
     var saveException: XCTestExpectation?
     
     var propertyInsertExpception: XCTestExpectation?
@@ -138,7 +138,7 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graphDidInsertActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, action: Action, added property: String, with value: AnyObject, from: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
@@ -149,7 +149,7 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         propertyInsertExpception?.fulfill()
     }
     
-    func graphDidUpdateActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, action: Action, updated property: String, with value: AnyObject, from: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
@@ -160,7 +160,7 @@ class ActionPropertyTests: XCTestCase, GraphDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func graphWillDeleteActionProperty(_ graph: Graph, action: Action, property: String, value: AnyObject, fromCloud: Bool) {
+    func graph(graph: Graph, action: Action, removed property: String, with value: AnyObject, from: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
