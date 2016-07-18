@@ -72,6 +72,11 @@ public class Relationship: NSObject, NodeType {
         return managedNode.tags
     }
     
+    /// A reference to groups.
+    public var groups: Set<String> {
+        return managedNode.groups
+    }
+    
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.

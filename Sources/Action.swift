@@ -72,6 +72,11 @@ public class Action: NSObject, NodeType {
         return managedNode.tags
     }
     
+    /// A reference to groups.
+    public var groups: Set<String> {
+        return managedNode.groups
+    }
+    
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
@@ -262,52 +267,32 @@ public class Action: NSObject, NodeType {
      Adds an Entity to the subject set.
      - Parameter entity: An Entity to add.
      */
-    public func addSubject(_ entity: Entity) {
-        managedNode.addSubject(entity.managedNode)
+    public func add(subject entity: Entity) {
+        managedNode.add(subject: entity.managedNode)
     }
     
     /**
      Removes an Entity from the subject set.
-     - Parameter entity: An Entity to remove.
+     - Parameter subject entity: An Entity to remove.
      */
-    public func removeSubject(_ entity: Entity) {
-        managedNode.removeSubject(entity.managedNode)
-    }
-    
-    /**
-     Checks whether the Entity is a member of the subject set.
-     - Parameter entity: An Entity to check.
-     - Returns: A boolean of the result, true if a member, false
-     otherwise.
-     */
-    public func memberOfSubjects(_ entity: Entity) -> Bool {
-        return subjects.contains(entity)
+    public func remove(subject entity: Entity) {
+        managedNode.remove(subject: entity.managedNode)
     }
     
     /**
      Adds an Entity to the object set.
-     - Parameter entity: An Entity to add.
+     - Parameter object entity: An Entity to add.
      */
-    public func addObject(_ entity: Entity) {
-        managedNode.addObject(entity.managedNode)
+    public func add(object entity: Entity) {
+        managedNode.add(object: entity.managedNode)
     }
     
     /**
      Removes an Entity from the object set.
-     - Parameter entity: An Entity to remove.
+     - Parameter object entity: An Entity to remove.
      */
-    public func removeObject(_ entity: Entity) {
-        managedNode.removeObject(entity.managedNode)
-    }
-    
-    /**
-     Checks whether the Entity is a member of the object set.
-     - Parameter entity: An Entity to check.
-     - Returns: A boolean of the result, true if a member, false
-     otherwise.
-     */
-    public func memberOfObjects(_ entity: Entity) -> Bool {
-        return objects.contains(entity)
+    public func remove(object entity: Entity) {
+        managedNode.remove(object: entity.managedNode)
     }
     
     /// Marks the Action for deletion.

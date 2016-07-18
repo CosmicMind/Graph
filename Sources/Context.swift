@@ -95,7 +95,6 @@ public extension Graph {
             location = try! GraphStoreDescription.location.appendingPathComponent(route)
             
             guard !enableCloud, #available(iOS 10.0, OSX 10.12, *) else {
-                
                 managedObjectContext = Context.create(.mainQueueConcurrencyType)
                 managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
                 GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
@@ -143,7 +142,7 @@ public extension Graph {
     
     @available(iOS 10.0, OSX 10.12, *)
     private func prepareContextContainer() {
-        prepareSQLite()
+        self.prepareSQLite()
         
         let storeDescription = NSPersistentStoreDescription()
         storeDescription.shouldAddStoreAsynchronously = false

@@ -41,12 +41,16 @@ internal class ManagedNode: ManagedObject {
     
     /// A reference to the Nodes unique ID.
     internal var id: String {
+        guard let moc = managedObjectContext else {
+            fatalError("[Graph Error: Cannot obtain permanent objectID]")
+        }
+        
         var result: String?
-        managedObjectContext?.performAndWait { [unowned self] in
+        moc.performAndWait { [unowned self, unowned moc] in
             do {
-                try self.managedObjectContext?.obtainPermanentIDs(for: [self])
+                try moc.obtainPermanentIDs(for: [self])
             } catch let e as NSError {
-                fatalError("[Graph Error: Cannot obtain permanent objectID - \(e.localizedDescription)")
+                fatalError("[Graph Error: Cannot obtain permanent objectID - \(e.localizedDescription)]")
             }
             result = String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.uriRepresentation().lastPathComponent!
         }
@@ -181,37 +185,5 @@ internal class ManagedNode: ManagedObject {
             }
         }
         return result!
-    }
-    
-    /// Marks a Node for deletion and clears all its relationships.
-    internal override func delete() {
-        guard let moc = self.managedObjectContext else {
-            return
-        }
-        
-        moc.performAndWait { [unowned self] in
-            self.tagSet.forEach { (object: AnyObject) in
-                guard let tag = object as? ManagedEntityTag else {
-                    return
-                }
-                tag.delete()
-            }
-            
-            self.groupSet.forEach { (object: AnyObject) in
-                guard let group = object as? ManagedEntityGroup else {
-                    return
-                }
-                group.delete()
-            }
-            
-            self.propertySet.forEach { (object: AnyObject) in
-                guard let property = object as? ManagedEntityProperty else {
-                    return
-                }
-                property.delete()
-            }
-        }
-        
-        super.delete()
     }
 }

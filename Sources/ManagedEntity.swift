@@ -164,6 +164,27 @@ internal class ManagedEntity: ManagedNode {
         }
         
         moc.performAndWait { [unowned self] in
+            self.propertySet.forEach { (object: AnyObject) in
+                guard let property = object as? ManagedEntityProperty else {
+                    return
+                }
+                property.delete()
+            }
+            
+            self.tagSet.forEach { (object: AnyObject) in
+                guard let tag = object as? ManagedEntityTag else {
+                    return
+                }
+                tag.delete()
+            }
+            
+            self.groupSet.forEach { (object: AnyObject) in
+                guard let group = object as? ManagedEntityGroup else {
+                    return
+                }
+                group.delete()
+            }
+            
             self.actionSubjectSet.forEach { (object: AnyObject) in
                 guard let action = object as? ManagedAction else {
                     return

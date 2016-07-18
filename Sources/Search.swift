@@ -396,6 +396,56 @@ public extension Graph {
     }
     
     /**
+     Searches based on property value.
+     - Parameter forEntityName: An entity type name.
+     - Parameter properties: An Array of property tuples.
+     - Returns: An optional Array of AnyObjects.
+     */
+    internal func search(forEntityName: String, properties: [(name: String, value: AnyObject?)]) -> [AnyObject]? {
+        guard let moc = managedObjectContext else {
+            return nil
+        }
+        
+        var predicate = [Predicate]()
+        
+        for (k, v) in properties {
+            if let x = v {
+                if let a = x as? String {
+                    predicate.append(CompoundPredicate(andPredicateWithSubpredicates: [Predicate(format: "name LIKE[cd] %@", k), Predicate(format: "object = %@", a)]))
+                } else if let a: NSNumber = x as? NSNumber {
+                    predicate.append(CompoundPredicate(andPredicateWithSubpredicates: [Predicate(format: "name LIKE[cd] %@", k), Predicate(format: "object = %@", a)]))
+                }
+            } else {
+                predicate.append(Predicate(format: "name LIKE[cd] %@", k))
+            }
+        }
+        
+        let request = NSFetchRequest<ManagedProperty>()
+        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
+        request.fetchBatchSize = batchSize
+        request.fetchOffset = batchOffset
+        request.resultType = .dictionaryResultType
+        request.propertiesToFetch = ["node"]
+        request.returnsDistinctResults = true
+        request.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicate)
+        request.sortDescriptors = [SortDescriptor(key: "node.createdDate", ascending: true)]
+        
+        var result: [AnyObject]?
+        moc.performAndWait { [unowned request] in
+            do {
+                if #available(iOS 10.0, OSX 10.12, *) {
+                    result = try request.execute()
+                } else {
+                    result = try moc.fetch(request)
+                }
+            } catch {
+                result = [AnyObject]()
+            }
+        }
+        return result!
+    }
+    
+    /**
      Searches based on type value.
      - Parameter forEntityName: An entity type name.
      - Parameter types: An Array of types.
@@ -412,9 +462,8 @@ public extension Graph {
             predicate.append(Predicate(format: "type LIKE[cd] %@", v))
         }
         
-        let entityDescription = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
         let request = NSFetchRequest<ManagedNode>()
-        request.entity = entityDescription
+        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
         request.fetchBatchSize = batchSize
         request.fetchOffset = batchOffset
         request.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicate)
@@ -452,9 +501,8 @@ public extension Graph {
             predicate.append(Predicate(format: "name LIKE[cd] %@", v))
         }
         
-        let entityDescription = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
         let request = NSFetchRequest<ManagedTag>()
-        request.entity = entityDescription
+        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
         request.fetchBatchSize = batchSize
         request.fetchOffset = batchOffset
         request.resultType = .dictionaryResultType
@@ -479,33 +527,24 @@ public extension Graph {
     }
     
     /**
-     Searches based on property value.
+     Searches based on group value.
      - Parameter forEntityName: An entity type name.
-     - Parameter properties: An Array of property tuples.
+     - Parameter groups: An Array of tags.
      - Returns: An optional Array of AnyObjects.
      */
-    internal func search(forEntityName: String, properties: [(name: String, value: AnyObject?)]) -> [AnyObject]? {
+    internal func search(forEntityName: String, groups: [String]) -> [AnyObject]? {
         guard let moc = managedObjectContext else {
             return nil
         }
         
         var predicate = [Predicate]()
         
-        for (k, v) in properties {
-            if let x = v {
-                if let a = x as? String {
-                    predicate.append(CompoundPredicate(andPredicateWithSubpredicates: [Predicate(format: "name LIKE[cd] %@", k), Predicate(format: "object = %@", a)]))
-                } else if let a: NSNumber = x as? NSNumber {
-                    predicate.append(CompoundPredicate(andPredicateWithSubpredicates: [Predicate(format: "name LIKE[cd] %@", k), Predicate(format: "object = %@", a)]))
-                }
-            } else {
-                predicate.append(Predicate(format: "name LIKE[cd] %@", k))
-            }
+        for v in groups {
+            predicate.append(Predicate(format: "name LIKE[cd] %@", v))
         }
         
-        let entityDescription = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
-        let request = NSFetchRequest<ManagedProperty>()
-        request.entity = entityDescription
+        let request = NSFetchRequest<ManagedGroup>()
+        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
         request.fetchBatchSize = batchSize
         request.fetchOffset = batchOffset
         request.resultType = .dictionaryResultType

@@ -32,19 +32,19 @@ import CoreData
 
 internal struct ModelIdentifier {
     static let entityName: String = "ManagedEntity"
+    static let entityPropertyName: String = "ManagedEntityProperty"
     static let entityTagName: String = "ManagedEntityTag"
     static let entityGroupName: String = "ManagedEntityGroup"
-    static let entityPropertyName: String = "ManagedEntityProperty"
     
     static let actionName: String = "ManagedAction"
+    static let actionPropertyName: String = "ManagedActionProperty"
     static let actionTagName: String = "ManagedActionTag"
     static let actionGroupName: String = "ManagedActionGroup"
-    static let actionPropertyName: String = "ManagedActionProperty"
     
     static let relationshipName: String = "ManagedRelationship"
+    static let relationshipPropertyName: String = "ManagedRelationshipProperty"
     static let relationshipTagName: String = "ManagedRelationshipTag"
     static let relationshipGroupName: String = "ManagedRelationshipGroup"
-    static let relationshipPropertyName: String = "ManagedRelationshipProperty"
 }
 
 internal struct Model {
@@ -59,65 +59,73 @@ internal struct Model {
     
     /// Constructs the model once.
     private static var __once: () = {
+        // Entity
+        
         let entityDescription = NSEntityDescription()
         var entityProperties = [AnyObject]()
         entityDescription.name = ModelIdentifier.entityName
         entityDescription.managedObjectClassName = ModelIdentifier.entityName
-        
-        let actionDescription = NSEntityDescription()
-        var actionProperties = [AnyObject]()
-        actionDescription.name = ModelIdentifier.actionName
-        actionDescription.managedObjectClassName = ModelIdentifier.actionName
-        
-        let relationshipDescription = NSEntityDescription()
-        var relationshipProperties = [AnyObject]()
-        relationshipDescription.name = ModelIdentifier.relationshipName
-        relationshipDescription.managedObjectClassName = ModelIdentifier.relationshipName
-        
-        let entityTagDescription = NSEntityDescription()
-        var entityTagProperties = [AnyObject]()
-        entityTagDescription.name = ModelIdentifier.entityTagName
-        entityTagDescription.managedObjectClassName = ModelIdentifier.entityTagName
-        
-        let actionTagDescription = NSEntityDescription()
-        var actionTagProperties = [AnyObject]()
-        actionTagDescription.name = ModelIdentifier.actionTagName
-        actionTagDescription.managedObjectClassName = ModelIdentifier.actionTagName
-        
-        let relationshipTagDescription = NSEntityDescription()
-        var relationshipTagProperties = [AnyObject]()
-        relationshipTagDescription.name = ModelIdentifier.relationshipTagName
-        relationshipTagDescription.managedObjectClassName = ModelIdentifier.relationshipTagName
-        
-        let entityGroupDescription = NSEntityDescription()
-        var entityGroupProperties = [AnyObject]()
-        entityGroupDescription.name = ModelIdentifier.entityGroupName
-        entityGroupDescription.managedObjectClassName = ModelIdentifier.entityGroupName
-        
-        let actionGroupDescription = NSEntityDescription()
-        var actionGroupProperties = [AnyObject]()
-        actionGroupDescription.name = ModelIdentifier.actionGroupName
-        actionGroupDescription.managedObjectClassName = ModelIdentifier.actionGroupName
-        
-        let relationshipGroupDescription = NSEntityDescription()
-        var relationshipGroupProperties = [AnyObject]()
-        relationshipGroupDescription.name = ModelIdentifier.relationshipGroupName
-        relationshipGroupDescription.managedObjectClassName = ModelIdentifier.relationshipGroupName
         
         let entityPropertyDescription = NSEntityDescription()
         var entityPropertyProperties = [AnyObject]()
         entityPropertyDescription.name = ModelIdentifier.entityPropertyName
         entityPropertyDescription.managedObjectClassName = ModelIdentifier.entityPropertyName
         
-        let actionPropertyDescription = NSEntityDescription()
-        var actionPropertyProperties = [AnyObject]()
-        actionPropertyDescription.name = ModelIdentifier.actionPropertyName
-        actionPropertyDescription.managedObjectClassName = ModelIdentifier.actionPropertyName
+        let entityTagDescription = NSEntityDescription()
+        var entityTagProperties = [AnyObject]()
+        entityTagDescription.name = ModelIdentifier.entityTagName
+        entityTagDescription.managedObjectClassName = ModelIdentifier.entityTagName
+        
+        let entityGroupDescription = NSEntityDescription()
+        var entityGroupProperties = [AnyObject]()
+        entityGroupDescription.name = ModelIdentifier.entityGroupName
+        entityGroupDescription.managedObjectClassName = ModelIdentifier.entityGroupName
+        
+        // Relationship
+        
+        let relationshipDescription = NSEntityDescription()
+        var relationshipProperties = [AnyObject]()
+        relationshipDescription.name = ModelIdentifier.relationshipName
+        relationshipDescription.managedObjectClassName = ModelIdentifier.relationshipName
         
         let relationshipPropertyDescription = NSEntityDescription()
         var relationshipPropertyProperties = [AnyObject]()
         relationshipPropertyDescription.name = ModelIdentifier.relationshipPropertyName
         relationshipPropertyDescription.managedObjectClassName = ModelIdentifier.relationshipPropertyName
+        
+        let relationshipTagDescription = NSEntityDescription()
+        var relationshipTagProperties = [AnyObject]()
+        relationshipTagDescription.name = ModelIdentifier.relationshipTagName
+        relationshipTagDescription.managedObjectClassName = ModelIdentifier.relationshipTagName
+        
+        let relationshipGroupDescription = NSEntityDescription()
+        var relationshipGroupProperties = [AnyObject]()
+        relationshipGroupDescription.name = ModelIdentifier.relationshipGroupName
+        relationshipGroupDescription.managedObjectClassName = ModelIdentifier.relationshipGroupName
+        
+        // Action
+        
+        let actionDescription = NSEntityDescription()
+        var actionProperties = [AnyObject]()
+        actionDescription.name = ModelIdentifier.actionName
+        actionDescription.managedObjectClassName = ModelIdentifier.actionName
+        
+        let actionPropertyDescription = NSEntityDescription()
+        var actionPropertyProperties = [AnyObject]()
+        actionPropertyDescription.name = ModelIdentifier.actionPropertyName
+        actionPropertyDescription.managedObjectClassName = ModelIdentifier.actionPropertyName
+        
+        let actionTagDescription = NSEntityDescription()
+        var actionTagProperties = [AnyObject]()
+        actionTagDescription.name = ModelIdentifier.actionTagName
+        actionTagDescription.managedObjectClassName = ModelIdentifier.actionTagName
+        
+        let actionGroupDescription = NSEntityDescription()
+        var actionGroupProperties = [AnyObject]()
+        actionGroupDescription.name = ModelIdentifier.actionGroupName
+        actionGroupDescription.managedObjectClassName = ModelIdentifier.actionGroupName
+        
+        // nodeClass
         
         let nodeClass = NSAttributeDescription()
         nodeClass.name = "nodeClass"
@@ -127,6 +135,8 @@ internal struct Model {
         actionProperties.append(nodeClass.copy() as! NSAttributeDescription)
         relationshipProperties.append(nodeClass.copy() as! NSAttributeDescription)
         
+        // type
+        
         let type = NSAttributeDescription()
         type.name = "type"
         type.attributeType = .stringAttributeType
@@ -135,6 +145,8 @@ internal struct Model {
         actionProperties.append(type.copy() as! NSAttributeDescription)
         relationshipProperties.append(type.copy() as! NSAttributeDescription)
         
+        // createdDate
+        
         let createdDate = NSAttributeDescription()
         createdDate.name = "createdDate"
         createdDate.attributeType = .dateAttributeType
@@ -142,6 +154,8 @@ internal struct Model {
         entityProperties.append(createdDate.copy() as! NSAttributeDescription)
         actionProperties.append(createdDate.copy() as! NSAttributeDescription)
         relationshipProperties.append(createdDate.copy() as! NSAttributeDescription)
+        
+        // property
         
         let propertyName = NSAttributeDescription()
         propertyName.name = "name"
@@ -182,15 +196,17 @@ internal struct Model {
         entityPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
         entityProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
         
+        propertyRelationship.destinationEntity = relationshipDescription
+        propertySetRelationship.destinationEntity = relationshipPropertyDescription
+        relationshipPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
+        relationshipProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
+        
         propertyRelationship.destinationEntity = actionDescription
         propertySetRelationship.destinationEntity = actionPropertyDescription
         actionPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
         actionProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
         
-        propertyRelationship.destinationEntity = relationshipDescription
-        propertySetRelationship.destinationEntity = relationshipPropertyDescription
-        relationshipPropertyProperties.append(propertyRelationship.copy() as! NSRelationshipDescription)
-        relationshipProperties.append(propertySetRelationship.copy() as! NSRelationshipDescription)
+        // tag
         
         let tagName = NSAttributeDescription()
         tagName.name = "name"
@@ -221,15 +237,25 @@ internal struct Model {
         entityTagProperties.append(tagRelationship.copy() as! NSRelationshipDescription)
         entityProperties.append(tagSetRelationship.copy() as! NSRelationshipDescription)
         
+        tagRelationship.destinationEntity = relationshipDescription
+        tagSetRelationship.destinationEntity = relationshipTagDescription
+        relationshipTagProperties.append(tagRelationship.copy() as! NSRelationshipDescription)
+        relationshipProperties.append(tagSetRelationship.copy() as! NSRelationshipDescription)
+        
         tagRelationship.destinationEntity = actionDescription
         tagSetRelationship.destinationEntity = actionTagDescription
         actionTagProperties.append(tagRelationship.copy() as! NSRelationshipDescription)
         actionProperties.append(tagSetRelationship.copy() as! NSRelationshipDescription)
         
-        tagRelationship.destinationEntity = relationshipDescription
-        tagSetRelationship.destinationEntity = relationshipTagDescription
-        relationshipTagProperties.append(tagRelationship.copy() as! NSRelationshipDescription)
-        relationshipProperties.append(tagSetRelationship.copy() as! NSRelationshipDescription)
+        // group
+        
+        let groupName = NSAttributeDescription()
+        groupName.name = "name"
+        groupName.attributeType = .stringAttributeType
+        groupName.isOptional = false
+        entityGroupProperties.append(groupName.copy() as! NSAttributeDescription)
+        actionGroupProperties.append(groupName.copy() as! NSAttributeDescription)
+        relationshipGroupProperties.append(groupName.copy() as! NSAttributeDescription)
         
         let groupRelationship = NSRelationshipDescription()
         groupRelationship.name = "node"
@@ -252,15 +278,15 @@ internal struct Model {
         entityGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
         entityProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
         
-        groupRelationship.destinationEntity = actionDescription
-        groupSetRelationship.destinationEntity = actionGroupDescription
-        actionGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
-        actionProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
-        
         groupRelationship.destinationEntity = relationshipDescription
         groupSetRelationship.destinationEntity = relationshipGroupDescription
         relationshipGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
         relationshipProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
+        
+        groupRelationship.destinationEntity = actionDescription
+        groupSetRelationship.destinationEntity = actionGroupDescription
+        actionGroupProperties.append(groupRelationship.copy() as! NSRelationshipDescription)
+        actionProperties.append(groupSetRelationship.copy() as! NSRelationshipDescription)
         
         // Inverse relationship for Subjects -- B.
         let actionSubjectSetRelationship = NSRelationshipDescription()
@@ -356,33 +382,36 @@ internal struct Model {
         // Inverse relationship for Objects -- E.
         
         entityDescription.properties = entityProperties as! [NSPropertyDescription]
-        entityTagDescription.properties = entityTagProperties as! [NSPropertyDescription]
         entityPropertyDescription.properties = entityPropertyProperties as! [NSPropertyDescription]
+        entityTagDescription.properties = entityTagProperties as! [NSPropertyDescription]
+        entityGroupDescription.properties = entityGroupProperties as! [NSPropertyDescription]
         
         actionDescription.properties = actionProperties as! [NSPropertyDescription]
-        actionTagDescription.properties = actionTagProperties as! [NSPropertyDescription]
         actionPropertyDescription.properties = actionPropertyProperties as! [NSPropertyDescription]
+        actionTagDescription.properties = actionTagProperties as! [NSPropertyDescription]
+        actionGroupDescription.properties = actionGroupProperties as! [NSPropertyDescription]
         
         relationshipDescription.properties = relationshipProperties as! [NSPropertyDescription]
-        relationshipTagDescription.properties = relationshipTagProperties as! [NSPropertyDescription]
         relationshipPropertyDescription.properties = relationshipPropertyProperties as! [NSPropertyDescription]
+        relationshipTagDescription.properties = relationshipTagProperties as! [NSPropertyDescription]
+        relationshipGroupDescription.properties = relationshipGroupProperties as! [NSPropertyDescription]
         
         Model.managedObjectModel = NSManagedObjectModel()
         Model.managedObjectModel?.entities = [
             entityDescription,
+            entityPropertyDescription,
             entityTagDescription,
             entityGroupDescription,
-            entityPropertyDescription,
-            
-            actionDescription,
-            actionTagDescription,
-            actionGroupDescription,
-            actionPropertyDescription,
             
             relationshipDescription,
+            relationshipPropertyDescription,
             relationshipTagDescription,
             relationshipGroupDescription,
-            relationshipPropertyDescription
+            
+            actionDescription,
+            actionPropertyDescription,
+            actionTagDescription,
+            actionGroupDescription
         ]
     }()
 }

@@ -43,7 +43,7 @@ class ActionSearchTests : XCTestCase {
     func testAll() {
         let graph = Graph()
         graph.clear()
-        
+
         for i in 0..<100 {
             let n: Action = Action(type: "T1")
             n["P1"] = 0 == i % 2 ? "V1" : 1

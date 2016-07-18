@@ -64,10 +64,8 @@ internal class ManagedRelationship: ManagedNode {
                 guard let object = value else {
                     for property in self.propertySet {
                         if name == property.name {
-                            if let p = property as? ManagedRelationshipProperty {
-                                p.delete()
-                                break
-                            }
+                            (property as? ManagedRelationshipProperty)?.delete()
+                            break
                         }
                     }
                     return
@@ -157,14 +155,35 @@ internal class ManagedRelationship: ManagedNode {
     
     /// Marks the Relationship for deletion and clears all its relationships.
     internal override func delete() {
-//        guard let moc = self.managedObjectContext else {
-//            return
-//        }
+        guard let moc = self.managedObjectContext else {
+            return
+        }
         
-//        moc.performAndWait { [unowned self] in
+        moc.performAndWait { [unowned self] in
+            self.propertySet.forEach { (object: AnyObject) in
+                guard let property = object as? ManagedRelationshipProperty else {
+                    return
+                }
+                property.delete()
+            }
+            
+            self.tagSet.forEach { (object: AnyObject) in
+                guard let tag = object as? ManagedRelationshipTag else {
+                    return
+                }
+                tag.delete()
+            }
+            
+            self.groupSet.forEach { (object: AnyObject) in
+                guard let group = object as? ManagedRelationshipGroup else {
+                    return
+                }
+                group.delete()
+            }
+          
 //            self.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self)
 //            self.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self)
-//        }
+        }
         
         super.delete()
     }

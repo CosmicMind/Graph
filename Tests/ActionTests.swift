@@ -165,13 +165,13 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         action["P"] = "V"
         action.add(tag: "G")
         
-        action.addSubject(Entity(type: "T"))
-        action.addSubject(Entity(type: "T"))
+        action.add(subject: Entity(type: "T"))
+        action.add(subject: Entity(type: "T"))
         
         XCTAssertEqual(2, action.subjects.count)
         
-        action.addObject(Entity(type: "T"))
-        action.addObject(Entity(type: "T"))
+        action.add(object: Entity(type: "T"))
+        action.add(object: Entity(type: "T"))
         
         XCTAssertEqual(2, action.objects.count)
         
@@ -226,10 +226,10 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         
-        action.addSubject(Entity(type: "T"))
-        action.addSubject(Entity(type: "T"))
-        action.addSubject(Entity(type: "T"))
-        action.addSubject(Entity(type: "T"))
+        action.add(subject: Entity(type: "T"))
+        action.add(subject: Entity(type: "T"))
+        action.add(subject: Entity(type: "T"))
+        action.add(subject: Entity(type: "T"))
         
         XCTAssertEqual(4, action.subjects.count)
         
@@ -268,10 +268,10 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
         
-        action.addObject(Entity(type: "T"))
-        action.addObject(Entity(type: "T"))
-        action.addObject(Entity(type: "T"))
-        action.addObject(Entity(type: "T"))
+        action.add(object: Entity(type: "T"))
+        action.add(object: Entity(type: "T"))
+        action.add(object: Entity(type: "T"))
+        action.add(object: Entity(type: "T"))
         
         XCTAssertEqual(4, action.objects.count)
         

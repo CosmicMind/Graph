@@ -155,9 +155,9 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Adds a ManagedEntity to the subjectSet.
-     - Parameter managedEntity: A ManagedEntity to add.
+     - Parameter subject managedEntity: A ManagedEntity to add.
      */
-    internal func addSubject(_ managedEntity: ManagedEntity) {
+    internal func add(subject managedEntity: ManagedEntity) {
         managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
             self.mutableSetValue(forKey: "subjectSet").add(managedEntity)
         }
@@ -165,9 +165,9 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Removes a ManagedEntity from the subjectSet.
-     - Parameter managedEntity: A ManagedEntity to remove.
+     - Parameter subject managedEntity: A ManagedEntity to remove.
      */
-    internal func removeSubject(_ managedEntity: ManagedEntity) {
+    internal func remove(subject managedEntity: ManagedEntity) {
         managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
             self.mutableSetValue(forKey: "subjectSet").remove(managedEntity)
         }
@@ -175,9 +175,9 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Adds a ManagedEntity to the objectSet.
-     - Parameter managedEntity: A ManagedEntity to add.
+     - Parameter object managedEntity: A ManagedEntity to add.
      */
-    internal func addObject(_ managedEntity: ManagedEntity) {
+    internal func add(object managedEntity: ManagedEntity) {
         managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
             self.mutableSetValue(forKey: "objectSet").add(managedEntity)
         }
@@ -185,9 +185,9 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Removes a ManagedEntity from the objectSet.
-     - Parameter managedEntity: A ManagedEntity to remove.
+     - Parameter object managedEntity: A ManagedEntity to remove.
      */
-    internal func removeObject(_ managedEntity: ManagedEntity) {
+    internal func remove(object managedEntity: ManagedEntity) {
         managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
             self.mutableSetValue(forKey: "objectSet").remove(managedEntity)
         }
@@ -195,11 +195,32 @@ internal class ManagedAction: ManagedNode {
     
     /// Marks the Action for deletion and clears all its relationships.
     internal override func delete() {
-//        guard let moc = managedObjectContext else {
-//            return
-//        }
+        guard let moc = managedObjectContext else {
+            return
+        }
         
-//        moc.performAndWait { [unowned self] in
+        moc.performAndWait { [unowned self] in
+            self.propertySet.forEach { (object: AnyObject) in
+                guard let property = object as? ManagedActionProperty else {
+                    return
+                }
+                property.delete()
+            }
+            
+            self.tagSet.forEach { (object: AnyObject) in
+                guard let tag = object as? ManagedActionTag else {
+                    return
+                }
+                tag.delete()
+            }
+            
+            self.groupSet.forEach { (object: AnyObject) in
+                guard let group = object as? ManagedActionGroup else {
+                    return
+                }
+                group.delete()
+            }
+            
 //            self.subjectSet.forEach { [unowned self] (object: AnyObject) in
 //                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
 //                    return
@@ -213,7 +234,7 @@ internal class ManagedAction: ManagedNode {
 //                }
 //                self.mutableSetValueForKey("objectSet").removeObject(managedEntity)
 //            }
-//        }
+        }
         
         super.delete()
     }

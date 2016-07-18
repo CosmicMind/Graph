@@ -73,6 +73,11 @@ public class Entity: NSObject, NodeType {
         return managedNode.tags
     }
     
+    /// A reference to groups.
+    public var groups: Set<String> {
+        return managedNode.groups
+    }
+    
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
@@ -99,7 +104,7 @@ public class Entity: NSObject, NodeType {
         s.formUnion(managedNode.actionObjectSet as! Set<ManagedAction>)
         return s.map {
             return Action(managedNode: $0 as ManagedAction)
-            } as [Action]
+        } as [Action]
     }
     
     /**
@@ -108,7 +113,7 @@ public class Entity: NSObject, NodeType {
     public var actionsWhenSubject: [Action] {
         return managedNode.actionSubjectSet.map {
             return Action(managedNode: $0 as! ManagedAction)
-            } as [Action]
+        } as [Action]
     }
     
     /**
@@ -117,7 +122,7 @@ public class Entity: NSObject, NodeType {
     public var actionsWhenObject: [Action] {
         return managedNode.actionObjectSet.map {
             return Action(managedNode: $0 as! ManagedAction)
-            } as [Action]
+        } as [Action]
     }
     
     /**
@@ -131,7 +136,7 @@ public class Entity: NSObject, NodeType {
             set.formUnion(self.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
             result = set.map {
                 return Relationship(managedNode: $0 as ManagedRelationship)
-                } as [Relationship]
+            } as [Relationship]
         }
         return result!
     }
@@ -144,7 +149,7 @@ public class Entity: NSObject, NodeType {
         managedNode.managedObjectContext?.performAndWait { [unowned self] in
             result = self.managedNode.relationshipSubjectSet.map {
                 return Relationship(managedNode: $0 as! ManagedRelationship)
-                } as [Relationship]
+            } as [Relationship]
         }
         return result!
     }
@@ -157,7 +162,7 @@ public class Entity: NSObject, NodeType {
         managedNode.managedObjectContext?.performAndWait { [unowned self] in
             result = self.managedNode.relationshipObjectSet.map {
                 return Relationship(managedNode: $0 as! ManagedRelationship)
-                } as [Relationship]
+            } as [Relationship]
         }
         return result!
     }

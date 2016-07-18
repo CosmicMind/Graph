@@ -275,9 +275,9 @@
 			children = (
 				96E3C4021D3ABFCE0086A024 /* Entity.swift */,
 				96E3C4081D3AC07D0086A024 /* ManagedEntity.swift */,
+				96E3C40A1D3AC07D0086A024 /* ManagedEntityProperty.swift */,
 				96E3C4091D3AC07D0086A024 /* ManagedEntityTag.swift */,
 				968672091D3BE9BA000CD904 /* ManagedEntityGroup.swift */,
-				96E3C40A1D3AC07D0086A024 /* ManagedEntityProperty.swift */,
 			);
 			name = Entity;
 			sourceTree = "<group>";
@@ -287,9 +287,9 @@
 			children = (
 				96E3C4111D3AC0960086A024 /* Action.swift */,
 				96E3C4121D3AC0960086A024 /* ManagedAction.swift */,
+				96E3C4141D3AC0960086A024 /* ManagedActionProperty.swift */,
 				96E3C4131D3AC0960086A024 /* ManagedActionTag.swift */,
 				9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */,
-				96E3C4141D3AC0960086A024 /* ManagedActionProperty.swift */,
 			);
 			name = Action;
 			sourceTree = "<group>";
@@ -299,9 +299,9 @@
 			children = (
 				96E3C4201D3AC0A20086A024 /* Relationship.swift */,
 				96E3C41D1D3AC0A20086A024 /* ManagedRelationship.swift */,
+				96E3C41F1D3AC0A20086A024 /* ManagedRelationshipProperty.swift */,
 				96E3C41E1D3AC0A20086A024 /* ManagedRelationshipTag.swift */,
 				9686720C1D3BEA50000CD904 /* ManagedRelationshipGroup.swift */,
-				96E3C41F1D3AC0A20086A024 /* ManagedRelationshipProperty.swift */,
 			);
 			name = Relationship;
 			sourceTree = "<group>";
@@ -309,15 +309,15 @@
 		96E3C4A01D3B0A6F0086A024 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				96E3C3ED1D3AB6160086A024 /* Node.swift */,
 				96E3C4291D3AC5880086A024 /* Graph.swift */,
-				96E3C4581D3AD6B00086A024 /* Search.swift */,
+				96E3C3F31D3AB8B00086A024 /* Model.swift */,
+				96E3C3F01D3AB79F0086A024 /* Container.swift */,
 				96E3C45B1D3AE4F00086A024 /* Coordinator.swift */,
 				96E3C45E1D3AE50E0086A024 /* Context.swift */,
-				96E3C4521D3AD5CA0086A024 /* Watch.swift */,
-				96E3C3ED1D3AB6160086A024 /* Node.swift */,
-				96E3C3F01D3AB79F0086A024 /* Container.swift */,
-				96E3C3F31D3AB8B00086A024 /* Model.swift */,
 				96E3C4551D3AD6930086A024 /* Storage.swift */,
+				96E3C4581D3AD6B00086A024 /* Search.swift */,
+				96E3C4521D3AD5CA0086A024 /* Watch.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
@@ -327,9 +327,9 @@
 			children = (
 				96E3C3F61D3ABE560086A024 /* ManagedObject.swift */,
 				96E3C3FF1D3ABECE0086A024 /* ManagedNode.swift */,
+				96E3C3FC1D3ABEA80086A024 /* ManagedProperty.swift */,
 				96E3C3F91D3ABE880086A024 /* ManagedTag.swift */,
 				968672061D3BE6C2000CD904 /* ManagedGroup.swift */,
-				96E3C3FC1D3ABEA80086A024 /* ManagedProperty.swift */,
 			);
 			name = Managed;
 			sourceTree = "<group>";
