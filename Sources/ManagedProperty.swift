@@ -44,11 +44,7 @@ internal class ManagedProperty: ManagedObject{
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
     internal convenience init(identifier: String, name: String, object: AnyObject, managedObjectContext: NSManagedObjectContext) {
-        if #available(iOS 10.0, OSX 10.12, *) {
-            self.init(context: managedObjectContext)
-        } else {
-            self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
-        }
+        self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
         self.name = name
         self.object = object
     }

@@ -37,8 +37,7 @@ internal struct GraphContextRegistry {
     static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
 
-internal struct Context
-{
+internal struct Context {
     /**
      Creates a NSManagedContext. The method will ensure that  any workerManagedObjectContexts that have
      a concurrency type of .MainQueueConcurrencyType are always created on the main
@@ -94,24 +93,19 @@ public extension Graph {
             GraphContextRegistry.supported[route] = supported
             location = try! GraphStoreDescription.location.appendingPathComponent(route)
             
-            guard !enableCloud, #available(iOS 10.0, OSX 10.12, *) else {
-                managedObjectContext = Context.create(.mainQueueConcurrencyType)
-                managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
-                GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
-                
-                if supported {
-                    preparePersistentStoreCoordinatorNotificationHandlers()
-                    
-                    managedObjectContext.perform { [weak self] in
-                        self?.addPersistentStore(supported: true)
-                    }
-                } else {
-                    addPersistentStore(supported: false)
-                }
-                return
-            }
+            managedObjectContext = Context.create(.mainQueueConcurrencyType)
+            managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
+            GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
             
-            prepareContextContainer()
+            if supported {
+                preparePersistentStoreCoordinatorNotificationHandlers()
+                
+                managedObjectContext.perform { [weak self] in
+                    self?.addPersistentStore(supported: true)
+                }
+            } else {
+                addPersistentStore(supported: false)
+            }
             return
         }
         
@@ -139,7 +133,7 @@ public extension Graph {
             location = try! location.appendingPathComponent("Graph.sqlite")
         }
     }
-    
+
     @available(iOS 10.0, OSX 10.12, *)
     private func prepareContextContainer() {
         self.prepareSQLite()
