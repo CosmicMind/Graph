@@ -52,12 +52,12 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], tags: ["G1"])
+        graph.watchForEntity(types: ["T"], groups: ["G1"])
         
         let entity = Entity(type: "T")
-        entity.add(tag: "G1")
+        entity.add(to: "G1")
         
-        XCTAssertTrue(entity.has(tag: "G1"))
+        XCTAssertTrue(entity.member(of: "G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -74,7 +74,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         let graph = Graph()
         
         let entity = Entity(type: "T")
-        entity.add(tag: "G2")
+        entity.add(to: "G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -89,13 +89,13 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         tagRemoveExpception = expectation(withDescription: "[EntityTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForEntity(tags: ["G1", "G2"])
+        graph.watchForEntity(groups: ["G1", "G2"])
         
-        entity.add(tag: "G1")
-        entity.remove(tag: "G2")
+        entity.add(to: "G1")
+        entity.remove(from: "G2")
         
-        XCTAssertTrue(entity.has(tag: "G1"))
-        XCTAssertFalse(entity.has(tag: "G2"))
+        XCTAssertTrue(entity.member(of: "G1"))
+        XCTAssertFalse(entity.member(of: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -112,9 +112,9 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         let graph = Graph()
         
         let entity = Entity(type: "T")
-        entity.add(tag: "G2")
+        entity.add(to: "G2")
         
-        XCTAssertTrue(entity.has(tag: "G2"))
+        XCTAssertTrue(entity.member(of: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -128,11 +128,11 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         tagRemoveExpception = expectation(withDescription: "[EntityTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForEntity(tags: ["G2"])
+        graph.watchForEntity(groups: ["G2"])
         
-        entity.remove(tag: "G2")
+        entity.remove(from: "G2")
         
-        XCTAssertFalse(entity.has(tag: "G2"))
+        XCTAssertFalse(entity.member(of: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -143,22 +143,22 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, entity: Entity, added tag: String, cloud: Bool) {
+    func graph(graph: Graph, entity: Entity, addedTo group: String, cloud: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("G1", tag)
-        XCTAssertTrue(entity.has(tag: tag))
-        XCTAssertEqual(1, entity.tags.count)
-        XCTAssertTrue(entity.tags.contains(tag))
+        XCTAssertEqual("G1", group)
+        XCTAssertTrue(entity.member(of: group))
+        XCTAssertEqual(1, entity.groups.count)
+        XCTAssertTrue(entity.groups.contains(group))
         
         tagAddExpception?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, removed tag: String, cloud: Bool) {
+    func graph(graph: Graph, entity: Entity, removedFrom group: String, cloud: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("G2", tag)
-        XCTAssertFalse(entity.has(tag: tag))
+        XCTAssertEqual("G2", group)
+        XCTAssertFalse(entity.member(of: group))
         
         tagRemoveExpception?.fulfill()
     }

@@ -81,7 +81,7 @@ internal class ManagedNode: ManagedObject {
         }
         moc.performAndWait { [unowned self] in
             self.groupSet.forEach { (object: AnyObject) in
-                if let group = object as? ManagedTag {
+                if let group = object as? ManagedGroup {
                     g.insert(group.name)
                 }
             }

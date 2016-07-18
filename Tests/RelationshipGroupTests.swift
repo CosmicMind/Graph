@@ -52,12 +52,12 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForRelationship(types: ["T"], tags: ["G1"])
+        graph.watchForRelationship(types: ["T"], groups: ["G1"])
         
         let relationship = Relationship(type: "T")
-        relationship.add(tag: "G1")
+        relationship.add(to: "G1")
         
-        XCTAssertTrue(relationship.has(tag: "G1"))
+        XCTAssertTrue(relationship.member(of: "G1"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -74,7 +74,7 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         let graph = Graph()
         
         let relationship = Relationship(type: "T")
-        relationship.add(tag: "G2")
+        relationship.add(to: "G2")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -89,13 +89,13 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         tagRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForRelationship(tags: ["G1", "G2"])
+        graph.watchForRelationship(groups: ["G1", "G2"])
         
-        relationship.add(tag: "G1")
-        relationship.remove(tag: "G2")
+        relationship.add(to: "G1")
+        relationship.remove(from: "G2")
         
-        XCTAssertTrue(relationship.has(tag: "G1"))
-        XCTAssertFalse(relationship.has(tag: "G2"))
+        XCTAssertTrue(relationship.member(of: "G1"))
+        XCTAssertFalse(relationship.member(of: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -112,9 +112,9 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         let graph = Graph()
         
         let relationship = Relationship(type: "T")
-        relationship.add(tag: "G2")
+        relationship.add(to: "G2")
         
-        XCTAssertTrue(relationship.has(tag: "G2"))
+        XCTAssertTrue(relationship.member(of: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -128,11 +128,11 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         tagRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForRelationship(tags: ["G2"])
+        graph.watchForRelationship(groups: ["G2"])
         
-        relationship.remove(tag: "G2")
+        relationship.remove(from: "G2")
         
-        XCTAssertFalse(relationship.has(tag: "G2"))
+        XCTAssertFalse(relationship.member(of: "G2"))
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
@@ -143,22 +143,22 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         waitForExpectations(withTimeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, relationship: Relationship, added tag: String, cloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, addedTo group: String, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
-        XCTAssertEqual("G1", tag)
-        XCTAssertTrue(relationship.has(tag: tag))
-        XCTAssertEqual(1, relationship.tags.count)
-        XCTAssertTrue(relationship.tags.contains(tag))
+        XCTAssertEqual("G1", group)
+        XCTAssertTrue(relationship.member(of: group))
+        XCTAssertEqual(1, relationship.groups.count)
+        XCTAssertTrue(relationship.groups.contains(group))
         
         tagAddExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed tag: String, cloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removedFrom group: String, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
-        XCTAssertEqual("G2", tag)
-        XCTAssertFalse(relationship.has(tag: tag))
+        XCTAssertEqual("G2", group)
+        XCTAssertFalse(relationship.member(of: group))
         
         tagRemoveExpception?.fulfill()
     }
