@@ -47,8 +47,8 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
     }
     
     func testTagAdd() {
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[ActionTests Error: Tag add test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[ActionTests Error: Tag add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,11 +65,11 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testTagUpdate() {
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -82,11 +82,11 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[ActionTests Error: Tag add test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[ActionTests Error: Tag remove test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[ActionTests Error: Tag add test failed.]")
+        tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
         graph.delegate = self
         graph.watchForAction(tags: ["G1", "G2"])
@@ -103,11 +103,11 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testTagDelete() {
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -122,10 +122,10 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[ActionTests Error: Tag remove test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
         graph.delegate = self
         graph.watchForAction(tags: ["G2"])
@@ -140,7 +140,7 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func graph(graph: Graph, action: Action, added tag: String, cloud: Bool) {

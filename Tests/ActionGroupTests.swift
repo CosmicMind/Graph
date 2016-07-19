@@ -47,8 +47,8 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
     }
     
     func testGroupAdd() {
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[ActionTests Error: Group add test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[ActionTests Error: Group add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,11 +65,11 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testGroupUpdate() {
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -82,11 +82,11 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[ActionTests Error: Group add test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[ActionTests Error: Group remove test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[ActionTests Error: Group add test failed.]")
+        tagRemoveExpception = expectation(description: "[ActionTests Error: Group remove test failed.]")
         
         graph.delegate = self
         graph.watchForAction(groups: ["G1", "G2"])
@@ -103,11 +103,11 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testGroupDelete() {
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -122,10 +122,10 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[ActionTests Error: Graph save test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[ActionTests Error: Group remove test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        tagRemoveExpception = expectation(description: "[ActionTests Error: Group remove test failed.]")
         
         graph.delegate = self
         graph.watchForAction(groups: ["G2"])
@@ -140,7 +140,7 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func graph(graph: Graph, action: Action, addedTo group: String, cloud: Bool) {

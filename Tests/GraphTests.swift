@@ -31,7 +31,7 @@ class GraphTests: XCTestCase {
         XCTAssertEqual("marketing", g2.name)
         XCTAssertEqual(GraphStoreDescription.type, g2.type)
         
-        graphException = expectation(withDescription: "[GraphTests Error: Async tests failed.]")
+        graphException = expectation(description: "[GraphTests Error: Async tests failed.]")
         
         var g3: Graph!
         DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
@@ -42,7 +42,7 @@ class GraphTests: XCTestCase {
             self?.graphException?.fulfill()
         }
         
-       waitForExpectations(withTimeout: 5, handler: nil)
+       waitForExpectations(timeout: 5, handler: nil)
         
         XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("async", g3.name)
@@ -50,7 +50,7 @@ class GraphTests: XCTestCase {
     }
     
     func testCloud() {
-        graphException = expectation(withDescription: "[CloudTests Error: Async tests failed.]")
+        graphException = expectation(description: "[CloudTests Error: Async tests failed.]")
         
         let g1 = Graph(cloud: "marketing") { [weak self] (supported: Bool, error: NSError?) in
             XCTAssertFalse(supported)
@@ -58,13 +58,13 @@ class GraphTests: XCTestCase {
             self?.graphException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
         XCTAssertTrue(g1.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("marketing", g1.name)
         XCTAssertEqual(GraphStoreDescription.type, g1.type)
         
-        graphException = expectation(withDescription: "[CloudTests Error: Async tests failed.]")
+        graphException = expectation(description: "[CloudTests Error: Async tests failed.]")
         
         let g2 = Graph(cloud: "async") { [weak self] (supported: Bool, error: NSError?) in
             XCTAssertFalse(supported)
@@ -72,13 +72,13 @@ class GraphTests: XCTestCase {
             self?.graphException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
         XCTAssertTrue(g2.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("async", g2.name)
         XCTAssertEqual(GraphStoreDescription.type, g2.type)
         
-        graphException = expectation(withDescription: "[CloudTests Error: Async tests failed.]")
+        graphException = expectation(description: "[CloudTests Error: Async tests failed.]")
         
         var g3: Graph!
         DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
@@ -89,7 +89,7 @@ class GraphTests: XCTestCase {
             }
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
         XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("test", g3.name)

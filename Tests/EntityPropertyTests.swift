@@ -47,8 +47,8 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
     }
     
     func testPropertyInsert() {
-        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
-        propertyInsertExpception = expectation(withDescription: "[EntityTests Error: Property insert test failed.]")
+        saveException = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        propertyInsertExpception = expectation(description: "[EntityTests Error: Property insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,11 +65,11 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPropertyUpdate() {
-        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[EntityTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -82,10 +82,10 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
-        propertyUpdateExpception = expectation(withDescription: "[EntityTests Error: Property update test failed.]")
+        saveException = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        propertyUpdateExpception = expectation(description: "[EntityTests Error: Property update test failed.]")
         
         graph.delegate = self
         graph.watchForEntity(properties: ["P1"])
@@ -100,11 +100,11 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPropertyDelete() {
-        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[EntityTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -117,10 +117,10 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[EntityTests Error: Graph save test failed.]")
-        propertyDeleteExpception = expectation(withDescription: "[EntityTests Error: Property delete test failed.]")
+        saveException = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        propertyDeleteExpception = expectation(description: "[EntityTests Error: Property delete test failed.]")
         
         graph.delegate = self
         graph.watchForEntity(properties: ["P1"])
@@ -135,7 +135,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func graph(graph: Graph, entity: Entity, added property: String, with value: AnyObject, cloud: Bool) {

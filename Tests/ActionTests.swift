@@ -46,10 +46,10 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     }
     
     func testDefaultGraph() {
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
-        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
-        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(description: "[ActionTests Error: Delegate test failed.]")
+        tagExpception = expectation(description: "[ActionTests Error: Tag test failed.]")
+        propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -67,14 +67,14 @@ class ActionTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testNamedGraphSave() {
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
-        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
-        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(description: "[ActionTests Error: Delegate test failed.]")
+        tagExpception = expectation(description: "[ActionTests Error: Tag test failed.]")
+        propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph(name: "ActionTests-testNamedGraphSave")
         
@@ -93,14 +93,14 @@ class ActionTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testReferenceGraphSave() {
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
-        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
-        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(description: "[ActionTests Error: Delegate test failed.]")
+        tagExpception = expectation(description: "[ActionTests Error: Tag test failed.]")
+        propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph(name: "ActionTests-testReferenceGraphSave")
         
@@ -121,14 +121,14 @@ class ActionTests: XCTestCase, GraphActionDelegate {
             }
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testAsyncGraphSave() {
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
-        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
-        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(description: "[ActionTests Error: Delegate test failed.]")
+        tagExpception = expectation(description: "[ActionTests Error: Tag test failed.]")
+        propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph(name: "ActionTests-testAsyncGraphSave")
         graph.delegate = self
@@ -148,14 +148,14 @@ class ActionTests: XCTestCase, GraphActionDelegate {
             }
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testAsyncGraphDelete() {
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
-        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
-        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(description: "[ActionTests Error: Delegate test failed.]")
+        tagExpception = expectation(description: "[ActionTests Error: Tag test failed.]")
+        propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -183,28 +183,28 @@ class ActionTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
         action.delete()
         
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
-        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
-        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(description: "[ActionTests Error: Delegate test failed.]")
+        tagExpception = expectation(description: "[ActionTests Error: Tag test failed.]")
+        propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
         
         graph.async { [weak self] (success: Bool, error: NSError?) in
             XCTAssertTrue(success)
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testSubjects() {
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
-        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
-        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(description: "[ActionTests Error: Delegate test failed.]")
+        tagExpception = expectation(description: "[ActionTests Error: Tag test failed.]")
+        propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -222,9 +222,9 @@ class ActionTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
         
         action.add(subject: Entity(type: "T"))
         action.add(subject: Entity(type: "T"))
@@ -239,14 +239,14 @@ class ActionTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testObjects() {
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
-        delegateException = expectation(withDescription: "[ActionTests Error: Delegate test failed.]")
-        tagExpception = expectation(withDescription: "[ActionTests Error: Tag test failed.]")
-        propertyExpception = expectation(withDescription: "[ActionTests Error: Property test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
+        delegateException = expectation(description: "[ActionTests Error: Delegate test failed.]")
+        tagExpception = expectation(description: "[ActionTests Error: Tag test failed.]")
+        propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -264,9 +264,9 @@ class ActionTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[ActionTests Error: Save test failed.]")
+        saveException = expectation(description: "[ActionTests Error: Save test failed.]")
         
         action.add(object: Entity(type: "T"))
         action.add(object: Entity(type: "T"))
@@ -281,7 +281,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func graph(graph: Graph, inserted action: Action, cloud: Bool) {

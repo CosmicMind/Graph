@@ -47,8 +47,8 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
     }
     
     func testPropertyInsert() {
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
-        propertyInsertExpception = expectation(withDescription: "[RelationshipTests Error: Property insert test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        propertyInsertExpception = expectation(description: "[RelationshipTests Error: Property insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,11 +65,11 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPropertyUpdate() {
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -82,10 +82,10 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
-        propertyUpdateExpception = expectation(withDescription: "[RelationshipTests Error: Property update test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        propertyUpdateExpception = expectation(description: "[RelationshipTests Error: Property update test failed.]")
         
         graph.delegate = self
         graph.watchForRelationship(properties: ["P1"])
@@ -100,11 +100,11 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPropertyDelete() {
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -117,10 +117,10 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
-        propertyDeleteExpception = expectation(withDescription: "[RelationshipTests Error: Property delete test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        propertyDeleteExpception = expectation(description: "[RelationshipTests Error: Property delete test failed.]")
         
         graph.delegate = self
         graph.watchForRelationship(properties: ["P1"])
@@ -135,7 +135,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func graph(graph: Graph, relationship: Relationship, added property: String, with value: AnyObject, cloud: Bool) {

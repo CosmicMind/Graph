@@ -50,8 +50,8 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
     }
     
     func testPropertyStress() {
-        saveException = expectation(withDescription: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
-        relationshipInsertException = expectation(withDescription: "[RelationshipPropertyStressTests Error: Relationship insert test failed.]")
+        saveException = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
+        relationshipInsertException = expectation(description: "[RelationshipPropertyStressTests Error: Relationship insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,7 +65,7 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
         for i in 0..<100 {
             let property = "P\(i)"
@@ -77,8 +77,8 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
             
             XCTAssertEqual(value, relationship[property] as? Int)
             
-            saveException = expectation(withDescription: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
-            propertyInsertExpception = expectation(withDescription: "[RelationshipPropertyStressTests Error: Property insert test failed.]")
+            saveException = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
+            propertyInsertExpception = expectation(description: "[RelationshipPropertyStressTests Error: Property insert test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
@@ -86,15 +86,15 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
                 self?.saveException?.fulfill()
             }
             
-            waitForExpectations(withTimeout: 5, handler: nil)
+            waitForExpectations(timeout: 5, handler: nil)
             
             value += 1
             relationship[property] = value
             
             XCTAssertEqual(value, relationship[property] as? Int)
             
-            saveException = expectation(withDescription: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
-            propertyUpdateExpception = expectation(withDescription: "[RelationshipPropertyStressTests Error: Property update test failed.]")
+            saveException = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
+            propertyUpdateExpception = expectation(description: "[RelationshipPropertyStressTests Error: Property update test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
@@ -102,14 +102,14 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
                 self?.saveException?.fulfill()
             }
             
-            waitForExpectations(withTimeout: 5, handler: nil)
+            waitForExpectations(timeout: 5, handler: nil)
             
             relationship[property] = nil
             
             XCTAssertNil(relationship[property])
             
-            saveException = expectation(withDescription: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
-            propertyDeleteExpception = expectation(withDescription: "[RelationshipPropertyStressTests Error: Property delete test failed.]")
+            saveException = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
+            propertyDeleteExpception = expectation(description: "[RelationshipPropertyStressTests Error: Property delete test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 self?.saveException?.fulfill()
@@ -117,11 +117,11 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
                 XCTAssertNil(error)
             }
             
-            waitForExpectations(withTimeout: 5, handler: nil)
+            waitForExpectations(timeout: 5, handler: nil)
         }
         
-        saveException = expectation(withDescription: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
-        relationshipDeleteException = expectation(withDescription: "[RelationshipPropertyStressTests Error: Relationship delete test failed.]")
+        saveException = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
+        relationshipDeleteException = expectation(description: "[RelationshipPropertyStressTests Error: Relationship delete test failed.]")
         
         relationship.delete()
         
@@ -131,7 +131,7 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func graph(graph: Graph, inserted relationship: Relationship, cloud: Bool) {

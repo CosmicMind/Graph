@@ -47,8 +47,8 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
     }
     
     func testTagAdd() {
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[RelationshipTests Error: Tag add test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,11 +65,11 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testTagUpdate() {
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -82,11 +82,11 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(withDescription: "[RelationshipTests Error: Tag add test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Tag remove test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
+        tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
         graph.delegate = self
         graph.watchForRelationship(tags: ["G1", "G2"])
@@ -103,11 +103,11 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testTagDelete() {
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -122,10 +122,10 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(withDescription: "[RelationshipTests Error: Graph save test failed.]")
-        tagRemoveExpception = expectation(withDescription: "[RelationshipTests Error: Tag remove test failed.]")
+        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
         graph.delegate = self
         graph.watchForRelationship(tags: ["G2"])
@@ -140,7 +140,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func graph(graph: Graph, relationship: Relationship, added tag: String, cloud: Bool) {

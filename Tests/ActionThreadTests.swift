@@ -52,10 +52,10 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
     }
     
     func testAll() {
-        insertSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
-        insertExpectation = expectation(withDescription: "Test: Insert did not pass.")
-        insertPropertyExpectation = expectation(withDescription: "Test: Insert property did not pass.")
-        insertTagExpectation = expectation(withDescription: "Test: Insert tag did not pass.")
+        insertSaveExpectation = expectation(description: "Test: Save did not pass.")
+        insertExpectation = expectation(description: "Test: Insert did not pass.")
+        insertPropertyExpectation = expectation(description: "Test: Insert property did not pass.")
+        insertTagExpectation = expectation(description: "Test: Insert tag did not pass.")
         
         let q1 = DispatchQueue(label: "io.cosmicmind.graph.thread.1", attributes: DispatchQueueAttributes.serial)
         let q2 = DispatchQueue(label: "io.cosmicmind.graph.thread.2", attributes: DispatchQueueAttributes.serial)
@@ -77,10 +77,10 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
             }
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        updateSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
-        updatePropertyExpectation = expectation(withDescription: "Test: Update did not pass.")
+        updateSaveExpectation = expectation(description: "Test: Save did not pass.")
+        updatePropertyExpectation = expectation(description: "Test: Update did not pass.")
         
         q2.async { [weak self] in
             action["P"] = 222
@@ -91,12 +91,12 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
             }
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        deleteSaveExpectation = expectation(withDescription: "Test: Save did not pass.")
-        deleteExpectation = expectation(withDescription: "Test: Delete did not pass.")
-        deletePropertyExpectation = expectation(withDescription: "Test: Delete property did not pass.")
-        deleteTagExpectation = expectation(withDescription: "Test: Delete tag did not pass.")
+        deleteSaveExpectation = expectation(description: "Test: Save did not pass.")
+        deleteExpectation = expectation(description: "Test: Delete did not pass.")
+        deletePropertyExpectation = expectation(description: "Test: Delete property did not pass.")
+        deleteTagExpectation = expectation(description: "Test: Delete tag did not pass.")
         
         q3.async { [weak self] in
             action.delete()
@@ -107,7 +107,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
             }
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func graph(graph: Graph, inserted action: Action, cloud: Bool) {

@@ -548,8 +548,8 @@
 			projectRoot = "";
 			targets = (
 				96E3C3A81D3AB41F0086A024 /* Graph iOS */,
-				96E3C3B21D3AB41F0086A024 /* Graph iOS Tests */,
 				96E3C3D31D3AB5280086A024 /* Graph macOS */,
+				96E3C3B21D3AB41F0086A024 /* Graph iOS Tests */,
 				96E3C3DC1D3AB5280086A024 /* Graph macOS Tests */,
 			);
 		};

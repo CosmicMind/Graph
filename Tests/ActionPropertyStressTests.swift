@@ -50,8 +50,8 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
     }
     
     func testPropertyStress() {
-        saveException = expectation(withDescription: "[ActionPropertyStressTests Error: Graph save test failed.]")
-        actionInsertException = expectation(withDescription: "[ActionPropertyStressTests Error: Action insert test failed.]")
+        saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+        actionInsertException = expectation(description: "[ActionPropertyStressTests Error: Action insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
@@ -65,7 +65,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
         for i in 0..<100 {
             let property = "P\(i)"
@@ -77,8 +77,8 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             
             XCTAssertEqual(value, action[property] as? Int)
             
-            saveException = expectation(withDescription: "[ActionPropertyStressTests Error: Graph save test failed.]")
-            propertyInsertExpception = expectation(withDescription: "[ActionPropertyStressTests Error: Property insert test failed.]")
+            saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+            propertyInsertExpception = expectation(description: "[ActionPropertyStressTests Error: Property insert test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
@@ -86,15 +86,15 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
                 self?.saveException?.fulfill()
             }
             
-            waitForExpectations(withTimeout: 5, handler: nil)
+            waitForExpectations(timeout: 5, handler: nil)
             
             value += 1
             action[property] = value
             
             XCTAssertEqual(value, action[property] as? Int)
             
-            saveException = expectation(withDescription: "[ActionPropertyStressTests Error: Graph save test failed.]")
-            propertyUpdateExpception = expectation(withDescription: "[ActionPropertyStressTests Error: Property update test failed.]")
+            saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+            propertyUpdateExpception = expectation(description: "[ActionPropertyStressTests Error: Property update test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 XCTAssertTrue(success)
@@ -102,14 +102,14 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
                 self?.saveException?.fulfill()
             }
             
-            waitForExpectations(withTimeout: 5, handler: nil)
+            waitForExpectations(timeout: 5, handler: nil)
             
             action[property] = nil
             
             XCTAssertNil(action[property])
             
-            saveException = expectation(withDescription: "[ActionPropertyStressTests Error: Graph save test failed.]")
-            propertyDeleteExpception = expectation(withDescription: "[ActionPropertyStressTests Error: Property delete test failed.]")
+            saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+            propertyDeleteExpception = expectation(description: "[ActionPropertyStressTests Error: Property delete test failed.]")
             
             graph.async { [weak self] (success: Bool, error: NSError?) in
                 self?.saveException?.fulfill()
@@ -117,11 +117,11 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
                 XCTAssertNil(error)
             }
             
-            waitForExpectations(withTimeout: 5, handler: nil)
+            waitForExpectations(timeout: 5, handler: nil)
         }
         
-        saveException = expectation(withDescription: "[ActionPropertyStressTests Error: Graph save test failed.]")
-        actionDeleteException = expectation(withDescription: "[ActionPropertyStressTests Error: Action delete test failed.]")
+        saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+        actionDeleteException = expectation(description: "[ActionPropertyStressTests Error: Action delete test failed.]")
         
         action.delete()
         
@@ -131,7 +131,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             self?.saveException?.fulfill()
         }
         
-        waitForExpectations(withTimeout: 5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func graph(graph: Graph, inserted action: Action, cloud: Bool) {
