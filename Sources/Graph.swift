@@ -45,6 +45,9 @@ public struct GraphStoreDescription {
 
 @objc(Graph)
 public class Graph: NSObject {
+    /// Graph location.
+    internal var location: URL
+    
     /// Graph rouute/
     public internal(set) var route: String
     
@@ -53,9 +56,6 @@ public class Graph: NSObject {
     
     /// Graph type.
     public internal(set) var type: String
-    
-    /// Graph location.
-    public internal(set) var location: URL
     
     /// Worker managedObjectContext.
     public internal(set) var managedObjectContext: NSManagedObjectContext!

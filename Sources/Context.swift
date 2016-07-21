@@ -110,7 +110,6 @@ public extension Graph {
         }
         
         managedObjectContext = moc
-        location = moc.persistentStoreCoordinator!.persistentStores.first!.url!
         
         guard let supported = GraphContextRegistry.supported[route] else {
             return

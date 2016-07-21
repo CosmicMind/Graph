@@ -141,7 +141,6 @@ public extension Graph {
     
     internal func persistentStoreDidChange(_ notification: Notification) {
         GraphContextRegistry.added[self.route] = true
-        
         self.completion?(supported: true, error: nil)
         (self.delegate as? GraphCloudDelegate)?.graphDidPrepareCloudStorage?(graph: self)
     }
