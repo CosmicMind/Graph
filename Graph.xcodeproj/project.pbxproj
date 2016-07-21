@@ -510,7 +510,7 @@
 						DevelopmentTeam = 9Z76XCNLGL;
 						DevelopmentTeamName = "CosmicMind Inc.";
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					96E3C3B21D3AB41F0086A024 = {
 						CreatedOnToolsVersion = 8.0;
