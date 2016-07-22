@@ -94,7 +94,7 @@ class ViewController: UIViewController {
 		people = graph.searchForEntity(types: ["Person"])
 		
 		// Add People if none exist.
-		if 0 == people.count {
+		if people.count == 0 {
 			// Create Person Entities.
 			let tim = Entity(type: "Person")
 			tim["firstName"] = "Tim"
