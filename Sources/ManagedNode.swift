@@ -127,19 +127,22 @@ internal class ManagedNode: ManagedObject {
      */
     internal subscript(name: String) -> AnyObject? {
         get {
-            var object: AnyObject?
+            var value: AnyObject?
             guard let moc = managedObjectContext else {
-                return object
+                return value
             }
             moc.performAndWait { [unowned self] in
                 for property in self.propertySet {
-                    if name == property.name {
-                        object = property.object
+                    guard let p = property as? ManagedProperty else {
+                        return
+                    }
+                    if name == p.name {
+                        value = p.object
                         break
                     }
                 }
             }
-            return object
+            return value
         }
     }
     
