@@ -133,10 +133,17 @@ public protocol GraphActionDelegate: GraphDelegate {
 
 @objc(GraphCloudDelegate)
 public protocol GraphCloudDelegate: GraphDelegate {
-    @objc optional func graphWillPrepareCloudStorage(graph: Graph, transition: GraphCloudStorageTransition)
-    @objc optional func graphDidPrepareCloudStorage(graph: Graph)
-    @objc optional func graphWillUpdateFromCloudStorage(graph: Graph)
-    @objc optional func graphDidUpdateFromCloudStorage(graph: Graph)
+    @objc
+    optional func graphWillPrepareCloudStorage(graph: Graph, transition: GraphCloudStorageTransition)
+    
+    @objc
+    optional func graphDidPrepareCloudStorage(graph: Graph)
+    
+    @objc
+    optional func graphWillUpdateFromCloudStorage(graph: Graph)
+    
+    @objc
+    optional func graphDidUpdateFromCloudStorage(graph: Graph)
 }
 
 /// Storage Watch API.
