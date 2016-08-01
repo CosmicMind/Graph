@@ -562,17 +562,17 @@ public extension Graph {
             return nil
         }
         
-        var predicate = [Predicate]()
+        var predicate = [NSPredicate]()
         
         for (k, v) in properties {
             if let x = v {
                 if let a = x as? String {
-                    predicate.append(CompoundPredicate(andPredicateWithSubpredicates: [Predicate(format: "name LIKE[cd] %@", k), Predicate(format: "object = %@", a)]))
+                    predicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
                 } else if let a: NSNumber = x as? NSNumber {
-                    predicate.append(CompoundPredicate(andPredicateWithSubpredicates: [Predicate(format: "name LIKE[cd] %@", k), Predicate(format: "object = %@", a)]))
+                    predicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
                 }
             } else {
-                predicate.append(Predicate(format: "name LIKE[cd] %@", k))
+                predicate.append(NSPredicate(format: "name LIKE[cd] %@", k))
             }
         }
         
@@ -583,8 +583,8 @@ public extension Graph {
         request.resultType = .dictionaryResultType
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
-        request.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicate)
-        request.sortDescriptors = [SortDescriptor(key: "node.createdDate", ascending: true)]
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
+        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
         moc.performAndWait { [unowned request] in
@@ -612,18 +612,18 @@ public extension Graph {
             return nil
         }
         
-        var predicate = [Predicate]()
+        var predicate = [NSPredicate]()
         
         for v in types {
-            predicate.append(Predicate(format: "type LIKE[cd] %@", v))
+            predicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
         }
         
         let request = NSFetchRequest<ManagedNode>()
         request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
         request.fetchBatchSize = batchSize
         request.fetchOffset = batchOffset
-        request.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicate)
-        request.sortDescriptors = [SortDescriptor(key: "createdDate", ascending: true)]
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
+        request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: true)]
         
         var result: [AnyObject]?
         moc.performAndWait { [unowned moc, unowned request] in
@@ -651,10 +651,10 @@ public extension Graph {
             return nil
         }
         
-        var predicate = [Predicate]()
+        var predicate = [NSPredicate]()
         
         for v in tags {
-            predicate.append(Predicate(format: "name LIKE[cd] %@", v))
+            predicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
         }
         
         let request = NSFetchRequest<ManagedTag>()
@@ -664,8 +664,8 @@ public extension Graph {
         request.resultType = .dictionaryResultType
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
-        request.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicate)
-        request.sortDescriptors = [SortDescriptor(key: "node.createdDate", ascending: true)]
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
+        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
         moc.performAndWait { [unowned request] in
@@ -693,10 +693,10 @@ public extension Graph {
             return nil
         }
         
-        var predicate = [Predicate]()
+        var predicate = [NSPredicate]()
         
         for v in groups {
-            predicate.append(Predicate(format: "name LIKE[cd] %@", v))
+            predicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
         }
         
         let request = NSFetchRequest<ManagedGroup>()
@@ -706,8 +706,8 @@ public extension Graph {
         request.resultType = .dictionaryResultType
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
-        request.predicate = CompoundPredicate(orPredicateWithSubpredicates: predicate)
-        request.sortDescriptors = [SortDescriptor(key: "node.createdDate", ascending: true)]
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
+        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
         moc.performAndWait { [unowned request] in

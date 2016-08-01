@@ -173,7 +173,7 @@ public struct File {
      - Returns: A boolean of the result, true if exists, false otherwise.
     */
     public static func fileExistsAtPath(_ path: URL) -> Bool {
-        return FileManager.default.fileExists(atPath: path.path!)
+        return FileManager.default.fileExists(atPath: path.path)
     }
     
     /**
@@ -183,7 +183,7 @@ public struct File {
      - Returns: A boolean of the result, true if equal, false otherwise.
      */
     public static func contentsEqualAtPath(_ path: URL, andPath: URL) -> Bool {
-        return FileManager.default.contentsEqual(atPath: path.path!, andPath: andPath.path!)
+        return FileManager.default.contentsEqual(atPath: path.path, andPath: andPath.path)
     }
     
     /**
@@ -192,7 +192,7 @@ public struct File {
      - Returns: A boolean of the result, true if writable, false otherwise.
      */
     public static func isWritableFileAtPath(_ path: URL) -> Bool {
-        return FileManager.default.isWritableFile(atPath: path.path!)
+        return FileManager.default.isWritableFile(atPath: path.path)
     }
     
     /**
@@ -203,7 +203,7 @@ public struct File {
      */
     public static func removeItemAtPath(_ path: URL, completion: ((removed: Bool?, error: NSError?) -> Void)? = nil) {
         do {
-            try FileManager.default.removeItem(atPath: path.path!)
+            try FileManager.default.removeItem(atPath: path.path)
             completion?(removed: true, error: nil)
         } catch let e as NSError {
             completion?(removed: nil, error: e)
@@ -220,7 +220,7 @@ public struct File {
      */
     public static func createDirectoryAtPath(_ path: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         do {
-            try FileManager.default.createDirectory(atPath: path.path!, withIntermediateDirectories: createIntermediates, attributes: attributes)
+            try FileManager.default.createDirectory(atPath: path.path, withIntermediateDirectories: createIntermediates, attributes: attributes)
             completion?(success: true, error: nil)
         } catch let e as NSError {
             completion?(success: false, error: e)
@@ -268,7 +268,7 @@ public struct File {
      */
     public static func writeToPath(_ path: URL, name: String, value: String, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
         do{
-            try value.write(to: try! path.appendingPathComponent("/\(name)"), atomically: true, encoding: String.Encoding.utf8)
+            try value.write(to: path.appendingPathComponent("/\(name)"), atomically: true, encoding: String.Encoding.utf8)
             completion?(success: true, error: nil)
         } catch let e as NSError {
             completion?(success: false, error: e)
@@ -296,21 +296,21 @@ public struct File {
      - Returns: An optional NSURL to return if possible.
      */
     public static func path(_ searchPathDirectory: FileManager.SearchPathDirectory, path: String) -> URL? {
-        var URL: Foundation.URL?
+        var url: URL?
         switch searchPathDirectory {
         case .documentDirectory:
-            URL = File.documentDirectoryPath
+            url = File.documentDirectoryPath
         case .libraryDirectory:
-            URL = File.libraryDirectoryPath
+            url = File.libraryDirectoryPath
         case .cachesDirectory:
-            URL = File.cachesDirectoryPath
+            url = File.cachesDirectoryPath
         case .applicationSupportDirectory:
-            URL = File.applicationSupportDirectoryPath
+            url = File.applicationSupportDirectoryPath
         default:
-            URL = nil
+            url = nil
             break
         }
-        return try! URL?.appendingPathComponent(path)
+        return url?.appendingPathComponent(path)
     }
     
     /**
@@ -320,7 +320,7 @@ public struct File {
      - Returns: An optional NSURL to return if possible.
      */
     public static func pathForDirectory(_ searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
-        return try? FileManager.default.urlForDirectory(searchPathDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        return try? FileManager.default.url(for: searchPathDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     }
     
     /**
@@ -333,30 +333,31 @@ public struct File {
         File.contentsOfDirectoryAtPath(path) { (contents: [URL]?, error: NSError?) -> Void in
             isDirectory = nil == error
         }
+        
         if isDirectory {
             return .directory
         }
-        if let v = path.pathExtension {
-            switch v {
-            case ImageExtensionToString(.png),
-                 ImageExtensionToString(.jpg),
-                 ImageExtensionToString(.jpeg),
-                 ImageExtensionToString(.gif):
-                return .image
-            case TextExtensionToString(.txt),
-                 TextExtensionToString(.rtf),
-                 TextExtensionToString(.html):
-                return .text
-            case VideoExtensionToString(.mov),
-                 VideoExtensionToString(.m4v),
-                 VideoExtensionToString(.mp4):
-                return .video
-            case SQLiteExtensionToString(.sqLite),
-                 SQLiteExtensionToString(.sqLiteSHM):
-                return .sqLite
-            default:break
-            }
+        
+        switch path.pathExtension {
+        case ImageExtensionToString(.png),
+             ImageExtensionToString(.jpg),
+             ImageExtensionToString(.jpeg),
+             ImageExtensionToString(.gif):
+            return .image
+        case TextExtensionToString(.txt),
+             TextExtensionToString(.rtf),
+             TextExtensionToString(.html):
+            return .text
+        case VideoExtensionToString(.mov),
+             VideoExtensionToString(.m4v),
+             VideoExtensionToString(.mp4):
+            return .video
+        case SQLiteExtensionToString(.sqLite),
+             SQLiteExtensionToString(.sqLiteSHM):
+            return .sqLite
+        default:break
         }
+        
         return .unknown
     }
 }

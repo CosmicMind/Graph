@@ -855,7 +855,7 @@ public extension Graph {
         entityDescription.name = entityDescriptionName
         entityDescription.managedObjectClassName = managedObjectClassName
         
-        let predicate = Predicate(format: "%K LIKE %@", key as NSString, value as NSString)
+        let predicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
         addPredicateToObserve(entityDescription, predicate: predicate)
     }
     
@@ -864,9 +864,9 @@ public extension Graph {
      - Parameter entityDescription: An NSEntityDescription to watch.
      - Parameter predicate: An NSPredicate.
      */
-    private func addPredicateToObserve(_ entityDescription: NSEntityDescription, predicate: Predicate) {
-        let finalPredicate = CompoundPredicate(andPredicateWithSubpredicates: [Predicate(format: "entity.name == %@", entityDescription.name! as NSString), predicate])
-        watchPredicate = CompoundPredicate(orPredicateWithSubpredicates: nil == watchPredicate ? [finalPredicate] : [watchPredicate!, finalPredicate])
+    private func addPredicateToObserve(_ entityDescription: NSEntityDescription, predicate: NSPredicate) {
+        let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString), predicate])
+        watchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: nil == watchPredicate ? [finalPredicate] : [watchPredicate!, finalPredicate])
     }
     
     /// Prepares the instance for save notifications.

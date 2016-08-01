@@ -38,7 +38,7 @@ public struct Container {
      - Parameter storeDescription: An NSPersistentStoreDescription.
      - Returns: An instance of NSPersistentStoreCoordinator.
      */
-    static func create(name: String, storeDescription: NSPersistentStoreDescription, completion: ((NSPersistentStoreDescription, NSError?) -> Void)? = nil) -> NSPersistentContainer {
+    static func create(name: String, storeDescription: NSPersistentStoreDescription, completion: ((NSPersistentStoreDescription, Error?) -> Void)? = nil) -> NSPersistentContainer {
         let container = NSPersistentContainer(name: name, managedObjectModel: Model.create())
         container.persistentStoreDescriptions.append(storeDescription)
         guard let handler = completion else {

@@ -89,9 +89,9 @@ public extension Graph {
      */
     internal func prepareManagedObjectContext(enableCloud: Bool) {
         guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
-            let supported = enableCloud && nil != FileManager.default.urlForUbiquityContainerIdentifier(nil)
+            let supported = enableCloud
             GraphContextRegistry.supported[route] = supported
-            location = try! GraphStoreDescription.location.appendingPathComponent(route)
+            location = GraphStoreDescription.location.appendingPathComponent(route)
             
             managedObjectContext = Context.create(.mainQueueConcurrencyType)
             managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
@@ -129,7 +129,7 @@ public extension Graph {
     /// Prepares the SQLight file if needed.
     internal func prepareSQLite() {
         if NSSQLiteStoreType == type {
-            location = try! location.appendingPathComponent("Graph.sqlite")
+            location = location.appendingPathComponent("Graph.sqlite")
         }
     }
 

@@ -61,7 +61,7 @@ public class Graph: NSObject {
     public internal(set) var managedObjectContext: NSManagedObjectContext!
     
     /// A reference to the watch predicate.
-    public internal(set) var watchPredicate: Predicate?
+    public internal(set) var watchPredicate: NSPredicate?
     
     /// A reference to cache the watch values.
     public internal(set) lazy var watchers = [String: [String]]()
