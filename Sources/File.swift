@@ -133,7 +133,7 @@ public struct Schema {
 /// A result type.
 public enum Result {
     case success
-    case failure(error: NSError)
+    case failure(error: Error)
 }
 
 /// File types.
@@ -201,7 +201,7 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func removeItemAtPath(_ path: URL, completion: ((removed: Bool?, error: NSError?) -> Void)? = nil) {
+    public static func removeItemAtPath(_ path: URL, completion: ((removed: Bool?, error: Error?) -> Void)? = nil) {
         do {
             try FileManager.default.removeItem(atPath: path.path)
             completion?(removed: true, error: nil)
@@ -218,7 +218,7 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func createDirectoryAtPath(_ path: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public static func createDirectoryAtPath(_ path: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: Error?) -> Void)? = nil) {
         do {
             try FileManager.default.createDirectory(atPath: path.path, withIntermediateDirectories: createIntermediates, attributes: attributes)
             completion?(success: true, error: nil)
@@ -233,7 +233,7 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func removeDirectoryAtPath(_ path: URL, completion: ((success: Bool, error: NSError?) -> Void)?  = nil)  {
+    public static func removeDirectoryAtPath(_ path: URL, completion: ((success: Bool, error: Error?) -> Void)?  = nil)  {
         do {
             try FileManager.default.removeItem(at: path)
             completion?(success: true, error: nil)
@@ -249,7 +249,7 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func contentsOfDirectoryAtPath(_ path: URL, shouldSkipHiddenFiles skip: Bool = false, completion: ((contents: [URL]?, error: NSError?) -> Void)) {
+    public static func contentsOfDirectoryAtPath(_ path: URL, shouldSkipHiddenFiles skip: Bool = false, completion: ((contents: [URL]?, error: Error?) -> Void)) {
         do {
             let contents = try FileManager.default.contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: skip == true ? FileManager.DirectoryEnumerationOptions.skipsHiddenFiles : FileManager.DirectoryEnumerationOptions(rawValue: 0))
             completion(contents: contents, error: nil)
@@ -266,7 +266,7 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func writeToPath(_ path: URL, name: String, value: String, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public static func writeToPath(_ path: URL, name: String, value: String, completion: ((success: Bool, error: Error?) -> Void)? = nil) {
         do{
             try value.write(to: path.appendingPathComponent("/\(name)"), atomically: true, encoding: String.Encoding.utf8)
             completion?(success: true, error: nil)
@@ -281,7 +281,7 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func readFromPath(_ path: URL, completion: ((string: String?, error: NSError?) -> Void)) {
+    public static func readFromPath(_ path: URL, completion: ((string: String?, error: Error?) -> Void)) {
         if let data = try? Data(contentsOf: path) {
             completion(string: String(data: data, encoding: String.Encoding.utf8), error: nil)
         } else {
@@ -330,7 +330,7 @@ public struct File {
      */
     public static func fileType(_ path: URL) -> FileType {
         var isDirectory = false
-        File.contentsOfDirectoryAtPath(path) { (contents: [URL]?, error: NSError?) -> Void in
+        File.contentsOfDirectoryAtPath(path) { (contents: [URL]?, error: Error?) -> Void in
             isDirectory = nil == error
         }
         

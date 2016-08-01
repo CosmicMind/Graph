@@ -61,7 +61,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         XCTAssertEqual("V", entity["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -87,7 +87,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         XCTAssertEqual("V", entity["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -113,8 +113,8 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         XCTAssertEqual("V", entity["P"] as? String)
         
-        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+        DispatchQueue.global(qos: .default).async { [weak self] in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveException?.fulfill()
@@ -140,8 +140,8 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         XCTAssertEqual("V", entity["P"] as? String)
         
-        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+        DispatchQueue.global(qos: .default).async { [weak self] in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveException?.fulfill()
@@ -167,7 +167,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         XCTAssertEqual("V", entity["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -182,7 +182,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         tagExpception = expectation(description: "[EntityTests Error: Tag test failed.]")
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             self?.saveException?.fulfill()
         }

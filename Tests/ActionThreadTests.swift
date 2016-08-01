@@ -71,7 +71,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
             action["P"] = 111
             action.add(tag: "G")
             
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 XCTAssertTrue(success, "\(error)")
                 self?.insertSaveExpectation?.fulfill()
             }
@@ -85,7 +85,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         q2.async { [weak self] in
             action["P"] = 222
             
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 XCTAssertTrue(success, "\(error)")
                 self?.updateSaveExpectation?.fulfill()
             }
@@ -101,7 +101,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         q3.async { [weak self] in
             action.delete()
             
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 XCTAssertTrue(success, "\(error)")
                 self?.deleteSaveExpectation?.fulfill()
             }

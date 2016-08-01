@@ -59,7 +59,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual("V1", relationship["P1"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -76,7 +76,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         let relationship = Relationship(type: "T")
         relationship["P1"] = "V1"
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -94,7 +94,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual("V2", relationship["P1"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -111,7 +111,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         let relationship = Relationship(type: "T")
         relationship["P1"] = "V1"
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -129,7 +129,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertNil(relationship["P1"])
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()

@@ -80,7 +80,7 @@ public class Graph: NSObject {
      - Parameter success: A boolean indicating if the cloud connection
      is possible or not.
      */
-    internal var completion: ((supported: Bool, error: NSError?) -> Void)?
+    internal var completion: ((supported: Bool, error: Error?) -> Void)?
     
     /// Deinitializer that removes the Graph from NSNotificationCenter.
     deinit {
@@ -112,7 +112,7 @@ public class Graph: NSObject {
      - Parameter completion: An Optional completion block that is
      executed to determine if iCloud support is available or not.
      */
-    public init(cloud: String, completion: ((supported: Bool, error: NSError?) -> Void)? = nil) {
+    public init(cloud: String, completion: ((supported: Bool, error: Error?) -> Void)? = nil) {
         route = "Cloud/\(cloud)"
         name = cloud
         type = NSSQLiteStoreType

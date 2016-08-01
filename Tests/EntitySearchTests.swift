@@ -66,7 +66,7 @@ class EntitySearchTests : XCTestCase {
             n.add(to: "G3")
         }
         
-        graph.sync { (success: Bool, error: NSError?) in
+        graph.sync { (success: Bool, error: Error?) in
             XCTAssertTrue(success, "\(error)")
         }
         

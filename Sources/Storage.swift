@@ -38,7 +38,7 @@ import CoreData
  - Parameter error: An optional error object to pass.
  - Parameter completion: An Optional completion block.
  */
-internal func GraphCompletionCallback(success: Bool, error: NSError?, completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+internal func GraphCompletionCallback(success: Bool, error: Error?, completion: ((success: Bool, error: Error?) -> Void)? = nil) {
     if Thread.isMainThread {
         completion?(success: success, error: error)
     } else {
@@ -51,9 +51,9 @@ internal func GraphCompletionCallback(success: Bool, error: NSError?, completion
 /**
  A helper method to construct error messages.
  - Parameter message: The message to pass.
- - Returns: An NSError object.
+ - Returns: An Error object.
  */
-internal func GraphError(message: String, domain: String = "io.cosmicmind.graph") -> NSError {
+internal func GraphError(message: String, domain: String = "io.cosmicmind.graph") -> Error {
     var info = [String: AnyObject]()
     info[NSLocalizedDescriptionKey] = message
     info[NSLocalizedFailureReasonErrorKey] = message
@@ -68,7 +68,7 @@ public extension Graph {
      - Parameter completion: An Optional completion block that is
      executed when the save operation is completed.
      */
-    public func async(_ completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public func async(_ completion: ((success: Bool, error: Error?) -> Void)? = nil) {
         guard let moc = managedObjectContext else {
             GraphCompletionCallback(
                 success: false,
@@ -92,7 +92,7 @@ public extension Graph {
      - Parameter completion: An Optional completion block that is
      executed when the save operation is completed.
      */
-    public func sync(_ completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public func sync(_ completion: ((success: Bool, error: Error?) -> Void)? = nil) {
         guard let moc = managedObjectContext else {
             GraphCompletionCallback(
                 success: false,
@@ -116,7 +116,7 @@ public extension Graph {
      - Parameter completion: An Optional completion block that is
      executed when the save operation is completed.
      */
-    public func clear(_ completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    public func clear(_ completion: ((success: Bool, error: Error?) -> Void)? = nil) {
         for entity in search(forEntity: ["*"]) {
             entity.delete()
         }

@@ -61,7 +61,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -87,7 +87,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -113,8 +113,8 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
-        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+        DispatchQueue.global(qos: .default).async { [weak self] in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveException?.fulfill()
@@ -140,8 +140,8 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
-        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+        DispatchQueue.global(qos: .default).async { [weak self] in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveException?.fulfill()
@@ -173,7 +173,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             XCTAssertNotNil(relationship.subject)
@@ -209,7 +209,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         tagExpception = expectation(description: "[RelationshipTests Error: Tag test failed.]")
         propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(relationship.subject)
             XCTAssertNil(relationship.object)
@@ -237,7 +237,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -253,7 +253,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual(subject, relationship.subject)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -281,7 +281,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -297,7 +297,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertEqual(object, relationship.object)
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()

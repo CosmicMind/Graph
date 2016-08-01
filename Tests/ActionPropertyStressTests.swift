@@ -59,7 +59,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
         
         let action = Action(type: "T")
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -80,7 +80,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
             propertyInsertExpception = expectation(description: "[ActionPropertyStressTests Error: Property insert test failed.]")
             
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveException?.fulfill()
@@ -96,7 +96,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
             propertyUpdateExpception = expectation(description: "[ActionPropertyStressTests Error: Property update test failed.]")
             
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveException?.fulfill()
@@ -111,7 +111,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
             propertyDeleteExpception = expectation(description: "[ActionPropertyStressTests Error: Property delete test failed.]")
             
-            graph.async { [weak self] (success: Bool, error: NSError?) in
+            graph.async { [weak self] (success: Bool, error: Error?) in
                 self?.saveException?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
@@ -125,7 +125,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
         
         action.delete()
         
-        graph.async { [weak self] (success: Bool, error: NSError?) in
+        graph.async { [weak self] (success: Bool, error: Error?) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()

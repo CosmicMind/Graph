@@ -34,7 +34,7 @@ class GraphTests: XCTestCase {
         graphException = expectation(description: "[GraphTests Error: Async tests failed.]")
         
         var g3: Graph!
-        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
+        DispatchQueue.global(qos: .default).async { [weak self] in
             g3 = Graph(name: "async")
             XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
             XCTAssertEqual("async", g3.name)
@@ -52,7 +52,7 @@ class GraphTests: XCTestCase {
     func testCloud() {
         graphException = expectation(description: "[CloudTests Error: Async tests failed.]")
         
-        let g1 = Graph(cloud: "marketing") { [weak self] (supported: Bool, error: NSError?) in
+        let g1 = Graph(cloud: "marketing") { [weak self] (supported: Bool, error: Error?) in
             XCTAssertFalse(supported)
             XCTAssertNotNil(error)
             self?.graphException?.fulfill()
@@ -66,7 +66,7 @@ class GraphTests: XCTestCase {
         
         graphException = expectation(description: "[CloudTests Error: Async tests failed.]")
         
-        let g2 = Graph(cloud: "async") { [weak self] (supported: Bool, error: NSError?) in
+        let g2 = Graph(cloud: "async") { [weak self] (supported: Bool, error: Error?) in
             XCTAssertFalse(supported)
             XCTAssertNotNil(error)
             self?.graphException?.fulfill()
@@ -81,8 +81,8 @@ class GraphTests: XCTestCase {
         graphException = expectation(description: "[CloudTests Error: Async tests failed.]")
         
         var g3: Graph!
-        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async { [weak self] in
-            g3 = Graph(cloud: "test") { [weak self] (supported: Bool, error: NSError?) in
+        DispatchQueue.global(qos: .default).async { [weak self] in
+            g3 = Graph(cloud: "test") { [weak self] (supported: Bool, error: Error?) in
                 XCTAssertFalse(supported)
                 XCTAssertNotNil(error)
                 self?.graphException?.fulfill()
