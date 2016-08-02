@@ -53,8 +53,8 @@ class GraphTests: XCTestCase {
         graphException = expectation(description: "[CloudTests Error: Async tests failed.]")
         
         let g1 = Graph(cloud: "marketing") { [weak self] (supported: Bool, error: Error?) in
-            XCTAssertFalse(supported)
-            XCTAssertNotNil(error)
+            XCTAssertTrue(supported)
+            XCTAssertNil(error)
             self?.graphException?.fulfill()
         }
         
@@ -67,8 +67,8 @@ class GraphTests: XCTestCase {
         graphException = expectation(description: "[CloudTests Error: Async tests failed.]")
         
         let g2 = Graph(cloud: "async") { [weak self] (supported: Bool, error: Error?) in
-            XCTAssertFalse(supported)
-            XCTAssertNotNil(error)
+            XCTAssertTrue(supported)
+            XCTAssertNil(error)
             self?.graphException?.fulfill()
         }
         
@@ -83,8 +83,8 @@ class GraphTests: XCTestCase {
         var g3: Graph!
         DispatchQueue.global(qos: .default).async { [weak self] in
             g3 = Graph(cloud: "test") { [weak self] (supported: Bool, error: Error?) in
-                XCTAssertFalse(supported)
-                XCTAssertNotNil(error)
+                XCTAssertTrue(supported)
+                XCTAssertNil(error)
                 self?.graphException?.fulfill()
             }
         }

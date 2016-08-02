@@ -57,9 +57,9 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         insertPropertyExpectation = expectation(description: "Test: Insert property did not pass.")
         insertTagExpectation = expectation(description: "Test: Insert tag did not pass.")
         
-        let q1 = DispatchQueue(label: "io.cosmicmind.graph.thread.1", attributes: DispatchQueueAttributes.serial)
-        let q2 = DispatchQueue(label: "io.cosmicmind.graph.thread.2", attributes: DispatchQueueAttributes.serial)
-        let q3 = DispatchQueue(label: "io.cosmicmind.graph.thread.3", attributes: DispatchQueueAttributes.serial)
+        let q1 = DispatchQueue(label: "io.cosmicmind.graph.thread.1", attributes: .concurrent)
+        let q2 = DispatchQueue(label: "io.cosmicmind.graph.thread.2", attributes: .concurrent)
+        let q3 = DispatchQueue(label: "io.cosmicmind.graph.thread.3", attributes: .concurrent)
         
         let graph = Graph()
         graph.delegate = self
