@@ -147,7 +147,7 @@ public protocol GraphCloudDelegate: GraphDelegate {
 }
 
 /// Storage Watch API.
-public extension Graph {
+extension Graph {
     /**
      Watches for Entities that fall into any of the specified facets.
      - Parameter types: An Array of Entity types.

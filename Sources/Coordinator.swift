@@ -64,7 +64,7 @@ internal struct Coordinator {
 }
 
 /// NSPersistentStoreCoordinator extension.
-public extension Graph {
+extension Graph {
     /**
      Adds the persistentStore to the persistentStoreCoordinator.
      - Parameter supported: A boolean indicating whether cloud

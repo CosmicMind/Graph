@@ -62,7 +62,7 @@ internal func GraphError(message: String, domain: String = "io.cosmicmind.graph"
     return error
 }
 
-public extension Graph {
+extension Graph {
     /**
      Performs a save.
      - Parameter completion: An Optional completion block that is

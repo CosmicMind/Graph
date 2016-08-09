@@ -31,7 +31,7 @@
 import CoreData
 
 /// Storage Search API.
-public extension Graph {
+extension Graph {
     /**
      Search API that accepts types.
      - Parameter forEntity: An Array of Strings.

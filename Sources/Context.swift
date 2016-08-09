@@ -71,7 +71,7 @@ internal struct Context {
 }
 
 /// NSManagedObjectContext extension.
-public extension Graph {
+extension Graph {
     /// Prepares the registry.
     internal func prepareGraphContextRegistry() {
         guard false == GraphContextRegistry.dispatchToken else {
