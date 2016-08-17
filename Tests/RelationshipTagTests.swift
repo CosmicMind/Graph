@@ -59,7 +59,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertTrue(relationship.has(tag: "G1"))
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -76,7 +76,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         let relationship = Relationship(type: "T")
         relationship.add(tag: "G2")
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -97,7 +97,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         XCTAssertTrue(relationship.has(tag: "G1"))
         XCTAssertFalse(relationship.has(tag: "G2"))
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -116,7 +116,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertTrue(relationship.has(tag: "G2"))
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -134,7 +134,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         
         XCTAssertFalse(relationship.has(tag: "G2"))
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()

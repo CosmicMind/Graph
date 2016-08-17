@@ -61,7 +61,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -87,7 +87,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -114,7 +114,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         XCTAssertEqual("V", action["P"] as? String)
         
         DispatchQueue.global(qos: .default).async { [weak self] in
-            graph.async { [weak self] (success: Bool, error: Error?) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveException?.fulfill()
@@ -141,7 +141,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         XCTAssertEqual("V", action["P"] as? String)
         
         DispatchQueue.global(qos: .default).async { [weak self] in
-            graph.async { [weak self] (success: Bool, error: Error?) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveException?.fulfill()
@@ -177,7 +177,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -192,7 +192,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         tagExpception = expectation(description: "[ActionTests Error: Tag test failed.]")
         propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             self?.saveException?.fulfill()
         }
@@ -216,7 +216,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -233,7 +233,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         XCTAssertEqual(4, action.subjects.count)
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -258,7 +258,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         XCTAssertEqual("V", action["P"] as? String)
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -275,7 +275,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         XCTAssertEqual(4, action.objects.count)
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()

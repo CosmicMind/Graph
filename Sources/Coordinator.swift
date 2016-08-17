@@ -53,7 +53,7 @@ internal struct Coordinator {
      */
     static func create(type: String, location: URL, options: [NSObject: Any]? = nil) -> NSPersistentStoreCoordinator {
         var coordinator: NSPersistentStoreCoordinator?
-        File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: Error?) in
+        File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success, error) in
             if let e = error {
                 fatalError("[Graph Error: \(e.localizedDescription)]")
             }

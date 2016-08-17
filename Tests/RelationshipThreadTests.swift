@@ -71,7 +71,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
             relationship["P"] = 111
             relationship.add(tag: "G")
             
-            graph.async { [weak self] (success: Bool, error: Error?) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(error)")
                 self?.insertSaveExpectation?.fulfill()
             }
@@ -85,7 +85,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         q2.async { [weak self] in
             relationship["P"] = 222
             
-            graph.async { [weak self] (success: Bool, error: Error?) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(error)")
                 self?.updateSaveExpectation?.fulfill()
             }
@@ -101,7 +101,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         q3.async { [weak self] in
             relationship.delete()
             
-            graph.async { [weak self] (success: Bool, error: Error?) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(error)")
                 self?.deleteSaveExpectation?.fulfill()
             }

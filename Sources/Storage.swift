@@ -53,7 +53,7 @@ internal func GraphCompletionCallback(success: Bool, error: Error?, completion: 
  - Parameter message: The message to pass.
  - Returns: An Error object.
  */
-internal func GraphError(message: String, domain: String = "io.cosmicmind.graph") -> Error {
+internal func GraphError(message: String, domain: String = "io.cosmicmind.graph") -> Error? {
     var info = [String: Any]()
     info[NSLocalizedDescriptionKey] = message
     info[NSLocalizedFailureReasonErrorKey] = message

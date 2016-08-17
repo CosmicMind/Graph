@@ -168,7 +168,7 @@ internal struct Model {
         let propertyValue = NSAttributeDescription()
         propertyValue.name = "object"
         propertyValue.attributeType = .transformableAttributeType
-        propertyValue.attributeValueClassName = "AnyObject"
+        propertyValue.attributeValueClassName = "Any"
         propertyValue.isOptional = false
         propertyValue.allowsExternalBinaryDataStorage = true
         entityPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)

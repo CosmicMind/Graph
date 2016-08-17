@@ -233,16 +233,15 @@ extension Graph {
      */
     @objc
     internal func notifyInsertedWatchers(_ notification: Notification) {
-        guard let objects = (notification as NSNotification).userInfo?[NSInsertedObjectsKey] as? NSMutableSet else {
+        guard let objects = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
             return
         }
         
         guard let predicate = watchPredicate else {
             return
         }
-        objects.filter(using: predicate)
-        
-        delegateToInsertedWatchers(objects, source: .local)
+
+        delegateToInsertedWatchers(objects.filtered(using: predicate), source: .local)
     }
     
     /**
@@ -251,16 +250,15 @@ extension Graph {
      */
     @objc
     internal func notifyUpdatedWatchers(_ notification: Notification) {
-        guard let objects = (notification as NSNotification).userInfo?[NSUpdatedObjectsKey] as? NSMutableSet else {
+        guard let objects = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
             return
         }
         
         guard let predicate = watchPredicate else {
             return
         }
-        objects.filter(using: predicate)
         
-        delegateToUpdatedWatchers(objects, source: .local)
+        delegateToUpdatedWatchers(objects.filtered(using: predicate), source: .local)
     }
     
     /**
@@ -269,16 +267,15 @@ extension Graph {
      */
     @objc
     internal func notifyDeletedWatchers(_ notification: Notification) {
-        guard let objects = (notification as NSNotification).userInfo?[NSDeletedObjectsKey] as? NSMutableSet else {
+        guard let objects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
             return
         }
         
         guard let predicate = watchPredicate else {
             return
         }
-        objects.filter(using: predicate)
         
-        delegateToDeletedWatchers(objects, source: .local)
+        delegateToDeletedWatchers(objects.filtered(using: predicate), source: .local)
     }
     
     /**
@@ -287,7 +284,7 @@ extension Graph {
      */
     @objc
     internal func notifyInsertedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = (notification as NSNotification).userInfo?[NSInsertedObjectsKey] as? NSMutableSet else {
+        guard let objectIDs = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
             return
         }
         
@@ -303,9 +300,8 @@ extension Graph {
         (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
             objects.add(moc.object(with: objectID))
         }
-        objects.filter(using: predicate)
         
-        delegateToInsertedWatchers(objects, source: .cloud)
+        delegateToInsertedWatchers(objects.filtered(using: predicate), source: .cloud)
     }
     
     /**
@@ -314,7 +310,7 @@ extension Graph {
      */
     @objc
     internal func notifyUpdatedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = (notification as NSNotification).userInfo?[NSUpdatedObjectsKey] as? NSMutableSet else {
+        guard let objectIDs = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
             return
         }
         
@@ -330,9 +326,8 @@ extension Graph {
         (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
             objects.add(moc.object(with: objectID))
         }
-        objects.filter(using: predicate)
         
-        delegateToUpdatedWatchers(objects, source: .cloud)
+        delegateToUpdatedWatchers(objects.filtered(using: predicate), source: .cloud)
     }
     
     /**
@@ -341,7 +336,7 @@ extension Graph {
      */
     @objc
     internal func notifyDeletedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = (notification as NSNotification).userInfo?[NSDeletedObjectsKey] as? NSMutableSet else {
+        guard let objectIDs = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
             return
         }
         
@@ -357,16 +352,15 @@ extension Graph {
         (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
             objects.add(moc.object(with: objectID))
         }
-        objects.filter(using: predicate)
         
-        delegateToDeletedWatchers(objects, source: .cloud)
+        delegateToDeletedWatchers(objects.filtered(using: predicate), source: .cloud)
     }
     
     /**
      Passes the handle to the inserted notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
      */
-    private func delegateToInsertedWatchers(_ set: NSMutableSet, source: GraphSource) {
+    private func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         let nodes = sortToArray(set)
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -467,7 +461,7 @@ extension Graph {
      Passes the handle to the updated notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
      */
-    private func delegateToUpdatedWatchers(_ set: NSMutableSet, source: GraphSource) {
+    private func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         let nodes = sortToArray(set)
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -506,7 +500,7 @@ extension Graph {
      Passes the handle to the deleted notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
      */
-    private func delegateToDeletedWatchers(_ set: NSMutableSet, source: GraphSource) {
+    private func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         let nodes = sortToArray(set)
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -662,10 +656,20 @@ extension Graph {
      - Parameter set: A Set of NSManagedObjects.
      - Returns: A Set of NSManagedObjects in sorted order.
      */
-    private func sortToArray(_ set: NSMutableSet) -> [NSManagedObject] {
-        return set.sorted { (a, b) -> Bool in
-            return (a as! ManagedNode).id < (b as! ManagedNode).id
-        } as! [NSManagedObject]
+    private func sortToArray(_ set: Set<AnyHashable>) -> [NSManagedObject] {
+        var objects = Set<NSManagedObject>()
+        set.forEach { (object) in
+            objects.insert(object as! NSManagedObject)
+        }
+        return objects.sorted { (a, b) -> Bool in
+            guard let a1 = a as? ManagedNode else {
+                return false
+            }
+            guard let b1 = b as? ManagedNode else {
+                return false
+            }
+            return a1 < b1
+        }
     }
     
     /**

@@ -66,7 +66,7 @@ class ActionSearchTests : XCTestCase {
             n.add(to: "G3")
         }
         
-        graph.sync { (success: Bool, error: Error?) in
+        graph.sync { (success, error) in
             XCTAssertTrue(success, "\(error)")
         }
         

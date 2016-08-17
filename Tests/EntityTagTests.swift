@@ -59,7 +59,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
         
         XCTAssertTrue(entity.has(tag: "G1"))
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -76,7 +76,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
         let entity = Entity(type: "T")
         entity.add(tag: "G2")
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -97,7 +97,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
         XCTAssertTrue(entity.has(tag: "G1"))
         XCTAssertFalse(entity.has(tag: "G2"))
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -116,7 +116,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
         
         XCTAssertTrue(entity.has(tag: "G2"))
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
@@ -134,7 +134,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
         
         XCTAssertFalse(entity.has(tag: "G2"))
         
-        graph.async { [weak self] (success: Bool, error: Error?) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveException?.fulfill()
