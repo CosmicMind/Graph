@@ -115,6 +115,66 @@
 		96E3C49A1D3AFB890086A024 /* RelationshipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4731D3AFB890086A024 /* RelationshipTests.swift */; };
 		96E3C49B1D3AFB890086A024 /* RelationshipThreadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4741D3AFB890086A024 /* RelationshipThreadTests.swift */; };
 		96E3C49C1D3AFB890086A024 /* RelationshipThreadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4741D3AFB890086A024 /* RelationshipThreadTests.swift */; };
+		96F1DC3F1D64DDBC0025F925 /* File.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C43C1D3AC7A00086A024 /* File.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC401D64DDBC0025F925 /* Node.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3ED1D3AB6160086A024 /* Node.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC411D64DDBC0025F925 /* Graph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Graph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC421D64DDBC0025F925 /* Model.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F31D3AB8B00086A024 /* Model.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC431D64DDBC0025F925 /* Container.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F01D3AB79F0086A024 /* Container.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC441D64DDBC0025F925 /* Coordinator.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C45B1D3AE4F00086A024 /* Coordinator.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC451D64DDBC0025F925 /* Context.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C45E1D3AE50E0086A024 /* Context.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC461D64DDBC0025F925 /* Storage.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4551D3AD6930086A024 /* Storage.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC471D64DDBC0025F925 /* Search.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4581D3AD6B00086A024 /* Search.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC481D64DDBC0025F925 /* Watch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4521D3AD5CA0086A024 /* Watch.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC491D64DDBC0025F925 /* ManagedObject.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F61D3ABE560086A024 /* ManagedObject.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC4A1D64DDBC0025F925 /* ManagedNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3FF1D3ABECE0086A024 /* ManagedNode.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC4B1D64DDBC0025F925 /* ManagedProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3FC1D3ABEA80086A024 /* ManagedProperty.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC4C1D64DDBC0025F925 /* ManagedTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F91D3ABE880086A024 /* ManagedTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC4D1D64DDBC0025F925 /* ManagedGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968672061D3BE6C2000CD904 /* ManagedGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC4E1D64DDBC0025F925 /* Entity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4021D3ABFCE0086A024 /* Entity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC4F1D64DDBC0025F925 /* ManagedEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4081D3AC07D0086A024 /* ManagedEntity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC501D64DDBC0025F925 /* ManagedEntityProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C40A1D3AC07D0086A024 /* ManagedEntityProperty.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC511D64DDBC0025F925 /* ManagedEntityTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4091D3AC07D0086A024 /* ManagedEntityTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC521D64DDBC0025F925 /* ManagedEntityGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968672091D3BE9BA000CD904 /* ManagedEntityGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC531D64DDBC0025F925 /* Relationship.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4201D3AC0A20086A024 /* Relationship.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC541D64DDBC0025F925 /* ManagedRelationship.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C41D1D3AC0A20086A024 /* ManagedRelationship.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC551D64DDBC0025F925 /* ManagedRelationshipProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C41F1D3AC0A20086A024 /* ManagedRelationshipProperty.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC561D64DDBC0025F925 /* ManagedRelationshipTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C41E1D3AC0A20086A024 /* ManagedRelationshipTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC571D64DDBC0025F925 /* ManagedRelationshipGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 9686720C1D3BEA50000CD904 /* ManagedRelationshipGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC581D64DDBC0025F925 /* Action.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4111D3AC0960086A024 /* Action.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC591D64DDBC0025F925 /* ManagedAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4121D3AC0960086A024 /* ManagedAction.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC5A1D64DDBC0025F925 /* ManagedActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4141D3AC0960086A024 /* ManagedActionProperty.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC5B1D64DDBC0025F925 /* ManagedActionTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4131D3AC0960086A024 /* ManagedActionTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC5C1D64DDBC0025F925 /* ManagedActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC5D1D64DDCF0025F925 /* File.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C43C1D3AC7A00086A024 /* File.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC5E1D64DDCF0025F925 /* Node.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3ED1D3AB6160086A024 /* Node.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC5F1D64DDCF0025F925 /* Graph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Graph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC601D64DDCF0025F925 /* Model.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F31D3AB8B00086A024 /* Model.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC611D64DDCF0025F925 /* Container.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F01D3AB79F0086A024 /* Container.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC621D64DDCF0025F925 /* Coordinator.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C45B1D3AE4F00086A024 /* Coordinator.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC631D64DDCF0025F925 /* Context.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C45E1D3AE50E0086A024 /* Context.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC641D64DDCF0025F925 /* Storage.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4551D3AD6930086A024 /* Storage.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC651D64DDCF0025F925 /* Search.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4581D3AD6B00086A024 /* Search.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC661D64DDCF0025F925 /* Watch.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4521D3AD5CA0086A024 /* Watch.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC671D64DDCF0025F925 /* ManagedObject.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F61D3ABE560086A024 /* ManagedObject.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC681D64DDCF0025F925 /* ManagedNode.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3FF1D3ABECE0086A024 /* ManagedNode.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC691D64DDCF0025F925 /* ManagedProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3FC1D3ABEA80086A024 /* ManagedProperty.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC6A1D64DDCF0025F925 /* ManagedTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F91D3ABE880086A024 /* ManagedTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC6B1D64DDCF0025F925 /* ManagedGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968672061D3BE6C2000CD904 /* ManagedGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC6C1D64DDCF0025F925 /* Entity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4021D3ABFCE0086A024 /* Entity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC6D1D64DDCF0025F925 /* ManagedEntity.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4081D3AC07D0086A024 /* ManagedEntity.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC6E1D64DDCF0025F925 /* ManagedEntityProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C40A1D3AC07D0086A024 /* ManagedEntityProperty.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC6F1D64DDCF0025F925 /* ManagedEntityTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4091D3AC07D0086A024 /* ManagedEntityTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC701D64DDCF0025F925 /* ManagedEntityGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 968672091D3BE9BA000CD904 /* ManagedEntityGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC711D64DDCF0025F925 /* Relationship.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4201D3AC0A20086A024 /* Relationship.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC721D64DDCF0025F925 /* ManagedRelationship.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C41D1D3AC0A20086A024 /* ManagedRelationship.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC731D64DDCF0025F925 /* ManagedRelationshipProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C41F1D3AC0A20086A024 /* ManagedRelationshipProperty.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC741D64DDCF0025F925 /* ManagedRelationshipTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C41E1D3AC0A20086A024 /* ManagedRelationshipTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC751D64DDCF0025F925 /* ManagedRelationshipGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 9686720C1D3BEA50000CD904 /* ManagedRelationshipGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC761D64DDCF0025F925 /* Action.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4111D3AC0960086A024 /* Action.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC771D64DDCF0025F925 /* ManagedAction.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4121D3AC0960086A024 /* ManagedAction.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC781D64DDCF0025F925 /* ManagedActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4141D3AC0960086A024 /* ManagedActionProperty.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC791D64DDCF0025F925 /* ManagedActionTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4131D3AC0960086A024 /* ManagedActionTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC7A1D64DDCF0025F925 /* ManagedActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -409,6 +469,36 @@
 			buildActionMask = 2147483647;
 			files = (
 				96E3C3C81D3AB4860086A024 /* Graph.h in Headers */,
+				96F1DC3F1D64DDBC0025F925 /* File.swift in Headers */,
+				96F1DC401D64DDBC0025F925 /* Node.swift in Headers */,
+				96F1DC411D64DDBC0025F925 /* Graph.swift in Headers */,
+				96F1DC421D64DDBC0025F925 /* Model.swift in Headers */,
+				96F1DC431D64DDBC0025F925 /* Container.swift in Headers */,
+				96F1DC441D64DDBC0025F925 /* Coordinator.swift in Headers */,
+				96F1DC451D64DDBC0025F925 /* Context.swift in Headers */,
+				96F1DC461D64DDBC0025F925 /* Storage.swift in Headers */,
+				96F1DC471D64DDBC0025F925 /* Search.swift in Headers */,
+				96F1DC481D64DDBC0025F925 /* Watch.swift in Headers */,
+				96F1DC491D64DDBC0025F925 /* ManagedObject.swift in Headers */,
+				96F1DC4A1D64DDBC0025F925 /* ManagedNode.swift in Headers */,
+				96F1DC4B1D64DDBC0025F925 /* ManagedProperty.swift in Headers */,
+				96F1DC4C1D64DDBC0025F925 /* ManagedTag.swift in Headers */,
+				96F1DC4D1D64DDBC0025F925 /* ManagedGroup.swift in Headers */,
+				96F1DC4E1D64DDBC0025F925 /* Entity.swift in Headers */,
+				96F1DC4F1D64DDBC0025F925 /* ManagedEntity.swift in Headers */,
+				96F1DC501D64DDBC0025F925 /* ManagedEntityProperty.swift in Headers */,
+				96F1DC511D64DDBC0025F925 /* ManagedEntityTag.swift in Headers */,
+				96F1DC521D64DDBC0025F925 /* ManagedEntityGroup.swift in Headers */,
+				96F1DC531D64DDBC0025F925 /* Relationship.swift in Headers */,
+				96F1DC541D64DDBC0025F925 /* ManagedRelationship.swift in Headers */,
+				96F1DC551D64DDBC0025F925 /* ManagedRelationshipProperty.swift in Headers */,
+				96F1DC561D64DDBC0025F925 /* ManagedRelationshipTag.swift in Headers */,
+				96F1DC571D64DDBC0025F925 /* ManagedRelationshipGroup.swift in Headers */,
+				96F1DC581D64DDBC0025F925 /* Action.swift in Headers */,
+				96F1DC591D64DDBC0025F925 /* ManagedAction.swift in Headers */,
+				96F1DC5A1D64DDBC0025F925 /* ManagedActionProperty.swift in Headers */,
+				96F1DC5B1D64DDBC0025F925 /* ManagedActionTag.swift in Headers */,
+				96F1DC5C1D64DDBC0025F925 /* ManagedActionGroup.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +507,36 @@
 			buildActionMask = 2147483647;
 			files = (
 				96E3C3EC1D3AB5DC0086A024 /* Graph.h in Headers */,
+				96F1DC5D1D64DDCF0025F925 /* File.swift in Headers */,
+				96F1DC5E1D64DDCF0025F925 /* Node.swift in Headers */,
+				96F1DC5F1D64DDCF0025F925 /* Graph.swift in Headers */,
+				96F1DC601D64DDCF0025F925 /* Model.swift in Headers */,
+				96F1DC611D64DDCF0025F925 /* Container.swift in Headers */,
+				96F1DC621D64DDCF0025F925 /* Coordinator.swift in Headers */,
+				96F1DC631D64DDCF0025F925 /* Context.swift in Headers */,
+				96F1DC641D64DDCF0025F925 /* Storage.swift in Headers */,
+				96F1DC651D64DDCF0025F925 /* Search.swift in Headers */,
+				96F1DC661D64DDCF0025F925 /* Watch.swift in Headers */,
+				96F1DC671D64DDCF0025F925 /* ManagedObject.swift in Headers */,
+				96F1DC681D64DDCF0025F925 /* ManagedNode.swift in Headers */,
+				96F1DC691D64DDCF0025F925 /* ManagedProperty.swift in Headers */,
+				96F1DC6A1D64DDCF0025F925 /* ManagedTag.swift in Headers */,
+				96F1DC6B1D64DDCF0025F925 /* ManagedGroup.swift in Headers */,
+				96F1DC6C1D64DDCF0025F925 /* Entity.swift in Headers */,
+				96F1DC6D1D64DDCF0025F925 /* ManagedEntity.swift in Headers */,
+				96F1DC6E1D64DDCF0025F925 /* ManagedEntityProperty.swift in Headers */,
+				96F1DC6F1D64DDCF0025F925 /* ManagedEntityTag.swift in Headers */,
+				96F1DC701D64DDCF0025F925 /* ManagedEntityGroup.swift in Headers */,
+				96F1DC711D64DDCF0025F925 /* Relationship.swift in Headers */,
+				96F1DC721D64DDCF0025F925 /* ManagedRelationship.swift in Headers */,
+				96F1DC731D64DDCF0025F925 /* ManagedRelationshipProperty.swift in Headers */,
+				96F1DC741D64DDCF0025F925 /* ManagedRelationshipTag.swift in Headers */,
+				96F1DC751D64DDCF0025F925 /* ManagedRelationshipGroup.swift in Headers */,
+				96F1DC761D64DDCF0025F925 /* Action.swift in Headers */,
+				96F1DC771D64DDCF0025F925 /* ManagedAction.swift in Headers */,
+				96F1DC781D64DDCF0025F925 /* ManagedActionProperty.swift in Headers */,
+				96F1DC791D64DDCF0025F925 /* ManagedActionTag.swift in Headers */,
+				96F1DC7A1D64DDCF0025F925 /* ManagedActionGroup.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

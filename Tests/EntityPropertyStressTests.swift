@@ -134,7 +134,7 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, inserted entity: Entity, cloud: Bool) {
+    func graph(graph: Graph, inserted entity: Entity, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual(0, entity.properties.count)
@@ -142,7 +142,7 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
         entityInsertException?.fulfill()
     }
     
-    func graph(graph: Graph, deleted entity: Entity, cloud: Bool) {
+    func graph(graph: Graph, deleted entity: Entity, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual(0, entity.properties.count)
@@ -150,21 +150,21 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
         entityDeleteException?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, added property: String, with value: Any, cloud: Bool) {
+    func graph(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         
         propertyInsertExpception?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, updated property: String, with value: Any, cloud: Bool) {
+    func graph(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         
         propertyUpdateExpception?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, removed property: String, with value: Any, cloud: Bool) {
+    func graph(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         

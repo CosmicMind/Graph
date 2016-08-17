@@ -284,7 +284,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, inserted action: Action, cloud: Bool) {
+    func graph(graph: Graph, inserted action: Action, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("V", action["P"] as? String)
@@ -293,7 +293,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         delegateException?.fulfill()
     }
     
-    func graph(graph: Graph, deleted action: Action, cloud: Bool) {
+    func graph(graph: Graph, deleted action: Action, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
@@ -308,7 +308,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         delegateException?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, added tag: String, cloud: Bool) {
+    func graph(graph: Graph, action: Action, added tag: String, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", tag)
@@ -317,7 +317,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         tagExpception?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, removed tag: String, cloud: Bool) {
+    func graph(graph: Graph, action: Action, removed tag: String, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", tag)
@@ -326,7 +326,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         tagExpception?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, added property: String, with value: Any, cloud: Bool) {
+    func graph(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -336,7 +336,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, updated property: String, with value: Any, cloud: Bool) {
+    func graph(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -346,7 +346,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, removed property: String, with value: Any, cloud: Bool) {
+    func graph(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)

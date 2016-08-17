@@ -30,8 +30,8 @@
 
 import CoreData
 
-@objc(GraphWatch)
-public enum GraphWatchSource: Int {
+@objc(GraphSource)
+public enum GraphSource: Int {
     case cloud
     case local
 }
@@ -42,94 +42,94 @@ public protocol GraphDelegate {}
 @objc(GraphEntityDelegate)
 public protocol GraphEntityDelegate: GraphDelegate {
     @objc
-    optional func graph(graph: Graph, inserted entity: Entity, source: GraphWatchSource)
+    optional func graph(graph: Graph, inserted entity: Entity, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, deleted entity: Entity, source: GraphWatchSource)
+    optional func graph(graph: Graph, deleted entity: Entity, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphWatchSource)
+    optional func graph(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphWatchSource)
+    optional func graph(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphWatchSource)
+    optional func graph(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, entity: Entity, added tag: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, entity: Entity, added tag: String, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, entity: Entity, removed tag: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, entity: Entity, removed tag: String, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, entity: Entity, addedTo group: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, entity: Entity, addedTo group: String, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, entity: Entity, removedFrom group: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource)
 }
     
 @objc(GraphRelationshipDelegate)
 public protocol GraphRelationshipDelegate: GraphDelegate {
     @objc
-    optional func graph(graph: Graph, inserted relationship: Relationship, source: GraphWatchSource)
+    optional func graph(graph: Graph, inserted relationship: Relationship, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, updated relationship: Relationship, source: GraphWatchSource)
+    optional func graph(graph: Graph, updated relationship: Relationship, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, deleted relationship: Relationship, source: GraphWatchSource)
+    optional func graph(graph: Graph, deleted relationship: Relationship, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphWatchSource)
+    optional func graph(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphWatchSource)
+    optional func graph(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphWatchSource)
+    optional func graph(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, relationship: Relationship, added tag: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, relationship: Relationship, removed tag: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, relationship: Relationship, addedTo group: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, relationship: Relationship, addedTo group: String, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, relationship: Relationship, removedFrom group: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, relationship: Relationship, removedFrom group: String, source: GraphSource)
 }
 
 @objc(GraphActionDelegate)
 public protocol GraphActionDelegate: GraphDelegate {
     @objc
-    optional func graph(graph: Graph, inserted action: Action, source: GraphWatchSource)
+    optional func graph(graph: Graph, inserted action: Action, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, deleted action: Action, source: GraphWatchSource)
+    optional func graph(graph: Graph, deleted action: Action, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, action: Action, added property: String, with value: Any, source: GraphWatchSource)
+    optional func graph(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphWatchSource)
+    optional func graph(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphWatchSource)
+    optional func graph(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, action: Action, added tag: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, action: Action, added tag: String, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, action: Action, removed tag: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, action: Action, removed tag: String, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, action: Action, addedTo group: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, action: Action, addedTo group: String, source: GraphSource)
     
     @objc
-    optional func graph(graph: Graph, action: Action, removedFrom group: String, source: GraphWatchSource)
+    optional func graph(graph: Graph, action: Action, removedFrom group: String, source: GraphSource)
 }
 
 @objc(GraphCloudDelegate)
@@ -233,15 +233,16 @@ extension Graph {
      */
     @objc
     internal func notifyInsertedWatchers(_ notification: Notification) {
-        guard let objects = (notification as NSNotification).userInfo?[NSInsertedObjectsKey] as? NSSet else {
+        guard let objects = (notification as NSNotification).userInfo?[NSInsertedObjectsKey] as? NSMutableSet else {
             return
         }
         
         guard let predicate = watchPredicate else {
             return
         }
+        objects.filter(using: predicate)
         
-        delegateToInsertedWatchers(objects.filtered(using: predicate), source: .local)
+        delegateToInsertedWatchers(objects, source: .local)
     }
     
     /**
@@ -250,15 +251,16 @@ extension Graph {
      */
     @objc
     internal func notifyUpdatedWatchers(_ notification: Notification) {
-        guard let objects = (notification as NSNotification).userInfo?[NSUpdatedObjectsKey] as? NSSet else {
+        guard let objects = (notification as NSNotification).userInfo?[NSUpdatedObjectsKey] as? NSMutableSet else {
             return
         }
         
         guard let predicate = watchPredicate else {
             return
         }
+        objects.filter(using: predicate)
         
-        delegateToUpdatedWatchers(objects.filtered(using: predicate), source: .local)
+        delegateToUpdatedWatchers(objects, source: .local)
     }
     
     /**
@@ -267,15 +269,16 @@ extension Graph {
      */
     @objc
     internal func notifyDeletedWatchers(_ notification: Notification) {
-        guard let objects = (notification as NSNotification).userInfo?[NSDeletedObjectsKey] as? NSSet else {
+        guard let objects = (notification as NSNotification).userInfo?[NSDeletedObjectsKey] as? NSMutableSet else {
             return
         }
         
         guard let predicate = watchPredicate else {
             return
         }
+        objects.filter(using: predicate)
         
-        delegateToDeletedWatchers(objects.filtered(using: predicate), source: .local)
+        delegateToDeletedWatchers(objects, source: .local)
     }
     
     /**
@@ -284,7 +287,7 @@ extension Graph {
      */
     @objc
     internal func notifyInsertedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = (notification as NSNotification).userInfo?[NSInsertedObjectsKey] as? NSSet else {
+        guard let objectIDs = (notification as NSNotification).userInfo?[NSInsertedObjectsKey] as? NSMutableSet else {
             return
         }
         
@@ -300,8 +303,9 @@ extension Graph {
         (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
             objects.add(moc.object(with: objectID))
         }
+        objects.filter(using: predicate)
         
-        delegateToInsertedWatchers(objects.filtered(using: predicate), source: .cloud)
+        delegateToInsertedWatchers(objects, source: .cloud)
     }
     
     /**
@@ -310,7 +314,7 @@ extension Graph {
      */
     @objc
     internal func notifyUpdatedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = (notification as NSNotification).userInfo?[NSUpdatedObjectsKey] as? NSSet else {
+        guard let objectIDs = (notification as NSNotification).userInfo?[NSUpdatedObjectsKey] as? NSMutableSet else {
             return
         }
         
@@ -326,8 +330,9 @@ extension Graph {
         (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
             objects.add(moc.object(with: objectID))
         }
+        objects.filter(using: predicate)
         
-        delegateToUpdatedWatchers(objects.filtered(using: predicate), source: .cloud)
+        delegateToUpdatedWatchers(objects, source: .cloud)
     }
     
     /**
@@ -336,7 +341,7 @@ extension Graph {
      */
     @objc
     internal func notifyDeletedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = (notification as NSNotification).userInfo?[NSDeletedObjectsKey] as? NSSet else {
+        guard let objectIDs = (notification as NSNotification).userInfo?[NSDeletedObjectsKey] as? NSMutableSet else {
             return
         }
         
@@ -352,15 +357,16 @@ extension Graph {
         (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
             objects.add(moc.object(with: objectID))
         }
+        objects.filter(using: predicate)
         
-        delegateToDeletedWatchers(objects.filtered(using: predicate), source: .cloud)
+        delegateToDeletedWatchers(objects, source: .cloud)
     }
     
     /**
      Passes the handle to the inserted notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
      */
-    private func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphWatchSource) {
+    private func delegateToInsertedWatchers(_ set: NSMutableSet, source: GraphSource) {
         let nodes = sortToArray(set)
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -461,7 +467,7 @@ extension Graph {
      Passes the handle to the updated notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
      */
-    private func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphWatchSource) {
+    private func delegateToUpdatedWatchers(_ set: NSMutableSet, source: GraphSource) {
         let nodes = sortToArray(set)
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -500,7 +506,7 @@ extension Graph {
      Passes the handle to the deleted notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
      */
-    private func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphWatchSource) {
+    private func delegateToDeletedWatchers(_ set: NSMutableSet, source: GraphSource) {
         let nodes = sortToArray(set)
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -656,14 +662,10 @@ extension Graph {
      - Parameter set: A Set of NSManagedObjects.
      - Returns: A Set of NSManagedObjects in sorted order.
      */
-    private func sortToArray(_ set: Set<AnyHashable>) -> [NSManagedObject] {
-        var objects = [NSManagedObject]()
-        set.sorted { (a, b) -> Bool in
+    private func sortToArray(_ set: NSMutableSet) -> [NSManagedObject] {
+        return set.sorted { (a, b) -> Bool in
             return (a as! ManagedNode).id < (b as! ManagedNode).id
-        }.forEach { (object) in
-            objects.append(object as! NSManagedObject)
-        }
-        return objects
+        } as! [NSManagedObject]
     }
     
     /**

@@ -31,7 +31,7 @@
 import CoreData
 
 @objc(ManagedNode)
-internal class ManagedNode: ManagedObject, NodeType {
+internal class ManagedNode: ManagedObject {
     @NSManaged internal var nodeClass: NSNumber
     @NSManaged internal var type: String
     @NSManaged internal var createdDate: Date
@@ -118,17 +118,6 @@ internal class ManagedNode: ManagedObject, NodeType {
         propertySet = NSSet()
         tagSet = NSSet()
         groupSet = NSSet()
-    }
-    
-    /**
-     Checks equality between ManagedNodes.
-     - Parameter object: A reference to an object to test
-     equality against.
-     - Returns: A boolean of the result, true if equal, false
-     otherwise.
-     */
-    public override func isEqual(_ object: Any?) -> Bool {
-        return id == (object as? ManagedNode)?.id
     }
     
     /**

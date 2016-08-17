@@ -112,9 +112,9 @@ public class Graph: NSObject {
      - Parameter completion: An Optional completion block that is
      executed to determine if iCloud support is available or not.
      */
-    public init(cloud: String, completion: ((Bool, Error?) -> Void)? = nil) {
-        route = "Cloud/\(cloud)"
-        name = cloud
+    public init(cloud name: String, completion: ((Bool, Error?) -> Void)? = nil) {
+        route = "Cloud/\(name)"
+        self.name = name
         type = NSSQLiteStoreType
         location = GraphStoreDescription.location
         super.init()

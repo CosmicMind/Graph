@@ -67,7 +67,7 @@ extension Graph {
      - Parameter where properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
-    public func search(forEntity types: [String], where properties: [(name: String, value: AnyObject?)]) -> [Entity] {
+    public func search(forEntity types: [String], where properties: [(name: String, value: Any?)]) -> [Entity] {
         return searchForEntity(types: types, properties: properties)
     }
     
@@ -78,7 +78,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
-    public func search(forEntity types: [String], tags: [String], where properties: [(name: String, value: AnyObject?)]) -> [Entity] {
+    public func search(forEntity types: [String], tags: [String], where properties: [(name: String, value: Any?)]) -> [Entity] {
         return searchForEntity(types: types, tags: tags, properties: properties)
     }
     
@@ -89,7 +89,7 @@ extension Graph {
      - Parameter where properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
-    public func search(forEntity types: [String], groups: [String], where properties: [(name: String, value: AnyObject?)]) -> [Entity] {
+    public func search(forEntity types: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Entity] {
         return searchForEntity(types: types, groups: groups, properties: properties)
     }
     
@@ -112,7 +112,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
-    public func search(forEntity types: [String], tags: [String], groups: [String], where properties: [(name: String, value: AnyObject?)]) -> [Entity] {
+    public func search(forEntity types: [String], tags: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Entity] {
         return searchForEntity(types: types, tags: tags, groups: groups, properties: properties)
     }
     
@@ -124,7 +124,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
-    internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: AnyObject?)]? = nil) -> [Entity] {
+    internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Entity] {
         guard let moc = managedObjectContext else {
             return [Entity]()
         }
@@ -240,7 +240,7 @@ extension Graph {
      - Parameter where properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    public func search(forRelationship types: [String], where properties: [(name: String, value: AnyObject?)]) -> [Relationship] {
+    public func search(forRelationship types: [String], where properties: [(name: String, value: Any?)]) -> [Relationship] {
         return searchForRelationship(types: types, properties: properties)
     }
     
@@ -251,7 +251,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    public func search(forRelationship types: [String], tags: [String], where properties: [(name: String, value: AnyObject?)]) -> [Relationship] {
+    public func search(forRelationship types: [String], tags: [String], where properties: [(name: String, value: Any?)]) -> [Relationship] {
         return searchForRelationship(types: types, tags: tags, properties: properties)
     }
     
@@ -262,7 +262,7 @@ extension Graph {
      - Parameter where properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    public func search(forRelationship types: [String], groups: [String], where properties: [(name: String, value: AnyObject?)]) -> [Relationship] {
+    public func search(forRelationship types: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Relationship] {
         return searchForRelationship(types: types, groups: groups, properties: properties)
     }
     
@@ -285,7 +285,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    public func search(forRelationship types: [String], tags: [String], groups: [String], where properties: [(name: String, value: AnyObject?)]) -> [Relationship] {
+    public func search(forRelationship types: [String], tags: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Relationship] {
         return searchForRelationship(types: types, tags: tags, groups: groups, properties: properties)
     }
     
@@ -297,7 +297,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    internal func searchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: AnyObject?)]? = nil) -> [Relationship] {
+    internal func searchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Relationship] {
         guard let moc = managedObjectContext else {
             return [Relationship]()
         }
@@ -413,7 +413,7 @@ extension Graph {
      - Parameter where properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    public func search(forAction types: [String], where properties: [(name: String, value: AnyObject?)]) -> [Action] {
+    public func search(forAction types: [String], where properties: [(name: String, value: Any?)]) -> [Action] {
         return searchForAction(types: types, properties: properties)
     }
     
@@ -424,7 +424,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    public func search(forAction types: [String], tags: [String], where properties: [(name: String, value: AnyObject?)]) -> [Action] {
+    public func search(forAction types: [String], tags: [String], where properties: [(name: String, value: Any?)]) -> [Action] {
         return searchForAction(types: types, tags: tags, properties: properties)
     }
     
@@ -435,7 +435,7 @@ extension Graph {
      - Parameter where properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    public func search(forAction types: [String], groups: [String], where properties: [(name: String, value: AnyObject?)]) -> [Action] {
+    public func search(forAction types: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Action] {
         return searchForAction(types: types, groups: groups, properties: properties)
     }
     
@@ -458,7 +458,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    public func search(forAction types: [String], tags: [String], groups: [String], where properties: [(name: String, value: AnyObject?)]) -> [Action] {
+    public func search(forAction types: [String], tags: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Action] {
         return searchForAction(types: types, tags: tags, groups: groups, properties: properties)
     }
     
@@ -470,7 +470,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    internal func searchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: AnyObject?)]? = nil) -> [Action] {
+    internal func searchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Action] {
         guard let moc = managedObjectContext else {
             return [Action]()
         }
@@ -557,7 +557,7 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An optional Array of Anys.
      */
-    internal func search(forEntityName: String, properties: [(name: String, value: AnyObject?)]) -> [AnyObject]? {
+    internal func search(forEntityName: String, properties: [(name: String, value: Any?)]) -> [AnyObject]? {
         guard let moc = managedObjectContext else {
             return nil
         }
