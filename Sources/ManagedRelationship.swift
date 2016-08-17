@@ -50,9 +50,9 @@ internal class ManagedRelationship: ManagedNode {
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
-     - Returns: The optional AnyObject value.
+     - Returns: The optional Any value.
      */
-    internal override subscript(name: String) -> AnyObject? {
+    internal override subscript(name: String) -> Any? {
         get {
             return super[name]
         }
@@ -63,9 +63,11 @@ internal class ManagedRelationship: ManagedNode {
             moc.performAndWait { [unowned self, unowned moc] in
                 guard let object = value else {
                     for property in self.propertySet {
-                        if name == property.name {
-                            (property as? ManagedRelationshipProperty)?.delete()
-                            break
+                        if let p = property as? ManagedRelationshipProperty {
+                            if name == p.name {
+                                p.delete()
+                                break
+                            }
                         }
                     }
                     return
@@ -73,10 +75,12 @@ internal class ManagedRelationship: ManagedNode {
                 
                 var exists: Bool = false
                 for property in self.propertySet {
-                    if name == property.name {
-                        (property as? ManagedRelationshipProperty)?.object = object
-                        exists = true
-                        break
+                    if let p = property as? ManagedRelationshipProperty {
+                        if name == p.name {
+                            p.object = object
+                            exists = true
+                            break
+                        }
                     }
                 }
                 
@@ -91,13 +95,13 @@ internal class ManagedRelationship: ManagedNode {
      Adds a tag to the ManagedRelationship.
      - Parameter tag: A tag name.
      */
-    internal func add(tag: String) {
+    internal func add(tag name: String) {
         guard let moc = managedObjectContext else {
             return
         }
         moc.performAndWait { [unowned self, unowned moc] in
-            if !self.has(tag: tag) {
-                _ = ManagedRelationshipTag(name: tag, node: self, managedObjectContext: moc)
+            if !self.has(tag: name) {
+                _ = ManagedRelationshipTag(name: name, node: self, managedObjectContext: moc)
             }
         }
     }
@@ -106,15 +110,17 @@ internal class ManagedRelationship: ManagedNode {
      Removes a tag from a ManagedRelationship.
      - Parameter tag: A tag name.
      */
-    internal func remove(tag: String) {
+    internal func remove(tag name: String) {
         guard let moc = managedObjectContext else {
             return
         }
         moc.performAndWait { [unowned self] in
-            for t in self.tagSet {
-                if tag == t.name {
-                    (t as? ManagedRelationshipTag)?.delete()
-                    break
+            for tag in self.tagSet {
+                if let t = tag as? ManagedRelationshipTag {
+                    if name == t.name {
+                        t.delete()
+                        break
+                    }
                 }
             }
         }
@@ -144,10 +150,12 @@ internal class ManagedRelationship: ManagedNode {
             return
         }
         moc.performAndWait { [unowned self] in
-            for g in self.groupSet {
-                if group == g.name {
-                    (g as? ManagedRelationshipGroup)?.delete()
-                    break
+            for grp in self.groupSet {
+                if let g = grp as? ManagedRelationshipGroup {
+                    if group == g.name {
+                        g.delete()
+                        break
+                    }
                 }
             }
         }
@@ -160,29 +168,26 @@ internal class ManagedRelationship: ManagedNode {
         }
         
         moc.performAndWait { [unowned self] in
-            self.propertySet.forEach { (object: AnyObject) in
+            self.propertySet.forEach { (object: Any) in
                 guard let property = object as? ManagedRelationshipProperty else {
                     return
                 }
                 property.delete()
             }
             
-            self.tagSet.forEach { (object: AnyObject) in
+            self.tagSet.forEach { (object: Any) in
                 guard let tag = object as? ManagedRelationshipTag else {
                     return
                 }
                 tag.delete()
             }
             
-            self.groupSet.forEach { (object: AnyObject) in
+            self.groupSet.forEach { (object: Any) in
                 guard let group = object as? ManagedRelationshipGroup else {
                     return
                 }
                 group.delete()
             }
-          
-//            self.subject?.mutableSetValueForKey("relationshipSubjectSet").removeObject(self)
-//            self.object?.mutableSetValueForKey("relationshipObjectSet").removeObject(self)
         }
         
         super.delete()

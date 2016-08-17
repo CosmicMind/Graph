@@ -33,7 +33,7 @@ import CoreData
 @objc(ManagedProperty)
 internal class ManagedProperty: ManagedObject{
     @NSManaged internal var name: String
-    @NSManaged internal var object: AnyObject
+    @NSManaged internal var object: Any
     
     /**
      Initializer that accepts an identifier, property name, value and
@@ -43,7 +43,7 @@ internal class ManagedProperty: ManagedObject{
      - Parameter object: A reference to the object value.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(identifier: String, name: String, object: AnyObject, managedObjectContext: NSManagedObjectContext) {
+    internal convenience init(identifier: String, name: String, object: Any, managedObjectContext: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
         self.name = name
         self.object = object

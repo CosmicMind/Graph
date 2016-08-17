@@ -201,12 +201,12 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func removeItemAtPath(_ path: URL, completion: ((removed: Bool?, error: Error?) -> Void)? = nil) {
+    public static func removeItemAtPath(_ path: URL, completion: ((Bool?, Error?) -> Void)? = nil) {
         do {
             try FileManager.default.removeItem(atPath: path.path)
-            completion?(removed: true, error: nil)
+            completion?(true, nil)
         } catch let e as NSError {
-            completion?(removed: nil, error: e)
+            completion?(nil, e)
         }
     }
     
@@ -218,12 +218,12 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func createDirectoryAtPath(_ path: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: AnyObject]?, completion: ((success: Bool, error: Error?) -> Void)? = nil) {
+    public static func createDirectoryAtPath(_ path: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: Any]?, completion: ((Bool, Error?) -> Void)? = nil) {
         do {
             try FileManager.default.createDirectory(atPath: path.path, withIntermediateDirectories: createIntermediates, attributes: attributes)
-            completion?(success: true, error: nil)
+            completion?(true, nil)
         } catch let e as NSError {
-            completion?(success: false, error: e)
+            completion?(false, e)
         }
     }
     
@@ -233,12 +233,12 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func removeDirectoryAtPath(_ path: URL, completion: ((success: Bool, error: Error?) -> Void)?  = nil)  {
+    public static func removeDirectoryAtPath(_ path: URL, completion: ((Bool, Error?) -> Void)?  = nil)  {
         do {
             try FileManager.default.removeItem(at: path)
-            completion?(success: true, error: nil)
+            completion?(true, nil)
         } catch let e as NSError {
-            completion?(success: false, error: e)
+            completion?(false, e)
         }
     }
     
@@ -249,12 +249,12 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func contentsOfDirectoryAtPath(_ path: URL, shouldSkipHiddenFiles skip: Bool = false, completion: ((contents: [URL]?, error: Error?) -> Void)) {
+    public static func contentsOfDirectoryAtPath(_ path: URL, shouldSkipHiddenFiles skip: Bool = false, completion: (([URL]?, Error?) -> Void)) {
         do {
             let contents = try FileManager.default.contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: skip == true ? FileManager.DirectoryEnumerationOptions.skipsHiddenFiles : FileManager.DirectoryEnumerationOptions(rawValue: 0))
-            completion(contents: contents, error: nil)
+            completion(contents, nil)
         } catch let e as NSError {
-            return completion(contents: nil, error: e)
+            return completion(nil, e)
         }
     }
     
@@ -266,12 +266,12 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func writeToPath(_ path: URL, name: String, value: String, completion: ((success: Bool, error: Error?) -> Void)? = nil) {
+    public static func writeToPath(_ path: URL, name: String, value: String, completion: ((Bool, Error?) -> Void)? = nil) {
         do{
             try value.write(to: path.appendingPathComponent("/\(name)"), atomically: true, encoding: String.Encoding.utf8)
-            completion?(success: true, error: nil)
+            completion?(true, nil)
         } catch let e as NSError {
-            completion?(success: false, error: e)
+            completion?(false, e)
         }
     }
     
@@ -281,11 +281,11 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func readFromPath(_ path: URL, completion: ((string: String?, error: Error?) -> Void)) {
+    public static func readFromPath(_ path: URL, completion: ((String?, Error?) -> Void)) {
         if let data = try? Data(contentsOf: path) {
-            completion(string: String(data: data, encoding: String.Encoding.utf8), error: nil)
+            completion(String(data: data, encoding: String.Encoding.utf8), nil)
         } else {
-            completion(string: nil, error: NSError(domain: "io.graph.File", code: 0, userInfo: nil))
+            completion(nil, NSError(domain: "io.cosmicmind.Graph.File", code: 0, userInfo: nil))
         }
     }
     

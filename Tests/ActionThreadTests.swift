@@ -145,7 +145,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         deleteTagExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, added property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, action: Action, added property: String, with value: Any, cloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -155,7 +155,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, updated property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, action: Action, updated property: String, with value: Any, cloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -165,7 +165,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, removed property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, action: Action, removed property: String, with value: Any, cloud: Bool) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)

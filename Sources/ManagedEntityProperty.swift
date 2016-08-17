@@ -42,7 +42,7 @@ internal class ManagedEntityProperty: ManagedProperty {
      - Parameter node: A ManagedEntity.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(name: String, object: AnyObject, node: ManagedEntity, managedObjectContext: NSManagedObjectContext) {
+    internal convenience init(name: String, object: Any, node: ManagedEntity, managedObjectContext: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.entityPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
         self.node = node
     }

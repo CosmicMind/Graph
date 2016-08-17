@@ -150,21 +150,21 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
         actionDeleteException?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, added property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, action: Action, added property: String, with value: Any, cloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
         propertyInsertExpception?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, updated property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, action: Action, updated property: String, with value: Any, cloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
         propertyUpdateExpception?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, removed property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, action: Action, removed property: String, with value: Any, cloud: Bool) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         

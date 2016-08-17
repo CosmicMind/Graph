@@ -51,7 +51,7 @@ internal struct Coordinator {
      - Parameter options: Additional options.
      - Returns: An instance of NSPersistentStoreCoordinator.
      */
-    static func create(type: String, location: URL, options: [NSObject: AnyObject]? = nil) -> NSPersistentStoreCoordinator {
+    static func create(type: String, location: URL, options: [NSObject: Any]? = nil) -> NSPersistentStoreCoordinator {
         var coordinator: NSPersistentStoreCoordinator?
         File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success: Bool, error: Error?) in
             if let e = error {
@@ -75,10 +75,10 @@ extension Graph {
             return
         }
         
-        var options: [NSObject: AnyObject]?
+        var options: [AnyHashable: Any]?
         
         if supported {
-            options = [NSObject: AnyObject]()
+            options = [AnyHashable: Any]()
             options?[NSPersistentStoreUbiquitousContentNameKey] = name
         }
         
@@ -88,7 +88,7 @@ extension Graph {
             try moc.persistentStoreCoordinator?.addPersistentStore(ofType: type, configurationName: nil, at: location, options: options)
             location = moc.persistentStoreCoordinator!.persistentStores.first!.url!
             if !supported {
-                completion?(supported: false, error: GraphError(message: "[Graph Error: iCloud is not supported.]"))
+                completion?(false, GraphError(message: "[Graph Error: iCloud is not supported.]"))
             }
         } catch let e as NSError {
             fatalError("[Graph Error: \(e.localizedDescription)]")
@@ -141,7 +141,7 @@ extension Graph {
     
     internal func persistentStoreDidChange(_ notification: Notification) {
         GraphContextRegistry.added[self.route] = true
-        self.completion?(supported: true, error: nil)
+        self.completion?(true, nil)
         (self.delegate as? GraphCloudDelegate)?.graphDidPrepareCloudStorage?(graph: self)
     }
     

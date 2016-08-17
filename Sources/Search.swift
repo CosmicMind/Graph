@@ -172,7 +172,7 @@ extension Graph {
                 } else {
                     let n = nodes[i]["node"]
                     var c: Bool? = false
-                    var weakNodes: [AnyObject]? = nodes
+                    var weakNodes: [Any]? = nodes
                     moc.performAndWait { [unowned moc] in
                         if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedEntity {
                             if nil == seen.updateValue(true, forKey: v.id) {
@@ -345,7 +345,7 @@ extension Graph {
                 } else {
                     let n = nodes[i]["node"]
                     var c: Bool? = false
-                    var weakNodes: [AnyObject]? = nodes
+                    var weakNodes: [Any]? = nodes
                     moc.performAndWait { [unowned moc] in
                         if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedRelationship {
                             if nil == seen.updateValue(true, forKey: v.id) {
@@ -518,7 +518,7 @@ extension Graph {
                 } else {
                     let n = nodes[i]["node"]
                     var c: Bool? = false
-                    var weakNodes: [AnyObject]? = nodes
+                    var weakNodes: [Any]? = nodes
                     moc.performAndWait { [unowned moc] in
                         if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedAction {
                             if nil == seen.updateValue(true, forKey: v.id) {
@@ -555,7 +555,7 @@ extension Graph {
      Searches based on property value.
      - Parameter forEntityName: An entity type name.
      - Parameter properties: An Array of property tuples.
-     - Returns: An optional Array of AnyObjects.
+     - Returns: An optional Array of Anys.
      */
     internal func search(forEntityName: String, properties: [(name: String, value: AnyObject?)]) -> [AnyObject]? {
         guard let moc = managedObjectContext else {
@@ -605,7 +605,7 @@ extension Graph {
      Searches based on type value.
      - Parameter forEntityName: An entity type name.
      - Parameter types: An Array of types.
-     - Returns: An optional Array of AnyObjects.
+     - Returns: An optional Array of Anys.
      */
     internal func search(forEntityName: String, types: [String]) -> [AnyObject]? {
         guard let moc = managedObjectContext else {
@@ -644,7 +644,7 @@ extension Graph {
      Searches based on tag value.
      - Parameter forEntityName: An entity type name.
      - Parameter tags: An Array of tags.
-     - Returns: An optional Array of AnyObjects.
+     - Returns: An optional Array of Anys.
      */
     internal func search(forEntityName: String, tags: [String]) -> [AnyObject]? {
         guard let moc = managedObjectContext else {
@@ -686,7 +686,7 @@ extension Graph {
      Searches based on group value.
      - Parameter forEntityName: An entity type name.
      - Parameter groups: An Array of tags.
-     - Returns: An optional Array of AnyObjects.
+     - Returns: An optional Array of Anys.
      */
     internal func search(forEntityName: String, groups: [String]) -> [AnyObject]? {
         guard let moc = managedObjectContext else {

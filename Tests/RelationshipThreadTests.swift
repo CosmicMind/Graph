@@ -145,7 +145,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         deleteTagExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, added property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, added property: String, with value: Any, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -155,7 +155,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: Any, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -165,7 +165,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: Any, cloud: Bool) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)

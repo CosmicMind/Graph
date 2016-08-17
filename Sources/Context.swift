@@ -121,7 +121,7 @@ extension Graph {
             guard let s = self else {
                 return
             }
-            s.completion?(supported: supported, error: supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+            s.completion?(supported, supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
             (s.delegate as? GraphCloudDelegate)?.graphDidPrepareCloudStorage?(graph: s)
         }
     }

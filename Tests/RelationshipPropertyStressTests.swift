@@ -150,21 +150,21 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
         relationshipDeleteException?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, added property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, added property: String, with value: Any, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
         propertyInsertExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: Any, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
         propertyUpdateExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: Any, cloud: Bool) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         

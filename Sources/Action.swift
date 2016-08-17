@@ -80,9 +80,9 @@ public class Action: NSObject, NodeType {
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
-     - Returns: The optional AnyObject value.
+     - Returns: The optional Any value.
      */
-    public subscript(name: String) -> AnyObject? {
+    public subscript(name: String) -> Any? {
         get {
             return managedNode[name]
         }
@@ -92,7 +92,7 @@ public class Action: NSObject, NodeType {
     }
     
     /// A reference to the properties Dictionary.
-    public var properties: [String: AnyObject] {
+    public var properties: [String: Any] {
         return managedNode.properties
     }
     
@@ -182,7 +182,7 @@ public class Action: NSObject, NodeType {
      - Returns: A boolean of the result, true if equal, false
      otherwise.
      */
-    public override func isEqual(_ object: AnyObject?) -> Bool {
+    public override func isEqual(_ object: Any?) -> Bool {
         return id == (object as? Action)?.id
     }
     

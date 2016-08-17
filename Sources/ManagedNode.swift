@@ -31,7 +31,7 @@
 import CoreData
 
 @objc(ManagedNode)
-internal class ManagedNode: ManagedObject {
+internal class ManagedNode: ManagedObject, NodeType {
     @NSManaged internal var nodeClass: NSNumber
     @NSManaged internal var type: String
     @NSManaged internal var createdDate: Date
@@ -64,7 +64,7 @@ internal class ManagedNode: ManagedObject {
             return t
         }
         moc.performAndWait { [unowned self] in
-            self.tagSet.forEach { (object: AnyObject) in
+            self.tagSet.forEach { (object: Any) in
                 if let tag = object as? ManagedTag {
                     t.insert(tag.name)
                 }
@@ -80,7 +80,7 @@ internal class ManagedNode: ManagedObject {
             return g
         }
         moc.performAndWait { [unowned self] in
-            self.groupSet.forEach { (object: AnyObject) in
+            self.groupSet.forEach { (object: Any) in
                 if let group = object as? ManagedGroup {
                     g.insert(group.name)
                 }
@@ -90,13 +90,13 @@ internal class ManagedNode: ManagedObject {
     }
     
     /// A reference to the properties.
-    internal var properties: [String: AnyObject] {
-        var p = [String: AnyObject]()
+    internal var properties: [String: Any] {
+        var p = [String: Any]()
         guard let moc = managedObjectContext else {
             return p
         }
         moc.performAndWait { [unowned self] in
-            self.propertySet.forEach { (object: AnyObject) in
+            self.propertySet.forEach { (object: Any) in
                 if let property = object as? ManagedProperty {
                     p[property.name] = property.object
                 }
@@ -121,13 +121,24 @@ internal class ManagedNode: ManagedObject {
     }
     
     /**
+     Checks equality between ManagedNodes.
+     - Parameter object: A reference to an object to test
+     equality against.
+     - Returns: A boolean of the result, true if equal, false
+     otherwise.
+     */
+    public override func isEqual(_ object: Any?) -> Bool {
+        return id == (object as? ManagedNode)?.id
+    }
+    
+    /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
-     - Returns: The optional AnyObject value.
+     - Returns: The optional Any value.
      */
-    internal subscript(name: String) -> AnyObject? {
+    internal subscript(name: String) -> Any? {
         get {
-            var value: AnyObject?
+            var value: Any?
             guard let moc = managedObjectContext else {
                 return value
             }
@@ -152,14 +163,14 @@ internal class ManagedNode: ManagedObject {
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    internal func has(tag: String) -> Bool {
+    internal func has(tag name: String) -> Bool {
         guard let moc = managedObjectContext else {
             return false
         }
         var result: Bool? = false
         moc.performAndWait { [unowned self] in
-            for t in self.tagSet {
-                if tag == t.name {
+            for tag in self.tagSet {
+                if name == (tag as? ManagedTag)?.name {
                     result = true
                     break
                 }
@@ -181,7 +192,7 @@ internal class ManagedNode: ManagedObject {
         var result: Bool? = false
         moc.performAndWait { [unowned self] in
             for g in self.groupSet {
-                if group == g.name {
+                if group == (g as? ManagedGroup)?.name {
                     result = true
                     break
                 }
@@ -190,3 +201,20 @@ internal class ManagedNode: ManagedObject {
         return result!
     }
 }
+
+internal func <=(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
+    return lhs.id <= rhs.id
+}
+
+internal func >=(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
+    return lhs.id >= rhs.id
+}
+
+internal func >(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
+    return lhs.id > rhs.id
+}
+
+internal func <(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
+    return lhs.id < rhs.id
+}
+

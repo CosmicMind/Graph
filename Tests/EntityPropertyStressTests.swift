@@ -150,21 +150,21 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
         entityDeleteException?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, added property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, entity: Entity, added property: String, with value: Any, cloud: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         
         propertyInsertExpception?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, updated property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, entity: Entity, updated property: String, with value: Any, cloud: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         
         propertyUpdateExpception?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, removed property: String, with value: AnyObject, cloud: Bool) {
+    func graph(graph: Graph, entity: Entity, removed property: String, with value: Any, cloud: Bool) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         

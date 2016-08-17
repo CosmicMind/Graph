@@ -42,7 +42,7 @@ internal class ManagedActionProperty: ManagedProperty {
      - Parameter node: A ManagedAction.
      - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
      */
-    internal convenience init(name: String, object: AnyObject, node: ManagedAction, managedObjectContext: NSManagedObjectContext) {
+    internal convenience init(name: String, object: Any, node: ManagedAction, managedObjectContext: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.actionPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
         self.node = node
     }
