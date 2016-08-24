@@ -73,7 +73,7 @@ public class Graph: NSObject {
     public var batchOffset: Int = 0
     
     /// A reference to a delagte object.
-    public weak var delegate: GraphDelegate?
+    open weak var delegate: GraphDelegate?
     
     /**
      A reference to the graph completion handler.
