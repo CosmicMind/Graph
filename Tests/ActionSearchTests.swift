@@ -45,7 +45,7 @@ class ActionSearchTests : XCTestCase {
         graph.clear()
         
         for i in 0..<100 {
-            let n: Action = Action(type: "T1")
+            let n = Action(type: "T1")
             n["P1"] = 0 == i % 2 ? "V1" : 1
             n["P2"] = "V2"
             n.add(tag: "Q1")
@@ -53,14 +53,14 @@ class ActionSearchTests : XCTestCase {
         }
         
         for _ in 0..<200 {
-            let n: Action = Action(type: "T2")
+            let n = Action(type: "T2")
             n["P2"] = "V2"
             n.add(tag: "Q2")
             n.add(to: "G2")
         }
         
         for _ in 0..<300 {
-            let n: Action = Action(type: "T3")
+            let n = Action(type: "T3")
             n["P3"] = "V3"
             n.add(tag: "Q3")
             n.add(to: "G3")
