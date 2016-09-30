@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		962EB9D01D9E9E6800DFA8C4 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */; };
+		962EB9D11D9E9E6800DFA8C4 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */; };
 		968672071D3BE6C2000CD904 /* ManagedGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968672061D3BE6C2000CD904 /* ManagedGroup.swift */; };
 		968672081D3BE6C2000CD904 /* ManagedGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968672061D3BE6C2000CD904 /* ManagedGroup.swift */; };
 		9686720A1D3BE9BA000CD904 /* ManagedEntityGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968672091D3BE9BA000CD904 /* ManagedEntityGroup.swift */; };
@@ -195,6 +197,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		968672061D3BE6C2000CD904 /* ManagedGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedGroup.swift; sourceTree = "<group>"; };
 		968672091D3BE9BA000CD904 /* ManagedEntityGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedEntityGroup.swift; sourceTree = "<group>"; };
 		9686720C1D3BEA50000CD904 /* ManagedRelationshipGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedRelationshipGroup.swift; sourceTree = "<group>"; };
@@ -291,6 +294,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		962EB9CE1D9E9E5600DFA8C4 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */,
+			);
+			name = JSON;
+			sourceTree = "<group>";
+		};
 		96E3C39F1D3AB41F0086A024 = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +329,7 @@
 				96E3C3C71D3AB4860086A024 /* Info.plist */,
 				96E3C3C61D3AB4860086A024 /* Graph.h */,
 				96E3C4A21D3B0AA90086A024 /* File */,
+				962EB9CE1D9E9E5600DFA8C4 /* JSON */,
 				96E3C4A01D3B0A6F0086A024 /* Graph */,
 				96E3C4A11D3B0A820086A024 /* Managed */,
 				96E3C49D1D3B0A120086A024 /* Entity */,
@@ -719,6 +731,7 @@
 				96E3C42C1D3AC6B60086A024 /* Entity.swift in Sources */,
 				96E3C4361D3AC6F20086A024 /* ManagedObject.swift in Sources */,
 				96E3C4441D3AC7E40086A024 /* ManagedRelationshipTag.swift in Sources */,
+				962EB9D01D9E9E6800DFA8C4 /* JSON.swift in Sources */,
 				96E3C3F41D3AB8B00086A024 /* Model.swift in Sources */,
 				968672101D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */,
 				96E3C4451D3AC7E40086A024 /* ManagedRelationshipProperty.swift in Sources */,
@@ -785,6 +798,7 @@
 				96E3C42D1D3AC6B70086A024 /* Entity.swift in Sources */,
 				96E3C4391D3AC6F30086A024 /* ManagedObject.swift in Sources */,
 				96E3C44C1D3AC7E50086A024 /* ManagedRelationshipTag.swift in Sources */,
+				962EB9D11D9E9E6800DFA8C4 /* JSON.swift in Sources */,
 				96E3C3F51D3AB8B00086A024 /* Model.swift in Sources */,
 				968672111D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */,
 				96E3C44D1D3AC7E50086A024 /* ManagedRelationshipProperty.swift in Sources */,
