@@ -60,12 +60,9 @@ public class Graph: NSObject {
     /// Worker managedObjectContext.
     public internal(set) var managedObjectContext: NSManagedObjectContext!
     
-    /// A reference to the watch predicate.
-    public internal(set) var watchPredicate: NSPredicate?
-    
-    /// A reference to cache the watch values.
-    public internal(set) lazy var watchers = [String: [String]]()
-    
+    /// Watch instances.
+    public lazy var watchers = [Watch]()
+
     /// Number of items to return.
     public var batchSize: Int = 0 // 0 == no limit
     

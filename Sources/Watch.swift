@@ -369,20 +369,21 @@ public protocol GraphCloudDelegate: GraphDelegate {
 /// Watch.
 public class Watch {
     /// A reference to the NodeClass value.
-    internal var nodeClass: NodeClass
+    public internal(set) var nodeClass: NodeClass
     
-    /// A reference to a Graph instance.
-    internal var graph: Graph
+    /// A reference to the predicate.
+    public internal(set) var predicate: NSPredicate?
+    
+    /// A reference to cache the watch values.
+    internal lazy var watchers = [String: [String]]()
     
     /**
      An initializer that accepts a NodeClass and Graph
      instance.
      - Parameter nodeClass: A NodeClass value.
-     - Parameter graph: A Graph instance.
      */
-    internal init(nodeClass: NodeClass, graph: Graph) {
+    internal init(nodeClass: NodeClass) {
         self.nodeClass = nodeClass
-        self.graph = graph
     }
     
     /**
@@ -462,6 +463,7 @@ public class Watch {
     }
 }
 
+/// Watch mechanics.
 extension Watch {
     /**
      Watches for Entities that fall into any of the specified facets.
@@ -546,7 +548,7 @@ extension Watch {
      - Parameter type: An Entity type to watch for.
      */
     private func watch(Entity type: String) {
-        graph.addWatcher(
+        addWatcher(
             "type",
             index: ModelIdentifier.entityName,
             value: type,
@@ -559,7 +561,7 @@ extension Watch {
      - Parameter name: An Entity tag name to watch for.
      */
     private func watch(EntityTag name: String) {
-        graph.addWatcher(
+        addWatcher(
             "name",
             index: ModelIdentifier.entityTagName,
             value: name,
@@ -572,7 +574,7 @@ extension Watch {
      - Parameter name: An Entity group name to watch for.
      */
     private func watch(EntityGroup name: String) {
-        graph.addWatcher(
+        addWatcher(
             "name",
             index: ModelIdentifier.entityGroupName,
             value: name,
@@ -585,7 +587,7 @@ extension Watch {
      - Parameter name: An Entity property to watch for.
      */
     private func watch(EntityProperty name: String) {
-        graph.addWatcher(
+        addWatcher(
             "name",
             index: ModelIdentifier.entityPropertyName,
             value: name,
@@ -598,7 +600,7 @@ extension Watch {
      - Parameter type: A Relationship type to watch for.
      */
     private func watch(Relationship type: String) {
-        graph.addWatcher(
+        addWatcher(
             "type",
             index: ModelIdentifier.relationshipName,
             value: type,
@@ -611,7 +613,7 @@ extension Watch {
      - Parameter name: A Relationship tag name to watch for.
      */
     private func watch(RelationshipTag name: String) {
-        graph.addWatcher(
+        addWatcher(
             "name",
             index: ModelIdentifier.relationshipTagName,
             value: name,
@@ -624,7 +626,7 @@ extension Watch {
      - Parameter name: An Relationship group name to watch for.
      */
     private func watch(RelationshipGroup name: String) {
-        graph.addWatcher(
+        addWatcher(
             "name",
             index: ModelIdentifier.relationshipGroupName,
             value: name,
@@ -637,7 +639,7 @@ extension Watch {
      - Parameter name: An Entity property to watch for.
      */
     private func watch(RelationshipProperty name: String) {
-        graph.addWatcher(
+        addWatcher(
             "name",
             index: ModelIdentifier.relationshipPropertyName,
             value: name,
@@ -650,7 +652,7 @@ extension Watch {
      - Parameter type: An Action type to watch for.
      */
     private func watch(Action type: String) {
-        graph.addWatcher(
+        addWatcher(
             "type",
             index: ModelIdentifier.actionName,
             value: type,
@@ -663,7 +665,7 @@ extension Watch {
      - Parameter name: An Action tag name to watch for.
      */
     private func watch(ActionTag name: String) {
-        graph.addWatcher(
+        addWatcher(
             "name",
             index: ModelIdentifier.actionTagName,
             value: name,
@@ -676,7 +678,7 @@ extension Watch {
      - Parameter name: An Action group name to watch for.
      */
     private func watch(ActionGroup name: String) {
-        graph.addWatcher(
+        addWatcher(
             "name",
             index: ModelIdentifier.actionGroupName,
             value: name,
@@ -689,149 +691,12 @@ extension Watch {
      - Parameter name: An Action property to watch for.
      */
     private func watch(ActionProperty name: String) {
-        graph.addWatcher(
+        addWatcher(
             "name",
             index: ModelIdentifier.actionPropertyName,
             value: name,
             entityDescriptionName: ModelIdentifier.actionPropertyName,
             managedObjectClassName: ModelIdentifier.actionPropertyName)
-    }
-}
-
-/// Storage Watch API.
-extension Graph {
-    @discardableResult
-    public func watch(for nodeClass: NodeClass) -> Watch {
-        return Watch(nodeClass: nodeClass, graph: self)
-    }
-    
-    /**
-     Notifies inserted watchers from local changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyInsertedWatchers(_ notification: Notification) {
-        guard let objects = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let predicate = watchPredicate else {
-            return
-        }
-        
-        delegateToInsertedWatchers(objects.filtered(using: predicate), source: .local)
-    }
-    
-    /**
-     Notifies updated watchers from local changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyUpdatedWatchers(_ notification: Notification) {
-        guard let objects = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let predicate = watchPredicate else {
-            return
-        }
-        
-        delegateToUpdatedWatchers(objects.filtered(using: predicate), source: .local)
-    }
-    
-    /**
-     Notifies deleted watchers from local changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyDeletedWatchers(_ notification: Notification) {
-        guard let objects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let predicate = watchPredicate else {
-            return
-        }
-        
-        delegateToDeletedWatchers(objects.filtered(using: predicate), source: .local)
-    }
-    
-    /**
-     Notifies inserted watchers from cloud changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyInsertedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let predicate = watchPredicate else {
-            return
-        }
-        
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        let objects = NSMutableSet()
-        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
-            objects.add(moc.object(with: objectID))
-        }
-        
-        delegateToInsertedWatchers(objects.filtered(using: predicate), source: .cloud)
-    }
-    
-    /**
-     Notifies updated watchers from cloud changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyUpdatedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let predicate = watchPredicate else {
-            return
-        }
-        
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        let objects = NSMutableSet()
-        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
-            objects.add(moc.object(with: objectID))
-        }
-        
-        delegateToUpdatedWatchers(objects.filtered(using: predicate), source: .cloud)
-    }
-    
-    /**
-     Notifies deleted watchers from cloud changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyDeletedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let predicate = watchPredicate else {
-            return
-        }
-        
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        let objects = NSMutableSet()
-        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
-            objects.add(moc.object(with: objectID))
-        }
-        
-        delegateToDeletedWatchers(objects.filtered(using: predicate), source: .cloud)
     }
     
     /**
@@ -842,9 +707,7 @@ extension Graph {
      - Parameter entityDescription: An entity description.
      - Parameter managedObjectClassName: A Mode class name.
      */
-    internal func addWatcher(_ key: String, index: String, value: String, entityDescriptionName: String, managedObjectClassName: String) {
-        prepareForObservation()
-        
+    private func addWatcher(_ key: String, index: String, value: String, entityDescriptionName: String, managedObjectClassName: String) {
         guard !isWatching(key: value, index: index) else {
             return
         }
@@ -876,9 +739,101 @@ extension Graph {
         return false
     }
     
-    /// Prepares the instance for save notifications.
-    private func prepareForObservation() {
-        guard 0 == watchers.count else {
+    /**
+     Adds a predicate to watch for.
+     - Parameter entityDescription: An NSEntityDescription to watch.
+     - Parameter predicate: An NSPredicate.
+     */
+    private func addPredicateToObserve(_ entityDescription: NSEntityDescription, predicate p: NSPredicate) {
+        let p = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString), p])
+        predicate = NSCompoundPredicate(orPredicateWithSubpredicates: nil == predicate ? [p] : [predicate!, p])
+    }
+}
+
+extension Graph {
+    /// A reference to the overall predicate.
+    internal var predicate: NSPredicate? {
+        var p: NSPredicate?
+        for watch in watchers {
+            if let v = watch.predicate {
+                p = NSCompoundPredicate(orPredicateWithSubpredicates: nil == p ? [v] : [v, p!])
+            }
+        }
+        return p
+    }
+    
+    @discardableResult
+    public func watch(for nodeClass: NodeClass) -> Watch {
+        prepareForObservation()
+        
+        let watch = Watch(nodeClass: nodeClass)
+        watchers.append(watch)
+        
+        return watch
+    }
+    
+    /**
+     Notifies inserted watchers from local changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyInsertedWatchers(_ notification: Notification) {
+        guard let objects = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        delegateToInsertedWatchers(objects.filtered(using: p), source: .local)
+    }
+    
+    /**
+     Notifies updated watchers from local changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyUpdatedWatchers(_ notification: Notification) {
+        guard let objects = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        delegateToUpdatedWatchers(objects.filtered(using: p), source: .local)
+    }
+    
+    /**
+     Notifies deleted watchers from local changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyDeletedWatchers(_ notification: Notification) {
+        guard let objects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        delegateToDeletedWatchers(objects.filtered(using: p), source: .local)
+    }
+    
+    /**
+     Notifies inserted watchers from cloud changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyInsertedWatchersFromCloud(_ notification: Notification) {
+        guard let objectIDs = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
             return
         }
         
@@ -886,25 +841,69 @@ extension Graph {
             return
         }
         
-        let defaultCenter = NotificationCenter.default
-        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
-        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
-        defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: moc)
+        let objects = NSMutableSet()
+        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
+            objects.add(moc.object(with: objectID))
+        }
+        
+        delegateToInsertedWatchers(objects.filtered(using: p), source: .cloud)
     }
     
     /**
-     Adds a predicate to watch for.
-     - Parameter entityDescription: An NSEntityDescription to watch.
-     - Parameter predicate: An NSPredicate.
+     Notifies updated watchers from cloud changes.
+     - Parameter notification: NSNotification reference.
      */
-    private func addPredicateToObserve(_ entityDescription: NSEntityDescription, predicate: NSPredicate) {
-        let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString), predicate])
-        watchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: nil == watchPredicate ? [finalPredicate] : [watchPredicate!, finalPredicate])
+    @objc
+    internal func notifyUpdatedWatchersFromCloud(_ notification: Notification) {
+        guard let objectIDs = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        let objects = NSMutableSet()
+        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
+            objects.add(moc.object(with: objectID))
+        }
+        
+        delegateToUpdatedWatchers(objects.filtered(using: p), source: .cloud)
+    }
+    
+    /**
+     Notifies deleted watchers from cloud changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyDeletedWatchersFromCloud(_ notification: Notification) {
+        guard let objectIDs = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        let objects = NSMutableSet()
+        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
+            objects.add(moc.object(with: objectID))
+        }
+        
+        delegateToDeletedWatchers(objects.filtered(using: p), source: .cloud)
     }
     
     /**
      Passes the handle to the inserted notification delegates.
-     - Parameter set: A Set of NSManagedObjects to pass.
+     - Parameter _ set: A Set of NSManagedObjects to pass.
      - Parameter source: A GraphSource value.
      */
     private func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -1006,7 +1005,7 @@ extension Graph {
     
     /**
      Passes the handle to the updated notification delegates.
-     - Parameter set: A Set of NSManagedObjects to pass.
+     - Parameter _ set: A Set of NSManagedObjects to pass.
      - Parameter source: A GraphSource value.
      */
     private func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -1046,7 +1045,7 @@ extension Graph {
     
     /**
      Passes the handle to the deleted notification delegates.
-     - Parameter set: A Set of NSManagedObjects to pass.
+     - Parameter _ set: A Set of NSManagedObjects to pass.
      - Parameter source: A GraphSource value.
      */
     private func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -1202,14 +1201,16 @@ extension Graph {
     
     /**
      Sort nodes.
-     - Parameter set: A Set of NSManagedObjects.
+     - Parameter _ set: A Set of NSManagedObjects.
      - Returns: A Set of NSManagedObjects in sorted order.
      */
     private func sortToArray(_ set: Set<AnyHashable>) -> [NSManagedObject] {
         var objects = Set<NSManagedObject>()
+        
         set.forEach { (object) in
             objects.insert(object as! NSManagedObject)
         }
+        
         return objects.sorted { (a, b) -> Bool in
             guard let a1 = a as? ManagedNode else {
                 return false
@@ -1219,5 +1220,21 @@ extension Graph {
             }
             return a1 < b1
         }
+    }
+    
+    /// Prepares the instance for save notifications.
+    private func prepareForObservation() {
+        guard 0 == watchers.count else {
+            return
+        }
+        
+        guard let moc = managedObjectContext else {
+            return
+        }
+        
+        let defaultCenter = NotificationCenter.default
+        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
+        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
+        defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: moc)
     }
 }
