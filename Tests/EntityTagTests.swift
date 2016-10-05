@@ -52,7 +52,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], tags: ["G1"])
+        graph.watch(for: .entity).is(type: "T").has(tags: ["G1"])
         
         let entity = Entity(type: "T")
         entity.add(tag: "G1")
@@ -89,7 +89,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
         tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
         
         graph.delegate = self
-        graph.watchForEntity(tags: ["G1", "G2"])
+        graph.watch(for: .entity).has(tags: ["G1", "G2"])
         
         entity.add(tag: "G1")
         entity.remove(tag: "G2")
@@ -128,7 +128,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
         tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
         
         graph.delegate = self
-        graph.watchForEntity(tags: ["G2"])
+        graph.watch(for: .entity).has(tags: ["G2"])
         
         entity.remove(tag: "G2")
         

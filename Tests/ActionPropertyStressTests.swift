@@ -71,7 +71,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             let property = "P\(i)"
             var value = i
             
-            graph.watch(for: .action).where([property])
+            graph.watch(for: .action).where(property: [property])
             
             action[property] = value
             

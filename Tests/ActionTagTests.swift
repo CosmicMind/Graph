@@ -52,7 +52,7 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G1"])
+        graph.watch(for: .action).is(type: "T").has(tags: ["G1"])
         
         let action = Action(type: "T")
         action.add(tag: "G1")
@@ -89,7 +89,7 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(tags: ["G1", "G2"])
+        graph.watch(for: .action).has(tags: ["G1", "G2"])
         
         action.add(tag: "G1")
         action.remove(tag: "G2")
@@ -128,7 +128,7 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(tags: ["G2"])
+        graph.watch(for: .action).has(tags: ["G2"])
         
         action.remove(tag: "G2")
         

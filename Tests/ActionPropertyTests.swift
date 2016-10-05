@@ -52,7 +52,7 @@ class ActionPropertyTests: XCTestCase, GraphActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(properties: ["P1"])
+        graph.watch(for: .action).where(property: ["P1"])
         
         let action = Action(type: "T")
         action["P1"] = "V1"
@@ -88,7 +88,7 @@ class ActionPropertyTests: XCTestCase, GraphActionDelegate {
         propertyUpdateExpception = expectation(description: "[ActionTests Error: Property update test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(properties: ["P1"])
+        graph.watch(for: .action).where(property: ["P1"])
         
         action["P1"] = "V2"
         
@@ -123,7 +123,7 @@ class ActionPropertyTests: XCTestCase, GraphActionDelegate {
         propertyDeleteExpception = expectation(description: "[ActionTests Error: Property delete test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(properties: ["P1"])
+        graph.watch(for: .action).where(property: ["P1"])
         
         action["P1"] = nil
         

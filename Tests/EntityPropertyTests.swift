@@ -52,7 +52,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .entity).where(["P1"])
+        graph.watch(for: .entity).where(property: ["P1"])
         
         let entity = Entity(type: "T")
         entity["P1"] = "V1"
@@ -88,7 +88,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
         propertyUpdateExpception = expectation(description: "[EntityTests Error: Property update test failed.]")
         
         graph.delegate = self
-        graph.watch(for: .entity).where(["P1"])
+        graph.watch(for: .entity).where(property: ["P1"])
         
         entity["P1"] = "V2"
         
@@ -123,7 +123,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
         propertyDeleteExpception = expectation(description: "[EntityTests Error: Property delete test failed.]")
         
         graph.delegate = self
-        graph.watch(for: .entity).where(["P1"])
+        graph.watch(for: .entity).where(property: ["P1"])
         
         entity["P1"] = nil
         

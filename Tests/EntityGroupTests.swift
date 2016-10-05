@@ -128,7 +128,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         tagRemoveExpception = expectation(description: "[EntityTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watch(for: .entity).has(tags: ["G2"])
+        graph.watch(for: .entity).member(of: ["G2"])
         
         entity.remove(from: "G2")
         

@@ -63,7 +63,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).is(type: "T").has(tags: ["G"]).where(["P"])
+        graph.watch(for: .relationship).is(type: "T").has(tags: ["G"]).where(property: ["P"])
         
         let relationship = Relationship(type: "T")
         

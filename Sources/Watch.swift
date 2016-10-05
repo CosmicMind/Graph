@@ -147,6 +147,338 @@ public protocol GraphCloudDelegate: GraphDelegate {
     optional func graphDidUpdateFromCloudStorage(graph: Graph)
 }
 
+/// Watch.
+public class Watch {
+    /// A reference to the NodeClass value.
+    internal var nodeClass: NodeClass
+    
+    /// A reference to a Graph instance.
+    internal var graph: Graph
+    
+    /**
+     An initializer that accepts a NodeClass and Graph
+     instance.
+     - Parameter nodeClass: A NodeClass value.
+     - Parameter graph: A Graph instance.
+     */
+    internal init(nodeClass: NodeClass, graph: Graph) {
+        self.nodeClass = nodeClass
+        self.graph = graph
+    }
+    
+    /**
+     Watches nodes with a given type.
+     - Parameter type: A String type.
+     - Returns: A Watch instance.
+     */
+    @discardableResult
+    public func `is`(type: String) -> Watch {
+        switch nodeClass {
+        case .entity:
+            watchForEntity(types: [type])
+        case .relationship:
+            watchForRelationship(types: [type])
+        case .action:
+            watchForAction(types: [type])
+        }
+        
+        return self
+    }
+    
+    /**
+     Watches nodes with the given tags.
+     - Parameter tags: An Array of Strings.
+     - Returns: A Watch instance.
+     */
+    @discardableResult
+    public func has(tags: [String]) -> Watch {
+        switch nodeClass {
+        case .entity:
+            watchForEntity(tags: tags)
+        case .relationship:
+            watchForRelationship(tags: tags)
+        case .action:
+            watchForAction(tags: tags)
+        }
+        
+        return self
+    }
+    
+    /**
+     Watches nodes in the given groups.
+     - Parameter of groups: An Array of Strings.
+     - Returns: A Watch instance.
+     */
+    @discardableResult
+    public func member(of groups: [String]) -> Watch {
+        switch nodeClass {
+        case .entity:
+            watchForEntity(groups: groups)
+        case .relationship:
+            watchForRelationship(groups: groups)
+        case .action:
+            watchForAction(groups: groups)
+        }
+        
+        return self
+    }
+    
+    /**
+     Watches nodes with the given property keys.
+     - Parameter property keys: An Array of Strings.
+     - Returns: A Watch instance.
+     */
+    @discardableResult
+    public func `where`(property keys: [String]) -> Watch {
+        switch nodeClass {
+        case .entity:
+            watchForEntity(properties: keys)
+        case .relationship:
+            watchForRelationship(properties: keys)
+        case .action:
+            watchForAction(properties: keys)
+        }
+        
+        return self
+    }
+}
+
+extension Watch {
+    /**
+     Watches for Entities that fall into any of the specified facets.
+     - Parameter types: An Array of Entity types.
+     - Parameter tags: An Array of tags.
+     - Parameter groups: An Array of groups.
+     - Parameter properties: An Array of property typles.
+     - Returns: An Array of Entities.
+     */
+    internal func watchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
+        types?.forEach { [unowned self] (type: String) in
+            self.watch(Entity: type)
+        }
+        
+        tags?.forEach { [unowned self] (tag: String) in
+            self.watch(EntityTag: tag)
+        }
+        
+        groups?.forEach { [unowned self] (group: String) in
+            self.watch(EntityGroup: group)
+        }
+        
+        properties?.forEach { [unowned self] (property: String) in
+            self.watch(EntityProperty: property)
+        }
+    }
+    
+    /**
+     Watches for Relationships that fall into any of the specified facets.
+     - Parameter types: An Array of Relationship types.
+     - Parameter tags: An Array of tags.
+     - Parameter groups: An Array of groups.
+     - Parameter properties: An Array of property typles.
+     - Returns: An Array of Relationships.
+     */
+    internal func watchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
+        types?.forEach { [unowned self] (type: String) in
+            self.watch(Relationship: type)
+        }
+        
+        tags?.forEach { [unowned self] (tag: String) in
+            self.watch(RelationshipTag: tag)
+        }
+        
+        groups?.forEach { [unowned self] (group: String) in
+            self.watch(RelationshipGroup: group)
+        }
+        
+        properties?.forEach { [unowned self] (property: String) in
+            self.watch(RelationshipProperty: property)
+        }
+    }
+    
+    /**
+     Watches for Actions that fall into any of the specified facets.
+     - Parameter types: An Array of Action types.
+     - Parameter tags: An Array of tags.
+     - Parameter groups: An Array of groups.
+     - Parameter properties: An Array of property typles.
+     - Returns: An Array of Actions.
+     */
+    internal func watchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
+        types?.forEach { [unowned self] (type: String) in
+            self.watch(Action: type)
+        }
+        
+        tags?.forEach { [unowned self] (tag: String) in
+            self.watch(ActionTag: tag)
+        }
+        
+        groups?.forEach { [unowned self] (group: String) in
+            self.watch(ActionGroup: group)
+        }
+        
+        properties?.forEach { [unowned self] (property: String) in
+            self.watch(ActionProperty: property)
+        }
+    }
+    
+    /**
+     Watch for an Entity type.
+     - Parameter type: An Entity type to watch for.
+     */
+    private func watch(Entity type: String) {
+        graph.addWatcher(
+            "type",
+            index: ModelIdentifier.entityName,
+            value: type,
+            entityDescriptionName: ModelIdentifier.entityName,
+            managedObjectClassName: ModelIdentifier.entityName)
+    }
+    
+    /**
+     Watch for an Entity tag.
+     - Parameter name: An Entity tag name to watch for.
+     */
+    private func watch(EntityTag name: String) {
+        graph.addWatcher(
+            "name",
+            index: ModelIdentifier.entityTagName,
+            value: name,
+            entityDescriptionName: ModelIdentifier.entityTagName,
+            managedObjectClassName: ModelIdentifier.entityTagName)
+    }
+    
+    /**
+     Watch for an Entity group.
+     - Parameter name: An Entity group name to watch for.
+     */
+    private func watch(EntityGroup name: String) {
+        graph.addWatcher(
+            "name",
+            index: ModelIdentifier.entityGroupName,
+            value: name,
+            entityDescriptionName: ModelIdentifier.entityGroupName,
+            managedObjectClassName: ModelIdentifier.entityGroupName)
+    }
+    
+    /**
+     Watch for an Entity property.
+     - Parameter name: An Entity property to watch for.
+     */
+    private func watch(EntityProperty name: String) {
+        graph.addWatcher(
+            "name",
+            index: ModelIdentifier.entityPropertyName,
+            value: name,
+            entityDescriptionName: ModelIdentifier.entityPropertyName,
+            managedObjectClassName: ModelIdentifier.entityPropertyName)
+    }
+    
+    /**
+     Watch for a Relationship type.
+     - Parameter type: A Relationship type to watch for.
+     */
+    private func watch(Relationship type: String) {
+        graph.addWatcher(
+            "type",
+            index: ModelIdentifier.relationshipName,
+            value: type,
+            entityDescriptionName: ModelIdentifier.relationshipName,
+            managedObjectClassName: ModelIdentifier.relationshipName)
+    }
+    
+    /**
+     Watch for a Relationship tag.
+     - Parameter name: A Relationship tag name to watch for.
+     */
+    private func watch(RelationshipTag name: String) {
+        graph.addWatcher(
+            "name",
+            index: ModelIdentifier.relationshipTagName,
+            value: name,
+            entityDescriptionName: ModelIdentifier.relationshipTagName,
+            managedObjectClassName: ModelIdentifier.relationshipTagName)
+    }
+    
+    /**
+     Watch for an Relationship group.
+     - Parameter name: An Relationship group name to watch for.
+     */
+    private func watch(RelationshipGroup name: String) {
+        graph.addWatcher(
+            "name",
+            index: ModelIdentifier.relationshipGroupName,
+            value: name,
+            entityDescriptionName: ModelIdentifier.relationshipGroupName,
+            managedObjectClassName: ModelIdentifier.relationshipGroupName)
+    }
+    
+    /**
+     Watch for a Relationship property.
+     - Parameter name: An Entity property to watch for.
+     */
+    private func watch(RelationshipProperty name: String) {
+        graph.addWatcher(
+            "name",
+            index: ModelIdentifier.relationshipPropertyName,
+            value: name,
+            entityDescriptionName: ModelIdentifier.relationshipPropertyName,
+            managedObjectClassName: ModelIdentifier.relationshipPropertyName)
+    }
+    
+    /**
+     Watch for an Action type.
+     - Parameter type: An Action type to watch for.
+     */
+    private func watch(Action type: String) {
+        graph.addWatcher(
+            "type",
+            index: ModelIdentifier.actionName,
+            value: type,
+            entityDescriptionName: ModelIdentifier.actionName,
+            managedObjectClassName: ModelIdentifier.actionName)
+    }
+    
+    /**
+     Watch for an Action tag.
+     - Parameter name: An Action tag name to watch for.
+     */
+    private func watch(ActionTag name: String) {
+        graph.addWatcher(
+            "name",
+            index: ModelIdentifier.actionTagName,
+            value: name,
+            entityDescriptionName: ModelIdentifier.actionTagName,
+            managedObjectClassName: ModelIdentifier.actionTagName)
+    }
+    
+    /**
+     Watch for an Action group.
+     - Parameter name: An Action group name to watch for.
+     */
+    private func watch(ActionGroup name: String) {
+        graph.addWatcher(
+            "name",
+            index: ModelIdentifier.actionGroupName,
+            value: name,
+            entityDescriptionName: ModelIdentifier.actionGroupName,
+            managedObjectClassName: ModelIdentifier.actionGroupName)
+    }
+    
+    /**
+     Watch for an Action property.
+     - Parameter name: An Action property to watch for.
+     */
+    private func watch(ActionProperty name: String) {
+        graph.addWatcher(
+            "name",
+            index: ModelIdentifier.actionPropertyName,
+            value: name,
+            entityDescriptionName: ModelIdentifier.actionPropertyName,
+            managedObjectClassName: ModelIdentifier.actionPropertyName)
+    }
+}
+
 /// Storage Watch API.
 extension Graph {
     @discardableResult
@@ -348,7 +680,7 @@ extension Graph {
      */
     private func addPredicateToObserve(_ entityDescription: NSEntityDescription, predicate: NSPredicate) {
         let finalPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString), predicate])
-        watchPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: nil == watchPredicate ? [finalPredicate] : [watchPredicate!, finalPredicate])
+        watchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: nil == watchPredicate ? [finalPredicate] : [watchPredicate!, finalPredicate])
     }
     
     /**
@@ -665,311 +997,5 @@ extension Graph {
             }
             return a1 < b1
         }
-    }
-}
-
-/// Watch.
-public class Watch {
-    /// A reference to the NodeClass value.
-    internal var nodeClass: NodeClass
-    
-    /// A reference to a Graph instance.
-    internal var graph: Graph
-    
-    internal init(nodeClass: NodeClass, graph: Graph) {
-        self.nodeClass = nodeClass
-        self.graph = graph
-    }
-    
-    @discardableResult
-    public func `is`(type: String) -> Watch {
-        switch nodeClass {
-        case .entity:
-            watchForEntity(types: [type])
-        case .relationship:
-            watchForRelationship(types: [type])
-        case .action:
-            watchForAction(types: [type])
-        }
-        
-        return self
-    }
-    
-    @discardableResult
-    public func has(tags: [String]) -> Watch {
-        switch nodeClass {
-        case .entity:
-            watchForEntity(tags: tags)
-        case .relationship:
-            watchForRelationship(tags: tags)
-        case .action:
-            watchForAction(tags: tags)
-        }
-        
-        return self
-    }
-    
-    @discardableResult
-    public func member(of groups: [String]) -> Watch {
-        switch nodeClass {
-        case .entity:
-            watchForEntity(groups: groups)
-        case .relationship:
-            watchForRelationship(groups: groups)
-        case .action:
-            watchForAction(groups: groups)
-        }
-        
-        return self
-    }
-    
-    @discardableResult
-    public func `where`(_ properties: [String]) -> Watch {
-        switch nodeClass {
-        case .entity:
-            watchForEntity(properties: properties)
-        case .relationship:
-            watchForRelationship(properties: properties)
-        case .action:
-            watchForAction(properties: properties)
-        }
-        
-        return self
-    }
-}
-
-extension Watch {
-    /**
-     Watches for Entities that fall into any of the specified facets.
-     - Parameter types: An Array of Entity types.
-     - Parameter tags: An Array of tags.
-     - Parameter groups: An Array of groups.
-     - Parameter properties: An Array of property typles.
-     - Returns: An Array of Entities.
-     */
-    internal func watchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-        types?.forEach { [unowned self] (type: String) in
-            self.watch(Entity: type)
-        }
-        
-        tags?.forEach { [unowned self] (tag: String) in
-            self.watch(EntityTag: tag)
-        }
-        
-        groups?.forEach { [unowned self] (group: String) in
-            self.watch(EntityGroup: group)
-        }
-        
-        properties?.forEach { [unowned self] (property: String) in
-            self.watch(EntityProperty: property)
-        }
-    }
-    
-    /**
-     Watches for Relationships that fall into any of the specified facets.
-     - Parameter types: An Array of Relationship types.
-     - Parameter tags: An Array of tags.
-     - Parameter groups: An Array of groups.
-     - Parameter properties: An Array of property typles.
-     - Returns: An Array of Relationships.
-     */
-    internal func watchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-        types?.forEach { [unowned self] (type: String) in
-            self.watch(Relationship: type)
-        }
-        
-        tags?.forEach { [unowned self] (tag: String) in
-            self.watch(RelationshipTag: tag)
-        }
-        
-        groups?.forEach { [unowned self] (group: String) in
-            self.watch(RelationshipGroup: group)
-        }
-        
-        properties?.forEach { [unowned self] (property: String) in
-            self.watch(RelationshipProperty: property)
-        }
-    }
-    
-    /**
-     Watches for Actions that fall into any of the specified facets.
-     - Parameter types: An Array of Action types.
-     - Parameter tags: An Array of tags.
-     - Parameter groups: An Array of groups.
-     - Parameter properties: An Array of property typles.
-     - Returns: An Array of Actions.
-     */
-    internal func watchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-        types?.forEach { [unowned self] (type: String) in
-            self.watch(Action: type)
-        }
-        
-        tags?.forEach { [unowned self] (tag: String) in
-            self.watch(ActionTag: tag)
-        }
-        
-        groups?.forEach { [unowned self] (group: String) in
-            self.watch(ActionGroup: group)
-        }
-        
-        properties?.forEach { [unowned self] (property: String) in
-            self.watch(ActionProperty: property)
-        }
-    }
-    
-    /**
-     Watch for an Entity type.
-     - Parameter type: An Entity type to watch for.
-     */
-    private func watch(Entity type: String) {
-        graph.addWatcher(
-            "type",
-            index: ModelIdentifier.entityName,
-            value: type,
-            entityDescriptionName: ModelIdentifier.entityName,
-            managedObjectClassName: ModelIdentifier.entityName)
-    }
-    
-    /**
-     Watch for an Entity tag.
-     - Parameter name: An Entity tag name to watch for.
-     */
-    private func watch(EntityTag name: String) {
-        graph.addWatcher(
-            "name",
-            index: ModelIdentifier.entityTagName,
-            value: name,
-            entityDescriptionName: ModelIdentifier.entityTagName,
-            managedObjectClassName: ModelIdentifier.entityTagName)
-    }
-    
-    /**
-     Watch for an Entity group.
-     - Parameter name: An Entity group name to watch for.
-     */
-    private func watch(EntityGroup name: String) {
-        graph.addWatcher(
-            "name",
-            index: ModelIdentifier.entityGroupName,
-            value: name,
-            entityDescriptionName: ModelIdentifier.entityGroupName,
-            managedObjectClassName: ModelIdentifier.entityGroupName)
-    }
-    
-    /**
-     Watch for an Entity property.
-     - Parameter name: An Entity property to watch for.
-     */
-    private func watch(EntityProperty name: String) {
-        graph.addWatcher(
-            "name",
-            index: ModelIdentifier.entityPropertyName,
-            value: name,
-            entityDescriptionName: ModelIdentifier.entityPropertyName,
-            managedObjectClassName: ModelIdentifier.entityPropertyName)
-    }
-    
-    /**
-     Watch for a Relationship type.
-     - Parameter type: A Relationship type to watch for.
-     */
-    private func watch(Relationship type: String) {
-        graph.addWatcher(
-            "type",
-            index: ModelIdentifier.relationshipName,
-            value: type,
-            entityDescriptionName: ModelIdentifier.relationshipName,
-            managedObjectClassName: ModelIdentifier.relationshipName)
-    }
-    
-    /**
-     Watch for a Relationship tag.
-     - Parameter name: A Relationship tag name to watch for.
-     */
-    private func watch(RelationshipTag name: String) {
-        graph.addWatcher(
-            "name",
-            index: ModelIdentifier.relationshipTagName,
-            value: name,
-            entityDescriptionName: ModelIdentifier.relationshipTagName,
-            managedObjectClassName: ModelIdentifier.relationshipTagName)
-    }
-    
-    /**
-     Watch for an Relationship group.
-     - Parameter name: An Relationship group name to watch for.
-     */
-    private func watch(RelationshipGroup name: String) {
-        graph.addWatcher(
-            "name",
-            index: ModelIdentifier.relationshipGroupName,
-            value: name,
-            entityDescriptionName: ModelIdentifier.relationshipGroupName,
-            managedObjectClassName: ModelIdentifier.relationshipGroupName)
-    }
-    
-    /**
-     Watch for a Relationship property.
-     - Parameter name: An Entity property to watch for.
-     */
-    private func watch(RelationshipProperty name: String) {
-        graph.addWatcher(
-            "name",
-            index: ModelIdentifier.relationshipPropertyName,
-            value: name,
-            entityDescriptionName: ModelIdentifier.relationshipPropertyName,
-            managedObjectClassName: ModelIdentifier.relationshipPropertyName)
-    }
-    
-    /**
-     Watch for an Action type.
-     - Parameter type: An Action type to watch for.
-     */
-    private func watch(Action type: String) {
-        graph.addWatcher(
-            "type",
-            index: ModelIdentifier.actionName,
-            value: type,
-            entityDescriptionName: ModelIdentifier.actionName,
-            managedObjectClassName: ModelIdentifier.actionName)
-    }
-    
-    /**
-     Watch for an Action tag.
-     - Parameter name: An Action tag name to watch for.
-     */
-    private func watch(ActionTag name: String) {
-        graph.addWatcher(
-            "name",
-            index: ModelIdentifier.actionTagName,
-            value: name,
-            entityDescriptionName: ModelIdentifier.actionTagName,
-            managedObjectClassName: ModelIdentifier.actionTagName)
-    }
-    
-    /**
-     Watch for an Action group.
-     - Parameter name: An Action group name to watch for.
-     */
-    private func watch(ActionGroup name: String) {
-        graph.addWatcher(
-            "name",
-            index: ModelIdentifier.actionGroupName,
-            value: name,
-            entityDescriptionName: ModelIdentifier.actionGroupName,
-            managedObjectClassName: ModelIdentifier.actionGroupName)
-    }
-    
-    /**
-     Watch for an Action property.
-     - Parameter name: An Action property to watch for.
-     */
-    private func watch(ActionProperty name: String) {
-        graph.addWatcher(
-            "name",
-            index: ModelIdentifier.actionPropertyName,
-            value: name,
-            entityDescriptionName: ModelIdentifier.actionPropertyName,
-            managedObjectClassName: ModelIdentifier.actionPropertyName)
     }
 }

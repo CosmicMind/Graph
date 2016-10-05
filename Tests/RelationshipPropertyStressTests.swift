@@ -55,7 +55,7 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForRelationship(types: ["T"])
+        graph.watch(for: .relationship).is(type: "T")
         
         let relationship = Relationship(type: "T")
         
@@ -71,7 +71,7 @@ class RelationshipPropertyStressTests: XCTestCase, GraphRelationshipDelegate {
             let property = "P\(i)"
             var value = i
             
-            graph.watchForRelationship(properties: [property])
+            graph.watch(for: .relationship).where(property: [property])
             
             relationship[property] = value
             

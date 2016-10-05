@@ -52,7 +52,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).where(["P1"])
+        graph.watch(for: .relationship).where(property: ["P1"])
         
         let relationship = Relationship(type: "T")
         relationship["P1"] = "V1"
@@ -88,7 +88,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         propertyUpdateExpception = expectation(description: "[RelationshipTests Error: Property update test failed.]")
         
         graph.delegate = self
-        graph.watch(for: .relationship).where(["P1"])
+        graph.watch(for: .relationship).where(property: ["P1"])
         
         
         relationship["P1"] = "V2"
@@ -124,7 +124,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         propertyDeleteExpception = expectation(description: "[RelationshipTests Error: Property delete test failed.]")
         
         graph.delegate = self
-        graph.watch(for: .relationship).where(["P1"])
+        graph.watch(for: .relationship).where(property: ["P1"])
         
         relationship["P1"] = nil
         
