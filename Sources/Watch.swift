@@ -41,108 +41,327 @@ public protocol GraphDelegate {}
 
 @objc(GraphEntityDelegate)
 public protocol GraphEntityDelegate: GraphDelegate {
+    /**
+     A delegation method that is executed when an Entity is inserted.
+     - Parameter graph: A Graph instance.
+     - Parameter inserted entity: An Entity instance.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, inserted entity: Entity, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Entity is deleted.
+     - Parameter graph: A Graph instance.
+     - Parameter deleted entity: An Entity instance.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, deleted entity: Entity, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Entity added a property and value.
+     - Parameter graph: A Graph instance.
+     - Parameter entity: An Entity instance.
+     - Parameter added property: A String.
+     - Parameter with value: Any object.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Entity updated a property and value.
+     - Parameter graph: A Graph instance.
+     - Parameter entity: An Entity instance.
+     - Parameter updated property: A String.
+     - Parameter with value: Any object.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Entity removed a property and value.
+     - Parameter graph: A Graph instance.
+     - Parameter entity: An Entity instance.
+     - Parameter removed property: A String.
+     - Parameter with value: Any object.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Entity added a tag.
+     - Parameter graph: A Graph instance.
+     - Parameter entity: An Entity instance.
+     - Parameter added tag: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, entity: Entity, added tag: String, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Entity removed a tag.
+     - Parameter graph: A Graph instance.
+     - Parameter entity: An Entity instance.
+     - Parameter removed tag: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, entity: Entity, removed tag: String, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Entity was added to a group.
+     - Parameter graph: A Graph instance.
+     - Parameter entity: An Entity instance.
+     - Parameter addedTo group: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, entity: Entity, addedTo group: String, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Entity was removed from a group.
+     - Parameter graph: A Graph instance.
+     - Parameter entity: An Entity instance.
+     - Parameter removedFrom group: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource)
 }
     
 @objc(GraphRelationshipDelegate)
 public protocol GraphRelationshipDelegate: GraphDelegate {
+    /**
+     A delegation method that is executed when a Relationship is inserted.
+     - Parameter graph: A Graph instance.
+     - Parameter inserted relationship: A Relationship instance.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, inserted relationship: Relationship, source: GraphSource)
     
+    /**
+     A delegation method that is executed when a Relationship is updated.
+     - Parameter graph: A Graph instance.
+     - Parameter updated relationship: A Relationship instance.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, updated relationship: Relationship, source: GraphSource)
     
+    /**
+     A delegation method that is executed when a Relationship is deleted.
+     - Parameter graph: A Graph instance.
+     - Parameter deleted relationship: A Relationship instance.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, deleted relationship: Relationship, source: GraphSource)
     
+    /**
+     A delegation method that is executed when a Relationship added a property and value.
+     - Parameter graph: A Graph instance.
+     - Parameter relationship: A Relationship instance.
+     - Parameter added property: A String.
+     - Parameter with value: Any object.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource)
     
+    /**
+     A delegation method that is executed when a Relationship updated a property and value.
+     - Parameter graph: A Graph instance.
+     - Parameter relationship: A Relationship instance.
+     - Parameter updated property: A String.
+     - Parameter with value: Any object.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource)
     
+    /**
+     A delegation method that is executed when a Relationship removed a property and value.
+     - Parameter graph: A Graph instance.
+     - Parameter relationship: A Relationship instance.
+     - Parameter removed property: A String.
+     - Parameter with value: Any object.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource)
     
+    /**
+     A delegation method that is executed when a Relationship added a tag.
+     - Parameter graph: A Graph instance.
+     - Parameter relationship: A Relationship instance.
+     - Parameter added tag: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource)
     
+    /**
+     A delegation method that is executed when a Relationship removed a tag.
+     - Parameter graph: A Graph instance.
+     - Parameter relationship: A Relationship instance.
+     - Parameter removed tag: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource)
     
+    /**
+     A delegation method that is executed when a Relationship was added to a group.
+     - Parameter graph: A Graph instance.
+     - Parameter relationship: A Relationship instance.
+     - Parameter addedTo group: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, relationship: Relationship, addedTo group: String, source: GraphSource)
     
+    /**
+     A delegation method that is executed when a Relationship was removed from a group.
+     - Parameter graph: A Graph instance.
+     - Parameter relationship: A Relationship instance.
+     - Parameter removedFrom group: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, relationship: Relationship, removedFrom group: String, source: GraphSource)
 }
 
 @objc(GraphActionDelegate)
 public protocol GraphActionDelegate: GraphDelegate {
+    /**
+     A delegation method that is executed when an Action is inserted.
+     - Parameter graph: A Graph instance.
+     - Parameter inserted action: An Action instance.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, inserted action: Action, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Action is deleted.
+     - Parameter graph: A Graph instance.
+     - Parameter deleted action: An Action instance.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, deleted action: Action, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Action added a property and value.
+     - Parameter graph: A Graph instance.
+     - Parameter action: An Action instance.
+     - Parameter added property: A String.
+     - Parameter with value: Any object.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Action updated a property and value.
+     - Parameter graph: A Graph instance.
+     - Parameter action: An Action instance.
+     - Parameter updated property: A String.
+     - Parameter with value: Any object.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Action removed a property and value.
+     - Parameter graph: A Graph instance.
+     - Parameter action: An Action instance.
+     - Parameter removed property: A String.
+     - Parameter with value: Any object.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Action added a tag.
+     - Parameter graph: A Graph instance.
+     - Parameter action: An Action instance.
+     - Parameter added tag: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, action: Action, added tag: String, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Action removed a tag.
+     - Parameter graph: A Graph instance.
+     - Parameter action: An Action instance.
+     - Parameter removed tag: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, action: Action, removed tag: String, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Action was added to a group.
+     - Parameter graph: A Graph instance.
+     - Parameter action: An Action instance.
+     - Parameter addedTo group: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, action: Action, addedTo group: String, source: GraphSource)
     
+    /**
+     A delegation method that is executed when an Action was removed from a group.
+     - Parameter graph: A Graph instance.
+     - Parameter action: An Action instance.
+     - Parameter removedFrom group: A String.
+     - Parameter source: A GraphSource value.
+     */
     @objc
     optional func graph(graph: Graph, action: Action, removedFrom group: String, source: GraphSource)
 }
 
 @objc(GraphCloudDelegate)
 public protocol GraphCloudDelegate: GraphDelegate {
+    /**
+     A delegation method that is executed when a graph instance
+     will prepare cloud storage.
+     - Parameter graph: A Graph instance.
+     - Parameter transition: A GraphCloudStorageTransition value.
+     */
     @objc
     optional func graphWillPrepareCloudStorage(graph: Graph, transition: GraphCloudStorageTransition)
     
+    /**
+     A delegation method that is executed when a graph instance
+     did prepare cloud storage.
+     - Parameter graph: A Graph instance.
+     */
     @objc
     optional func graphDidPrepareCloudStorage(graph: Graph)
     
+    /**
+     A delegation method that is executed when a graph instance
+     will update from cloud storage.
+     - Parameter graph: A Graph instance.
+     */
     @objc
     optional func graphWillUpdateFromCloudStorage(graph: Graph)
     
+    /**
+     A delegation method that is executed when a graph instance 
+     did update from cloud storage.
+     - Parameter graph: A Graph instance.
+     */
     @objc
     optional func graphDidUpdateFromCloudStorage(graph: Graph)
 }
@@ -686,6 +905,7 @@ extension Graph {
     /**
      Passes the handle to the inserted notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
+     - Parameter source: A GraphSource value.
      */
     private func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         let nodes = sortToArray(set)
@@ -787,6 +1007,7 @@ extension Graph {
     /**
      Passes the handle to the updated notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
+     - Parameter source: A GraphSource value.
      */
     private func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         let nodes = sortToArray(set)
@@ -826,6 +1047,7 @@ extension Graph {
     /**
      Passes the handle to the deleted notification delegates.
      - Parameter set: A Set of NSManagedObjects to pass.
+     - Parameter source: A GraphSource value.
      */
     private func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         let nodes = sortToArray(set)
