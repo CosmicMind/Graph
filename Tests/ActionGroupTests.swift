@@ -52,7 +52,7 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], groups: ["G1"])
+        graph.watch(for: .action).is(type: "T").member(of: ["G1"])
         
         let action = Action(type: "T")
         action.add(to: "G1")
@@ -89,7 +89,7 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         tagRemoveExpception = expectation(description: "[ActionTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(groups: ["G1", "G2"])
+        graph.watch(for: .action).member(of: ["G1", "G2"])
         
         action.add(to: "G1")
         action.remove(from: "G2")
@@ -128,7 +128,7 @@ class ActionGroupTests: XCTestCase, GraphActionDelegate {
         tagRemoveExpception = expectation(description: "[ActionTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForAction(groups: ["G2"])
+        graph.watch(for: .action).member(of: ["G2"])
         
         action.remove(from: "G2")
         

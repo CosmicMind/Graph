@@ -36,7 +36,7 @@ public class Relationship: NSObject, NodeType {
     internal let managedNode: ManagedRelationship
     
     public override var description: String {
-        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
+        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), groups: \(groups), properties: \(properties), subject: \(subject), object: \(object), createdDate: \(createdDate)]"
     }
     
     /// A reference to the nodeClass.

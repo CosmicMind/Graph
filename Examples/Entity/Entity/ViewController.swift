@@ -86,7 +86,7 @@ class ViewController: UIViewController {
 		made when loading the ViewController.
 		*/
 		graph.delegate = self
-		graph.watchForEntity(types: ["Person"])
+        graph.watch(for: .entity).is(["Person"])
 	}
 	
 	/// Prepares the people Array.

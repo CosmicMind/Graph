@@ -53,7 +53,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .action).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let action = Action(type: "T")
         action["P"] = "V"
@@ -79,7 +79,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         let graph = Graph(name: "ActionTests-testNamedGraphSave")
         
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .action).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let action = Action(type: "T", graph: "ActionTests-testNamedGraphSave")
         action["P"] = "V"
@@ -105,7 +105,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         let graph = Graph(name: "ActionTests-testReferenceGraphSave")
         
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .action).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let action = Action(type: "T", graph: graph)
         action["P"] = "V"
@@ -132,7 +132,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let graph = Graph(name: "ActionTests-testAsyncGraphSave")
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .action).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let action = Action(type: "T", graph: graph)
         action["P"] = "V"
@@ -159,7 +159,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .action).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let action = Action(type: "T")
         action["P"] = "V"
@@ -208,7 +208,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .action).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let action = Action(type: "T")
         action["P"] = "V"
@@ -250,7 +250,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .action).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let action = Action(type: "T")
         action["P"] = "V"

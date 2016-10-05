@@ -52,7 +52,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForRelationship(types: ["T"], tags: ["G1"])
+        graph.watch(for: .relationship).is(type: "T").has(tags: ["G1"])
         
         let relationship = Relationship(type: "T")
         relationship.add(tag: "G1")
@@ -89,7 +89,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
         graph.delegate = self
-        graph.watchForRelationship(tags: ["G1", "G2"])
+        graph.watch(for: .relationship).has(tags: ["G1", "G2"])
         
         relationship.add(tag: "G1")
         relationship.remove(tag: "G2")
@@ -128,7 +128,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
         graph.delegate = self
-        graph.watchForRelationship(tags: ["G2"])
+        graph.watch(for: .relationship).has(tags: ["G2"])
         
         relationship.remove(tag: "G2")
         

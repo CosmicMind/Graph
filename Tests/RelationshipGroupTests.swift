@@ -52,7 +52,7 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForRelationship(types: ["T"], groups: ["G1"])
+        graph.watch(for: .relationship).is(type: "T").member(of: ["G1"])
         
         let relationship = Relationship(type: "T")
         relationship.add(to: "G1")
@@ -89,7 +89,7 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForRelationship(groups: ["G1", "G2"])
+        graph.watch(for: .relationship).member(of: ["G1", "G2"])
         
         relationship.add(to: "G1")
         relationship.remove(from: "G2")
@@ -128,7 +128,7 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForRelationship(groups: ["G2"])
+        graph.watch(for: .relationship).member(of: ["G2"])
         
         relationship.remove(from: "G2")
         

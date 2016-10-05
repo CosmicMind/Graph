@@ -69,7 +69,7 @@ class ViewController: UIViewController {
 		made when loading the ViewController.
 		*/
 		graph.delegate = self
-		graph.watchForAction(types: ["Acquired"])
+        graph.watch(for: .action).is(["Acquired"])
 	}
 	
 	/// Prepares the acquisitions Array.

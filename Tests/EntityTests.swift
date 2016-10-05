@@ -53,7 +53,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let entity = Entity(type: "T")
         entity["P"] = "V"
@@ -79,7 +79,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         let graph = Graph(name: "EntityTests-testNamedGraphSave")
         
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let entity = Entity(type: "T", graph: "EntityTests-testNamedGraphSave")
         entity["P"] = "V"
@@ -105,7 +105,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         let graph = Graph(name: "EntityTests-testReferenceGraphSave")
         
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
@@ -132,7 +132,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         let graph = Graph(name: "EntityTests-testAsyncGraphSave")
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
@@ -159,7 +159,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(["P"])
         
         let entity = Entity(type: "T")
         entity["P"] = "V"

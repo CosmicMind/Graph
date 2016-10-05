@@ -55,7 +55,7 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"])
+        graph.watch(for: .entity).is(type: "T")
         
         let entity = Entity(type: "T")
         
@@ -71,7 +71,7 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
             let property = "P\(i)"
             var value = i
             
-            graph.watchForEntity(properties: [property])
+            graph.watch(for: .entity).where([property])
             
             entity[property] = value
             

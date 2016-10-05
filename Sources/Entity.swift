@@ -37,7 +37,7 @@ public class Entity: NSObject, NodeType {
     
     /// A string representation of the Entity.
     public override var description: String {
-        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), properties: \(properties), createdDate: \(createdDate)]"
+        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), groups: \(groups), properties: \(properties), createdDate: \(createdDate)]"
     }
     
     /// A reference to the nodeClass.

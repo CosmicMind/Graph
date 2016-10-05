@@ -52,7 +52,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForEntity(types: ["T"], groups: ["G1"])
+        graph.watch(for: .entity).is(type: "T").member(of: ["G1"])
         
         let entity = Entity(type: "T")
         entity.add(to: "G1")
@@ -89,7 +89,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         tagRemoveExpception = expectation(description: "[EntityTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForEntity(groups: ["G1", "G2"])
+        graph.watch(for: .entity).member(of: ["G1", "G2"])
         
         entity.add(to: "G1")
         entity.remove(from: "G2")
@@ -128,7 +128,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         tagRemoveExpception = expectation(description: "[EntityTests Error: Group remove test failed.]")
         
         graph.delegate = self
-        graph.watchForEntity(groups: ["G2"])
+        graph.watch(for: .entity).has(tags: ["G2"])
         
         entity.remove(from: "G2")
         

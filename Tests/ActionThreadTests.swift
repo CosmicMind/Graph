@@ -63,7 +63,8 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watchForAction(types: ["T"], tags: ["G"], properties: ["P"])
+        graph.watch(for: .action).is(type: "T").has(tags: ["G"]).where(["P"])
+        
         
         let action = Action(type: "T")
         

@@ -36,7 +36,7 @@ public class Action: NSObject, NodeType {
     internal let managedNode: ManagedAction
     
     public override var description: String {
-        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
+        return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), groups: \(groups), properties: \(properties), subjects: \(subjects), objects: \(objects), createdDate: \(createdDate)]"
     }
     
     /// A reference to the nodeClass.
