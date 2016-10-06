@@ -30,6 +30,198 @@
 
 import CoreData
 
+public protocol Searchable {
+    associatedtype Element
+    func sync(completion: (([Element]) -> Void)?) -> [Element]
+    func async(completion: (([Element]) -> Void))
+}
+
+/// Search.
+public class Search<T: Node>: Searchable {
+    public typealias Element = T
+    
+    public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
+        return [T]()
+    }
+    
+    public func async(completion: (([T]) -> Void)) {}
+    
+    
+    /// A Graph instance.
+    internal private(set) var graph: Graph
+    
+    /// A reference to the type.
+    public internal(set) var types: [String]?
+    
+    /// A reference to the tags.
+    public internal(set) var tags: [String]?
+    
+    /// A reference to the groups.
+    public internal(set) var groups: [String]?
+    
+    /// A reference to the properties.
+    public internal(set) var properties: [(name: String, value: Any?)]?
+    
+    /**
+     An initializer that accepts a NodeClass and Graph
+     instance.
+     - Parameter graph: A Graph instance.
+     - Parameter nodeClass: A NodeClass value.
+     */
+    internal init(graph: Graph) {
+        self.graph = graph
+    }
+    
+    /**
+     Searches nodes with given types.
+     - Parameter types: An Array of Strings.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func `for`(types: [String]) -> Search {
+        self.types = types
+        return self
+    }
+    
+    /**
+     Searches nodes with given tags.
+     - Parameter tags: An Array of Strings.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func has(tags: [String]) -> Search {
+        self.tags = tags
+        return self
+    }
+    
+    /**
+     Searches nodes with given groups.
+     - Parameter groups: An Array of Strings.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func member(of groups: [String]) -> Search {
+        self.groups = groups
+        return self
+    }
+    
+    /**
+     Watches nodes with given properties.
+     - Parameter properties: An Array of Strings.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func `where`(properties: [(name: String, value: Any?)]) -> Search {
+        self.properties = properties
+        return self
+    }
+}
+
+extension Search where T: Entity  {
+    @discardableResult
+    public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
+        let n = graph.searchForEntity(types: types, tags: tags, groups: groups, properties: properties) as! [T]
+        
+        guard let c = completion else {
+            return n
+        }
+        
+        if Thread.isMainThread {
+            c(n)
+        } else {
+            DispatchQueue.main.async { [n = n, c = c] in
+                c(n)
+            }
+        }
+        
+        return n
+    }
+    
+    public func async(completion: @escaping (([T]) -> Void)) {
+        DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
+            guard let s = self else {
+                return
+            }
+    
+            let n = s.graph.searchForEntity(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            
+            DispatchQueue.main.async { [n = n, completion = completion] in
+                completion(n)
+            }
+        }
+    }
+}
+
+extension Search where T: Relationship  {
+    @discardableResult
+    public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
+        let n = graph.searchForRelationship(types: types, tags: tags, groups: groups, properties: properties) as! [T]
+        
+        guard let c = completion else {
+            return n
+        }
+        
+        if Thread.isMainThread {
+            c(n)
+        } else {
+            DispatchQueue.main.async { [n = n, c = c] in
+                c(n)
+            }
+        }
+        
+        return n
+    }
+    
+    public func async(completion: @escaping (([T]) -> Void)) {
+        DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
+            guard let s = self else {
+                return
+            }
+            
+            let n = s.graph.searchForRelationship(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            
+            DispatchQueue.main.async { [n = n, completion = completion] in
+                completion(n)
+            }
+        }
+    }
+}
+
+extension Search where T: Action  {
+    @discardableResult
+    public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
+        let n = graph.searchForAction(types: types, tags: tags, groups: groups, properties: properties) as! [T]
+        
+        guard let c = completion else {
+            return n
+        }
+        
+        if Thread.isMainThread {
+            c(n)
+        } else {
+            DispatchQueue.main.async { [n = n, c = c] in
+                c(n)
+            }
+        }
+        
+        return n
+    }
+    
+    public func async(completion: @escaping (([T]) -> Void)) {
+        DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
+            guard let s = self else {
+                return
+            }
+            
+            let n = s.graph.searchForAction(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            
+            DispatchQueue.main.async { [n = n, completion = completion] in
+                completion(n)
+            }
+        }
+    }
+}
+
 /// Storage Search API.
 extension Graph {
     /**

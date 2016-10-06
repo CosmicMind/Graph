@@ -36,4 +36,4 @@ public enum NodeClass: NSNumber {
     case action = 3
 }
 
-public protocol NodeType: Comparable {}
+public protocol Node: Comparable {}

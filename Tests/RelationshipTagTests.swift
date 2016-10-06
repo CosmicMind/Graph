@@ -32,7 +32,7 @@ import XCTest
 @testable import Graph
 
 class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
-    var saveException: XCTestExpectation?
+    var saveExpectation: XCTestExpectation?
     
     var tagAddExpception: XCTestExpectation?
     var tagUpdateExpception: XCTestExpectation?
@@ -47,12 +47,12 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
     }
     
     func testTagAdd() {
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).is(type: "T").has(tags: ["G1"])
+        graph.watch(for: .relationship).for(types: ["T"]).has(tags: ["G1"])
         
         let relationship = Relationship(type: "T")
         relationship.add(tag: "G1")
@@ -62,14 +62,14 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testTagUpdate() {
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -79,12 +79,12 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
@@ -100,14 +100,14 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testTagDelete() {
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -119,12 +119,12 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
         graph.delegate = self
@@ -137,7 +137,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)

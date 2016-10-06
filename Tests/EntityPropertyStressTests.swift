@@ -32,10 +32,10 @@ import XCTest
 @testable import Graph
 
 class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
-    var saveException: XCTestExpectation?
+    var saveExpectation: XCTestExpectation?
     
-    var entityInsertException: XCTestExpectation?
-    var entityDeleteException: XCTestExpectation?
+    var entityInsertExpectation: XCTestExpectation?
+    var entityDeleteExpectation: XCTestExpectation?
     
     var propertyInsertExpception: XCTestExpectation?
     var propertyUpdateExpception: XCTestExpectation?
@@ -50,19 +50,19 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
     }
     
     func testPropertyStress() {
-        saveException = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
-        entityInsertException = expectation(description: "[EntityPropertyStressTests Error: Entity insert test failed.]")
+        saveExpectation = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
+        entityInsertExpectation = expectation(description: "[EntityPropertyStressTests Error: Entity insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .entity).is(type: "T")
+        graph.watch(for: .entity).for(types: ["T"])
         
         let entity = Entity(type: "T")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
@@ -71,19 +71,19 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
             let property = "P\(i)"
             var value = i
             
-            graph.watch(for: .entity).where(property: [property])
+            graph.watch(for: .entity).where(properties: [property])
             
             entity[property] = value
             
             XCTAssertEqual(value, entity[property] as? Int)
             
-            saveException = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
+            saveExpectation = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
             propertyInsertExpception = expectation(description: "[EntityPropertyStressTests Error: Property insert test failed.]")
             
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
-                self?.saveException?.fulfill()
+                self?.saveExpectation?.fulfill()
             }
             
             waitForExpectations(timeout: 5, handler: nil)
@@ -93,13 +93,13 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
             
             XCTAssertEqual(value, entity[property] as? Int)
             
-            saveException = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
+            saveExpectation = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
             propertyUpdateExpception = expectation(description: "[EntityPropertyStressTests Error: Property update test failed.]")
             
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
-                self?.saveException?.fulfill()
+                self?.saveExpectation?.fulfill()
             }
             
             waitForExpectations(timeout: 5, handler: nil)
@@ -108,11 +108,11 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
             
             XCTAssertNil(entity[property])
             
-            saveException = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
+            saveExpectation = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
             propertyDeleteExpception = expectation(description: "[EntityPropertyStressTests Error: Property delete test failed.]")
             
             graph.async { [weak self] (success, error) in
-                self?.saveException?.fulfill()
+                self?.saveExpectation?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
             }
@@ -120,15 +120,15 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
             waitForExpectations(timeout: 5, handler: nil)
         }
         
-        saveException = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
-        entityDeleteException = expectation(description: "[EntityPropertyStressTests Error: Entity delete test failed.]")
+        saveExpectation = expectation(description: "[EntityPropertyStressTests Error: Graph save test failed.]")
+        entityDeleteExpectation = expectation(description: "[EntityPropertyStressTests Error: Entity delete test failed.]")
         
         entity.delete()
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
@@ -139,7 +139,7 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual(0, entity.properties.count)
         
-        entityInsertException?.fulfill()
+        entityInsertExpectation?.fulfill()
     }
     
     func graph(graph: Graph, deleted entity: Entity, source: GraphSource) {
@@ -147,7 +147,7 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual(0, entity.properties.count)
         
-        entityDeleteException?.fulfill()
+        entityDeleteExpectation?.fulfill()
     }
     
     func graph(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {

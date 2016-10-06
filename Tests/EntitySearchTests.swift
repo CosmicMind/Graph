@@ -32,6 +32,8 @@ import XCTest
 @testable import Graph
 
 class EntitySearchTests : XCTestCase {
+    var expectation: XCTestExpectation?
+    
     override func setUp() {
         super.setUp()
     }
@@ -70,88 +72,57 @@ class EntitySearchTests : XCTestCase {
             XCTAssertTrue(success, "\(error)")
         }
         
-        XCTAssertEqual(0, graph.search(forEntity: []).count)
+        let search = Search<Entity>(graph: graph)
         
-        XCTAssertEqual(100, graph.search(forEntity: ["T1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"]).count)
+        XCTAssertEqual(0, search.for(types: []).sync().count)
+        XCTAssertEqual(0, search.has(tags: []).sync().count)
+        XCTAssertEqual(0, search.member(of: []).sync().count)
+        XCTAssertEqual(0, search.where(properties: []).sync().count)
         
-        XCTAssertEqual(0, graph.search(forEntity: [], tags: ["NONE"]).count)
-        XCTAssertEqual(100, graph.search(forEntity: [], tags: ["Q1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: [], tags: ["Q1", "Q2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: [], tags: ["Q1", "Q2", "Q3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: [], tags: ["*"]).count)
+        expectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        XCTAssertEqual(100, graph.search(forEntity: ["T1"], tags: ["Q1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1"], tags: ["Q1", "Q2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1"], tags: ["Q1", "Q2", "Q3"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"], tags: ["Q1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"], tags: ["Q1", "Q2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2"], tags: ["Q1", "Q2", "Q3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], tags: ["Q1"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], tags: ["Q1", "Q2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], tags: ["Q1", "Q2", "Q3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], tags: ["Q1"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], tags: ["Q1", "Q2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], tags: ["Q1", "Q2", "Q3"]).count)
+        search.for(types: []).sync { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.expectation?.fulfill()
+        }
         
-        XCTAssertEqual(0, graph.search(forEntity: [], groups: ["NONE"]).count)
-        XCTAssertEqual(100, graph.search(forEntity: [], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: [], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: [], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: [], groups: ["*"]).count)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(100, graph.search(forEntity: ["T1"], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], groups: ["G1"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], groups: ["G1"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], groups: ["G1", "G2", "G3"]).count)
+        expectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        XCTAssertEqual(0, graph.search(forEntity: [], tags: ["NONE"], groups: ["NONE"]).count)
-        XCTAssertEqual(100, graph.search(forEntity: [], tags: ["Q1"], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: [], tags: ["Q1", "Q2"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: [], tags: ["Q1", "Q2", "Q3"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: [], tags: ["*"], groups: ["*"]).count)
+        search.has(tags: []).sync { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.expectation?.fulfill()
+        }
         
-        XCTAssertEqual(100, graph.search(forEntity: ["T1"], tags: ["Q1"], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1"], tags: ["Q1", "Q2"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1"], tags: ["Q1", "Q2", "Q3"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"], tags: ["Q1"], groups: ["G1"]).count)
-        XCTAssertEqual(300, graph.search(forEntity: ["T1", "T2"], tags: ["Q1", "Q2"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2"], tags: ["Q1", "Q2", "Q3"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], tags: ["Q1"], groups: ["G1"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], tags: ["Q1", "Q2"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1", "T2", "T3"], tags: ["Q1", "Q2", "Q3"], groups: ["G1", "G2", "G3"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], tags: ["Q1"], groups: ["G1"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], tags: ["Q1", "Q2"], groups: ["G1", "G2"]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], tags: ["Q1", "Q2", "Q3"], groups: ["G1", "G2", "G3"]).count)
+        waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(100, graph.search(forEntity:[], where: [("P1", nil)]).count)
-        XCTAssertEqual(50, graph.search(forEntity:[], where: [("P1", "V1")]).count)
-        XCTAssertEqual(50, graph.search(forEntity:[], where: [("P1", 1)]).count)
-        XCTAssertEqual(50, graph.search(forEntity:[], where: [("*", "V1")]).count)
-        XCTAssertEqual(50, graph.search(forEntity:[], where: [("*", 1)]).count)
-        XCTAssertEqual(100, graph.search(forEntity:[], where: [("P1", "V1"), ("P1", 1)]).count)
-        XCTAssertEqual(300, graph.search(forEntity:[], where: [("P1", nil), ("P2", "V2")]).count)
-        XCTAssertEqual(600, graph.search(forEntity:[], where: [("P1", nil), ("P2", "V2"), ("P3", "V3")]).count)
-        XCTAssertEqual(600, graph.search(forEntity:[], where: [("P1", nil), ("P2", nil), ("P3", nil)]).count)
-        XCTAssertEqual(600, graph.search(forEntity:[], where: [("*", nil)]).count)
+        expectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        XCTAssertEqual(300, graph.search(forEntity: ["T1"], where: [("P1", nil), ("P2", nil)]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1"], tags: ["Q3"], where: [("P1", nil), ("P2", nil)]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], tags: ["*"], where: [("*", nil)]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1"], groups: ["G3"], where: [("P1", nil), ("P2", nil)]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], groups: ["*"], where: [("*", nil)]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["T1"], tags: ["Q3"], groups: ["G3"], where: [("P1", nil), ("P2", nil)]).count)
-        XCTAssertEqual(600, graph.search(forEntity: ["*"], tags: ["*"], groups: ["*"], where: [("*", nil)]).count)
+        search.member(of: []).sync { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.expectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        expectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.where(properties: []).sync { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.expectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        expectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.for(types: []).async { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.expectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
         
         graph.clear()
     }

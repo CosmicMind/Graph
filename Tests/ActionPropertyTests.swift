@@ -32,7 +32,7 @@ import XCTest
 @testable import Graph
 
 class ActionPropertyTests: XCTestCase, GraphActionDelegate {
-    var saveException: XCTestExpectation?
+    var saveExpectation: XCTestExpectation?
     
     var propertyInsertExpception: XCTestExpectation?
     var propertyUpdateExpception: XCTestExpectation?
@@ -47,12 +47,12 @@ class ActionPropertyTests: XCTestCase, GraphActionDelegate {
     }
     
     func testPropertyInsert() {
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         propertyInsertExpception = expectation(description: "[ActionTests Error: Property insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .action).where(property: ["P1"])
+        graph.watch(for: .action).where(properties: ["P1"])
         
         let action = Action(type: "T")
         action["P1"] = "V1"
@@ -62,14 +62,14 @@ class ActionPropertyTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPropertyUpdate() {
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -79,16 +79,16 @@ class ActionPropertyTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         propertyUpdateExpception = expectation(description: "[ActionTests Error: Property update test failed.]")
         
         graph.delegate = self
-        graph.watch(for: .action).where(property: ["P1"])
+        graph.watch(for: .action).where(properties: ["P1"])
         
         action["P1"] = "V2"
         
@@ -97,14 +97,14 @@ class ActionPropertyTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPropertyDelete() {
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -114,16 +114,16 @@ class ActionPropertyTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         propertyDeleteExpception = expectation(description: "[ActionTests Error: Property delete test failed.]")
         
         graph.delegate = self
-        graph.watch(for: .action).where(property: ["P1"])
+        graph.watch(for: .action).where(properties: ["P1"])
         
         action["P1"] = nil
         
@@ -132,7 +132,7 @@ class ActionPropertyTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)

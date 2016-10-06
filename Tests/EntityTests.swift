@@ -32,8 +32,8 @@ import XCTest
 @testable import Graph
 
 class EntityTests: XCTestCase, GraphEntityDelegate {
-    var saveException: XCTestExpectation?
-    var delegateException: XCTestExpectation?
+    var saveExpectation: XCTestExpectation?
+    var delegateExpectation: XCTestExpectation?
     var tagExpception: XCTestExpectation?
     var propertyExpception: XCTestExpectation?
     
@@ -46,14 +46,14 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
     }
     
     func testDefaultGraph() {
-        saveException = expectation(description: "[EntityTests Error: Save test failed.]")
-        delegateException = expectation(description: "[EntityTests Error: Delegate test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Save test failed.]")
+        delegateExpectation = expectation(description: "[EntityTests Error: Delegate test failed.]")
         tagExpception = expectation(description: "[EntityTests Error: Tag test failed.]")
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(property: ["P"])
+        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
         
         let entity = Entity(type: "T")
         entity["P"] = "V"
@@ -64,22 +64,22 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testNamedGraphSave() {
-        saveException = expectation(description: "[EntityTests Error: Save test failed.]")
-        delegateException = expectation(description: "[EntityTests Error: Delegate test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Save test failed.]")
+        delegateExpectation = expectation(description: "[EntityTests Error: Delegate test failed.]")
         tagExpception = expectation(description: "[EntityTests Error: Tag test failed.]")
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph(name: "EntityTests-testNamedGraphSave")
         
         graph.delegate = self
-        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(property: ["P"])
+        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
         
         let entity = Entity(type: "T", graph: "EntityTests-testNamedGraphSave")
         entity["P"] = "V"
@@ -90,22 +90,22 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testReferenceGraphSave() {
-        saveException = expectation(description: "[EntityTests Error: Save test failed.]")
-        delegateException = expectation(description: "[EntityTests Error: Delegate test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Save test failed.]")
+        delegateExpectation = expectation(description: "[EntityTests Error: Delegate test failed.]")
         tagExpception = expectation(description: "[EntityTests Error: Tag test failed.]")
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph(name: "EntityTests-testReferenceGraphSave")
         
         graph.delegate = self
-        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(property: ["P"])
+        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
@@ -117,7 +117,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
-                self?.saveException?.fulfill()
+                self?.saveExpectation?.fulfill()
             }
         }
         
@@ -125,14 +125,14 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
     }
     
     func testAsyncGraphSave() {
-        saveException = expectation(description: "[EntityTests Error: Save test failed.]")
-        delegateException = expectation(description: "[EntityTests Error: Delegate test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Save test failed.]")
+        delegateExpectation = expectation(description: "[EntityTests Error: Delegate test failed.]")
         tagExpception = expectation(description: "[EntityTests Error: Tag test failed.]")
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph(name: "EntityTests-testAsyncGraphSave")
         graph.delegate = self
-        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(property: ["P"])
+        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
@@ -144,7 +144,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
-                self?.saveException?.fulfill()
+                self?.saveExpectation?.fulfill()
             }
         }
         
@@ -152,14 +152,14 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
     }
     
     func testAsyncGraphDelete() {
-        saveException = expectation(description: "[EntityTests Error: Save test failed.]")
-        delegateException = expectation(description: "[EntityTests Error: Delegate test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Save test failed.]")
+        delegateExpectation = expectation(description: "[EntityTests Error: Delegate test failed.]")
         tagExpception = expectation(description: "[EntityTests Error: Tag test failed.]")
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .entity).is(type: "T").has(tags: ["G"]).where(property: ["P"])
+        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
         
         let entity = Entity(type: "T")
         entity["P"] = "V"
@@ -170,21 +170,21 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
         entity.delete()
         
-        saveException = expectation(description: "[EntityTests Error: Save test failed.]")
-        delegateException = expectation(description: "[EntityTests Error: Delegate test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Save test failed.]")
+        delegateExpectation = expectation(description: "[EntityTests Error: Delegate test failed.]")
         tagExpception = expectation(description: "[EntityTests Error: Tag test failed.]")
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
@@ -196,7 +196,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         XCTAssertEqual("V", entity["P"] as? String)
         XCTAssertTrue(entity.has(tag: "G"))
         
-        delegateException?.fulfill()
+        delegateExpectation?.fulfill()
     }
     
     func graph(graph: Graph, deleted entity: Entity, source: GraphSource) {
@@ -205,7 +205,7 @@ class EntityTests: XCTestCase, GraphEntityDelegate {
         XCTAssertNil(entity["P"])
         XCTAssertFalse(entity.has(tag: "G"))
         
-        delegateException?.fulfill()
+        delegateExpectation?.fulfill()
     }
     
     func graph(graph: Graph, entity: Entity, added tag: String, source: GraphSource) {

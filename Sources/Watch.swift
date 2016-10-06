@@ -387,26 +387,26 @@ public class Watch {
     }
     
     /**
-     Watches nodes with a given type.
-     - Parameter type: A String type.
+     Watches nodes with given types.
+     - Parameter types: An Array of Strings.
      - Returns: A Watch instance.
      */
     @discardableResult
-    public func `is`(type: String) -> Watch {
+    public func `for`(types: [String]) -> Watch {
         switch nodeClass {
         case .entity:
-            watchForEntity(types: [type])
+            watchForEntity(types: types)
         case .relationship:
-            watchForRelationship(types: [type])
+            watchForRelationship(types: types)
         case .action:
-            watchForAction(types: [type])
+            watchForAction(types: types)
         }
         
         return self
     }
     
     /**
-     Watches nodes with the given tags.
+     Watches nodes with given tags.
      - Parameter tags: An Array of Strings.
      - Returns: A Watch instance.
      */
@@ -425,7 +425,7 @@ public class Watch {
     }
     
     /**
-     Watches nodes in the given groups.
+     Watches nodes in given groups.
      - Parameter of groups: An Array of Strings.
      - Returns: A Watch instance.
      */
@@ -444,19 +444,19 @@ public class Watch {
     }
     
     /**
-     Watches nodes with the given property keys.
-     - Parameter property keys: An Array of Strings.
+     Watches nodes with given properties.
+     - Parameter properties: An Array of Strings.
      - Returns: A Watch instance.
      */
     @discardableResult
-    public func `where`(property keys: [String]) -> Watch {
+    public func `where`(properties: [String]) -> Watch {
         switch nodeClass {
         case .entity:
-            watchForEntity(properties: keys)
+            watchForEntity(properties: properties)
         case .relationship:
-            watchForRelationship(properties: keys)
+            watchForRelationship(properties: properties)
         case .action:
-            watchForAction(properties: keys)
+            watchForAction(properties: properties)
         }
         
         return self
@@ -762,6 +762,11 @@ extension Graph {
         return p
     }
     
+    /**
+     Watch for a given NodeClass.
+     - Parameter for nodeClass: A NodeClass value.
+     - Returns: A Watch instance.
+     */
     @discardableResult
     public func watch(for nodeClass: NodeClass) -> Watch {
         prepareForObservation()

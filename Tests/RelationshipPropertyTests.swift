@@ -32,7 +32,7 @@ import XCTest
 @testable import Graph
 
 class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
-    var saveException: XCTestExpectation?
+    var saveExpectation: XCTestExpectation?
     
     var propertyInsertExpception: XCTestExpectation?
     var propertyUpdateExpception: XCTestExpectation?
@@ -47,12 +47,12 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
     }
     
     func testPropertyInsert() {
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         propertyInsertExpception = expectation(description: "[RelationshipTests Error: Property insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).where(property: ["P1"])
+        graph.watch(for: .relationship).where(properties: ["P1"])
         
         let relationship = Relationship(type: "T")
         relationship["P1"] = "V1"
@@ -62,14 +62,14 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPropertyUpdate() {
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -79,16 +79,16 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         propertyUpdateExpception = expectation(description: "[RelationshipTests Error: Property update test failed.]")
         
         graph.delegate = self
-        graph.watch(for: .relationship).where(property: ["P1"])
+        graph.watch(for: .relationship).where(properties: ["P1"])
         
         
         relationship["P1"] = "V2"
@@ -98,14 +98,14 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPropertyDelete() {
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -115,16 +115,16 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         propertyDeleteExpception = expectation(description: "[RelationshipTests Error: Property delete test failed.]")
         
         graph.delegate = self
-        graph.watch(for: .relationship).where(property: ["P1"])
+        graph.watch(for: .relationship).where(properties: ["P1"])
         
         relationship["P1"] = nil
         
@@ -133,7 +133,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)

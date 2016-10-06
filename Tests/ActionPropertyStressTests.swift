@@ -32,10 +32,10 @@ import XCTest
 @testable import Graph
 
 class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
-    var saveException: XCTestExpectation?
+    var saveExpectation: XCTestExpectation?
     
-    var actionInsertException: XCTestExpectation?
-    var actionDeleteException: XCTestExpectation?
+    var actionInsertExpectation: XCTestExpectation?
+    var actionDeleteExpectation: XCTestExpectation?
     
     var propertyInsertExpception: XCTestExpectation?
     var propertyUpdateExpception: XCTestExpectation?
@@ -50,19 +50,19 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
     }
     
     func testPropertyStress() {
-        saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
-        actionInsertException = expectation(description: "[ActionPropertyStressTests Error: Action insert test failed.]")
+        saveExpectation = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+        actionInsertExpectation = expectation(description: "[ActionPropertyStressTests Error: Action insert test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .action).is(type: "T")
+        graph.watch(for: .action).for(types: ["T"])
         
         let action = Action(type: "T")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
@@ -71,19 +71,19 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             let property = "P\(i)"
             var value = i
             
-            graph.watch(for: .action).where(property: [property])
+            graph.watch(for: .action).where(properties: [property])
             
             action[property] = value
             
             XCTAssertEqual(value, action[property] as? Int)
             
-            saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+            saveExpectation = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
             propertyInsertExpception = expectation(description: "[ActionPropertyStressTests Error: Property insert test failed.]")
             
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
-                self?.saveException?.fulfill()
+                self?.saveExpectation?.fulfill()
             }
             
             waitForExpectations(timeout: 5, handler: nil)
@@ -93,13 +93,13 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             
             XCTAssertEqual(value, action[property] as? Int)
             
-            saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+            saveExpectation = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
             propertyUpdateExpception = expectation(description: "[ActionPropertyStressTests Error: Property update test failed.]")
             
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
-                self?.saveException?.fulfill()
+                self?.saveExpectation?.fulfill()
             }
             
             waitForExpectations(timeout: 5, handler: nil)
@@ -108,11 +108,11 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             
             XCTAssertNil(action[property])
             
-            saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+            saveExpectation = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
             propertyDeleteExpception = expectation(description: "[ActionPropertyStressTests Error: Property delete test failed.]")
             
             graph.async { [weak self] (success, error) in
-                self?.saveException?.fulfill()
+                self?.saveExpectation?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
             }
@@ -120,15 +120,15 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
             waitForExpectations(timeout: 5, handler: nil)
         }
         
-        saveException = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
-        actionDeleteException = expectation(description: "[ActionPropertyStressTests Error: Action delete test failed.]")
+        saveExpectation = expectation(description: "[ActionPropertyStressTests Error: Graph save test failed.]")
+        actionDeleteExpectation = expectation(description: "[ActionPropertyStressTests Error: Action delete test failed.]")
         
         action.delete()
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
@@ -139,7 +139,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(0, action.properties.count)
         
-        actionInsertException?.fulfill()
+        actionInsertExpectation?.fulfill()
     }
     
     func graph(graph: Graph, deleted action: Action, source: GraphSource) {
@@ -147,7 +147,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(0, action.properties.count)
         
-        actionDeleteException?.fulfill()
+        actionDeleteExpectation?.fulfill()
     }
     
     func graph(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource) {

@@ -32,7 +32,7 @@ import XCTest
 @testable import Graph
 
 class ActionTagTests: XCTestCase, GraphActionDelegate {
-    var saveException: XCTestExpectation?
+    var saveExpectation: XCTestExpectation?
     
     var tagAddExpception: XCTestExpectation?
     var tagUpdateExpception: XCTestExpectation?
@@ -47,12 +47,12 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
     }
     
     func testTagAdd() {
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         tagAddExpception = expectation(description: "[ActionTests Error: Tag add test failed.]")
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .action).is(type: "T").has(tags: ["G1"])
+        graph.watch(for: .action).for(types: ["T"]).has(tags: ["G1"])
         
         let action = Action(type: "T")
         action.add(tag: "G1")
@@ -62,14 +62,14 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testTagUpdate() {
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -79,12 +79,12 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         tagAddExpception = expectation(description: "[ActionTests Error: Tag add test failed.]")
         tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
@@ -100,14 +100,14 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testTagDelete() {
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
@@ -119,12 +119,12 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveException = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
         graph.delegate = self
@@ -137,7 +137,7 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
-            self?.saveException?.fulfill()
+            self?.saveExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
