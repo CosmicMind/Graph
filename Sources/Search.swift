@@ -51,16 +51,16 @@ public class Search<T: Node>: Searchable {
     internal private(set) var graph: Graph
     
     /// A reference to the type.
-    public internal(set) var types: [String]?
+    public var types: [String]
     
     /// A reference to the tags.
-    public internal(set) var tags: [String]?
+    public var tags: [String]
     
     /// A reference to the groups.
-    public internal(set) var groups: [String]?
+    public var groups: [String]
     
     /// A reference to the properties.
-    public internal(set) var properties: [(name: String, value: Any?)]?
+    public var properties: [(name: String, value: Any?)]
     
     /**
      An initializer that accepts a NodeClass and Graph
@@ -70,6 +70,23 @@ public class Search<T: Node>: Searchable {
      */
     internal init(graph: Graph) {
         self.graph = graph
+        types = []
+        tags = []
+        groups = []
+        properties = []
+    }
+    
+    /**
+     Clears the search parameters.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func clear() -> Search {
+        types.removeAll()
+        tags.removeAll()
+        groups.removeAll()
+        properties.removeAll()
+        return self
     }
     
     /**
@@ -225,90 +242,6 @@ extension Search where T: Action  {
 /// Storage Search API.
 extension Graph {
     /**
-     Search API that accepts types.
-     - Parameter forEntity: An Array of Strings.
-     - Returns: An Array of Entities.
-    */
-    public func search(forEntity types: [String]) -> [Entity] {
-        return searchForEntity(types: types)
-    }
-    
-    /**
-     Search API that accepts types and tags.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Returns: An Array of Entities.
-     */
-    public func search(forEntity types: [String], tags: [String]) -> [Entity] {
-        return searchForEntity(types: types, tags: tags)
-    }
-    
-    /**
-     Search API that accepts types and groups.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Returns: An Array of Entities.
-     */
-    public func search(forEntity types: [String], groups: [String]) -> [Entity] {
-        return searchForEntity(types: types, groups: groups)
-    }
-    
-    /**
-     Search API that accepts types and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter where properties: An Array of property tuples.
-     - Returns: An Array of Entities.
-     */
-    public func search(forEntity types: [String], where properties: [(name: String, value: Any?)]) -> [Entity] {
-        return searchForEntity(types: types, properties: properties)
-    }
-    
-    /**
-     Search API that accepts types, tags, and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Parameter properties: An Array of property tuples.
-     - Returns: An Array of Entities.
-     */
-    public func search(forEntity types: [String], tags: [String], where properties: [(name: String, value: Any?)]) -> [Entity] {
-        return searchForEntity(types: types, tags: tags, properties: properties)
-    }
-    
-    /**
-     Search API that accepts types, groups, and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Parameter where properties: An Array of property tuples.
-     - Returns: An Array of Entities.
-     */
-    public func search(forEntity types: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Entity] {
-        return searchForEntity(types: types, groups: groups, properties: properties)
-    }
-    
-    /**
-     Search API that accepts types, tags, and groups.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Returns: An Array of Entities.
-     */
-    public func search(forEntity types: [String], tags: [String], groups: [String]) -> [Entity] {
-        return searchForEntity(types: types, tags: tags, groups: groups)
-    }
-    
-    /**
-     Search API that accepts types, tags, groups, and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Parameter properties: An Array of property tuples.
-     - Returns: An Array of Entities.
-     */
-    public func search(forEntity types: [String], tags: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Entity] {
-        return searchForEntity(types: types, tags: tags, groups: groups, properties: properties)
-    }
-    
-    /**
      Searches for Entities that fall into any of the specified facets.
      - Parameter types: An Array of Entity types.
      - Parameter tags: An Array of tags.
@@ -398,90 +331,6 @@ extension Graph {
     }
     
     /**
-     Search API that accepts types.
-     - Parameter forEntity: An Array of Strings.
-     - Returns: An Array of Relationships.
-     */
-    public func search(forRelationship types: [String]) -> [Relationship] {
-        return searchForRelationship(types: types)
-    }
-    
-    /**
-     Search API that accepts types and tags.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Returns: An Array of Relationships.
-     */
-    public func search(forRelationship types: [String], tags: [String]) -> [Relationship] {
-        return searchForRelationship(types: types, tags: tags)
-    }
-    
-    /**
-     Search API that accepts types and groups.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Returns: An Array of Relationships.
-     */
-    public func search(forRelationship types: [String], groups: [String]) -> [Relationship] {
-        return searchForRelationship(types: types, groups: groups)
-    }
-    
-    /**
-     Search API that accepts types and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter where properties: An Array of property tuples.
-     - Returns: An Array of Relationships.
-     */
-    public func search(forRelationship types: [String], where properties: [(name: String, value: Any?)]) -> [Relationship] {
-        return searchForRelationship(types: types, properties: properties)
-    }
-    
-    /**
-     Search API that accepts types, tags, and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Parameter properties: An Array of property tuples.
-     - Returns: An Array of Relationships.
-     */
-    public func search(forRelationship types: [String], tags: [String], where properties: [(name: String, value: Any?)]) -> [Relationship] {
-        return searchForRelationship(types: types, tags: tags, properties: properties)
-    }
-    
-    /**
-     Search API that accepts types, groups, and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Parameter where properties: An Array of property tuples.
-     - Returns: An Array of Relationships.
-     */
-    public func search(forRelationship types: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Relationship] {
-        return searchForRelationship(types: types, groups: groups, properties: properties)
-    }
-    
-    /**
-     Search API that accepts types, tags, and groups.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Returns: An Array of Relationships.
-     */
-    public func search(forRelationship types: [String], tags: [String], groups: [String]) -> [Relationship] {
-        return searchForRelationship(types: types, tags: tags, groups: groups)
-    }
-    
-    /**
-     Search API that accepts types, tags, groups, and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Parameter properties: An Array of property tuples.
-     - Returns: An Array of Relationships.
-     */
-    public func search(forRelationship types: [String], tags: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Relationship] {
-        return searchForRelationship(types: types, tags: tags, groups: groups, properties: properties)
-    }
-    
-    /**
      Searches for Entities that fall into any of the specified facets.
      - Parameter types: An Array of Entity types.
      - Parameter tags: An Array of tags.
@@ -568,90 +417,6 @@ extension Graph {
             }
             return Relationship(managedNode: n)
         } as [Relationship]
-    }
-    
-    /**
-     Search API that accepts types.
-     - Parameter forEntity: An Array of Strings.
-     - Returns: An Array of Actions.
-     */
-    public func search(forAction types: [String]) -> [Action] {
-        return searchForAction(types: types)
-    }
-    
-    /**
-     Search API that accepts types and tags.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Returns: An Array of Actions.
-     */
-    public func search(forAction types: [String], tags: [String]) -> [Action] {
-        return searchForAction(types: types, tags: tags)
-    }
-    
-    /**
-     Search API that accepts types and groups.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Returns: An Array of Actions.
-     */
-    public func search(forAction types: [String], groups: [String]) -> [Action] {
-        return searchForAction(types: types, groups: groups)
-    }
-    
-    /**
-     Search API that accepts types and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter where properties: An Array of property tuples.
-     - Returns: An Array of Actions.
-     */
-    public func search(forAction types: [String], where properties: [(name: String, value: Any?)]) -> [Action] {
-        return searchForAction(types: types, properties: properties)
-    }
-    
-    /**
-     Search API that accepts types, tags, and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Parameter properties: An Array of property tuples.
-     - Returns: An Array of Actions.
-     */
-    public func search(forAction types: [String], tags: [String], where properties: [(name: String, value: Any?)]) -> [Action] {
-        return searchForAction(types: types, tags: tags, properties: properties)
-    }
-    
-    /**
-     Search API that accepts types, groups, and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Parameter where properties: An Array of property tuples.
-     - Returns: An Array of Actions.
-     */
-    public func search(forAction types: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Action] {
-        return searchForAction(types: types, groups: groups, properties: properties)
-    }
-    
-    /**
-     Search API that accepts types, tags, and groups.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Returns: An Array of Actions.
-     */
-    public func search(forAction types: [String], tags: [String], groups: [String]) -> [Action] {
-        return searchForAction(types: types, tags: tags, groups: groups)
-    }
-    
-    /**
-     Search API that accepts types, tags, groups, and properties.
-     - Parameter forEntity: An Array of Strings.
-     - Parameter tags: An Array of Strings.
-     - Parameter groups: An Array of Strings.
-     - Parameter properties: An Array of property tuples.
-     - Returns: An Array of Actions.
-     */
-    public func search(forAction types: [String], tags: [String], groups: [String], where properties: [(name: String, value: Any?)]) -> [Action] {
-        return searchForAction(types: types, tags: tags, groups: groups, properties: properties)
     }
     
     /**
