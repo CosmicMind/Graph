@@ -46,7 +46,6 @@ public class Search<T: Node>: Searchable {
     
     public func async(completion: (([T]) -> Void)) {}
     
-    
     /// A Graph instance.
     internal private(set) var graph: Graph
     
@@ -138,6 +137,7 @@ extension Search where T: Entity  {
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
         let n = graph.searchForEntity(types: types, tags: tags, groups: groups, properties: properties) as! [T]
+        clear()
         
         guard let c = completion else {
             return n
@@ -161,6 +161,7 @@ extension Search where T: Entity  {
             }
     
             let n = s.graph.searchForEntity(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            s.clear()
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -173,6 +174,7 @@ extension Search where T: Relationship  {
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
         let n = graph.searchForRelationship(types: types, tags: tags, groups: groups, properties: properties) as! [T]
+        clear()
         
         guard let c = completion else {
             return n
@@ -196,6 +198,7 @@ extension Search where T: Relationship  {
             }
             
             let n = s.graph.searchForRelationship(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            s.clear()
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -208,6 +211,7 @@ extension Search where T: Action  {
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
         let n = graph.searchForAction(types: types, tags: tags, groups: groups, properties: properties) as! [T]
+        clear()
         
         guard let c = completion else {
             return n
@@ -231,6 +235,7 @@ extension Search where T: Action  {
             }
             
             let n = s.graph.searchForAction(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            s.clear()
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
