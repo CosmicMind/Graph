@@ -2,19 +2,19 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../Graph.xcodeproj">
+      location = "group:Graph.xcodeproj">
    </FileRef>
    <Group
       location = "container:"
       name = "Examples">
       <FileRef
-         location = "group:Entity/Entity.xcodeproj">
+         location = "group:Examples/Action/Action.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Relationship/Relationship.xcodeproj">
+         location = "group:Examples/Entity/Entity.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Action/Action.xcodeproj">
+         location = "group:Examples/Relationship/Relationship.xcodeproj">
       </FileRef>
    </Group>
 </Workspace>

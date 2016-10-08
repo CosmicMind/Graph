@@ -31,8 +31,22 @@
 import CoreData
 
 public protocol Searchable {
+    /// Element type.
     associatedtype Element
+    
+    /**
+     A synchronous request that returns an Array of Elements or executes a
+     callback with an Array of Elements passed in as the first argument.
+     - Parameter completeion: An optional completion block.
+     - Returns: An Array of Elements.
+     */
     func sync(completion: (([Element]) -> Void)?) -> [Element]
+    
+    /**
+     An asynchronous request that executes a callback with an Array of Elements
+     passed in as the first argument.
+     - Parameter completion: An optional completion block.
+     */
     func async(completion: (([Element]) -> Void))
 }
 
@@ -40,10 +54,21 @@ public protocol Searchable {
 public class Search<T: Node>: Searchable {
     public typealias Element = T
     
+    /**
+     A synchronous request that returns an Array of Elements or executes a
+     callback with an Array of Elements passed in as the first argument.
+     - Parameter completeion: An optional completion block.
+     - Returns: An Array of Elements.
+     */
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
         return [T]()
     }
     
+    /**
+     An asynchronous request that executes a callback with an Array of Elements
+     passed in as the first argument.
+     - Parameter completion: An optional completion block.
+     */
     public func async(completion: (([T]) -> Void)) {}
     
     /// A Graph instance.
@@ -134,10 +159,15 @@ public class Search<T: Node>: Searchable {
 }
 
 extension Search where T: Entity  {
+    /**
+     A synchronous request that returns an Array of Entities or executes a
+     callback with an Array of Entities passed in as the first argument.
+     - Parameter completeion: An optional completion block.
+     - Returns: An Array of Entities.
+     */
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
         let n = graph.searchForEntity(types: types, tags: tags, groups: groups, properties: properties) as! [T]
-        clear()
         
         guard let c = completion else {
             return n
@@ -154,6 +184,11 @@ extension Search where T: Entity  {
         return n
     }
     
+    /**
+     An asynchronous request that executes a callback with an Array of Entities
+     passed in as the first argument.
+     - Parameter completion: An optional completion block.
+     */
     public func async(completion: @escaping (([T]) -> Void)) {
         DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
             guard let s = self else {
@@ -161,7 +196,6 @@ extension Search where T: Entity  {
             }
     
             let n = s.graph.searchForEntity(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
-            s.clear()
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -171,10 +205,15 @@ extension Search where T: Entity  {
 }
 
 extension Search where T: Relationship  {
+    /**
+     A synchronous request that returns an Array of Relationships or executes a
+     callback with an Array of Relationships passed in as the first argument.
+     - Parameter completeion: An optional completion block.
+     - Returns: An Array of Relationships.
+     */
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
         let n = graph.searchForRelationship(types: types, tags: tags, groups: groups, properties: properties) as! [T]
-        clear()
         
         guard let c = completion else {
             return n
@@ -191,6 +230,11 @@ extension Search where T: Relationship  {
         return n
     }
     
+    /**
+     An asynchronous request that executes a callback with an Array of Relationships
+     passed in as the first argument.
+     - Parameter completion: An optional completion block.
+     */
     public func async(completion: @escaping (([T]) -> Void)) {
         DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
             guard let s = self else {
@@ -198,7 +242,6 @@ extension Search where T: Relationship  {
             }
             
             let n = s.graph.searchForRelationship(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
-            s.clear()
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -208,10 +251,15 @@ extension Search where T: Relationship  {
 }
 
 extension Search where T: Action  {
+    /**
+     A synchronous request that returns an Array of Actions or executes a
+     callback with an Array of Actions passed in as the first argument.
+     - Parameter completeion: An optional completion block.
+     - Returns: An Array of Actions.
+     */
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
         let n = graph.searchForAction(types: types, tags: tags, groups: groups, properties: properties) as! [T]
-        clear()
         
         guard let c = completion else {
             return n
@@ -228,6 +276,11 @@ extension Search where T: Action  {
         return n
     }
     
+    /**
+     An asynchronous request that executes a callback with an Array of Actions
+     passed in as the first argument.
+     - Parameter completion: An optional completion block.
+     */
     public func async(completion: @escaping (([T]) -> Void)) {
         DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
             guard let s = self else {
@@ -235,7 +288,6 @@ extension Search where T: Action  {
             }
             
             let n = s.graph.searchForAction(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
-            s.clear()
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
