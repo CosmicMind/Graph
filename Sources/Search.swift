@@ -156,6 +156,29 @@ public class Search<T: Node>: Searchable {
         self.properties = properties
         return self
     }
+    
+    /**
+     Executes the synchronous process on the main thread.
+     - Parameter nodes: An Array of Elements.
+     - Parameter completion: An optional completion block.
+     - Returns: An Array of Elements.
+     */
+    @discardableResult
+    internal func executeSynchronousRequest(nodes: [T], completion: (([T]) -> Void)? = nil) -> [T] {
+        guard let c = completion else {
+            return nodes
+        }
+
+        if Thread.isMainThread {
+            c(nodes)
+        } else {
+            DispatchQueue.main.async { [n = nodes, c = c] in
+                c(n)
+            }
+        }
+
+        return nodes
+    }
 }
 
 extension Search where T: Entity  {
@@ -167,21 +190,7 @@ extension Search where T: Entity  {
      */
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        let n = graph.searchForEntity(types: types, tags: tags, groups: groups, properties: properties) as! [T]
-        
-        guard let c = completion else {
-            return n
-        }
-        
-        if Thread.isMainThread {
-            c(n)
-        } else {
-            DispatchQueue.main.async { [n = n, c = c] in
-                c(n)
-            }
-        }
-        
-        return n
+        return executeSynchronousRequest(nodes: graph.searchForEntity(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
     }
     
     /**
@@ -213,21 +222,7 @@ extension Search where T: Relationship  {
      */
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        let n = graph.searchForRelationship(types: types, tags: tags, groups: groups, properties: properties) as! [T]
-        
-        guard let c = completion else {
-            return n
-        }
-        
-        if Thread.isMainThread {
-            c(n)
-        } else {
-            DispatchQueue.main.async { [n = n, c = c] in
-                c(n)
-            }
-        }
-        
-        return n
+        return executeSynchronousRequest(nodes: graph.searchForRelationship(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
     }
     
     /**
@@ -259,21 +254,7 @@ extension Search where T: Action  {
      */
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        let n = graph.searchForAction(types: types, tags: tags, groups: groups, properties: properties) as! [T]
-        
-        guard let c = completion else {
-            return n
-        }
-        
-        if Thread.isMainThread {
-            c(n)
-        } else {
-            DispatchQueue.main.async { [n = n, c = c] in
-                c(n)
-            }
-        }
-        
-        return n
+        return executeSynchronousRequest(nodes: graph.searchForAction(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
     }
     
     /**
