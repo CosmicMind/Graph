@@ -711,6 +711,111 @@ class ActionSearchTests : XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
         
+        XCTAssertEqual(0, search.clear().where(properties: ["NONE": nil]).sync().count)
+        
+        testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["NONE": nil]).sync { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["NONE": nil]).async { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTAssertEqual(100, search.clear().where(properties: ["P1": nil]).sync().count)
+        
+        testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["P1": nil]).sync { [weak self] (nodes) in
+            XCTAssertEqual(100, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["P1": nil]).async { [weak self] (nodes) in
+            XCTAssertEqual(100, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTAssertEqual(50, search.clear().where(properties: ["P1": 1]).sync().count)
+        
+        testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["P1": 1]).sync { [weak self] (nodes) in
+            XCTAssertEqual(50, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["P1": 1]).async { [weak self] (nodes) in
+            XCTAssertEqual(50, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTAssertEqual(50, search.clear().where(properties: [("P1", 1), ("P1", 2)]).sync().count)
+        
+        testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: [("P1", 1), ("P1", 2)]).sync { [weak self] (nodes) in
+            XCTAssertEqual(50, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: [("P1", 1), ("P1", 2)]).async { [weak self] (nodes) in
+            XCTAssertEqual(50, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        graph.clear()
+    }
+    
+    func testPerformance() {
+        let graph = Graph()
+        graph.clear()
+        
+        for i in 0..<1000 {
+            let n = Action(type: "T1")
+            n["P1"] = 0 == i % 2 ? "V1" : 1
+            n["P2"] = "V2"
+            n.add(tag: "Q1")
+            n.add(to: "G1")
+        }
+        
+        graph.sync { (success, error) in
+            XCTAssertTrue(success, "\(error)")
+        }
+        
+        let search = Search<Action>(graph: graph)
+        
+        measure { [search = search] in
+            XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: "Q1").member(of: "G1").where(properties: ["P1": nil, "P2": nil]).sync().count)
+        }
+        
         graph.clear()
     }
 }

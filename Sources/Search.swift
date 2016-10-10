@@ -32,7 +32,7 @@ import CoreData
 
 public protocol Searchable {
     /// Element type.
-    associatedtype Element: Hashable
+    associatedtype Element: Node
     
     /**
      A synchronous request that returns an Array of Elements or executes a

@@ -53,6 +53,16 @@ public class Action: NSObject, Node {
         return result!
     }
     
+    /// A reference to the hash.
+    public override var hash: Int {
+        return managedNode.hash
+    }
+    
+    /// A reference to the hashValue.
+    public override var hashValue: Int {
+        return managedNode.hashValue
+    }
+    
     /// A reference to the ID.
     public var id: String {
         return managedNode.id

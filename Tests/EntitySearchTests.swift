@@ -751,6 +751,46 @@ class EntitySearchTests : XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
         
+        XCTAssertEqual(50, search.clear().where(properties: ["P1": 1]).sync().count)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["P1": 1]).sync { [weak self] (nodes) in
+            XCTAssertEqual(50, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["P1": 1]).async { [weak self] (nodes) in
+            XCTAssertEqual(50, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTAssertEqual(50, search.clear().where(properties: [("P1", 1), ("P1", 2)]).sync().count)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: [("P1", 1), ("P1", 2)]).sync { [weak self] (nodes) in
+            XCTAssertEqual(50, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: [("P1", 1), ("P1", 2)]).async { [weak self] (nodes) in
+            XCTAssertEqual(50, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
         graph.clear()
     }
     
@@ -775,5 +815,7 @@ class EntitySearchTests : XCTestCase {
         measure { [search = search] in
             XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: "Q1").member(of: "G1").where(properties: ["P1": nil, "P2": nil]).sync().count)
         }
+        
+        graph.clear()
     }
 }
