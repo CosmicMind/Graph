@@ -117,18 +117,15 @@ extension Graph {
      executed when the save operation is completed.
      */
     public func clear(_ completion: ((Bool, Error?) -> Void)? = nil) {
-        let s1 = Search<Entity>(graph: self)
-        for n in s1.for(types: ["*"]).sync() {
+        Search<Entity>(graph: self).for(types: "*").sync().forEach { (n) in
             n.delete()
         }
         
-        let s2 = Search<Relationship>(graph: self)
-        for n in s2.for(types: ["*"]).sync() {
+        Search<Relationship>(graph: self).for(types: "*").sync().forEach { (n) in
             n.delete()
         }
         
-        let s3 = Search<Action>(graph: self)
-        for n in s3.for(types: ["*"]).sync() {
+        Search<Action>(graph: self).for(types: "*").sync().forEach { (n) in
             n.delete()
         }
         

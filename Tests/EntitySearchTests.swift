@@ -171,11 +171,11 @@ class EntitySearchTests : XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(300, search.clear().for(types: ["T1", "T2"]).sync().count)
+        XCTAssertEqual(300, search.clear().for(types: "T1", "T2").sync().count)
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).sync { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").sync { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -184,7 +184,7 @@ class EntitySearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).async { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").async { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -391,11 +391,11 @@ class EntitySearchTests : XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(300, search.clear().for(types: ["T1", "T2"]).has(tags: ["Q1"]).sync().count)
+        XCTAssertEqual(300, search.clear().for(types: "T1", "T2").has(tags: ["Q1"]).sync().count)
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).has(tags: ["Q1"]).sync { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").has(tags: ["Q1"]).sync { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -404,18 +404,18 @@ class EntitySearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).has(tags: ["Q1"]).async { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").has(tags: ["Q1"]).async { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(300, search.clear().for(types: ["T1", "T2"]).has(tags: ["Q1", "Q2"]).sync().count)
+        XCTAssertEqual(300, search.clear().for(types: "T1", "T2").has(tags: ["Q1", "Q2"]).sync().count)
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).has(tags: ["Q1", "Q2"]).sync { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").has(tags: ["Q1", "Q2"]).sync { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -424,7 +424,7 @@ class EntitySearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).has(tags: ["Q1", "Q2"]).async { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").has(tags: ["Q1", "Q2"]).async { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -531,11 +531,11 @@ class EntitySearchTests : XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(600, search.clear().member(of: ["G1", "G2", "G3"]).sync().count)
+        XCTAssertEqual(600, search.clear().member(of: "G1", "G2", "G3").sync().count)
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().member(of: ["G1", "G2", "G3"]).sync { [weak self] (nodes) in
+        search.clear().member(of: "G1", "G2", "G3").sync { [weak self] (nodes) in
             XCTAssertEqual(600, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -544,7 +544,7 @@ class EntitySearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().member(of: ["G1", "G2", "G3"]).async { [weak self] (nodes) in
+        search.clear().member(of: "G1", "G2", "G3").async { [weak self] (nodes) in
             XCTAssertEqual(600, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -611,11 +611,11 @@ class EntitySearchTests : XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(600, search.clear().for(types: ["T1"]).member(of: ["G1", "G2", "G3"]).sync().count)
+        XCTAssertEqual(600, search.clear().for(types: ["T1"]).member(of: "G1", "G2", "G3").sync().count)
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1"]).member(of: ["G1", "G2", "G3"]).sync { [weak self] (nodes) in
+        search.clear().for(types: ["T1"]).member(of: "G1", "G2", "G3").sync { [weak self] (nodes) in
             XCTAssertEqual(600, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -624,18 +624,18 @@ class EntitySearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1"]).member(of: ["G1", "G2", "G3"]).async { [weak self] (nodes) in
+        search.clear().for(types: ["T1"]).member(of: "G1", "G2", "G3").async { [weak self] (nodes) in
             XCTAssertEqual(600, nodes.count)
             self?.testExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(300, search.clear().for(types: ["T1", "T2"]).member(of: ["G1"]).sync().count)
+        XCTAssertEqual(300, search.clear().for(types: "T1", "T2").member(of: ["G1"]).sync().count)
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).member(of: ["G1"]).sync { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").member(of: ["G1"]).sync { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -644,18 +644,18 @@ class EntitySearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).member(of: ["G1"]).async { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").member(of: ["G1"]).async { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(300, search.clear().for(types: ["T1", "T2"]).member(of: ["G1", "G2"]).sync().count)
+        XCTAssertEqual(300, search.clear().for(types: "T1", "T2").member(of: ["G1", "G2"]).sync().count)
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).member(of: ["G1", "G2"]).sync { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").member(of: ["G1", "G2"]).sync { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -664,18 +664,18 @@ class EntitySearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2"]).member(of: ["G1", "G2"]).async { [weak self] (nodes) in
+        search.clear().for(types: "T1", "T2").member(of: ["G1", "G2"]).async { [weak self] (nodes) in
             XCTAssertEqual(300, nodes.count)
             self?.testExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(600, search.clear().for(types: ["T1", "T2", "T3"]).member(of: ["G1", "G2", "G3"]).sync().count)
+        XCTAssertEqual(600, search.clear().for(types: ["T1", "T2", "T3"]).member(of: "G1", "G2", "G3").sync().count)
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2", "T3"]).member(of: ["G1", "G2", "G3"]).sync { [weak self] (nodes) in
+        search.clear().for(types: ["T1", "T2", "T3"]).member(of: "G1", "G2", "G3").sync { [weak self] (nodes) in
             XCTAssertEqual(600, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -684,18 +684,18 @@ class EntitySearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["T1", "T2", "T3"]).member(of: ["G1", "G2", "G3"]).async { [weak self] (nodes) in
+        search.clear().for(types: ["T1", "T2", "T3"]).member(of: "G1", "G2", "G3").async { [weak self] (nodes) in
             XCTAssertEqual(600, nodes.count)
             self?.testExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        XCTAssertEqual(600, search.clear().for(types: ["*"]).member(of: ["G1", "G2", "G3"]).sync().count)
+        XCTAssertEqual(600, search.clear().for(types: ["*"]).member(of: "G1", "G2", "G3").sync().count)
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["*"]).member(of: ["G1", "G2", "G3"]).sync { [weak self] (nodes) in
+        search.clear().for(types: ["*"]).member(of: "G1", "G2", "G3").sync { [weak self] (nodes) in
             XCTAssertEqual(600, nodes.count)
             self?.testExpectation?.fulfill()
         }
@@ -704,13 +704,76 @@ class EntitySearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
-        search.clear().for(types: ["*"]).member(of: ["G1", "G2", "G3"]).async { [weak self] (nodes) in
+        search.clear().for(types: ["*"]).member(of: "G1", "G2", "G3").async { [weak self] (nodes) in
             XCTAssertEqual(600, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTAssertEqual(0, search.clear().where(properties: ["NONE": nil]).sync().count)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["NONE": nil]).sync { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["NONE": nil]).async { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTAssertEqual(100, search.clear().where(properties: ["P1": nil]).sync().count)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["P1": nil]).sync { [weak self] (nodes) in
+            XCTAssertEqual(100, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().where(properties: ["P1": nil]).async { [weak self] (nodes) in
+            XCTAssertEqual(100, nodes.count)
             self?.testExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
         graph.clear()
+    }
+    
+    func testPerformance() {
+        let graph = Graph()
+        graph.clear()
+        
+        for i in 0..<1000 {
+            let n = Entity(type: "T1")
+            n["P1"] = 0 == i % 2 ? "V1" : 1
+            n["P2"] = "V2"
+            n.add(tag: "Q1")
+            n.add(to: "G1")
+        }
+        
+        graph.sync { (success, error) in
+            XCTAssertTrue(success, "\(error)")
+        }
+        
+        let search = Search<Entity>(graph: graph)
+        
+        measure { [search = search] in
+            XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: "Q1").member(of: "G1").where(properties: ["P1": nil, "P2": nil]).sync().count)
+        }
     }
 }

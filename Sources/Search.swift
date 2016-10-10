@@ -32,7 +32,7 @@ import CoreData
 
 public protocol Searchable {
     /// Element type.
-    associatedtype Element
+    associatedtype Element: Hashable
     
     /**
      A synchronous request that returns an Array of Elements or executes a
@@ -40,14 +40,14 @@ public protocol Searchable {
      - Parameter completeion: An optional completion block.
      - Returns: An Array of Elements.
      */
-    func sync(completion: (([Element]) -> Void)?) -> [Element]
+    func sync(completion: ((Set<Element>) -> Void)?) -> Set<Element>
     
     /**
      An asynchronous request that executes a callback with an Array of Elements
      passed in as the first argument.
      - Parameter completion: An optional completion block.
      */
-    func async(completion: (([Element]) -> Void))
+    func async(completion: ((Set<Element>) -> Void))
 }
 
 /// Search.
@@ -60,8 +60,8 @@ public class Search<T: Node>: Searchable {
      - Parameter completeion: An optional completion block.
      - Returns: An Array of Elements.
      */
-    public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        return [T]()
+    public func sync(completion: ((Set<T>) -> Void)? = nil) -> Set<T> {
+        return Set<T>()
     }
     
     /**
@@ -69,7 +69,7 @@ public class Search<T: Node>: Searchable {
      passed in as the first argument.
      - Parameter completion: An optional completion block.
      */
-    public func async(completion: (([T]) -> Void)) {}
+    public func async(completion: ((Set<T>) -> Void)) {}
     
     /// A Graph instance.
     internal private(set) var graph: Graph
@@ -115,6 +115,16 @@ public class Search<T: Node>: Searchable {
     
     /**
      Searches nodes with given types.
+     - Parameter types: A parameter list of Strings.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func `for`(types: String...) -> Search {
+        return self.for(types: types)
+    }
+    
+    /**
+     Searches nodes with given types.
      - Parameter types: An Array of Strings.
      - Returns: A Search instance.
      */
@@ -122,6 +132,16 @@ public class Search<T: Node>: Searchable {
     public func `for`(types: [String]) -> Search {
         self.types = types
         return self
+    }
+    
+    /**
+     Searches nodes with given tags.
+     - Parameter tags: A parameter list of Strings.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func has(tags: String...) -> Search {
+        return has(tags: tags)
     }
     
     /**
@@ -137,6 +157,16 @@ public class Search<T: Node>: Searchable {
     
     /**
      Searches nodes with given groups.
+     - Parameter groups: A parameter list of Strings.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func member(of groups: String...) -> Search {
+        return member(of: groups)
+    }
+    
+    /**
+     Searches nodes with given groups.
      - Parameter groups: An Array of Strings.
      - Returns: A Search instance.
      */
@@ -148,7 +178,31 @@ public class Search<T: Node>: Searchable {
     
     /**
      Watches nodes with given properties.
-     - Parameter properties: An Array of Strings.
+     - Parameter properties: A Dictionary of [String: Any?] values..
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func `where`(properties: [String: Any?]) -> Search {
+        var p = [(name: String, value: Any?)]()
+        for x in properties {
+            p.append((x.key, x.value))
+        }
+        return self.where(properties: p)
+    }
+    
+    /**
+     Watches nodes with given properties.
+     - Parameter properties: A parameter list of tuples, (name: String, value: Any?).
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func `where`(properties: (name: String, value: Any?)...) -> Search {
+        return self.where(properties: properties)
+    }
+    
+    /**
+     Watches nodes with given properties.
+     - Parameter properties: An Array of tuples, (name: String, value: Any?).
      - Returns: A Search instance.
      */
     @discardableResult
@@ -164,7 +218,7 @@ public class Search<T: Node>: Searchable {
      - Returns: An Array of Elements.
      */
     @discardableResult
-    internal func executeSynchronousRequest(nodes: [T], completion: (([T]) -> Void)? = nil) -> [T] {
+    internal func executeSynchronousRequest(nodes: Set<T>, completion: ((Set<T>) -> Void)? = nil) -> Set<T> {
         guard let c = completion else {
             return nodes
         }
@@ -189,8 +243,8 @@ extension Search where T: Entity  {
      - Returns: An Array of Entities.
      */
     @discardableResult
-    public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        return executeSynchronousRequest(nodes: graph.searchForEntity(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
+    public func sync(completion: ((Set<T>) -> Void)? = nil) -> Set<T> {
+        return executeSynchronousRequest(nodes: graph.searchForEntity(types: types, tags: tags, groups: groups, properties: properties) as! Set<T>, completion: completion)
     }
     
     /**
@@ -198,13 +252,13 @@ extension Search where T: Entity  {
      passed in as the first argument.
      - Parameter completion: An optional completion block.
      */
-    public func async(completion: @escaping (([T]) -> Void)) {
+    public func async(completion: @escaping ((Set<T>) -> Void)) {
         DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
             guard let s = self else {
                 return
             }
     
-            let n = s.graph.searchForEntity(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            let n = s.graph.searchForEntity(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! Set<T>
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -221,8 +275,8 @@ extension Search where T: Relationship  {
      - Returns: An Array of Relationships.
      */
     @discardableResult
-    public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        return executeSynchronousRequest(nodes: graph.searchForRelationship(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
+    public func sync(completion: ((Set<T>) -> Void)? = nil) -> Set<T> {
+        return executeSynchronousRequest(nodes: graph.searchForRelationship(types: types, tags: tags, groups: groups, properties: properties) as! Set<T>, completion: completion)
     }
     
     /**
@@ -230,13 +284,13 @@ extension Search where T: Relationship  {
      passed in as the first argument.
      - Parameter completion: An optional completion block.
      */
-    public func async(completion: @escaping (([T]) -> Void)) {
+    public func async(completion: @escaping ((Set<T>) -> Void)) {
         DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
             guard let s = self else {
                 return
             }
             
-            let n = s.graph.searchForRelationship(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            let n = s.graph.searchForRelationship(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! Set<T>
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -253,8 +307,8 @@ extension Search where T: Action  {
      - Returns: An Array of Actions.
      */
     @discardableResult
-    public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        return executeSynchronousRequest(nodes: graph.searchForAction(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
+    public func sync(completion: ((Set<T>) -> Void)? = nil) -> Set<T> {
+        return executeSynchronousRequest(nodes: graph.searchForAction(types: types, tags: tags, groups: groups, properties: properties) as! Set<T>, completion: completion)
     }
     
     /**
@@ -262,13 +316,13 @@ extension Search where T: Action  {
      passed in as the first argument.
      - Parameter completion: An optional completion block.
      */
-    public func async(completion: @escaping (([T]) -> Void)) {
+    public func async(completion: @escaping ((Set<T>) -> Void)) {
         DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
             guard let s = self else {
                 return
             }
             
-            let n = s.graph.searchForAction(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            let n = s.graph.searchForAction(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! Set<T>
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -287,13 +341,13 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
-    internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Entity] {
+    internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> Set<Entity> {
         guard let moc = managedObjectContext else {
-            return [Entity]()
+            return Set<Entity>()
         }
         
         var nodes = [AnyObject]()
-        var toFilter: Bool = false
+//        var toFilter: Bool = false
         
         if let v = types {
             if let n = search(forEntityName: ModelIdentifier.entityName, types: v) {
@@ -303,69 +357,72 @@ extension Graph {
         
         if let v = tags {
             if let n = search(forEntityName: ModelIdentifier.entityTagName, tags: v) {
-                toFilter = 0 < nodes.count
+//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = groups {
             if let n = search(forEntityName: ModelIdentifier.entityGroupName, groups: v) {
-                toFilter = 0 < nodes.count
+//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = properties {
             if let n = search(forEntityName: ModelIdentifier.entityPropertyName, properties: v) {
-                toFilter = 0 < nodes.count
+//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
-        if toFilter {
-            var seen = [String: Bool]()
-            var i: Int = nodes.count - 1
-            while 0 <= i {
-                if let v = nodes[i] as? ManagedEntity {
-                    if nil == seen.updateValue(true, forKey: v.id) {
-                        nodes[i] = Entity(managedNode: v)
-                        i -= 1
-                        continue
-                    }
-                } else {
-                    let n = nodes[i]["node"]
-                    var c: Bool? = false
-                    var weakNodes: [Any]? = nodes
-                    moc.performAndWait { [unowned moc] in
-                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedEntity {
-                            if nil == seen.updateValue(true, forKey: v.id) {
-                                weakNodes?[i] = Entity(managedNode: v)
-                                i -= 1
-                                c = true
-                            }
-                        }
-                    }
-                    if true == c {
-                        continue
-                    }
-                }
-                nodes.remove(at: i)
-                i -= 1
-            }
-            return nodes as! [Entity]
-        }
+//        if toFilter {
+//            var seen = [String: Bool]()
+//            var i: Int = nodes.count - 1
+//            while 0 <= i {
+//                if let v = nodes[i] as? ManagedEntity {
+//                    if nil == seen.updateValue(true, forKey: v.id) {
+//                        nodes[i] = Entity(managedNode: v)
+//                        i -= 1
+//                        continue
+//                    }
+//                } else {
+//                    let n = nodes[i]["node"]
+//                    var c: Bool? = false
+//                    var weakNodes: [Any]? = nodes
+//                    moc.performAndWait { [unowned moc] in
+//                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedEntity {
+//                            if nil == seen.updateValue(true, forKey: v.id) {
+//                                weakNodes?[i] = Entity(managedNode: v)
+//                                i -= 1
+//                                c = true
+//                            }
+//                        }
+//                    }
+//                    if true == c {
+//                        continue
+//                    }
+//                }
+//                nodes.remove(at: i)
+//                i -= 1
+//            }
+//            return nodes as! [Entity]
+//        }
         
-        return nodes.map { [weak moc] in
+        var set = Set<Entity>()
+        nodes.forEach { [weak moc] in
             guard let n = $0 as? ManagedEntity else {
                 var managedNode: NSManagedObject?
                 let n = $0["node"]
                 moc?.performAndWait { [weak moc] in
                     managedNode = moc?.object(with: n! as! NSManagedObjectID)
                 }
-                return Entity(managedNode: managedNode as! ManagedEntity)
+                set.insert(Entity(managedNode: managedNode as! ManagedEntity))
+                return
             }
-            return Entity(managedNode: n)
-        } as [Entity]
+            set.insert(Entity(managedNode: n))
+        }
+        return set
     }
     
     /**
@@ -376,13 +433,13 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    internal func searchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Relationship] {
+    internal func searchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> Set<Relationship> {
         guard let moc = managedObjectContext else {
-            return [Relationship]()
+            return Set<Relationship>()
         }
         
         var nodes = [AnyObject]()
-        var toFilter: Bool = false
+//        var toFilter: Bool = false
         
         if let v = types {
             if let n = search(forEntityName: ModelIdentifier.relationshipName, types: v) {
@@ -392,69 +449,72 @@ extension Graph {
         
         if let v = tags {
             if let n = search(forEntityName: ModelIdentifier.relationshipTagName, tags: v) {
-                toFilter = 0 < nodes.count
+//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = groups {
             if let n = search(forEntityName: ModelIdentifier.relationshipGroupName, groups: v) {
-                toFilter = 0 < nodes.count
+//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = properties {
             if let n = search(forEntityName: ModelIdentifier.relationshipPropertyName, properties: v) {
-                toFilter = 0 < nodes.count
+//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
-        if toFilter {
-            var seen = [String: Bool]()
-            var i: Int = nodes.count - 1
-            while 0 <= i {
-                if let v = nodes[i] as? ManagedRelationship {
-                    if nil == seen.updateValue(true, forKey: v.id) {
-                        nodes[i] = Relationship(managedNode: v)
-                        i -= 1
-                        continue
-                    }
-                } else {
-                    let n = nodes[i]["node"]
-                    var c: Bool? = false
-                    var weakNodes: [Any]? = nodes
-                    moc.performAndWait { [unowned moc] in
-                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedRelationship {
-                            if nil == seen.updateValue(true, forKey: v.id) {
-                                weakNodes?[i] = Relationship(managedNode: v)
-                                i -= 1
-                                c = true
-                            }
-                        }
-                    }
-                    if true == c {
-                        continue
-                    }
-                }
-                nodes.remove(at: i)
-                i -= 1
-            }
-            return nodes as! [Relationship]
-        }
+//        if toFilter {
+//            var seen = [String: Bool]()
+//            var i: Int = nodes.count - 1
+//            while 0 <= i {
+//                if let v = nodes[i] as? ManagedRelationship {
+//                    if nil == seen.updateValue(true, forKey: v.id) {
+//                        nodes[i] = Relationship(managedNode: v)
+//                        i -= 1
+//                        continue
+//                    }
+//                } else {
+//                    let n = nodes[i]["node"]
+//                    var c: Bool? = false
+//                    var weakNodes: [Any]? = nodes
+//                    moc.performAndWait { [unowned moc] in
+//                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedRelationship {
+//                            if nil == seen.updateValue(true, forKey: v.id) {
+//                                weakNodes?[i] = Relationship(managedNode: v)
+//                                i -= 1
+//                                c = true
+//                            }
+//                        }
+//                    }
+//                    if true == c {
+//                        continue
+//                    }
+//                }
+//                nodes.remove(at: i)
+//                i -= 1
+//            }
+//            return nodes as! [Relationship]
+//        }
         
-        return nodes.map { [weak moc] in
+        var set = Set<Relationship>()
+        nodes.forEach { [weak moc] in
             guard let n = $0 as? ManagedRelationship else {
                 var managedNode: NSManagedObject?
                 let n = $0["node"]
                 moc?.performAndWait { [weak moc] in
                     managedNode = moc?.object(with: n! as! NSManagedObjectID)
                 }
-                return Relationship(managedNode: managedNode as! ManagedRelationship)
+                set.insert(Relationship(managedNode: managedNode as! ManagedRelationship))
+                return
             }
-            return Relationship(managedNode: n)
-        } as [Relationship]
+            set.insert(Relationship(managedNode: n))
+        }
+        return set
     }
     
     /**
@@ -465,13 +525,13 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    internal func searchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Action] {
+    internal func searchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> Set<Action> {
         guard let moc = managedObjectContext else {
-            return [Action]()
+            return Set<Action>()
         }
         
         var nodes = [AnyObject]()
-        var toFilter: Bool = false
+//        var toFilter: Bool = false
         
         if let v = types {
             if let n = search(forEntityName: ModelIdentifier.actionName, types: v) {
@@ -481,69 +541,72 @@ extension Graph {
         
         if let v = tags {
             if let n = search(forEntityName: ModelIdentifier.actionTagName, tags: v) {
-                toFilter = 0 < nodes.count
+//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = groups {
             if let n = search(forEntityName: ModelIdentifier.actionGroupName, groups: v) {
-                toFilter = 0 < nodes.count
+//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = properties {
             if let n = search(forEntityName: ModelIdentifier.actionPropertyName, properties: v) {
-                toFilter = 0 < nodes.count
+//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
-        if toFilter {
-            var seen = [String: Bool]()
-            var i: Int = nodes.count - 1
-            while 0 <= i {
-                if let v = nodes[i] as? ManagedAction {
-                    if nil == seen.updateValue(true, forKey: v.id) {
-                        nodes[i] = Action(managedNode: v)
-                        i -= 1
-                        continue
-                    }
-                } else {
-                    let n = nodes[i]["node"]
-                    var c: Bool? = false
-                    var weakNodes: [Any]? = nodes
-                    moc.performAndWait { [unowned moc] in
-                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedAction {
-                            if nil == seen.updateValue(true, forKey: v.id) {
-                                weakNodes?[i] = Action(managedNode: v)
-                                i -= 1
-                                c = true
-                            }
-                        }
-                    }
-                    if true == c {
-                        continue
-                    }
-                }
-                nodes.remove(at: i)
-                i -= 1
-            }
-            return nodes as! [Action]
-        }
+//        if toFilter {
+//            var seen = [String: Bool]()
+//            var i: Int = nodes.count - 1
+//            while 0 <= i {
+//                if let v = nodes[i] as? ManagedAction {
+//                    if nil == seen.updateValue(true, forKey: v.id) {
+//                        nodes[i] = Action(managedNode: v)
+//                        i -= 1
+//                        continue
+//                    }
+//                } else {
+//                    let n = nodes[i]["node"]
+//                    var c: Bool? = false
+//                    var weakNodes: [Any]? = nodes
+//                    moc.performAndWait { [unowned moc] in
+//                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedAction {
+//                            if nil == seen.updateValue(true, forKey: v.id) {
+//                                weakNodes?[i] = Action(managedNode: v)
+//                                i -= 1
+//                                c = true
+//                            }
+//                        }
+//                    }
+//                    if true == c {
+//                        continue
+//                    }
+//                }
+//                nodes.remove(at: i)
+//                i -= 1
+//            }
+//            return nodes as! [Action]
+//        }
         
-        return nodes.map { [weak moc] in
+        var set = Set<Action>()
+        nodes.forEach { [weak moc] in
             guard let n = $0 as? ManagedAction else {
                 var managedNode: NSManagedObject?
                 let n = $0["node"]
                 moc?.performAndWait { [weak moc] in
                     managedNode = moc?.object(with: n! as! NSManagedObjectID)
                 }
-                return Action(managedNode: managedNode as! ManagedAction)
+                set.insert(Action(managedNode: managedNode as! ManagedAction))
+                return
             }
-            return Action(managedNode: n)
-        } as [Action]
+            set.insert(Action(managedNode: n))
+        }
+        return set
     }
     
     /**
