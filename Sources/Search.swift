@@ -331,7 +331,6 @@ extension Search where T: Action  {
     }
 }
 
-/// Storage Search API.
 extension Graph {
     /**
      Searches for Entities that fall into any of the specified facets.
@@ -347,7 +346,6 @@ extension Graph {
         }
         
         var nodes = [AnyObject]()
-//        var toFilter: Bool = false
         
         if let v = types {
             if let n = search(forEntityName: ModelIdentifier.entityName, types: v) {
@@ -357,57 +355,21 @@ extension Graph {
         
         if let v = tags {
             if let n = search(forEntityName: ModelIdentifier.entityTagName, tags: v) {
-//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = groups {
             if let n = search(forEntityName: ModelIdentifier.entityGroupName, groups: v) {
-//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = properties {
             if let n = search(forEntityName: ModelIdentifier.entityPropertyName, properties: v) {
-//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
-        
-//        if toFilter {
-//            var seen = [String: Bool]()
-//            var i: Int = nodes.count - 1
-//            while 0 <= i {
-//                if let v = nodes[i] as? ManagedEntity {
-//                    if nil == seen.updateValue(true, forKey: v.id) {
-//                        nodes[i] = Entity(managedNode: v)
-//                        i -= 1
-//                        continue
-//                    }
-//                } else {
-//                    let n = nodes[i]["node"]
-//                    var c: Bool? = false
-//                    var weakNodes: [Any]? = nodes
-//                    moc.performAndWait { [unowned moc] in
-//                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedEntity {
-//                            if nil == seen.updateValue(true, forKey: v.id) {
-//                                weakNodes?[i] = Entity(managedNode: v)
-//                                i -= 1
-//                                c = true
-//                            }
-//                        }
-//                    }
-//                    if true == c {
-//                        continue
-//                    }
-//                }
-//                nodes.remove(at: i)
-//                i -= 1
-//            }
-//            return nodes as! [Entity]
-//        }
         
         var set = Set<Entity>()
         nodes.forEach { [weak moc] in
@@ -439,7 +401,6 @@ extension Graph {
         }
         
         var nodes = [AnyObject]()
-//        var toFilter: Bool = false
         
         if let v = types {
             if let n = search(forEntityName: ModelIdentifier.relationshipName, types: v) {
@@ -449,57 +410,21 @@ extension Graph {
         
         if let v = tags {
             if let n = search(forEntityName: ModelIdentifier.relationshipTagName, tags: v) {
-//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = groups {
             if let n = search(forEntityName: ModelIdentifier.relationshipGroupName, groups: v) {
-//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = properties {
             if let n = search(forEntityName: ModelIdentifier.relationshipPropertyName, properties: v) {
-//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
-        
-//        if toFilter {
-//            var seen = [String: Bool]()
-//            var i: Int = nodes.count - 1
-//            while 0 <= i {
-//                if let v = nodes[i] as? ManagedRelationship {
-//                    if nil == seen.updateValue(true, forKey: v.id) {
-//                        nodes[i] = Relationship(managedNode: v)
-//                        i -= 1
-//                        continue
-//                    }
-//                } else {
-//                    let n = nodes[i]["node"]
-//                    var c: Bool? = false
-//                    var weakNodes: [Any]? = nodes
-//                    moc.performAndWait { [unowned moc] in
-//                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedRelationship {
-//                            if nil == seen.updateValue(true, forKey: v.id) {
-//                                weakNodes?[i] = Relationship(managedNode: v)
-//                                i -= 1
-//                                c = true
-//                            }
-//                        }
-//                    }
-//                    if true == c {
-//                        continue
-//                    }
-//                }
-//                nodes.remove(at: i)
-//                i -= 1
-//            }
-//            return nodes as! [Relationship]
-//        }
         
         var set = Set<Relationship>()
         nodes.forEach { [weak moc] in
@@ -529,9 +454,8 @@ extension Graph {
         guard let moc = managedObjectContext else {
             return Set<Action>()
         }
-        
+
         var nodes = [AnyObject]()
-//        var toFilter: Bool = false
         
         if let v = types {
             if let n = search(forEntityName: ModelIdentifier.actionName, types: v) {
@@ -541,57 +465,21 @@ extension Graph {
         
         if let v = tags {
             if let n = search(forEntityName: ModelIdentifier.actionTagName, tags: v) {
-//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = groups {
             if let n = search(forEntityName: ModelIdentifier.actionGroupName, groups: v) {
-//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
         
         if let v = properties {
             if let n = search(forEntityName: ModelIdentifier.actionPropertyName, properties: v) {
-//                toFilter = 0 < nodes.count
                 nodes.append(contentsOf: n)
             }
         }
-        
-//        if toFilter {
-//            var seen = [String: Bool]()
-//            var i: Int = nodes.count - 1
-//            while 0 <= i {
-//                if let v = nodes[i] as? ManagedAction {
-//                    if nil == seen.updateValue(true, forKey: v.id) {
-//                        nodes[i] = Action(managedNode: v)
-//                        i -= 1
-//                        continue
-//                    }
-//                } else {
-//                    let n = nodes[i]["node"]
-//                    var c: Bool? = false
-//                    var weakNodes: [Any]? = nodes
-//                    moc.performAndWait { [unowned moc] in
-//                        if let v = moc.object(with: n! as! NSManagedObjectID) as? ManagedAction {
-//                            if nil == seen.updateValue(true, forKey: v.id) {
-//                                weakNodes?[i] = Action(managedNode: v)
-//                                i -= 1
-//                                c = true
-//                            }
-//                        }
-//                    }
-//                    if true == c {
-//                        continue
-//                    }
-//                }
-//                nodes.remove(at: i)
-//                i -= 1
-//            }
-//            return nodes as! [Action]
-//        }
         
         var set = Set<Action>()
         nodes.forEach { [weak moc] in
@@ -642,7 +530,6 @@ extension Graph {
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
         moc.performAndWait { [unowned request] in
@@ -681,7 +568,6 @@ extension Graph {
         request.fetchBatchSize = batchSize
         request.fetchOffset = batchOffset
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "createdDate", ascending: true)]
         
         var result: [AnyObject]?
         moc.performAndWait { [unowned moc, unowned request] in
@@ -723,7 +609,6 @@ extension Graph {
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
         moc.performAndWait { [unowned request] in
@@ -765,7 +650,6 @@ extension Graph {
         request.propertiesToFetch = ["node"]
         request.returnsDistinctResults = true
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
-        request.sortDescriptors = [NSSortDescriptor(key: "node.createdDate", ascending: true)]
         
         var result: [AnyObject]?
         moc.performAndWait { [unowned request] in
