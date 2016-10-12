@@ -330,47 +330,47 @@ class EntitySearchTests : XCTestCase {
         }
         
         waitForExpectations(timeout: 5, handler: nil)
+
+        XCTAssertEqual(100, search.clear().for(types: "T1").has(tags: "Q1").sync().count)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().for(types: "T1").has(tags: "Q1").sync { [weak self] (nodes) in
+            XCTAssertEqual(100, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().for(types: "T1").has(tags: "Q1").async { [weak self] (nodes) in
+            XCTAssertEqual(100, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+
+        XCTAssertEqual(0, search.clear().for(types: "T1").has(tags: "Q1", "Q2").sync().count)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().for(types: "T1").has(tags: "Q1", "Q2").sync { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
+        
+        search.clear().for(types: "T1").has(tags: "Q1", "Q2").async { [weak self] (nodes) in
+            XCTAssertEqual(0, nodes.count)
+            self?.testExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
 //
-//        XCTAssertEqual(100, search.clear().for(types: ["T1"]).has(tags: ["Q1"]).sync().count)
-//        
-//        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
-//        
-//        search.clear().for(types: ["T1"]).has(tags: ["Q1"]).sync { [weak self] (nodes) in
-//            XCTAssertEqual(100, nodes.count)
-//            self?.testExpectation?.fulfill()
-//        }
-//        
-//        waitForExpectations(timeout: 5, handler: nil)
-//        
-//        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
-//        
-//        search.clear().for(types: ["T1"]).has(tags: ["Q1"]).async { [weak self] (nodes) in
-//            XCTAssertEqual(100, nodes.count)
-//            self?.testExpectation?.fulfill()
-//        }
-//        
-//        waitForExpectations(timeout: 5, handler: nil)
-//        
-//        XCTAssertEqual(300, search.clear().for(types: ["T1"]).has(tags: ["Q1", "Q2"]).sync().count)
-//        
-//        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
-//        
-//        search.clear().for(types: ["T1"]).has(tags: ["Q1", "Q2"]).sync { [weak self] (nodes) in
-//            XCTAssertEqual(300, nodes.count)
-//            self?.testExpectation?.fulfill()
-//        }
-//        
-//        waitForExpectations(timeout: 5, handler: nil)
-//        
-//        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
-//        
-//        search.clear().for(types: ["T1"]).has(tags: ["Q1", "Q2"]).async { [weak self] (nodes) in
-//            XCTAssertEqual(300, nodes.count)
-//            self?.testExpectation?.fulfill()
-//        }
-//        
-//        waitForExpectations(timeout: 5, handler: nil)
-//        
 //        XCTAssertEqual(600, search.clear().for(types: ["T1"]).has(tags: ["Q1", "Q2", "Q3"]).sync().count)
 //        
 //        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
