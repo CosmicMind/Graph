@@ -78,12 +78,12 @@ public class Action: NSObject, Node {
     }
     
     /// A reference to tags.
-    public var tags: Set<String> {
+    public var tags: [String] {
         return managedNode.tags
     }
     
     /// A reference to groups.
-    public var groups: Set<String> {
+    public var groups: [String] {
         return managedNode.groups
     }
     
@@ -207,13 +207,23 @@ public class Action: NSObject, Node {
     }
     
     /**
-     Checks if an Action has a given tag.
+     Checks if the Action has a given tag.
      - Parameter tag: A tag name.
-     - Returns: A boolean of the result, true if a member, false
+     - Returns: A boolean of the result, true if has the given tag,
      otherwise.
      */
     public func has(tag: String) -> Bool {
         return managedNode.has(tag: tag)
+    }
+    
+    /**
+     Checks if the Action has a the given tags.
+     - Parameter tags: An Array of Strings.
+     - Returns: A boolean of the result, true if has the tags,
+     false otherwise.
+     */
+    public func has(tags: [String]) -> Bool {
+        return managedNode.has(tags: tags)
     }
     
     /**
@@ -227,7 +237,7 @@ public class Action: NSObject, Node {
     }
     
     /**
-     Adds a given tag to an Action or removes it, based on its previous state.
+     Adds a given tag to the Action or removes it, based on its previous state.
      - Parameter tag: A tag name.
      */
     public func toggle(tag: String) {
@@ -235,7 +245,7 @@ public class Action: NSObject, Node {
     }
     
     /**
-     Adds an Action to a given group.
+     Adds the Action to a given group.
      - Parameter to group: A group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -245,13 +255,24 @@ public class Action: NSObject, Node {
     }
     
     /**
-     Checks if an Action is a member of a given group.
+     Checks if the Action is a member of a given group.
      - Parameter of group: A group name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
     public func member(of group: String) -> Bool {
         return managedNode.member(of: group)
+    }
+    
+    /**
+     Checks if the Action is a member of a given group.
+     - Parameter of group: A group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    @nonobjc
+    public func member(of groups: [String]) -> Bool {
+        return managedNode.member(of: groups)
     }
     
     /**

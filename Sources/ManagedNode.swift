@@ -58,15 +58,15 @@ internal class ManagedNode: ManagedObject {
     }
     
     /// A reference to the tags.
-    internal var tags: Set<String> {
-        var t = Set<String>()
+    internal var tags: [String] {
+        var t = [String]()
         guard let moc = managedObjectContext else {
             return t
         }
         moc.performAndWait { [unowned self] in
             self.tagSet.forEach { (object: Any) in
                 if let tag = object as? ManagedTag {
-                    t.insert(tag.name)
+                    t.append(tag.name)
                 }
             }
         }
@@ -74,15 +74,15 @@ internal class ManagedNode: ManagedObject {
     }
     
     /// A reference to the groups.
-    internal var groups: Set<String> {
-        var g = Set<String>()
+    internal var groups: [String] {
+        var g = [String]()
         guard let moc = managedObjectContext else {
             return g
         }
         moc.performAndWait { [unowned self] in
             self.groupSet.forEach { (object: Any) in
                 if let group = object as? ManagedGroup {
-                    g.insert(group.name)
+                    g.append(group.name)
                 }
             }
         }
@@ -149,23 +149,39 @@ internal class ManagedNode: ManagedObject {
     /**
      Checks if the ManagedNode has a given tag.
      - Parameter tag: A tag name.
-     - Returns: A boolean of the result, true if a member, false
-     otherwise.
+     - Returns: A boolean of the result, true if has the given tag,
+     false otherwise.
      */
-    internal func has(tag name: String) -> Bool {
+    internal func has(tag: String) -> Bool {
         guard let moc = managedObjectContext else {
             return false
         }
         var result: Bool? = false
         moc.performAndWait { [unowned self] in
-            for tag in self.tagSet {
-                if name == (tag as? ManagedTag)?.name {
+            for t in self.tagSet {
+                if tag == (t as? ManagedTag)?.name {
                     result = true
                     break
                 }
             }
         }
         return result!
+    }
+    
+    /**
+     Checks if the ManagedNode has a the given tags.
+     - Parameter tags: An Array of Strings.
+     - Returns: A boolean of the result, true if has the tags, 
+     false otherwise.
+     */
+    internal func has(tags: [String]) -> Bool {
+        let t = self.tags
+        for tag in tags {
+            guard t.contains(tag) else {
+                return false
+            }
+        }
+        return true
     }
     
     /**
@@ -188,6 +204,23 @@ internal class ManagedNode: ManagedObject {
             }
         }
         return result!
+    }
+    
+    /**
+     Checks if the ManagedNode is a member of a group.
+     - Parameter of groups: An Array of Strings.
+     - Returns: A boolean of the result, true if a member of the groups,
+     false otherwise.
+     */
+    @nonobjc
+    internal func member(of groups: [String]) -> Bool {
+        let g = self.groups
+        for group in groups {
+            guard g.contains(group) else {
+                return false
+            }
+        }
+        return true
     }
 }
 

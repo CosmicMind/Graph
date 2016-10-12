@@ -30,6 +30,12 @@
 
 import CoreData
 
+@objc(SearchCondition)
+public enum SearchCondition: Int {
+    case and
+    case or
+}
+
 public protocol Searchable {
     /// Element type.
     associatedtype Element: Node
@@ -75,16 +81,25 @@ public class Search<T: Node>: Searchable {
     internal private(set) var graph: Graph
     
     /// A reference to the type.
-    public var types: [String]?
+    public private(set) var types: [String]?
     
     /// A reference to the tags.
-    public var tags: [String]?
+    public private(set) var tags: [String]?
+    
+    /// A SearchCondition value for tags.
+    public private(set) var tagsSearchCondition = SearchCondition.and
     
     /// A reference to the groups.
-    public var groups: [String]?
+    public private(set) var groups: [String]?
+    
+    /// A SearchCondition value for groups.
+    public private(set) var groupsSearchCondition = SearchCondition.and
     
     /// A reference to the properties.
-    public var properties: [(name: String, value: Any?)]?
+    public var properties: [String]?
+    
+    /// A SearchCondition value for properties.
+    public var propertiesSearchCondition = SearchCondition.and
     
     /**
      An initializer that accepts a NodeClass and Graph
@@ -104,8 +119,11 @@ public class Search<T: Node>: Searchable {
     public func clear() -> Search {
         types = nil
         tags = nil
+        tagsSearchCondition = .and
         groups = nil
+        groupsSearchCondition = .and
         properties = nil
+        propertiesSearchCondition = .and
         return self
     }
     
@@ -146,8 +164,9 @@ public class Search<T: Node>: Searchable {
      - Returns: A Search instance.
      */
     @discardableResult
-    public func has(tags: [String]) -> Search {
+    public func has(tags: [String], with condition: SearchCondition = .and) -> Search {
         self.tags = tags
+        tagsSearchCondition = condition
         return self
     }
     
@@ -167,43 +186,31 @@ public class Search<T: Node>: Searchable {
      - Returns: A Search instance.
      */
     @discardableResult
-    public func member(of groups: [String]) -> Search {
+    public func member(of groups: [String], with condition: SearchCondition = .and) -> Search {
         self.groups = groups
+        groupsSearchCondition = condition
         return self
     }
     
     /**
      Watches nodes with given properties.
-     - Parameter properties: A Dictionary of [String: Any?] values..
+     - Parameter properties: A parameter list of Strings.
      - Returns: A Search instance.
      */
     @discardableResult
-    public func `where`(properties: [String: Any?]) -> Search {
-        var p = [(name: String, value: Any?)]()
-        for x in properties {
-            p.append((x.key, x.value))
-        }
-        return self.where(properties: p)
-    }
-    
-    /**
-     Watches nodes with given properties.
-     - Parameter properties: A parameter list of tuples, (name: String, value: Any?).
-     - Returns: A Search instance.
-     */
-    @discardableResult
-    public func `where`(properties: (name: String, value: Any?)...) -> Search {
+    public func `where`(properties: String...) -> Search {
         return self.where(properties: properties)
     }
     
     /**
      Watches nodes with given properties.
-     - Parameter properties: An Array of tuples, (name: String, value: Any?).
+     - Parameter groups: An Array of Strings.
      - Returns: A Search instance.
      */
     @discardableResult
-    public func `where`(properties: [(name: String, value: Any?)]) -> Search {
+    public func `where`(properties: [String], with condition: SearchCondition = .and) -> Search {
         self.properties = properties
+        propertiesSearchCondition = condition
         return self
     }
     
@@ -240,7 +247,7 @@ extension Search where T: Entity  {
      */
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        return executeSynchronousRequest(nodes: graph.searchForEntity(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
+        return executeSynchronousRequest(nodes: searchForEntity(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
     }
     
     /**
@@ -254,7 +261,7 @@ extension Search where T: Entity  {
                 return
             }
     
-            let n = s.graph.searchForEntity(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            let n = s.searchForEntity(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -272,7 +279,7 @@ extension Search where T: Relationship  {
      */
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        return executeSynchronousRequest(nodes: graph.searchForRelationship(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
+        return executeSynchronousRequest(nodes: searchForRelationship(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
     }
     
     /**
@@ -286,7 +293,7 @@ extension Search where T: Relationship  {
                 return
             }
             
-            let n = s.graph.searchForRelationship(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            let n = s.searchForRelationship(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -304,7 +311,7 @@ extension Search where T: Action  {
      */
     @discardableResult
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        return executeSynchronousRequest(nodes: graph.searchForAction(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
+        return executeSynchronousRequest(nodes: searchForAction(types: types, tags: tags, groups: groups, properties: properties) as! [T], completion: completion)
     }
     
     /**
@@ -318,7 +325,7 @@ extension Search where T: Action  {
                 return
             }
             
-            let n = s.graph.searchForAction(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
+            let n = s.searchForAction(types: s.types, tags: s.tags, groups: s.groups, properties: s.properties) as! [T]
             
             DispatchQueue.main.async { [n = n, completion = completion] in
                 completion(n)
@@ -327,7 +334,7 @@ extension Search where T: Action  {
     }
 }
 
-extension Graph {
+extension Search {
     /**
      Searches for Entities that fall into any of the specified facets.
      - Parameter types: An Array of Entity types.
@@ -336,8 +343,8 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
-    internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Entity] {
-        guard let moc = managedObjectContext else {
+    internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) -> [Entity] {
+        guard let moc = graph.managedObjectContext else {
             return [Entity]()
         }
         
@@ -359,68 +366,99 @@ extension Graph {
         
         if let v = tags {
             tagsSet = Set<ManagedEntity>()
-            search(forEntityName: ModelIdentifier.entityTagName, tags: v)?.forEach { [weak moc] in
-                guard Thread.isMainThread else {
-                    moc?.performAndWait { [q = $0] in
-                        guard let n = (q as? ManagedEntityTag)?.node else {
-                            return
-                        }
-                        tagsSet?.insert(n)
-                    }
+            search(forEntityName: ModelIdentifier.entityTagName, tags: v)?.forEach { [weak self, weak moc, v = v] in
+                guard let s = self else {
                     return
                 }
                 
-                guard let n = ($0 as? ManagedEntityTag)?.node else {
+                var n: ManagedEntity?
+                moc?.performAndWait { [q = $0] in
+                    n = (q as? ManagedEntityTag)?.node
+                }
+                
+                guard let q = n else {
                     return
                 }
                 
-                tagsSet?.insert(n)
+                guard .and == s.tagsSearchCondition else {
+                    tagsSet?.insert(q)
+                    return
+                }
+                
+                guard q.has(tags: v) else {
+                    return
+                }
+                
+                tagsSet?.insert(q)
             }
         }
         
         if let v = groups {
             groupsSet = Set<ManagedEntity>()
-            search(forEntityName: ModelIdentifier.entityGroupName, groups: v)?.forEach { [weak moc] in
-                guard Thread.isMainThread else {
-                    moc?.performAndWait { [q = $0] in
-                        guard let n = (q as? ManagedEntityGroup)?.node else {
-                            return
-                        }
-                        groupsSet?.insert(n)
+            search(forEntityName: ModelIdentifier.entityGroupName, groups: v)?.forEach { [weak self, weak moc, v = v] in
+                guard let s = self else {
+                    return
+                }
+                
+                var n: ManagedEntity?
+                moc?.performAndWait { [q = $0] in
+                    n = (q as? ManagedEntityGroup)?.node
+                }
+                
+                guard let q = n else {
+                    return
+                }
+                
+                guard .and == s.groupsSearchCondition else {
+                    groupsSet?.insert(q)
+                    return
+                }
+                
+                let g = q.groups
+                for group in v {
+                    guard g.contains(group) else {
+                        return
                     }
-                    return
                 }
                 
-                guard let n = ($0 as? ManagedEntityGroup)?.node else {
-                    return
-                }
-                
-                groupsSet?.insert(n)
+                groupsSet?.insert(q)
             }
         }
         
         if let v = properties {
             propertiesSet = Set<ManagedEntity>()
-            search(forEntityName: ModelIdentifier.entityPropertyName, properties: v)?.forEach { [weak moc] in
-                guard Thread.isMainThread else {
-                    moc?.performAndWait { [q = $0] in
-                        guard let n = (q as? ManagedEntityProperty)?.node else {
-                            return
-                        }
-                        propertiesSet?.insert(n)
+            search(forEntityName: ModelIdentifier.entityPropertyName, properties: v)?.forEach { [weak self, weak moc, v = v] in
+                guard let s = self else {
+                    return
+                }
+                
+                var n: ManagedEntity?
+                moc?.performAndWait { [q = $0] in
+                    n = (q as? ManagedEntityProperty)?.node
+                }
+                
+                guard let q = n else {
+                    return
+                }
+                
+                guard .and == s.propertiesSearchCondition else {
+                    propertiesSet?.insert(q)
+                    return
+                }
+                
+                let k = q.properties.keys
+                for property in v {
+                    guard k.contains(property) else {
+                        return
                     }
-                    return
                 }
                 
-                guard let n = ($0 as? ManagedEntityProperty)?.node else {
-                    return
-                }
-                
-                propertiesSet?.insert(n)
+                propertiesSet?.insert(q)
             }
         }
         
         var set: Set<ManagedEntity>?
+        
         if let v = typesSet {
             set = v
         }
@@ -464,7 +502,11 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    internal func searchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Relationship] {
+    internal func searchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) -> [Relationship] {
+        guard let moc = graph.managedObjectContext else {
+            return [Relationship]()
+        }
+        
         var typesSet: Set<ManagedRelationship>?
         var tagsSet: Set<ManagedRelationship>?
         var groupsSet: Set<ManagedRelationship>?
@@ -473,44 +515,109 @@ extension Graph {
         if let v = types {
             typesSet = Set<ManagedRelationship>()
             search(forEntityName: ModelIdentifier.relationshipName, types: v)?.forEach {
-                guard let managedNode = $0 as? ManagedRelationship else {
+                guard let n = $0 as? ManagedRelationship else {
                     return
                 }
-                typesSet?.insert(managedNode)
+                
+                typesSet?.insert(n)
             }
         }
         
         if let v = tags {
             tagsSet = Set<ManagedRelationship>()
-            search(forEntityName: ModelIdentifier.relationshipTagName, tags: v)?.forEach {
-                guard let n = $0 as? ManagedRelationshipTag else {
+            search(forEntityName: ModelIdentifier.relationshipTagName, tags: v)?.forEach { [weak self, weak moc, v = v] in
+                guard let s = self else {
                     return
                 }
-                tagsSet?.insert(n.node)
+                
+                var n: ManagedRelationship?
+                moc?.performAndWait { [q = $0] in
+                    n = (q as? ManagedRelationshipTag)?.node
+                }
+                
+                guard let q = n else {
+                    return
+                }
+                
+                guard .and == s.tagsSearchCondition else {
+                    tagsSet?.insert(q)
+                    return
+                }
+                
+                guard q.has(tags: v) else {
+                    return
+                }
+                
+                tagsSet?.insert(q)
             }
         }
         
         if let v = groups {
             groupsSet = Set<ManagedRelationship>()
-            search(forEntityName: ModelIdentifier.relationshipGroupName, groups: v)?.forEach {
-                guard let n = $0 as? ManagedRelationshipGroup else {
+            search(forEntityName: ModelIdentifier.relationshipGroupName, groups: v)?.forEach { [weak self, weak moc, v = v] in
+                guard let s = self else {
                     return
                 }
-                groupsSet?.insert(n.node)
+                
+                var n: ManagedRelationship?
+                moc?.performAndWait { [q = $0] in
+                    n = (q as? ManagedRelationshipGroup)?.node
+                }
+                
+                guard let q = n else {
+                    return
+                }
+                
+                guard .and == s.groupsSearchCondition else {
+                    groupsSet?.insert(q)
+                    return
+                }
+                
+                let g = q.groups
+                for group in v {
+                    guard g.contains(group) else {
+                        return
+                    }
+                }
+                
+                groupsSet?.insert(q)
             }
         }
         
         if let v = properties {
             propertiesSet = Set<ManagedRelationship>()
-            search(forEntityName: ModelIdentifier.relationshipPropertyName, properties: v)?.forEach {
-                guard let n = $0 as? ManagedRelationshipProperty else {
+            search(forEntityName: ModelIdentifier.relationshipPropertyName, properties: v)?.forEach { [weak self, weak moc, v = v] in
+                guard let s = self else {
                     return
                 }
-                propertiesSet?.insert(n.node)
+                
+                var n: ManagedRelationship?
+                moc?.performAndWait { [q = $0] in
+                    n = (q as? ManagedRelationshipProperty)?.node
+                }
+                
+                guard let q = n else {
+                    return
+                }
+                
+                guard .and == s.propertiesSearchCondition else {
+                    propertiesSet?.insert(q)
+                    return
+                }
+                
+                let k = q.properties.keys
+                for property in v {
+                    guard k.contains(property) else {
+                        return
+                    }
+                }
+                
+                propertiesSet?.insert(q)
             }
         }
         
         var set: Set<ManagedRelationship>?
+        
         if let v = typesSet {
             set = v
         }
@@ -554,7 +661,11 @@ extension Graph {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    internal func searchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Action] {
+    internal func searchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) -> [Action] {
+        guard let moc = graph.managedObjectContext else {
+            return [Action]()
+        }
+        
         var typesSet: Set<ManagedAction>?
         var tagsSet: Set<ManagedAction>?
         var groupsSet: Set<ManagedAction>?
@@ -563,44 +674,109 @@ extension Graph {
         if let v = types {
             typesSet = Set<ManagedAction>()
             search(forEntityName: ModelIdentifier.actionName, types: v)?.forEach {
-                guard let managedNode = $0 as? ManagedAction else {
+                guard let n = $0 as? ManagedAction else {
                     return
                 }
-                typesSet?.insert(managedNode)
+                
+                typesSet?.insert(n)
             }
         }
         
         if let v = tags {
             tagsSet = Set<ManagedAction>()
-            search(forEntityName: ModelIdentifier.actionTagName, tags: v)?.forEach {
-                guard let n = $0 as? ManagedActionTag else {
+            search(forEntityName: ModelIdentifier.actionTagName, tags: v)?.forEach { [weak self, weak moc, v = v] in
+                guard let s = self else {
                     return
                 }
-                tagsSet?.insert(n.node)
+                
+                var n: ManagedAction?
+                moc?.performAndWait { [q = $0] in
+                    n = (q as? ManagedActionTag)?.node
+                }
+                
+                guard let q = n else {
+                    return
+                }
+                
+                guard .and == s.tagsSearchCondition else {
+                    tagsSet?.insert(q)
+                    return
+                }
+                
+                guard q.has(tags: v) else {
+                    return
+                }
+                
+                tagsSet?.insert(q)
             }
         }
         
         if let v = groups {
             groupsSet = Set<ManagedAction>()
-            search(forEntityName: ModelIdentifier.actionGroupName, groups: v)?.forEach {
-                guard let n = $0 as? ManagedActionGroup else {
+            search(forEntityName: ModelIdentifier.actionGroupName, groups: v)?.forEach { [weak self, weak moc, v = v] in
+                guard let s = self else {
                     return
                 }
-                groupsSet?.insert(n.node)
+                
+                var n: ManagedAction?
+                moc?.performAndWait { [q = $0] in
+                    n = (q as? ManagedActionGroup)?.node
+                }
+                
+                guard let q = n else {
+                    return
+                }
+                
+                guard .and == s.groupsSearchCondition else {
+                    groupsSet?.insert(q)
+                    return
+                }
+                
+                let g = q.groups
+                for group in v {
+                    guard g.contains(group) else {
+                        return
+                    }
+                }
+                
+                groupsSet?.insert(q)
             }
         }
         
         if let v = properties {
             propertiesSet = Set<ManagedAction>()
-            search(forEntityName: ModelIdentifier.actionPropertyName, properties: v)?.forEach {
-                guard let n = $0 as? ManagedActionProperty else {
+            search(forEntityName: ModelIdentifier.actionPropertyName, properties: v)?.forEach { [weak self, weak moc, v = v] in
+                guard let s = self else {
                     return
                 }
-                propertiesSet?.insert(n.node)
+                
+                var n: ManagedAction?
+                moc?.performAndWait { [q = $0] in
+                    n = (q as? ManagedActionProperty)?.node
+                }
+                
+                guard let q = n else {
+                    return
+                }
+                
+                guard .and == s.propertiesSearchCondition else {
+                    propertiesSet?.insert(q)
+                    return
+                }
+                
+                let k = q.properties.keys
+                for property in v {
+                    guard k.contains(property) else {
+                        return
+                    }
+                }
+                
+                propertiesSet?.insert(q)
             }
         }
         
         var set: Set<ManagedAction>?
+        
         if let v = typesSet {
             set = v
         }
@@ -639,11 +815,11 @@ extension Graph {
     /**
      Searches based on type value.
      - Parameter forEntityName: An entity type name.
-     - Parameter types: An Array of types.
-     - Returns: An optional Array of Anys.
+     - Parameter types: An Array of Strings.
+     - Returns: An optional Array of ManagedNode objects.
      */
     internal func search(forEntityName: String, types: [String]) -> [ManagedNode]? {
-        guard let moc = managedObjectContext else {
+        guard let moc = graph.managedObjectContext else {
             return nil
         }
         
@@ -655,8 +831,8 @@ extension Graph {
         
         let request = NSFetchRequest<ManagedNode>()
         request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
+        request.fetchBatchSize = graph.batchSize
+        request.fetchOffset = graph.batchOffset
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
         
         var result: [AnyObject]?
@@ -675,11 +851,11 @@ extension Graph {
     /**
      Searches based on tag value.
      - Parameter forEntityName: An entity type name.
-     - Parameter tags: An Array of tags.
-     - Returns: An optional Array of Anys.
+     - Parameter tags: An Array of Strings.
+     - Returns: An optional Array of ManagedTag objects.
      */
     internal func search(forEntityName: String, tags: [String]) -> [ManagedTag]? {
-        guard let moc = managedObjectContext else {
+        guard let moc = graph.managedObjectContext else {
             return nil
         }
         
@@ -691,8 +867,8 @@ extension Graph {
         
         let request = NSFetchRequest<ManagedTag>()
         request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
+        request.fetchBatchSize = graph.batchSize
+        request.fetchOffset = graph.batchOffset
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
         
         var result: [AnyObject]?
@@ -711,11 +887,11 @@ extension Graph {
     /**
      Searches based on group value.
      - Parameter forEntityName: An entity type name.
-     - Parameter groups: An Array of tags.
-     - Returns: An optional Array of Anys.
+     - Parameter groups: An Array of Strings.
+     - Returns: An optional Array of ManagedGroup objects.
      */
     internal func search(forEntityName: String, groups: [String]) -> [ManagedGroup]? {
-        guard let moc = managedObjectContext else {
+        guard let moc = graph.managedObjectContext else {
             return nil
         }
         
@@ -727,8 +903,8 @@ extension Graph {
         
         let request = NSFetchRequest<ManagedGroup>()
         request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
+        request.fetchBatchSize = graph.batchSize
+        request.fetchOffset = graph.batchOffset
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
         
         var result: [AnyObject]?
@@ -747,32 +923,24 @@ extension Graph {
     /**
      Searches based on property value.
      - Parameter forEntityName: An entity type name.
-     - Parameter properties: An Array of property tuples.
+     - Parameter properties: An Array of ManagedProperty objects.
      - Returns: An optional Array of Anys.
      */
-    internal func search(forEntityName: String, properties: [(name: String, value: Any?)]) -> [ManagedProperty]? {
-        guard let moc = managedObjectContext else {
+    internal func search(forEntityName: String, properties: [String]) -> [ManagedProperty]? {
+        guard let moc = graph.managedObjectContext else {
             return nil
         }
         
         var predicate = [NSPredicate]()
         
-        for (k, v) in properties {
-            if let x = v {
-                if let a = x as? String {
-                    predicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
-                } else if let a: NSNumber = x as? NSNumber {
-                    predicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", a)]))
-                }
-            } else {
-                predicate.append(NSPredicate(format: "name LIKE[cd] %@", k))
-            }
+        for v in properties {
+            predicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
         }
         
         let request = NSFetchRequest<ManagedProperty>()
         request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
+        request.fetchBatchSize = graph.batchSize
+        request.fetchOffset = graph.batchOffset
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
         
         var result: [AnyObject]?

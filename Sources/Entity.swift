@@ -79,12 +79,12 @@ public class Entity: NSObject, Node {
     }
     
     /// A reference to tags.
-    public var tags: Set<String> {
+    public var tags: [String] {
         return managedNode.tags
     }
     
     /// A reference to groups.
-    public var groups: Set<String> {
+    public var groups: [String] {
         return managedNode.groups
     }
     
@@ -247,13 +247,23 @@ public class Entity: NSObject, Node {
     }
     
     /**
-     Checks if an Entity has a given tag.
+     Checks if the Entity has a given tag.
      - Parameter tag: A tag name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
     public func has(tag: String) -> Bool {
         return managedNode.has(tag: tag)
+    }
+    
+    /**
+     Checks if the Entity has a the given tags.
+     - Parameter tags: An Array of Strings.
+     - Returns: A boolean of the result, true if has the tags,
+     false otherwise.
+     */
+    public func has(tags: [String]) -> Bool {
+        return managedNode.has(tags: tags)
     }
     
     /**
@@ -275,7 +285,7 @@ public class Entity: NSObject, Node {
     }
     
     /**
-     Adds an Entity to a given group.
+     Adds the Entity to a given group.
      - Parameter to group: A group name.
      - Returns: A boolean of the result, true if added, false
      otherwise.
@@ -285,7 +295,7 @@ public class Entity: NSObject, Node {
     }
     
     /**
-     Checks if an Entity is a member of a given group.
+     Checks if the Entity is a member of a given group.
      - Parameter of group: A group name.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
@@ -295,7 +305,18 @@ public class Entity: NSObject, Node {
     }
     
     /**
-     Removes an Entity from a given group.
+     Checks if the Entity is a member of a given group.
+     - Parameter of group: A group name.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
+     */
+    @nonobjc
+    public func member(of groups: [String]) -> Bool {
+        return managedNode.member(of: groups)
+    }
+    
+    /**
+     Removes the Entity from a given group.
      - Parameter from group: A group name.
      - Returns: A boolean of the result, true if removed, false
      otherwise.
