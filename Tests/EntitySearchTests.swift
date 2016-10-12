@@ -798,12 +798,15 @@ class EntitySearchTests : XCTestCase {
         let graph = Graph()
         graph.clear()
         
-        for i in 0..<1000 {
-            let n = Entity(type: "T1")
-            n["P1"] = 0 == i % 2 ? "V1" : 1
-            n["P2"] = "V2"
-            n.add(tag: "Q1")
-            n.add(to: "G1")
+        for _ in 0..<1000 {
+            let n1 = Entity(type: "T1")
+            let n2 = Entity(type: "T2")
+            n1["P1"] = 1
+            n2["P1"] = 2
+            n1.add(tag: "Q1")
+            n2.add(tag: "Q1")
+            n1.add(to: "G1")
+            n2.add(to: "G1")
         }
         
         graph.sync { (success, error) in
@@ -813,7 +816,8 @@ class EntitySearchTests : XCTestCase {
         let search = Search<Entity>(graph: graph)
         
         measure { [search = search] in
-            XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: "Q1").member(of: "G1").where(properties: ["P1": nil, "P2": nil]).sync().count)
+            XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: "Q1").where(properties: ["P1": 1]).sync().count)
+//            XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: "Q1").member(of: "G1").where(properties: ["P1": nil, "P2": nil]).sync().count)
         }
         
         graph.clear()
