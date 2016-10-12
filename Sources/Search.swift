@@ -337,6 +337,10 @@ extension Graph {
      - Returns: An Array of Entities.
      */
     internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(name: String, value: Any?)]? = nil) -> [Entity] {
+        guard let moc = managedObjectContext else {
+            return [Entity]()
+        }
+        
         var typesSet: Set<ManagedEntity>?
         var tagsSet: Set<ManagedEntity>?
         var groupsSet: Set<ManagedEntity>?
@@ -345,40 +349,74 @@ extension Graph {
         if let v = types {
             typesSet = Set<ManagedEntity>()
             search(forEntityName: ModelIdentifier.entityName, types: v)?.forEach {
-                guard let managedNode = $0 as? ManagedEntity else {
+                guard let n = $0 as? ManagedEntity else {
                     return
                 }
-                typesSet?.insert(managedNode)
+                
+                typesSet?.insert(n)
             }
         }
         
         if let v = tags {
             tagsSet = Set<ManagedEntity>()
-            search(forEntityName: ModelIdentifier.entityTagName, tags: v)?.forEach {
-                guard let n = $0 as? ManagedEntityTag else {
+            search(forEntityName: ModelIdentifier.entityTagName, tags: v)?.forEach { [weak moc] in
+                guard Thread.isMainThread else {
+                    moc?.performAndWait { [q = $0] in
+                        guard let n = (q as? ManagedEntityTag)?.node else {
+                            return
+                        }
+                        tagsSet?.insert(n)
+                    }
                     return
                 }
-                tagsSet?.insert(n.node)
+                
+                guard let n = ($0 as? ManagedEntityTag)?.node else {
+                    return
+                }
+                
+                tagsSet?.insert(n)
             }
         }
         
         if let v = groups {
             groupsSet = Set<ManagedEntity>()
-            search(forEntityName: ModelIdentifier.entityGroupName, groups: v)?.forEach {
-                guard let n = $0 as? ManagedEntityGroup else {
+            search(forEntityName: ModelIdentifier.entityGroupName, groups: v)?.forEach { [weak moc] in
+                guard Thread.isMainThread else {
+                    moc?.performAndWait { [q = $0] in
+                        guard let n = (q as? ManagedEntityGroup)?.node else {
+                            return
+                        }
+                        groupsSet?.insert(n)
+                    }
                     return
                 }
-                groupsSet?.insert(n.node)
+                
+                guard let n = ($0 as? ManagedEntityGroup)?.node else {
+                    return
+                }
+                
+                groupsSet?.insert(n)
             }
         }
         
         if let v = properties {
             propertiesSet = Set<ManagedEntity>()
-            search(forEntityName: ModelIdentifier.entityPropertyName, properties: v)?.forEach {
-                guard let n = $0 as? ManagedEntityProperty else {
+            search(forEntityName: ModelIdentifier.entityPropertyName, properties: v)?.forEach { [weak moc] in
+                guard Thread.isMainThread else {
+                    moc?.performAndWait { [q = $0] in
+                        guard let n = (q as? ManagedEntityProperty)?.node else {
+                            return
+                        }
+                        propertiesSet?.insert(n)
+                    }
                     return
                 }
-                propertiesSet?.insert(n.node)
+                
+                guard let n = ($0 as? ManagedEntityProperty)?.node else {
+                    return
+                }
+                
+                propertiesSet?.insert(n)
             }
         }
         
@@ -599,12 +637,120 @@ extension Graph {
     }
     
     /**
+     Searches based on type value.
+     - Parameter forEntityName: An entity type name.
+     - Parameter types: An Array of types.
+     - Returns: An optional Array of Anys.
+     */
+    internal func search(forEntityName: String, types: [String]) -> [ManagedNode]? {
+        guard let moc = managedObjectContext else {
+            return nil
+        }
+        
+        var predicate = [NSPredicate]()
+        
+        for v in types {
+            predicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
+        }
+        
+        let request = NSFetchRequest<ManagedNode>()
+        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
+        request.fetchBatchSize = batchSize
+        request.fetchOffset = batchOffset
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
+        
+        var result: [AnyObject]?
+        moc.performAndWait { [unowned moc, unowned request] in
+            do {
+                if #available(iOS 10.0, OSX 10.12, *) {
+                    result = try request.execute()
+                } else {
+                    result = try moc.fetch(request)
+                }
+            } catch {}
+        }
+        return result as? [ManagedNode]
+    }
+    
+    /**
+     Searches based on tag value.
+     - Parameter forEntityName: An entity type name.
+     - Parameter tags: An Array of tags.
+     - Returns: An optional Array of Anys.
+     */
+    internal func search(forEntityName: String, tags: [String]) -> [ManagedTag]? {
+        guard let moc = managedObjectContext else {
+            return nil
+        }
+        
+        var predicate = [NSPredicate]()
+        
+        for v in tags {
+            predicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
+        }
+        
+        let request = NSFetchRequest<ManagedTag>()
+        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
+        request.fetchBatchSize = batchSize
+        request.fetchOffset = batchOffset
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
+        
+        var result: [AnyObject]?
+        moc.performAndWait { [unowned request] in
+            do {
+                if #available(iOS 10.0, OSX 10.12, *) {
+                    result = try request.execute()
+                } else {
+                    result = try moc.fetch(request)
+                }
+            } catch {}
+        }
+        return result as? [ManagedTag]
+    }
+    
+    /**
+     Searches based on group value.
+     - Parameter forEntityName: An entity type name.
+     - Parameter groups: An Array of tags.
+     - Returns: An optional Array of Anys.
+     */
+    internal func search(forEntityName: String, groups: [String]) -> [ManagedGroup]? {
+        guard let moc = managedObjectContext else {
+            return nil
+        }
+        
+        var predicate = [NSPredicate]()
+        
+        for v in groups {
+            predicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
+        }
+        
+        let request = NSFetchRequest<ManagedGroup>()
+        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
+        request.fetchBatchSize = batchSize
+        request.fetchOffset = batchOffset
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
+        
+        var result: [AnyObject]?
+        moc.performAndWait { [unowned request] in
+            do {
+                if #available(iOS 10.0, OSX 10.12, *) {
+                    result = try request.execute()
+                } else {
+                    result = try moc.fetch(request)
+                }
+            } catch {}
+        }
+        return result as? [ManagedGroup]
+    }
+    
+    /**
      Searches based on property value.
      - Parameter forEntityName: An entity type name.
      - Parameter properties: An Array of property tuples.
      - Returns: An optional Array of Anys.
      */
-    internal func search(forEntityName: String, properties: [(name: String, value: Any?)]) -> [ManagedObject]? {
+    internal func search(forEntityName: String, properties: [(name: String, value: Any?)]) -> [ManagedProperty]? {
         guard let moc = managedObjectContext else {
             return nil
         }
@@ -639,114 +785,6 @@ extension Graph {
                 }
             } catch {}
         }
-        return result as? [ManagedObject]
-    }
-    
-    /**
-     Searches based on type value.
-     - Parameter forEntityName: An entity type name.
-     - Parameter types: An Array of types.
-     - Returns: An optional Array of Anys.
-     */
-    internal func search(forEntityName: String, types: [String]) -> [ManagedObject]? {
-        guard let moc = managedObjectContext else {
-            return nil
-        }
-        
-        var predicate = [NSPredicate]()
-        
-        for v in types {
-            predicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
-        }
-        
-        let request = NSFetchRequest<ManagedNode>()
-        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
-        
-        var result: [AnyObject]?
-        moc.performAndWait { [unowned moc, unowned request] in
-            do {
-                if #available(iOS 10.0, OSX 10.12, *) {
-                    result = try request.execute()
-                } else {
-                    result = try moc.fetch(request)
-                }
-            } catch {}
-        }
-        return result as? [ManagedObject]
-    }
-    
-    /**
-     Searches based on tag value.
-     - Parameter forEntityName: An entity type name.
-     - Parameter tags: An Array of tags.
-     - Returns: An optional Array of Anys.
-     */
-    internal func search(forEntityName: String, tags: [String]) -> [ManagedObject]? {
-        guard let moc = managedObjectContext else {
-            return nil
-        }
-        
-        var predicate = [NSPredicate]()
-        
-        for v in tags {
-            predicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
-        }
-        
-        let request = NSFetchRequest<ManagedTag>()
-        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
-        
-        var result: [AnyObject]?
-        moc.performAndWait { [unowned request] in
-            do {
-                if #available(iOS 10.0, OSX 10.12, *) {
-                    result = try request.execute()
-                } else {
-                    result = try moc.fetch(request)
-                }
-            } catch {}
-        }
-        return result as? [ManagedObject]
-    }
-    
-    /**
-     Searches based on group value.
-     - Parameter forEntityName: An entity type name.
-     - Parameter groups: An Array of tags.
-     - Returns: An optional Array of Anys.
-     */
-    internal func search(forEntityName: String, groups: [String]) -> [ManagedObject]? {
-        guard let moc = managedObjectContext else {
-            return nil
-        }
-        
-        var predicate = [NSPredicate]()
-        
-        for v in groups {
-            predicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
-        }
-        
-        let request = NSFetchRequest<ManagedGroup>()
-        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
-        request.fetchBatchSize = batchSize
-        request.fetchOffset = batchOffset
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
-        
-        var result: [AnyObject]?
-        moc.performAndWait { [unowned request] in
-            do {
-                if #available(iOS 10.0, OSX 10.12, *) {
-                    result = try request.execute()
-                } else {
-                    result = try moc.fetch(request)
-                }
-            } catch {}
-        }
-        return result as? [ManagedObject]
+        return result as? [ManagedProperty]
     }
 }
