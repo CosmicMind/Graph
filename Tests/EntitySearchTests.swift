@@ -165,9 +165,9 @@ class EntitySearchTests : XCTestCase {
         
         let search = Search<Entity>(graph: graph)
         
-//        measure { [search = search] in
-//            XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: "Q1").member(of: "G1").where(properties: ["P1": 1]).sync().count)
-//        }
+        measure { [search = search] in
+            XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: ["Q1"], with: .and).member(of: ["G1"], with: .and).where(properties: ["P1"], with: .and).sync().count)
+        }
         
         graph.clear()
     }
