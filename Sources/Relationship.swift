@@ -32,7 +32,7 @@ import Foundation
 
 @objc(Relationship)
 public class Relationship: NSObject, Node {
-    /// A reference to the 
+    /// A reference to the managedNode.
     internal let managedNode: ManagedRelationship
     
     public override var description: String {
@@ -182,7 +182,6 @@ public class Relationship: NSObject, Node {
      - Parameter type: A reference to a type.
      - Parameter graph: A reference to a Graph instance.
      */
-    @nonobjc
     public convenience init(type: String, graph: Graph) {
         let context = graph.managedObjectContext
         var managedNode: ManagedRelationship?

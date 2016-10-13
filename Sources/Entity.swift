@@ -32,7 +32,7 @@ import Foundation
 
 @objc(Entity)
 public class Entity: NSObject, Node {
-    /// A reference to the node.
+    /// A reference to the managedNode.
     internal let managedNode: ManagedEntity
     
     /// A string representation of the Entity.
@@ -207,7 +207,6 @@ public class Entity: NSObject, Node {
      - Parameter type: A reference to a type.
      - Parameter graph: A reference to a Graph instance.
      */
-    @nonobjc
     public convenience init(type: String, graph: Graph) {
         let context = graph.managedObjectContext
         var managedNode: ManagedEntity?
