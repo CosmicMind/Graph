@@ -32,8 +32,6 @@ import CoreData
 
 @objc(ManagedActionGroup)
 internal class ManagedActionGroup: ManagedGroup {
-    @NSManaged internal var node: ManagedAction
-    
     /**
      Initializer that accepts a group name and a NSManagedObjectContext.
      - Parameter name: A group name.

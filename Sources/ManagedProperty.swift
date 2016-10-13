@@ -34,6 +34,7 @@ import CoreData
 internal class ManagedProperty: ManagedObject{
     @NSManaged internal var name: String
     @NSManaged internal var object: Any
+    @NSManaged internal var node: ManagedNode
     
     /**
      Initializer that accepts an identifier, property name, value and

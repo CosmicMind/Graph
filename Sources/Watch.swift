@@ -926,7 +926,7 @@ extension Graph {
                 return
             }
             let tag = managedObject as! ManagedEntityTag
-            (self.delegate as? GraphEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: tag.node), added: tag.name, source: source)
+            (self.delegate as? GraphEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: tag.node as! ManagedEntity), added: tag.name, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -934,7 +934,7 @@ extension Graph {
                 return
             }
             let group = managedObject as! ManagedEntityGroup
-            (self.delegate as? GraphEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: group.node), addedTo: group.name, source: source)
+            (self.delegate as? GraphEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: group.node as! ManagedEntity), addedTo: group.name, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -942,7 +942,7 @@ extension Graph {
                 return
             }
             let property = managedObject as! ManagedEntityProperty
-            (self.delegate as? GraphEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: property.node), added: property.name, with: property.object, source: source)
+            (self.delegate as? GraphEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: property.node as! ManagedEntity), added: property.name, with: property.object, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -957,7 +957,7 @@ extension Graph {
                 return
             }
             let tag = managedObject as! ManagedRelationshipTag
-            (self.delegate as? GraphRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: tag.node), added: tag.name, source: source)
+            (self.delegate as? GraphRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: tag.node as! ManagedRelationship), added: tag.name, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -965,7 +965,7 @@ extension Graph {
                 return
             }
             let group = managedObject as! ManagedRelationshipGroup
-            (self.delegate as? GraphRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: group.node), addedTo: group.name, source: source)
+            (self.delegate as? GraphRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: group.node as! ManagedRelationship), addedTo: group.name, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -973,7 +973,7 @@ extension Graph {
                 return
             }
             let property = managedObject as! ManagedRelationshipProperty
-            (self.delegate as? GraphRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: property.node), added: property.name, with: property.object, source: source)
+            (self.delegate as? GraphRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: property.node as! ManagedRelationship), added: property.name, with: property.object, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -988,7 +988,7 @@ extension Graph {
                 return
             }
             let tag: ManagedActionTag = managedObject as! ManagedActionTag
-            (self.delegate as? GraphActionDelegate)?.graph?(graph: self, action: Action(managedNode: tag.node), added: tag.name, source: source)
+            (self.delegate as? GraphActionDelegate)?.graph?(graph: self, action: Action(managedNode: tag.node as! ManagedAction), added: tag.name, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -996,7 +996,7 @@ extension Graph {
                 return
             }
             let group = managedObject as! ManagedActionGroup
-            (self.delegate as? GraphActionDelegate)?.graph?(graph: self, action: Action(managedNode: group.node), addedTo: group.name, source: source)
+            (self.delegate as? GraphActionDelegate)?.graph?(graph: self, action: Action(managedNode: group.node as! ManagedAction), addedTo: group.name, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -1004,7 +1004,7 @@ extension Graph {
                 return
             }
             let property = managedObject as! ManagedActionProperty
-            (self.delegate as? GraphActionDelegate)?.graph?(graph: self, action: Action(managedNode: property.node), added: property.name, with: property.object, source: source)
+            (self.delegate as? GraphActionDelegate)?.graph?(graph: self, action: Action(managedNode: property.node as! ManagedAction), added: property.name, with: property.object, source: source)
         }
     }
     
@@ -1021,7 +1021,7 @@ extension Graph {
                 return
             }
             let property = managedObject as! ManagedEntityProperty
-            (self.delegate as? GraphEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: property.node), updated: property.name, with: property.object, source: source)
+            (self.delegate as? GraphEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: property.node as! ManagedEntity), updated: property.name, with: property.object, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -1036,7 +1036,7 @@ extension Graph {
                 return
             }
             let property = managedObject as! ManagedRelationshipProperty
-            (self.delegate as? GraphRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: property.node), updated: property.name, with: property.object, source: source)
+            (self.delegate as? GraphRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: property.node as! ManagedRelationship), updated: property.name, with: property.object, source: source)
         }
         
         nodes.forEach { [unowned self] (managedObject: NSManagedObject) in
@@ -1044,7 +1044,7 @@ extension Graph {
                 return
             }
             let property = managedObject as! ManagedActionProperty
-            (self.delegate as? GraphActionDelegate)?.graph?(graph: self, action: Action(managedNode: property.node), updated: property.name, with: property.object, source: source)
+            (self.delegate as? GraphActionDelegate)?.graph?(graph: self, action: Action(managedNode: property.node as! ManagedAction), updated: property.name, with: property.object, source: source)
         }
     }
     
@@ -1063,7 +1063,7 @@ extension Graph {
             
             let tag = managedObject as! ManagedEntityTag
             
-            guard let node = .cloud == source ? tag.node : tag.changedValuesForCurrentEvent()["node"] as? ManagedEntity else {
+            guard let node = (.cloud == source ? tag.node : tag.changedValuesForCurrentEvent()["node"]) as? ManagedEntity else {
                 return
             }
             
@@ -1077,7 +1077,7 @@ extension Graph {
             
             let group = managedObject as! ManagedEntityGroup
             
-            guard let node = .cloud == source ? group.node : group.changedValuesForCurrentEvent()["node"] as? ManagedEntity else {
+            guard let node = (.cloud == source ? group.node : group.changedValuesForCurrentEvent()["node"]) as? ManagedEntity else {
                 return
             }
             
@@ -1091,7 +1091,7 @@ extension Graph {
             
             let property = managedObject as! ManagedEntityProperty
             
-            guard let node = .cloud == source ? property.node : property.changedValuesForCurrentEvent()["node"] as? ManagedEntity else {
+            guard let node = (.cloud == source ? property.node : property.changedValuesForCurrentEvent()["node"]) as? ManagedEntity else {
                 return
             }
             
@@ -1112,7 +1112,7 @@ extension Graph {
             
             let tag = managedObject as! ManagedRelationshipTag
             
-            guard let node = .cloud == source ? tag.node : tag.changedValuesForCurrentEvent()["node"] as? ManagedRelationship else {
+            guard let node = (.cloud == source ? tag.node : tag.changedValuesForCurrentEvent()["node"]) as? ManagedRelationship else {
                 return
             }
             
@@ -1126,7 +1126,7 @@ extension Graph {
             
             let group = managedObject as! ManagedRelationshipGroup
             
-            guard let node = .cloud == source ? group.node : group.changedValuesForCurrentEvent()["node"] as? ManagedRelationship else {
+            guard let node = (.cloud == source ? group.node : group.changedValuesForCurrentEvent()["node"]) as? ManagedRelationship else {
                 return
             }
             
@@ -1140,7 +1140,7 @@ extension Graph {
             
             let property = managedObject as! ManagedRelationshipProperty
             
-            guard let node = .cloud == source ? property.node : property.changedValuesForCurrentEvent()["node"] as? ManagedRelationship else {
+            guard let node = (.cloud == source ? property.node : property.changedValuesForCurrentEvent()["node"]) as? ManagedRelationship else {
                 return
             }
             
@@ -1161,7 +1161,7 @@ extension Graph {
             
             let tag: ManagedActionTag = managedObject as! ManagedActionTag
             
-            guard let node = .cloud == source ? tag.node : tag.changedValuesForCurrentEvent()["node"] as? ManagedAction else {
+            guard let node = (.cloud == source ? tag.node : tag.changedValuesForCurrentEvent()["node"]) as? ManagedAction else {
                 return
             }
             
@@ -1175,7 +1175,7 @@ extension Graph {
             
             let group = managedObject as! ManagedActionGroup
             
-            guard let node = .cloud == source ? group.node : group.changedValuesForCurrentEvent()["node"] as? ManagedAction else {
+            guard let node = (.cloud == source ? group.node : group.changedValuesForCurrentEvent()["node"]) as? ManagedAction else {
                 return
             }
             
@@ -1189,7 +1189,7 @@ extension Graph {
             
             let property = managedObject as! ManagedActionProperty
             
-            guard let node = .cloud == source ? property.node : property.changedValuesForCurrentEvent()["node"] as? ManagedAction else {
+            guard let node = (.cloud == source ? property.node : property.changedValuesForCurrentEvent()["node"]) as? ManagedAction else {
                 return
             }
             

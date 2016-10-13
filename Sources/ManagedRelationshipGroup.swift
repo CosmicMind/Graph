@@ -32,8 +32,6 @@ import CoreData
 
 @objc(ManagedRelationshipGroup)
 internal class ManagedRelationshipGroup: ManagedGroup {
-    @NSManaged internal var node: ManagedRelationship
-    
     /**
      Initializer that accepts a group name and a NSManagedObjectContext.
      - Parameter name: A group name.

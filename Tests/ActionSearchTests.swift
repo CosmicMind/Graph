@@ -166,7 +166,7 @@ class ActionSearchTests : XCTestCase {
         let search = Search<Action>(graph: graph)
         
         measure { [search = search] in
-            XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: ["Q2"], using: .and).member(of: ["G1"], using: .and).where(properties: ["P1"], using: .and).sync().count)
+            XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: ["Q1"], using: .and).member(of: ["G1"], using: .and).where(properties: ["P1"], using: .and).sync().count)
         }
         
         graph.clear()

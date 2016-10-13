@@ -32,8 +32,6 @@ import CoreData
 
 @objc(ManagedEntityProperty)
 internal class ManagedEntityProperty: ManagedProperty {
-    @NSManaged internal var node: ManagedEntity
-    
     /**
      Initializer that accepts a property name, value and
      a NSManagedObjectContext.

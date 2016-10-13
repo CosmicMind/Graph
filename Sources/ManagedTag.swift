@@ -33,6 +33,7 @@ import CoreData
 @objc(ManagedTag)
 internal class ManagedTag: ManagedObject {
     @NSManaged internal var name: String
+    @NSManaged internal var node: ManagedNode
     
     /**
      Initializer that accepts an identifier, tag name and a NSManagedObjectContext.

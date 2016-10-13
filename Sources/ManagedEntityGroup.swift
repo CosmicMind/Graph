@@ -32,8 +32,6 @@ import CoreData
 
 @objc(ManagedEntityGroup)
 internal class ManagedEntityGroup: ManagedGroup {
-    @NSManaged internal var node: ManagedEntity
-    
     /**
      Initializer that accepts a group name and a NSManagedObjectContext.
      - Parameter name: A group name.

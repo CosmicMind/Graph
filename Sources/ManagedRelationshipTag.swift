@@ -32,8 +32,6 @@ import CoreData
 
 @objc(ManagedRelationshipTag)
 internal class ManagedRelationshipTag: ManagedTag {
-    @NSManaged internal var node: ManagedRelationship
-    
     /**
      Initializer that accepts a tag name and a NSManagedObjectContext.
      - Parameter name: A tag name.

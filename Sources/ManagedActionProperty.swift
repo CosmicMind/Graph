@@ -32,8 +32,6 @@ import CoreData
 
 @objc(ManagedActionProperty)
 internal class ManagedActionProperty: ManagedProperty {
-    @NSManaged internal var node: ManagedAction
-    
     /**
      Initializer that accepts a property name, value and
      a NSManagedObjectContext.

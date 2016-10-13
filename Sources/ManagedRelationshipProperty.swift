@@ -32,8 +32,6 @@ import CoreData
 
 @objc(ManagedRelationshipProperty)
 internal class ManagedRelationshipProperty: ManagedProperty {
-    @NSManaged internal var node: ManagedRelationship
-    
     /**
      Initializer that accepts a property name, value and
      a NSManagedObjectContext.

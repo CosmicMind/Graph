@@ -33,6 +33,7 @@ import CoreData
 @objc(ManagedGroup)
 internal class ManagedGroup: ManagedObject {
     @NSManaged internal var name: String
+    @NSManaged internal var node: ManagedNode
     
     /**
      Initializer that accepts an identifier, group name and a NSManagedObjectContext.
