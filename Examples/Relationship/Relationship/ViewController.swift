@@ -183,9 +183,9 @@ class ViewController: UIViewController {
 	}
 }
 
-/// GraphDelegate delegation methods.
-extension ViewController: GraphDelegate {
-	/// GraphDelegate delegation method that is executed on Relationship inserts.
+/// WatchDelegate delegation methods.
+extension ViewController: WatchDelegate {
+	/// WatchDelegate delegation method that is executed on Relationship inserts.
     func graphDidInsertRelationship(graph: Graph, relationship: Relationship, cloud: Bool) {
 		employees.append(relationship)
 		tableView.reloadData()

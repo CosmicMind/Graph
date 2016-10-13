@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
+class RelationshipPropertyTests: XCTestCase, WatchRelationshipDelegate {
     var saveExpectation: XCTestExpectation?
     
     var propertyInsertExpception: XCTestExpectation?
@@ -139,7 +139,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
@@ -150,7 +150,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         propertyInsertExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
@@ -161,7 +161,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         

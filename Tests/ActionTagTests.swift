@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class ActionTagTests: XCTestCase, GraphActionDelegate {
+class ActionTagTests: XCTestCase, WatchActionDelegate {
     var saveExpectation: XCTestExpectation?
     
     var tagAddExpception: XCTestExpectation?
@@ -143,7 +143,7 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, action: Action, added tag: String, source: GraphSource) {
+    func watch(graph: Graph, action: Action, added tag: String, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G1", tag)
@@ -154,7 +154,7 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
         tagAddExpception?.fulfill()
     }
     
-    func graph(graph: Graph, action: Action, removed tag: String, source: GraphSource) {
+    func watch(graph: Graph, action: Action, removed tag: String, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G2", tag)

@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class EntityGroupTests: XCTestCase, GraphEntityDelegate {
+class EntityGroupTests: XCTestCase, WatchEntityDelegate {
     var saveExpectation: XCTestExpectation?
     
     var tagAddExpception: XCTestExpectation?
@@ -143,7 +143,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, entity: Entity, addedTo group: String, source: GraphSource) {
+    func watch(graph: Graph, entity: Entity, addedTo group: String, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G1", group)
@@ -154,7 +154,7 @@ class EntityGroupTests: XCTestCase, GraphEntityDelegate {
         tagAddExpception?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource) {
+    func watch(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G2", group)

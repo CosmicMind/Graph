@@ -30,7 +30,6 @@
 
 import CoreData
 
-@objc(SearchCondition)
 public enum SearchCondition: Int {
     case or
     case and
@@ -58,6 +57,8 @@ public protocol Searchable {
 
 /// Search.
 public class Search<T: Node>: Searchable {
+    public typealias Element = T
+    
     /**
      A synchronous request that returns an Array of Elements or executes a
      callback with an Array of Elements passed in as the first argument.

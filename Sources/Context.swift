@@ -77,6 +77,7 @@ extension Graph {
         guard false == GraphContextRegistry.dispatchToken else {
             return
         }
+        
         GraphContextRegistry.dispatchToken = true
         GraphContextRegistry.added = [String: Bool]()
         GraphContextRegistry.supported = [String: Bool]()
@@ -122,7 +123,7 @@ extension Graph {
                 return
             }
             s.completion?(supported, supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
-            (s.delegate as? GraphCloudDelegate)?.graphDidPrepareCloudStorage?(graph: s)
+            (s.delegate as? WatchCloudDelegate)?.graphDidPrepareCloudStorage?(graph: s)
         }
     }
     

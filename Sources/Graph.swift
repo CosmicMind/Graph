@@ -60,9 +60,6 @@ public class Graph: NSObject {
     /// Worker managedObjectContext.
     public internal(set) var managedObjectContext: NSManagedObjectContext!
     
-    /// Watch instances.
-    public lazy var watchers = [Watch]()
-
     /// Number of items to return.
     public var batchSize: Int = 0 // 0 == no limit
     
@@ -70,7 +67,7 @@ public class Graph: NSObject {
     public var batchOffset: Int = 0
     
     /// A reference to a delagte object.
-    open weak var delegate: GraphDelegate?
+    internal weak var delegate: WatchDelegate?
     
     /**
      A reference to the graph completion handler.

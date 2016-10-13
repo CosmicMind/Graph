@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
+class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
     var saveExpectation: XCTestExpectation?
     
     var propertyInsertExpception: XCTestExpectation?
@@ -138,7 +138,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         
@@ -149,7 +149,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
         propertyInsertExpception?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         
@@ -160,7 +160,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func graph(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         

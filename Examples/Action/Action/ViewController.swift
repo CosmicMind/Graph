@@ -134,9 +134,9 @@ class ViewController: UIViewController {
 	}
 }
 
-/// GraphDelegate delegation methods.
-extension ViewController: GraphDelegate {
-	/// GraphDelegate delegation method that is executed on Action inserts.
+/// WatchDelegate delegation methods.
+extension ViewController: WatchDelegate {
+	/// WatchDelegate delegation method that is executed on Action inserts.
     func graphDidInsertAction(graph: Graph, action: Action, cloud: Bool) {
 		acquisitions.append(action)
 		tableView.reloadData()

@@ -136,13 +136,13 @@ extension Graph {
             t = .initialImportCompleted
         }
         
-        (self.delegate as? GraphCloudDelegate)?.graphWillPrepareCloudStorage?(graph: self, transition: t)
+        (self.delegate as? WatchCloudDelegate)?.graphWillPrepareCloudStorage?(graph: self, transition: t)
     }
     
     internal func persistentStoreDidChange(_ notification: Notification) {
         GraphContextRegistry.added[self.route] = true
         self.completion?(true, nil)
-        (self.delegate as? GraphCloudDelegate)?.graphDidPrepareCloudStorage?(graph: self)
+        (self.delegate as? WatchCloudDelegate)?.graphDidPrepareCloudStorage?(graph: self)
     }
     
     internal func persistentStoreDidImportUbiquitousContentChanges(_ notification: Notification) {
@@ -155,7 +155,7 @@ extension Graph {
                 return
             }
             
-            (s.delegate as? GraphCloudDelegate)?.graphWillUpdateFromCloudStorage?(graph: s)
+            (s.delegate as? WatchCloudDelegate)?.graphWillUpdateFromCloudStorage?(graph: s)
             
             moc?.mergeChanges(fromContextDidSave: notification)
             
@@ -163,7 +163,7 @@ extension Graph {
             s.notifyUpdatedWatchersFromCloud(notification)
             s.notifyDeletedWatchersFromCloud(notification)
             
-            (s.delegate as? GraphCloudDelegate)?.graphDidUpdateFromCloudStorage?(graph: s)
+            (s.delegate as? WatchCloudDelegate)?.graphDidUpdateFromCloudStorage?(graph: s)
         }
     }
 }

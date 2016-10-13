@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
+class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     var saveExpectation: XCTestExpectation?
     var delegateExpectation: XCTestExpectation?
     var tagExpception: XCTestExpectation?
@@ -309,7 +309,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func graph(graph: Graph, inserted relationship: Relationship, source: GraphSource) {
+    func watch(graph: Graph, inserted relationship: Relationship, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
@@ -318,7 +318,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         delegateExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, updated relationship: Relationship, source: GraphSource) {
+    func watch(graph: Graph, updated relationship: Relationship, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
@@ -327,7 +327,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         delegateExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, deleted relationship: Relationship, source: GraphSource) {
+    func watch(graph: Graph, deleted relationship: Relationship, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
@@ -340,7 +340,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         delegateExpectation?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource) {
+    func watch(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
@@ -349,7 +349,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         tagExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource) {
+    func watch(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
@@ -358,7 +358,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         tagExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -368,7 +368,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
@@ -378,7 +378,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
         propertyExpception?.fulfill()
     }
     
-    func graph(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("P", property)
