@@ -32,8 +32,8 @@ import CoreData
 
 @objc(SearchCondition)
 public enum SearchCondition: Int {
-    case and
     case or
+    case and
 }
 
 public protocol Searchable {
@@ -164,7 +164,7 @@ public class Search<T: Node>: Searchable {
      - Returns: A Search instance.
      */
     @discardableResult
-    public func has(tags: [String], with condition: SearchCondition = .and) -> Search {
+    public func has(tags: [String], using condition: SearchCondition = .and) -> Search {
         self.tags = tags
         tagsSearchCondition = condition
         return self
@@ -186,7 +186,7 @@ public class Search<T: Node>: Searchable {
      - Returns: A Search instance.
      */
     @discardableResult
-    public func member(of groups: [String], with condition: SearchCondition = .and) -> Search {
+    public func member(of groups: [String], using condition: SearchCondition = .and) -> Search {
         self.groups = groups
         groupsSearchCondition = condition
         return self
@@ -208,7 +208,7 @@ public class Search<T: Node>: Searchable {
      - Returns: A Search instance.
      */
     @discardableResult
-    public func `where`(properties: [String], with condition: SearchCondition = .and) -> Search {
+    public func `where`(properties: [String], using condition: SearchCondition = .and) -> Search {
         self.properties = properties
         propertiesSearchCondition = condition
         return self
