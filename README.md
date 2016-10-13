@@ -22,8 +22,8 @@ Graph is a data-driven framework for CoreData. It comes complete with iCloud sup
 
 ## Requirements
 
-* iOS 8.0+ / Mac OS X 10.9+
-* Xcode 7.3+
+* iOS 8.0+ / Mac OS X 10.10+
+* Xcode 8.0+
 
 ## Communication
 

@@ -94,10 +94,10 @@ public class Search<T: Node>: Searchable {
     public private(set) var groupsSearchCondition = SearchCondition.and
     
     /// A reference to the properties.
-    public var properties: [String]?
+    public private(set) var properties: [String]?
     
     /// A SearchCondition value for properties.
-    public var propertiesSearchCondition = SearchCondition.and
+    public private(set) var propertiesSearchCondition = SearchCondition.and
     
     /**
      An initializer that accepts a NodeClass and Graph
