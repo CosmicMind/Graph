@@ -1163,17 +1163,15 @@ public class Watch<T: Node>: Watchable {
     private func removeFromObservation() {
         NotificationCenter.default.removeObserver(self)
         isRunning = false
-        clear()
     }
     
     /// Prepares the Watch instance.
     private func prepare() {
         prepareGraph()
-        prepareForObservation()
     }
     
     /// Prepares the instance for save notifications.
-    private func prepareForObservation() {
+    internal func prepareForObservation() {
         guard !isRunning else {
             return
         }
@@ -1337,6 +1335,7 @@ extension Watch where T: Entity {
     @discardableResult
     public func resume() -> Watch {
         watchForEntity(types: types, tags: tags, groups: groups, properties: properties)
+        prepareForObservation()
         return self
     }
 }
@@ -1349,6 +1348,7 @@ extension Watch where T: Relationship {
     @discardableResult
     public func resume() -> Watch {
         watchForRelationship(types: types, tags: tags, groups: groups, properties: properties)
+        prepareForObservation()
         return self
     }
 }
@@ -1361,6 +1361,7 @@ extension Watch where T: Action {
     @discardableResult
     public func resume() -> Watch {
         watchForAction(types: types, tags: tags, groups: groups, properties: properties)
+        prepareForObservation()
         return self
     }
 }
