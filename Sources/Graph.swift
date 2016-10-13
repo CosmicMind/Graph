@@ -66,8 +66,8 @@ public class Graph: NSObject {
     /// Start the return results from this offset.
     public var batchOffset: Int = 0
     
-    /// A reference to a delagte object.
-    internal weak var delegate: WatchDelegate?
+    /// Watch instances.
+    public internal(set) lazy var watchers = [Watcher]()
     
     /**
      A reference to the graph completion handler.

@@ -376,22 +376,32 @@ public protocol Watchable {
     associatedtype Element: Node
 }
 
+public struct Watcher {
+    private weak var object: AnyObject?
+    
+    /// A reference to the weak Watch<T> instance.
+    public var watch: Watch<Node>? {
+        return object as? Watch<Node>
+    }
+    
+    /**
+     An initializer that takes in an object instance.
+     - Parameter watch: A Watch<T> instance.
+     */
+    public init (object: AnyObject) {
+        self.object = watch
+    }
+}
+
 /// Watch.
 public class Watch<T: Node>: Watchable {
     public typealias Element = T
     
     /// A Graph instance.
-    internal private(set) var graph: Graph
+    internal internal(set) var graph: Graph
     
     /// A reference to a delagte object.
-    open weak var delegate: WatchDelegate? {
-        get {
-            return graph.delegate
-        }
-        set(value) {
-            graph.delegate = value
-        }
-    }
+    open weak var delegate: WatchDelegate?
     
     /// A reference to the predicate.
     public internal(set) var predicate: NSPredicate?
@@ -424,10 +434,10 @@ public class Watch<T: Node>: Watchable {
      An initializer that accepts a NodeClass and Graph
      instance.
      - Parameter graph: A Graph instance.
-     - Parameter nodeClass: A NodeClass value.
      */
-    internal init(graph: Graph) {
+    public init(graph: Graph) {
         self.graph = graph
+        prepare()
     }
     
     /**
@@ -531,6 +541,591 @@ public class Watch<T: Node>: Watchable {
         self.properties = properties
         propertiesWatchCondition = condition
         return self
+    }
+    
+    /// Prepares the instance for save notifications.
+    private func prepareForObservation() {
+        guard let moc = graph.managedObjectContext else {
+            return
+        }
+        
+        let defaultCenter = NotificationCenter.default
+        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
+        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
+        defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: moc)
+    }
+    
+    /// Prepares the Watch instance.
+    private func prepare() {
+        prepareForObservation()
+        prepareGraph()
+    }
+    
+    /// Prepares graph for watching.
+    private func prepareGraph() {
+        graph.watchers.append(Watcher(object: self as AnyObject))
+    }
+    
+    /**
+     Notifies inserted watchers from local changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyInsertedWatchers(_ notification: Notification) {
+        guard let objects = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        delegateToInsertedWatchers(objects.filtered(using: p), source: .local)
+    }
+    
+    /**
+     Notifies updated watchers from local changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyUpdatedWatchers(_ notification: Notification) {
+        guard let objects = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        delegateToUpdatedWatchers(objects.filtered(using: p), source: .local)
+    }
+    
+    /**
+     Notifies deleted watchers from local changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyDeletedWatchers(_ notification: Notification) {
+        guard let objects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        delegateToDeletedWatchers(objects.filtered(using: p), source: .local)
+    }
+    
+    /**
+     Notifies inserted watchers from cloud changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyInsertedWatchersFromCloud(_ notification: Notification) {
+        guard let objectIDs = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        guard let moc = graph.managedObjectContext else {
+            return
+        }
+        
+        let objects = NSMutableSet()
+        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
+            objects.add(moc.object(with: objectID))
+        }
+        
+        delegateToInsertedWatchers(objects.filtered(using: p), source: .cloud)
+    }
+    
+    /**
+     Notifies updated watchers from cloud changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyUpdatedWatchersFromCloud(_ notification: Notification) {
+        guard let objectIDs = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        guard let moc = graph.managedObjectContext else {
+            return
+        }
+        
+        let objects = NSMutableSet()
+        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
+            objects.add(moc.object(with: objectID))
+        }
+        
+        delegateToUpdatedWatchers(objects.filtered(using: p), source: .cloud)
+    }
+    
+    /**
+     Notifies deleted watchers from cloud changes.
+     - Parameter notification: NSNotification reference.
+     */
+    @objc
+    internal func notifyDeletedWatchersFromCloud(_ notification: Notification) {
+        guard let objectIDs = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
+            return
+        }
+        
+        guard let p = predicate else {
+            return
+        }
+        
+        guard let moc = graph.managedObjectContext else {
+            return
+        }
+        
+        let objects = NSMutableSet()
+        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
+            objects.add(moc.object(with: objectID))
+        }
+        
+        delegateToDeletedWatchers(objects.filtered(using: p), source: .cloud)
+    }
+    
+    /**
+     Passes the handle to the inserted notification delegates.
+     - Parameter _ set: A Set of NSManagedObjects to pass.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        let nodes = sortToArray(set)
+        
+        delegateToEntityInsertedWatchers(nodes: nodes, source: source)
+        delegateToRelationshipInsertedWatchers(nodes: nodes, source: source)
+        delegateToActionInsertedWatchers(nodes: nodes, source: source)
+    }
+    
+    /**
+     Passes the handle to the inserted notification delegates for Entities.
+     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToEntityInsertedWatchers(nodes: [NSManagedObject], source: GraphSource) {
+        nodes.forEach { [unowned self] in
+            guard let n = $0 as? ManagedEntity else {
+                return
+            }
+            
+            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, inserted: Entity(managedNode: n), source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedEntityTag else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedEntity else {
+                return
+            }
+            
+            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedEntityGroup else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedEntity else {
+                return
+            }
+            
+            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), addedTo: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedEntityProperty else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedEntity else {
+                return
+            }
+            
+            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, with: o.object, source: source)
+        }
+    }
+    
+    /**
+     Passes the handle to the inserted notification delegates for Relationships.
+     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToRelationshipInsertedWatchers(nodes: [NSManagedObject], source: GraphSource) {
+        nodes.forEach { [unowned self] in
+            guard let n = $0 as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, inserted: Relationship(managedNode: n), source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedRelationshipTag else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedRelationshipGroup else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), addedTo: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedRelationshipProperty else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, with: o.object, source: source)
+        }
+    }
+    
+    /**
+     Passes the handle to the inserted notification delegates for Actions.
+     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToActionInsertedWatchers(nodes: [NSManagedObject], source: GraphSource) {
+        nodes.forEach { [unowned self] in
+            guard let n = $0 as? ManagedAction else {
+                return
+            }
+            
+            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, inserted: Action(managedNode: n), source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedActionTag else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedAction else {
+                return
+            }
+            
+            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedActionGroup else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedAction else {
+                return
+            }
+            
+            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), addedTo: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedActionProperty else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedAction else {
+                return
+            }
+            
+            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, with: o.object, source: source)
+        }
+    }
+    
+    /**
+     Passes the handle to the updated notification delegates.
+     - Parameter _ set: A Set of NSManagedObjects to pass.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        let nodes = sortToArray(set)
+        
+        delegateToEntityUpdatedWatchers(nodes: nodes, source: source)
+        delegateToRelationshipUpdatedWatchers(nodes: nodes, source: source)
+        delegateToActionUpdatedWatchers(nodes: nodes, source: source)
+    }
+    
+    /**
+     Passes the handle to the updated notification delegates for Entities.
+     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToEntityUpdatedWatchers(nodes: [NSManagedObject], source: GraphSource) {
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedEntityProperty else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedEntity else {
+                return
+            }
+            
+            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), updated: o.name, with: o.object, source: source)
+        }
+    }
+    
+    /**
+     Passes the handle to the updated notification delegates for Relationships.
+     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToRelationshipUpdatedWatchers(nodes: [NSManagedObject], source: GraphSource) {
+        nodes.forEach { [unowned self] in
+            guard let n = $0 as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, updated: Relationship(managedNode: n), source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedRelationshipProperty else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), updated: o.name, with: o.object, source: source)
+        }
+    }
+    
+    /**
+     Passes the handle to the updated notification delegates for Actions.
+     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToActionUpdatedWatchers(nodes: [NSManagedObject], source: GraphSource) {
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedActionProperty else {
+                return
+            }
+            
+            guard let n = o.node as? ManagedAction else {
+                return
+            }
+            
+            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), updated: o.name, with: o.object, source: source)
+        }
+    }
+    
+    /**
+     Passes the handle to the deleted notification delegates.
+     - Parameter _ set: A Set of NSManagedObjects to pass.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        let nodes = sortToArray(set)
+        
+        delegateToEntityDeletedWatchers(nodes: nodes, source: source)
+        delegateToRelationshipDeletedWatchers(nodes: nodes, source: source)
+        delegateToActionDeletedWatchers(nodes: nodes, source: source)
+    }
+    
+    /**
+     Passes the handle to the deleted notification delegates for Entities.
+     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToEntityDeletedWatchers(nodes: [NSManagedObject], source: GraphSource) {
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedEntityTag else {
+                return
+            }
+            
+            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedEntity else {
+                return
+            }
+            
+            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedEntityGroup else {
+                return
+            }
+            
+            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedEntity else {
+                return
+            }
+            
+            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removedFrom: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedEntityProperty else {
+                return
+            }
+            
+            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedEntity else {
+                return
+            }
+            
+            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, with: o.object, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let n = $0 as? ManagedEntity else {
+                return
+            }
+            
+            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, deleted: Entity(managedNode: n), source: source)
+        }
+    }
+    
+    /**
+     Passes the handle to the deleted notification delegates for Relationships.
+     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToRelationshipDeletedWatchers(nodes: [NSManagedObject], source: GraphSource) {
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedRelationshipTag else {
+                return
+            }
+            
+            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedRelationshipGroup else {
+                return
+            }
+            
+            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removedFrom: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedRelationshipProperty else {
+                return
+            }
+            
+            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, with: o.object, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let n = $0 as? ManagedRelationship else {
+                return
+            }
+            
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, deleted: Relationship(managedNode: n), source: source)
+        }
+    }
+    
+    /**
+     Passes the handle to the deleted notification delegates for Actions.
+     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter source: A GraphSource value.
+     */
+    private func delegateToActionDeletedWatchers(nodes: [NSManagedObject], source: GraphSource) {
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedActionTag else {
+                return
+            }
+            
+            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedAction else {
+                return
+            }
+            
+            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedActionGroup else {
+                return
+            }
+            
+            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedAction else {
+                return
+            }
+            
+            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removedFrom: o.name, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let o = $0 as? ManagedActionProperty else {
+                return
+            }
+            
+            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedAction else {
+                return
+            }
+            
+            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, with: o.object, source: source)
+        }
+        
+        nodes.forEach { [unowned self] in
+            guard let n = $0 as? ManagedAction else {
+                return
+            }
+            
+            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, deleted: Action(managedNode: n), source: source)
+        }
+    }
+    
+    /**
+     Sort nodes.
+     - Parameter _ set: A Set of NSManagedObjects.
+     - Returns: A Set of NSManagedObjects in sorted order.
+     */
+    private func sortToArray(_ set: Set<AnyHashable>) -> [NSManagedObject] {
+        var objects = Set<NSManagedObject>()
+        
+        set.forEach { (object) in
+            objects.insert(object as! NSManagedObject)
+        }
+        
+        return objects.sorted { (a, b) -> Bool in
+            guard let a1 = a as? ManagedNode else {
+                return false
+            }
+            guard let b1 = b as? ManagedNode else {
+                return false
+            }
+            return a1 < b1
+        }
     }
 }
 
@@ -720,596 +1315,5 @@ extension Watch {
     private func addPredicateToObserve(entity description: NSEntityDescription, predicate p: NSPredicate) {
         let p = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", description.name! as NSString), p])
         predicate = NSCompoundPredicate(orPredicateWithSubpredicates: nil == predicate ? [p] : [predicate!, p])
-    }
-}
-
-extension Graph {
-    /// A reference to the overall predicate.
-    internal var predicate: NSPredicate? {
-        var p: NSPredicate?
-        for watch in watchers {
-            if let v = watch.predicate {
-                p = NSCompoundPredicate(orPredicateWithSubpredicates: nil == p ? [v] : [v, p!])
-            }
-        }
-        return p
-    }
-    
-    /**
-     Notifies inserted watchers from local changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyInsertedWatchers(_ notification: Notification) {
-        guard let objects = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let p = predicate else {
-            return
-        }
-        
-        delegateToInsertedWatchers(objects.filtered(using: p), source: .local)
-    }
-    
-    /**
-     Notifies updated watchers from local changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyUpdatedWatchers(_ notification: Notification) {
-        guard let objects = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let p = predicate else {
-            return
-        }
-        
-        delegateToUpdatedWatchers(objects.filtered(using: p), source: .local)
-    }
-    
-    /**
-     Notifies deleted watchers from local changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyDeletedWatchers(_ notification: Notification) {
-        guard let objects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let p = predicate else {
-            return
-        }
-        
-        delegateToDeletedWatchers(objects.filtered(using: p), source: .local)
-    }
-    
-    /**
-     Notifies inserted watchers from cloud changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyInsertedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let p = predicate else {
-            return
-        }
-        
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        let objects = NSMutableSet()
-        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
-            objects.add(moc.object(with: objectID))
-        }
-        
-        delegateToInsertedWatchers(objects.filtered(using: p), source: .cloud)
-    }
-    
-    /**
-     Notifies updated watchers from cloud changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyUpdatedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let p = predicate else {
-            return
-        }
-        
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        let objects = NSMutableSet()
-        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
-            objects.add(moc.object(with: objectID))
-        }
-        
-        delegateToUpdatedWatchers(objects.filtered(using: p), source: .cloud)
-    }
-    
-    /**
-     Notifies deleted watchers from cloud changes.
-     - Parameter notification: NSNotification reference.
-     */
-    @objc
-    internal func notifyDeletedWatchersFromCloud(_ notification: Notification) {
-        guard let objectIDs = notification.userInfo?[NSDeletedObjectsKey] as? NSSet else {
-            return
-        }
-        
-        guard let p = predicate else {
-            return
-        }
-        
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        let objects = NSMutableSet()
-        (objectIDs.allObjects as! [NSManagedObjectID]).forEach { [unowned moc] (objectID: NSManagedObjectID) in
-            objects.add(moc.object(with: objectID))
-        }
-        
-        delegateToDeletedWatchers(objects.filtered(using: p), source: .cloud)
-    }
-    
-    /**
-     Passes the handle to the inserted notification delegates.
-     - Parameter _ set: A Set of NSManagedObjects to pass.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
-        let nodes = sortToArray(set)
-        
-        delegateToEntityInsertedWatchers(nodes: nodes, source: source)
-        delegateToRelationshipInsertedWatchers(nodes: nodes, source: source)
-        delegateToActionInsertedWatchers(nodes: nodes, source: source)
-    }
-    
-    /**
-     Passes the handle to the inserted notification delegates for Entities.
-     - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToEntityInsertedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
-            guard let n = $0 as? ManagedEntity else {
-                return
-            }
-            
-            (self.delegate as? WatchEntityDelegate)?.graph?(graph: self, inserted: Entity(managedNode: n), source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedEntityTag else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedEntity else {
-                return
-            }
-            
-            (self.delegate as? WatchEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: n), added: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedEntityGroup else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedEntity else {
-                return
-            }
-            
-            (self.delegate as? WatchEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: n), addedTo: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedEntityProperty else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedEntity else {
-                return
-            }
-            
-            (self.delegate as? WatchEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: n), added: o.name, with: o.object, source: source)
-        }
-    }
-    
-    /**
-     Passes the handle to the inserted notification delegates for Relationships.
-     - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToRelationshipInsertedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
-            guard let n = $0 as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, inserted: Relationship(managedNode: n), source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedRelationshipTag else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: n), added: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedRelationshipGroup else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: n), addedTo: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedRelationshipProperty else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: n), added: o.name, with: o.object, source: source)
-        }
-    }
-    
-    /**
-     Passes the handle to the inserted notification delegates for Actions.
-     - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToActionInsertedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
-            guard let n = $0 as? ManagedAction else {
-                return
-            }
-            
-            (self.delegate as? WatchActionDelegate)?.graph?(graph: self, inserted: Action(managedNode: n), source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedActionTag else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedAction else {
-                return
-            }
-            
-            (self.delegate as? WatchActionDelegate)?.graph?(graph: self, action: Action(managedNode: n), added: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedActionGroup else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedAction else {
-                return
-            }
-            
-            (self.delegate as? WatchActionDelegate)?.graph?(graph: self, action: Action(managedNode: n), addedTo: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedActionProperty else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedAction else {
-                return
-            }
-            
-            (self.delegate as? WatchActionDelegate)?.graph?(graph: self, action: Action(managedNode: n), added: o.name, with: o.object, source: source)
-        }
-    }
-    
-    /**
-     Passes the handle to the updated notification delegates.
-     - Parameter _ set: A Set of NSManagedObjects to pass.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
-        let nodes = sortToArray(set)
-        
-        delegateToEntityUpdatedWatchers(nodes: nodes, source: source)
-        delegateToRelationshipUpdatedWatchers(nodes: nodes, source: source)
-        delegateToActionUpdatedWatchers(nodes: nodes, source: source)
-    }
-    
-    /**
-     Passes the handle to the updated notification delegates for Entities.
-     - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToEntityUpdatedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedEntityProperty else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedEntity else {
-                return
-            }
-            
-            (self.delegate as? WatchEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: n), updated: o.name, with: o.object, source: source)
-        }
-    }
-    
-    /**
-     Passes the handle to the updated notification delegates for Relationships.
-     - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToRelationshipUpdatedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
-            guard let n = $0 as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, updated: Relationship(managedNode: n), source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedRelationshipProperty else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: n), updated: o.name, with: o.object, source: source)
-        }
-    }
-    
-    /**
-     Passes the handle to the updated notification delegates for Actions.
-     - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToActionUpdatedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedActionProperty else {
-                return
-            }
-            
-            guard let n = o.node as? ManagedAction else {
-                return
-            }
-            
-            (self.delegate as? WatchActionDelegate)?.graph?(graph: self, action: Action(managedNode: n), updated: o.name, with: o.object, source: source)
-        }
-    }
-    
-    /**
-     Passes the handle to the deleted notification delegates.
-     - Parameter _ set: A Set of NSManagedObjects to pass.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
-        let nodes = sortToArray(set)
-        
-        delegateToEntityDeletedWatchers(nodes: nodes, source: source)
-        delegateToRelationshipDeletedWatchers(nodes: nodes, source: source)
-        delegateToActionDeletedWatchers(nodes: nodes, source: source)
-    }
-    
-    /**
-     Passes the handle to the deleted notification delegates for Entities.
-     - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToEntityDeletedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedEntityTag else {
-                return
-            }
-            
-            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedEntity else {
-                return
-            }
-            
-            (self.delegate as? WatchEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: n), removed: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedEntityGroup else {
-                return
-            }
-            
-            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedEntity else {
-                return
-            }
-            
-            (self.delegate as? WatchEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: n), removedFrom: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedEntityProperty else {
-                return
-            }
-            
-            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedEntity else {
-                return
-            }
-            
-            (self.delegate as? WatchEntityDelegate)?.graph?(graph: self, entity: Entity(managedNode: n), removed: o.name, with: o.object, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let n = $0 as? ManagedEntity else {
-                return
-            }
-            
-            (self.delegate as? WatchEntityDelegate)?.graph?(graph: self, deleted: Entity(managedNode: n), source: source)
-        }
-    }
-    
-    /**
-     Passes the handle to the deleted notification delegates for Relationships.
-     - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToRelationshipDeletedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedRelationshipTag else {
-                return
-            }
-            
-            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: n), removed: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedRelationshipGroup else {
-                return
-            }
-            
-            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: n), removedFrom: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedRelationshipProperty else {
-                return
-            }
-            
-            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, relationship: Relationship(managedNode: n), removed: o.name, with: o.object, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let n = $0 as? ManagedRelationship else {
-                return
-            }
-            
-            (self.delegate as? WatchRelationshipDelegate)?.graph?(graph: self, deleted: Relationship(managedNode: n), source: source)
-        }
-    }
-    
-    /**
-     Passes the handle to the deleted notification delegates for Actions.
-     - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
-     */
-    private func delegateToActionDeletedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedActionTag else {
-                return
-            }
-            
-            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedAction else {
-                return
-            }
-            
-            (self.delegate as? WatchActionDelegate)?.graph?(graph: self, action: Action(managedNode: n), removed: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedActionGroup else {
-                return
-            }
-            
-            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedAction else {
-                return
-            }
-            
-            (self.delegate as? WatchActionDelegate)?.graph?(graph: self, action: Action(managedNode: n), removedFrom: o.name, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let o = $0 as? ManagedActionProperty else {
-                return
-            }
-            
-            guard let n = (.cloud == source ? o.node : o.changedValuesForCurrentEvent()["node"]) as? ManagedAction else {
-                return
-            }
-            
-            (self.delegate as? WatchActionDelegate)?.graph?(graph: self, action: Action(managedNode: n), removed: o.name, with: o.object, source: source)
-        }
-        
-        nodes.forEach { [unowned self] in
-            guard let n = $0 as? ManagedAction else {
-                return
-            }
-            
-            (self.delegate as? WatchActionDelegate)?.graph?(graph: self, deleted: Action(managedNode: n), source: source)
-        }
-    }
-    
-    /**
-     Sort nodes.
-     - Parameter _ set: A Set of NSManagedObjects.
-     - Returns: A Set of NSManagedObjects in sorted order.
-     */
-    private func sortToArray(_ set: Set<AnyHashable>) -> [NSManagedObject] {
-        var objects = Set<NSManagedObject>()
-        
-        set.forEach { (object) in
-            objects.insert(object as! NSManagedObject)
-        }
-        
-        return objects.sorted { (a, b) -> Bool in
-            guard let a1 = a as? ManagedNode else {
-                return false
-            }
-            guard let b1 = b as? ManagedNode else {
-                return false
-            }
-            return a1 < b1
-        }
-    }
-    
-    /// Prepares the instance for save notifications.
-    private func prepareForObservation() {
-        guard 0 == watchers.count else {
-            return
-        }
-        
-        guard let moc = managedObjectContext else {
-            return
-        }
-        
-        let defaultCenter = NotificationCenter.default
-        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
-        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
-        defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: moc)
     }
 }

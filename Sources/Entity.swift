@@ -31,7 +31,7 @@
 import Foundation
 
 @objc(Entity)
-public class Entity: NSObject, Node {
+public class Entity: Node {
     /// A reference to the managedNode.
     internal let managedNode: ManagedEntity
     

@@ -136,13 +136,23 @@ extension Graph {
             t = .initialImportCompleted
         }
         
-        (self.delegate as? WatchCloudDelegate)?.graphWillPrepareCloudStorage?(graph: self, transition: t)
+        watchers.forEach { [weak self] in
+            guard let s = self else {
+                return
+            }
+            
+            ($0.watch?.delegate as? WatchCloudDelegate)?.graphWillPrepareCloudStorage?(graph: s, transition: t)
+        }
     }
     
     internal func persistentStoreDidChange(_ notification: Notification) {
         GraphContextRegistry.added[self.route] = true
         self.completion?(true, nil)
-        (self.delegate as? WatchCloudDelegate)?.graphDidPrepareCloudStorage?(graph: self)
+        for watcher in watchers {
+            if let watch = watcher.watch {
+                (watch.delegate as? WatchCloudDelegate)?.graphDidPrepareCloudStorage?(graph: self)
+            }
+        }
     }
     
     internal func persistentStoreDidImportUbiquitousContentChanges(_ notification: Notification) {
@@ -155,15 +165,26 @@ extension Graph {
                 return
             }
             
-            (s.delegate as? WatchCloudDelegate)?.graphWillUpdateFromCloudStorage?(graph: s)
+            s.watchers.forEach { [weak self, weak moc] in
+                guard let s = self else {
+                    return
+                }
+                
+                guard let watch = $0.watch else {
+                    return
+                }
+                
+                (watch.delegate as? WatchCloudDelegate)?.graphWillUpdateFromCloudStorage?(graph: s)
+                
+                moc?.mergeChanges(fromContextDidSave: notification)
+                
+                watch.notifyInsertedWatchersFromCloud(notification)
+                watch.notifyUpdatedWatchersFromCloud(notification)
+                watch.notifyDeletedWatchersFromCloud(notification)
             
-            moc?.mergeChanges(fromContextDidSave: notification)
-            
-            s.notifyInsertedWatchersFromCloud(notification)
-            s.notifyUpdatedWatchersFromCloud(notification)
-            s.notifyDeletedWatchersFromCloud(notification)
-            
-            (s.delegate as? WatchCloudDelegate)?.graphDidUpdateFromCloudStorage?(graph: s)
+                
+                (watch.delegate as? WatchCloudDelegate)?.graphDidUpdateFromCloudStorage?(graph: s)
+            }
         }
     }
 }

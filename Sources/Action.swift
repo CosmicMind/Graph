@@ -31,7 +31,7 @@
 import Foundation
 
 @objc(Action)
-public class Action: NSObject, Node {
+public class Action: Node {
     /// A reference to the managedNode.
     internal let managedNode: ManagedAction
     

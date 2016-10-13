@@ -31,7 +31,7 @@
 import Foundation
 
 @objc(Relationship)
-public class Relationship: NSObject, Node {
+public class Relationship: Node {
     /// A reference to the managedNode.
     internal let managedNode: ManagedRelationship
     

@@ -36,4 +36,4 @@ public enum NodeClass: NSNumber {
     case action = 3
 }
 
-public protocol Node: Comparable, Hashable {}
+public class Node: NSObject {}

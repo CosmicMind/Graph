@@ -104,9 +104,8 @@ public class Search<T: Node>: Searchable {
      An initializer that accepts a NodeClass and Graph
      instance.
      - Parameter graph: A Graph instance.
-     - Parameter nodeClass: A NodeClass value.
      */
-    internal init(graph: Graph) {
+    public init(graph: Graph) {
         self.graph = graph
     }
     
