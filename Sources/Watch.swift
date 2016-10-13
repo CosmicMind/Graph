@@ -543,29 +543,6 @@ public class Watch<T: Node>: Watchable {
         return self
     }
     
-    /// Prepares the instance for save notifications.
-    private func prepareForObservation() {
-        guard let moc = graph.managedObjectContext else {
-            return
-        }
-        
-        let defaultCenter = NotificationCenter.default
-        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
-        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
-        defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: moc)
-    }
-    
-    /// Prepares the Watch instance.
-    private func prepare() {
-        prepareForObservation()
-        prepareGraph()
-    }
-    
-    /// Prepares graph for watching.
-    private func prepareGraph() {
-        graph.watchers.append(Watcher(object: self as AnyObject))
-    }
-    
     /**
      Notifies inserted watchers from local changes.
      - Parameter notification: NSNotification reference.
@@ -1127,6 +1104,29 @@ public class Watch<T: Node>: Watchable {
             return a1 < b1
         }
     }
+    
+    /// Prepares the instance for save notifications.
+    private func prepareForObservation() {
+        guard let moc = graph.managedObjectContext else {
+            return
+        }
+        
+        let defaultCenter = NotificationCenter.default
+        defaultCenter.addObserver(self, selector: #selector(notifyInsertedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
+        defaultCenter.addObserver(self, selector: #selector(notifyUpdatedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: moc)
+        defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers(_:)), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: moc)
+    }
+    
+    /// Prepares the Watch instance.
+    private func prepare() {
+        prepareGraph()
+        prepareForObservation()
+    }
+    
+    /// Prepares graph for watching.
+    private func prepareGraph() {
+        graph.watchers.append(Watcher(object: self as AnyObject))
+    }
 }
 
 /// Watch mechanics.
@@ -1315,5 +1315,29 @@ extension Watch {
     private func addPredicateToObserve(entity description: NSEntityDescription, predicate p: NSPredicate) {
         let p = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", description.name! as NSString), p])
         predicate = NSCompoundPredicate(orPredicateWithSubpredicates: nil == predicate ? [p] : [predicate!, p])
+    }
+}
+
+extension Watch where T: Entity {
+    @discardableResult
+    public func start() -> Watch {
+        watchForEntity(types: types, tags: tags, groups: groups, properties: properties)
+        return self
+    }
+}
+
+extension Watch where T: Relationship {
+    @discardableResult
+    public func start() -> Watch {
+        watchForRelationship(types: types, tags: tags, groups: groups, properties: properties)
+        return self
+    }
+}
+
+extension Watch where T: Action {
+    @discardableResult
+    public func start() -> Watch {
+        watchForAction(types: types, tags: tags, groups: groups, properties: properties)
+        return self
     }
 }
