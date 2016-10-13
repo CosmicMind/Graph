@@ -544,8 +544,9 @@ extension Watch {
     }
     
     /**
-     Watch for an Entity type.
-     - Parameter type: An Entity type to watch for.
+     Watch for a Node.
+     - Parameter Node type: A String.
+     - Parameter index: A String.
      */
     private func watch(Node type: String, index: String) {
         addWatcher(
@@ -557,8 +558,9 @@ extension Watch {
     }
     
     /**
-     Watch for an Entity tag.
-     - Parameter name: An Entity tag name to watch for.
+     Watch for a Tag.
+     - Parameter Tag name: A String.
+     - Parameter index: A String.
      */
     private func watch(Tag name: String, index: String) {
         addWatcher(
@@ -570,8 +572,9 @@ extension Watch {
     }
     
     /**
-     Watch for an Entity group.
-     - Parameter name: An Entity group name to watch for.
+     Watch for a Group.
+     - Parameter Group name: A String.
+     - Parameter index: A String.
      */
     private func watch(Group name: String, index: String) {
         addWatcher(
@@ -583,8 +586,9 @@ extension Watch {
     }
     
     /**
-     Watch for an Entity property.
-     - Parameter name: An Entity property to watch for.
+     Watch for a Property.
+     - Parameter Property name: A String.
+     - Parameter index: A String.
      */
     private func watch(Property name: String, index: String) {
         addWatcher(
@@ -608,12 +612,12 @@ extension Watch {
             return
         }
         
-        let entityDescription = NSEntityDescription()
-        entityDescription.name = entityDescriptionName
-        entityDescription.managedObjectClassName = managedObjectClassName
+        let description = NSEntityDescription()
+        description.name = entityDescriptionName
+        description.managedObjectClassName = managedObjectClassName
         
         let predicate = NSPredicate(format: "%K LIKE %@", key as NSString, value as NSString)
-        addPredicateToObserve(entityDescription, predicate: predicate)
+        addPredicateToObserve(entity: description, predicate: predicate)
     }
     
     /**
@@ -642,8 +646,8 @@ extension Watch {
      - Parameter entityDescription: An NSEntityDescription to watch.
      - Parameter predicate: An NSPredicate.
      */
-    private func addPredicateToObserve(_ entityDescription: NSEntityDescription, predicate p: NSPredicate) {
-        let p = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", entityDescription.name! as NSString), p])
+    private func addPredicateToObserve(entity description: NSEntityDescription, predicate p: NSPredicate) {
+        let p = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", description.name! as NSString), p])
         predicate = NSCompoundPredicate(orPredicateWithSubpredicates: nil == predicate ? [p] : [predicate!, p])
     }
 }
