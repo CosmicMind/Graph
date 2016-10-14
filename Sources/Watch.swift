@@ -399,7 +399,7 @@ public class Watch<T: Node>: Watchable {
     public typealias Element = T
     
     /// A Graph instance.
-    internal internal(set) var graph: Graph
+    public internal(set) var graph: Graph
     
     /// A reference to a delagte object.
     public weak var delegate: WatchDelegate?
