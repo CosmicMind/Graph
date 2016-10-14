@@ -497,7 +497,6 @@ public class Watch<T: Node>: Watchable {
         properties = nil
         propertiesWatchCondition = .and
         propertiesPredicate = nil
-        removeFromObservation()
         return self
     }
     
@@ -507,6 +506,12 @@ public class Watch<T: Node>: Watchable {
      */
     @discardableResult
     public func resume() -> Watch {
+        guard !isRunning else {
+            return self
+        }
+        
+        isRunning = true
+        
         prepareForObservation()
         return self
     }
@@ -517,6 +522,7 @@ public class Watch<T: Node>: Watchable {
      */
     @discardableResult
     public func pause() -> Watch {
+        isRunning = false
         removeFromObservation()
         return self
     }
@@ -1180,7 +1186,6 @@ public class Watch<T: Node>: Watchable {
     /// Removes the watcher.
     private func removeFromObservation() {
         NotificationCenter.default.removeObserver(self)
-        isRunning = false
     }
     
     /// Prepares the Watch instance.
@@ -1190,12 +1195,6 @@ public class Watch<T: Node>: Watchable {
     
     /// Prepares the instance for save notifications.
     internal func prepareForObservation() {
-        guard !isRunning else {
-            return
-        }
-        
-        isRunning = true
-        
         guard let moc = graph.managedObjectContext else {
             return
         }

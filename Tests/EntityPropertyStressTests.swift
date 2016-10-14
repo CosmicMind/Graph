@@ -67,11 +67,15 @@ class EntityPropertyStressTests: XCTestCase, WatchEntityDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
+        var properties = [String]()
+        for i in 0..<100 {
+            properties.append("P\(i)")
+        }
+        watch.where(properties: properties)
+        
         for i in 0..<100 {
             let property = "P\(i)"
             var value = i
-            
-            watch.where(properties: property)
             
             entity[property] = value
             

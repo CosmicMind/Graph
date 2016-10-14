@@ -54,8 +54,8 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
         relationshipInsertExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Relationship insert test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .relationship).for(types: "T")
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").resume()
+        watch.delegate = self
         
         let relationship = Relationship(type: "T")
         
@@ -67,11 +67,15 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
+        var properties = [String]()
+        for i in 0..<100 {
+            properties.append("P\(i)")
+        }
+        watch.where(properties: properties)
+        
         for i in 0..<100 {
             let property = "P\(i)"
             var value = i
-            
-            graph.watch(for: .relationship).where(properties: [property])
             
             relationship[property] = value
             
