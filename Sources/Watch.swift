@@ -728,7 +728,7 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the inserted notification delegates.
-     - Parameter _ set: A Set of NSManagedObjects to pass.
+     - Parameter _ set: A Set of AnyHashable objects to pass.
      - Parameter source: A GraphSource value.
      */
     private func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -739,7 +739,7 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the inserted notification delegates for Entities.
-     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
     private func delegateToEntityInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -790,7 +790,7 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the inserted notification delegates for Relationships.
-     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
     private func delegateToRelationshipInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -841,7 +841,7 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the inserted notification delegates for Actions.
-     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
     private func delegateToActionInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -922,7 +922,7 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the updated notification delegates for Relationships.
-     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
     private func delegateToRelationshipUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -949,7 +949,7 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the updated notification delegates for Actions.
-     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
     private func delegateToActionUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -968,7 +968,7 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the deleted notification delegates.
-     - Parameter _ set: A Set of NSManagedObjects to pass.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
     private func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -1030,7 +1030,7 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the deleted notification delegates for Relationships.
-     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
     private func delegateToRelationshipDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
@@ -1081,7 +1081,7 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the deleted notification delegates for Actions.
-     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
     private func delegateToActionDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
