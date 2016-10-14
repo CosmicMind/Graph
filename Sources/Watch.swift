@@ -398,12 +398,6 @@ public struct Watcher {
 public class Watch<T: Node>: Watchable {
     public typealias Element = T
     
-    /** 
-     A boolean indicating if the Watch instance is
-     currently watching.
-     */
-    public private(set) var isRunning = false
-    
     /// A Graph instance.
     internal internal(set) var graph: Graph
     
@@ -465,6 +459,12 @@ public class Watch<T: Node>: Watchable {
         return NSCompoundPredicate(orPredicateWithSubpredicates: p)
     }
     
+    /**
+     A boolean indicating if the Watch instance is
+     currently watching.
+     */
+    public private(set) var isRunning = false
+    
     /// Deinitializer.
     deinit {
         removeFromObservation()
@@ -497,6 +497,17 @@ public class Watch<T: Node>: Watchable {
         properties = nil
         propertiesWatchCondition = .and
         propertiesPredicate = nil
+        removeFromObservation()
+        return self
+    }
+    
+    /**
+     Resumes the watcher.
+     - Returns: A Watch instance.
+     */
+    @discardableResult
+    public func resume() -> Watch {
+        prepareForObservation()
         return self
     }
     
@@ -528,6 +539,15 @@ public class Watch<T: Node>: Watchable {
     @discardableResult
     public func `for`(types: [String]) -> Watch {
         self.types = types
+        switch T.self {
+        case is Entity.Type:
+            watchForEntity(types: types)
+        case is Relationship.Type:
+            watchForRelationship(types: types)
+        case is Action.Type:
+            watchForAction(types: types)
+        default:break
+        }
         return self
     }
     
@@ -550,6 +570,15 @@ public class Watch<T: Node>: Watchable {
     public func has(tags: [String], using condition: WatchCondition = .and) -> Watch {
         self.tags = tags
         tagsWatchCondition = condition
+        switch T.self {
+        case is Entity.Type:
+            watchForEntity(tags: tags)
+        case is Relationship.Type:
+            watchForRelationship(tags: tags)
+        case is Action.Type:
+            watchForAction(tags: tags)
+        default:break
+        }
         return self
     }
     
@@ -572,6 +601,15 @@ public class Watch<T: Node>: Watchable {
     public func member(of groups: [String], using condition: WatchCondition = .and) -> Watch {
         self.groups = groups
         groupsWatchCondition = condition
+        switch T.self {
+        case is Entity.Type:
+            watchForEntity(groups: groups)
+        case is Relationship.Type:
+            watchForRelationship(groups: groups)
+        case is Action.Type:
+            watchForAction(groups: groups)
+        default:break
+        }
         return self
     }
     
@@ -594,6 +632,15 @@ public class Watch<T: Node>: Watchable {
     public func `where`(properties: [String], using condition: WatchCondition = .and) -> Watch {
         self.properties = properties
         propertiesWatchCondition = condition
+        switch T.self {
+        case is Entity.Type:
+            watchForEntity(properties: properties)
+        case is Relationship.Type:
+            watchForRelationship(properties: properties)
+        case is Action.Type:
+            watchForAction(properties: properties)
+        default:break
+        }
         return self
     }
     
@@ -1299,44 +1346,5 @@ extension Watch {
         
         let cp = .and == using ? NSCompoundPredicate(andPredicateWithSubpredicates: p) : NSCompoundPredicate(orPredicateWithSubpredicates: p)
         return NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", index), cp])
-    }
-}
-
-extension Watch where T: Entity {
-    /**
-     Resumes the watcher.
-     - Returns: A Watch instance.
-     */
-    @discardableResult
-    public func resume() -> Watch {
-        watchForEntity(types: types, tags: tags, groups: groups, properties: properties)
-        prepareForObservation()
-        return self
-    }
-}
-
-extension Watch where T: Relationship {
-    /**
-     Resumes the watcher.
-     - Returns: A Watch instance.
-     */
-    @discardableResult
-    public func resume() -> Watch {
-        watchForRelationship(types: types, tags: tags, groups: groups, properties: properties)
-        prepareForObservation()
-        return self
-    }
-}
-
-extension Watch where T: Action {
-    /**
-     Resumes the watcher.
-     - Returns: A Watch instance.
-     */
-    @discardableResult
-    public func resume() -> Watch {
-        watchForAction(types: types, tags: tags, groups: groups, properties: properties)
-        prepareForObservation()
-        return self
     }
 }

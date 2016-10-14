@@ -71,8 +71,7 @@ class EntityPropertyStressTests: XCTestCase, WatchEntityDelegate {
             let property = "P\(i)"
             var value = i
             
-            let watch = Watch<Entity>(graph: graph).where(properties: property)
-            watch.delegate = self
+            watch.where(properties: property)
             
             entity[property] = value
             

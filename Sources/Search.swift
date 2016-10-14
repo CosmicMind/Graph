@@ -122,6 +122,7 @@ public class Search<T: Node>: Searchable {
         groupsSearchCondition = .and
         properties = nil
         propertiesSearchCondition = .and
+        pause()
         return self
     }
     
