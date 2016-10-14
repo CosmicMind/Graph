@@ -53,12 +53,15 @@ internal struct Coordinator {
      */
     static func create(type: String, location: URL, options: [NSObject: Any]? = nil) -> NSPersistentStoreCoordinator {
         var coordinator: NSPersistentStoreCoordinator?
+        
         File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success, error) in
             if let e = error {
                 fatalError("[Graph Error: \(e.localizedDescription)]")
             }
+        
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.create())
         }
+        
         return coordinator!
     }
 }
@@ -86,7 +89,9 @@ extension Graph {
         
         do {
             try moc.persistentStoreCoordinator?.addPersistentStore(ofType: type, configurationName: nil, at: location, options: options)
+            
             location = moc.persistentStoreCoordinator!.persistentStores.first!.url!
+            
             if !supported {
                 completion?(false, GraphError(message: "[Graph Error: iCloud is not supported.]"))
             }
@@ -136,22 +141,26 @@ extension Graph {
             t = .initialImportCompleted
         }
         
-        watchers.forEach { [weak self] in
-            guard let s = self else {
+        watchers.forEach { [t = t] in
+            guard let watch = $0.watch else {
                 return
             }
             
-            ($0.watch?.delegate as? WatchCloudDelegate)?.graphWillPrepareCloudStorage?(graph: s, transition: t)
+            (watch.delegate as? WatchCloudDelegate)?.graphWillPrepareCloudStorage?(graph: watch.graph, transition: t)
         }
     }
     
     internal func persistentStoreDidChange(_ notification: Notification) {
-        GraphContextRegistry.added[self.route] = true
-        self.completion?(true, nil)
-        for watcher in watchers {
-            if let watch = watcher.watch {
-                (watch.delegate as? WatchCloudDelegate)?.graphDidPrepareCloudStorage?(graph: self)
+        GraphContextRegistry.added[route] = true
+        
+        completion?(true, nil)
+        
+        watchers.forEach {
+            guard let watch = $0.watch else {
+                return
             }
+            
+            (watch.delegate as? WatchCloudDelegate)?.graphDidPrepareCloudStorage?(graph: watch.graph)
         }
     }
     
@@ -165,16 +174,12 @@ extension Graph {
                 return
             }
             
-            s.watchers.forEach { [weak self, weak moc] in
-                guard let s = self else {
-                    return
-                }
-                
+            s.watchers.forEach { [weak moc] in
                 guard let watch = $0.watch else {
                     return
                 }
                 
-                (watch.delegate as? WatchCloudDelegate)?.graphWillUpdateFromCloudStorage?(graph: s)
+                (watch.delegate as? WatchCloudDelegate)?.graphWillUpdateFromCloudStorage?(graph: watch.graph)
                 
                 moc?.mergeChanges(fromContextDidSave: notification)
                 
@@ -182,8 +187,7 @@ extension Graph {
                 watch.notifyUpdatedWatchersFromCloud(notification)
                 watch.notifyDeletedWatchersFromCloud(notification)
             
-                
-                (watch.delegate as? WatchCloudDelegate)?.graphDidUpdateFromCloudStorage?(graph: s)
+                (watch.delegate as? WatchCloudDelegate)?.graphDidUpdateFromCloudStorage?(graph: watch.graph)
             }
         }
     }
