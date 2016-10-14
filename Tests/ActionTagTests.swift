@@ -51,8 +51,8 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         tagAddExpception = expectation(description: "[ActionTests Error: Tag add test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .action).for(types: "T").has(tags: ["G1"])
+        let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: ["G1"]).resume()
+        watch.delegate = self
         
         let action = Action(type: "T")
         action.add(tag: "G1")
@@ -88,8 +88,8 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         tagAddExpception = expectation(description: "[ActionTests Error: Tag add test failed.]")
         tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
-        graph.delegate = self
-        graph.watch(for: .action).has(tags: ["G1", "G2"])
+        let watch = Watch<Action>(graph: graph).has(tags: ["G1", "G2"]).resume()
+        watch.delegate = self
         
         action.add(tag: "G1")
         action.remove(tag: "G2")
@@ -127,8 +127,9 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
-        graph.delegate = self
-        graph.watch(for: .action).has(tags: ["G2"])
+        let watch = Watch<Action>(graph: graph).has(tags: ["G2"]).resume()
+        watch.delegate = self
+        
         
         action.remove(tag: "G2")
         

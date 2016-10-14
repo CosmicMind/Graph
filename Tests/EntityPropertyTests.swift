@@ -51,8 +51,8 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
         propertyInsertExpception = expectation(description: "[EntityTests Error: Property insert test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .entity).where(properties: ["P1"])
+        let watch = Watch<Entity>(graph: graph).where(properties: "P1").resume()
+        watch.delegate = self
         
         let entity = Entity(type: "T")
         entity["P1"] = "V1"
@@ -87,8 +87,8 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
         saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
         propertyUpdateExpception = expectation(description: "[EntityTests Error: Property update test failed.]")
         
-        graph.delegate = self
-        graph.watch(for: .entity).where(properties: ["P1"])
+        let watch = Watch<Entity>(graph: graph).where(properties: "P1").resume()
+        watch.delegate = self
         
         entity["P1"] = "V2"
         
@@ -122,8 +122,8 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
         saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
         propertyDeleteExpception = expectation(description: "[EntityTests Error: Property delete test failed.]")
         
-        graph.delegate = self
-        graph.watch(for: .entity).where(properties: ["P1"])
+        let watch = Watch<Entity>(graph: graph).where(properties: "P1").resume()
+        watch.delegate = self
         
         entity["P1"] = nil
         

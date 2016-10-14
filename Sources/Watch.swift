@@ -408,29 +408,7 @@ public class Watch<T: Node>: Watchable {
     internal internal(set) var graph: Graph
     
     /// A reference to a delagte object.
-    open weak var delegate: WatchDelegate?
-    
-    /// A reference to the predicate.
-    public var predicate: NSPredicate? {
-        var p = [NSPredicate]()
-        if let v = typesPredicate {
-            p.append(v)
-        }
-        
-        if let v = tagsPredicate {
-            p.append(v)
-        }
-        
-        if let v = groupsPredicate {
-            p.append(v)
-        }
-        
-        if let v = propertiesPredicate {
-            p.append(v)
-        }
-        
-        return NSCompoundPredicate(orPredicateWithSubpredicates: p)
-    }
+    public weak var delegate: WatchDelegate?
     
     /// A reference to the type.
     public private(set) var types: [String]?
@@ -464,6 +442,28 @@ public class Watch<T: Node>: Watchable {
     
     /// A reference to the propertiesPredicate.
     public internal(set) var propertiesPredicate: NSPredicate?
+    
+    /// A reference to the predicate.
+    public var predicate: NSPredicate? {
+        var p = [NSPredicate]()
+        if let v = typesPredicate {
+            p.append(v)
+        }
+        
+        if let v = tagsPredicate {
+            p.append(v)
+        }
+        
+        if let v = groupsPredicate {
+            p.append(v)
+        }
+        
+        if let v = propertiesPredicate {
+            p.append(v)
+        }
+        
+        return NSCompoundPredicate(orPredicateWithSubpredicates: p)
+    }
     
     /// Deinitializer.
     deinit {
@@ -732,11 +732,9 @@ public class Watch<T: Node>: Watchable {
      - Parameter source: A GraphSource value.
      */
     private func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
-        let nodes = sortToArray(set)
-        
-        delegateToEntityInsertedWatchers(nodes: nodes, source: source)
-        delegateToRelationshipInsertedWatchers(nodes: nodes, source: source)
-        delegateToActionInsertedWatchers(nodes: nodes, source: source)
+        delegateToEntityInsertedWatchers(set, source: source)
+        delegateToRelationshipInsertedWatchers(set, source: source)
+        delegateToActionInsertedWatchers(set, source: source)
     }
     
     /**
@@ -744,8 +742,8 @@ public class Watch<T: Node>: Watchable {
      - Parameter nodes: An Array of ManagedObjects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToEntityInsertedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
+    private func delegateToEntityInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        set.forEach { [unowned self] in
             guard let n = $0 as? ManagedEntity else {
                 return
             }
@@ -753,7 +751,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, inserted: Entity(managedNode: n), source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityTag else {
                 return
             }
@@ -765,7 +763,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityGroup else {
                 return
             }
@@ -777,7 +775,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), addedTo: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityProperty else {
                 return
             }
@@ -795,8 +793,8 @@ public class Watch<T: Node>: Watchable {
      - Parameter nodes: An Array of ManagedObjects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToRelationshipInsertedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
+    private func delegateToRelationshipInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        set.forEach { [unowned self] in
             guard let n = $0 as? ManagedRelationship else {
                 return
             }
@@ -804,7 +802,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, inserted: Relationship(managedNode: n), source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedRelationshipTag else {
                 return
             }
@@ -816,7 +814,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedRelationshipGroup else {
                 return
             }
@@ -828,7 +826,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), addedTo: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedRelationshipProperty else {
                 return
             }
@@ -846,8 +844,8 @@ public class Watch<T: Node>: Watchable {
      - Parameter nodes: An Array of ManagedObjects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToActionInsertedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
+    private func delegateToActionInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        set.forEach { [unowned self] in
             guard let n = $0 as? ManagedAction else {
                 return
             }
@@ -855,7 +853,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, inserted: Action(managedNode: n), source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionTag else {
                 return
             }
@@ -867,7 +865,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionGroup else {
                 return
             }
@@ -879,7 +877,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), addedTo: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionProperty else {
                 return
             }
@@ -894,15 +892,13 @@ public class Watch<T: Node>: Watchable {
     
     /**
      Passes the handle to the updated notification delegates.
-     - Parameter _ set: A Set of NSManagedObjects to pass.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
     private func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
-        let nodes = sortToArray(set)
-        
-        delegateToEntityUpdatedWatchers(nodes: nodes, source: source)
-        delegateToRelationshipUpdatedWatchers(nodes: nodes, source: source)
-        delegateToActionUpdatedWatchers(nodes: nodes, source: source)
+        delegateToEntityUpdatedWatchers(set, source: source)
+        delegateToRelationshipUpdatedWatchers(set, source: source)
+        delegateToActionUpdatedWatchers(set, source: source)
     }
     
     /**
@@ -910,8 +906,8 @@ public class Watch<T: Node>: Watchable {
      - Parameter nodes: An Array of ManagedObjects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToEntityUpdatedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
+    private func delegateToEntityUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityProperty else {
                 return
             }
@@ -929,8 +925,8 @@ public class Watch<T: Node>: Watchable {
      - Parameter nodes: An Array of ManagedObjects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToRelationshipUpdatedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
+    private func delegateToRelationshipUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        set.forEach { [unowned self] in
             guard let n = $0 as? ManagedRelationship else {
                 return
             }
@@ -938,7 +934,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, updated: Relationship(managedNode: n), source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedRelationshipProperty else {
                 return
             }
@@ -956,8 +952,8 @@ public class Watch<T: Node>: Watchable {
      - Parameter nodes: An Array of ManagedObjects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToActionUpdatedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
+    private func delegateToActionUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionProperty else {
                 return
             }
@@ -976,20 +972,18 @@ public class Watch<T: Node>: Watchable {
      - Parameter source: A GraphSource value.
      */
     private func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
-        let nodes = sortToArray(set)
-        
-        delegateToEntityDeletedWatchers(nodes: nodes, source: source)
-        delegateToRelationshipDeletedWatchers(nodes: nodes, source: source)
-        delegateToActionDeletedWatchers(nodes: nodes, source: source)
+        delegateToEntityDeletedWatchers(set, source: source)
+        delegateToRelationshipDeletedWatchers(set, source: source)
+        delegateToActionDeletedWatchers(set, source: source)
     }
     
     /**
      Passes the handle to the deleted notification delegates for Entities.
-     - Parameter nodes: An Array of ManagedObjects.
+     - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToEntityDeletedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
+    private func delegateToEntityDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityTag else {
                 return
             }
@@ -1001,7 +995,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityGroup else {
                 return
             }
@@ -1013,7 +1007,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removedFrom: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityProperty else {
                 return
             }
@@ -1025,7 +1019,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, with: o.object, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let n = $0 as? ManagedEntity else {
                 return
             }
@@ -1039,8 +1033,8 @@ public class Watch<T: Node>: Watchable {
      - Parameter nodes: An Array of ManagedObjects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToRelationshipDeletedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
+    private func delegateToRelationshipDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedRelationshipTag else {
                 return
             }
@@ -1052,7 +1046,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedRelationshipGroup else {
                 return
             }
@@ -1064,7 +1058,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removedFrom: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedRelationshipProperty else {
                 return
             }
@@ -1076,7 +1070,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, with: o.object, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let n = $0 as? ManagedRelationship else {
                 return
             }
@@ -1090,8 +1084,8 @@ public class Watch<T: Node>: Watchable {
      - Parameter nodes: An Array of ManagedObjects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToActionDeletedWatchers(nodes: [NSManagedObject], source: GraphSource) {
-        nodes.forEach { [unowned self] in
+    private func delegateToActionDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionTag else {
                 return
             }
@@ -1103,7 +1097,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionGroup else {
                 return
             }
@@ -1115,7 +1109,7 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removedFrom: o.name, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionProperty else {
                 return
             }
@@ -1127,35 +1121,12 @@ public class Watch<T: Node>: Watchable {
             (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, with: o.object, source: source)
         }
         
-        nodes.forEach { [unowned self] in
+        set.forEach { [unowned self] in
             guard let n = $0 as? ManagedAction else {
                 return
             }
             
             (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, deleted: Action(managedNode: n), source: source)
-        }
-    }
-    
-    /**
-     Sort nodes.
-     - Parameter _ set: A Set of NSManagedObjects.
-     - Returns: A Set of NSManagedObjects in sorted order.
-     */
-    private func sortToArray(_ set: Set<AnyHashable>) -> [NSManagedObject] {
-        var objects = Set<NSManagedObject>()
-        
-        set.forEach { (object) in
-            objects.insert(object as! NSManagedObject)
-        }
-        
-        return objects.sorted { (a, b) -> Bool in
-            guard let a1 = a as? ManagedNode else {
-                return false
-            }
-            guard let b1 = b as? ManagedNode else {
-                return false
-            }
-            return a1 < b1
         }
     }
     
@@ -1190,7 +1161,7 @@ public class Watch<T: Node>: Watchable {
     
     /// Prepares graph for watching.
     private func prepareGraph() {
-        graph.watchers.append(Watcher(object: self as AnyObject))
+        graph.watchers.append(Watcher(object: self))
     }
 }
 
@@ -1280,7 +1251,8 @@ extension Watch {
      - Parameter index: A String.
      */
     private func watch(types: [String], index: String) {
-        typesPredicate = addWatcher(using: .or, key: "type", index: index, values: types)
+        let p = addWatcher(using: .or, key: "type", index: index, values: types)
+        typesPredicate = nil == typesPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, typesPredicate!])
     }
     
     /**
@@ -1289,7 +1261,8 @@ extension Watch {
      - Parameter index: A String.
      */
     private func watch(tags: [String], index: String) {
-        tagsPredicate = addWatcher(using: .or, key: "name", index: index, values: tags)
+        let p = addWatcher(using: .or, key: "name", index: index, values: tags)
+        tagsPredicate = nil == tagsPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, tagsPredicate!])
     }
     
     /**
@@ -1298,7 +1271,8 @@ extension Watch {
      - Parameter index: A String.
      */
     private func watch(groups: [String], index: String) {
-        groupsPredicate = addWatcher(using: .or, key: "name", index: index, values: groups)
+        let p = addWatcher(using: .or, key: "name", index: index, values: groups)
+        groupsPredicate = nil == groupsPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, groupsPredicate!])
     }
     
     /**
@@ -1307,7 +1281,8 @@ extension Watch {
      - Parameter index: A String.
      */
     private func watch(properties: [String], index: String) {
-        propertiesPredicate = addWatcher(using: .or, key: "name", index: index, values: properties)
+        let p = addWatcher(using: .or, key: "name", index: index, values: properties)
+        propertiesPredicate = nil == propertiesPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, propertiesPredicate!])
     }
     
     /**

@@ -51,8 +51,8 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .relationship).for(types: "T").has(tags: ["G1"])
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: ["G1"]).resume()
+        watch.delegate = self
         
         let relationship = Relationship(type: "T")
         relationship.add(tag: "G1")
@@ -88,8 +88,8 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
-        graph.delegate = self
-        graph.watch(for: .relationship).has(tags: ["G1", "G2"])
+        let watch = Watch<Relationship>(graph: graph).has(tags: ["G1", "G2"]).resume()
+        watch.delegate = self
         
         relationship.add(tag: "G1")
         relationship.remove(tag: "G2")
@@ -127,8 +127,8 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
-        graph.delegate = self
-        graph.watch(for: .relationship).has(tags: ["G2"])
+        let watch = Watch<Relationship>(graph: graph).has(tags: ["G2"]).resume()
+        watch.delegate = self
         
         relationship.remove(tag: "G2")
         

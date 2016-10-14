@@ -51,8 +51,8 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         tagAddExpception = expectation(description: "[EntityTests Error: Group add test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .entity).for(types: "T").member(of: ["G1"])
+        let watch = Watch<Entity>(graph: graph).for(types: "T").member(of: "G1").resume()
+        watch.delegate = self
         
         let entity = Entity(type: "T")
         entity.add(to: "G1")
@@ -88,8 +88,8 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         tagAddExpception = expectation(description: "[EntityTests Error: Group add test failed.]")
         tagRemoveExpception = expectation(description: "[EntityTests Error: Group remove test failed.]")
         
-        graph.delegate = self
-        graph.watch(for: .entity).member(of: ["G1", "G2"])
+        let watch = Watch<Entity>(graph: graph).member(of: "G1", "G2").resume()
+        watch.delegate = self
         
         entity.add(to: "G1")
         entity.remove(from: "G2")
@@ -127,8 +127,8 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
         tagRemoveExpception = expectation(description: "[EntityTests Error: Group remove test failed.]")
         
-        graph.delegate = self
-        graph.watch(for: .entity).member(of: ["G2"])
+        let watch = Watch<Entity>(graph: graph).member(of: "G2").resume()
+        watch.delegate = self
         
         entity.remove(from: "G2")
         
