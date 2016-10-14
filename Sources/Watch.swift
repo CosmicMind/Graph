@@ -366,11 +366,6 @@ public protocol WatchCloudDelegate: WatchDelegate {
     optional func graphDidUpdateFromCloudStorage(graph: Graph)
 }
 
-public enum WatchCondition: Int {
-    case or
-    case and
-}
-
 public protocol Watchable {
     /// Element type.
     associatedtype Element: Node
@@ -413,26 +408,17 @@ public class Watch<T: Node>: Watchable {
     /// A reference to the tags.
     public private(set) var tags: [String]?
     
-    /// A WatchCondition value for tags.
-    public private(set) var tagsWatchCondition = WatchCondition.and
-    
     /// A reference to the tagsPredicate.
     public internal(set) var tagsPredicate: NSPredicate?
     
     /// A reference to the groups.
     public private(set) var groups: [String]?
     
-    /// A WatchCondition value for groups.
-    public private(set) var groupsWatchCondition = WatchCondition.and
-    
     /// A reference to the groupsPredicate.
     public internal(set) var groupsPredicate: NSPredicate?
     
     /// A reference to the properties.
     public private(set) var properties: [String]?
-    
-    /// A WatchCondition value for properties.
-    public private(set) var propertiesWatchCondition = WatchCondition.and
     
     /// A reference to the propertiesPredicate.
     public internal(set) var propertiesPredicate: NSPredicate?
@@ -489,14 +475,12 @@ public class Watch<T: Node>: Watchable {
         types = nil
         typesPredicate = nil
         tags = nil
-        tagsWatchCondition = .and
         tagsPredicate = nil
         groups = nil
-        groupsWatchCondition = .and
         groupsPredicate = nil
         properties = nil
-        propertiesWatchCondition = .and
         propertiesPredicate = nil
+        
         return self
     }
     
@@ -512,7 +496,7 @@ public class Watch<T: Node>: Watchable {
         
         isRunning = true
         
-        prepareForObservation()
+        addForObservation()
         return self
     }
     
@@ -523,6 +507,7 @@ public class Watch<T: Node>: Watchable {
     @discardableResult
     public func pause() -> Watch {
         isRunning = false
+        
         removeFromObservation()
         return self
     }
@@ -573,9 +558,8 @@ public class Watch<T: Node>: Watchable {
      - Returns: A Watch instance.
      */
     @discardableResult
-    public func has(tags: [String], using condition: WatchCondition = .and) -> Watch {
+    public func has(tags: [String]) -> Watch {
         self.tags = tags
-        tagsWatchCondition = condition
         switch T.self {
         case is Entity.Type:
             watchForEntity(tags: tags)
@@ -604,9 +588,8 @@ public class Watch<T: Node>: Watchable {
      - Returns: A Watch instance.
      */
     @discardableResult
-    public func member(of groups: [String], using condition: WatchCondition = .and) -> Watch {
+    public func member(of groups: [String]) -> Watch {
         self.groups = groups
-        groupsWatchCondition = condition
         switch T.self {
         case is Entity.Type:
             watchForEntity(groups: groups)
@@ -635,9 +618,8 @@ public class Watch<T: Node>: Watchable {
      - Returns: A Watch instance.
      */
     @discardableResult
-    public func `where`(properties: [String], using condition: WatchCondition = .and) -> Watch {
+    public func `where`(properties: [String]) -> Watch {
         self.properties = properties
-        propertiesWatchCondition = condition
         switch T.self {
         case is Entity.Type:
             watchForEntity(properties: properties)
@@ -1194,7 +1176,7 @@ public class Watch<T: Node>: Watchable {
     }
     
     /// Prepares the instance for save notifications.
-    internal func prepareForObservation() {
+    internal func addForObservation() {
         guard let moc = graph.managedObjectContext else {
             return
         }
@@ -1297,7 +1279,7 @@ extension Watch {
      - Parameter index: A String.
      */
     private func watch(types: [String], index: String) {
-        let p = addWatcher(using: .or, key: "type", index: index, values: types)
+        let p = addWatcher(key: "type", index: index, values: types)
         typesPredicate = nil == typesPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, typesPredicate!])
     }
     
@@ -1307,7 +1289,7 @@ extension Watch {
      - Parameter index: A String.
      */
     private func watch(tags: [String], index: String) {
-        let p = addWatcher(using: .or, key: "name", index: index, values: tags)
+        let p = addWatcher(key: "name", index: index, values: tags)
         tagsPredicate = nil == tagsPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, tagsPredicate!])
     }
     
@@ -1317,7 +1299,7 @@ extension Watch {
      - Parameter index: A String.
      */
     private func watch(groups: [String], index: String) {
-        let p = addWatcher(using: .or, key: "name", index: index, values: groups)
+        let p = addWatcher(key: "name", index: index, values: groups)
         groupsPredicate = nil == groupsPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, groupsPredicate!])
     }
     
@@ -1327,23 +1309,23 @@ extension Watch {
      - Parameter index: A String.
      */
     private func watch(properties: [String], index: String) {
-        let p = addWatcher(using: .or, key: "name", index: index, values: properties)
+        let p = addWatcher(key: "name", index: index, values: properties)
         propertiesPredicate = nil == propertiesPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, propertiesPredicate!])
     }
     
     /**
      Adds a watcher.
-     - Parameter using: A WatchCondition value.
      - Parameter key: A parent level key to watch for.
      - Parameter index: A Model index.
+     - Parameter values: An Array of Strings.
      */
-    private func addWatcher(using: WatchCondition, key: String, index: String, values: [String]) -> NSCompoundPredicate {
+    private func addWatcher(key: String, index: String, values: [String]) -> NSCompoundPredicate {
         var p = [NSPredicate]()
         values.forEach { [key = key] in
             p.append(NSPredicate(format: "%K LIKE %@", key, $0))
         }
         
-        let cp = .and == using ? NSCompoundPredicate(andPredicateWithSubpredicates: p) : NSCompoundPredicate(orPredicateWithSubpredicates: p)
+        let cp = NSCompoundPredicate(orPredicateWithSubpredicates: p)
         return NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", index), cp])
     }
 }
