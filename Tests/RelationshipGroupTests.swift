@@ -52,7 +52,7 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).for(types: ["T"]).member(of: ["G1"])
+        graph.watch(for: .relationship).for(types: "T").member(of: ["G1"])
         
         let relationship = Relationship(type: "T")
         relationship.add(to: "G1")

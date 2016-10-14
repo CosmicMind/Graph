@@ -63,7 +63,7 @@ class EntityThreadTests : XCTestCase, WatchEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        graph.watch(for: .entity).for(types: "T").has(tags: "G").where(properties: "P")
         
         let entity = Entity(type: "T")
         

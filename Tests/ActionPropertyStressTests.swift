@@ -55,7 +55,7 @@ class ActionPropertyStressTests: XCTestCase, WatchActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .action).for(types: ["T"])
+        graph.watch(for: .action).for(types: "T")
         
         let action = Action(type: "T")
         

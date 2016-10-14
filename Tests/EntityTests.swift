@@ -52,8 +52,8 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let entity = Entity(type: "T")
         entity["P"] = "V"
@@ -77,9 +77,8 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph(name: "EntityTests-testNamedGraphSave")
-        
-        graph.delegate = self
-        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let entity = Entity(type: "T", graph: "EntityTests-testNamedGraphSave")
         entity["P"] = "V"
@@ -103,9 +102,8 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph(name: "EntityTests-testReferenceGraphSave")
-        
-        graph.delegate = self
-        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
@@ -131,8 +129,8 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph(name: "EntityTests-testAsyncGraphSave")
-        graph.delegate = self
-        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
@@ -158,8 +156,8 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         propertyExpception = expectation(description: "[EntityTests Error: Property test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .entity).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let entity = Entity(type: "T")
         entity["P"] = "V"

@@ -51,7 +51,7 @@ class ActionGroupTests: XCTestCase, WatchActionDelegate {
         tagAddExpception = expectation(description: "[ActionTests Error: Group add test failed.]")
         
         let graph = Graph()
-        let watch = Watch<Action>(graph: graph).for(types: ["T"]).member(of: ["G1"])
+        let watch = Watch<Action>(graph: graph).for(types: "T").member(of: ["G1"])
         watch.delegate = self
         
         let action = Action(type: "T")

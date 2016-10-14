@@ -53,7 +53,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
@@ -79,7 +79,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         let graph = Graph(name: "RelationshipTests-testNamedGraphSave")
         
         graph.delegate = self
-        graph.watch(for: .relationship).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
         
         let relationship = Relationship(type: "T", graph: "RelationshipTests-testNamedGraphSave")
         relationship["P"] = "V"
@@ -105,7 +105,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         let graph = Graph(name: "RelationshipTests-testReferenceGraphSave")
         
         graph.delegate = self
-        graph.watch(for: .relationship).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
         
         let relationship = Relationship(type: "T", graph: graph)
         relationship["P"] = "V"
@@ -132,7 +132,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let graph = Graph(name: "RelationshipTests-testAsyncGraphSave")
         graph.delegate = self
-        graph.watch(for: .relationship).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
         
         let relationship = Relationship(type: "T", graph: graph)
         relationship["P"] = "V"
@@ -159,7 +159,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
@@ -229,7 +229,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
@@ -273,7 +273,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).for(types: ["T"]).has(tags: ["G"]).where(properties: ["P"])
+        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"

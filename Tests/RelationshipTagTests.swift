@@ -52,7 +52,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .relationship).for(types: ["T"]).has(tags: ["G1"])
+        graph.watch(for: .relationship).for(types: "T").has(tags: ["G1"])
         
         let relationship = Relationship(type: "T")
         relationship.add(tag: "G1")

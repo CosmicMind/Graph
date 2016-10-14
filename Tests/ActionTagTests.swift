@@ -52,7 +52,7 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .action).for(types: ["T"]).has(tags: ["G1"])
+        graph.watch(for: .action).for(types: "T").has(tags: ["G1"])
         
         let action = Action(type: "T")
         action.add(tag: "G1")

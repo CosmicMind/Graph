@@ -52,7 +52,7 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .entity).for(types: ["T"]).member(of: ["G1"])
+        graph.watch(for: .entity).for(types: "T").member(of: ["G1"])
         
         let entity = Entity(type: "T")
         entity.add(to: "G1")

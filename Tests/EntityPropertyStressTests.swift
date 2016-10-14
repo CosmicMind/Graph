@@ -55,7 +55,7 @@ class EntityPropertyStressTests: XCTestCase, WatchEntityDelegate {
         
         let graph = Graph()
         graph.delegate = self
-        graph.watch(for: .entity).for(types: ["T"])
+        graph.watch(for: .entity).for(types: "T")
         
         let entity = Entity(type: "T")
         
