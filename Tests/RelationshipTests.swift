@@ -52,8 +52,8 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
@@ -77,9 +77,8 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph(name: "RelationshipTests-testNamedGraphSave")
-        
-        graph.delegate = self
-        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let relationship = Relationship(type: "T", graph: "RelationshipTests-testNamedGraphSave")
         relationship["P"] = "V"
@@ -103,9 +102,8 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph(name: "RelationshipTests-testReferenceGraphSave")
-        
-        graph.delegate = self
-        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let relationship = Relationship(type: "T", graph: graph)
         relationship["P"] = "V"
@@ -131,8 +129,8 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph(name: "RelationshipTests-testAsyncGraphSave")
-        graph.delegate = self
-        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let relationship = Relationship(type: "T", graph: graph)
         relationship["P"] = "V"
@@ -158,8 +156,8 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
@@ -228,8 +226,8 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
@@ -272,8 +270,8 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
         
         let graph = Graph()
-        graph.delegate = self
-        graph.watch(for: .relationship).for(types: "T").has(tags: "G").where(properties: "P")
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        watch.delegate = self
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
