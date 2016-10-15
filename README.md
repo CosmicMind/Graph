@@ -87,7 +87,10 @@ authorLabel.text = entity["author"] as? String
 imageCard.bottomBar?.centerViews = [authorLabel]
 ```
 
-Download the complete [ ImageCard](http://github.com/CosmicMind/Graph/Examples/ImageCard) example.
+Download the complete [ ImageCard](https://github.com/CosmicMind/Graph/tree/master/Examples/ImageCard) example.
+
+Learn more about [Entity](http://cosmicmind.io/graph/entity)
+Learn more about Material [ImageCard](http://cosmicmind.io/material/imagecard)
 
 ## License
 
