@@ -6,8 +6,7 @@ target 'ImageCard' do
   use_frameworks!
 
   # Pods for Card
-#pod 'Material', '~> 2.0'
-#pod 'Graph', '~> 2.0'
-pod 'Material', :git => 'https://github.com/CosmicMind/Material.git', :branch => 'development'
+pod 'Material', '~> 2.0'
+pod 'Graph', '~> 2.0'
 
 end
