@@ -54,7 +54,7 @@ The following are some examples to see how Graph may be used within your project
 
 An **Entity** is a model object that represents a **person**, **place**, or **thing**. It may store property values, be a member of groups, and can be tagged.
 
-In the following example, we create an ImageCard entity that stores the data for our ImageCard view.
+In the following example, we create an ImageCard view using Material and populate it's properties with an entity that stores the data for that view.
 
 ![Material Image](http://www.cosmicmind.io/gifs/white/image-card.gif)
 
