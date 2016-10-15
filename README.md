@@ -52,7 +52,9 @@ The following are some examples to see how Graph may be used within your project
 
 ## Creating An Entity
 
-An **Entity** is a person, place, or thing. In the following example, we create an ImageCard entity that stores the data for our ImageCard view.
+An **Entity** is a model object that represents a **person**, **place**, or **thing**. It may store property values, be a member of groups, and can be tagged.
+
+In the following example, we create an ImageCard entity that stores the data for our ImageCard view.
 
 ![Material Image](http://www.cosmicmind.io/gifs/white/image-card.gif)
 
@@ -87,9 +89,9 @@ authorLabel.text = entity["author"] as? String
 imageCard.bottomBar?.centerViews = [authorLabel]
 ```
 
-* Download the complete [ ImageCard](https://github.com/CosmicMind/Graph/tree/master/Examples/ImageCard) example.
+* Download the complete [ ImageCard example](https://github.com/CosmicMind/Graph/tree/master/Examples/ImageCard).
 * Learn more about [Entity](http://cosmicmind.io/graph/entity)
-* Learn more about Material's [ImageCard](http://cosmicmind.io/material/imagecard)
+* Learn more about [Material's ImageCard](http://cosmicmind.io/material/imagecard)
 
 ## License
 
