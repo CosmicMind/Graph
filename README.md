@@ -63,11 +63,11 @@ An **Entity** is a person, place, or thing. In the following example, we create 
 
 ```swift
 let entity = Entity(type: "ImageCard")
+
 entity["title"] = "Graph"
 entity["detail"] = "Build Data-Driven Software"
 entity["content"] = "Graph is a semantic database that is used to create data-driven applications."
 entity["author"] = "CosmicMind"
-
 entity["image"] = UIImage(contentsOfFile: Bundle.main.path(forResource: "frontier", ofType: "jpg")!)?.resize(toWidth: view.width)
 ```
 
@@ -84,7 +84,6 @@ imageCard.contentView = contentLabel
 
 let authorLabel = UILabel()
 authorLabel.text = entity["author"] as? String
-
 imageCard.bottomBar?.centerViews = [authorLabel]
 ```
 
