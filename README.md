@@ -2,7 +2,7 @@
 
 ## Welcome to Graph
 
-Graph is a semantic database that is used for building intelligent applications.
+Graph is a semantic database that is used to create data-driven applications.
 
 ## Features
 
@@ -46,9 +46,49 @@ Graph is a growing project and will encounter changes throughout its development
 
 ## Examples
 
-* Visit the [Examples](https://github.com/CosmicMind/Graph/tree/development/Examples) directory to see example projects using Graph. All examples use [CocoaPods](http://cocoapods.org) to install, so please open the project you are interested in and run the command `pod install` to get started.
+* Visit the [Examples](https://github.com/CosmicMind/Graph/tree/development/Examples) directory to see example projects using Graph. Most examples use [CocoaPods](http://cocoapods.org) to install, so please open the project you are interested in and run the command `pod install` to get started.
 
 
+# Some Examples
+
+The following are some examples to see how Graph may be used with in your projects.
+
+## Creating An Entity
+
+An **Entity** is a person, place, or thing. In the following example, we create an ImageCard entity that stores the data for our ImageCard view.
+
+![Material Image](http://www.cosmicmind.io/gifs/white/image-card.gif)
+
+#### Creating the data.
+
+```swift
+let entity = Entity(type: "ImageCard")
+entity["title"] = "Graph"
+entity["detail"] = "Build Data-Driven Software"
+entity["content"] = "Graph is a semantic database that is used to create data-driven applications."
+entity["author"] = "CosmicMind"
+
+entity["image"] = UIImage(contentsOfFile: Bundle.main.path(forResource: "frontier", ofType: "jpg")!)?.resize(toWidth: view.width)
+```
+
+#### Setting the view's properties.
+
+```swift
+imageCard.toolbar?.title = entity["title"] as? String
+imageCard.toolbar?.detail = entity["detail"] as? String
+imageCard.imageView?.image = entity["image"] as? UIImage
+
+let contentLabel = UILabel()
+contentLabel.text = entity["content"] as? String
+imageCard.contentView = contentLabel
+
+let authorLabel = UILabel()
+authorLabel.text = entity["author"] as? String
+
+imageCard.bottomBar?.centerViews = [authorLabel]
+```
+
+Download the complete [ ImageCard](http://github.com/CosmicMind/Graph/Examples/ImageCard) example.
 
 ## License
 

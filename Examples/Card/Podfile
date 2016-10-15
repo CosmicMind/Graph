@@ -7,6 +7,6 @@ target 'Card' do
 
   # Pods for Card
 pod 'Material', '~> 2.0'
-pod 'Graph', '~> 2.0'
+#pod 'Graph', '~> 2.0'
 
 end
