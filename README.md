@@ -50,7 +50,7 @@ The following are some examples to see how Graph may be used within your project
 
 * Visit the [Examples](https://github.com/CosmicMind/Graph/tree/development/Examples) directory to see example projects using Graph. Most examples use [CocoaPods](http://cocoapods.org) to install, so please open the project you are interested in and run the command `pod install` to get started.
 
-## Creating An Entity
+## Creating An Entity With An ImageCard View
 
 An **Entity** is a model object that represents a **person**, **place**, or **thing**. It may store property values, be a member of groups, and can be tagged.
 
