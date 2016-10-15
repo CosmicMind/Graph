@@ -47,8 +47,8 @@ class ActionSearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
         
-        search.sync { [weak self, count = count] (nodes) in
-            XCTAssertEqual(count, nodes.count)
+        search.sync { [weak self, count = count] in
+            XCTAssertEqual(count, $0.count)
             self?.testExpectation?.fulfill()
         }
         
@@ -56,8 +56,8 @@ class ActionSearchTests : XCTestCase {
         
         testExpectation = expectation(description: "[ActionSearchTests Error: Test failed.]")
         
-        search.async { [weak self, count = count] (nodes) in
-            XCTAssertEqual(count, nodes.count)
+        search.async { [weak self, count = count] in
+            XCTAssertEqual(count, $0.count)
             self?.testExpectation?.fulfill()
         }
         
@@ -103,8 +103,8 @@ class ActionSearchTests : XCTestCase {
         searchTest(search: search.clear().member(of: [], using: .or), count: 0)
         searchTest(search: search.clear().member(of: [], using: .and), count: 0)
         
-        searchTest(search: search.clear().where(properties: [], using: .or), count: 0)
-        searchTest(search: search.clear().where(properties: [], using: .and), count: 0)
+        searchTest(search: search.clear().where(properties: [""], using: .or), count: 0)
+        searchTest(search: search.clear().where(properties: [""], using: .and), count: 0)
         
         searchTest(search: search.clear().for(types: "NONE"), count: 0)
         searchTest(search: search.clear().for(types: "T1"), count: 100)

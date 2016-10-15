@@ -95,7 +95,7 @@ public class Search<T: Node>: Searchable {
     public private(set) var groupsSearchCondition = SearchCondition.and
     
     /// A reference to the properties.
-    public private(set) var properties: [String]?
+    public private(set) var properties: [(key: String, value: Any?)]?
     
     /// A SearchCondition value for properties.
     public private(set) var propertiesSearchCondition = SearchCondition.and
@@ -159,6 +159,7 @@ public class Search<T: Node>: Searchable {
     /**
      Searches nodes with given tags.
      - Parameter tags: An Array of Strings.
+     - Parameter using condiction: A SearchCondition value.
      - Returns: A Search instance.
      */
     @discardableResult
@@ -181,6 +182,7 @@ public class Search<T: Node>: Searchable {
     /**
      Searches nodes with given groups.
      - Parameter groups: An Array of Strings.
+     - Parameter using condiction: A SearchCondition value.
      - Returns: A Search instance.
      */
     @discardableResult
@@ -203,10 +205,51 @@ public class Search<T: Node>: Searchable {
     /**
      Watches nodes with given properties.
      - Parameter groups: An Array of Strings.
+     - Parameter using condiction: A SearchCondition value.
      - Returns: A Search instance.
      */
     @discardableResult
     public func `where`(properties: [String], using condition: SearchCondition = .and) -> Search {
+        var p = [(key: String, value: Any?)]()
+        for k in properties {
+            p.append((k, nil))
+        }
+        return self.where(properties: p, using: condition)
+    }
+    
+    /**
+     Watches nodes with given properties.
+     - Parameter properties: A Dictionary of String keys and Any values.
+     - Parameter using condiction: A SearchCondition value.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func `where`(properties: [String: Any?], using condition: SearchCondition = .and) -> Search {
+        var p = [(key: String, value: Any?)]()
+        for (k, v) in properties {
+            p.append((k, v))
+        }
+        return self.where(properties: p)
+    }
+    
+    /**
+     Watches nodes with given properties.
+     - Parameter properties: A parameter list of tuples (key: String, value: Any?).
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func `where`(properties: (key: String, value: Any?)...) -> Search {
+        return self.where(properties: properties)
+    }
+    
+    /**
+     Watches nodes with given properties.
+     - Parameter groups: An Array of tuples (key: String, value: Any?).
+     - Parameter using condiction: A SearchCondition value.
+     - Returns: A Search instance.
+     */
+    @discardableResult
+    public func `where`(properties: [(key: String, value: Any?)], using condition: SearchCondition = .and) -> Search {
         self.properties = properties
         propertiesSearchCondition = condition
         return self
@@ -341,7 +384,7 @@ extension Search {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Entities.
      */
-    internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) -> [Entity] {
+    internal func searchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: Any?)]? = nil) -> [Entity] {
         var typeSet: Set<ManagedEntity>?
         var tagSet: Set<ManagedEntity>?
         var groupSet: Set<ManagedEntity>?
@@ -378,7 +421,7 @@ extension Search {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Relationships.
      */
-    internal func searchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) -> [Relationship] {
+    internal func searchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: Any?)]? = nil) -> [Relationship] {
         var typeSet: Set<ManagedRelationship>?
         var tagSet: Set<ManagedRelationship>?
         var groupSet: Set<ManagedRelationship>?
@@ -415,7 +458,7 @@ extension Search {
      - Parameter properties: An Array of property tuples.
      - Returns: An Array of Actions.
      */
-    internal func searchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) -> [Action] {
+    internal func searchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [(key: String, value: Any?)]? = nil) -> [Action] {
         var typeSet: Set<ManagedAction>?
         var tagSet: Set<ManagedAction>?
         var groupSet: Set<ManagedAction>?
@@ -451,7 +494,12 @@ extension Search {
      - Returns: A Set of ManagedNode objects.
      */
     internal func search<T: ManagedNode>(types: [String], entity name: String) -> Set<T> {
-        guard let objects: [T] = search(forEntityName: name, values: types, format: "type LIKE[cd] %@") else {
+        var predicate = [NSPredicate]()
+        for v in types {
+            predicate.append(NSPredicate(format: "type LIKE[cd] %@", v))
+        }
+        
+        guard let objects: [T] = search(for: name, predicate: NSCompoundPredicate(orPredicateWithSubpredicates: predicate)) else {
             return Set<T>()
         }
         
@@ -468,7 +516,12 @@ extension Search {
     internal func search<T: ManagedNode, U: ManagedTag>(tags: [String], entity name: String, _: U.Type) -> Set<T> {
         var set = Set<T>()
         
-        guard let objects: [U] = search(forEntityName: name, values: tags, format: "name LIKE[cd] %@") else {
+        var predicate = [NSPredicate]()
+        for v in tags {
+            predicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
+        }
+        
+        guard let objects: [U] = search(for: name, predicate: NSCompoundPredicate(orPredicateWithSubpredicates: predicate)) else {
             return set
         }
         
@@ -514,7 +567,12 @@ extension Search {
     internal func search<T: ManagedNode, U: ManagedGroup>(groups: [String], entity name: String, _: U.Type) -> Set<T> {
         var set = Set<T>()
         
-        guard let objects: [U] = search(forEntityName: name, values: groups, format: "name LIKE[cd] %@") else {
+        var predicate = [NSPredicate]()
+        for v in groups {
+            predicate.append(NSPredicate(format: "name LIKE[cd] %@", v))
+        }
+        
+        guard let objects: [U] = search(for: name, predicate: NSCompoundPredicate(orPredicateWithSubpredicates: predicate)) else {
             return set
         }
         
@@ -555,15 +613,27 @@ extension Search {
     
     /**
      Searches for ManagedProperty types and maps the result to a Set.
-     - Parameter properties: An Array of Strings.
+     - Parameter properties: An Array of tuples (key: String, value: Any?).
      - Parameter entity name: CoreData entity name.
      - Parameter _: ManagedProperty class Type.
      - Returns: A Set of ManagedProperty objects.
      */
-    internal func search<T: ManagedNode, U: ManagedProperty>(properties: [String], entity name: String, _: U.Type) -> Set<T> {
+    internal func search<T: ManagedNode, U: ManagedProperty>(properties: [(key: String, value: Any?)], entity name: String, _: U.Type) -> Set<T> {
         var set = Set<T>()
         
-        guard let objects: [U] = search(forEntityName: name, values: properties, format: "name LIKE[cd] %@") else {
+        var predicate = [NSPredicate]()
+        for p in properties {
+            switch p {
+            case let (k, v) where v is String:
+                predicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", v as! String)]))
+            case let (k, v) where v is NSNumber:
+                predicate.append(NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "name LIKE[cd] %@", k), NSPredicate(format: "object = %@", v as! NSNumber)]))
+            default:
+                predicate.append(NSPredicate(format: "name LIKE[cd] %@", p.key))
+            }
+        }
+        
+        guard let objects: [U] = search(for: name, predicate: NSCompoundPredicate(orPredicateWithSubpredicates: predicate)) else {
             return set
         }
         
@@ -592,7 +662,7 @@ extension Search {
             
             let k = q.properties.keys
             for property in properties {
-                guard k.contains(property) else {
+                guard k.contains(property.key) else {
                     return
                 }
             }
@@ -647,26 +717,20 @@ extension Search {
     
     /**
      Searches based on property value.
-     - Parameter forEntityName: An entity type name.
-     - Parameter properties: An Array of ManagedProperty objects.
-     - Returns: An optional Array of ManagedProperty objects.
+     - Parameter for entityName: A String.
+     - Parameter predicate: An NSPredicate.
+     - Returns: An optional Array of ManagedObject objects.
      */
-    internal func search<T: ManagedObject>(forEntityName: String, values: [String], format: String) -> [T]? {
+    internal func search<T: ManagedObject>(for entityName: String, predicate: NSPredicate) -> [T]? {
         guard let moc = graph.managedObjectContext else {
             return nil
         }
         
-        var predicate = [NSPredicate]()
-        
-        for v in values {
-            predicate.append(NSPredicate(format: format, v))
-        }
-        
         let request = NSFetchRequest<T>()
-        request.entity = NSEntityDescription.entity(forEntityName: forEntityName, in: moc)!
+        request.entity = NSEntityDescription.entity(forEntityName: entityName, in: moc)!
         request.fetchBatchSize = graph.batchSize
         request.fetchOffset = graph.batchOffset
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicate)
+        request.predicate = predicate
         
         var result: [AnyObject]?
         moc.performAndWait { [unowned request] in

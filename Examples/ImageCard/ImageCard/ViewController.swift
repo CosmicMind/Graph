@@ -57,7 +57,7 @@ class ViewController: UIViewController {
 
 /// Model.
 extension ViewController {
-    internal func createImageCardEntity() {
+    internal func createSampleData() {
         entity = Entity(type: "ImageCard")
         
         entity["title"] = "Graph"
@@ -74,7 +74,7 @@ extension ViewController {
         graph = Graph()
         
         // Uncomment to clear the Graph data.
-        graph.clear()
+//        graph.clear()
     }
     
     internal func prepareSearch() {
@@ -87,7 +87,7 @@ extension ViewController {
         let imageCards = search.sync()
         
         guard let e = imageCards.first else {
-            createImageCardEntity()
+            createSampleData()
             return
         }
         

@@ -1,0 +1,403 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		760C6B70B105AF2F9D2FEDE7 /* Pods_SearchBarController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D9C0BB7AD54F3304718146F /* Pods_SearchBarController.framework */; };
+		9642C5081DB2B432000B5941 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9642C5071DB2B432000B5941 /* AppDelegate.swift */; };
+		9642C50A1DB2B432000B5941 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9642C5091DB2B432000B5941 /* RootViewController.swift */; };
+		9642C50F1DB2B432000B5941 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9642C50E1DB2B432000B5941 /* Assets.xcassets */; };
+		9642C5121DB2B432000B5941 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9642C5101DB2B432000B5941 /* LaunchScreen.storyboard */; };
+		9642C51A1DB2B541000B5941 /* AppSearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9642C5191DB2B541000B5941 /* AppSearchBarController.swift */; };
+		9642C5201DB2B691000B5941 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9642C51F1DB2B691000B5941 /* Graph.framework */; };
+		9642C5211DB2B691000B5941 /* Graph.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9642C51F1DB2B691000B5941 /* Graph.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9642C5231DB2B7E4000B5941 /* UserTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9642C5221DB2B7E4000B5941 /* UserTableView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9642C51E1DB2B5BE000B5941 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9642C5211DB2B691000B5941 /* Graph.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2D9C0BB7AD54F3304718146F /* Pods_SearchBarController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SearchBarController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		61E15343F0F8679AF943950C /* Pods-SearchBarController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SearchBarController.release.xcconfig"; path = "Pods/Target Support Files/Pods-SearchBarController/Pods-SearchBarController.release.xcconfig"; sourceTree = "<group>"; };
+		9642C5041DB2B432000B5941 /* SearchBarController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SearchBarController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9642C5071DB2B432000B5941 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9642C5091DB2B432000B5941 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		9642C50E1DB2B432000B5941 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9642C5111DB2B432000B5941 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9642C5131DB2B432000B5941 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9642C5191DB2B541000B5941 /* AppSearchBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSearchBarController.swift; sourceTree = "<group>"; };
+		9642C51F1DB2B691000B5941 /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9642C5221DB2B7E4000B5941 /* UserTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableView.swift; sourceTree = "<group>"; };
+		AFF17BC12E9C251671A09769 /* Pods-SearchBarController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SearchBarController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SearchBarController/Pods-SearchBarController.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9642C5011DB2B432000B5941 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				760C6B70B105AF2F9D2FEDE7 /* Pods_SearchBarController.framework in Frameworks */,
+				9642C5201DB2B691000B5941 /* Graph.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		705EE6CE79C7F6DE5851ECDC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AFF17BC12E9C251671A09769 /* Pods-SearchBarController.debug.xcconfig */,
+				61E15343F0F8679AF943950C /* Pods-SearchBarController.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		9642C4FB1DB2B431000B5941 = {
+			isa = PBXGroup;
+			children = (
+				9642C51F1DB2B691000B5941 /* Graph.framework */,
+				9642C5061DB2B432000B5941 /* SearchBarController */,
+				9642C5051DB2B432000B5941 /* Products */,
+				705EE6CE79C7F6DE5851ECDC /* Pods */,
+				C42008FFE61310686718EDEB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		9642C5051DB2B432000B5941 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9642C5041DB2B432000B5941 /* SearchBarController.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9642C5061DB2B432000B5941 /* SearchBarController */ = {
+			isa = PBXGroup;
+			children = (
+				9642C5071DB2B432000B5941 /* AppDelegate.swift */,
+				9642C5191DB2B541000B5941 /* AppSearchBarController.swift */,
+				9642C5091DB2B432000B5941 /* RootViewController.swift */,
+				9642C5221DB2B7E4000B5941 /* UserTableView.swift */,
+				9642C50E1DB2B432000B5941 /* Assets.xcassets */,
+				9642C5101DB2B432000B5941 /* LaunchScreen.storyboard */,
+				9642C5131DB2B432000B5941 /* Info.plist */,
+			);
+			path = SearchBarController;
+			sourceTree = "<group>";
+		};
+		C42008FFE61310686718EDEB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2D9C0BB7AD54F3304718146F /* Pods_SearchBarController.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9642C5031DB2B432000B5941 /* SearchBarController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9642C5161DB2B432000B5941 /* Build configuration list for PBXNativeTarget "SearchBarController" */;
+			buildPhases = (
+				13837E0124CC38A744C1E052 /* [CP] Check Pods Manifest.lock */,
+				9642C5001DB2B432000B5941 /* Sources */,
+				9642C5011DB2B432000B5941 /* Frameworks */,
+				9642C5021DB2B432000B5941 /* Resources */,
+				A55E080B3983793D46EF774D /* [CP] Embed Pods Frameworks */,
+				ECF4FCFA0EB86A9DE19180FF /* [CP] Copy Pods Resources */,
+				9642C51E1DB2B5BE000B5941 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SearchBarController;
+			productName = SearchBarController;
+			productReference = 9642C5041DB2B432000B5941 /* SearchBarController.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9642C4FC1DB2B431000B5941 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "CosmicMind, Inc.";
+				TargetAttributes = {
+					9642C5031DB2B432000B5941 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 9Z76XCNLGL;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 9642C4FF1DB2B431000B5941 /* Build configuration list for PBXProject "SearchBarController" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9642C4FB1DB2B431000B5941;
+			productRefGroup = 9642C5051DB2B432000B5941 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9642C5031DB2B432000B5941 /* SearchBarController */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9642C5021DB2B432000B5941 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9642C5121DB2B432000B5941 /* LaunchScreen.storyboard in Resources */,
+				9642C50F1DB2B432000B5941 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		13837E0124CC38A744C1E052 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A55E080B3983793D46EF774D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SearchBarController/Pods-SearchBarController-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ECF4FCFA0EB86A9DE19180FF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SearchBarController/Pods-SearchBarController-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9642C5001DB2B432000B5941 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9642C5231DB2B7E4000B5941 /* UserTableView.swift in Sources */,
+				9642C50A1DB2B432000B5941 /* RootViewController.swift in Sources */,
+				9642C5081DB2B432000B5941 /* AppDelegate.swift in Sources */,
+				9642C51A1DB2B541000B5941 /* AppSearchBarController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9642C5101DB2B432000B5941 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9642C5111DB2B432000B5941 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9642C5141DB2B432000B5941 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9642C5151DB2B432000B5941 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9642C5171DB2B432000B5941 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFF17BC12E9C251671A09769 /* Pods-SearchBarController.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9Z76XCNLGL;
+				INFOPLIST_FILE = SearchBarController/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.cosmicmind.SearchBarController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		9642C5181DB2B432000B5941 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 61E15343F0F8679AF943950C /* Pods-SearchBarController.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9Z76XCNLGL;
+				INFOPLIST_FILE = SearchBarController/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.cosmicmind.SearchBarController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9642C4FF1DB2B431000B5941 /* Build configuration list for PBXProject "SearchBarController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9642C5141DB2B432000B5941 /* Debug */,
+				9642C5151DB2B432000B5941 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9642C5161DB2B432000B5941 /* Build configuration list for PBXNativeTarget "SearchBarController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9642C5171DB2B432000B5941 /* Debug */,
+				9642C5181DB2B432000B5941 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9642C4FC1DB2B431000B5941 /* Project object */;
+}
