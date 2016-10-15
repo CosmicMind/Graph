@@ -44,14 +44,11 @@ Visit the [Installation](https://github.com/CosmicMind/Graph/wiki/Installation) 
 
 Graph is a growing project and will encounter changes throughout its development. It is recommended that the [Changelog](https://github.com/CosmicMind/Graph/wiki/Changelog) be reviewed prior to updating versions.
 
-## Examples
+# Examples
+
+The following are some examples to see how Graph may be used within your projects.
 
 * Visit the [Examples](https://github.com/CosmicMind/Graph/tree/development/Examples) directory to see example projects using Graph. Most examples use [CocoaPods](http://cocoapods.org) to install, so please open the project you are interested in and run the command `pod install` to get started.
-
-
-# Some Examples
-
-The following are some examples to see how Graph may be used with in your projects.
 
 ## Creating An Entity
 
@@ -62,13 +59,16 @@ An **Entity** is a person, place, or thing. In the following example, we create 
 #### Creating the data.
 
 ```swift
-let entity = Entity(type: "ImageCard")
+let graph = Graph()
 
+let entity = Entity(type: "ImageCard")
 entity["title"] = "Graph"
 entity["detail"] = "Build Data-Driven Software"
 entity["content"] = "Graph is a semantic database that is used to create data-driven applications."
 entity["author"] = "CosmicMind"
 entity["image"] = UIImage(contentsOfFile: Bundle.main.path(forResource: "frontier", ofType: "jpg")!)?.resize(toWidth: view.width)
+
+graph.sync()
 ```
 
 #### Setting the view's properties.
