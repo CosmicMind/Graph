@@ -31,36 +31,17 @@
 import UIKit
 import Material
 
-class AppSearchBarController: SearchBarController {
-    private var menuButton: IconButton!
-    private var moreButton: IconButton!
-    
+class AppToolbarController: ToolbarController {
     open override func prepare() {
         super.prepare()
-        prepareMenuButton()
-        prepareMoreButton()
-        prepareStatusBar()
-        prepareSearchBar()
-    }
-    
-    private func prepareMenuButton() {
-        menuButton = IconButton(image: Icon.cm.menu)
-    }
-    
-    private func prepareMoreButton() {
-        moreButton = IconButton(image: Icon.cm.moreVertical)
-    }
-    
-    private func prepareStatusBar() {
-        statusBarStyle = .lightContent
+        statusBarStyle = .default
         
-        // Access the statusBar.
-        //        statusBar.backgroundColor = Color.green.base
+        prepareToolbar()
     }
     
-    private func prepareSearchBar() {
-        searchBar.leftViews = [menuButton]
-        searchBar.rightViews = [moreButton]
+    private func prepareToolbar() {
+        toolbar.title = "Albums"
+        toolbar.depthPreset = .none
+        toolbar.dividerColor = Color.grey.lighten3
     }
 }
-

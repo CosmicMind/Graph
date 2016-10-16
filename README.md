@@ -50,7 +50,7 @@ The following are some examples to see how Graph may be used within your project
 
 * Visit the [Examples](https://github.com/CosmicMind/Graph/tree/development/Examples) directory to see example projects using Graph. Most examples use [CocoaPods](http://cocoapods.org) to install, so please open the project you are interested in and run the command `pod install` to get started.
 
-## Creating an Entity with an ImageCard
+## Creating an Entity for an ImageCard.
 
 An **Entity** is a model (data) object that represents a **person**, **place**, or **thing**. It may store property values, be a member of groups, and can be tagged.
 
@@ -58,7 +58,7 @@ In the following example, we create an ImageCard view using Material and populat
 
 ![Material Image](http://www.cosmicmind.io/gifs/white/image-card.gif)
 
-#### Creating the data.
+#### Creating data.
 
 ```swift
 let graph = Graph()
@@ -68,7 +68,7 @@ entity["title"] = "Graph"
 entity["detail"] = "Build Data-Driven Software"
 entity["content"] = "Graph is a semantic database that is used to create data-driven applications."
 entity["author"] = "CosmicMind"
-entity["image"] = UIImage(contentsOfFile: Bundle.main.path(forResource: "frontier", ofType: "jpg")!)?.resize(toWidth: view.width)
+entity["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")
 
 graph.sync()
 ```
@@ -89,9 +89,51 @@ authorLabel.text = entity["author"] as? String
 imageCard.bottomBar?.centerViews = [authorLabel]
 ```
 
-* Download the complete [ ImageCard example](https://github.com/CosmicMind/Graph/tree/master/Examples/ImageCard).
+* Download the complete [ImageCard example](https://github.com/CosmicMind/Graph/tree/master/Examples/ImageCard).
 * Learn more about [Entity](http://cosmicmind.io/graph/entity).
 * Learn more about [Material's ImageCard](http://cosmicmind.io/material/imagecard).
+
+## Searching a list of users in realtime.
+
+Using the **Search** API is incredibly flexible. It is possible.
+
+#### Preparing the search criteria.
+
+```swift
+let graph = Graph()
+
+let search = Search<Entity>(graph: graph).for(types: "User").where(properties: "name")
+```
+
+#### Asynchronously searching graph.
+
+```swift        
+search.async { [weak self, pattern = pattern] (users) in
+
+	guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
+	    return
+    }
+
+	var data = [Entity]()
+
+	for user in users {
+		if let name = user["name"] as? String {
+			let matches = regex.matches(in: name, range: NSRange(location: 0, length: name.utf16.count))
+
+			if 0 < matches.count {
+				data.append(user)
+			}
+		}
+	}
+
+	self?.tableView.data = data
+}
+```
+
+* Download the complete [Search example](https://github.com/CosmicMind/Graph/tree/master/Examples/Search).
+* Learn more about [Search](http://cosmicmind.io/graph/search).
+* Learn more about [Material's SearchBar](http://cosmicmind.io/material/searchbar).
+
 
 ## License
 

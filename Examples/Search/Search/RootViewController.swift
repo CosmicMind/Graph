@@ -65,11 +65,11 @@ extension RootViewController {
         graph = Graph()
         
         // Uncomment to clear the Graph data.
-        graph.clear()
+//        graph.clear()
     }
     
     internal func prepareSearch() {
-        search = Search<Entity>(graph: graph).for(types: ["User"]).where(properties: "name")
+        search = Search<Entity>(graph: graph).for(types: "User").where(properties: "name")
         
         search.async { [weak self] (data) in
             if 0 == data.count {
@@ -101,7 +101,7 @@ extension RootViewController: SearchBarDelegate {
         guard let searchBar = searchBarController?.searchBar else {
             return
         }
-     
+        
         searchBar.delegate = self
     }
     
@@ -119,7 +119,7 @@ extension RootViewController: SearchBarDelegate {
             guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
                 return
             }
-        
+            
             var data = [Entity]()
             
             for user in users {

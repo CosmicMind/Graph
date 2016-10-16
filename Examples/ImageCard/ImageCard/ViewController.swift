@@ -32,6 +32,12 @@ import UIKit
 import Material
 import Graph
 
+extension UIImage {
+    public func load(contentsOfFile name: String, ofType type: String) -> UIImage? {
+        return UIImage(contentsOfFile: Bundle.main.path(forResource: name, ofType: type)!)
+    }
+}
+
 class ViewController: UIViewController {
     /// View.
     internal var imageCard: ImageCard!
@@ -62,7 +68,7 @@ extension ViewController {
         
         entity["title"] = "Graph"
         entity["detail"] = "Build Data-Driven Software"
-        entity["image"] = UIImage(contentsOfFile: Bundle.main.path(forResource: "frontier", ofType: "jpg")!)?.resize(toWidth: view.width)
+        entity["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")?.resize(toWidth: view.width)
         entity["content"] = "Graph is a semantic database that is used to create data-driven applications."
         entity["author"] = "CosmicMind"
         

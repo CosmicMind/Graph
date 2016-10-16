@@ -328,6 +328,17 @@ public class Relationship: Node {
         return self
     }
     
+    /**
+     Sets the object of the Relationship.
+     - Parameter object: An Entity.
+     - Returns: The Relationship.
+     */
+    @discardableResult
+    public func `in`(object: Entity) -> Relationship {
+        self.object = object
+        return self
+    }
+    
     /// Marks the Relationship for deletion.
     public func delete() {
         managedNode.delete()
