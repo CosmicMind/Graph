@@ -57,7 +57,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         
         let action = Action(type: "T")
         action["P"] = "V"
-        action.add(tag: "G")
+        action.add(tags: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -82,7 +82,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         
         let action = Action(type: "T", graph: "ActionTests-testNamedGraphSave")
         action["P"] = "V"
-        action.add(tag: "G")
+        action.add(tags: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -107,7 +107,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         
         let action = Action(type: "T", graph: graph)
         action["P"] = "V"
-        action.add(tag: "G")
+        action.add(tags: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -134,7 +134,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         
         let action = Action(type: "T", graph: graph)
         action["P"] = "V"
-        action.add(tag: "G")
+        action.add(tags: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -161,7 +161,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         
         let action = [Entity(type: "T"), Entity(type: "T")].did(action: "T").what(objects: [Entity(type: "T"), Entity(type: "T")])
         action["P"] = "V"
-        action.add(tag: "G")
+        action.add(tags: "G")
         
         XCTAssertEqual(2, action.subjects.count)
         XCTAssertEqual(2, action.objects.count)
@@ -203,7 +203,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         
         let action = Action(type: "T")
         action["P"] = "V"
-        action.add(tag: "G")
+        action.add(tags: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -242,7 +242,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         
         let action = Action(type: "T")
         action["P"] = "V"
-        action.add(tag: "G")
+        action.add(tags: "G")
         
         XCTAssertEqual("V", action["P"] as? String)
         
@@ -273,7 +273,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("V", action["P"] as? String)
-        XCTAssertTrue(action.has(tag: "G"))
+        XCTAssertTrue(action.has(tags: "G"))
         
         delegateExpectation?.fulfill()
     }
@@ -282,7 +282,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
-        XCTAssertFalse(action.has(tag: "G"))
+        XCTAssertFalse(action.has(tags: "G"))
         XCTAssertEqual(2, action.subjects.count)
         XCTAssertEqual(2, action.objects.count)
         XCTAssertEqual(1, action.subjects.first?.actionsWhenSubject.count)
@@ -297,7 +297,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(action.has(tag: tag))
+        XCTAssertTrue(action.has(tags: tag))
         
         tagExpception?.fulfill()
     }
@@ -306,7 +306,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(action.has(tag: tag))
+        XCTAssertFalse(action.has(tags: tag))
         
         tagExpception?.fulfill()
     }

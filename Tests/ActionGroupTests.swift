@@ -91,8 +91,7 @@ class ActionGroupTests: XCTestCase, WatchActionDelegate {
         let watch = Watch<Action>(graph: graph).member(of: "G1", "G2").resume()
         watch.delegate = self
         
-        action.add(to: "G1")
-        action.remove(from: "G2")
+        action.toggle(groups: "G1", "G2")
         
         XCTAssertTrue(action.member(of: "G1"))
         XCTAssertFalse(action.member(of: "G2"))

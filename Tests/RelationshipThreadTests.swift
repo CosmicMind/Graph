@@ -69,7 +69,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
         
         q1.async { [weak self] in
             relationship["P"] = 111
-            relationship.add(tag: "G")
+            relationship.add(tags: "G")
             
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(error)")
@@ -114,7 +114,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual(111, relationship["P"] as? Int)
-        XCTAssertTrue(relationship.has(tag: "G"))
+        XCTAssertTrue(relationship.has(tags: "G"))
         
         insertExpectation?.fulfill()
     }
@@ -123,7 +123,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
-        XCTAssertFalse(relationship.has(tag: "G"))
+        XCTAssertFalse(relationship.has(tags: "G"))
         
         deleteExpectation?.fulfill()
     }
@@ -131,7 +131,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
     func watch(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource) {
         XCTAssertEqual("T", relationship.type)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(relationship.has(tag: tag))
+        XCTAssertTrue(relationship.has(tags: tag))
         
         insertTagExpectation?.fulfill()
     }
@@ -140,7 +140,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
         XCTAssertEqual("T", relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(relationship.has(tag: "G"))
+        XCTAssertFalse(relationship.has(tags: "G"))
         
         deleteTagExpectation?.fulfill()
     }

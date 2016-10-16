@@ -69,7 +69,7 @@ class EntityThreadTests : XCTestCase, WatchEntityDelegate {
         
         q1.async { [weak self] in
             entity["P"] = 111
-            entity.add(tag: "G")
+            entity.add(tags: "G")
             
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(error)")
@@ -114,7 +114,7 @@ class EntityThreadTests : XCTestCase, WatchEntityDelegate {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual(111, entity["P"] as? Int)
-        XCTAssertTrue(entity.has(tag: "G"))
+        XCTAssertTrue(entity.has(tags: "G"))
         
         insertExpectation?.fulfill()
     }
@@ -123,7 +123,7 @@ class EntityThreadTests : XCTestCase, WatchEntityDelegate {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertNil(entity["P"])
-        XCTAssertFalse(entity.has(tag: "G"))
+        XCTAssertFalse(entity.has(tags: "G"))
         
         deleteExpectation?.fulfill()
     }
@@ -131,7 +131,7 @@ class EntityThreadTests : XCTestCase, WatchEntityDelegate {
     func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
         XCTAssertEqual("T", entity.type)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(entity.has(tag: tag))
+        XCTAssertTrue(entity.has(tags: tag))
         
         insertTagExpectation?.fulfill()
     }
@@ -140,7 +140,7 @@ class EntityThreadTests : XCTestCase, WatchEntityDelegate {
         XCTAssertEqual("T", entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(entity.has(tag: "G"))
+        XCTAssertFalse(entity.has(tags: "G"))
         
         deleteTagExpectation?.fulfill()
     }

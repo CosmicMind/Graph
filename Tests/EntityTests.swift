@@ -57,7 +57,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         
         let entity = Entity(type: "T")
         entity["P"] = "V"
-        entity.add(tag: "G")
+        entity.add(tags: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -82,7 +82,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         
         let entity = Entity(type: "T", graph: "EntityTests-testNamedGraphSave")
         entity["P"] = "V"
-        entity.add(tag: "G")
+        entity.add(tags: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -107,7 +107,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
-        entity.add(tag: "G")
+        entity.add(tags: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -134,7 +134,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         
         let entity = Entity(type: "T", graph: graph)
         entity["P"] = "V"
-        entity.add(tag: "G")
+        entity.add(tags: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -161,7 +161,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         
         let entity = Entity(type: "T")
         entity["P"] = "V"
-        entity.add(tag: "G")
+        entity.add(tags: "G")
         
         XCTAssertEqual("V", entity["P"] as? String)
         
@@ -192,7 +192,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("V", entity["P"] as? String)
-        XCTAssertTrue(entity.has(tag: "G"))
+        XCTAssertTrue(entity.has(tags: "G"))
         
         delegateExpectation?.fulfill()
     }
@@ -201,7 +201,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertNil(entity["P"])
-        XCTAssertFalse(entity.has(tag: "G"))
+        XCTAssertFalse(entity.has(tags: "G"))
         
         delegateExpectation?.fulfill()
     }
@@ -210,7 +210,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(entity.has(tag: tag))
+        XCTAssertTrue(entity.has(tags: tag))
         
         tagExpception?.fulfill()
     }
@@ -219,7 +219,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(entity.has(tag: tag))
+        XCTAssertFalse(entity.has(tags: tag))
         
         tagExpception?.fulfill()
     }

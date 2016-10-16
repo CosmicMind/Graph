@@ -91,8 +91,7 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         let watch = Watch<Entity>(graph: graph).member(of: "G1", "G2").resume()
         watch.delegate = self
         
-        entity.add(to: "G1")
-        entity.remove(from: "G2")
+        entity.toggle(groups: "G1", "G2")
         
         XCTAssertTrue(entity.member(of: "G1"))
         XCTAssertFalse(entity.member(of: "G2"))

@@ -97,33 +97,36 @@ internal class ManagedEntity: ManagedNode {
     
     /**
      Adds a tag to the ManagedEntity.
-     - Parameter tag: A tag name.
+     - Parameter tag: An Array of Strings.
      */
-    internal func add(tag name: String) {
+    internal func add(tags: [String]) {
         guard let moc = managedObjectContext else {
             return
         }
-        moc.performAndWait { [unowned self, unowned moc] in
-            if !self.has(tag: name) {
-                _ = ManagedEntityTag(name: name, node: self, managedObjectContext: moc)
+        moc.performAndWait { [unowned self, unowned moc, tags = tags] in
+            for name in tags {
+                if !self.has(tags: name) {
+                    _ = ManagedEntityTag(name: name, node: self, managedObjectContext: moc)
+                }
             }
         }
     }
     
     /**
      Removes a tag from a ManagedEntity.
-     - Parameter tag: A tag name.
+     - Parameter tags: An Array of Strings.
      */
-    internal func remove(tag name: String) {
+    internal func remove(tags: [String]) {
         guard let moc = managedObjectContext else {
             return
         }
-        moc.performAndWait { [unowned self] in
-            for tag in self.tagSet {
-                if let t = tag as? ManagedEntityTag {
-                    if name == t.name {
-                        t.delete()
-                        break
+        moc.performAndWait { [unowned self, tags = tags] in
+            for name in tags {
+                for tag in self.tagSet {
+                    if let t = tag as? ManagedEntityTag {
+                        if name == t.name {
+                            t.delete()
+                        }
                     }
                 }
             }
@@ -132,33 +135,36 @@ internal class ManagedEntity: ManagedNode {
     
     /**
      Adds the ManagedEntity to a given group.
-     - Parameter to group: A group name.
+     - Parameter to groups: An Array of Strings.
      */
-    internal func add(to group: String) {
+    internal func add(to groups: [String]) {
         guard let moc = managedObjectContext else {
             return
         }
-        moc.performAndWait { [unowned self, unowned moc] in
-            if !self.member(of: group) {
-                _ = ManagedEntityGroup(name: group, node: self, managedObjectContext: moc)
+        moc.performAndWait { [unowned self, unowned moc, groups = groups] in
+            for name in groups {
+                if !self.member(of: name) {
+                    _ = ManagedEntityGroup(name: name, node: self, managedObjectContext: moc)
+                }
             }
         }
     }
     
     /**
      Removes the ManagedEntity from a given group.
-     - Parameter from group: A group name.
+     - Parameter from groups: An Array of Strings.
      */
-    internal func remove(from group: String) {
+    internal func remove(from groups: [String]) {
         guard let moc = managedObjectContext else {
             return
         }
-        moc.performAndWait { [unowned self] in
-            for grp in self.groupSet {
-                if let g = grp as? ManagedEntityGroup {
-                    if group == g.name {
-                        g.delete()
-                        break
+        moc.performAndWait { [unowned self, groups = groups] in
+            for name in groups {
+                for group in self.groupSet {
+                    if let g = group as? ManagedEntityGroup {
+                        if name == g.name {
+                            g.delete()
+                        }
                     }
                 }
             }
@@ -172,53 +178,32 @@ internal class ManagedEntity: ManagedNode {
         }
         
         moc.performAndWait { [unowned self] in
-            self.propertySet.forEach { (object: Any) in
-                guard let property = object as? ManagedEntityProperty else {
-                    return
-                }
-                property.delete()
+            self.propertySet.forEach {
+                ($0 as? ManagedEntityProperty)?.delete()
             }
             
-            self.tagSet.forEach { (object: Any) in
-                guard let tag = object as? ManagedEntityTag else {
-                    return
-                }
-                tag.delete()
+            self.tagSet.forEach {
+                ($0 as? ManagedEntityTag)?.delete()
             }
             
-            self.groupSet.forEach { (object: Any) in
-                guard let group = object as? ManagedEntityGroup else {
-                    return
-                }
-                group.delete()
+            self.groupSet.forEach {
+                ($0 as? ManagedEntityGroup)?.delete()
             }
             
-            self.actionSubjectSet.forEach { (object: Any) in
-                guard let action = object as? ManagedAction else {
-                    return
-                }
-                action.delete()
+            self.actionSubjectSet.forEach {
+                ($0 as? ManagedAction)?.delete()
             }
             
-            self.actionObjectSet.forEach { (object: Any) in
-                guard let action = object as? ManagedAction else {
-                    return
-                }
-                action.delete()
+            self.actionObjectSet.forEach {
+                ($0 as? ManagedAction)?.delete()
             }
             
-            self.relationshipSubjectSet.forEach { (object: Any) in
-                guard let relationship = object as? ManagedRelationship else {
-                    return
-                }
-                relationship.delete()
+            self.relationshipSubjectSet.forEach {
+                ($0 as? ManagedRelationship)?.delete()
             }
             
-            self.relationshipObjectSet.forEach { (object: Any) in
-                guard let relationship = object as? ManagedRelationship else {
-                    return
-                }
-                relationship.delete()
+            self.relationshipObjectSet.forEach {
+                ($0 as? ManagedRelationship)?.delete()
             }
         }
         

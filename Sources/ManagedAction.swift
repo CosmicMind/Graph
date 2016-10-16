@@ -93,33 +93,36 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Adds a tag to the ManagedAction.
-     - Parameter tag: A tag name.
+     - Parameter tag: An Array of Strings.
      */
-    internal func add(tag name: String) {
+    internal func add(tags: [String]) {
         guard let moc = managedObjectContext else {
             return
         }
-        moc.performAndWait { [unowned self, unowned moc] in
-            if !self.has(tag: name) {
-                _ = ManagedActionTag(name: name, node: self, managedObjectContext: moc)
+        moc.performAndWait { [unowned self, unowned moc, tags = tags] in
+            for name in tags {
+                if !self.has(tags: name) {
+                    _ = ManagedActionTag(name: name, node: self, managedObjectContext: moc)
+                }
             }
         }
     }
     
     /**
      Removes a tag from a ManagedAction.
-     - Parameter tag: A tag name.
+     - Parameter tags: An Array of Strings.
      */
-    internal func remove(tag name: String) {
+    internal func remove(tags: [String]) {
         guard let moc = managedObjectContext else {
             return
         }
-        moc.performAndWait { [unowned self] in
-            for tag in self.tagSet {
-                if let t = tag as? ManagedActionTag {
-                    if name == t.name {
-                        t.delete()
-                        break
+        moc.performAndWait { [unowned self, tags = tags] in
+            for name in tags {
+                for tag in self.tagSet {
+                    if let t = tag as? ManagedActionTag {
+                        if name == t.name {
+                            t.delete()
+                        }
                     }
                 }
             }
@@ -128,33 +131,36 @@ internal class ManagedAction: ManagedNode {
     
     /**
      Adds the ManagedAction to a given group.
-     - Parameter to group: A group name.
+     - Parameter to groups: An Array of Strings.
      */
-    internal func add(to group: String) {
+    internal func add(to groups: [String]) {
         guard let moc = managedObjectContext else {
             return
         }
-        moc.performAndWait { [unowned self, unowned moc] in
-            if !self.member(of: group) {
-                _ = ManagedActionGroup(name: group, node: self, managedObjectContext: moc)
+        moc.performAndWait { [unowned self, unowned moc, groups = groups] in
+            for name in groups {
+                if !self.member(of: name) {
+                    _ = ManagedActionGroup(name: name, node: self, managedObjectContext: moc)
+                }
             }
         }
     }
     
     /**
      Removes the ManagedAction from a given group.
-     - Parameter from group: A group name.
+     - Parameter from groups: An Array of Strings.
      */
-    internal func remove(from group: String) {
+    internal func remove(from groups: [String]) {
         guard let moc = managedObjectContext else {
             return
         }
-        moc.performAndWait { [unowned self] in
-            for grp in self.groupSet {
-                if let g = grp as? ManagedActionGroup {
-                    if group == g.name {
-                        g.delete()
-                        break
+        moc.performAndWait { [unowned self, groups = groups] in
+            for name in groups {
+                for group in self.groupSet {
+                    if let g = group as? ManagedActionGroup {
+                        if name == g.name {
+                            g.delete()
+                        }
                     }
                 }
             }
@@ -208,40 +214,17 @@ internal class ManagedAction: ManagedNode {
         }
         
         moc.performAndWait { [unowned self] in
-            self.propertySet.forEach { (object: Any) in
-                guard let property = object as? ManagedActionProperty else {
-                    return
-                }
-                property.delete()
+            self.propertySet.forEach {
+                ($0 as? ManagedActionProperty)?.delete()
             }
             
-            self.tagSet.forEach { (object: Any) in
-                guard let tag = object as? ManagedActionTag else {
-                    return
-                }
-                tag.delete()
+            self.tagSet.forEach {
+                ($0 as? ManagedActionTag)?.delete()
             }
             
-            self.groupSet.forEach { (object: Any) in
-                guard let group = object as? ManagedActionGroup else {
-                    return
-                }
-                group.delete()
+            self.groupSet.forEach {
+                ($0 as? ManagedActionGroup)?.delete()
             }
-            
-//            self.subjectSet.forEach { [unowned self] (object: Any) in
-//                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
-//                    return
-//                }
-//                self.mutableSetValueForKey("subjectSet").removeObject(managedEntity)
-//            }
-//            
-//            self.objectSet.forEach { [unowned self] (object: Any) in
-//                guard let managedEntity: ManagedEntity = object as? ManagedEntity else {
-//                    return
-//                }
-//                self.mutableSetValueForKey("objectSet").removeObject(managedEntity)
-//            }
         }
         
         super.delete()

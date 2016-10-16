@@ -91,8 +91,7 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         let watch = Watch<Relationship>(graph: graph).member(of: "G1", "G2").resume()
         watch.delegate = self
         
-        relationship.add(to: "G1")
-        relationship.remove(from: "G2")
+        relationship.toggle(groups: "G1", "G2")
         
         XCTAssertTrue(relationship.member(of: "G1"))
         XCTAssertFalse(relationship.member(of: "G2"))

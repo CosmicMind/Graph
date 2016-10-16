@@ -55,9 +55,9 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         watch.delegate = self
         
         let relationship = Relationship(type: "T")
-        relationship.add(tag: "G1")
+        relationship.add(tags: "G1")
         
-        XCTAssertTrue(relationship.has(tag: "G1"))
+        XCTAssertTrue(relationship.has(tags: "G1"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -74,7 +74,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         let graph = Graph()
         
         let relationship = Relationship(type: "T")
-        relationship.add(tag: "G2")
+        relationship.add(tags: "G2")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -91,11 +91,10 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         let watch = Watch<Relationship>(graph: graph).has(tags: ["G1", "G2"]).resume()
         watch.delegate = self
         
-        relationship.add(tag: "G1")
-        relationship.remove(tag: "G2")
+        relationship.toggle(tags: "G1", "G2")
         
-        XCTAssertTrue(relationship.has(tag: "G1"))
-        XCTAssertFalse(relationship.has(tag: "G2"))
+        XCTAssertTrue(relationship.has(tags: "G1"))
+        XCTAssertFalse(relationship.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -112,9 +111,9 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         let graph = Graph()
         
         let relationship = Relationship(type: "T")
-        relationship.add(tag: "G2")
+        relationship.add(tags: "G2")
         
-        XCTAssertTrue(relationship.has(tag: "G2"))
+        XCTAssertTrue(relationship.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -130,9 +129,9 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         let watch = Watch<Relationship>(graph: graph).has(tags: ["G2"]).resume()
         watch.delegate = self
         
-        relationship.remove(tag: "G2")
+        relationship.remove(tags: "G2")
         
-        XCTAssertFalse(relationship.has(tag: "G2"))
+        XCTAssertFalse(relationship.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -147,7 +146,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G1", tag)
-        XCTAssertTrue(relationship.has(tag: tag))
+        XCTAssertTrue(relationship.has(tags: tag))
         XCTAssertEqual(1, relationship.tags.count)
         XCTAssertTrue(relationship.tags.contains(tag))
         
@@ -158,7 +157,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G2", tag)
-        XCTAssertFalse(relationship.has(tag: tag))
+        XCTAssertFalse(relationship.has(tags: tag))
         
         tagRemoveExpception?.fulfill()
     }

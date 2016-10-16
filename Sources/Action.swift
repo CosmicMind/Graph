@@ -220,108 +220,193 @@ public class Action: Node {
     }
     
     /**
-     Adds a given tag to an Action.
-     - Parameter tag: A tag name.
+     Adds given tags to an Action.
+     - Parameter tags: A list of Strings.
      - Returns: The Action.
      */
     @discardableResult
-    public func add(tag: String) -> Action {
-        managedNode.add(tag: tag)
+    public func add(tags: String...) -> Action {
+        return add(tags: tags)
+    }
+    
+    /**
+     Adds given tags to an Action.
+     - Parameter tags: An Array of Strings.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func add(tags: [String]) -> Action {
+        managedNode.add(tags: tags)
         return self
     }
     
     /**
-     Checks if the Action has a given tag.
-     - Parameter tag: A tag name.
-     - Returns: A boolean of the result, true if has the given tag,
-     otherwise.
+     Checks if the Action has the given tags.
+     - Parameter tags: A list of Strings.
+     - Returns: A boolean of the result, true if has the
+     given tags, false otherwise.
      */
-    public func has(tag: String) -> Bool {
-        return managedNode.has(tag: tag)
+    public func has(tags: String...) -> Bool {
+        return has(tags: tags)
     }
     
     /**
-     Checks if the Action has a the given tags.
+     Checks if the Action has the given tags.
      - Parameter tags: An Array of Strings.
-     - Returns: A boolean of the result, true if has the tags,
-     false otherwise.
+     - Returns: A boolean of the result, true if has the
+     given tags, false otherwise.
      */
     public func has(tags: [String]) -> Bool {
         return managedNode.has(tags: tags)
     }
     
     /**
-     Removes a given tag from an Action.
-     - Parameter tag: A tag name.
+     Removes given tags from an Action.
+     - Parameter tags: A list of Strings.
      - Returns: The Action.
      */
     @discardableResult
-    public func remove(tag: String) -> Action {
-        managedNode.remove(tag: tag)
+    public func remove(tags: String...) -> Action {
+        return remove(tags: tags)
+    }
+    
+    /**
+     Removes given tags from an Action.
+     - Parameter tags: An Array of Strings.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func remove(tags: [String]) -> Action {
+        managedNode.remove(tags: tags)
         return self
     }
     
     /**
-     Adds a given tag to the Action or removes it, based on its previous state.
-     - Parameter tag: A tag name.
+     Adds given tags to an Action or removes them, based on their
+     previous state.
+     - Parameter tags: A list of Strings.
      - Returns: The Action.
      */
     @discardableResult
-    public func toggle(tag: String) -> Action {
-        return has(tag: tag) ? remove(tag: tag) : add(tag: tag)
+    public func toggle(tags: String...) -> Action {
+        return toggle(tags: tags)
     }
     
     /**
-     Adds the Action to a given group.
-     - Parameter to group: A group name.
+     Adds given tags to an Action or removes them, based on their
+     previous state.
+     - Parameter tags: An Array of Strings.
      - Returns: The Action.
      */
     @discardableResult
-    public func add(to group: String) -> Action {
-        managedNode.add(to: group)
+    public func toggle(tags: [String]) -> Action {
+        var a = [String]()
+        var r = [String]()
+        tags.forEach { [unowned self] in
+            if self.managedNode.has(tags: $0) {
+                r.append($0)
+            } else {
+                a.append($0)
+            }
+        }
+        managedNode.add(tags: a)
+        managedNode.remove(tags: r)
         return self
     }
     
     /**
-     Checks if the Action is a member of a given group.
-     - Parameter of group: A list of Strings.
-     - Returns: A boolean of the result, true if a member, false
-     otherwise.
+     Adds given groups to an Action.
+     - Parameter to groups: A list of Strings.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func add(to groups: String...) -> Action {
+        return add(to: groups)
+    }
+    
+    /**
+     Adds given groups to an Action.
+     - Parameter to groups: An Array of Strings.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func add(to groups: [String]) -> Action {
+        managedNode.add(to: groups)
+        return self
+    }
+    
+    /**
+     Checks if the Action is a member of the given groups.
+     - Parameter of groups: A list of Strings.
+     - Returns: A boolean of the result, true if has the
+     given groups, false otherwise.
      */
     public func member(of groups: String...) -> Bool {
         return member(of: groups)
     }
     
     /**
-     Checks if the Action is a member of a given group.
-     - Parameter of group: A group name.
-     - Returns: A boolean of the result, true if a member, false
-     otherwise.
+     Checks if the Action has a the given tags.
+     - Parameter of groups: An Array of Strings.
+     - Returns: A boolean of the result, true if has the
+     given groups, false otherwise.
      */
     public func member(of groups: [String]) -> Bool {
         return managedNode.member(of: groups)
     }
     
     /**
-     Removes an Action from a given group.
-     - Parameter from group: A group name.
+     Removes given groups from an Action.
+     - Parameter from groups: A list of Strings.
      - Returns: The Action.
      */
     @discardableResult
-    public func remove(from group: String) -> Action {
-        managedNode.remove(from: group)
+    public func remove(from groups: String...) -> Action {
+        return remove(from: groups)
+    }
+    
+    /**
+     Removes given groups from an Action.
+     - Parameter from groups: An Array of Strings.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func remove(from groups: [String]) -> Action {
+        managedNode.remove(from: groups)
         return self
     }
     
     /**
-     Adds an Action to a given group, or removes it, based on its previous
-     state.
-     - Parameter group: A group name.
+     Adds given groups to an Action or removes them, based on their
+     previous state.
+     - Parameter groups: A list of Strings.
      - Returns: The Action.
      */
     @discardableResult
-    public func toggle(group: String) -> Action {
-        return member(of: group) ? remove(from: group) : add(to: group)
+    public func toggle(groups: String...) -> Action {
+        return toggle(groups: groups)
+    }
+    
+    /**
+     Adds given groups to an Action or removes them, based on their
+     previous state.
+     - Parameter groups: An Array of Strings.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func toggle(groups: [String]) -> Action {
+        var a = [String]()
+        var r = [String]()
+        groups.forEach { [unowned self] in
+            if self.managedNode.member(of: $0) {
+                r.append($0)
+            } else {
+                a.append($0)
+            }
+        }
+        managedNode.add(to: a)
+        managedNode.remove(from: r)
+        return self
     }
     
     /**

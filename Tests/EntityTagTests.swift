@@ -55,9 +55,9 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         watch.delegate = self
         
         let entity = Entity(type: "T")
-        entity.add(tag: "G1")
+        entity.add(tags: "G1")
         
-        XCTAssertTrue(entity.has(tag: "G1"))
+        XCTAssertTrue(entity.has(tags: "G1"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -74,7 +74,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         let graph = Graph()
         
         let entity = Entity(type: "T")
-        entity.add(tag: "G2")
+        entity.add(tags: "G2")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -91,11 +91,10 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         let watch = Watch<Entity>(graph: graph).has(tags: "G1", "G2").resume()
         watch.delegate = self
         
-        entity.add(tag: "G1")
-        entity.remove(tag: "G2")
+        entity.toggle(tags: "G1", "G2")
         
-        XCTAssertTrue(entity.has(tag: "G1"))
-        XCTAssertFalse(entity.has(tag: "G2"))
+        XCTAssertTrue(entity.has(tags: "G1"))
+        XCTAssertFalse(entity.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -112,9 +111,9 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         let graph = Graph()
         
         let entity = Entity(type: "T")
-        entity.add(tag: "G2")
+        entity.add(tags: "G2")
         
-        XCTAssertTrue(entity.has(tag: "G2"))
+        XCTAssertTrue(entity.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -130,9 +129,9 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         let watch = Watch<Entity>(graph: graph).has(tags: "G2").resume()
         watch.delegate = self
         
-        entity.remove(tag: "G2")
+        entity.remove(tags: "G2")
         
-        XCTAssertFalse(entity.has(tag: "G2"))
+        XCTAssertFalse(entity.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -147,7 +146,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G1", tag)
-        XCTAssertTrue(entity.has(tag: tag))
+        XCTAssertTrue(entity.has(tags: tag))
         XCTAssertEqual(1, entity.tags.count)
         XCTAssertTrue(entity.tags.contains(tag))
         
@@ -158,7 +157,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G2", tag)
-        XCTAssertFalse(entity.has(tag: tag))
+        XCTAssertFalse(entity.has(tags: tag))
         
         tagRemoveExpception?.fulfill()
     }

@@ -55,9 +55,9 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         watch.delegate = self
         
         let action = Action(type: "T")
-        action.add(tag: "G1")
+        action.add(tags: "G1")
         
-        XCTAssertTrue(action.has(tag: "G1"))
+        XCTAssertTrue(action.has(tags: "G1"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -74,7 +74,7 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         let graph = Graph()
         
         let action = Action(type: "T")
-        action.add(tag: "G2")
+        action.add(tags: "G2")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -91,11 +91,10 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         let watch = Watch<Action>(graph: graph).has(tags: ["G1", "G2"]).resume()
         watch.delegate = self
         
-        action.add(tag: "G1")
-        action.remove(tag: "G2")
+        action.toggle(tags: "G1", "G2")
         
-        XCTAssertTrue(action.has(tag: "G1"))
-        XCTAssertFalse(action.has(tag: "G2"))
+        XCTAssertTrue(action.has(tags: "G1"))
+        XCTAssertFalse(action.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -112,9 +111,9 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         let graph = Graph()
         
         let action = Action(type: "T")
-        action.add(tag: "G2")
+        action.add(tags: "G2")
         
-        XCTAssertTrue(action.has(tag: "G2"))
+        XCTAssertTrue(action.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -131,9 +130,9 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         watch.delegate = self
         
         
-        action.remove(tag: "G2")
+        action.remove(tags: "G2")
         
-        XCTAssertFalse(action.has(tag: "G2"))
+        XCTAssertFalse(action.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -148,7 +147,7 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G1", tag)
-        XCTAssertTrue(action.has(tag: tag))
+        XCTAssertTrue(action.has(tags: tag))
         XCTAssertEqual(1, action.tags.count)
         XCTAssertTrue(action.tags.contains(tag))
         
@@ -159,7 +158,7 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G2", tag)
-        XCTAssertFalse(action.has(tag: tag))
+        XCTAssertFalse(action.has(tags: tag))
         
         tagRemoveExpception?.fulfill()
     }

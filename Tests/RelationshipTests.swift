@@ -57,7 +57,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
-        relationship.add(tag: "G")
+        relationship.add(tags: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -82,7 +82,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let relationship = Relationship(type: "T", graph: "RelationshipTests-testNamedGraphSave")
         relationship["P"] = "V"
-        relationship.add(tag: "G")
+        relationship.add(tags: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -107,7 +107,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let relationship = Relationship(type: "T", graph: graph)
         relationship["P"] = "V"
-        relationship.add(tag: "G")
+        relationship.add(tags: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -134,7 +134,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let relationship = Relationship(type: "T", graph: graph)
         relationship["P"] = "V"
-        relationship.add(tag: "G")
+        relationship.add(tags: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -164,7 +164,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let relationship = subject.is(relationship: "T").of(object: object)
         relationship["P"] = "V"
-        relationship.add(tag: "G")
+        relationship.add(tags: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -228,7 +228,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
-        relationship.add(tag: "G")
+        relationship.add(tags: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -272,7 +272,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         let relationship = Relationship(type: "T")
         relationship["P"] = "V"
-        relationship.add(tag: "G")
+        relationship.add(tags: "G")
         
         XCTAssertEqual("V", relationship["P"] as? String)
         
@@ -308,7 +308,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
-        XCTAssertTrue(relationship.has(tag: "G"))
+        XCTAssertTrue(relationship.has(tags: "G"))
         
         delegateExpectation?.fulfill()
     }
@@ -317,7 +317,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("V", relationship["P"] as? String)
-        XCTAssertTrue(relationship.has(tag: "G"))
+        XCTAssertTrue(relationship.has(tags: "G"))
         
         delegateExpectation?.fulfill()
     }
@@ -326,7 +326,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
-        XCTAssertFalse(relationship.has(tag: "G"))
+        XCTAssertFalse(relationship.has(tags: "G"))
         XCTAssertNotNil(relationship.subject)
         XCTAssertEqual(1, relationship.subject?.relationships.count)
         XCTAssertNotNil(relationship.object)
@@ -339,7 +339,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(relationship.has(tag: tag))
+        XCTAssertTrue(relationship.has(tags: tag))
         
         tagExpception?.fulfill()
     }
@@ -348,7 +348,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(relationship.has(tag: tag))
+        XCTAssertFalse(relationship.has(tags: tag))
         
         tagExpception?.fulfill()
     }

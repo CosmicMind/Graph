@@ -152,20 +152,8 @@ internal class ManagedNode: ManagedObject {
      - Returns: A boolean of the result, true if has the given tag,
      false otherwise.
      */
-    internal func has(tag: String) -> Bool {
-        guard let moc = managedObjectContext else {
-            return false
-        }
-        var result: Bool? = false
-        moc.performAndWait { [unowned self] in
-            for t in self.tagSet {
-                if tag == (t as? ManagedTag)?.name {
-                    result = true
-                    break
-                }
-            }
-        }
-        return result!
+    internal func has(tags: String...) -> Bool {
+        return has(tags: tags)
     }
     
     /**
@@ -186,41 +174,36 @@ internal class ManagedNode: ManagedObject {
     
     /**
      Checks if the ManagedNode is a member of a group.
-     - Parameter of group: A group name.
+     - Parameter of groups: A list of Strings.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    internal func member(of group: String) -> Bool {
-        guard let moc = managedObjectContext else {
-            return false
-        }
-        var result: Bool? = false
-        moc.performAndWait { [unowned self] in
-            for g in self.groupSet {
-                if group == (g as? ManagedGroup)?.name {
-                    result = true
-                    break
-                }
-            }
-        }
-        return result!
+    internal func member(of groups: String...) -> Bool {
+       return member(of: groups)
     }
     
     /**
      Checks if the ManagedNode is a member of a group.
      - Parameter of groups: An Array of Strings.
-     - Returns: A boolean of the result, true if a member of the groups,
-     false otherwise.
+     - Returns: A boolean of the result, true if a member, false
+     otherwise.
      */
-    @nonobjc
     internal func member(of groups: [String]) -> Bool {
-        let g = self.groups
-        for group in groups {
-            guard g.contains(group) else {
-                return false
+        guard let moc = managedObjectContext else {
+            return false
+        }
+        var result: Bool? = false
+        moc.performAndWait { [unowned self, groups = groups] in
+            for name in groups {
+                for g in self.groupSet {
+                    if name == (g as? ManagedGroup)?.name {
+                        result = true
+                        break
+                    }
+                }
             }
         }
-        return true
+        return result!
     }
 }
 
