@@ -109,21 +109,21 @@ public class Entity: Node {
     
     /**
      Retrieves all the Actions that are given.
-     - Parameter actions: A list of Strings.
+     - Parameter types: A list of Strings.
      - Returns: An Array of Actions.
      */
-    public func find(actions: String...) -> [Action] {
-        return find(actions: actions)
+    public func action(types: String...) -> [Action] {
+        return action(types: types)
     }
     
     /**
      Retrieves all the Actions that are given.
-     - Parameter actions: An Array of Strings.
+     - Parameter types: An Array of Strings.
      - Returns: An Array of Actions.
      */
-    public func find(actions: [String]) -> [Action] {
-        return self.actions.filter { [actions = actions] (action) -> Bool in
-            return actions.contains(action.type)
+    public func action(types: [String]) -> [Action] {
+        return self.actions.filter { [types = types] (action) -> Bool in
+            return types.contains(action.type)
         }
     }
     
@@ -159,21 +159,21 @@ public class Entity: Node {
     
     /**
      Retrieves all the Relationships that are given.
-     - Parameter relationships: A list of Strings.
+     - Parameter types: A list of Strings.
      - Returns: An Array of Relationships.
      */
-    public func find(relationships: String...) -> [Relationship] {
-        return find(relationships: relationships)
+    public func relationship(types: String...) -> [Relationship] {
+        return relationship(types: types)
     }
     
     /**
      Retrieves all the Relationships that are given.
-     - Parameter relationships: An Array of Strings.
+     - Parameter types: An Array of Strings.
      - Returns: An Array of Relationships.
      */
-    public func find(relationships: [String]) -> [Relationship] {
-        return self.relationships.filter { [relationships = relationships] (relationship) -> Bool in
-            return relationships.contains(relationship.type)
+    public func relationship(types: [String]) -> [Relationship] {
+        return self.relationships.filter { [types = types] (relationship) -> Bool in
+            return types.contains(relationship.type)
         }
     }
     
@@ -342,12 +342,12 @@ public class Entity: Node {
     
     /**
      Checks if the Entity is a member of a given group.
-     - Parameter of group: A group name.
+     - Parameter of group: A list of Strings
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    public func member(of group: String) -> Bool {
-        return managedNode.member(of: group)
+    public func member(of groups: String...) -> Bool {
+        return member(of: groups)
     }
     
     /**
@@ -356,7 +356,6 @@ public class Entity: Node {
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    @nonobjc
     public func member(of groups: [String]) -> Bool {
         return managedNode.member(of: groups)
     }
@@ -403,7 +402,7 @@ public class Entity: Node {
     @discardableResult
     public func will(action type: String) -> Action {
         let action = Action(type: type)
-        action.add(subject: self)
+        action.add(subjects: self)
         return action
     }
     

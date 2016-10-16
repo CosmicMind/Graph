@@ -284,12 +284,12 @@ public class Action: Node {
     
     /**
      Checks if the Action is a member of a given group.
-     - Parameter of group: A group name.
+     - Parameter of group: A list of Strings.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    public func member(of group: String) -> Bool {
-        return managedNode.member(of: group)
+    public func member(of groups: String...) -> Bool {
+        return member(of: groups)
     }
     
     /**
@@ -298,7 +298,6 @@ public class Action: Node {
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    @nonobjc
     public func member(of groups: [String]) -> Bool {
         return managedNode.member(of: groups)
     }
@@ -327,13 +326,12 @@ public class Action: Node {
     
     /**
      Adds an Entity to the subject set.
-     - Parameter subejct: An Entity.
+     - Parameter subejct: A list of Entity objects.
      - Returns: The Action.
      */
     @discardableResult
-    public func add(subject: Entity) -> Action {
-        managedNode.add(subject: subject.managedNode)
-        return self
+    public func add(subjects: Entity...) -> Action {
+        return add(subjects: subjects)
     }
     
     /**
@@ -351,13 +349,12 @@ public class Action: Node {
     
     /**
      Removes an Entity from the subject set.
-     - Parameter subject: An Entity to remove.
+     - Parameter subject: A list of Entity objects.
      - Returns: The Action.
      */
     @discardableResult
-    public func remove(subject: Entity) -> Action {
-        managedNode.remove(subject: subject.managedNode)
-        return self
+    public func remove(subjects: Entity...) -> Action {
+        return remove(subjects: subjects)
     }
     
     /**
@@ -375,13 +372,12 @@ public class Action: Node {
     
     /**
      Adds an Entity to the object set.
-     - Parameter object: An Entity to add.
+     - Parameter object: A list of Entity objects.
      - Returns: The Action.
      */
     @discardableResult
-    public func add(object: Entity) -> Action {
-        managedNode.add(object: object.managedNode)
-        return self
+    public func add(objects: Entity...) -> Action {
+        return add(objects: objects)
     }
     
     /**
@@ -399,13 +395,12 @@ public class Action: Node {
     
     /**
      Removes an Entity from the object set.
-     - Parameter object: An Entity to remove.
+     - Parameter object: A list of Entity objects.
      - Returns: The Action.
      */
     @discardableResult
-    public func remove(object: Entity) -> Action {
-        managedNode.remove(object: object.managedNode)
-        return self
+    public func remove(objects: Entity...) -> Action {
+        return remove(objects: objects)
     }
     
     /**

@@ -276,12 +276,12 @@ public class Relationship: Node {
     
     /**
      Checks if the Relationship is a member of a given group.
-     - Parameter of group: A group name.
+     - Parameter of group: A list of Strings.
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    public func member(of group: String) -> Bool {
-        return managedNode.member(of: group)
+    public func member(of groups: String...) -> Bool {
+        return member(of: groups)
     }
     
     /**
@@ -290,7 +290,6 @@ public class Relationship: Node {
      - Returns: A boolean of the result, true if a member, false
      otherwise.
      */
-    @nonobjc
     public func member(of groups: [String]) -> Bool {
         return managedNode.member(of: groups)
     }
