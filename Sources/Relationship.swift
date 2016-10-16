@@ -213,11 +213,12 @@ public class Relationship: Node {
     /**
      Adds a given tag to a Relationship.
      - Parameter tag: A tag name.
-     - Returns: A boolean of the result, true if added, false
-     otherwise.
+     - Returns: The Relationship.
      */
-    public func add(tag: String) {
+    @discardableResult
+    public func add(tag: String) -> Relationship {
         managedNode.add(tag: tag)
+        return self
     }
     
     /**
@@ -243,30 +244,34 @@ public class Relationship: Node {
     /**
      Removes a given tag from a Relationship.
      - Parameter tag: A tag name.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
+     - Returns: The Relationship.
      */
-    public func remove(tag: String) {
+    @discardableResult
+    public func remove(tag: String) -> Relationship {
         managedNode.remove(tag: tag)
+        return self
     }
     
     /**
      Adds a given tag to an Relationship or removes it, based on its 
      previous state.
      - Parameter tag: A tag name.
+     - Returns: The Relationship.
      */
-    public func toggle(tag: String) {
-        has(tag: tag) ? remove(tag: tag) : add(tag: tag)
+    @discardableResult
+    public func toggle(tag: String) -> Relationship {
+        return has(tag: tag) ? remove(tag: tag) : add(tag: tag)
     }
     
     /**
      Adds the Relationship to a given group.
      - Parameter to group: A group name.
-     - Returns: A boolean of the result, true if added, false
-     otherwise.
+     - Returns: The Relationship.
      */
-    public func add(to group: String) {
+    @discardableResult
+    public func add(to group: String) -> Relationship {
         managedNode.add(to: group)
+        return self
     }
     
     /**
@@ -293,20 +298,34 @@ public class Relationship: Node {
     /**
      Removes a Relationship from a given group.
      - Parameter from group: A group name.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
+     - Returns: The Relationship.
      */
-    public func remove(from group: String) {
+    @discardableResult
+    public func remove(from group: String) -> Relationship {
         managedNode.remove(from: group)
+        return self
     }
     
     /**
      Adds a Relationship to a given group, or removes it, based on its previous
      state.
      - Parameter group: A group name.
+     - Returns: The Relationship.
      */
-    public func toggle(group: String) {
-        member(of: group) ? remove(from: group) : add(to: group)
+    @discardableResult
+    public func toggle(group: String) -> Relationship {
+        return member(of: group) ? remove(from: group) : add(to: group)
+    }
+    
+    /**
+     Sets the object of the Relationship.
+     - Parameter object: An Entity.
+     - Returns: The Relationship.
+     */
+    @discardableResult
+    public func of(object: Entity) -> Relationship {
+        self.object = object
+        return self
     }
     
     /// Marks the Relationship for deletion.

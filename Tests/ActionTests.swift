@@ -159,18 +159,11 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
         watch.delegate = self
         
-        let action = Action(type: "T")
+        let action = [Entity(type: "T"), Entity(type: "T")].did(action: "T").what(objects: [Entity(type: "T"), Entity(type: "T")])
         action["P"] = "V"
         action.add(tag: "G")
         
-        action.add(subject: Entity(type: "T"))
-        action.add(subject: Entity(type: "T"))
-        
         XCTAssertEqual(2, action.subjects.count)
-        
-        action.add(object: Entity(type: "T"))
-        action.add(object: Entity(type: "T"))
-        
         XCTAssertEqual(2, action.objects.count)
         
         XCTAssertEqual("V", action["P"] as? String)
@@ -224,10 +217,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         
         saveExpectation = expectation(description: "[ActionTests Error: Save test failed.]")
         
-        action.add(subject: Entity(type: "T"))
-        action.add(subject: Entity(type: "T"))
-        action.add(subject: Entity(type: "T"))
-        action.add(subject: Entity(type: "T"))
+        action.add(subjects: [Entity(type: "T"), Entity(type: "T"), Entity(type: "T"), Entity(type: "T")])
         
         XCTAssertEqual(4, action.subjects.count)
         
@@ -266,10 +256,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         
         saveExpectation = expectation(description: "[ActionTests Error: Save test failed.]")
         
-        action.add(object: Entity(type: "T"))
-        action.add(object: Entity(type: "T"))
-        action.add(object: Entity(type: "T"))
-        action.add(object: Entity(type: "T"))
+        action.add(objects: [Entity(type: "T"), Entity(type: "T"), Entity(type: "T"), Entity(type: "T")])
         
         XCTAssertEqual(4, action.objects.count)
         

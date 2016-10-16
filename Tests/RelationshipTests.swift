@@ -159,15 +159,12 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
         watch.delegate = self
         
-        let relationship = Relationship(type: "T")
+        let subject = Entity(type: "S")
+        let object = Entity(type: "O")
+        
+        let relationship = subject.is(relationship: "T").of(object: object)
         relationship["P"] = "V"
         relationship.add(tag: "G")
-        
-        let subject = Entity(type: "S")
-        relationship.subject = subject
-
-        let object = Entity(type: "O")
-        relationship.object = object
         
         XCTAssertEqual("V", relationship["P"] as? String)
         

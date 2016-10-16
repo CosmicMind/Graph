@@ -30,6 +30,30 @@
 
 import Foundation
 
+public extension Array where Element: Entity {
+    /**
+     An Array of Entity objects may add themselves to an
+     Action.
+     - Parameter action type: A String.
+     - Returns: The Action.
+     */
+    public func will(action type: String) -> Action {
+        let action = Action(type: type)
+        action.add(subjects: self)
+        return action
+    }
+    
+    /**
+     An Array of Entity objects may add themselves to an
+     Action. 
+     - Parameter action type: A String.
+     - Returns: The Action.
+     */
+    public func did(action type: String) -> Action {
+        return will(action: type)
+    }
+}
+
 @objc(Action)
 public class Action: Node {
     /// A reference to the managedNode.
@@ -198,11 +222,12 @@ public class Action: Node {
     /**
      Adds a given tag to an Action.
      - Parameter tag: A tag name.
-     - Returns: A boolean of the result, true if added, false
-     otherwise.
+     - Returns: The Action.
      */
-    public func add(tag: String) {
+    @discardableResult
+    public func add(tag: String) -> Action {
         managedNode.add(tag: tag)
+        return self
     }
     
     /**
@@ -228,29 +253,33 @@ public class Action: Node {
     /**
      Removes a given tag from an Action.
      - Parameter tag: A tag name.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
+     - Returns: The Action.
      */
-    public func remove(tag: String) {
+    @discardableResult
+    public func remove(tag: String) -> Action {
         managedNode.remove(tag: tag)
+        return self
     }
     
     /**
      Adds a given tag to the Action or removes it, based on its previous state.
      - Parameter tag: A tag name.
+     - Returns: The Action.
      */
-    public func toggle(tag: String) {
-        has(tag: tag) ? remove(tag: tag) : add(tag: tag)
+    @discardableResult
+    public func toggle(tag: String) -> Action {
+        return has(tag: tag) ? remove(tag: tag) : add(tag: tag)
     }
     
     /**
      Adds the Action to a given group.
      - Parameter to group: A group name.
-     - Returns: A boolean of the result, true if added, false
-     otherwise.
+     - Returns: The Action.
      */
-    public func add(to group: String) {
+    @discardableResult
+    public func add(to group: String) -> Action {
         managedNode.add(to: group)
+        return self
     }
     
     /**
@@ -277,52 +306,129 @@ public class Action: Node {
     /**
      Removes an Action from a given group.
      - Parameter from group: A group name.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
+     - Returns: The Action.
      */
-    public func remove(from group: String) {
+    @discardableResult
+    public func remove(from group: String) -> Action {
         managedNode.remove(from: group)
+        return self
     }
     
     /**
      Adds an Action to a given group, or removes it, based on its previous
      state.
      - Parameter group: A group name.
+     - Returns: The Action.
      */
-    public func toggle(group: String) {
-        member(of: group) ? remove(from: group) : add(to: group)
+    @discardableResult
+    public func toggle(group: String) -> Action {
+        return member(of: group) ? remove(from: group) : add(to: group)
     }
     
     /**
      Adds an Entity to the subject set.
-     - Parameter entity: An Entity to add.
+     - Parameter subejct: An Entity.
+     - Returns: The Action.
      */
-    public func add(subject entity: Entity) {
-        managedNode.add(subject: entity.managedNode)
+    @discardableResult
+    public func add(subject: Entity) -> Action {
+        managedNode.add(subject: subject.managedNode)
+        return self
+    }
+    
+    /**
+     Adds an Array of Entity objects to the subject set.
+     - Parameter subjects: An Array of Entity objects.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func add(subjects: [Entity]) -> Action {
+        for s in subjects {
+            managedNode.add(subject: s.managedNode)
+        }
+        return self
     }
     
     /**
      Removes an Entity from the subject set.
-     - Parameter subject entity: An Entity to remove.
+     - Parameter subject: An Entity to remove.
+     - Returns: The Action.
      */
-    public func remove(subject entity: Entity) {
-        managedNode.remove(subject: entity.managedNode)
+    @discardableResult
+    public func remove(subject: Entity) -> Action {
+        managedNode.remove(subject: subject.managedNode)
+        return self
+    }
+    
+    /**
+     Removes an Array of Entity objects from the subject set.
+     - Parameter subjects: An Array of Entity objects.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func remove(subjects: [Entity]) -> Action {
+        for s in subjects {
+            managedNode.remove(subject: s.managedNode)
+        }
+        return self
     }
     
     /**
      Adds an Entity to the object set.
-     - Parameter object entity: An Entity to add.
+     - Parameter object: An Entity to add.
+     - Returns: The Action.
      */
-    public func add(object entity: Entity) {
-        managedNode.add(object: entity.managedNode)
+    @discardableResult
+    public func add(object: Entity) -> Action {
+        managedNode.add(object: object.managedNode)
+        return self
+    }
+    
+    /**
+     Adds an Array of Entity objects to the objects set.
+     - Parameter subjects: An Array of Entity objects.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func add(objects: [Entity]) -> Action {
+        for o in objects {
+            managedNode.add(object: o.managedNode)
+        }
+        return self
     }
     
     /**
      Removes an Entity from the object set.
-     - Parameter object entity: An Entity to remove.
+     - Parameter object: An Entity to remove.
+     - Returns: The Action.
      */
-    public func remove(object entity: Entity) {
-        managedNode.remove(object: entity.managedNode)
+    @discardableResult
+    public func remove(object: Entity) -> Action {
+        managedNode.remove(object: object.managedNode)
+        return self
+    }
+    
+    /**
+     Removes an Array of Entity objects from the subject set.
+     - Parameter objects: An Array of Entity objects.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func remove(objects: [Entity]) -> Action {
+        for o in objects {
+            managedNode.remove(object: o.managedNode)
+        }
+        return self
+    }
+    
+    /**
+     Adds an Array of Entity objects to the objects set.
+     - Parameter objects: An Array of Entity objects.
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func what(objects: [Entity]) -> Action {
+        return add(objects: objects)
     }
     
     /// Marks the Action for deletion.

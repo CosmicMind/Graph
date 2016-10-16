@@ -107,6 +107,16 @@ public class Entity: Node {
         return managedNode.properties
     }
     
+    /**
+     Retrieves all the Actions that are given.
+     - Returns: An Array of Actions.
+     */
+    public func find(actions: [String]) -> [Action] {
+        return self.actions.filter { [actions = actions] (action) -> Bool in
+            return actions.contains(action.type)
+        }
+    }
+    
     /// A reference to all the Actions that the Entity is a part of.
     public var actions: [Action] {
         var s = Set<ManagedAction>()
@@ -118,7 +128,8 @@ public class Entity: Node {
     }
     
     /**
-    	:name:	actionsWhenSubject
+     An Array of Actions the Entity belongs to when it's part of the
+     subject set.
      */
     public var actionsWhenSubject: [Action] {
         return managedNode.actionSubjectSet.map {
@@ -127,7 +138,8 @@ public class Entity: Node {
     }
     
     /**
-    	:name:	actionsWhenObject
+     An Array of Actions the Entity belongs to when it's part of the
+     object set.
      */
     public var actionsWhenObject: [Action] {
         return managedNode.actionObjectSet.map {
@@ -136,8 +148,16 @@ public class Entity: Node {
     }
     
     /**
-    	:name:	relationships
+     Retrieves all the Relationships that are given.
+     - Returns: An Array of Relationships.
      */
+    public func find(relationships: [String]) -> [Relationship] {
+        return self.relationships.filter { [relationships = relationships] (relationship) -> Bool in
+            return relationships.contains(relationship.type)
+        }
+    }
+    
+    /// A reference to all the Relationships that the Entity is a part of.
     public var relationships: [Relationship] {
         var result: [Relationship]?
         managedNode.managedObjectContext?.performAndWait { [unowned self] in
@@ -152,7 +172,8 @@ public class Entity: Node {
     }
     
     /**
-    	:name:	relationshipsWhenSubject
+     An Array of Relationships the Entity belongs to when it's part of the
+     subject set.
      */
     public var relationshipsWhenSubject: [Relationship] {
         var result: [Relationship]?
@@ -165,7 +186,8 @@ public class Entity: Node {
     }
     
     /**
-    	:name:	relationshipsWhenObject
+     An Array of Relationships the Entity belongs to when it's part of the
+     object set.
      */
     public var relationshipsWhenObject: [Relationship] {
         var result: [Relationship]?
@@ -238,11 +260,12 @@ public class Entity: Node {
     /**
      Adds a given tag to an Entity.
      - Parameter tag: A tag name.
-     - Returns: A boolean of the result, true if added, false
-     otherwise.
+     - Returns: The Entity.
      */
-    public func add(tag: String) {
+    @discardableResult
+    public func add(tag: String) -> Entity {
         managedNode.add(tag: tag)
+        return self
     }
     
     /**
@@ -268,29 +291,33 @@ public class Entity: Node {
     /**
      Removes a given tag from an Entity.
      - Parameter tag: A tag name.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
+     - Returns: The Entity.
      */
-    public func remove(tag: String) {
+    @discardableResult
+    public func remove(tag: String) -> Entity {
         managedNode.remove(tag: tag)
+        return self
     }
     
     /**
      Adds a given tag to an Entity or removes it, based on its previous state.
      - Parameter tag: A tag name.
+     - Returns: The Entity.
      */
-    public func toggle(tag: String) {
-        has(tag: tag) ? remove(tag: tag) : add(tag: tag)
+    @discardableResult
+    public func toggle(tag: String) -> Entity {
+        return has(tag: tag) ? remove(tag: tag) : add(tag: tag)
     }
     
     /**
      Adds the Entity to a given group.
      - Parameter to group: A group name.
-     - Returns: A boolean of the result, true if added, false
-     otherwise.
+     - Returns: The Entity.
      */
-    public func add(to group: String) {
+    @discardableResult
+    public func add(to group: String) -> Entity {
         managedNode.add(to: group)
+        return self
     }
     
     /**
@@ -317,20 +344,57 @@ public class Entity: Node {
     /**
      Removes the Entity from a given group.
      - Parameter from group: A group name.
-     - Returns: A boolean of the result, true if removed, false
-     otherwise.
+     - Returns: The Entity.
      */
-    public func remove(from group: String) {
+    @discardableResult
+    public func remove(from group: String) -> Entity {
         managedNode.remove(from: group)
+        return self
     }
     
     /**
      Adds an Entity to a given group, or removes it, based on its previous
      state.
      - Parameter group: A group name.
+     - Returns: The Entity.
      */
-    public func toggle(group: String) {
-        member(of: group) ? remove(from: group) : add(to: group)
+    @discardableResult
+    public func toggle(group: String) -> Entity {
+        return member(of: group) ? remove(from: group) : add(to: group)
+    }
+    
+    /**
+     Sets the Entity as the subject of the Relationship.
+     - Parameter relationship type: A String.
+     - Returns: A Relationship.
+     */
+    @discardableResult
+    public func `is`(relationship type: String) -> Relationship {
+        let relationship = Relationship(type: type)
+        relationship.subject = self
+        return relationship
+    }
+    
+    /**
+     Sets the Entity as to the subjects set of an Action.
+     - Parameter action type: A String.
+     - Returns: A Action.
+     */
+    @discardableResult
+    public func will(action type: String) -> Action {
+        let action = Action(type: type)
+        action.add(subject: self)
+        return action
+    }
+    
+    /**
+     Sets the Entity as to the subjects set of an Action.
+     - Parameter action type: A String.
+     - Returns: A Action.
+     */
+    @discardableResult
+    public func did(action type: String) -> Action {
+        return will(action: type)
     }
     
     /// Marks the Entity for deletion.
