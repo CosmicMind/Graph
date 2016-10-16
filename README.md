@@ -50,7 +50,7 @@ The following are some examples to see how Graph may be used within your applica
 
 * Visit the [Examples](https://github.com/CosmicMind/Graph/tree/development/Examples) directory to see example projects using Graph. Most examples use [CocoaPods](http://cocoapods.org) to install, so please open the project you are interested in and run the command `pod install` to get started.
 
-## Creating an Entity for an ImageCard.
+## Creating an Entity for an ImageCard
 
 An **Entity** is a model (data) object that represents a **person**, **place**, or **thing**. It may store property values, be a member of groups, and can be tagged.
 
@@ -58,7 +58,7 @@ In the following example, we create an ImageCard view using Material and populat
 
 ![Material Image](http://www.cosmicmind.io/gifs/white/image-card.gif)
 
-#### Creating data.
+#### Creating data
 
 ```swift
 let graph = Graph()
@@ -73,7 +73,7 @@ entity["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")
 graph.sync()
 ```
 
-#### Setting the view's properties.
+#### Setting the view's properties
 
 ```swift
 imageCard.toolbar?.title = entity["title"] as? String
@@ -94,13 +94,13 @@ imageCard.bottomBar?.centerViews = [authorLabel]
 * Learn more about [Material's ImageCard](http://cosmicmind.io/material/imagecard).
 
 
-## Searching a list of users in realtime.
+## Searching a list of users in realtime
 
 Using the **Search** API is incredibly flexible. It is possible.
 
 ![Material Image](http://www.cosmicmind.io/gifs/shared/search-bar-controller.gif)
 
-#### Preparing the search criteria.
+#### Preparing the search criteria
 
 ```swift
 let graph = Graph()
@@ -108,7 +108,7 @@ let graph = Graph()
 let search = Search<Entity>(graph: graph).for(types: "User").where(properties: "name")
 ```
 
-#### Asynchronously searching graph.
+#### Asynchronously searching graph
 
 ```swift        
 search.async { [weak self, pattern = pattern] (users) in
