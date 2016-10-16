@@ -65,7 +65,7 @@ extension RootViewController {
         graph = Graph()
         
         // Uncomment to clear the Graph data.
-//        graph.clear()
+        graph.clear()
     }
     
     internal func prepareSearch() {
@@ -110,7 +110,7 @@ extension RootViewController: SearchBarDelegate {
     }
     
     func searchBar(searchBar: SearchBar, didChange textField: UITextField, with text: String?) {
-        guard let pattern = text, 0 < pattern.utf16.count else {
+        guard let pattern = text?.trimmed, 0 < pattern.utf16.count else {
             reloadData()
             return
         }

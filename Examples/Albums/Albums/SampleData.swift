@@ -33,7 +33,7 @@ import Material
 import Graph
 
 extension UIImage {
-    public func load(contentsOfFile name: String, ofType type: String) -> UIImage? {
+    public class func load(contentsOfFile name: String, ofType type: String) -> UIImage? {
         return UIImage(contentsOfFile: Bundle.main.path(forResource: name, ofType: type)!)
     }
 }
@@ -46,16 +46,16 @@ struct SampleData {
         album1["name"] = "Spring Trips"
         
         let photo1 = Entity(type: "Photo")
-        photo1["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")?.resize(toWidth: view.width)
+        photo1["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")?.resize(toWidth: 500)
         
         let photo2 = Entity(type: "Photo")
-        photo2["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")?.resize(toWidth: view.width)
+        photo2["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")?.resize(toWidth: 500)
         
         let photo3 = Entity(type: "Photo")
-        photo3["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")?.resize(toWidth: view.width)
+        photo3["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")?.resize(toWidth: 500)
         
         let photo4 = Entity(type: "Photo")
-        photo4["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")?.resize(toWidth: view.width)
+        photo4["image"] = UIImage.load(contentsOfFile: "frontier", ofType: "jpg")?.resize(toWidth: 500)
         
         photo1.is(relationship: "Photo").in(object: album1)
         photo2.is(relationship: "Photo").in(object: album1)

@@ -97,6 +97,8 @@ imageCard.bottomBar?.centerViews = [authorLabel]
 
 Using the **Search** API is incredibly flexible. It is possible.
 
+![Material Image](http://www.cosmicmind.io/gifs/shared/search-bar-controller.gif)
+
 #### Preparing the search criteria.
 
 ```swift
