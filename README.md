@@ -46,7 +46,7 @@ Graph is a growing project and will encounter changes throughout its development
 
 # Examples
 
-The following are some examples to see how Graph may be used within your projects.
+The following are some examples to see how Graph may be used within your applications.
 
 * Visit the [Examples](https://github.com/CosmicMind/Graph/tree/development/Examples) directory to see example projects using Graph. Most examples use [CocoaPods](http://cocoapods.org) to install, so please open the project you are interested in and run the command `pod install` to get started.
 
@@ -92,6 +92,7 @@ imageCard.bottomBar?.centerViews = [authorLabel]
 * Download the complete [ImageCard example](https://github.com/CosmicMind/Graph/tree/master/Examples/ImageCard).
 * Learn more about [Entity](http://cosmicmind.io/graph/entity).
 * Learn more about [Material's ImageCard](http://cosmicmind.io/material/imagecard).
+
 
 ## Searching a list of users in realtime.
 

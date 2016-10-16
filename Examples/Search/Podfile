@@ -5,7 +5,8 @@ target 'Search' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for SearchBarController
-pod 'Material', :git => 'https://github.com/CosmicMind/Material.git', :branch => 'development'
+  # Pods for Card
+pod 'Material', '~> 2.0'
+pod 'Graph', '~> 2.0'
 
 end
