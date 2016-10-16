@@ -109,6 +109,16 @@ public class Entity: Node {
     
     /**
      Retrieves all the Actions that are given.
+     - Parameter actions: A list of Strings.
+     - Returns: An Array of Actions.
+     */
+    public func find(actions: String...) -> [Action] {
+        return find(actions: actions)
+    }
+    
+    /**
+     Retrieves all the Actions that are given.
+     - Parameter actions: An Array of Strings.
      - Returns: An Array of Actions.
      */
     public func find(actions: [String]) -> [Action] {
@@ -149,6 +159,16 @@ public class Entity: Node {
     
     /**
      Retrieves all the Relationships that are given.
+     - Parameter relationships: A list of Strings.
+     - Returns: An Array of Relationships.
+     */
+    public func find(relationships: String...) -> [Relationship] {
+        return find(relationships: relationships)
+    }
+    
+    /**
+     Retrieves all the Relationships that are given.
+     - Parameter relationships: An Array of Strings.
      - Returns: An Array of Relationships.
      */
     public func find(relationships: [String]) -> [Relationship] {

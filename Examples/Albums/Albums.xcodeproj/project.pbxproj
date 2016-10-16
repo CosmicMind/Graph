@@ -12,6 +12,7 @@
 		96F8947C1DB349C500F4F8D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96F8947B1DB349C500F4F8D4 /* Assets.xcassets */; };
 		96F8947F1DB349C500F4F8D4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96F8947D1DB349C500F4F8D4 /* LaunchScreen.storyboard */; };
 		96F894871DB349FE00F4F8D4 /* AppToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F894861DB349FE00F4F8D4 /* AppToolbarController.swift */; };
+		96F894891DB34CE700F4F8D4 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F894881DB34CE700F4F8D4 /* SampleData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		96F8947E1DB349C500F4F8D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		96F894801DB349C500F4F8D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96F894861DB349FE00F4F8D4 /* AppToolbarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppToolbarController.swift; sourceTree = "<group>"; };
+		96F894881DB34CE700F4F8D4 /* SampleData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 				96F894741DB349C500F4F8D4 /* AppDelegate.swift */,
 				96F894861DB349FE00F4F8D4 /* AppToolbarController.swift */,
 				96F894761DB349C500F4F8D4 /* RootViewController.swift */,
+				96F894881DB34CE700F4F8D4 /* SampleData.swift */,
 				96F8947B1DB349C500F4F8D4 /* Assets.xcassets */,
 				96F8947D1DB349C500F4F8D4 /* LaunchScreen.storyboard */,
 				96F894801DB349C500F4F8D4 /* Info.plist */,
@@ -138,6 +141,7 @@
 				96F894771DB349C500F4F8D4 /* RootViewController.swift in Sources */,
 				96F894871DB349FE00F4F8D4 /* AppToolbarController.swift in Sources */,
 				96F894751DB349C500F4F8D4 /* AppDelegate.swift in Sources */,
+				96F894891DB34CE700F4F8D4 /* SampleData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
