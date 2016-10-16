@@ -296,8 +296,8 @@ extension Search where T: Entity  {
      passed in as the first argument.
      - Parameter completion: An optional completion block.
      */
-    public func async(completion: @escaping (([T]) -> Void)) {
-        DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
+    public func async(completion: @escaping(([T]) -> Void)) {
+        DispatchQueue.global(qos: .background).async { [weak self, completion = completion] in
             guard let s = self else {
                 return
             }
@@ -329,7 +329,7 @@ extension Search where T: Relationship  {
      - Parameter completion: An optional completion block.
      */
     public func async(completion: @escaping (([T]) -> Void)) {
-        DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
+        DispatchQueue.global(qos: .background).async { [weak self, completion = completion] in
             guard let s = self else {
                 return
             }
@@ -361,7 +361,7 @@ extension Search where T: Action  {
      - Parameter completion: An optional completion block.
      */
     public func async(completion: @escaping (([T]) -> Void)) {
-        DispatchQueue.global(qos: .default).async { [weak self, completion = completion] in
+        DispatchQueue.global(qos: .background).async { [weak self, completion = completion] in
             guard let s = self else {
                 return
             }

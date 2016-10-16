@@ -61,31 +61,6 @@ class RootViewController: UIViewController {
 
 /// Model.
 extension RootViewController {
-    internal func createSampleData() {
-        let u1 = Entity(type: "User")
-        u1["name"] = "Daniel Dahan"
-        u1["status"] = "Working on CosmicMind frameworks!"
-        u1["photo"] = UIImage.image(with: Color.grey.lighten5, size: CGSize(width: 100, height: 100))
-        
-        let u2 = Entity(type: "User")
-        u2["name"] = "Deepali Parhar"
-        u2["status"] = "Posting a tweet!"
-        u2["photo"] = UIImage.image(with: Color.grey.lighten5, size: CGSize(width: 100, height: 100))
-        
-        let u3 = Entity(type: "User")
-        u3["name"] = "Eve"
-        u3["status"] = "Doing yoga <3"
-        u3["photo"] = UIImage.image(with: Color.grey.lighten5, size: CGSize(width: 100, height: 100))
-        
-        let u4 = Entity(type: "User")
-        u4["name"] = "Charles St. Louis"
-        u4["status"] = "Kicking butt at Queens University."
-        u4["photo"] = UIImage.image(with: Color.grey.lighten5, size: CGSize(width: 100, height: 100))
-        
-        /// To save the model data synchronously, use the sync method.
-        graph.sync()
-    }
-    
     internal func prepareGraph() {
         graph = Graph()
         
@@ -95,56 +70,69 @@ extension RootViewController {
     
     internal func prepareSearch() {
         search = Search<Entity>(graph: graph).for(types: ["User"]).where(properties: "name")
-        var data = search.sync()
         
-        if 0 == data.count {
-            createSampleData()
-            data = search.sync()
+        search.async { [weak self] (data) in
+            if 0 == data.count {
+                SampleData.createSampleData()
+            }
+            self?.reloadData()
         }
-        
-        tableView.data = data
     }
     
     internal func prepareTableView() {
         tableView = UserTableView()
         view.layout(tableView).edges()
     }
+    
+    internal func reloadData() {
+        tableView.data = search.sync().sorted(by: { (a, b) -> Bool in
+            guard let n = a["name"] as? String, let m = b["name"] as? String else {
+                return false
+            }
+            return n < m
+        })
+    }
 }
 
 // View.
-extension RootViewController {
+extension RootViewController: SearchBarDelegate {
     internal func prepareSearchBar() {
         // Access the searchBar.
         guard let searchBar = searchBarController?.searchBar else {
             return
         }
      
-        searchBar.textField.addTarget(self, action: #selector(handleTextChange(textField:)), for: .editingChanged)
+        searchBar.delegate = self
     }
     
-    // Live updates the search results.
-    internal func handleTextChange(textField: UITextField) {
-        guard let pattern = textField.text, let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
-            tableView.data = search.sync()
+    func searchBar(searchBar: SearchBar, didClear textField: UITextField, with text: String?) {
+        reloadData()
+    }
+    
+    func searchBar(searchBar: SearchBar, didChange textField: UITextField, with text: String?) {
+        guard let pattern = text, 0 < pattern.utf16.count else {
+            reloadData()
             return
         }
         
-        var data = [Entity]()
-        
-        search.sync().forEach { [regex = regex] (user) in
-            guard let name = user["name"] as? String else {
+        search.async { [weak self, pattern = pattern] (users) in
+            guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
                 return
             }
+        
+            var data = [Entity]()
             
-            let matches = regex.matches(in: name, range: NSRange(location: 0, length: name.utf16.count))
-            if 0 < matches.count {
-                data.append(user)
+            for user in users {
+                if let name = user["name"] as? String {
+                    let matches = regex.matches(in: name, range: NSRange(location: 0, length: name.utf16.count))
+                    if 0 < matches.count {
+                        data.append(user)
+                    }
+                }
             }
+            
+            self?.tableView.data = data
         }
-        
-        tableView.data = data
-        
-        
     }
 }
 

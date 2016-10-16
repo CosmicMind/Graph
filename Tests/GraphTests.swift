@@ -34,7 +34,7 @@ class GraphTests: XCTestCase {
         graphExpectation = expectation(description: "[GraphTests Error: Async tests failed.]")
         
         var g3: Graph!
-        DispatchQueue.global(qos: .default).async { [weak self] in
+        DispatchQueue.global(qos: .background).async { [weak self] in
             g3 = Graph(name: "async")
             XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
             XCTAssertEqual("async", g3.name)
@@ -81,7 +81,7 @@ class GraphTests: XCTestCase {
         graphExpectation = expectation(description: "[CloudTests Error: Async tests failed.]")
         
         var g3: Graph!
-        DispatchQueue.global(qos: .default).async { [weak self] in
+        DispatchQueue.global(qos: .background).async { [weak self] in
             g3 = Graph(cloud: "test") { [weak self] (supported: Bool, error: Error?) in
                 XCTAssertTrue(supported)
                 XCTAssertNil(error)

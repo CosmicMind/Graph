@@ -111,7 +111,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         
         XCTAssertEqual("V", entity["P"] as? String)
         
-        DispatchQueue.global(qos: .default).async { [weak self] in
+        DispatchQueue.global(qos: .background).async { [weak self] in
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
@@ -138,7 +138,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
         
         XCTAssertEqual("V", entity["P"] as? String)
         
-        DispatchQueue.global(qos: .default).async { [weak self] in
+        DispatchQueue.global(qos: .background).async { [weak self] in
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)

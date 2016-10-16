@@ -13,9 +13,8 @@
 		9642C50F1DB2B432000B5941 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9642C50E1DB2B432000B5941 /* Assets.xcassets */; };
 		9642C5121DB2B432000B5941 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9642C5101DB2B432000B5941 /* LaunchScreen.storyboard */; };
 		9642C51A1DB2B541000B5941 /* AppSearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9642C5191DB2B541000B5941 /* AppSearchBarController.swift */; };
-		9642C5201DB2B691000B5941 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9642C51F1DB2B691000B5941 /* Graph.framework */; };
-		9642C5211DB2B691000B5941 /* Graph.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9642C51F1DB2B691000B5941 /* Graph.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9642C5231DB2B7E4000B5941 /* UserTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9642C5221DB2B7E4000B5941 /* UserTableView.swift */; };
+		96F894431DB2FD1300F4F8D4 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F894421DB2FD1300F4F8D4 /* SampleData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,7 +24,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9642C5211DB2B691000B5941 /* Graph.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -42,8 +40,8 @@
 		9642C5111DB2B432000B5941 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9642C5131DB2B432000B5941 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9642C5191DB2B541000B5941 /* AppSearchBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSearchBarController.swift; sourceTree = "<group>"; };
-		9642C51F1DB2B691000B5941 /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9642C5221DB2B7E4000B5941 /* UserTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableView.swift; sourceTree = "<group>"; };
+		96F894421DB2FD1300F4F8D4 /* SampleData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		AFF17BC12E9C251671A09769 /* Pods-SearchBarController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SearchBarController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SearchBarController/Pods-SearchBarController.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,7 +51,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				760C6B70B105AF2F9D2FEDE7 /* Pods_SearchBarController.framework in Frameworks */,
-				9642C5201DB2B691000B5941 /* Graph.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,7 +69,6 @@
 		9642C4FB1DB2B431000B5941 = {
 			isa = PBXGroup;
 			children = (
-				9642C51F1DB2B691000B5941 /* Graph.framework */,
 				9642C5061DB2B432000B5941 /* SearchBarController */,
 				9642C5051DB2B432000B5941 /* Products */,
 				705EE6CE79C7F6DE5851ECDC /* Pods */,
@@ -95,6 +91,7 @@
 				9642C5191DB2B541000B5941 /* AppSearchBarController.swift */,
 				9642C5091DB2B432000B5941 /* RootViewController.swift */,
 				9642C5221DB2B7E4000B5941 /* UserTableView.swift */,
+				96F894421DB2FD1300F4F8D4 /* SampleData.swift */,
 				9642C50E1DB2B432000B5941 /* Assets.xcassets */,
 				9642C5101DB2B432000B5941 /* LaunchScreen.storyboard */,
 				9642C5131DB2B432000B5941 /* Info.plist */,
@@ -237,6 +234,7 @@
 				9642C5231DB2B7E4000B5941 /* UserTableView.swift in Sources */,
 				9642C50A1DB2B432000B5941 /* RootViewController.swift in Sources */,
 				9642C5081DB2B432000B5941 /* AppDelegate.swift in Sources */,
+				96F894431DB2FD1300F4F8D4 /* SampleData.swift in Sources */,
 				9642C51A1DB2B541000B5941 /* AppSearchBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
