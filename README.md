@@ -1,4 +1,4 @@
-![Graph](http://www.cosmicmind.io/GK/Graph.png)
+![Graph](http://www.cosmicmind.io/graph/github/graph-logo.png)
 
 ## Welcome to Graph
 
@@ -96,7 +96,7 @@ imageCard.bottomBar?.centerViews = [authorLabel]
 
 ## Searching a list of users in realtime
 
-Using the **Search** API is incredibly flexible. It is possible.
+Using the **Search** API is incredibly flexible. In the following example, Search is used to create a live search on user names with a dynamic UI provided by [Material's SearchBar](http://cosmicmind.io/material/searchbar).
 
 ![Material Image](http://www.cosmicmind.io/gifs/shared/search-bar-controller.gif)
 
