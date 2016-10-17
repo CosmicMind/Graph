@@ -13,7 +13,7 @@ Graph is a semantic database that is used to create data-driven applications.
 - [x] Relationship Modeling
 - [x] Action Modeling For Analytics
 - [x] Model With Graph Theory and Set Theory
-- [x] Faceted Search API
+- [x] Asynchronous / Synchronous Search
 - [x] Asynchronous / Synchronous Saving
 - [x] Data-Driven Architecture
 - [x] Data Model Observation
@@ -90,7 +90,6 @@ imageCard.bottomBar?.centerViews = [authorLabel]
 ```
 
 * Download the complete [ImageCard example](https://github.com/CosmicMind/Graph/tree/master/Examples/ImageCard).
-* Learn more about [Entity](http://cosmicmind.io/graph/entity).
 * Learn more about [Material's ImageCard](http://cosmicmind.io/material/imagecard).
 
 
@@ -134,7 +133,6 @@ search.async { [weak self, pattern = pattern] (users) in
 ```
 
 * Download the complete [Search example](https://github.com/CosmicMind/Graph/tree/master/Examples/Search).
-* Learn more about [Search](http://cosmicmind.io/graph/search).
 * Learn more about [Material's SearchBar](http://cosmicmind.io/material/searchbar).
 
 
