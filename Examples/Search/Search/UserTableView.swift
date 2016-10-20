@@ -58,7 +58,7 @@ class UserTableView: UITableView {
     }
 }
 
-/// TableViewDataSource.
+/// UITableViewDataSource.
 extension UserTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
@@ -70,7 +70,7 @@ extension UserTableView: UITableViewDataSource {
     
     /// Prepares the cells within the tableView.
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = TableViewCell(style: .subtitle, reuseIdentifier: "TableViewCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
         
         let user = data[indexPath.row]
         
