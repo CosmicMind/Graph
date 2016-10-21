@@ -35,7 +35,7 @@ Graph is a semantic database that is used to create data-driven applications.
 
 ## Installation
 
-> **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks (10.9).**
+> **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Mavericks (10.10).**
 > - [Download Graph](https://github.com/CosmicMind/Graph/archive/master.zip)
 
 Visit the [Installation](https://github.com/CosmicMind/Graph/wiki/Installation) page to learn how to install Graph using [CocoaPods](http://cocoapods.org) and [Carthage](https://github.com/Carthage/Carthage).
@@ -44,19 +44,19 @@ Visit the [Installation](https://github.com/CosmicMind/Graph/wiki/Installation) 
 
 Graph is a growing project and will encounter changes throughout its development. It is recommended that the [Changelog](https://github.com/CosmicMind/Graph/wiki/Changelog) be reviewed prior to updating versions.
 
-# Examples
+# Samples
 
-The following are some examples to see how Graph may be used within your applications.
+The following are samples to see how Graph may be used within your applications.
 
-* Visit the [Examples](https://github.com/CosmicMind/Graph/tree/development/Examples) directory to see example projects using Graph. Most examples use [CocoaPods](http://cocoapods.org) to install, so please open the project you are interested in and run the command `pod install` to get started.
+* Visit the [Samples](https://github.com/CosmicMind/Samples) project to see example projects using Graph.
 
 ## Creating an Entity for an ImageCard
 
 An **Entity** is a model (data) object that represents a **person**, **place**, or **thing**. It may store property values, be a member of groups, and can be tagged.
 
-In the following example, we create an ImageCard view using Material and populate it's properties with an entity that stores the data for that view.
+In the following example, we create an ImageCard view using Material and populate it's properties with an Entity that stores the data for that view.
 
-![Material Image](http://www.cosmicmind.io/gifs/white/image-card.gif)
+![Material ImageCard](http://www.cosmicmind.io/gifs/white/image-card.gif)
 
 #### Creating data
 
@@ -89,15 +89,14 @@ authorLabel.text = entity["author"] as? String
 imageCard.bottomBar?.centerViews = [authorLabel]
 ```
 
-* Download the complete [ImageCard example](https://github.com/CosmicMind/Graph/tree/master/Examples/ImageCard).
+* Download the complete [ImageCard example](https://github.com/CosmicMind/Samples/tree/master/Graph/ImageCard).
 * Learn more about [Material's ImageCard](http://cosmicmind.io/material/imagecard).
-
 
 ## Searching a list of users in realtime
 
 Using the **Search** API is incredibly flexible. In the following example, Search is used to create a live search on user names with a dynamic UI provided by [Material's SearchBar](http://cosmicmind.io/material/searchbar).
 
-![Material Image](http://www.cosmicmind.io/gifs/shared/search-bar-controller.gif)
+![Material SearchBar](http://www.cosmicmind.io/gifs/shared/search-bar-controller.gif)
 
 #### Preparing the search criteria
 
@@ -132,9 +131,8 @@ search.async { [weak self, pattern = pattern] (users) in
 }
 ```
 
-* Download the complete [Search example](https://github.com/CosmicMind/Graph/tree/master/Examples/Search).
+* Download the complete [Search example](https://github.com/CosmicMind/Samples/tree/master/Graph/Search).
 * Learn more about [Material's SearchBar](http://cosmicmind.io/material/searchbar).
-
 
 ## License
 
