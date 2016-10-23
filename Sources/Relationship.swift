@@ -30,6 +30,64 @@
 
 import Foundation
 
+public extension Array where Element: Relationship {
+    /**
+     Finds the given types of subject Entities that are part
+     of the relationships in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func subject(types: String...) -> [Entity] {
+        return subject(types: types)
+    }
+    
+    /**
+     Finds the given types of subject Entities that are part
+     of the relationships in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func subject(types: [String]) -> [Entity] {
+        var e = [Entity]()
+        for r in self {
+            if let s = r.subject {
+                if types.contains(s.type) {
+                    e.append(s)
+                }
+            }
+        }
+        return e
+    }
+    
+    /**
+     Finds the given types of object Entities that are part
+     of the relationships in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func object(types: String...) -> [Entity] {
+        return object(types: types)
+    }
+    
+    /**
+     Finds the given types of object Entities that are part
+     of the relationships in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func object(types: [String]) -> [Entity] {
+        var e = [Entity]()
+        for r in self {
+            if let o = r.object {
+                if types.contains(o.type) {
+                    e.append(o)
+                }
+            }
+        }
+        return e
+    }
+}
+
 @objc(Relationship)
 public class Relationship: Node {
     /// A reference to the managedNode.
