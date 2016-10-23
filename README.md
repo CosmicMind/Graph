@@ -48,7 +48,7 @@ Graph is a growing project and will encounter changes throughout its development
 
 The following are samples to see how Graph may be used within your applications.
 
-* Visit the [Samples](https://github.com/CosmicMind/Samples) project to see example projects using Graph.
+* Visit the [Samples](https://github.com/CosmicMind/Samples) repo to see example projects using Graph.
 
 ## Creating an Entity for an ImageCard
 
