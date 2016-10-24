@@ -4,6 +4,10 @@
 
 Graph is a semantic database that is used to create data-driven applications.
 
+![Material Sample](http://cosmicmind.io/samples/github/page-tab-bar-controller-2.png)
+
+* [Download the latest sample](https://github.com/CosmicMind/Samples/tree/master/Graph/CardTableView).
+
 ## Features
 
 - [x] iCloud Support
