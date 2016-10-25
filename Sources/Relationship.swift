@@ -48,15 +48,15 @@ public extension Array where Element: Relationship {
      - Returns: An Array of Entities.
      */
     public func subject(types: [String]) -> [Entity] {
-        var e = [Entity]()
-        for r in self {
-            if let s = r.subject {
-                if types.contains(s.type) {
-                    e.append(s)
+        var s = Set<Entity>()
+        forEach { [types = types] (r) in
+            if let e = r.subject {
+                if types.contains(e.type) {
+                    s.insert(e)
                 }
             }
         }
-        return e
+        return [Entity](s)
     }
     
     /**
@@ -76,15 +76,15 @@ public extension Array where Element: Relationship {
      - Returns: An Array of Entities.
      */
     public func object(types: [String]) -> [Entity] {
-        var e = [Entity]()
-        for r in self {
-            if let o = r.object {
-                if types.contains(o.type) {
-                    e.append(o)
+        var s = Set<Entity>()
+        forEach { [types = types] (r) in
+            if let e = r.object {
+                if types.contains(e.type) {
+                    s.insert(e)
                 }
             }
         }
-        return e
+        return [Entity](s)
     }
 }
 

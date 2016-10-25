@@ -30,6 +30,30 @@
 
 import Foundation
 
+public extension Array where Element: Entity {
+    /**
+     An Array of Entity objects may add themselves to an
+     Action.
+     - Parameter action type: A String.
+     - Returns: The Action.
+     */
+    public func will(action type: String) -> Action {
+        let action = Action(type: type)
+        action.add(subjects: self)
+        return action
+    }
+    
+    /**
+     An Array of Entity objects may add themselves to an
+     Action.
+     - Parameter action type: A String.
+     - Returns: The Action.
+     */
+    public func did(action type: String) -> Action {
+        return will(action: type)
+    }
+}
+
 @objc(Entity)
 public class Entity: Node {
     /// A reference to the managedNode.

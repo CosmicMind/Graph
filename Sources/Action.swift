@@ -30,27 +30,61 @@
 
 import Foundation
 
-public extension Array where Element: Entity {
+public extension Array where Element: Action {
     /**
-     An Array of Entity objects may add themselves to an
-     Action.
-     - Parameter action type: A String.
-     - Returns: The Action.
+     Finds the given types of subject Entities that are part
+     of the actions in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
      */
-    public func will(action type: String) -> Action {
-        let action = Action(type: type)
-        action.add(subjects: self)
-        return action
+    public func subject(types: String...) -> [Entity] {
+        return subject(types: types)
     }
     
     /**
-     An Array of Entity objects may add themselves to an
-     Action. 
-     - Parameter action type: A String.
-     - Returns: The Action.
+     Finds the given types of subject Entities that are part
+     of the actions in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
      */
-    public func did(action type: String) -> Action {
-        return will(action: type)
+    public func subject(types: [String]) -> [Entity] {
+        var s = Set<Entity>()
+        forEach { [types = types] (a) in
+            a.subjects.forEach { [types = types] (e) in
+                if types.contains(e.type) {
+                    s.insert(e)
+                }
+            }
+        }
+        return [Entity](s)
+    }
+    
+    /**
+     Finds the given types of object Entities that are part
+     of the actions in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func object(types: String...) -> [Entity] {
+        return object(types: types)
+    }
+    
+    /**
+     Finds the given types of object Entities that are part
+     of the actions in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func object(types: [String]) -> [Entity] {
+        var s = Set<Entity>()
+        forEach { [types = types] (a) in
+            a.objects.forEach { [types = types] (e) in
+                if types.contains(e.type) {
+                    s.insert(e)
+                }
+            }
+        }
+        return [Entity](s)
     }
 }
 
