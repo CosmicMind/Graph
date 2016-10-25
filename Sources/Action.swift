@@ -51,9 +51,11 @@ public extension Array where Element: Action {
         var s = Set<Entity>()
         forEach { [types = types] (a) in
             a.subjects.forEach { [types = types] (e) in
-                if types.contains(e.type) {
-                    s.insert(e)
+                guard types.contains(e.type) else {
+                    return
                 }
+                
+                s.insert(e)
             }
         }
         return [Entity](s)
@@ -79,9 +81,11 @@ public extension Array where Element: Action {
         var s = Set<Entity>()
         forEach { [types = types] (a) in
             a.objects.forEach { [types = types] (e) in
-                if types.contains(e.type) {
-                    s.insert(e)
+                guard types.contains(e.type) else {
+                    return
                 }
+                
+                s.insert(e)
             }
         }
         return [Entity](s)
