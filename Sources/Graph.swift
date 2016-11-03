@@ -61,10 +61,10 @@ public class Graph: NSObject {
     public internal(set) var managedObjectContext: NSManagedObjectContext!
     
     /// Number of items to return.
-    public var batchSize: Int = 0 // 0 == no limit
+    public var batchSize = 0 // 0 == no limit
     
     /// Start the return results from this offset.
-    public var batchOffset: Int = 0
+    public var batchOffset = 0
     
     /// Watch instances.
     public internal(set) lazy var watchers = [Watcher]()
