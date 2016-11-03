@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
     s.summary = 'Graph is a semantic database that is used to create data-driven applications.'
     s.homepage = 'http://graphswift.io'
     s.social_media_url = 'https://www.facebook.com/cosmicmindio'
-    s.authors = { 'CosmicMind, Inc.' => 'support@cosmicmind.io' }
+    s.authors = { 'CosmicMind, Inc.' => 'support@cosmicmind.com' }
     s.source = { :git => 'https://github.com/CosmicMind/Graph.git', :tag => s.version }
     s.ios.deployment_target = '8.0'
     s.osx.deployment_target = '10.10'

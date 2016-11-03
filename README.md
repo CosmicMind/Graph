@@ -1,10 +1,10 @@
-![Graph](http://www.cosmicmind.io/graph/github/graph-logo.png)
+![Graph](http://www.cosmicmind.com/graph/github/graph-logo.png)
 
 ## Welcome to Graph
 
 Graph is a semantic database that is used to create data-driven applications.
 
-![Material Sample](http://cosmicmind.io/samples/github/page-tab-bar-controller-2.png)
+![Material Sample](http://cosmicmind.com/samples/github/page-tab-bar-controller-2.png)
 
 * [Download the latest sample](https://github.com/CosmicMind/Samples/tree/master/Graph/CardTableView).
 
@@ -60,7 +60,7 @@ An **Entity** is a model (data) object that represents a **person**, **place**, 
 
 In the following example, we create an ImageCard view using Material and populate it's properties with an Entity that stores the data for that view.
 
-![Material ImageCard](http://www.cosmicmind.io/gifs/white/image-card.gif)
+![Material ImageCard](http://www.cosmicmind.com/gifs/white/image-card.gif)
 
 #### Creating data
 
@@ -94,13 +94,13 @@ imageCard.bottomBar?.centerViews = [authorLabel]
 ```
 
 * Download the complete [ImageCard example](https://github.com/CosmicMind/Samples/tree/master/Graph/ImageCard).
-* Learn more about [Material's ImageCard](http://cosmicmind.io/material/imagecard).
+* Learn more about [Material's ImageCard](http://cosmicmind.com/material/imagecard).
 
 ## Searching a list of users in realtime
 
-Using the **Search** API is incredibly flexible. In the following example, Search is used to create a live search on user names with a dynamic UI provided by [Material's SearchBar](http://cosmicmind.io/material/searchbar).
+Using the **Search** API is incredibly flexible. In the following example, Search is used to create a live search on user names with a dynamic UI provided by [Material's SearchBar](http://cosmicmind.com/material/searchbar).
 
-![Material SearchBar](http://www.cosmicmind.io/gifs/shared/search-bar-controller.gif)
+![Material SearchBar](http://www.cosmicmind.com/gifs/shared/search-bar-controller.gif)
 
 #### Preparing the search criteria
 
@@ -136,11 +136,11 @@ search.async { [weak self, pattern = pattern] (users) in
 ```
 
 * Download the complete [Search example](https://github.com/CosmicMind/Samples/tree/master/Graph/Search).
-* Learn more about [Material's SearchBar](http://cosmicmind.io/material/searchbar).
+* Learn more about [Material's SearchBar](http://cosmicmind.com/material/searchbar).
 
 ## License
 
-Copyright (C) 2015 - 2016, CosmicMind, Inc. <http://cosmicmind.io>. All rights reserved.
+Copyright (C) 2015 - 2016, CosmicMind, Inc. <http://cosmicmind.com>. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
