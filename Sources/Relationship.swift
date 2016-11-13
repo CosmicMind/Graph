@@ -448,7 +448,15 @@ extension Array where Element: Relationship {
     public func subject(types: [String]) -> [Entity] {
         var s = Set<Entity>()
         forEach { [types = types] (r) in
-            s.insert(r.subject(types: types))
+            guard let e = r.subject else {
+                return
+            }
+            
+            guard types.contains(e.type) else {
+                return
+            }
+            
+            s.insert(e)
         }
         return [Entity](s)
     }
@@ -472,7 +480,15 @@ extension Array where Element: Relationship {
     public func object(types: [String]) -> [Entity] {
         var s = Set<Entity>()
         forEach { [types = types] (r) in
-            s.insert(r.object(types: types))
+            guard let e = r.subject else {
+                return
+            }
+            
+            guard types.contains(e.type) else {
+                return
+            }
+            
+            s.insert(e)
         }
         return [Entity](s)
     }

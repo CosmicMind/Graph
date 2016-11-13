@@ -581,7 +581,9 @@ extension Array where Element: Action {
     public func subject(types: [String]) -> [Entity] {
         var s = Set<Entity>()
         forEach { [types = types] (a) in
-            s.insert(a.suject(types: types))
+            a.subject(types: types).forEach {
+                s.insert($0)
+            }
         }
         return [Entity](s)
     }
@@ -605,7 +607,9 @@ extension Array where Element: Action {
     public func object(types: [String]) -> [Entity] {
         var s = Set<Entity>()
         forEach { [types = types] (a) in
-            s.insert(a.object(types: types))
+            a.object(types: types).forEach {
+                s.insert($0)
+            }
         }
         return [Entity](s)
     }
