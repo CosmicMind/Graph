@@ -30,68 +30,6 @@
 
 import Foundation
 
-public extension Array where Element: Action {
-    /**
-     Finds the given types of subject Entities that are part
-     of the actions in the Array.
-     - Parameter types: An Array of Strings.
-     - Returns: An Array of Entities.
-     */
-    public func subject(types: String...) -> [Entity] {
-        return subject(types: types)
-    }
-    
-    /**
-     Finds the given types of subject Entities that are part
-     of the actions in the Array.
-     - Parameter types: An Array of Strings.
-     - Returns: An Array of Entities.
-     */
-    public func subject(types: [String]) -> [Entity] {
-        var s = Set<Entity>()
-        forEach { [types = types] (a) in
-            a.subjects.forEach { [types = types] (e) in
-                guard types.contains(e.type) else {
-                    return
-                }
-                
-                s.insert(e)
-            }
-        }
-        return [Entity](s)
-    }
-    
-    /**
-     Finds the given types of object Entities that are part
-     of the actions in the Array.
-     - Parameter types: An Array of Strings.
-     - Returns: An Array of Entities.
-     */
-    public func object(types: String...) -> [Entity] {
-        return object(types: types)
-    }
-    
-    /**
-     Finds the given types of object Entities that are part
-     of the actions in the Array.
-     - Parameter types: An Array of Strings.
-     - Returns: An Array of Entities.
-     */
-    public func object(types: [String]) -> [Entity] {
-        var s = Set<Entity>()
-        forEach { [types = types] (a) in
-            a.objects.forEach { [types = types] (e) in
-                guard types.contains(e.type) else {
-                    return
-                }
-                
-                s.insert(e)
-            }
-        }
-        return [Entity](s)
-    }
-}
-
 @objc(Action)
 public class Action: Node {
     /// A reference to the managedNode.
@@ -540,6 +478,16 @@ public class Action: Node {
     }
     
     /**
+     Adds an Entity to the objects set.
+     - Parameter objects: A list of Entity objects..
+     - Returns: The Action.
+     */
+    @discardableResult
+    public func what(objects: Entity...) -> Action {
+        return what(objects: objects)
+    }
+    
+    /**
      Adds an Array of Entity objects to the objects set.
      - Parameter objects: An Array of Entity objects.
      - Returns: The Action.
@@ -552,6 +500,114 @@ public class Action: Node {
     /// Marks the Action for deletion.
     public func delete() {
         managedNode.delete()
+    }
+}
+
+extension Action {
+    /**
+     Finds the given types of subject Entities that are part
+     of the Action.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func subject(types: String...) -> [Entity] {
+        return subject(types: types)
+    }
+    
+    /**
+     Finds the given types of subject Entities that are part
+     of the Action.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func subject(types: [String]) -> [Entity] {
+        var s = Set<Entity>()
+        subjects.forEach { [types = types] (e) in
+            guard types.contains(e.type) else {
+                return
+            }
+                
+            s.insert(e)
+        }
+        return [Entity](s)
+    }
+    
+    /**
+     Finds the given types of object Entities that are part
+     of the Action.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func object(types: String...) -> [Entity] {
+        return object(types: types)
+    }
+    
+    /**
+     Finds the given types of object Entities that are part
+     of the Action.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func object(types: [String]) -> [Entity] {
+        var s = Set<Entity>()
+        objects.forEach { [types = types] (e) in
+            guard types.contains(e.type) else {
+                return
+            }
+            
+            s.insert(e)
+        }
+        return [Entity](s)
+    }
+}
+
+extension Array where Element: Action {
+    /**
+     Finds the given types of subject Entities that are part
+     of the Actions in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func subject(types: String...) -> [Entity] {
+        return subject(types: types)
+    }
+    
+    /**
+     Finds the given types of subject Entities that are part
+     of the Actions in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func subject(types: [String]) -> [Entity] {
+        var s = Set<Entity>()
+        forEach { [types = types] (a) in
+            s.insert(a.suject(types: types))
+        }
+        return [Entity](s)
+    }
+    
+    /**
+     Finds the given types of object Entities that are part
+     of the Actions in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func object(types: String...) -> [Entity] {
+        return object(types: types)
+    }
+    
+    /**
+     Finds the given types of object Entities that are part
+     of the Actions in the Array.
+     - Parameter types: An Array of Strings.
+     - Returns: An Array of Entities.
+     */
+    public func object(types: [String]) -> [Entity] {
+        var s = Set<Entity>()
+        forEach { [types = types] (a) in
+            s.insert(a.object(types: types))
+        }
+        return [Entity](s)
     }
 }
 
