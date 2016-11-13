@@ -185,6 +185,9 @@ internal class ManagedRelationship: ManagedNode {
             self.groupSet.forEach {
                 ($0 as? ManagedRelationshipGroup)?.delete()
             }
+            
+            self.subject?.mutableSetValue(forKey: "relationshipSubjectSet").remove(self)
+            self.object?.mutableSetValue(forKey: "relationshipObjectSet").remove(self)
         }
         
         super.delete()

@@ -194,10 +194,10 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         
         relationship.delete()
         
-        XCTAssertEqual(subject, relationship.subject)
-        XCTAssertEqual(1, relationship.subject?.relationships.count)
-        XCTAssertEqual(object, relationship.object)
-        XCTAssertEqual(1, relationship.object?.relationships.count)
+        XCTAssertNil(relationship.subject)
+        XCTAssertNil(relationship.subject?.relationships.count)
+        XCTAssertNil(relationship.object)
+        XCTAssertNil(relationship.object?.relationships.count)
         
         saveExpectation = expectation(description: "[RelationshipTests Error: Save test failed.]")
         delegateExpectation = expectation(description: "[RelationshipTests Error: Delegate test failed.]")
@@ -327,10 +327,10 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertNil(relationship["P"])
         XCTAssertFalse(relationship.has(tags: "G"))
-        XCTAssertNotNil(relationship.subject)
-        XCTAssertEqual(1, relationship.subject?.relationships.count)
-        XCTAssertNotNil(relationship.object)
-        XCTAssertEqual(1, relationship.object?.relationships.count)
+        XCTAssertNil(relationship.subject)
+        XCTAssertNil(relationship.subject?.relationships.count)
+        XCTAssertNil(relationship.object)
+        XCTAssertNil(relationship.object?.relationships.count)
         
         delegateExpectation?.fulfill()
     }
