@@ -153,8 +153,7 @@ public class Entity: Node {
     
     /// A reference to all the Actions that the Entity is a part of.
     public var actions: [Action] {
-        var s = Set<ManagedAction>()
-        s.formUnion(managedNode.actionSubjectSet as! Set<ManagedAction>)
+        var s = managedNode.actionSubjectSet as! Set<ManagedAction>
         s.formUnion(managedNode.actionObjectSet as! Set<ManagedAction>)
         return s.map {
             return Action(managedNode: $0 as ManagedAction)
@@ -203,16 +202,11 @@ public class Entity: Node {
     
     /// A reference to all the Relationships that the Entity is a part of.
     public var relationships: [Relationship] {
-        var result: [Relationship]?
-        managedNode.managedObjectContext?.performAndWait { [unowned self] in
-            var set = Set<ManagedRelationship>()
-            set.formUnion(self.managedNode.relationshipSubjectSet as! Set<ManagedRelationship>)
-            set.formUnion(self.managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
-            result = set.map {
-                return Relationship(managedNode: $0 as ManagedRelationship)
-            } as [Relationship]
-        }
-        return result!
+        var s = managedNode.relationshipSubjectSet as! Set<ManagedRelationship>
+        s.formUnion(managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
+        return s.map {
+            return Relationship(managedNode: $0 as ManagedRelationship)
+        } as [Relationship]
     }
     
     /**
