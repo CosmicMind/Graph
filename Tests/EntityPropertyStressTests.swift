@@ -54,7 +54,7 @@ class EntityPropertyStressTests: XCTestCase, WatchEntityDelegate {
         entityInsertExpectation = expectation(description: "[EntityPropertyStressTests Error: Entity insert test failed.]")
         
         let graph = Graph()
-        let watch = Watch<Entity>(graph: graph).for(types: "T").resume()
+        let watch = Watch<Entity>(graph: graph).for(types: "T")
         watch.delegate = self
         
         let entity = Entity(type: "T")

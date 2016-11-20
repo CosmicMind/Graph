@@ -1173,6 +1173,7 @@ public class Watch<T: Node>: Watchable {
     /// Prepares the Watch instance.
     private func prepare() {
         prepareGraph()
+        resume()
     }
     
     /// Prepares the instance for save notifications.

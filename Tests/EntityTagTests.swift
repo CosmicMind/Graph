@@ -51,7 +51,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
         
         let graph = Graph()
-        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G1").resume()
+        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G1")
         watch.delegate = self
         
         let entity = Entity(type: "T")
@@ -88,7 +88,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
         tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Entity>(graph: graph).has(tags: "G1", "G2").resume()
+        let watch = Watch<Entity>(graph: graph).has(tags: "G1", "G2")
         watch.delegate = self
         
         entity.toggle(tags: "G1", "G2")
@@ -126,7 +126,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
         tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Entity>(graph: graph).has(tags: "G2").resume()
+        let watch = Watch<Entity>(graph: graph).has(tags: "G2")
         watch.delegate = self
         
         entity.remove(tags: "G2")

@@ -51,7 +51,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
         propertyInsertExpception = expectation(description: "[ActionTests Error: Property insert test failed.]")
         
         let graph = Graph()
-        let watch = Watch<Action>(graph: graph).where(properties: "P1").resume()
+        let watch = Watch<Action>(graph: graph).where(properties: "P1")
         watch.delegate = self
         
         let action = Action(type: "T")
@@ -87,7 +87,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
         saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         propertyUpdateExpception = expectation(description: "[ActionTests Error: Property update test failed.]")
         
-        let watch = Watch<Action>(graph: graph).where(properties: "P1").resume()
+        let watch = Watch<Action>(graph: graph).where(properties: "P1")
         watch.delegate = self
         
         action["P1"] = "V2"
@@ -122,7 +122,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
         saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         propertyDeleteExpception = expectation(description: "[ActionTests Error: Property delete test failed.]")
         
-        let watch = Watch<Action>(graph: graph).where(properties: "P1").resume()
+        let watch = Watch<Action>(graph: graph).where(properties: "P1")
         watch.delegate = self
         
         action["P1"] = nil

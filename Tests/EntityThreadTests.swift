@@ -62,7 +62,7 @@ class EntityThreadTests : XCTestCase, WatchEntityDelegate {
         let q3 = DispatchQueue(label: "io.cosmicmind.graph.thread.3", attributes: .concurrent)
         
         let graph = Graph()
-        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P").resume()
+        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
         watch.delegate = self
         
         let entity = Entity(type: "T")

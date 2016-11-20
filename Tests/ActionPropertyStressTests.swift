@@ -54,7 +54,7 @@ class ActionPropertyStressTests: XCTestCase, WatchActionDelegate {
         actionInsertExpectation = expectation(description: "[ActionPropertyStressTests Error: Action insert test failed.]")
         
         let graph = Graph()
-        let watch = Watch<Action>(graph: graph).for(types: "T").resume()
+        let watch = Watch<Action>(graph: graph).for(types: "T")
         watch.delegate = self
         
         let action = Action(type: "T")
