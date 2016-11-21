@@ -141,13 +141,7 @@ extension Graph {
             t = .initialImportCompleted
         }
         
-        watchers.forEach { [t = t] in
-            guard let watch = $0.watch else {
-                return
-            }
-            
-            (watch.delegate as? WatchCloudDelegate)?.graphWillPrepareCloudStorage?(graph: watch.graph, transition: t)
-        }
+        delegate?.graphWillPrepareCloudStorage?(graph: self, transition: t)
     }
     
     internal func persistentStoreDidChange(_ notification: Notification) {
@@ -155,13 +149,7 @@ extension Graph {
         
         completion?(true, nil)
         
-        watchers.forEach {
-            guard let watch = $0.watch else {
-                return
-            }
-            
-            (watch.delegate as? WatchCloudDelegate)?.graphDidPrepareCloudStorage?(graph: watch.graph)
-        }
+        delegate?.graphDidPrepareCloudStorage?(graph: self)
     }
     
     internal func persistentStoreDidImportUbiquitousContentChanges(_ notification: Notification) {
@@ -174,21 +162,22 @@ extension Graph {
                 return
             }
             
+            s.delegate?.graphWillUpdateFromCloudStorage?(graph: s)
+            
             s.watchers.forEach { [weak moc] in
                 guard let watch = $0.watch else {
                     return
                 }
                 
-                (watch.delegate as? WatchCloudDelegate)?.graphWillUpdateFromCloudStorage?(graph: watch.graph)
                 
                 moc?.mergeChanges(fromContextDidSave: notification)
                 
                 watch.notifyInsertedWatchersFromCloud(notification)
                 watch.notifyUpdatedWatchersFromCloud(notification)
                 watch.notifyDeletedWatchersFromCloud(notification)
-            
-                (watch.delegate as? WatchCloudDelegate)?.graphDidUpdateFromCloudStorage?(graph: watch.graph)
             }
+            
+            s.delegate?.graphDidUpdateFromCloudStorage?(graph: s)
         }
     }
 }

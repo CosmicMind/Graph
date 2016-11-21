@@ -122,15 +122,9 @@ extension Graph {
             guard let s = self else {
                 return
             }
-            s.completion?(supported, supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
             
-            s.watchers.forEach { [weak self] in
-                guard let s = self else {
-                    return
-                }
-                
-                ($0.watch?.delegate as? WatchCloudDelegate)?.graphDidPrepareCloudStorage?(graph: s)
-            }
+            s.completion?(supported, supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+            s.delegate?.graphDidPrepareCloudStorage?(graph: s)
         }
     }
     

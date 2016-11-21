@@ -43,6 +43,42 @@ public struct GraphStoreDescription {
     }
 }
 
+@objc(GraphDelegate)
+public protocol GraphDelegate {
+    /**
+     A delegation method that is executed when a graph instance
+     will prepare cloud storage.
+     - Parameter graph: A Graph instance.
+     - Parameter transition: A GraphCloudStorageTransition value.
+     */
+    @objc
+    optional func graphWillPrepareCloudStorage(graph: Graph, transition: GraphCloudStorageTransition)
+    
+    /**
+     A delegation method that is executed when a graph instance
+     did prepare cloud storage.
+     - Parameter graph: A Graph instance.
+     */
+    @objc
+    optional func graphDidPrepareCloudStorage(graph: Graph)
+    
+    /**
+     A delegation method that is executed when a graph instance
+     will update from cloud storage.
+     - Parameter graph: A Graph instance.
+     */
+    @objc
+    optional func graphWillUpdateFromCloudStorage(graph: Graph)
+    
+    /**
+     A delegation method that is executed when a graph instance
+     did update from cloud storage.
+     - Parameter graph: A Graph instance.
+     */
+    @objc
+    optional func graphDidUpdateFromCloudStorage(graph: Graph)
+}
+
 @objc(Graph)
 public class Graph: NSObject {
     /// Graph location.
@@ -68,6 +104,8 @@ public class Graph: NSObject {
     
     /// Watch instances.
     public internal(set) lazy var watchers = [Watcher]()
+    
+    public weak var delegate: GraphDelegate?
     
     /**
      A reference to the graph completion handler.
