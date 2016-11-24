@@ -358,34 +358,34 @@ public class Watch<T: Node>: Watchable {
     public typealias Element = T
     
     /// A Graph instance.
-    public internal(set) var graph: Graph
+    public fileprivate(set) var graph: Graph
     
     /// A reference to a delagte object.
     public weak var delegate: WatchDelegate?
     
     /// A reference to the type.
-    public private(set) var types: [String]?
+    public fileprivate(set) var types: [String]?
     
     /// A reference to the typesPredicate.
-    public internal(set) var typesPredicate: NSPredicate?
+    public fileprivate(set) var typesPredicate: NSPredicate?
     
     /// A reference to the tags.
-    public private(set) var tags: [String]?
+    public fileprivate(set) var tags: [String]?
     
     /// A reference to the tagsPredicate.
-    public internal(set) var tagsPredicate: NSPredicate?
+    public fileprivate(set) var tagsPredicate: NSPredicate?
     
     /// A reference to the groups.
-    public private(set) var groups: [String]?
+    public fileprivate(set) var groups: [String]?
     
     /// A reference to the groupsPredicate.
-    public internal(set) var groupsPredicate: NSPredicate?
+    public fileprivate(set) var groupsPredicate: NSPredicate?
     
     /// A reference to the properties.
-    public private(set) var properties: [String]?
+    public fileprivate(set) var properties: [String]?
     
     /// A reference to the propertiesPredicate.
-    public internal(set) var propertiesPredicate: NSPredicate?
+    public fileprivate(set) var propertiesPredicate: NSPredicate?
     
     /// A reference to the predicate.
     public var predicate: NSPredicate? {
@@ -413,7 +413,7 @@ public class Watch<T: Node>: Watchable {
      A boolean indicating if the Watch instance is
      currently watching.
      */
-    public private(set) var isRunning = false
+    public fileprivate(set) var isRunning = false
     
     /// Deinitializer.
     deinit {
@@ -730,7 +730,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects to pass.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         delegateToEntityInsertedWatchers(set, source: source)
         delegateToRelationshipInsertedWatchers(set, source: source)
         delegateToActionInsertedWatchers(set, source: source)
@@ -741,7 +741,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToEntityInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToEntityInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         set.forEach { [unowned self] in
             guard let n = $0 as? ManagedEntity else {
                 return
@@ -792,7 +792,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToRelationshipInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToRelationshipInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         set.forEach { [unowned self] in
             guard let n = $0 as? ManagedRelationship else {
                 return
@@ -843,7 +843,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToActionInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToActionInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         set.forEach { [unowned self] in
             guard let n = $0 as? ManagedAction else {
                 return
@@ -894,7 +894,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         delegateToEntityUpdatedWatchers(set, source: source)
         delegateToRelationshipUpdatedWatchers(set, source: source)
         delegateToActionUpdatedWatchers(set, source: source)
@@ -905,7 +905,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter nodes: An Array of ManagedObjects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToEntityUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToEntityUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityProperty else {
                 return
@@ -924,7 +924,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToRelationshipUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToRelationshipUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         set.forEach { [unowned self] in
             guard let n = $0 as? ManagedRelationship else {
                 return
@@ -951,7 +951,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToActionUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToActionUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionProperty else {
                 return
@@ -970,7 +970,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         delegateToEntityDeletedWatchers(set, source: source)
         delegateToRelationshipDeletedWatchers(set, source: source)
         delegateToActionDeletedWatchers(set, source: source)
@@ -981,7 +981,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToEntityDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToEntityDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityTag else {
                 return
@@ -1032,7 +1032,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToRelationshipDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToRelationshipDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedRelationshipTag else {
                 return
@@ -1083,7 +1083,7 @@ public class Watch<T: Node>: Watchable {
      - Parameter _ set: A Set of AnyHashable objects.
      - Parameter source: A GraphSource value.
      */
-    private func delegateToActionDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToActionDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionTag else {
                 return
@@ -1130,18 +1130,18 @@ public class Watch<T: Node>: Watchable {
     }
     
     /// Removes the watcher.
-    private func removeFromObservation() {
+    fileprivate func removeFromObservation() {
         NotificationCenter.default.removeObserver(self)
     }
     
     /// Prepares the Watch instance.
-    private func prepare() {
+    fileprivate func prepare() {
         prepareGraph()
         resume()
     }
     
     /// Prepares the instance for save notifications.
-    internal func addForObservation() {
+    fileprivate func addForObservation() {
         guard let moc = graph.managedObjectContext else {
             return
         }
@@ -1153,7 +1153,7 @@ public class Watch<T: Node>: Watchable {
     }
     
     /// Prepares graph for watching.
-    private func prepareGraph() {
+    fileprivate func prepareGraph() {
         graph.watchers.append(Watcher(object: self))
     }
 }
@@ -1168,7 +1168,7 @@ extension Watch {
      - Parameter properties: An Array of property typles.
      - Returns: An Array of Entities.
      */
-    internal func watchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
+    fileprivate func watchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
         if let v = types {
             watch(types: v, index: ModelIdentifier.entityName)
         }
@@ -1194,7 +1194,7 @@ extension Watch {
      - Parameter properties: An Array of property typles.
      - Returns: An Array of Relationships.
      */
-    internal func watchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
+    fileprivate func watchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
         if let v = types {
             watch(types: v, index: ModelIdentifier.relationshipName)
         }
@@ -1220,7 +1220,7 @@ extension Watch {
      - Parameter properties: An Array of property typles.
      - Returns: An Array of Actions.
      */
-    internal func watchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
+    fileprivate func watchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
         if let v = types {
             watch(types: v, index: ModelIdentifier.actionName)
         }
@@ -1243,7 +1243,7 @@ extension Watch {
      - Parameter types: An Array of Strings.
      - Parameter index: A String.
      */
-    private func watch(types: [String], index: String) {
+    fileprivate func watch(types: [String], index: String) {
         let p = addWatcher(key: "type", index: index, values: types)
         typesPredicate = nil == typesPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, typesPredicate!])
     }
@@ -1253,7 +1253,7 @@ extension Watch {
      - Parameter tags: An Array of Strings.
      - Parameter index: A String.
      */
-    private func watch(tags: [String], index: String) {
+    fileprivate func watch(tags: [String], index: String) {
         let p = addWatcher(key: "name", index: index, values: tags)
         tagsPredicate = nil == tagsPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, tagsPredicate!])
     }
@@ -1263,7 +1263,7 @@ extension Watch {
      - Parameter groups: An Array of Strings.
      - Parameter index: A String.
      */
-    private func watch(groups: [String], index: String) {
+    fileprivate func watch(groups: [String], index: String) {
         let p = addWatcher(key: "name", index: index, values: groups)
         groupsPredicate = nil == groupsPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, groupsPredicate!])
     }
@@ -1273,7 +1273,7 @@ extension Watch {
      - Parameter properties: An Array of Strings.
      - Parameter index: A String.
      */
-    private func watch(properties: [String], index: String) {
+    fileprivate func watch(properties: [String], index: String) {
         let p = addWatcher(key: "name", index: index, values: properties)
         propertiesPredicate = nil == propertiesPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, propertiesPredicate!])
     }
@@ -1284,13 +1284,12 @@ extension Watch {
      - Parameter index: A Model index.
      - Parameter values: An Array of Strings.
      */
-    private func addWatcher(key: String, index: String, values: [String]) -> NSCompoundPredicate {
+    fileprivate func addWatcher(key: String, index: String, values: [String]) -> NSCompoundPredicate {
         var p = [NSPredicate]()
         values.forEach { [key = key] in
             p.append(NSPredicate(format: "%K LIKE %@", key, $0))
         }
         
-        let cp = NSCompoundPredicate(orPredicateWithSubpredicates: p)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", index), cp])
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", index), NSCompoundPredicate(orPredicateWithSubpredicates: p)])
     }
 }

@@ -468,7 +468,7 @@ public class Entity: Node {
      */
     @discardableResult
     public func `is`(relationship type: String) -> Relationship {
-        let relationship = Relationship(type: type)
+        let relationship = Relationship(managedNode: ManagedRelationship(type, managedObjectContext: managedNode.managedObjectContext!))
         relationship.subject = self
         return relationship
     }
@@ -480,7 +480,7 @@ public class Entity: Node {
      */
     @discardableResult
     public func will(action type: String) -> Action {
-        let action = Action(type: type)
+        let action = Action(managedNode: ManagedAction(type, managedObjectContext: managedNode.managedObjectContext!))
         action.add(subjects: self)
         return action
     }
@@ -500,31 +500,6 @@ public class Entity: Node {
         managedNode.delete()
     }
 }
-
-extension Array where Element: Entity {
-    /**
-     An Array of Entity objects may add themselves to an
-     Action.
-     - Parameter action type: A String.
-     - Returns: The Action.
-     */
-    public func will(action type: String) -> Action {
-        let action = Action(type: type)
-        action.add(subjects: self)
-        return action
-    }
-    
-    /**
-     An Array of Entity objects may add themselves to an
-     Action.
-     - Parameter action type: A String.
-     - Returns: The Action.
-     */
-    public func did(action type: String) -> Action {
-        return will(action: type)
-    }
-}
-
 
 public func <=(lhs: Entity, rhs: Entity) -> Bool {
     return lhs.id <= rhs.id

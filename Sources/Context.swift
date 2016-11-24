@@ -33,7 +33,7 @@ import CoreData
 internal struct GraphContextRegistry {
     static var dispatchToken: Bool = false
     static var added: [String: Bool]!
-    static var supported: [String: Bool]!
+    static var enableCloud: [String: Bool]!
     static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
 
@@ -80,7 +80,7 @@ extension Graph {
         
         GraphContextRegistry.dispatchToken = true
         GraphContextRegistry.added = [String: Bool]()
-        GraphContextRegistry.supported = [String: Bool]()
+        GraphContextRegistry.enableCloud = [String: Bool]()
         GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
     }
     
@@ -90,15 +90,14 @@ extension Graph {
      */
     internal func prepareManagedObjectContext(enableCloud: Bool) {
         guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
-            let supported = enableCloud
-            GraphContextRegistry.supported[route] = supported
+            GraphContextRegistry.enableCloud[route] = enableCloud
             location = GraphStoreDescription.location.appendingPathComponent(route)
             
             managedObjectContext = Context.create(.mainQueueConcurrencyType)
             managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
             GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
             
-            if supported {
+            if enableCloud {
                 preparePersistentStoreCoordinatorNotificationHandlers()
                 
                 managedObjectContext.perform { [weak self] in
@@ -112,18 +111,18 @@ extension Graph {
         
         managedObjectContext = moc
         
-        guard let supported = GraphContextRegistry.supported[route] else {
+        guard let isCloudEnabled = GraphContextRegistry.enableCloud[route] else {
             return
         }
         
         preparePersistentStoreCoordinatorNotificationHandlers()
         
-        managedObjectContext.perform { [weak self, supported = supported] in
+        managedObjectContext.perform { [weak self, isCloudEnabled = isCloudEnabled] in
             guard let s = self else {
                 return
             }
             
-            s.completion?(supported, supported ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+            s.completion?(isCloudEnabled, isCloudEnabled ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
             s.delegate?.graphDidPrepareCloudStorage?(graph: s)
         }
     }
@@ -136,7 +135,7 @@ extension Graph {
     }
 
     @available(iOS 10.0, OSX 10.12, *)
-    private func prepareContextContainer() {
+    fileprivate func prepareContextContainer() {
         self.prepareSQLite()
         
         let storeDescription = NSPersistentStoreDescription()
