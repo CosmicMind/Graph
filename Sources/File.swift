@@ -285,7 +285,7 @@ public struct File {
         if let data = try? Data(contentsOf: path) {
             completion(String(data: data, encoding: String.Encoding.utf8), nil)
         } else {
-            completion(nil, NSError(domain: "io.cosmicmind.Graph.File", code: 0, userInfo: nil))
+            completion(nil, NSError(domain: "com.cosmicmind.Graph.File", code: 0, userInfo: nil))
         }
     }
     

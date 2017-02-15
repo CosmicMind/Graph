@@ -159,7 +159,9 @@ class ActionTests: XCTestCase, WatchActionDelegate {
         let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
         watch.delegate = self
         
-        let action = [Entity(type: "T"), Entity(type: "T")].did(action: "T").what(objects: [Entity(type: "T"), Entity(type: "T")])
+        let action = Action(type: "T")
+        action.add(subjects: Entity(type: "T"), Entity(type: "T"))
+        action.add(objects: Entity(type: "T"), Entity(type: "T"))
         action["P"] = "V"
         action.add(tags: "G")
         

@@ -57,9 +57,9 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
         insertPropertyExpectation = expectation(description: "Test: Insert property did not pass.")
         insertTagExpectation = expectation(description: "Test: Insert tag did not pass.")
         
-        let q1 = DispatchQueue(label: "io.cosmicmind.graph.thread.1", attributes: .concurrent)
-        let q2 = DispatchQueue(label: "io.cosmicmind.graph.thread.2", attributes: .concurrent)
-        let q3 = DispatchQueue(label: "io.cosmicmind.graph.thread.3", attributes: .concurrent)
+        let q1 = DispatchQueue(label: "com.cosmicmind.graph.thread.1", attributes: .concurrent)
+        let q2 = DispatchQueue(label: "com.cosmicmind.graph.thread.2", attributes: .concurrent)
+        let q3 = DispatchQueue(label: "com.cosmicmind.graph.thread.3", attributes: .concurrent)
         
         let graph = Graph()
         let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
