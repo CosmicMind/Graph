@@ -130,12 +130,6 @@ public struct Schema {
     public static let File = "File://"
 }
 
-/// A result type.
-public enum Result {
-    case success
-    case failure(error: Error)
-}
-
 /// File types.
 public enum FileType {
     case directory
