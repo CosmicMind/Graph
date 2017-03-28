@@ -72,7 +72,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
             action.add(tags: "G")
             
             graph.async { [weak self] (success, error) in
-                XCTAssertTrue(success, "\(error)")
+                XCTAssertTrue(success, "\(String(describing: error))")
                 self?.insertSaveExpectation?.fulfill()
             }
         }
@@ -86,7 +86,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
             action["P"] = 222
             
             graph.async { [weak self] (success, error) in
-                XCTAssertTrue(success, "\(error)")
+                XCTAssertTrue(success, "\(String(describing: error))")
                 self?.updateSaveExpectation?.fulfill()
             }
         }
@@ -102,7 +102,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
             action.delete()
             
             graph.async { [weak self] (success, error) in
-                XCTAssertTrue(success, "\(error)")
+                XCTAssertTrue(success, "\(String(describing: error))")
                 self?.deleteSaveExpectation?.fulfill()
             }
         }

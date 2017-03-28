@@ -125,7 +125,7 @@ open class JSON: Equatable, CustomStringConvertible {
         if let o = object as? JSON {
             return stringify(object: o.object)
         } else if let data = JSON.serialize(object: object) {
-            if let o = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as? String {
+            if let o = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
                 return o
             }
         }

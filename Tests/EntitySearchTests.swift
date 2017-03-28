@@ -90,7 +90,7 @@ class EntitySearchTests : XCTestCase {
         }
         
         graph.sync { (success, error) in
-            XCTAssertTrue(success, "\(error)")
+            XCTAssertTrue(success, "\(String(describing: error))")
         }
         
         let search = Search<Entity>(graph: graph)
@@ -160,7 +160,7 @@ class EntitySearchTests : XCTestCase {
         }
         
         graph.sync { (success, error) in
-            XCTAssertTrue(success, "\(error)")
+            XCTAssertTrue(success, "\(String(describing: error))")
         }
         
         let search = Search<Entity>(graph: graph)
