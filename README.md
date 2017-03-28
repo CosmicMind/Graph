@@ -6,7 +6,7 @@ Graph is a semantic database that is used to create data-driven applications.
 
 ![Material Sample](http://cosmicmind.com/samples/github/page-tab-bar-controller-2.png)
 
-* [Download the latest sample](https://github.com/CosmicMind/Samples/tree/master/Graph/CardTableView).
+* [Download the latest sample](https://github.com/CosmicMind/Samples/tree/master/Projects/Programmatic/CardTableView).
 
 ## Features
 
@@ -93,7 +93,7 @@ authorLabel.text = entity["author"] as? String
 imageCard.bottomBar?.centerViews = [authorLabel]
 ```
 
-* Download the complete [ImageCard example](https://github.com/CosmicMind/Samples/tree/master/Graph/ImageCard).
+* Download the complete [ImageCard example](https://github.com/CosmicMind/Samples/tree/master/Projects/Programmatic/ImageCard).
 * Learn more about [Material's ImageCard](http://cosmicmind.com/material/imagecard).
 
 ## Searching a list of users in realtime
@@ -135,7 +135,7 @@ search.async { [weak self, pattern = pattern] (users) in
 }
 ```
 
-* Download the complete [Search example](https://github.com/CosmicMind/Samples/tree/master/Graph/Search).
+* Download the complete [Search example](https://github.com/CosmicMind/Samples/tree/master/Projects/Programmatic/Search).
 * Learn more about [Material's SearchBar](http://cosmicmind.com/material/searchbar).
 
 ## License
