@@ -436,6 +436,7 @@
 				96E3C4661D3AFB890086A024 /* ActionThreadTests.swift */,
 			);
 			name = Action;
+			path = GraphTests;
 			sourceTree = "<group>";
 		};
 		96E3C4A41D3B0AFB0086A024 /* Relationship */ = {
@@ -450,6 +451,7 @@
 				96E3C4741D3AFB890086A024 /* RelationshipThreadTests.swift */,
 			);
 			name = Relationship;
+			path = GraphTests;
 			sourceTree = "<group>";
 		};
 		96E3C4A51D3B0B080086A024 /* Entity */ = {
@@ -464,6 +466,7 @@
 				96E3C46D1D3AFB890086A024 /* EntityThreadTests.swift */,
 			);
 			name = Entity;
+			path = GraphTests;
 			sourceTree = "<group>";
 		};
 		96E3C4A61D3B0B140086A024 /* Graph */ = {
@@ -472,6 +475,7 @@
 				96E3C46E1D3AFB890086A024 /* GraphTests.swift */,
 			);
 			name = Graph;
+			path = GraphTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
