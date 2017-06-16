@@ -115,9 +115,9 @@ internal class ManagedNode: ManagedObject {
         self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
         self.type = type
         createdDate = Date()
-        propertySet = NSSet()
-        tagSet = NSSet()
-        groupSet = NSSet()
+        propertySet = []
+        tagSet = []
+        groupSet = []
     }
     
     /**

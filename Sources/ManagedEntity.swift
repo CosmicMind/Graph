@@ -45,10 +45,10 @@ internal class ManagedEntity: ManagedNode {
     internal convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.entityName, type: type, managedObjectContext: managedObjectContext)
         nodeClass = NodeClass.entity.rawValue
-        actionSubjectSet = NSSet()
-        actionObjectSet = NSSet()
-        relationshipSubjectSet = NSSet()
-        relationshipObjectSet = NSSet()
+        actionSubjectSet = []
+        actionObjectSet = []
+        relationshipSubjectSet = []
+        relationshipObjectSet = []
     }
     
     /**

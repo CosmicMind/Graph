@@ -66,7 +66,7 @@ public class Search<T: Node>: Searchable {
      - Returns: An Array of Elements.
      */
     public func sync(completion: (([T]) -> Void)? = nil) -> [T] {
-        return [T]()
+        return []
     }
     
     /**

@@ -43,8 +43,8 @@ internal class ManagedAction: ManagedNode {
     internal convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.actionName, type: type, managedObjectContext: managedObjectContext)
         nodeClass = NodeClass.action.rawValue
-        subjectSet = NSSet()
-        objectSet = NSSet()
+        subjectSet = []
+        objectSet = []
     }
     
     /**
