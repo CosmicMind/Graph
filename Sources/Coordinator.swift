@@ -40,6 +40,19 @@ public enum GraphCloudStorageTransition: Int {
     case accountRemoved
     case contentRemoved
     case initialImportCompleted
+
+    init(type : NSPersistentStoreUbiquitousTransitionType) {
+        switch type {
+        case .accountAdded:
+            self = .accountAdded
+        case .accountRemoved:
+            self = .accountRemoved
+        case .contentRemoved:
+            self = .contentRemoved
+        case .initialImportCompleted:
+            self = .initialImportCompleted
+        }
+    }
 }
 
 internal struct Coordinator {
@@ -128,19 +141,9 @@ extension Graph {
             return
         }
         
-        var t: GraphCloudStorageTransition
+        let t = GraphCloudStorageTransition(type: type)
         
-        switch type {
-        case .accountAdded:
-            t = .accountAdded
-        case .accountRemoved:
-            t = .accountRemoved
-        case .contentRemoved:
-            t = .contentRemoved
-        case .initialImportCompleted:
-            t = .initialImportCompleted
-        }
-        
+
         delegate?.graphWillPrepareCloudStorage?(graph: self, transition: t)
     }
     

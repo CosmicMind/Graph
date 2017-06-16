@@ -124,7 +124,7 @@ public class Action: Node {
     /// An Array of Entity objects.
     public var objects: [Entity] {
         guard let moc = managedNode.managedObjectContext else {
-            return [Entity]()
+            return []
         }
         
         
