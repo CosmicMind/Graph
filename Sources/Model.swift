@@ -62,66 +62,66 @@ internal struct Model {
         // Entity
         
         let entityDescription = NSEntityDescription()
-        var entityProperties = [Any]()
+        var entityProperties : [Any] = []
         entityDescription.name = ModelIdentifier.entityName
         entityDescription.managedObjectClassName = ModelIdentifier.entityName
         
         let entityPropertyDescription = NSEntityDescription()
-        var entityPropertyProperties = [Any]()
+        var entityPropertyProperties : [Any] = []
         entityPropertyDescription.name = ModelIdentifier.entityPropertyName
         entityPropertyDescription.managedObjectClassName = ModelIdentifier.entityPropertyName
         
         let entityTagDescription = NSEntityDescription()
-        var entityTagProperties = [Any]()
+        var entityTagProperties : [Any] = []
         entityTagDescription.name = ModelIdentifier.entityTagName
         entityTagDescription.managedObjectClassName = ModelIdentifier.entityTagName
         
         let entityGroupDescription = NSEntityDescription()
-        var entityGroupProperties = [Any]()
+        var entityGroupProperties : [Any] = []
         entityGroupDescription.name = ModelIdentifier.entityGroupName
         entityGroupDescription.managedObjectClassName = ModelIdentifier.entityGroupName
         
         // Relationship
         
         let relationshipDescription = NSEntityDescription()
-        var relationshipProperties = [Any]()
+        var relationshipProperties : [Any] = []
         relationshipDescription.name = ModelIdentifier.relationshipName
         relationshipDescription.managedObjectClassName = ModelIdentifier.relationshipName
         
         let relationshipPropertyDescription = NSEntityDescription()
-        var relationshipPropertyProperties = [Any]()
+        var relationshipPropertyProperties : [Any] = []
         relationshipPropertyDescription.name = ModelIdentifier.relationshipPropertyName
         relationshipPropertyDescription.managedObjectClassName = ModelIdentifier.relationshipPropertyName
         
         let relationshipTagDescription = NSEntityDescription()
-        var relationshipTagProperties = [Any]()
+        var relationshipTagProperties : [Any] = []
         relationshipTagDescription.name = ModelIdentifier.relationshipTagName
         relationshipTagDescription.managedObjectClassName = ModelIdentifier.relationshipTagName
         
         let relationshipGroupDescription = NSEntityDescription()
-        var relationshipGroupProperties = [Any]()
+        var relationshipGroupProperties : [Any] = []
         relationshipGroupDescription.name = ModelIdentifier.relationshipGroupName
         relationshipGroupDescription.managedObjectClassName = ModelIdentifier.relationshipGroupName
         
         // Action
         
         let actionDescription = NSEntityDescription()
-        var actionProperties = [Any]()
+        var actionProperties : [Any] = []
         actionDescription.name = ModelIdentifier.actionName
         actionDescription.managedObjectClassName = ModelIdentifier.actionName
         
         let actionPropertyDescription = NSEntityDescription()
-        var actionPropertyProperties = [Any]()
+        var actionPropertyProperties : [Any] = []
         actionPropertyDescription.name = ModelIdentifier.actionPropertyName
         actionPropertyDescription.managedObjectClassName = ModelIdentifier.actionPropertyName
         
         let actionTagDescription = NSEntityDescription()
-        var actionTagProperties = [Any]()
+        var actionTagProperties : [Any] = []
         actionTagDescription.name = ModelIdentifier.actionTagName
         actionTagDescription.managedObjectClassName = ModelIdentifier.actionTagName
         
         let actionGroupDescription = NSEntityDescription()
-        var actionGroupProperties = [Any]()
+        var actionGroupProperties : [Any] = []
         actionGroupDescription.name = ModelIdentifier.actionGroupName
         actionGroupDescription.managedObjectClassName = ModelIdentifier.actionGroupName
         

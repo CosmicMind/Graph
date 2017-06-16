@@ -79,8 +79,8 @@ extension Graph {
         }
         
         GraphContextRegistry.dispatchToken = true
-        GraphContextRegistry.added = [String: Bool]()
-        GraphContextRegistry.enableCloud = [String: Bool]()
+        GraphContextRegistry.added = [:]
+        GraphContextRegistry.enableCloud = [:]
         GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
     }
     
