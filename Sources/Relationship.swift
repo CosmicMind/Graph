@@ -113,7 +113,8 @@ public class Relationship: Node {
             managedNode.managedObjectContext?.performAndWait { [unowned self] in
                 n = self.managedNode.subject
             }
-            return nil == n ? nil : Entity(managedNode: n!)
+
+            return n.map { Entity(managedNode: $0) }
         }
         set(entity) {
             managedNode.managedObjectContext?.performAndWait { [unowned self] in
@@ -136,7 +137,7 @@ public class Relationship: Node {
             managedNode.managedObjectContext?.performAndWait { [unowned self] in
                 n = self.managedNode.object
             }
-            return nil == n ? nil : Entity(managedNode: n!)
+            return n.map { Entity(managedNode: $0) }
         }
         set(entity) {
             managedNode.managedObjectContext?.performAndWait { [unowned self] in
@@ -494,18 +495,12 @@ extension Array where Element: Relationship {
     }
 }
 
-public func <=(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id <= rhs.id
-}
+extension Relationship : Comparable {
+    static public func ==(lhs: Relationship, rhs: Relationship) -> Bool {
+        return lhs.id == rhs.id
+    }
 
-public func >=(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id >= rhs.id
-}
-
-public func >(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id > rhs.id
-}
-
-public func <(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id < rhs.id
+    static public func <(lhs: Relationship, rhs: Relationship) -> Bool {
+        return lhs.id < rhs.id
+    }
 }
