@@ -501,7 +501,7 @@ public class Watch<T: Node>: Watchable {
             watchForRelationship(types: types)
         case is Action.Type:
             watchForAction(types: types)
-        default:break
+        default: break
         }
         return self
     }

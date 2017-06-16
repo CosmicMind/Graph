@@ -76,7 +76,7 @@ extension Graph {
                 completion: completion)
             return
         }
-        
+
         moc.perform { [weak moc] in
             do {
                 try moc?.save()
@@ -86,7 +86,7 @@ extension Graph {
             }
         }
     }
-    
+
     /**
      Performs a synchronous save.
      - Parameter completion: An Optional completion block that is
@@ -100,7 +100,7 @@ extension Graph {
                 completion: completion)
             return
         }
-        
+
         moc.performAndWait { [unowned moc] in
             do {
                 try moc.save()
@@ -110,7 +110,7 @@ extension Graph {
             }
         }
     }
-    
+
     /**
      Clears all persisted data.
      - Parameter completion: An Optional completion block that is
@@ -120,24 +120,24 @@ extension Graph {
         Search<Entity>(graph: self).for(types: "*").sync().forEach {
             $0.delete()
         }
-        
+
         Search<Relationship>(graph: self).for(types: "*").sync().forEach {
             $0.delete()
         }
-        
+
         Search<Action>(graph: self).for(types: "*").sync().forEach {
             $0.delete()
         }
-        
+
         sync(completion)
     }
-    
+
     /// Reset the storage.
     public func reset() {
         guard let moc = managedObjectContext else {
             return
         }
-        
+
         moc.performAndWait { [unowned moc] in
             moc.reset()
         }

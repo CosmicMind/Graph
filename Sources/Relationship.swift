@@ -447,7 +447,7 @@ extension Array where Element: Relationship {
      - Returns: An Array of Entities.
      */
     public func subject(types: [String]) -> [Entity] {
-        var s = Set<Entity>()
+        var s : Set<Entity> = []
         forEach { [types = types] (r) in
             guard let e = r.subject else {
                 return
@@ -479,7 +479,7 @@ extension Array where Element: Relationship {
      - Returns: An Array of Entities.
      */
     public func object(types: [String]) -> [Entity] {
-        var s = Set<Entity>()
+        var s : Set<Entity> = []
         forEach { [types = types] (r) in
             guard let e = r.subject else {
                 return
