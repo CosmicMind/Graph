@@ -207,19 +207,13 @@ internal class ManagedNode: ManagedObject {
     }
 }
 
-internal func <=(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
-    return lhs.id <= rhs.id
-}
+extension ManagedNode : Comparable {
+    static public func ==(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
+        return lhs.id == rhs.id
+    }
 
-internal func >=(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
-    return lhs.id >= rhs.id
-}
-
-internal func >(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
-    return lhs.id > rhs.id
-}
-
-internal func <(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
-    return lhs.id < rhs.id
+    static public func <(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
+        return lhs.id < rhs.id
+    }
 }
 
