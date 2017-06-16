@@ -501,18 +501,14 @@ public class Entity: Node {
     }
 }
 
-public func <=(lhs: Entity, rhs: Entity) -> Bool {
-    return lhs.id <= rhs.id
+extension Entity : Comparable {
+    static public func ==(lhs: Entity, rhs: Entity) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    static public func <(lhs: Entity, rhs: Entity) -> Bool {
+        return lhs.id < rhs.id
+    }
 }
 
-public func >=(lhs: Entity, rhs: Entity) -> Bool {
-    return lhs.id >= rhs.id
-}
 
-public func >(lhs: Entity, rhs: Entity) -> Bool {
-    return lhs.id > rhs.id
-}
-
-public func <(lhs: Entity, rhs: Entity) -> Bool {
-    return lhs.id < rhs.id
-}
