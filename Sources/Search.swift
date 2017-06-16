@@ -406,7 +406,7 @@ extension Search {
             propertySet = search(properties: v, entity: ModelIdentifier.entityPropertyName, ManagedEntityProperty.self)
         }
         
-        var nodes = [Entity]()
+        var nodes : [Entity] = []
         formIntersectionResultSet(typeSet: typeSet, tagSet: tagSet, groupSet: groupSet, propertySet: propertySet)?.forEach {
             nodes.append(Entity(managedNode: $0))
         }

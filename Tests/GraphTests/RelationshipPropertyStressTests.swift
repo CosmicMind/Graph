@@ -67,7 +67,7 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        var properties = [String]()
+        var properties : [String] = []
         for i in 0..<100 {
             properties.append("P\(i)")
         }

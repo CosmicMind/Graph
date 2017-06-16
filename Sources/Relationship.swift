@@ -292,8 +292,8 @@ public class Relationship: Node {
      */
     @discardableResult
     public func toggle(tags: [String]) -> Relationship {
-        var a = [String]()
-        var r = [String]()
+        var a : [String] = []
+        var r : [String] = []
         tags.forEach { [unowned self] in
             if self.managedNode.has(tags: $0) {
                 r.append($0)
@@ -387,8 +387,8 @@ public class Relationship: Node {
      */
     @discardableResult
     public func toggle(groups: [String]) -> Relationship {
-        var a = [String]()
-        var r = [String]()
+        var a : [String] = []
+        var r : [String] = []
         groups.forEach { [unowned self] in
             if self.managedNode.member(of: $0) {
                 r.append($0)

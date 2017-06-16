@@ -109,7 +109,7 @@ public class Action: Node {
     /// An Array of Entity subjects.
     public var subjects: [Entity] {
         guard let moc = managedNode.managedObjectContext else {
-            return [Entity]()
+            return []
         }
         
         var s: [Entity]?
@@ -276,8 +276,8 @@ public class Action: Node {
      */
     @discardableResult
     public func toggle(tags: [String]) -> Action {
-        var a = [String]()
-        var r = [String]()
+        var a : [String] = []
+        var r : [String] = []
         tags.forEach { [unowned self] in
             if self.managedNode.has(tags: $0) {
                 r.append($0)
@@ -371,8 +371,8 @@ public class Action: Node {
      */
     @discardableResult
     public func toggle(groups: [String]) -> Action {
-        var a = [String]()
-        var r = [String]()
+        var a : [String] = []
+        var r : [String] = []
         groups.forEach { [unowned self] in
             if self.managedNode.member(of: $0) {
                 r.append($0)

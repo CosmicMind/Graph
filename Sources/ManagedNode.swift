@@ -59,7 +59,7 @@ internal class ManagedNode: ManagedObject {
     
     /// A reference to the tags.
     internal var tags: [String] {
-        var t = [String]()
+        var t : [String] = []
         guard let moc = managedObjectContext else {
             return t
         }
@@ -75,7 +75,7 @@ internal class ManagedNode: ManagedObject {
     
     /// A reference to the groups.
     internal var groups: [String] {
-        var g = [String]()
+        var g : [String] = []
         guard let moc = managedObjectContext else {
             return g
         }
