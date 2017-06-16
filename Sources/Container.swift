@@ -41,10 +41,10 @@ public struct Container {
     static func create(name: String, storeDescription: NSPersistentStoreDescription, completion: ((NSPersistentStoreDescription, Error?) -> Void)? = nil) -> NSPersistentContainer {
         let container = NSPersistentContainer(name: name, managedObjectModel: Model.create())
         container.persistentStoreDescriptions.append(storeDescription)
-        guard let handler = completion else {
-            return container
+        completion.map {
+            container.loadPersistentStores(completionHandler: $0)
         }
-        container.loadPersistentStores(completionHandler: handler)
+
         return container
     }
 }
