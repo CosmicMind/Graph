@@ -103,7 +103,7 @@ public class Graph: NSObject {
     public var batchOffset = 0
     
     /// Watch instances.
-    public internal(set) lazy var watchers = [Watcher]()
+    public internal(set) lazy var watchers : [Watcher] = []
     
     public weak var delegate: GraphDelegate?
     

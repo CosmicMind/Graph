@@ -34,7 +34,7 @@ import CoreData
 internal class ManagedRelationship: ManagedNode {
     @NSManaged internal var subject: ManagedEntity?
     @NSManaged internal var object: ManagedEntity?
-    
+
     /**
      Initializer that accepts a type and a NSManagedObjectContext.
      - Parameter type: A reference to the Relationship type.
@@ -46,7 +46,7 @@ internal class ManagedRelationship: ManagedNode {
         subject = nil
         object = nil
     }
-    
+
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
@@ -72,7 +72,7 @@ internal class ManagedRelationship: ManagedNode {
                     }
                     return
                 }
-                
+
                 var exists: Bool = false
                 for property in self.propertySet {
                     if let p = property as? ManagedRelationshipProperty {
@@ -83,14 +83,14 @@ internal class ManagedRelationship: ManagedNode {
                         }
                     }
                 }
-                
+
                 if !exists {
                     _ = ManagedRelationshipProperty(name: name, object: object, node: self, managedObjectContext: moc)
                 }
             }
         }
     }
-    
+
     /**
      Adds a tag to the ManagedRelationship.
      - Parameter tag: An Array of Strings.
@@ -107,7 +107,7 @@ internal class ManagedRelationship: ManagedNode {
             }
         }
     }
-    
+
     /**
      Removes a tag from a ManagedRelationship.
      - Parameter tags: An Array of Strings.
@@ -128,7 +128,7 @@ internal class ManagedRelationship: ManagedNode {
             }
         }
     }
-    
+
     /**
      Adds the ManagedRelationship to a given group.
      - Parameter to groups: An Array of Strings.
@@ -145,7 +145,7 @@ internal class ManagedRelationship: ManagedNode {
             }
         }
     }
-    
+
     /**
      Removes the ManagedRelationship from a given group.
      - Parameter from groups: An Array of Strings.
@@ -166,30 +166,30 @@ internal class ManagedRelationship: ManagedNode {
             }
         }
     }
-    
+
     /// Marks the Relationship for deletion and clears all its relationships.
     internal override func delete() {
         guard let moc = self.managedObjectContext else {
             return
         }
-        
+
         moc.performAndWait { [unowned self] in
             self.propertySet.forEach {
                 ($0 as? ManagedRelationshipProperty)?.delete()
             }
-            
+
             self.tagSet.forEach {
                 ($0 as? ManagedRelationshipTag)?.delete()
             }
-            
+
             self.groupSet.forEach {
                 ($0 as? ManagedRelationshipGroup)?.delete()
             }
-            
+
             self.subject?.mutableSetValue(forKey: "relationshipSubjectSet").remove(self)
             self.object?.mutableSetValue(forKey: "relationshipObjectSet").remove(self)
         }
-        
+
         super.delete()
     }
 }

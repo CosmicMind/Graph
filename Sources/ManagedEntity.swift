@@ -36,12 +36,12 @@ internal class ManagedEntity: ManagedNode {
     @NSManaged internal var actionObjectSet: NSSet
     @NSManaged internal var relationshipSubjectSet: NSSet
     @NSManaged internal var relationshipObjectSet: NSSet
-    
+
     /**
      Initializer that accepts a type and a NSManagedObjectContext.
      - Parameter type: A reference to the Entity type.
      - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
-    */
+     */
     internal convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
         self.init(identifier: ModelIdentifier.entityName, type: type, managedObjectContext: managedObjectContext)
         nodeClass = NodeClass.entity.rawValue
@@ -50,7 +50,7 @@ internal class ManagedEntity: ManagedNode {
         relationshipSubjectSet = []
         relationshipObjectSet = []
     }
-    
+
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
@@ -76,7 +76,7 @@ internal class ManagedEntity: ManagedNode {
                     }
                     return
                 }
-                
+
                 var exists: Bool = false
                 for property in self.propertySet {
                     if let p = property as? ManagedEntityProperty {
@@ -87,14 +87,14 @@ internal class ManagedEntity: ManagedNode {
                         }
                     }
                 }
-                
+
                 if !exists {
                     _ = ManagedEntityProperty(name: name, object: object, node: self, managedObjectContext: moc)
                 }
             }
         }
     }
-    
+
     /**
      Adds a tag to the ManagedEntity.
      - Parameter tag: An Array of Strings.
@@ -111,7 +111,7 @@ internal class ManagedEntity: ManagedNode {
             }
         }
     }
-    
+
     /**
      Removes a tag from a ManagedEntity.
      - Parameter tags: An Array of Strings.
@@ -132,7 +132,7 @@ internal class ManagedEntity: ManagedNode {
             }
         }
     }
-    
+
     /**
      Adds the ManagedEntity to a given group.
      - Parameter to groups: An Array of Strings.
@@ -149,7 +149,7 @@ internal class ManagedEntity: ManagedNode {
             }
         }
     }
-    
+
     /**
      Removes the ManagedEntity from a given group.
      - Parameter from groups: An Array of Strings.
@@ -170,43 +170,43 @@ internal class ManagedEntity: ManagedNode {
             }
         }
     }
-    
+
     /// Marks the Entity for deletion and clears all its relationships.
     internal override func delete() {
         guard let moc = self.managedObjectContext else {
             return
         }
-        
+
         moc.performAndWait { [unowned self] in
             self.propertySet.forEach {
                 ($0 as? ManagedEntityProperty)?.delete()
             }
-            
+
             self.tagSet.forEach {
                 ($0 as? ManagedEntityTag)?.delete()
             }
-            
+
             self.groupSet.forEach {
                 ($0 as? ManagedEntityGroup)?.delete()
             }
-            
+
             self.actionSubjectSet.forEach {
                 ($0 as? ManagedAction)?.delete()
             }
-            
+
             self.actionObjectSet.forEach {
                 ($0 as? ManagedAction)?.delete()
             }
-            
+
             self.relationshipSubjectSet.forEach {
                 ($0 as? ManagedRelationship)?.delete()
             }
-            
+
             self.relationshipObjectSet.forEach {
                 ($0 as? ManagedRelationship)?.delete()
             }
         }
-        
+
         super.delete()
     }
 }
