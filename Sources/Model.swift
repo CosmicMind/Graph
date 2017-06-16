@@ -402,12 +402,12 @@ internal struct Model {
             entityPropertyDescription,
             entityTagDescription,
             entityGroupDescription,
-
+            
             relationshipDescription,
             relationshipPropertyDescription,
             relationshipTagDescription,
             relationshipGroupDescription,
-
+            
             actionDescription,
             actionPropertyDescription,
             actionTagDescription,

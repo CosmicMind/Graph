@@ -34,7 +34,7 @@ import CoreData
 internal class ManagedAction: ManagedNode {
     @NSManaged internal var subjectSet: NSSet
     @NSManaged internal var objectSet: NSSet
-    
+
     /**
      Initializer that accepts a type and a NSManagedObjectContext.
      - Parameter type: A reference to the Action type.
@@ -46,7 +46,7 @@ internal class ManagedAction: ManagedNode {
         subjectSet = []
         objectSet = []
     }
-    
+
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
@@ -72,7 +72,7 @@ internal class ManagedAction: ManagedNode {
                     }
                     return
                 }
-                
+
                 var exists: Bool = false
                 for property in self.propertySet {
                     if let p = property as? ManagedActionProperty {
@@ -83,14 +83,14 @@ internal class ManagedAction: ManagedNode {
                         }
                     }
                 }
-                
+
                 if !exists {
                     _ = ManagedActionProperty(name: name, object: object, node: self, managedObjectContext: moc)
                 }
             }
         }
     }
-    
+
     /**
      Adds a tag to the ManagedAction.
      - Parameter tag: An Array of Strings.
@@ -107,7 +107,7 @@ internal class ManagedAction: ManagedNode {
             }
         }
     }
-    
+
     /**
      Removes a tag from a ManagedAction.
      - Parameter tags: An Array of Strings.
@@ -128,7 +128,7 @@ internal class ManagedAction: ManagedNode {
             }
         }
     }
-    
+
     /**
      Adds the ManagedAction to a given group.
      - Parameter to groups: An Array of Strings.
@@ -145,7 +145,7 @@ internal class ManagedAction: ManagedNode {
             }
         }
     }
-    
+
     /**
      Removes the ManagedAction from a given group.
      - Parameter from groups: An Array of Strings.
@@ -166,7 +166,7 @@ internal class ManagedAction: ManagedNode {
             }
         }
     }
-    
+
     /**
      Adds a ManagedEntity to the subjectSet.
      - Parameter subject managedEntity: A ManagedEntity to add.
@@ -176,7 +176,7 @@ internal class ManagedAction: ManagedNode {
             self.mutableSetValue(forKey: "subjectSet").add(managedEntity)
         }
     }
-    
+
     /**
      Removes a ManagedEntity from the subjectSet.
      - Parameter subject managedEntity: A ManagedEntity to remove.
@@ -186,7 +186,7 @@ internal class ManagedAction: ManagedNode {
             self.mutableSetValue(forKey: "subjectSet").remove(managedEntity)
         }
     }
-    
+
     /**
      Adds a ManagedEntity to the objectSet.
      - Parameter object managedEntity: A ManagedEntity to add.
@@ -196,7 +196,7 @@ internal class ManagedAction: ManagedNode {
             self.mutableSetValue(forKey: "objectSet").add(managedEntity)
         }
     }
-    
+
     /**
      Removes a ManagedEntity from the objectSet.
      - Parameter object managedEntity: A ManagedEntity to remove.
@@ -206,27 +206,27 @@ internal class ManagedAction: ManagedNode {
             self.mutableSetValue(forKey: "objectSet").remove(managedEntity)
         }
     }
-    
+
     /// Marks the Action for deletion and clears all its relationships.
     internal override func delete() {
         guard let moc = managedObjectContext else {
             return
         }
-        
+
         moc.performAndWait { [unowned self] in
             self.propertySet.forEach {
                 ($0 as? ManagedActionProperty)?.delete()
             }
-            
+
             self.tagSet.forEach {
                 ($0 as? ManagedActionTag)?.delete()
             }
-            
+
             self.groupSet.forEach {
                 ($0 as? ManagedActionGroup)?.delete()
             }
         }
-        
+
         super.delete()
     }
 }

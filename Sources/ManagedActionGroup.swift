@@ -42,7 +42,7 @@ internal class ManagedActionGroup: ManagedGroup {
         self.init(identifier: ModelIdentifier.actionGroupName, name: name, managedObjectContext: managedObjectContext)
         self.node = node
     }
-    
+
     /// Marks node for deletion.
     internal override func delete() {
         node.mutableSetValue(forKey: "groupSet").remove(self)
