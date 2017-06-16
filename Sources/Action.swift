@@ -615,18 +615,13 @@ extension Array where Element: Action {
     }
 }
 
-public func <=(lhs: Action, rhs: Action) -> Bool {
-    return lhs.id <= rhs.id
+extension Action : Comparable {
+    static public func ==(lhs: Action, rhs: Action) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    static public func <(lhs: Action, rhs: Action) -> Bool {
+        return lhs.id < rhs.id
+    }
 }
 
-public func >=(lhs: Action, rhs: Action) -> Bool {
-    return lhs.id >= rhs.id
-}
-
-public func >(lhs: Action, rhs: Action) -> Bool {
-    return lhs.id > rhs.id
-}
-
-public func <(lhs: Action, rhs: Action) -> Bool {
-    return lhs.id < rhs.id
-}
