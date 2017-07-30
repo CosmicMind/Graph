@@ -34,16 +34,16 @@ import Foundation
 public class Relationship: Node {
     /// A reference to the managedNode.
     internal let managedNode: ManagedRelationship
-    
+
     public override var description: String {
         return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), groups: \(groups), properties: \(properties), subject: \(String(describing: subject)), object: \(String(describing: object)), createdDate: \(createdDate)]"
     }
-    
+
     /// A reference to the nodeClass.
     public var nodeClass: NodeClass {
         return .relationship
     }
-    
+
     /// A reference to the type.
     public var type: String {
         var result: String?
@@ -52,22 +52,22 @@ public class Relationship: Node {
         }
         return result!
     }
-    
+
     /// A reference to the hash.
     public override var hash: Int {
         return managedNode.hash
     }
-    
+
     /// A reference to the hashValue.
     public override var hashValue: Int {
         return managedNode.hashValue
     }
-    
+
     /// A reference to the ID.
     public var id: String {
         return managedNode.id
     }
-    
+
     /// A reference to the createDate.
     public var createdDate: Date {
         var result: Date?
@@ -76,17 +76,17 @@ public class Relationship: Node {
         }
         return result!
     }
-    
+
     /// A reference to tags.
     public var tags: [String] {
         return managedNode.tags
     }
-    
+
     /// A reference to groups.
     public var groups: [String] {
         return managedNode.groups
     }
-    
+
     /**
      Access properties using the subscript operator.
      - Parameter name: A property name value.
@@ -100,12 +100,12 @@ public class Relationship: Node {
             managedNode[name] = value
         }
     }
-    
+
     /// A reference to the properties Dictionary.
     public var properties: [String: Any] {
         return managedNode.properties
     }
-    
+
     /// A reference to the subject Entity.
     public var subject: Entity? {
         get {
@@ -113,7 +113,8 @@ public class Relationship: Node {
             managedNode.managedObjectContext?.performAndWait { [unowned self] in
                 n = self.managedNode.subject
             }
-            return nil == n ? nil : Entity(managedNode: n!)
+
+            return n.map { Entity(managedNode: $0) }
         }
         set(entity) {
             managedNode.managedObjectContext?.performAndWait { [unowned self] in
@@ -128,7 +129,7 @@ public class Relationship: Node {
             }
         }
     }
-    
+
     /// A reference to the object Entity.
     public var object: Entity? {
         get {
@@ -136,7 +137,7 @@ public class Relationship: Node {
             managedNode.managedObjectContext?.performAndWait { [unowned self] in
                 n = self.managedNode.object
             }
-            return nil == n ? nil : Entity(managedNode: n!)
+            return n.map { Entity(managedNode: $0) }
         }
         set(entity) {
             managedNode.managedObjectContext?.performAndWait { [unowned self] in
@@ -151,7 +152,7 @@ public class Relationship: Node {
             }
         }
     }
-    
+
     /**
      Initializer that accepts a ManagedRelationship.
      - Parameter managedNode: A reference to a ManagedRelationship.
@@ -159,7 +160,7 @@ public class Relationship: Node {
     internal init(managedNode: ManagedRelationship) {
         self.managedNode = managedNode
     }
-    
+
     /**
      Initializer that accepts a type and graph. The graph
      indicates which graph to save to.
@@ -175,7 +176,7 @@ public class Relationship: Node {
         }
         self.init(managedNode: managedNode!)
     }
-    
+
     /**
      Initializer that accepts a type and graph. The graph
      indicates which graph to save to.
@@ -190,7 +191,7 @@ public class Relationship: Node {
         }
         self.init(managedNode: managedNode!)
     }
-    
+
     /**
      Initializer that accepts a type value.
      - Parameter type: A reference to a type.
@@ -198,7 +199,7 @@ public class Relationship: Node {
     public convenience init(type: String) {
         self.init(type: type, graph: GraphStoreDescription.name)
     }
-    
+
     /**
      Checks equality between Entities.
      - Parameter object: A reference to an object to test
@@ -209,7 +210,7 @@ public class Relationship: Node {
     public override func isEqual(_ object: Any?) -> Bool {
         return id == (object as? Relationship)?.id
     }
-    
+
     /**
      Adds given tags to a Relationship.
      - Parameter tags: A list of Strings.
@@ -219,7 +220,7 @@ public class Relationship: Node {
     public func add(tags: String...) -> Relationship {
         return add(tags: tags)
     }
-    
+
     /**
      Adds given tags to a Relationship.
      - Parameter tags: An Array of Strings.
@@ -230,27 +231,27 @@ public class Relationship: Node {
         managedNode.add(tags: tags)
         return self
     }
-    
+
     /**
      Checks if the Relationship has the given tags.
      - Parameter tags: A list of Strings.
-     - Returns: A boolean of the result, true if has the 
+     - Returns: A boolean of the result, true if has the
      given tags, false otherwise.
      */
     public func has(tags: String...) -> Bool {
         return has(tags: tags)
     }
-    
+
     /**
      Checks if the Relationship has the given tags.
      - Parameter tags: An Array of Strings.
-     - Returns: A boolean of the result, true if has the 
+     - Returns: A boolean of the result, true if has the
      given tags, false otherwise.
      */
     public func has(tags: [String]) -> Bool {
         return managedNode.has(tags: tags)
     }
-    
+
     /**
      Removes given tags from a Relationship.
      - Parameter tags: A list of Strings.
@@ -260,7 +261,7 @@ public class Relationship: Node {
     public func remove(tags: String...) -> Relationship {
         return remove(tags: tags)
     }
-    
+
     /**
      Removes given tags from a Relationship.
      - Parameter tags: An Array of Strings.
@@ -271,7 +272,7 @@ public class Relationship: Node {
         managedNode.remove(tags: tags)
         return self
     }
-    
+
     /**
      Adds given tags to a Relationship or removes them, based on their
      previous state.
@@ -282,7 +283,7 @@ public class Relationship: Node {
     public func toggle(tags: String...) -> Relationship {
         return toggle(tags: tags)
     }
-    
+
     /**
      Adds given tags to a Relationship or removes them, based on their
      previous state.
@@ -291,8 +292,8 @@ public class Relationship: Node {
      */
     @discardableResult
     public func toggle(tags: [String]) -> Relationship {
-        var a = [String]()
-        var r = [String]()
+        var a : [String] = []
+        var r : [String] = []
         tags.forEach { [unowned self] in
             if self.managedNode.has(tags: $0) {
                 r.append($0)
@@ -304,7 +305,7 @@ public class Relationship: Node {
         managedNode.remove(tags: r)
         return self
     }
-    
+
     /**
      Adds given groups to a Relationship.
      - Parameter to groups: A list of Strings.
@@ -314,7 +315,7 @@ public class Relationship: Node {
     public func add(to groups: String...) -> Relationship {
         return add(to: groups)
     }
-    
+
     /**
      Adds given groups to a Relationship.
      - Parameter to groups: An Array of Strings.
@@ -325,17 +326,17 @@ public class Relationship: Node {
         managedNode.add(to: groups)
         return self
     }
-    
+
     /**
      Checks if the Relationship is a member of the given groups.
      - Parameter of groups: A list of Strings.
-     - Returns: A boolean of the result, true if has the 
+     - Returns: A boolean of the result, true if has the
      given groups, false otherwise.
      */
     public func member(of groups: String...) -> Bool {
         return member(of: groups)
     }
-    
+
     /**
      Checks if the Relationship has a the given tags.
      - Parameter of groups: An Array of Strings.
@@ -345,7 +346,7 @@ public class Relationship: Node {
     public func member(of groups: [String]) -> Bool {
         return managedNode.member(of: groups)
     }
-    
+
     /**
      Removes given groups from a Relationship.
      - Parameter from groups: A list of Strings.
@@ -355,7 +356,7 @@ public class Relationship: Node {
     public func remove(from groups: String...) -> Relationship {
         return remove(from: groups)
     }
-    
+
     /**
      Removes given groups from a Relationship.
      - Parameter from groups: An Array of Strings.
@@ -366,7 +367,7 @@ public class Relationship: Node {
         managedNode.remove(from: groups)
         return self
     }
-    
+
     /**
      Adds given groups to a Relationship or removes them, based on their
      previous state.
@@ -377,7 +378,7 @@ public class Relationship: Node {
     public func toggle(groups: String...) -> Relationship {
         return toggle(groups: groups)
     }
-    
+
     /**
      Adds given groups to a Relationship or removes them, based on their
      previous state.
@@ -386,8 +387,8 @@ public class Relationship: Node {
      */
     @discardableResult
     public func toggle(groups: [String]) -> Relationship {
-        var a = [String]()
-        var r = [String]()
+        var a : [String] = []
+        var r : [String] = []
         groups.forEach { [unowned self] in
             if self.managedNode.member(of: $0) {
                 r.append($0)
@@ -399,7 +400,7 @@ public class Relationship: Node {
         managedNode.remove(from: r)
         return self
     }
-    
+
     /**
      Sets the object of the Relationship.
      - Parameter object: An Entity.
@@ -410,7 +411,7 @@ public class Relationship: Node {
         self.object = object
         return self
     }
-    
+
     /**
      Sets the object of the Relationship.
      - Parameter object: An Entity.
@@ -421,7 +422,7 @@ public class Relationship: Node {
         self.object = object
         return self
     }
-    
+
     /// Marks the Relationship for deletion.
     public func delete() {
         managedNode.delete()
@@ -438,7 +439,7 @@ extension Array where Element: Relationship {
     public func subject(types: String...) -> [Entity] {
         return subject(types: types)
     }
-    
+
     /**
      Finds the given types of subject Entities that are part
      of the relationships in the Array.
@@ -446,21 +447,21 @@ extension Array where Element: Relationship {
      - Returns: An Array of Entities.
      */
     public func subject(types: [String]) -> [Entity] {
-        var s = Set<Entity>()
+        var s : Set<Entity> = []
         forEach { [types = types] (r) in
             guard let e = r.subject else {
                 return
             }
-            
+
             guard types.contains(e.type) else {
                 return
             }
-            
+
             s.insert(e)
         }
         return [Entity](s)
     }
-    
+
     /**
      Finds the given types of object Entities that are part
      of the relationships in the Array.
@@ -470,7 +471,7 @@ extension Array where Element: Relationship {
     public func object(types: String...) -> [Entity] {
         return object(types: types)
     }
-    
+
     /**
      Finds the given types of object Entities that are part
      of the relationships in the Array.
@@ -478,34 +479,28 @@ extension Array where Element: Relationship {
      - Returns: An Array of Entities.
      */
     public func object(types: [String]) -> [Entity] {
-        var s = Set<Entity>()
+        var s : Set<Entity> = []
         forEach { [types = types] (r) in
             guard let e = r.subject else {
                 return
             }
-            
+
             guard types.contains(e.type) else {
                 return
             }
-            
+
             s.insert(e)
         }
         return [Entity](s)
     }
 }
 
-public func <=(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id <= rhs.id
-}
+extension Relationship : Comparable {
+    static public func ==(lhs: Relationship, rhs: Relationship) -> Bool {
+        return lhs.id == rhs.id
+    }
 
-public func >=(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id >= rhs.id
-}
-
-public func >(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id > rhs.id
-}
-
-public func <(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id < rhs.id
+    static public func <(lhs: Relationship, rhs: Relationship) -> Bool {
+        return lhs.id < rhs.id
+    }
 }

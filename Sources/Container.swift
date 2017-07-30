@@ -31,20 +31,18 @@
 import CoreData
 
 @available(iOS 10.0, OSX 10.12, *)
-public struct Container {
+extension NSPersistentContainer {
     /**
      Creates a NSPersistentStoreCoordinator.
      - Parameter name: Storage name.
      - Parameter storeDescription: An NSPersistentStoreDescription.
      - Returns: An instance of NSPersistentStoreCoordinator.
      */
-    static func create(name: String, storeDescription: NSPersistentStoreDescription, completion: ((NSPersistentStoreDescription, Error?) -> Void)? = nil) -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: name, managedObjectModel: Model.create())
-        container.persistentStoreDescriptions.append(storeDescription)
-        guard let handler = completion else {
-            return container
+    convenience init(name: String, storeDescription: NSPersistentStoreDescription, completion: ((NSPersistentStoreDescription, Error?) -> Void)? = nil) {
+        self.init(name: name, managedObjectModel: Model.create())
+        persistentStoreDescriptions.append(storeDescription)
+        completion.map {
+            loadPersistentStores(completionHandler: $0)
         }
-        container.loadPersistentStores(completionHandler: handler)
-        return container
     }
 }

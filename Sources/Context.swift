@@ -79,8 +79,8 @@ extension Graph {
         }
         
         GraphContextRegistry.dispatchToken = true
-        GraphContextRegistry.added = [String: Bool]()
-        GraphContextRegistry.enableCloud = [String: Bool]()
+        GraphContextRegistry.added = [:]
+        GraphContextRegistry.enableCloud = [:]
         GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
     }
     
@@ -142,7 +142,7 @@ extension Graph {
         storeDescription.shouldAddStoreAsynchronously = false
         storeDescription.url = location
         
-        let container = Container.create(name: name, storeDescription: storeDescription)
+        let container = NSPersistentContainer(name: name, storeDescription: storeDescription)
         container.loadPersistentStores { [unowned self] (storeDescription, error) in
             self.managedObjectContext = container.viewContext
             GraphContextRegistry.managedObjectContexts[self.route] = self.managedObjectContext

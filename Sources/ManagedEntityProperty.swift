@@ -44,7 +44,7 @@ internal class ManagedEntityProperty: ManagedProperty {
         self.init(identifier: ModelIdentifier.entityPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
         self.node = node
     }
-    
+
     /// Marks node for deletion.
     internal override func delete() {
         node.mutableSetValue(forKey: "propertySet").remove(self)

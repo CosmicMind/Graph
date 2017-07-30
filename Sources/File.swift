@@ -143,16 +143,16 @@ public enum FileType {
 public struct File {
     /// A reference to the DocumentDirectory.
     public static let documentDirectoryPath: URL? = File.pathForDirectory(.documentDirectory)
-    
+
     /// A reference to the LibraryDirectory.
     public static let libraryDirectoryPath: URL? = File.pathForDirectory(.libraryDirectory)
-    
+
     /// A reference to the ApplicationSupportDirectory.
     public static let applicationSupportDirectoryPath: URL? = File.pathForDirectory(.applicationSupportDirectory)
-    
+
     /// A reference to the CachesDirectory.
     public static let cachesDirectoryPath: URL? = File.pathForDirectory(.cachesDirectory)
-    
+
     /// A reference to the rootPath.
     public static var rootPath: URL? {
         let path = File.documentDirectoryPath
@@ -160,16 +160,16 @@ public struct File {
         pathComponents?.removeLast()
         return URL(string: Schema.File + (pathComponents?.joined(separator: "/"))!)
     }
-    
+
     /**
      Checks whether a file exists at a given path.
      - Parameter path: A NSURL to check.
      - Returns: A boolean of the result, true if exists, false otherwise.
-    */
+     */
     public static func fileExistsAtPath(_ path: URL) -> Bool {
         return FileManager.default.fileExists(atPath: path.path)
     }
-    
+
     /**
      Checks whether a two paths equal the same contents.
      - Parameter path: A NSURL to check.
@@ -179,7 +179,7 @@ public struct File {
     public static func contentsEqualAtPath(_ path: URL, andPath: URL) -> Bool {
         return FileManager.default.contentsEqual(atPath: path.path, andPath: andPath.path)
     }
-    
+
     /**
      Checks whether a file is writable at a given path.
      - Parameter path: A NSURL to check.
@@ -188,7 +188,7 @@ public struct File {
     public static func isWritableFileAtPath(_ path: URL) -> Bool {
         return FileManager.default.isWritableFile(atPath: path.path)
     }
-    
+
     /**
      Removes an item at a given path.
      - Parameter path: A NSURL to remove.
@@ -203,7 +203,7 @@ public struct File {
             completion?(nil, e)
         }
     }
-    
+
     /**
      Creates a directory at a given path.
      - Parameter path: A NSURL that indicates the directory path to create.
@@ -220,7 +220,7 @@ public struct File {
             completion?(false, e)
         }
     }
-    
+
     /**
      Removes a directory at a given path.
      - Parameter path: A NSURL that indicates the directory path to remove.
@@ -235,7 +235,7 @@ public struct File {
             completion?(false, e)
         }
     }
-    
+
     /**
      Fetch the contents at a given path.
      - Parameter path: A NSURL that indicates the directory path to fetch.
@@ -251,7 +251,7 @@ public struct File {
             return completion(nil, e)
         }
     }
-    
+
     /**
      Write to a given path.
      - Parameter path: A NSURL that indicates the directory to write to.
@@ -268,7 +268,7 @@ public struct File {
             completion?(false, e)
         }
     }
-    
+
     /**
      Read from a given path.
      - Parameter path: A NSURL that indicates the directory to write to.
@@ -282,7 +282,7 @@ public struct File {
             completion(nil, NSError(domain: "com.cosmicmind.Graph.File", code: 0, userInfo: nil))
         }
     }
-    
+
     /**
      Prepares a NSURL based on the given directory path.
      - Parameter searchPathDirectory: A search directory.
@@ -306,7 +306,7 @@ public struct File {
         }
         return url?.appendingPathComponent(path)
     }
-    
+
     /**
      Fetches a path for a given search directory and creates it if
      it does not exist.
@@ -316,7 +316,7 @@ public struct File {
     public static func pathForDirectory(_ searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
         return try? FileManager.default.url(for: searchPathDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     }
-    
+
     /**
      Returns the FileType for a given path.
      - Parameter path: A search path.
@@ -327,11 +327,11 @@ public struct File {
         File.contentsOfDirectoryAtPath(path) { (contents: [URL]?, error: Error?) -> Void in
             isDirectory = nil == error
         }
-        
+
         if isDirectory {
             return .directory
         }
-        
+
         switch path.pathExtension {
         case ImageExtensionToString(.png),
              ImageExtensionToString(.jpg),
@@ -351,7 +351,7 @@ public struct File {
             return .sqLite
         default:break
         }
-        
+
         return .unknown
     }
 }

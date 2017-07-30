@@ -35,50 +35,50 @@ open class JSON: Equatable, CustomStringConvertible {
     open var description: String {
         return JSON.stringify(object: object) ?? "{}"
     }
-    
+
     /// A reference to the core object.
     open private(set) var object: Any
-    
+
     /// An Array representation of the object.
     open var asArray: [Any]? {
         return object as? [Any]
     }
-    
+
     /// A Dictionary representation of the object.
     open var asDictionary: [String: Any]? {
         return object as? [String: Any]
     }
-    
+
     /// A String representation of the object.
     open var asString: String? {
         return object as? String
     }
-    
+
     /// An Int representation of the object.
     open var asInt: Int? {
         return object as? Int
     }
-    
+
     /// A Double representation of the object.
     open var asDouble: Double? {
         return object as? Double
     }
-    
+
     /// A Float representation of the object.
     open var asFloat: Float? {
         return object as? Float
     }
-    
+
     /// A Bool representation of the object.
     open var asBool: Bool? {
         return object as? Bool
     }
-    
+
     /// A Data representation of the object.
     open var asNSData: Data? {
         return JSON.serialize(object: object)
     }
-    
+
     /**
      Parses a given Data object.
      - Parameter data: A Data object.
@@ -89,10 +89,10 @@ open class JSON: Equatable, CustomStringConvertible {
         guard let object = try? JSONSerialization.jsonObject(with: data, options: options) else {
             return nil
         }
-        
+
         return JSON(object)
     }
-    
+
     /**
      Parses a given String object.
      - Parameter string: A Data object.
@@ -103,10 +103,10 @@ open class JSON: Equatable, CustomStringConvertible {
         guard let data = string.data(using: String.Encoding.utf8) else {
             return nil
         }
-        
+
         return parse(data: data, options: options)
     }
-    
+
     /**
      Serializes an Any object into a Data object.
      - Parameter object: An Any object.
@@ -115,7 +115,7 @@ open class JSON: Equatable, CustomStringConvertible {
     open class func serialize(object: Any) -> Data? {
         return try? JSONSerialization.data(withJSONObject: object, options: [])
     }
-    
+
     /**
      Stringifies an instance of Any object into a String.
      - Parameter object: An Any object.
@@ -131,7 +131,7 @@ open class JSON: Equatable, CustomStringConvertible {
         }
         return nil
     }
-    
+
     /// An initializer that accepts a given Any object.
     public required init(_ object: Any) {
         if let o = object as? JSON {
@@ -140,7 +140,7 @@ open class JSON: Equatable, CustomStringConvertible {
             self.object = object
         }
     }
-    
+
     /**
      A subscript operator for Array style access.
      - Parameter index: An Int.
@@ -150,10 +150,10 @@ open class JSON: Equatable, CustomStringConvertible {
         guard let item = asArray else {
             return nil
         }
-        
+
         return JSON(item[index])
     }
-    
+
     /**
      A subscript operator for Dictionary style access.
      - Parameter key: A String.
@@ -163,11 +163,11 @@ open class JSON: Equatable, CustomStringConvertible {
         guard let item = asDictionary else {
             return nil
         }
-        
+
         guard nil != item[key] else {
             return nil
         }
-        
+
         return JSON(item[key]!)
     }
 }

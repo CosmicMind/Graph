@@ -42,7 +42,7 @@ internal class ManagedActionTag: ManagedTag {
         self.init(identifier: ModelIdentifier.actionTagName, name: name, managedObjectContext: managedObjectContext)
         self.node = node
     }
-    
+
     /// Marks node for deletion.
     internal override func delete() {
         node.mutableSetValue(forKey: "tagSet").remove(self)

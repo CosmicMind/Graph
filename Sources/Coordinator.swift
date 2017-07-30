@@ -40,6 +40,19 @@ public enum GraphCloudStorageTransition: Int {
     case accountRemoved
     case contentRemoved
     case initialImportCompleted
+
+    init(type : NSPersistentStoreUbiquitousTransitionType) {
+        switch type {
+        case .accountAdded:
+            self = .accountAdded
+        case .accountRemoved:
+            self = .accountRemoved
+        case .contentRemoved:
+            self = .contentRemoved
+        case .initialImportCompleted:
+            self = .initialImportCompleted
+        }
+    }
 }
 
 internal struct Coordinator {
@@ -107,9 +120,9 @@ extension Graph {
         }
         
         let defaultCenter = NotificationCenter.default
-        defaultCenter.addObserver(self, selector: #selector(persistentStoreWillChange(_:)), name: NSNotification.Name.NSPersistentStoreCoordinatorStoresWillChange, object: moc.persistentStoreCoordinator)
-        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidChange(_:)), name: NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange, object: moc.persistentStoreCoordinator)
-        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidImportUbiquitousContentChanges(_:)), name: NSNotification.Name.NSPersistentStoreDidImportUbiquitousContentChanges, object: moc.persistentStoreCoordinator)
+        defaultCenter.addObserver(self, selector: #selector(persistentStoreWillChange), name: .NSPersistentStoreCoordinatorStoresWillChange, object: moc.persistentStoreCoordinator)
+        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidChange), name: .NSPersistentStoreCoordinatorStoresDidChange, object: moc.persistentStoreCoordinator)
+        defaultCenter.addObserver(self, selector: #selector(persistentStoreDidImportUbiquitousContentChanges), name: .NSPersistentStoreDidImportUbiquitousContentChanges, object: moc.persistentStoreCoordinator)
     }
     
     internal func persistentStoreWillChange(_ notification: Notification) {
@@ -128,19 +141,9 @@ extension Graph {
             return
         }
         
-        var t: GraphCloudStorageTransition
+        let t = GraphCloudStorageTransition(type: type)
         
-        switch type {
-        case .accountAdded:
-            t = .accountAdded
-        case .accountRemoved:
-            t = .accountRemoved
-        case .contentRemoved:
-            t = .contentRemoved
-        case .initialImportCompleted:
-            t = .initialImportCompleted
-        }
-        
+
         delegate?.graphWillPrepareCloudStorage?(graph: self, transition: t)
     }
     
