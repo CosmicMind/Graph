@@ -29,7 +29,7 @@
  */
 
 import XCTest
-@testable import Graph
+@testable import Focus
 
 class ActionSearchTests : XCTestCase {
     var testExpectation: XCTestExpectation?
@@ -65,8 +65,8 @@ class ActionSearchTests : XCTestCase {
     }
     
     func testAll() {
-        let graph = Graph()
-        graph.clear()
+        let focus = Focus()
+        focus.clear()
         
         for _ in 0..<100 {
             let n = Action(type: "T1")
@@ -89,11 +89,11 @@ class ActionSearchTests : XCTestCase {
             n.add(to: "G3")
         }
         
-        graph.sync { (success, error) in
+        focus.sync { (success, error) in
             XCTAssertTrue(success, "\(String(describing: error))")
         }
         
-        let search = Search<Action>(graph: graph)
+        let search = Search<Action>(focus: focus)
         
         searchTest(search: search.clear().for(types: []), count: 0)
         
@@ -145,12 +145,12 @@ class ActionSearchTests : XCTestCase {
         searchTest(search: search.clear().where(properties: ["*"], using: .or), count: 600)
         searchTest(search: search.clear().where(properties: ["*"], using: .and), count: 0)
         
-        graph.clear()
+        focus.clear()
     }
     
     func testPerformance() {
-        let graph = Graph()
-        graph.clear()
+        let focus = Focus()
+        focus.clear()
         
         for _ in 0..<1000 {
             let n1 = Action(type: "T1")
@@ -159,16 +159,16 @@ class ActionSearchTests : XCTestCase {
             n1.add(to: "G1")
         }
         
-        graph.sync { (success, error) in
+        focus.sync { (success, error) in
             XCTAssertTrue(success, "\(String(describing: error))")
         }
         
-        let search = Search<Action>(graph: graph)
+        let search = Search<Action>(focus: focus)
         
         measure { [search = search] in
             XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: ["Q1"], using: .and).member(of: ["G1"], using: .and).where(properties: ["P1"], using: .and).sync().count)
         }
         
-        graph.clear()
+        focus.clear()
     }
 }

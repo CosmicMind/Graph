@@ -30,8 +30,8 @@
 
 import CoreData
 
-@objc(GraphSource)
-public enum GraphSource: Int {
+@objc(FocusSource)
+public enum FocusSource: Int {
     case cloud
     case local
 }
@@ -43,291 +43,291 @@ public protocol WatchDelegate {}
 public protocol WatchEntityDelegate: WatchDelegate {
     /**
      A delegation method that is executed when an Entity is inserted.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter inserted entity: An Entity instance.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, inserted entity: Entity, source: GraphSource)
+    optional func watch(focus: Focus, inserted entity: Entity, source: FocusSource)
     
     /**
      A delegation method that is executed when an Entity is deleted.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter deleted entity: An Entity instance.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, deleted entity: Entity, source: GraphSource)
+    optional func watch(focus: Focus, deleted entity: Entity, source: FocusSource)
     
     /**
      A delegation method that is executed when an Entity added a property and value.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter entity: An Entity instance.
      - Parameter added property: A String.
      - Parameter with value: Any object.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource)
+    optional func watch(focus: Focus, entity: Entity, added property: String, with value: Any, source: FocusSource)
     
     /**
      A delegation method that is executed when an Entity updated a property and value.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter entity: An Entity instance.
      - Parameter updated property: A String.
      - Parameter with value: Any object.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource)
+    optional func watch(focus: Focus, entity: Entity, updated property: String, with value: Any, source: FocusSource)
     
     /**
      A delegation method that is executed when an Entity removed a property and value.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter entity: An Entity instance.
      - Parameter removed property: A String.
      - Parameter with value: Any object.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource)
+    optional func watch(focus: Focus, entity: Entity, removed property: String, with value: Any, source: FocusSource)
     
     /**
      A delegation method that is executed when an Entity added a tag.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter entity: An Entity instance.
      - Parameter added tag: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource)
+    optional func watch(focus: Focus, entity: Entity, added tag: String, source: FocusSource)
     
     /**
      A delegation method that is executed when an Entity removed a tag.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter entity: An Entity instance.
      - Parameter removed tag: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, entity: Entity, removed tag: String, source: GraphSource)
+    optional func watch(focus: Focus, entity: Entity, removed tag: String, source: FocusSource)
     
     /**
      A delegation method that is executed when an Entity was added to a group.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter entity: An Entity instance.
      - Parameter addedTo group: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, entity: Entity, addedTo group: String, source: GraphSource)
+    optional func watch(focus: Focus, entity: Entity, addedTo group: String, source: FocusSource)
     
     /**
      A delegation method that is executed when an Entity was removed from a group.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter entity: An Entity instance.
      - Parameter removedFrom group: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource)
+    optional func watch(focus: Focus, entity: Entity, removedFrom group: String, source: FocusSource)
 }
     
 @objc(WatchRelationshipDelegate)
 public protocol WatchRelationshipDelegate: WatchDelegate {
     /**
      A delegation method that is executed when a Relationship is inserted.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter inserted relationship: A Relationship instance.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, inserted relationship: Relationship, source: GraphSource)
+    optional func watch(focus: Focus, inserted relationship: Relationship, source: FocusSource)
     
     /**
      A delegation method that is executed when a Relationship is updated.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter updated relationship: A Relationship instance.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, updated relationship: Relationship, source: GraphSource)
+    optional func watch(focus: Focus, updated relationship: Relationship, source: FocusSource)
     
     /**
      A delegation method that is executed when a Relationship is deleted.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter deleted relationship: A Relationship instance.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, deleted relationship: Relationship, source: GraphSource)
+    optional func watch(focus: Focus, deleted relationship: Relationship, source: FocusSource)
     
     /**
      A delegation method that is executed when a Relationship added a property and value.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter relationship: A Relationship instance.
      - Parameter added property: A String.
      - Parameter with value: Any object.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource)
+    optional func watch(focus: Focus, relationship: Relationship, added property: String, with value: Any, source: FocusSource)
     
     /**
      A delegation method that is executed when a Relationship updated a property and value.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter relationship: A Relationship instance.
      - Parameter updated property: A String.
      - Parameter with value: Any object.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource)
+    optional func watch(focus: Focus, relationship: Relationship, updated property: String, with value: Any, source: FocusSource)
     
     /**
      A delegation method that is executed when a Relationship removed a property and value.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter relationship: A Relationship instance.
      - Parameter removed property: A String.
      - Parameter with value: Any object.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource)
+    optional func watch(focus: Focus, relationship: Relationship, removed property: String, with value: Any, source: FocusSource)
     
     /**
      A delegation method that is executed when a Relationship added a tag.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter relationship: A Relationship instance.
      - Parameter added tag: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource)
+    optional func watch(focus: Focus, relationship: Relationship, added tag: String, source: FocusSource)
     
     /**
      A delegation method that is executed when a Relationship removed a tag.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter relationship: A Relationship instance.
      - Parameter removed tag: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource)
+    optional func watch(focus: Focus, relationship: Relationship, removed tag: String, source: FocusSource)
     
     /**
      A delegation method that is executed when a Relationship was added to a group.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter relationship: A Relationship instance.
      - Parameter addedTo group: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, relationship: Relationship, addedTo group: String, source: GraphSource)
+    optional func watch(focus: Focus, relationship: Relationship, addedTo group: String, source: FocusSource)
     
     /**
      A delegation method that is executed when a Relationship was removed from a group.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter relationship: A Relationship instance.
      - Parameter removedFrom group: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, relationship: Relationship, removedFrom group: String, source: GraphSource)
+    optional func watch(focus: Focus, relationship: Relationship, removedFrom group: String, source: FocusSource)
 }
 
 @objc(WatchActionDelegate)
 public protocol WatchActionDelegate: WatchDelegate {
     /**
      A delegation method that is executed when an Action is inserted.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter inserted action: An Action instance.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, inserted action: Action, source: GraphSource)
+    optional func watch(focus: Focus, inserted action: Action, source: FocusSource)
     
     /**
      A delegation method that is executed when an Action is deleted.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter deleted action: An Action instance.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, deleted action: Action, source: GraphSource)
+    optional func watch(focus: Focus, deleted action: Action, source: FocusSource)
     
     /**
      A delegation method that is executed when an Action added a property and value.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter action: An Action instance.
      - Parameter added property: A String.
      - Parameter with value: Any object.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource)
+    optional func watch(focus: Focus, action: Action, added property: String, with value: Any, source: FocusSource)
     
     /**
      A delegation method that is executed when an Action updated a property and value.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter action: An Action instance.
      - Parameter updated property: A String.
      - Parameter with value: Any object.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource)
+    optional func watch(focus: Focus, action: Action, updated property: String, with value: Any, source: FocusSource)
     
     /**
      A delegation method that is executed when an Action removed a property and value.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter action: An Action instance.
      - Parameter removed property: A String.
      - Parameter with value: Any object.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource)
+    optional func watch(focus: Focus, action: Action, removed property: String, with value: Any, source: FocusSource)
     
     /**
      A delegation method that is executed when an Action added a tag.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter action: An Action instance.
      - Parameter added tag: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, action: Action, added tag: String, source: GraphSource)
+    optional func watch(focus: Focus, action: Action, added tag: String, source: FocusSource)
     
     /**
      A delegation method that is executed when an Action removed a tag.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter action: An Action instance.
      - Parameter removed tag: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, action: Action, removed tag: String, source: GraphSource)
+    optional func watch(focus: Focus, action: Action, removed tag: String, source: FocusSource)
     
     /**
      A delegation method that is executed when an Action was added to a group.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter action: An Action instance.
      - Parameter addedTo group: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, action: Action, addedTo group: String, source: GraphSource)
+    optional func watch(focus: Focus, action: Action, addedTo group: String, source: FocusSource)
     
     /**
      A delegation method that is executed when an Action was removed from a group.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      - Parameter action: An Action instance.
      - Parameter removedFrom group: A String.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
     @objc
-    optional func watch(graph: Graph, action: Action, removedFrom group: String, source: GraphSource)
+    optional func watch(focus: Focus, action: Action, removedFrom group: String, source: FocusSource)
 }
 
 public protocol Watchable {
@@ -357,8 +357,8 @@ public struct Watcher {
 public class Watch<T: Node>: Watchable {
     public typealias Element = T
     
-    /// A Graph instance.
-    public fileprivate(set) var graph: Graph
+    /// A Focus instance.
+    public fileprivate(set) var focus: Focus
     
     /// A reference to a delagte object.
     public weak var delegate: WatchDelegate?
@@ -421,12 +421,12 @@ public class Watch<T: Node>: Watchable {
     }
     
     /**
-     An initializer that accepts a NodeClass and Graph
+     An initializer that accepts a NodeClass and Focus
      instance.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      */
-    public init(graph: Graph) {
-        self.graph = graph
+    public init(focus: Focus) {
+        self.focus = focus
         prepare()
     }
     
@@ -661,7 +661,7 @@ public class Watch<T: Node>: Watchable {
             return
         }
         
-        guard let moc = graph.managedObjectContext else {
+        guard let moc = focus.managedObjectContext else {
             return
         }
         
@@ -687,7 +687,7 @@ public class Watch<T: Node>: Watchable {
             return
         }
         
-        guard let moc = graph.managedObjectContext else {
+        guard let moc = focus.managedObjectContext else {
             return
         }
         
@@ -713,7 +713,7 @@ public class Watch<T: Node>: Watchable {
             return
         }
         
-        guard let moc = graph.managedObjectContext else {
+        guard let moc = focus.managedObjectContext else {
             return
         }
         
@@ -728,9 +728,9 @@ public class Watch<T: Node>: Watchable {
     /**
      Passes the handle to the inserted notification delegates.
      - Parameter _ set: A Set of AnyHashable objects to pass.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToInsertedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         delegateToEntityInsertedWatchers(set, source: source)
         delegateToRelationshipInsertedWatchers(set, source: source)
         delegateToActionInsertedWatchers(set, source: source)
@@ -739,15 +739,15 @@ public class Watch<T: Node>: Watchable {
     /**
      Passes the handle to the inserted notification delegates for Entities.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToEntityInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToEntityInsertedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         set.forEach { [unowned self] in
             guard let n = $0 as? ManagedEntity else {
                 return
             }
             
-            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, inserted: Entity(managedNode: n), source: source)
+            (self.delegate as? WatchEntityDelegate)?.watch?(focus: self.focus, inserted: Entity(managedNode: n), source: source)
         }
         
         set.forEach { [unowned self] in
@@ -759,7 +759,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, source: source)
+            (self.delegate as? WatchEntityDelegate)?.watch?(focus: self.focus, entity: Entity(managedNode: n), added: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -771,7 +771,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), addedTo: o.name, source: source)
+            (self.delegate as? WatchEntityDelegate)?.watch?(focus: self.focus, entity: Entity(managedNode: n), addedTo: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -783,22 +783,22 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, with: o.object, source: source)
+            (self.delegate as? WatchEntityDelegate)?.watch?(focus: self.focus, entity: Entity(managedNode: n), added: o.name, with: o.object, source: source)
         }
     }
     
     /**
      Passes the handle to the inserted notification delegates for Relationships.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToRelationshipInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToRelationshipInsertedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         set.forEach { [unowned self] in
             guard let n = $0 as? ManagedRelationship else {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, inserted: Relationship(managedNode: n), source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, inserted: Relationship(managedNode: n), source: source)
         }
         
         set.forEach { [unowned self] in
@@ -810,7 +810,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, relationship: Relationship(managedNode: n), added: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -822,7 +822,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), addedTo: o.name, source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, relationship: Relationship(managedNode: n), addedTo: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -834,22 +834,22 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, with: o.object, source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, relationship: Relationship(managedNode: n), added: o.name, with: o.object, source: source)
         }
     }
     
     /**
      Passes the handle to the inserted notification delegates for Actions.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToActionInsertedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToActionInsertedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         set.forEach { [unowned self] in
             guard let n = $0 as? ManagedAction else {
                 return
             }
             
-            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, inserted: Action(managedNode: n), source: source)
+            (self.delegate as? WatchActionDelegate)?.watch?(focus: self.focus, inserted: Action(managedNode: n), source: source)
         }
         
         set.forEach { [unowned self] in
@@ -861,7 +861,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, source: source)
+            (self.delegate as? WatchActionDelegate)?.watch?(focus: self.focus, action: Action(managedNode: n), added: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -873,7 +873,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), addedTo: o.name, source: source)
+            (self.delegate as? WatchActionDelegate)?.watch?(focus: self.focus, action: Action(managedNode: n), addedTo: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -885,16 +885,16 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, with: o.object, source: source)
+            (self.delegate as? WatchActionDelegate)?.watch?(focus: self.focus, action: Action(managedNode: n), added: o.name, with: o.object, source: source)
         }
     }
     
     /**
      Passes the handle to the updated notification delegates.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToUpdatedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         delegateToEntityUpdatedWatchers(set, source: source)
         delegateToRelationshipUpdatedWatchers(set, source: source)
         delegateToActionUpdatedWatchers(set, source: source)
@@ -903,9 +903,9 @@ public class Watch<T: Node>: Watchable {
     /**
      Passes the handle to the updated notification delegates for Entities.
      - Parameter nodes: An Array of ManagedObjects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToEntityUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToEntityUpdatedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityProperty else {
                 return
@@ -915,22 +915,22 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), updated: o.name, with: o.object, source: source)
+            (self.delegate as? WatchEntityDelegate)?.watch?(focus: self.focus, entity: Entity(managedNode: n), updated: o.name, with: o.object, source: source)
         }
     }
     
     /**
      Passes the handle to the updated notification delegates for Relationships.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToRelationshipUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToRelationshipUpdatedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         set.forEach { [unowned self] in
             guard let n = $0 as? ManagedRelationship else {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, updated: Relationship(managedNode: n), source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, updated: Relationship(managedNode: n), source: source)
         }
         
         set.forEach { [unowned self] in
@@ -942,16 +942,16 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), updated: o.name, with: o.object, source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, relationship: Relationship(managedNode: n), updated: o.name, with: o.object, source: source)
         }
     }
     
     /**
      Passes the handle to the updated notification delegates for Actions.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToActionUpdatedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToActionUpdatedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionProperty else {
                 return
@@ -961,16 +961,16 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), updated: o.name, with: o.object, source: source)
+            (self.delegate as? WatchActionDelegate)?.watch?(focus: self.focus, action: Action(managedNode: n), updated: o.name, with: o.object, source: source)
         }
     }
     
     /**
      Passes the handle to the deleted notification delegates.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToDeletedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         delegateToEntityDeletedWatchers(set, source: source)
         delegateToRelationshipDeletedWatchers(set, source: source)
         delegateToActionDeletedWatchers(set, source: source)
@@ -979,9 +979,9 @@ public class Watch<T: Node>: Watchable {
     /**
      Passes the handle to the deleted notification delegates for Entities.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToEntityDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToEntityDeletedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedEntityTag else {
                 return
@@ -991,7 +991,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, source: source)
+            (self.delegate as? WatchEntityDelegate)?.watch?(focus: self.focus, entity: Entity(managedNode: n), removed: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -1003,7 +1003,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removedFrom: o.name, source: source)
+            (self.delegate as? WatchEntityDelegate)?.watch?(focus: self.focus, entity: Entity(managedNode: n), removedFrom: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -1015,7 +1015,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, with: o.object, source: source)
+            (self.delegate as? WatchEntityDelegate)?.watch?(focus: self.focus, entity: Entity(managedNode: n), removed: o.name, with: o.object, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -1023,16 +1023,16 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, deleted: Entity(managedNode: n), source: source)
+            (self.delegate as? WatchEntityDelegate)?.watch?(focus: self.focus, deleted: Entity(managedNode: n), source: source)
         }
     }
     
     /**
      Passes the handle to the deleted notification delegates for Relationships.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToRelationshipDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToRelationshipDeletedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedRelationshipTag else {
                 return
@@ -1042,7 +1042,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, relationship: Relationship(managedNode: n), removed: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -1054,7 +1054,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removedFrom: o.name, source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, relationship: Relationship(managedNode: n), removedFrom: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -1066,7 +1066,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, with: o.object, source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, relationship: Relationship(managedNode: n), removed: o.name, with: o.object, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -1074,16 +1074,16 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, deleted: Relationship(managedNode: n), source: source)
+            (self.delegate as? WatchRelationshipDelegate)?.watch?(focus: self.focus, deleted: Relationship(managedNode: n), source: source)
         }
     }
     
     /**
      Passes the handle to the deleted notification delegates for Actions.
      - Parameter _ set: A Set of AnyHashable objects.
-     - Parameter source: A GraphSource value.
+     - Parameter source: A FocusSource value.
      */
-    fileprivate func delegateToActionDeletedWatchers(_ set: Set<AnyHashable>, source: GraphSource) {
+    fileprivate func delegateToActionDeletedWatchers(_ set: Set<AnyHashable>, source: FocusSource) {
         set.forEach { [unowned self] in
             guard let o = $0 as? ManagedActionTag else {
                 return
@@ -1093,7 +1093,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, source: source)
+            (self.delegate as? WatchActionDelegate)?.watch?(focus: self.focus, action: Action(managedNode: n), removed: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -1105,7 +1105,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removedFrom: o.name, source: source)
+            (self.delegate as? WatchActionDelegate)?.watch?(focus: self.focus, action: Action(managedNode: n), removedFrom: o.name, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -1117,7 +1117,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, with: o.object, source: source)
+            (self.delegate as? WatchActionDelegate)?.watch?(focus: self.focus, action: Action(managedNode: n), removed: o.name, with: o.object, source: source)
         }
         
         set.forEach { [unowned self] in
@@ -1125,7 +1125,7 @@ public class Watch<T: Node>: Watchable {
                 return
             }
             
-            (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, deleted: Action(managedNode: n), source: source)
+            (self.delegate as? WatchActionDelegate)?.watch?(focus: self.focus, deleted: Action(managedNode: n), source: source)
         }
     }
     
@@ -1136,13 +1136,13 @@ public class Watch<T: Node>: Watchable {
     
     /// Prepares the Watch instance.
     fileprivate func prepare() {
-        prepareGraph()
+        prepareFocus()
         resume()
     }
     
     /// Prepares the instance for save notifications.
     fileprivate func addForObservation() {
-        guard let moc = graph.managedObjectContext else {
+        guard let moc = focus.managedObjectContext else {
             return
         }
         
@@ -1152,9 +1152,9 @@ public class Watch<T: Node>: Watchable {
         defaultCenter.addObserver(self, selector: #selector(notifyDeletedWatchers), name: .NSManagedObjectContextObjectsDidChange, object: moc)
     }
     
-    /// Prepares graph for watching.
-    fileprivate func prepareGraph() {
-        graph.watchers.append(Watcher(object: self))
+    /// Prepares focus for watching.
+    fileprivate func prepareFocus() {
+        focus.watchers.append(Watcher(object: self))
     }
 }
 

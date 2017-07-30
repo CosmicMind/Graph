@@ -30,7 +30,7 @@
 
 import CoreData
 
-internal struct GraphContextRegistry {
+internal struct FocusContextRegistry {
     static var dispatchToken: Bool = false
     static var added: [String: Bool]!
     static var enableCloud: [String: Bool]!
@@ -71,17 +71,17 @@ internal struct Context {
 }
 
 /// NSManagedObjectContext extension.
-extension Graph {
+extension Focus {
     /// Prepares the registry.
-    internal func prepareGraphContextRegistry() {
-        guard false == GraphContextRegistry.dispatchToken else {
+    internal func prepareFocusContextRegistry() {
+        guard false == FocusContextRegistry.dispatchToken else {
             return
         }
         
-        GraphContextRegistry.dispatchToken = true
-        GraphContextRegistry.added = [:]
-        GraphContextRegistry.enableCloud = [:]
-        GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
+        FocusContextRegistry.dispatchToken = true
+        FocusContextRegistry.added = [:]
+        FocusContextRegistry.enableCloud = [:]
+        FocusContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
     }
     
     /**
@@ -89,13 +89,13 @@ extension Graph {
      - Parameter iCloud: A boolean to enable iCloud.
      */
     internal func prepareManagedObjectContext(enableCloud: Bool) {
-        guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
-            GraphContextRegistry.enableCloud[route] = enableCloud
-            location = GraphStoreDescription.location.appendingPathComponent(route)
+        guard let moc = FocusContextRegistry.managedObjectContexts[route] else {
+            FocusContextRegistry.enableCloud[route] = enableCloud
+            location = FocusStoreDescription.location.appendingPathComponent(route)
             
             managedObjectContext = Context.create(.mainQueueConcurrencyType)
             managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
-            GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
+            FocusContextRegistry.managedObjectContexts[route] = managedObjectContext
             
             if enableCloud {
                 preparePersistentStoreCoordinatorNotificationHandlers()
@@ -111,7 +111,7 @@ extension Graph {
         
         managedObjectContext = moc
         
-        guard let isCloudEnabled = GraphContextRegistry.enableCloud[route] else {
+        guard let isCloudEnabled = FocusContextRegistry.enableCloud[route] else {
             return
         }
         
@@ -122,15 +122,15 @@ extension Graph {
                 return
             }
             
-            s.completion?(isCloudEnabled, isCloudEnabled ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
-            s.delegate?.graphDidPrepareCloudStorage?(graph: s)
+            s.completion?(isCloudEnabled, isCloudEnabled ? nil : FocusError(message: "[Focus Error: iCloud is not supported.]"))
+            s.delegate?.focusDidPrepareCloudStorage?(focus: s)
         }
     }
     
     /// Prepares the SQLight file if needed.
     internal func prepareSQLite() {
         if NSSQLiteStoreType == type {
-            location = location.appendingPathComponent("Graph.sqlite")
+            location = location.appendingPathComponent("Focus.sqlite")
         }
     }
 
@@ -145,7 +145,7 @@ extension Graph {
         let container = NSPersistentContainer(name: name, storeDescription: storeDescription)
         container.loadPersistentStores { [unowned self] (storeDescription, error) in
             self.managedObjectContext = container.viewContext
-            GraphContextRegistry.managedObjectContexts[self.route] = self.managedObjectContext
+            FocusContextRegistry.managedObjectContexts[self.route] = self.managedObjectContext
         }
     }
 }

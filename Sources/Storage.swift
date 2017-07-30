@@ -38,7 +38,7 @@ import CoreData
  - Parameter error: An optional error object to pass.
  - Parameter completion: An Optional completion block.
  */
-internal func GraphCompletionCallback(success: Bool, error: Error?, completion: ((Bool, Error?) -> Void)? = nil) {
+internal func FocusCompletionCallback(success: Bool, error: Error?, completion: ((Bool, Error?) -> Void)? = nil) {
     if Thread.isMainThread {
         completion?(success, error)
     } else {
@@ -53,7 +53,7 @@ internal func GraphCompletionCallback(success: Bool, error: Error?, completion: 
  - Parameter message: The message to pass.
  - Returns: An Error object.
  */
-internal func GraphError(message: String, domain: String = "com.cosmicmind.graph") -> Error? {
+internal func FocusError(message: String, domain: String = "com.cosmicmind.focus") -> Error? {
     var info = [String: Any]()
     info[NSLocalizedDescriptionKey] = message
     info[NSLocalizedFailureReasonErrorKey] = message
@@ -62,7 +62,7 @@ internal func GraphError(message: String, domain: String = "com.cosmicmind.graph
     return error
 }
 
-extension Graph {
+extension Focus {
     /**
      Performs a save.
      - Parameter completion: An Optional completion block that is
@@ -70,9 +70,9 @@ extension Graph {
      */
     public func async(_ completion: ((Bool, Error?) -> Void)? = nil) {
         guard let moc = managedObjectContext else {
-            GraphCompletionCallback(
+            FocusCompletionCallback(
                 success: false,
-                error: GraphError(message: "[Graph Error: ManagedObjectContext does not exist."),
+                error: FocusError(message: "[Focus Error: ManagedObjectContext does not exist."),
                 completion: completion)
             return
         }
@@ -80,9 +80,9 @@ extension Graph {
         moc.perform { [weak moc] in
             do {
                 try moc?.save()
-                GraphCompletionCallback(success: true, error: nil, completion: completion)
+                FocusCompletionCallback(success: true, error: nil, completion: completion)
             } catch let e as NSError {
-                GraphCompletionCallback(success: false, error: e, completion: completion)
+                FocusCompletionCallback(success: false, error: e, completion: completion)
             }
         }
     }
@@ -94,9 +94,9 @@ extension Graph {
      */
     public func sync(_ completion: ((Bool, Error?) -> Void)? = nil) {
         guard let moc = managedObjectContext else {
-            GraphCompletionCallback(
+            FocusCompletionCallback(
                 success: false,
-                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not exist."),
+                error: FocusError(message: "[Focus Error: Worker ManagedObjectContext does not exist."),
                 completion: completion)
             return
         }
@@ -104,9 +104,9 @@ extension Graph {
         moc.performAndWait { [unowned moc] in
             do {
                 try moc.save()
-                GraphCompletionCallback(success: true, error: nil, completion: completion)
+                FocusCompletionCallback(success: true, error: nil, completion: completion)
             } catch let e as NSError {
-                GraphCompletionCallback(success: false, error: e, completion: completion)
+                FocusCompletionCallback(success: false, error: e, completion: completion)
             }
         }
     }
@@ -117,15 +117,15 @@ extension Graph {
      executed when the save operation is completed.
      */
     public func clear(_ completion: ((Bool, Error?) -> Void)? = nil) {
-        Search<Entity>(graph: self).for(types: "*").sync().forEach {
+        Search<Entity>(focus: self).for(types: "*").sync().forEach {
             $0.delete()
         }
 
-        Search<Relationship>(graph: self).for(types: "*").sync().forEach {
+        Search<Relationship>(focus: self).for(types: "*").sync().forEach {
             $0.delete()
         }
 
-        Search<Action>(graph: self).for(types: "*").sync().forEach {
+        Search<Action>(focus: self).for(types: "*").sync().forEach {
             $0.delete()
         }
 

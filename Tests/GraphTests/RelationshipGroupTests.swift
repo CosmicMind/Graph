@@ -29,7 +29,7 @@
  */
 
 import XCTest
-@testable import Graph
+@testable import Focus
 
 class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
     var saveExpectation: XCTestExpectation?
@@ -47,11 +47,11 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
     }
     
     func testGroupAdd() {
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         tagAddExpception = expectation(description: "[RelationshipTests Error: Group add test failed.]")
         
-        let graph = Graph()
-        let watch = Watch<Relationship>(graph: graph).for(types: "T").member(of: "G1")
+        let focus = Focus()
+        let watch = Watch<Relationship>(focus: focus).for(types: "T").member(of: "G1")
         watch.delegate = self
         
         let relationship = Relationship(type: "T")
@@ -59,7 +59,7 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         
         XCTAssertTrue(relationship.member(of: "G1"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -69,14 +69,14 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
     }
     
     func testGroupUpdate() {
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         
-        let graph = Graph()
+        let focus = Focus()
         
         let relationship = Relationship(type: "T")
         relationship.add(to: "G2")
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -84,11 +84,11 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         tagAddExpception = expectation(description: "[RelationshipTests Error: Group add test failed.]")
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Group remove test failed.]")
         
-        let watch = Watch<Relationship>(graph: graph).member(of: "G1", "G2")
+        let watch = Watch<Relationship>(focus: focus).member(of: "G1", "G2")
         watch.delegate = self
         
         relationship.toggle(groups: "G1", "G2")
@@ -96,7 +96,7 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue(relationship.member(of: "G1"))
         XCTAssertFalse(relationship.member(of: "G2"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -106,16 +106,16 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
     }
     
     func testGroupDelete() {
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         
-        let graph = Graph()
+        let focus = Focus()
         
         let relationship = Relationship(type: "T")
         relationship.add(to: "G2")
         
         XCTAssertTrue(relationship.member(of: "G2"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -123,17 +123,17 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Group remove test failed.]")
         
-        let watch = Watch<Relationship>(graph: graph).member(of: "G2")
+        let watch = Watch<Relationship>(focus: focus).member(of: "G2")
         watch.delegate = self
         
         relationship.remove(from: "G2")
         
         XCTAssertFalse(relationship.member(of: "G2"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -142,7 +142,7 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, relationship: Relationship, addedTo group: String, source: GraphSource) {
+    func watch(focus: Focus, relationship: Relationship, addedTo group: String, source: FocusSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G1", group)
@@ -153,7 +153,7 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         tagAddExpception?.fulfill()
     }
     
-    func watch(graph: Graph, relationship: Relationship, removedFrom group: String, source: GraphSource) {
+    func watch(focus: Focus, relationship: Relationship, removedFrom group: String, source: FocusSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G2", group)

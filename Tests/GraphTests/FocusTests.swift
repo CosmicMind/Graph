@@ -1,16 +1,16 @@
 //
-//  GraphTests.swift
-//  GraphTests
+//  FocusTests.swift
+//  FocusTests
 //
 //  Created by Daniel Dahan on 2017-07-16.
 //  Copyright © 2017 Daniel Dahan. All rights reserved.
 //
 
 import XCTest
-@testable import Graph
+@testable import Focus
 
-class GraphTests: XCTestCase {
-    var graphExpectation: XCTestExpectation?
+class FocusTests: XCTestCase {
+    var focusExpectation: XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -21,71 +21,71 @@ class GraphTests: XCTestCase {
     }
     
     func testLocal() {
-        let g1 = Graph()
+        let g1 = Focus()
         XCTAssertTrue(g1.managedObjectContext.isKind(of: NSManagedObjectContext.self))
-        XCTAssertEqual(GraphStoreDescription.name, g1.name)
-        XCTAssertEqual(GraphStoreDescription.type, g1.type)
+        XCTAssertEqual(FocusStoreDescription.name, g1.name)
+        XCTAssertEqual(FocusStoreDescription.type, g1.type)
         
-        let g2 = Graph(name: "marketing")
+        let g2 = Focus(name: "marketing")
         XCTAssertTrue(g2.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("marketing", g2.name)
-        XCTAssertEqual(GraphStoreDescription.type, g2.type)
+        XCTAssertEqual(FocusStoreDescription.type, g2.type)
         
-        graphExpectation = expectation(description: "[GraphTests Error: Async tests failed.]")
+        focusExpectation = expectation(description: "[FocusTests Error: Async tests failed.]")
         
-        var g3: Graph!
+        var g3: Focus!
         DispatchQueue.global(qos: .background).async { [weak self] in
-            g3 = Graph(name: "async")
+            g3 = Focus(name: "async")
             XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
             XCTAssertEqual("async", g3.name)
-            XCTAssertEqual(GraphStoreDescription.type, g3.type)
-            self?.graphExpectation?.fulfill()
+            XCTAssertEqual(FocusStoreDescription.type, g3.type)
+            self?.focusExpectation?.fulfill()
         }
         
        waitForExpectations(timeout: 5, handler: nil)
         
         XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("async", g3.name)
-        XCTAssertEqual(GraphStoreDescription.type, g3.type)
+        XCTAssertEqual(FocusStoreDescription.type, g3.type)
     }
     
     func testCloud() {
-        graphExpectation = expectation(description: "[CloudTests Error: Async tests failed.]")
+        focusExpectation = expectation(description: "[CloudTests Error: Async tests failed.]")
         
-        let g1 = Graph(cloud: "marketing") { [weak self] (supported: Bool, error: Error?) in
+        let g1 = Focus(cloud: "marketing") { [weak self] (supported: Bool, error: Error?) in
             XCTAssertTrue(supported)
             XCTAssertNil(error)
-            self?.graphExpectation?.fulfill()
+            self?.focusExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
         XCTAssertTrue(g1.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("marketing", g1.name)
-        XCTAssertEqual(GraphStoreDescription.type, g1.type)
+        XCTAssertEqual(FocusStoreDescription.type, g1.type)
         
-        graphExpectation = expectation(description: "[CloudTests Error: Async tests failed.]")
+        focusExpectation = expectation(description: "[CloudTests Error: Async tests failed.]")
         
-        let g2 = Graph(cloud: "async") { [weak self] (supported: Bool, error: Error?) in
+        let g2 = Focus(cloud: "async") { [weak self] (supported: Bool, error: Error?) in
             XCTAssertTrue(supported)
             XCTAssertNil(error)
-            self?.graphExpectation?.fulfill()
+            self?.focusExpectation?.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
         
         XCTAssertTrue(g2.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("async", g2.name)
-        XCTAssertEqual(GraphStoreDescription.type, g2.type)
+        XCTAssertEqual(FocusStoreDescription.type, g2.type)
         
-        graphExpectation = expectation(description: "[CloudTests Error: Async tests failed.]")
+        focusExpectation = expectation(description: "[CloudTests Error: Async tests failed.]")
         
-        var g3: Graph!
+        var g3: Focus!
         DispatchQueue.global(qos: .background).async { [weak self] in
-            g3 = Graph(cloud: "test") { [weak self] (supported: Bool, error: Error?) in
+            g3 = Focus(cloud: "test") { [weak self] (supported: Bool, error: Error?) in
                 XCTAssertTrue(supported)
                 XCTAssertNil(error)
-                self?.graphExpectation?.fulfill()
+                self?.focusExpectation?.fulfill()
             }
         }
         
@@ -93,6 +93,6 @@ class GraphTests: XCTestCase {
         
         XCTAssertTrue(g3.managedObjectContext.isKind(of: NSManagedObjectContext.self))
         XCTAssertEqual("test", g3.name)
-        XCTAssertEqual(GraphStoreDescription.type, g3.type)
+        XCTAssertEqual(FocusStoreDescription.type, g3.type)
     }
 }

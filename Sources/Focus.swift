@@ -30,67 +30,67 @@
 
 import CoreData
 
-public struct GraphStoreDescription {
+public struct FocusStoreDescription {
     /// Datastore name.
     static let name: String = "default"
 
-    /// Graph type.
+    /// Focus type.
     static let type: String = NSSQLiteStoreType
 
-    /// URL reference to where the Graph datastore will live.
+    /// URL reference to where the Focus datastore will live.
     static var location: URL {
-        return File.path(.applicationSupportDirectory, path: "CosmicMind/Graph/")!
+        return File.path(.applicationSupportDirectory, path: "CosmicMind/Focus/")!
     }
 }
 
-@objc(GraphDelegate)
-public protocol GraphDelegate {
+@objc(FocusDelegate)
+public protocol FocusDelegate {
     /**
-     A delegation method that is executed when a graph instance
+     A delegation method that is executed when a focus instance
      will prepare cloud storage.
-     - Parameter graph: A Graph instance.
-     - Parameter transition: A GraphCloudStorageTransition value.
+     - Parameter focus: A Focus instance.
+     - Parameter transition: A FocusCloudStorageTransition value.
      */
     @objc
-    optional func graphWillPrepareCloudStorage(graph: Graph, transition: GraphCloudStorageTransition)
+    optional func focusWillPrepareCloudStorage(focus: Focus, transition: FocusCloudStorageTransition)
 
     /**
-     A delegation method that is executed when a graph instance
+     A delegation method that is executed when a focus instance
      did prepare cloud storage.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      */
     @objc
-    optional func graphDidPrepareCloudStorage(graph: Graph)
+    optional func focusDidPrepareCloudStorage(focus: Focus)
 
     /**
-     A delegation method that is executed when a graph instance
+     A delegation method that is executed when a focus instance
      will update from cloud storage.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      */
     @objc
-    optional func graphWillUpdateFromCloudStorage(graph: Graph)
+    optional func focusWillUpdateFromCloudStorage(focus: Focus)
 
     /**
-     A delegation method that is executed when a graph instance
+     A delegation method that is executed when a focus instance
      did update from cloud storage.
-     - Parameter graph: A Graph instance.
+     - Parameter focus: A Focus instance.
      */
     @objc
-    optional func graphDidUpdateFromCloudStorage(graph: Graph)
+    optional func focusDidUpdateFromCloudStorage(focus: Focus)
 }
 
-@objc(Graph)
-public class Graph: NSObject {
-    /// Graph location.
+@objc(Focus)
+public class Focus: NSObject {
+    /// Focus location.
     internal var location: URL
 
-    /// Graph rouute/
+    /// Focus rouute/
     public internal(set) var route: String
 
-    /// Graph name.
+    /// Focus name.
     public internal(set) var name: String
 
-    /// Graph type.
+    /// Focus type.
     public internal(set) var type: String
 
     /// Worker managedObjectContext.
@@ -105,41 +105,41 @@ public class Graph: NSObject {
     /// Watch instances.
     public internal(set) lazy var watchers : [Watcher] = []
 
-    public weak var delegate: GraphDelegate?
+    public weak var delegate: FocusDelegate?
 
     /**
-     A reference to the graph completion handler.
+     A reference to the focus completion handler.
      - Parameter success: A boolean indicating if the cloud connection
      is possible or not.
      */
     internal var completion: ((Bool, Error?) -> Void)?
 
-    /// Deinitializer that removes the Graph from NSNotificationCenter.
+    /// Deinitializer that removes the Focus from NSNotificationCenter.
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
     /**
-     Initializer to named Graph with optional type and location.
-     - Parameter name: A name for the Graph.
-     - Parameter type: Graph type.
+     Initializer to named Focus with optional type and location.
+     - Parameter name: A name for the Focus.
+     - Parameter type: Focus type.
      - Parameter location: A location for storage.
      executed to determine if iCloud support is available or not.
      */
-    public init(name: String = GraphStoreDescription.name, type: String = GraphStoreDescription.type) {
+    public init(name: String = FocusStoreDescription.name, type: String = FocusStoreDescription.type) {
         route = "Local/\(name)"
         self.name = name
         self.type = type
-        self.location = GraphStoreDescription.location
+        self.location = FocusStoreDescription.location
         super.init()
-        prepareGraphContextRegistry()
+        prepareFocusContextRegistry()
         prepareManagedObjectContext(enableCloud: false)
     }
 
     /**
-     Initializer to named Graph with optional type and location.
-     - Parameter cloud: A name for the Graph.
-     - Parameter type: Graph type.
+     Initializer to named Focus with optional type and location.
+     - Parameter cloud: A name for the Focus.
+     - Parameter type: Focus type.
      - Parameter location: A location for storage.
      - Parameter completion: An Optional completion block that is
      executed to determine if iCloud support is available or not.
@@ -148,10 +148,10 @@ public class Graph: NSObject {
         route = "Cloud/\(name)"
         self.name = name
         type = NSSQLiteStoreType
-        location = GraphStoreDescription.location
+        location = FocusStoreDescription.location
         super.init()
         self.completion = completion
-        prepareGraphContextRegistry()
+        prepareFocusContextRegistry()
         prepareManagedObjectContext(enableCloud: true)
     }
 }

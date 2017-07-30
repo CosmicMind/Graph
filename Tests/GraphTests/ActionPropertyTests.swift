@@ -29,7 +29,7 @@
  */
 
 import XCTest
-@testable import Graph
+@testable import Focus
 
 class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     var saveExpectation: XCTestExpectation?
@@ -47,11 +47,11 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     }
     
     func testPropertyInsert() {
-        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Focus save test failed.]")
         propertyInsertExpception = expectation(description: "[ActionTests Error: Property insert test failed.]")
         
-        let graph = Graph()
-        let watch = Watch<Action>(graph: graph).where(properties: "P1")
+        let focus = Focus()
+        let watch = Watch<Action>(focus: focus).where(properties: "P1")
         watch.delegate = self
         
         let action = Action(type: "T")
@@ -59,7 +59,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
         
         XCTAssertEqual("V1", action["P1"] as? String)
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -69,14 +69,14 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     }
     
     func testPropertyUpdate() {
-        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Focus save test failed.]")
         
-        let graph = Graph()
+        let focus = Focus()
         
         let action = Action(type: "T")
         action["P1"] = "V1"
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -84,17 +84,17 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Focus save test failed.]")
         propertyUpdateExpception = expectation(description: "[ActionTests Error: Property update test failed.]")
         
-        let watch = Watch<Action>(graph: graph).where(properties: "P1")
+        let watch = Watch<Action>(focus: focus).where(properties: "P1")
         watch.delegate = self
         
         action["P1"] = "V2"
         
         XCTAssertEqual("V2", action["P1"] as? String)
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -104,14 +104,14 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     }
     
     func testPropertyDelete() {
-        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Focus save test failed.]")
         
-        let graph = Graph()
+        let focus = Focus()
         
         let action = Action(type: "T")
         action["P1"] = "V1"
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -119,17 +119,17 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Focus save test failed.]")
         propertyDeleteExpception = expectation(description: "[ActionTests Error: Property delete test failed.]")
         
-        let watch = Watch<Action>(graph: graph).where(properties: "P1")
+        let watch = Watch<Action>(focus: focus).where(properties: "P1")
         watch.delegate = self
         
         action["P1"] = nil
         
         XCTAssertNil(action["P1"])
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -138,7 +138,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource) {
+    func watch(focus: Focus, action: Action, added property: String, with value: Any, source: FocusSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
@@ -149,7 +149,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
         propertyInsertExpception?.fulfill()
     }
     
-    func watch(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource) {
+    func watch(focus: Focus, action: Action, updated property: String, with value: Any, source: FocusSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         
@@ -160,7 +160,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
         propertyUpdateExpception?.fulfill()
     }
     
-    func watch(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource) {
+    func watch(focus: Focus, action: Action, removed property: String, with value: Any, source: FocusSource) {
         XCTAssertTrue("T" == action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         

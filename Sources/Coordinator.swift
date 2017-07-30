@@ -34,8 +34,8 @@ import CoreData
  Cloud stroage transition types for when changes happen
  to the iCloud account directly.
  */
-@objc(GraphCloudStorageTransition)
-public enum GraphCloudStorageTransition: Int {
+@objc(FocusCloudStorageTransition)
+public enum FocusCloudStorageTransition: Int {
     case accountAdded
     case accountRemoved
     case contentRemoved
@@ -69,7 +69,7 @@ internal struct Coordinator {
         
         File.createDirectoryAtPath(location, withIntermediateDirectories: true, attributes: nil) { (success, error) in
             if let e = error {
-                fatalError("[Graph Error: \(e.localizedDescription)]")
+                fatalError("[Focus Error: \(e.localizedDescription)]")
             }
         
             coordinator = NSPersistentStoreCoordinator(managedObjectModel: Model.create())
@@ -80,7 +80,7 @@ internal struct Coordinator {
 }
 
 /// NSPersistentStoreCoordinator extension.
-extension Graph {
+extension Focus {
     /**
      Adds the persistentStore to the persistentStoreCoordinator.
      - Parameter supported: A boolean indicating whether cloud
@@ -106,10 +106,10 @@ extension Graph {
             location = moc.persistentStoreCoordinator!.persistentStores.first!.url!
             
             if !supported {
-                completion?(false, GraphError(message: "[Graph Error: iCloud is not supported.]"))
+                completion?(false, FocusError(message: "[Focus Error: iCloud is not supported.]"))
             }
         } catch let e as NSError {
-            fatalError("[Graph Error: \(e.localizedDescription)]")
+            fatalError("[Focus Error: \(e.localizedDescription)]")
         }
     }
     
@@ -141,18 +141,18 @@ extension Graph {
             return
         }
         
-        let t = GraphCloudStorageTransition(type: type)
+        let t = FocusCloudStorageTransition(type: type)
         
 
-        delegate?.graphWillPrepareCloudStorage?(graph: self, transition: t)
+        delegate?.focusWillPrepareCloudStorage?(focus: self, transition: t)
     }
     
     internal func persistentStoreDidChange(_ notification: Notification) {
-        GraphContextRegistry.added[route] = true
+        FocusContextRegistry.added[route] = true
         
         completion?(true, nil)
         
-        delegate?.graphDidPrepareCloudStorage?(graph: self)
+        delegate?.focusDidPrepareCloudStorage?(focus: self)
     }
     
     internal func persistentStoreDidImportUbiquitousContentChanges(_ notification: Notification) {
@@ -165,7 +165,7 @@ extension Graph {
                 return
             }
             
-            s.delegate?.graphWillUpdateFromCloudStorage?(graph: s)
+            s.delegate?.focusWillUpdateFromCloudStorage?(focus: s)
             
             s.watchers.forEach { [weak moc] in
                 guard let watch = $0.watch else {
@@ -180,7 +180,7 @@ extension Graph {
                 watch.notifyDeletedWatchersFromCloud(notification)
             }
             
-            s.delegate?.graphDidUpdateFromCloudStorage?(graph: s)
+            s.delegate?.focusDidUpdateFromCloudStorage?(focus: s)
         }
     }
 }

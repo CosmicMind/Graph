@@ -29,7 +29,7 @@
  */
 
 import XCTest
-@testable import Graph
+@testable import Focus
 
 class RelationshipSearchTests : XCTestCase {
     var testExpectation: XCTestExpectation?
@@ -65,8 +65,8 @@ class RelationshipSearchTests : XCTestCase {
     }
     
     func testAll() {
-        let graph = Graph()
-        graph.clear()
+        let focus = Focus()
+        focus.clear()
         
         for _ in 0..<100 {
             let n = Relationship(type: "T1")
@@ -89,11 +89,11 @@ class RelationshipSearchTests : XCTestCase {
             n.add(to: "G3")
         }
         
-        graph.sync { (success, error) in
+        focus.sync { (success, error) in
             XCTAssertTrue(success, "\(String(describing: error))")
         }
         
-        let search = Search<Relationship>(graph: graph)
+        let search = Search<Relationship>(focus: focus)
         
         searchTest(search: search.clear().for(types: []), count: 0)
         
@@ -145,12 +145,12 @@ class RelationshipSearchTests : XCTestCase {
         searchTest(search: search.clear().where(properties: ["*"], using: .or), count: 600)
         searchTest(search: search.clear().where(properties: ["*"], using: .and), count: 0)
         
-        graph.clear()
+        focus.clear()
     }
     
     func testPerformance() {
-        let graph = Graph()
-        graph.clear()
+        let focus = Focus()
+        focus.clear()
         
         for _ in 0..<1000 {
             let n1 = Relationship(type: "T1")
@@ -159,16 +159,16 @@ class RelationshipSearchTests : XCTestCase {
             n1.add(to: "G1")
         }
         
-        graph.sync { (success, error) in
+        focus.sync { (success, error) in
             XCTAssertTrue(success, "\(String(describing: error))")
         }
         
-        let search = Search<Relationship>(graph: graph)
+        let search = Search<Relationship>(focus: focus)
         
         measure { [search = search] in
             XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: ["Q1"], using: .and).member(of: ["G1"], using: .and).where(properties: ["P1"], using: .and).sync().count)
         }
         
-        graph.clear()
+        focus.clear()
     }
 }

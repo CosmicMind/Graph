@@ -29,7 +29,7 @@
  */
 
 import XCTest
-@testable import Graph
+@testable import Focus
 
 class EntityTagTests: XCTestCase, WatchEntityDelegate {
     var saveExpectation: XCTestExpectation?
@@ -47,11 +47,11 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     }
     
     func testTagAdd() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Focus save test failed.]")
         tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
         
-        let graph = Graph()
-        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G1")
+        let focus = Focus()
+        let watch = Watch<Entity>(focus: focus).for(types: "T").has(tags: "G1")
         watch.delegate = self
         
         let entity = Entity(type: "T")
@@ -59,7 +59,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         
         XCTAssertTrue(entity.has(tags: "G1"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -69,14 +69,14 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     }
     
     func testTagUpdate() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Focus save test failed.]")
         
-        let graph = Graph()
+        let focus = Focus()
         
         let entity = Entity(type: "T")
         entity.add(tags: "G2")
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -84,11 +84,11 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Focus save test failed.]")
         tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
         tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Entity>(graph: graph).has(tags: "G1", "G2")
+        let watch = Watch<Entity>(focus: focus).has(tags: "G1", "G2")
         watch.delegate = self
         
         entity.toggle(tags: "G1", "G2")
@@ -96,7 +96,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         XCTAssertTrue(entity.has(tags: "G1"))
         XCTAssertFalse(entity.has(tags: "G2"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -106,16 +106,16 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     }
     
     func testTagDelete() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Focus save test failed.]")
         
-        let graph = Graph()
+        let focus = Focus()
         
         let entity = Entity(type: "T")
         entity.add(tags: "G2")
         
         XCTAssertTrue(entity.has(tags: "G2"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -123,17 +123,17 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Focus save test failed.]")
         tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Entity>(graph: graph).has(tags: "G2")
+        let watch = Watch<Entity>(focus: focus).has(tags: "G2")
         watch.delegate = self
         
         entity.remove(tags: "G2")
         
         XCTAssertFalse(entity.has(tags: "G2"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -142,7 +142,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
+    func watch(focus: Focus, entity: Entity, added tag: String, source: FocusSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G1", tag)
@@ -153,7 +153,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         tagAddExpception?.fulfill()
     }
     
-    func watch(graph: Graph, entity: Entity, removed tag: String, source: GraphSource) {
+    func watch(focus: Focus, entity: Entity, removed tag: String, source: FocusSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G2", tag)

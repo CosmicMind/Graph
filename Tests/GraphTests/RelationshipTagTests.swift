@@ -29,7 +29,7 @@
  */
 
 import XCTest
-@testable import Graph
+@testable import Focus
 
 class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     var saveExpectation: XCTestExpectation?
@@ -47,11 +47,11 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     }
     
     func testTagAdd() {
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
         
-        let graph = Graph()
-        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: ["G1"])
+        let focus = Focus()
+        let watch = Watch<Relationship>(focus: focus).for(types: "T").has(tags: ["G1"])
         watch.delegate = self
         
         let relationship = Relationship(type: "T")
@@ -59,7 +59,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         
         XCTAssertTrue(relationship.has(tags: "G1"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -69,14 +69,14 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     }
     
     func testTagUpdate() {
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         
-        let graph = Graph()
+        let focus = Focus()
         
         let relationship = Relationship(type: "T")
         relationship.add(tags: "G2")
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -84,11 +84,11 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Relationship>(graph: graph).has(tags: ["G1", "G2"])
+        let watch = Watch<Relationship>(focus: focus).has(tags: ["G1", "G2"])
         watch.delegate = self
         
         relationship.toggle(tags: "G1", "G2")
@@ -96,7 +96,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         XCTAssertTrue(relationship.has(tags: "G1"))
         XCTAssertFalse(relationship.has(tags: "G2"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -106,16 +106,16 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     }
     
     func testTagDelete() {
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         
-        let graph = Graph()
+        let focus = Focus()
         
         let relationship = Relationship(type: "T")
         relationship.add(tags: "G2")
         
         XCTAssertTrue(relationship.has(tags: "G2"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -123,17 +123,17 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Focus save test failed.]")
         tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Relationship>(graph: graph).has(tags: ["G2"])
+        let watch = Watch<Relationship>(focus: focus).has(tags: ["G2"])
         watch.delegate = self
         
         relationship.remove(tags: "G2")
         
         XCTAssertFalse(relationship.has(tags: "G2"))
         
-        graph.async { [weak self] (success, error) in
+        focus.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -142,7 +142,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource) {
+    func watch(focus: Focus, relationship: Relationship, added tag: String, source: FocusSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G1", tag)
@@ -153,7 +153,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
         tagAddExpception?.fulfill()
     }
     
-    func watch(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource) {
+    func watch(focus: Focus, relationship: Relationship, removed tag: String, source: FocusSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G2", tag)
