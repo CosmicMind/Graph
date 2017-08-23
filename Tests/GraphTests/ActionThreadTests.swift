@@ -29,7 +29,7 @@
  */
 
 import XCTest
-@testable import Focus
+@testable import Graph
 
 class ActionThreadTests : XCTestCase, WatchActionDelegate {
     var insertSaveExpectation: XCTestExpectation?
@@ -57,12 +57,12 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         insertPropertyExpectation = expectation(description: "Test: Insert property did not pass.")
         insertTagExpectation = expectation(description: "Test: Insert tag did not pass.")
         
-        let q1 = DispatchQueue(label: "com.cosmicmind.focus.thread.1", attributes: .concurrent)
-        let q2 = DispatchQueue(label: "com.cosmicmind.focus.thread.2", attributes: .concurrent)
-        let q3 = DispatchQueue(label: "com.cosmicmind.focus.thread.3", attributes: .concurrent)
+        let q1 = DispatchQueue(label: "com.cosmicmind.graph.thread.1", attributes: .concurrent)
+        let q2 = DispatchQueue(label: "com.cosmicmind.graph.thread.2", attributes: .concurrent)
+        let q3 = DispatchQueue(label: "com.cosmicmind.graph.thread.3", attributes: .concurrent)
         
-        let focus = Focus()
-        let watch = Watch<Action>(focus: focus).for(types: "T").has(tags: "G").where(properties: "P")
+        let graph = Graph()
+        let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
         watch.delegate = self
         
         let action = Action(type: "T")
@@ -71,7 +71,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
             action["P"] = 111
             action.add(tags: "G")
             
-            focus.async { [weak self] (success, error) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(String(describing: error))")
                 self?.insertSaveExpectation?.fulfill()
             }
@@ -85,7 +85,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         q2.async { [weak self] in
             action["P"] = 222
             
-            focus.async { [weak self] (success, error) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(String(describing: error))")
                 self?.updateSaveExpectation?.fulfill()
             }
@@ -101,7 +101,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         q3.async { [weak self] in
             action.delete()
             
-            focus.async { [weak self] (success, error) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(String(describing: error))")
                 self?.deleteSaveExpectation?.fulfill()
             }
@@ -110,7 +110,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(focus: Focus, inserted action: Action, source: FocusSource) {
+    func watch(graph: Graph, inserted action: Action, source: GraphSource) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual(111, action["P"] as? Int)
@@ -119,7 +119,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         insertExpectation?.fulfill()
     }
     
-    func watch(focus: Focus, deleted action: Action, source: FocusSource) {
+    func watch(graph: Graph, deleted action: Action, source: GraphSource) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertNil(action["P"])
@@ -128,7 +128,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         deleteExpectation?.fulfill()
     }
     
-    func watch(focus: Focus, action: Action, added tag: String, source: FocusSource) {
+    func watch(graph: Graph, action: Action, added tag: String, source: GraphSource) {
         XCTAssertEqual("T", action.type)
         XCTAssertEqual("G", tag)
         XCTAssertTrue(action.has(tags: tag))
@@ -136,7 +136,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         insertTagExpectation?.fulfill()
     }
     
-    func watch(focus: Focus, action: Action, removed tag: String, source: FocusSource) {
+    func watch(graph: Graph, action: Action, removed tag: String, source: GraphSource) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("G", tag)
@@ -145,7 +145,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         deleteTagExpectation?.fulfill()
     }
     
-    func watch(focus: Focus, action: Action, added property: String, with value: Any, source: FocusSource) {
+    func watch(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -155,7 +155,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         insertPropertyExpectation?.fulfill()
     }
     
-    func watch(focus: Focus, action: Action, updated property: String, with value: Any, source: FocusSource) {
+    func watch(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)
@@ -165,7 +165,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         updatePropertyExpectation?.fulfill()
     }
     
-    func watch(focus: Focus, action: Action, removed property: String, with value: Any, source: FocusSource) {
+    func watch(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertEqual("T", action.type)
         XCTAssertTrue(0 < action.id.characters.count)
         XCTAssertEqual("P", property)

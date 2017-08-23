@@ -162,14 +162,14 @@ public class Relationship: Node {
     }
 
     /**
-     Initializer that accepts a type and focus. The focus
-     indicates which focus to save to.
+     Initializer that accepts a type and graph. The graph
+     indicates which graph to save to.
      - Parameter type: A reference to a type.
-     - Parameter focus: A reference to a Focus instance by name.
+     - Parameter graph: A reference to a Graph instance by name.
      */
     @nonobjc
-    public convenience init(type: String, focus: String) {
-        let context = Focus(name: focus).managedObjectContext
+    public convenience init(type: String, graph: String) {
+        let context = Graph(name: graph).managedObjectContext
         var managedNode: ManagedRelationship?
         context?.performAndWait {
             managedNode = ManagedRelationship(type, managedObjectContext: context!)
@@ -178,13 +178,13 @@ public class Relationship: Node {
     }
 
     /**
-     Initializer that accepts a type and focus. The focus
-     indicates which focus to save to.
+     Initializer that accepts a type and graph. The graph
+     indicates which graph to save to.
      - Parameter type: A reference to a type.
-     - Parameter focus: A reference to a Focus instance.
+     - Parameter graph: A reference to a Graph instance.
      */
-    public convenience init(type: String, focus: Focus) {
-        let context = focus.managedObjectContext
+    public convenience init(type: String, graph: Graph) {
+        let context = graph.managedObjectContext
         var managedNode: ManagedRelationship?
         context?.performAndWait {
             managedNode = ManagedRelationship(type, managedObjectContext: context!)
@@ -197,7 +197,7 @@ public class Relationship: Node {
      - Parameter type: A reference to a type.
      */
     public convenience init(type: String) {
-        self.init(type: type, focus: FocusStoreDescription.name)
+        self.init(type: type, graph: GraphStoreDescription.name)
     }
 
     /**
@@ -403,12 +403,12 @@ public class Relationship: Node {
 
     /**
      Sets the object of the Relationship.
-     - Parameter object: An Entity.
+     - Parameter _ entity: An Entity.
      - Returns: The Relationship.
      */
     @discardableResult
-    public func of(object: Entity) -> Relationship {
-        self.object = object
+    public func of(_ entity: Entity) -> Relationship {
+        self.object = entity
         return self
     }
 

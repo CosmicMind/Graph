@@ -76,8 +76,8 @@ public class Search<T: Node>: Searchable {
      */
     public func async(completion: (([T]) -> Void)) {}
 
-    /// A Focus instance.
-    internal private(set) var focus: Focus
+    /// A Graph instance.
+    internal private(set) var graph: Graph
 
     /// A reference to the type.
     public private(set) var types: [String]?
@@ -101,12 +101,12 @@ public class Search<T: Node>: Searchable {
     public private(set) var propertiesSearchCondition : SearchCondition = .and
 
     /**
-     An initializer that accepts a NodeClass and Focus
+     An initializer that accepts a NodeClass and Graph
      instance.
-     - Parameter focus: A Focus instance.
+     - Parameter graph: A Graph instance.
      */
-    public init(focus: Focus) {
-        self.focus = focus
+    public init(graph: Graph) {
+        self.graph = graph
     }
 
     /**
@@ -524,7 +524,7 @@ extension Search {
             return set
         }
 
-        guard let moc = focus.managedObjectContext else {
+        guard let moc = graph.managedObjectContext else {
             return set
         }
 
@@ -575,7 +575,7 @@ extension Search {
             return set
         }
 
-        guard let moc = focus.managedObjectContext else {
+        guard let moc = graph.managedObjectContext else {
             return set
         }
 
@@ -636,7 +636,7 @@ extension Search {
             return set
         }
 
-        guard let moc = focus.managedObjectContext else {
+        guard let moc = graph.managedObjectContext else {
             return set
         }
 
@@ -721,14 +721,14 @@ extension Search {
      - Returns: An optional Array of ManagedObject objects.
      */
     internal func search<T: ManagedObject>(for entityName: String, predicate: NSPredicate) -> [T]? {
-        guard let moc = focus.managedObjectContext else {
+        guard let moc = graph.managedObjectContext else {
             return nil
         }
 
         let request = NSFetchRequest<T>()
         request.entity = NSEntityDescription.entity(forEntityName: entityName, in: moc)!
-        request.fetchBatchSize = focus.batchSize
-        request.fetchOffset = focus.batchOffset
+        request.fetchBatchSize = graph.batchSize
+        request.fetchOffset = graph.batchOffset
         request.predicate = predicate
 
         var result: [AnyObject]?

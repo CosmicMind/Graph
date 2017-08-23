@@ -42,7 +42,7 @@ internal class ManagedNode: ManagedObject {
     /// A reference to the Nodes unique ID.
     internal var id: String {
         guard let moc = managedObjectContext else {
-            fatalError("[Focus Error: Cannot obtain permanent objectID]")
+            fatalError("[Graph Error: Cannot obtain permanent objectID]")
         }
         
         var result: String?
@@ -50,7 +50,7 @@ internal class ManagedNode: ManagedObject {
             do {
                 try moc.obtainPermanentIDs(for: [self])
             } catch let e as NSError {
-                fatalError("[Focus Error: Cannot obtain permanent objectID - \(e.localizedDescription)]")
+                fatalError("[Graph Error: Cannot obtain permanent objectID - \(e.localizedDescription)]")
             }
             result = String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.uriRepresentation().lastPathComponent
         }

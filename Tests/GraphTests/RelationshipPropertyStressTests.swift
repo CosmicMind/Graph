@@ -29,7 +29,7 @@
  */
 
 import XCTest
-@testable import Focus
+@testable import Graph
 
 class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
     var saveExpectation: XCTestExpectation?
@@ -50,16 +50,16 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
     }
     
     func testPropertyStress() {
-        saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Focus save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
         relationshipInsertExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Relationship insert test failed.]")
         
-        let focus = Focus()
-        let watch = Watch<Relationship>(focus: focus).for(types: "T")
+        let graph = Graph()
+        let watch = Watch<Relationship>(graph: graph).for(types: "T")
         watch.delegate = self
         
         let relationship = Relationship(type: "T")
         
-        focus.async { [weak self] (success, error) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -81,10 +81,10 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
             
             XCTAssertEqual(value, relationship[property] as? Int)
             
-            saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Focus save test failed.]")
+            saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
             propertyInsertExpception = expectation(description: "[RelationshipPropertyStressTests Error: Property insert test failed.]")
             
-            focus.async { [weak self] (success, error) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveExpectation?.fulfill()
@@ -97,10 +97,10 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
             
             XCTAssertEqual(value, relationship[property] as? Int)
             
-            saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Focus save test failed.]")
+            saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
             propertyUpdateExpception = expectation(description: "[RelationshipPropertyStressTests Error: Property update test failed.]")
             
-            focus.async { [weak self] (success, error) in
+            graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
                 self?.saveExpectation?.fulfill()
@@ -112,10 +112,10 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
             
             XCTAssertNil(relationship[property])
             
-            saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Focus save test failed.]")
+            saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
             propertyDeleteExpception = expectation(description: "[RelationshipPropertyStressTests Error: Property delete test failed.]")
             
-            focus.async { [weak self] (success, error) in
+            graph.async { [weak self] (success, error) in
                 self?.saveExpectation?.fulfill()
                 XCTAssertTrue(success)
                 XCTAssertNil(error)
@@ -124,12 +124,12 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
             waitForExpectations(timeout: 5, handler: nil)
         }
         
-        saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Focus save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Graph save test failed.]")
         relationshipDeleteExpectation = expectation(description: "[RelationshipPropertyStressTests Error: Relationship delete test failed.]")
         
         relationship.delete()
         
-        focus.async { [weak self] (success, error) in
+        graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
             XCTAssertNil(error)
             self?.saveExpectation?.fulfill()
@@ -138,7 +138,7 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(focus: Focus, inserted relationship: Relationship, source: FocusSource) {
+    func watch(graph: Graph, inserted relationship: Relationship, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual(0, relationship.properties.count)
@@ -146,7 +146,7 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
         relationshipInsertExpectation?.fulfill()
     }
     
-    func watch(focus: Focus, deleted relationship: Relationship, source: FocusSource) {
+    func watch(graph: Graph, deleted relationship: Relationship, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual(0, relationship.properties.count)
@@ -154,21 +154,21 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
         relationshipDeleteExpectation?.fulfill()
     }
     
-    func watch(focus: Focus, relationship: Relationship, added property: String, with value: Any, source: FocusSource) {
+    func watch(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
         propertyInsertExpception?.fulfill()
     }
     
-    func watch(focus: Focus, relationship: Relationship, updated property: String, with value: Any, source: FocusSource) {
+    func watch(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         
         propertyUpdateExpception?.fulfill()
     }
     
-    func watch(focus: Focus, relationship: Relationship, removed property: String, with value: Any, source: FocusSource) {
+    func watch(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
         XCTAssertTrue(0 < relationship.id.characters.count)
         

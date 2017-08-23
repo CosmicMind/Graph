@@ -49,8 +49,8 @@
 		9662D2C51DB0BC6E004CE65B /* RelationshipThreadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4741D3AFB890086A024 /* RelationshipThreadTests.swift */; };
 		9662D2C61DB0BC79004CE65B /* ActionThreadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4661D3AFB890086A024 /* ActionThreadTests.swift */; };
 		9662D2C71DB0BC7A004CE65B /* ActionThreadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4661D3AFB890086A024 /* ActionThreadTests.swift */; };
-		9662D2C81DB0BC7F004CE65B /* FocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C46E1D3AFB890086A024 /* FocusTests.swift */; };
-		9662D2C91DB0BC80004CE65B /* FocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C46E1D3AFB890086A024 /* FocusTests.swift */; };
+		9662D2C81DB0BC7F004CE65B /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C46E1D3AFB890086A024 /* GraphTests.swift */; };
+		9662D2C91DB0BC80004CE65B /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C46E1D3AFB890086A024 /* GraphTests.swift */; };
 		9662D2CA1DB0BCC1004CE65B /* RelationshipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4731D3AFB890086A024 /* RelationshipTests.swift */; };
 		9662D2CB1DB0BCC2004CE65B /* RelationshipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4731D3AFB890086A024 /* RelationshipTests.swift */; };
 		968672071D3BE6C2000CD904 /* ManagedGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968672061D3BE6C2000CD904 /* ManagedGroup.swift */; };
@@ -63,18 +63,18 @@
 		968672111D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; };
 		968B3EA81DA89EC40099F8E5 /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		968B3EA91DA89ED40099F8E5 /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		96E3C3B41D3AB41F0086A024 /* Focus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E3C3A91D3AB41F0086A024 /* Focus.framework */; };
-		96E3C3C81D3AB4860086A024 /* Focus.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3C61D3AB4860086A024 /* Focus.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		96E3C3DE1D3AB5280086A024 /* Focus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E3C3D41D3AB5280086A024 /* Focus.framework */; };
-		96E3C3EC1D3AB5DC0086A024 /* Focus.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3C61D3AB4860086A024 /* Focus.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		96E3C3B41D3AB41F0086A024 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E3C3A91D3AB41F0086A024 /* Graph.framework */; };
+		96E3C3C81D3AB4860086A024 /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3C61D3AB4860086A024 /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		96E3C3DE1D3AB5280086A024 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E3C3D41D3AB5280086A024 /* Graph.framework */; };
+		96E3C3EC1D3AB5DC0086A024 /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3C61D3AB4860086A024 /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E3C3EE1D3AB6160086A024 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C3ED1D3AB6160086A024 /* Node.swift */; };
 		96E3C3EF1D3AB6160086A024 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C3ED1D3AB6160086A024 /* Node.swift */; };
 		96E3C3F11D3AB79F0086A024 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C3F01D3AB79F0086A024 /* Container.swift */; };
 		96E3C3F21D3AB79F0086A024 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C3F01D3AB79F0086A024 /* Container.swift */; };
 		96E3C3F41D3AB8B00086A024 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C3F31D3AB8B00086A024 /* Model.swift */; };
 		96E3C3F51D3AB8B00086A024 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C3F31D3AB8B00086A024 /* Model.swift */; };
-		96E3C42A1D3AC5880086A024 /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Focus.swift */; };
-		96E3C42B1D3AC5880086A024 /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Focus.swift */; };
+		96E3C42A1D3AC5880086A024 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Graph.swift */; };
+		96E3C42B1D3AC5880086A024 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Graph.swift */; };
 		96E3C42C1D3AC6B60086A024 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4021D3ABFCE0086A024 /* Entity.swift */; };
 		96E3C42D1D3AC6B70086A024 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4021D3ABFCE0086A024 /* Entity.swift */; };
 		96E3C42E1D3AC6BD0086A024 /* ManagedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C4081D3AC07D0086A024 /* ManagedEntity.swift */; };
@@ -121,7 +121,7 @@
 		96E3C4601D3AE50E0086A024 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E3C45E1D3AE50E0086A024 /* Context.swift */; };
 		96F1DC3F1D64DDBC0025F925 /* File.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C43C1D3AC7A00086A024 /* File.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC401D64DDBC0025F925 /* Node.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3ED1D3AB6160086A024 /* Node.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		96F1DC411D64DDBC0025F925 /* Focus.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Focus.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC411D64DDBC0025F925 /* Graph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Graph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC421D64DDBC0025F925 /* Model.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F31D3AB8B00086A024 /* Model.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC431D64DDBC0025F925 /* Container.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F01D3AB79F0086A024 /* Container.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC441D64DDBC0025F925 /* Coordinator.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C45B1D3AE4F00086A024 /* Coordinator.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -151,7 +151,7 @@
 		96F1DC5C1D64DDBC0025F925 /* ManagedActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC5D1D64DDCF0025F925 /* File.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C43C1D3AC7A00086A024 /* File.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC5E1D64DDCF0025F925 /* Node.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3ED1D3AB6160086A024 /* Node.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		96F1DC5F1D64DDCF0025F925 /* Focus.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Focus.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F1DC5F1D64DDCF0025F925 /* Graph.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4291D3AC5880086A024 /* Graph.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC601D64DDCF0025F925 /* Model.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F31D3AB8B00086A024 /* Model.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC611D64DDCF0025F925 /* Container.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3F01D3AB79F0086A024 /* Container.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC621D64DDCF0025F925 /* Coordinator.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C45B1D3AE4F00086A024 /* Coordinator.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -206,13 +206,13 @@
 		96948AA81D3D8E33004C65D4 /* EntityGroupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityGroupTests.swift; sourceTree = "<group>"; };
 		96948AAD1D3D92B8004C65D4 /* RelationshipGroupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipGroupTests.swift; sourceTree = "<group>"; };
 		96948AB01D3D92DC004C65D4 /* ActionGroupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionGroupTests.swift; sourceTree = "<group>"; };
-		96E3C3A91D3AB41F0086A024 /* Focus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Focus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		96E3C3B31D3AB41F0086A024 /* Focus iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Focus iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		96E3C3C61D3AB4860086A024 /* Focus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Focus.h; sourceTree = "<group>"; };
+		96E3C3A91D3AB41F0086A024 /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E3C3B31D3AB41F0086A024 /* Graph iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E3C3C61D3AB4860086A024 /* Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graph.h; sourceTree = "<group>"; };
 		96E3C3C71D3AB4860086A024 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96E3C3CC1D3AB4AA0086A024 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		96E3C3D41D3AB5280086A024 /* Focus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Focus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		96E3C3DD1D3AB5280086A024 /* Focus macOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Focus macOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E3C3D41D3AB5280086A024 /* Graph.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Graph.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E3C3DD1D3AB5280086A024 /* Graph macOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Graph macOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E3C3ED1D3AB6160086A024 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		96E3C3F01D3AB79F0086A024 /* Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		96E3C3F31D3AB8B00086A024 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
@@ -232,7 +232,7 @@
 		96E3C41E1D3AC0A20086A024 /* ManagedRelationshipTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedRelationshipTag.swift; sourceTree = "<group>"; };
 		96E3C41F1D3AC0A20086A024 /* ManagedRelationshipProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedRelationshipProperty.swift; sourceTree = "<group>"; };
 		96E3C4201D3AC0A20086A024 /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
-		96E3C4291D3AC5880086A024 /* Focus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Focus.swift; sourceTree = "<group>"; };
+		96E3C4291D3AC5880086A024 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		96E3C43C1D3AC7A00086A024 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		96E3C43D1D3AC7A00086A024 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		96E3C4521D3AD5CA0086A024 /* Watch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Watch.swift; sourceTree = "<group>"; };
@@ -252,7 +252,7 @@
 		96E3C46B1D3AFB890086A024 /* EntitySearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySearchTests.swift; sourceTree = "<group>"; };
 		96E3C46C1D3AFB890086A024 /* EntityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityTests.swift; sourceTree = "<group>"; };
 		96E3C46D1D3AFB890086A024 /* EntityThreadTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityThreadTests.swift; sourceTree = "<group>"; };
-		96E3C46E1D3AFB890086A024 /* FocusTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusTests.swift; sourceTree = "<group>"; };
+		96E3C46E1D3AFB890086A024 /* GraphTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphTests.swift; sourceTree = "<group>"; };
 		96E3C46F1D3AFB890086A024 /* RelationshipTagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipTagTests.swift; sourceTree = "<group>"; };
 		96E3C4701D3AFB890086A024 /* RelationshipPropertyStressTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipPropertyStressTests.swift; sourceTree = "<group>"; };
 		96E3C4711D3AFB890086A024 /* RelationshipPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipPropertyTests.swift; sourceTree = "<group>"; };
@@ -273,7 +273,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E3C3B41D3AB41F0086A024 /* Focus.framework in Frameworks */,
+				96E3C3B41D3AB41F0086A024 /* Graph.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,7 +288,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E3C3DE1D3AB5280086A024 /* Focus.framework in Frameworks */,
+				96E3C3DE1D3AB5280086A024 /* Graph.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,10 +315,10 @@
 		96E3C3AA1D3AB41F0086A024 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				96E3C3A91D3AB41F0086A024 /* Focus.framework */,
-				96E3C3B31D3AB41F0086A024 /* Focus iOS Tests.xctest */,
-				96E3C3D41D3AB5280086A024 /* Focus.framework */,
-				96E3C3DD1D3AB5280086A024 /* Focus macOS Tests.xctest */,
+				96E3C3A91D3AB41F0086A024 /* Graph.framework */,
+				96E3C3B31D3AB41F0086A024 /* Graph iOS Tests.xctest */,
+				96E3C3D41D3AB5280086A024 /* Graph.framework */,
+				96E3C3DD1D3AB5280086A024 /* Graph macOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -328,10 +328,10 @@
 			children = (
 				96E3C43D1D3AC7A00086A024 /* LICENSE */,
 				96E3C3C71D3AB4860086A024 /* Info.plist */,
-				96E3C3C61D3AB4860086A024 /* Focus.h */,
+				96E3C3C61D3AB4860086A024 /* Graph.h */,
 				96E3C4A21D3B0AA90086A024 /* File */,
 				962EB9CE1D9E9E5600DFA8C4 /* JSON */,
-				96E3C4A01D3B0A6F0086A024 /* Focus */,
+				96E3C4A01D3B0A6F0086A024 /* Graph */,
 				96E3C4A11D3B0A820086A024 /* Managed */,
 				96E3C49D1D3B0A120086A024 /* Entity */,
 				96E3C49F1D3B0A5D0086A024 /* Relationship */,
@@ -344,7 +344,7 @@
 			isa = PBXGroup;
 			children = (
 				96E3C3CC1D3AB4AA0086A024 /* Info.plist */,
-				96E3C4A61D3B0B140086A024 /* Focus */,
+				96E3C4A61D3B0B140086A024 /* Graph */,
 				96E3C4A51D3B0B080086A024 /* Entity */,
 				96E3C4A41D3B0AFB0086A024 /* Relationship */,
 				96E3C4A31D3B0AEF0086A024 /* Action */,
@@ -388,11 +388,11 @@
 			name = Relationship;
 			sourceTree = "<group>";
 		};
-		96E3C4A01D3B0A6F0086A024 /* Focus */ = {
+		96E3C4A01D3B0A6F0086A024 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
 				96E3C3ED1D3AB6160086A024 /* Node.swift */,
-				96E3C4291D3AC5880086A024 /* Focus.swift */,
+				96E3C4291D3AC5880086A024 /* Graph.swift */,
 				96E3C3F31D3AB8B00086A024 /* Model.swift */,
 				96E3C3F01D3AB79F0086A024 /* Container.swift */,
 				96E3C45B1D3AE4F00086A024 /* Coordinator.swift */,
@@ -401,7 +401,7 @@
 				96E3C4581D3AD6B00086A024 /* Search.swift */,
 				96E3C4521D3AD5CA0086A024 /* Watch.swift */,
 			);
-			name = Focus;
+			name = Graph;
 			sourceTree = "<group>";
 		};
 		96E3C4A11D3B0A820086A024 /* Managed */ = {
@@ -469,12 +469,12 @@
 			path = GraphTests;
 			sourceTree = "<group>";
 		};
-		96E3C4A61D3B0B140086A024 /* Focus */ = {
+		96E3C4A61D3B0B140086A024 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
-				96E3C46E1D3AFB890086A024 /* FocusTests.swift */,
+				96E3C46E1D3AFB890086A024 /* GraphTests.swift */,
 			);
-			name = Focus;
+			name = Graph;
 			path = GraphTests;
 			sourceTree = "<group>";
 		};
@@ -485,10 +485,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E3C3C81D3AB4860086A024 /* Focus.h in Headers */,
+				96E3C3C81D3AB4860086A024 /* Graph.h in Headers */,
 				96F1DC3F1D64DDBC0025F925 /* File.swift in Headers */,
 				96F1DC401D64DDBC0025F925 /* Node.swift in Headers */,
-				96F1DC411D64DDBC0025F925 /* Focus.swift in Headers */,
+				96F1DC411D64DDBC0025F925 /* Graph.swift in Headers */,
 				96F1DC421D64DDBC0025F925 /* Model.swift in Headers */,
 				96F1DC431D64DDBC0025F925 /* Container.swift in Headers */,
 				96F1DC441D64DDBC0025F925 /* Coordinator.swift in Headers */,
@@ -524,10 +524,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E3C3EC1D3AB5DC0086A024 /* Focus.h in Headers */,
+				96E3C3EC1D3AB5DC0086A024 /* Graph.h in Headers */,
 				96F1DC5D1D64DDCF0025F925 /* File.swift in Headers */,
 				96F1DC5E1D64DDCF0025F925 /* Node.swift in Headers */,
-				96F1DC5F1D64DDCF0025F925 /* Focus.swift in Headers */,
+				96F1DC5F1D64DDCF0025F925 /* Graph.swift in Headers */,
 				96F1DC601D64DDCF0025F925 /* Model.swift in Headers */,
 				96F1DC611D64DDCF0025F925 /* Container.swift in Headers */,
 				96F1DC621D64DDCF0025F925 /* Coordinator.swift in Headers */,
@@ -561,9 +561,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		96E3C3A81D3AB41F0086A024 /* Focus iOS */ = {
+		96E3C3A81D3AB41F0086A024 /* Graph iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 96E3C3BD1D3AB41F0086A024 /* Build configuration list for PBXNativeTarget "Focus iOS" */;
+			buildConfigurationList = 96E3C3BD1D3AB41F0086A024 /* Build configuration list for PBXNativeTarget "Graph iOS" */;
 			buildPhases = (
 				96E3C3A41D3AB41F0086A024 /* Sources */,
 				96E3C3A51D3AB41F0086A024 /* Frameworks */,
@@ -574,14 +574,14 @@
 			);
 			dependencies = (
 			);
-			name = "Focus iOS";
+			name = "Graph iOS";
 			productName = Graph;
-			productReference = 96E3C3A91D3AB41F0086A024 /* Focus.framework */;
+			productReference = 96E3C3A91D3AB41F0086A024 /* Graph.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		96E3C3B21D3AB41F0086A024 /* Focus iOS Tests */ = {
+		96E3C3B21D3AB41F0086A024 /* Graph iOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 96E3C3C01D3AB41F0086A024 /* Build configuration list for PBXNativeTarget "Focus iOS Tests" */;
+			buildConfigurationList = 96E3C3C01D3AB41F0086A024 /* Build configuration list for PBXNativeTarget "Graph iOS Tests" */;
 			buildPhases = (
 				96E3C3AF1D3AB41F0086A024 /* Sources */,
 				96E3C3B01D3AB41F0086A024 /* Frameworks */,
@@ -592,14 +592,14 @@
 			dependencies = (
 				96E3C3B61D3AB41F0086A024 /* PBXTargetDependency */,
 			);
-			name = "Focus iOS Tests";
+			name = "Graph iOS Tests";
 			productName = GraphTests;
-			productReference = 96E3C3B31D3AB41F0086A024 /* Focus iOS Tests.xctest */;
+			productReference = 96E3C3B31D3AB41F0086A024 /* Graph iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		96E3C3D31D3AB5280086A024 /* Focus macOS */ = {
+		96E3C3D31D3AB5280086A024 /* Graph macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 96E3C3E51D3AB5280086A024 /* Build configuration list for PBXNativeTarget "Focus macOS" */;
+			buildConfigurationList = 96E3C3E51D3AB5280086A024 /* Build configuration list for PBXNativeTarget "Graph macOS" */;
 			buildPhases = (
 				96E3C3CF1D3AB5280086A024 /* Sources */,
 				96E3C3D01D3AB5280086A024 /* Frameworks */,
@@ -610,14 +610,14 @@
 			);
 			dependencies = (
 			);
-			name = "Focus macOS";
+			name = "Graph macOS";
 			productName = "Graph-macOS";
-			productReference = 96E3C3D41D3AB5280086A024 /* Focus.framework */;
+			productReference = 96E3C3D41D3AB5280086A024 /* Graph.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		96E3C3DC1D3AB5280086A024 /* Focus macOS Tests */ = {
+		96E3C3DC1D3AB5280086A024 /* Graph macOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 96E3C3E81D3AB5280086A024 /* Build configuration list for PBXNativeTarget "Focus macOS Tests" */;
+			buildConfigurationList = 96E3C3E81D3AB5280086A024 /* Build configuration list for PBXNativeTarget "Graph macOS Tests" */;
 			buildPhases = (
 				96E3C3D91D3AB5280086A024 /* Sources */,
 				96E3C3DA1D3AB5280086A024 /* Frameworks */,
@@ -628,9 +628,9 @@
 			dependencies = (
 				96E3C3E01D3AB5280086A024 /* PBXTargetDependency */,
 			);
-			name = "Focus macOS Tests";
+			name = "Graph macOS Tests";
 			productName = "Graph-macOSTests";
-			productReference = 96E3C3DD1D3AB5280086A024 /* Focus macOS Tests.xctest */;
+			productReference = 96E3C3DD1D3AB5280086A024 /* Graph macOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -672,7 +672,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 96E3C3A31D3AB41F0086A024 /* Build configuration list for PBXProject "Focus" */;
+			buildConfigurationList = 96E3C3A31D3AB41F0086A024 /* Build configuration list for PBXProject "Graph" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -684,10 +684,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				96E3C3A81D3AB41F0086A024 /* Focus iOS */,
-				96E3C3D31D3AB5280086A024 /* Focus macOS */,
-				96E3C3B21D3AB41F0086A024 /* Focus iOS Tests */,
-				96E3C3DC1D3AB5280086A024 /* Focus macOS Tests */,
+				96E3C3A81D3AB41F0086A024 /* Graph iOS */,
+				96E3C3D31D3AB5280086A024 /* Graph macOS */,
+				96E3C3B21D3AB41F0086A024 /* Graph iOS Tests */,
+				96E3C3DC1D3AB5280086A024 /* Graph macOS Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -730,7 +730,7 @@
 			files = (
 				96E3C4371D3AC6F20086A024 /* ManagedTag.swift in Sources */,
 				96E3C4461D3AC7E40086A024 /* Action.swift in Sources */,
-				96E3C42A1D3AC5880086A024 /* Focus.swift in Sources */,
+				96E3C42A1D3AC5880086A024 /* Graph.swift in Sources */,
 				96E3C45F1D3AE50E0086A024 /* Context.swift in Sources */,
 				96E3C4431D3AC7E40086A024 /* ManagedRelationship.swift in Sources */,
 				96E3C42C1D3AC6B60086A024 /* Entity.swift in Sources */,
@@ -779,7 +779,7 @@
 				9662D2C01DB0BAE7004CE65B /* ActionPropertyStressTests.swift in Sources */,
 				9640ED821DB096AE0085CDA1 /* ActionTagTests.swift in Sources */,
 				9640ED7E1DB091550085CDA1 /* EntityTagTests.swift in Sources */,
-				9662D2C81DB0BC7F004CE65B /* FocusTests.swift in Sources */,
+				9662D2C81DB0BC7F004CE65B /* GraphTests.swift in Sources */,
 				9640ED751DB08FB00085CDA1 /* EntitySearchTests.swift in Sources */,
 				9640ED8D1DB097DE0085CDA1 /* EntityPropertyTests.swift in Sources */,
 				9640ED8A1DB097BF0085CDA1 /* ActionPropertyTests.swift in Sources */,
@@ -797,7 +797,7 @@
 			files = (
 				96E3C43A1D3AC6F30086A024 /* ManagedTag.swift in Sources */,
 				96E3C44E1D3AC7E50086A024 /* Action.swift in Sources */,
-				96E3C42B1D3AC5880086A024 /* Focus.swift in Sources */,
+				96E3C42B1D3AC5880086A024 /* Graph.swift in Sources */,
 				96E3C4601D3AE50E0086A024 /* Context.swift in Sources */,
 				96E3C44B1D3AC7E50086A024 /* ManagedRelationship.swift in Sources */,
 				96E3C42D1D3AC6B70086A024 /* Entity.swift in Sources */,
@@ -846,7 +846,7 @@
 				9662D2C11DB0BAE8004CE65B /* ActionPropertyStressTests.swift in Sources */,
 				9640ED831DB096AE0085CDA1 /* ActionTagTests.swift in Sources */,
 				9640ED7F1DB091560085CDA1 /* EntityTagTests.swift in Sources */,
-				9662D2C91DB0BC80004CE65B /* FocusTests.swift in Sources */,
+				9662D2C91DB0BC80004CE65B /* GraphTests.swift in Sources */,
 				9640ED761DB08FB20085CDA1 /* EntitySearchTests.swift in Sources */,
 				9640ED8C1DB097DD0085CDA1 /* EntityPropertyTests.swift in Sources */,
 				9640ED8B1DB097BF0085CDA1 /* ActionPropertyTests.swift in Sources */,
@@ -863,12 +863,12 @@
 /* Begin PBXTargetDependency section */
 		96E3C3B61D3AB41F0086A024 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 96E3C3A81D3AB41F0086A024 /* Focus iOS */;
+			target = 96E3C3A81D3AB41F0086A024 /* Graph iOS */;
 			targetProxy = 96E3C3B51D3AB41F0086A024 /* PBXContainerItemProxy */;
 		};
 		96E3C3E01D3AB5280086A024 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 96E3C3D31D3AB5280086A024 /* Focus macOS */;
+			target = 96E3C3D31D3AB5280086A024 /* Graph macOS */;
 			targetProxy = 96E3C3DF1D3AB5280086A024 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -990,7 +990,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cosmicmind.Focus;
-				PRODUCT_NAME = Focus;
+				PRODUCT_NAME = Graph;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1010,7 +1010,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cosmicmind.Focus;
-				PRODUCT_NAME = Focus;
+				PRODUCT_NAME = Graph;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
 			};
@@ -1057,7 +1057,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.cosmicmind.Graph;
-				PRODUCT_NAME = Focus;
+				PRODUCT_NAME = Graph;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1081,7 +1081,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.cosmicmind.Graph;
-				PRODUCT_NAME = Focus;
+				PRODUCT_NAME = Graph;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -1124,7 +1124,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		96E3C3A31D3AB41F0086A024 /* Build configuration list for PBXProject "Focus" */ = {
+		96E3C3A31D3AB41F0086A024 /* Build configuration list for PBXProject "Graph" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E3C3BB1D3AB41F0086A024 /* Debug */,
@@ -1133,7 +1133,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96E3C3BD1D3AB41F0086A024 /* Build configuration list for PBXNativeTarget "Focus iOS" */ = {
+		96E3C3BD1D3AB41F0086A024 /* Build configuration list for PBXNativeTarget "Graph iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E3C3BE1D3AB41F0086A024 /* Debug */,
@@ -1142,7 +1142,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96E3C3C01D3AB41F0086A024 /* Build configuration list for PBXNativeTarget "Focus iOS Tests" */ = {
+		96E3C3C01D3AB41F0086A024 /* Build configuration list for PBXNativeTarget "Graph iOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E3C3C11D3AB41F0086A024 /* Debug */,
@@ -1151,7 +1151,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96E3C3E51D3AB5280086A024 /* Build configuration list for PBXNativeTarget "Focus macOS" */ = {
+		96E3C3E51D3AB5280086A024 /* Build configuration list for PBXNativeTarget "Graph macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E3C3E61D3AB5280086A024 /* Debug */,
@@ -1160,7 +1160,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96E3C3E81D3AB5280086A024 /* Build configuration list for PBXNativeTarget "Focus macOS Tests" */ = {
+		96E3C3E81D3AB5280086A024 /* Build configuration list for PBXNativeTarget "Graph macOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96E3C3E91D3AB5280086A024 /* Debug */,

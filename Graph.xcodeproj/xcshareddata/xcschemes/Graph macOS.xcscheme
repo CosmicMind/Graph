@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "96E3C3A81D3AB41F0086A024"
-               BuildableName = "Focus.framework"
-               BlueprintName = "Focus iOS"
-               ReferencedContainer = "container:Focus.xcodeproj">
+               BlueprintIdentifier = "96E3C3D31D3AB5280086A024"
+               BuildableName = "Graph.framework"
+               BlueprintName = "Graph macOS"
+               ReferencedContainer = "container:Graph.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,20 +32,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "96E3C3B21D3AB41F0086A024"
-               BuildableName = "Focus iOS Tests.xctest"
-               BlueprintName = "Focus iOS Tests"
-               ReferencedContainer = "container:Focus.xcodeproj">
+               BlueprintIdentifier = "96E3C3DC1D3AB5280086A024"
+               BuildableName = "Graph macOS Tests.xctest"
+               BlueprintName = "Graph macOS Tests"
+               ReferencedContainer = "container:Graph.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "96E3C3A81D3AB41F0086A024"
-            BuildableName = "Focus.framework"
-            BlueprintName = "Focus iOS"
-            ReferencedContainer = "container:Focus.xcodeproj">
+            BlueprintIdentifier = "96E3C3D31D3AB5280086A024"
+            BuildableName = "Graph.framework"
+            BlueprintName = "Graph macOS"
+            ReferencedContainer = "container:Graph.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -64,10 +64,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "96E3C3A81D3AB41F0086A024"
-            BuildableName = "Focus.framework"
-            BlueprintName = "Focus iOS"
-            ReferencedContainer = "container:Focus.xcodeproj">
+            BlueprintIdentifier = "96E3C3D31D3AB5280086A024"
+            BuildableName = "Graph.framework"
+            BlueprintName = "Graph macOS"
+            ReferencedContainer = "container:Graph.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>
@@ -88,10 +88,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "96E3C3A81D3AB41F0086A024"
-            BuildableName = "Focus.framework"
-            BlueprintName = "Focus iOS"
-            ReferencedContainer = "container:Focus.xcodeproj">
+            BlueprintIdentifier = "96E3C3D31D3AB5280086A024"
+            BuildableName = "Graph.framework"
+            BlueprintName = "Graph macOS"
+            ReferencedContainer = "container:Graph.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
