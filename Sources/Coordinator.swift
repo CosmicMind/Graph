@@ -125,6 +125,7 @@ extension Graph {
         defaultCenter.addObserver(self, selector: #selector(persistentStoreDidImportUbiquitousContentChanges), name: .NSPersistentStoreDidImportUbiquitousContentChanges, object: moc.persistentStoreCoordinator)
     }
     
+    @objc
     internal func persistentStoreWillChange(_ notification: Notification) {
         guard let moc = managedObjectContext else {
             return
@@ -147,6 +148,7 @@ extension Graph {
         delegate?.graphWillPrepareCloudStorage?(graph: self, transition: t)
     }
     
+    @objc
     internal func persistentStoreDidChange(_ notification: Notification) {
         GraphContextRegistry.added[route] = true
         
@@ -155,6 +157,7 @@ extension Graph {
         delegate?.graphDidPrepareCloudStorage?(graph: self)
     }
     
+    @objc
     internal func persistentStoreDidImportUbiquitousContentChanges(_ notification: Notification) {
         guard let moc = managedObjectContext else {
             return

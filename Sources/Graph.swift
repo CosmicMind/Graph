@@ -126,11 +126,11 @@ public class Graph: NSObject {
      - Parameter location: A location for storage.
      executed to determine if iCloud support is available or not.
      */
-    public init(name: String = GraphStoreDescription.name, type: String = GraphStoreDescription.type) {
-        route = "Local/\(name)"
-        self.name = name
-        self.type = type
+    public init(name: String? = nil, type: String? = nil) {
+        self.name = name ?? GraphStoreDescription.name
+        self.type = type ?? GraphStoreDescription.type
         self.location = GraphStoreDescription.location
+        route = "Local/\(self.name)"
         super.init()
         prepareGraphContextRegistry()
         prepareManagedObjectContext(enableCloud: false)

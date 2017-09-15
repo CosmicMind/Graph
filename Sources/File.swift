@@ -212,7 +212,7 @@ public struct File {
      - Parameter completion: An optional completion block when the operation
      is done.
      */
-    public static func createDirectoryAtPath(_ path: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [String: Any]?, completion: ((Bool, Error?) -> Void)? = nil) {
+    public static func createDirectoryAtPath(_ path: URL, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey: Any]?, completion: ((Bool, Error?) -> Void)? = nil) {
         do {
             try FileManager.default.createDirectory(atPath: path.path, withIntermediateDirectories: createIntermediates, attributes: attributes)
             completion?(true, nil)
