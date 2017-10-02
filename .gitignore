@@ -1,8 +1,6 @@
 #OS X
 .DS_Store
 
-.build/*
-
 # Xcode
 build/*
 *.pbxuser
@@ -18,3 +16,7 @@ profile
 *.moved-aside
 *.playground
 *.framework
+DerivedData
+Index
+Build
+
