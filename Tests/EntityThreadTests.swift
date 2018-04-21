@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2017, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class ActionThreadTests : XCTestCase, WatchActionDelegate {
+class EntityThreadTests : XCTestCase, WatchEntityDelegate {
     var insertSaveExpectation: XCTestExpectation?
     var insertExpectation: XCTestExpectation?
     var insertPropertyExpectation: XCTestExpectation?
@@ -62,14 +62,14 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         let q3 = DispatchQueue(label: "com.cosmicmind.graph.thread.3", attributes: .concurrent)
         
         let graph = Graph()
-        let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
         watch.delegate = self
         
-        let action = Action(type: "T")
+        let entity = Entity(type: "T")
         
         q1.async { [weak self] in
-            action["P"] = 111
-            action.add(tags: "G")
+            entity["P"] = 111
+            entity.add(tags: "G")
             
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(String(describing: error))")
@@ -83,7 +83,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         updatePropertyExpectation = expectation(description: "Test: Update did not pass.")
         
         q2.async { [weak self] in
-            action["P"] = 222
+            entity["P"] = 222
             
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(String(describing: error))")
@@ -99,7 +99,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         deleteTagExpectation = expectation(description: "Test: Delete tag did not pass.")
         
         q3.async { [weak self] in
-            action.delete()
+            entity.delete()
             
             graph.async { [weak self] (success, error) in
                 XCTAssertTrue(success, "\(String(describing: error))")
@@ -110,67 +110,67 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, inserted action: Action, source: GraphSource) {
-        XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertEqual(111, action["P"] as? Int)
-        XCTAssertTrue(action.has(tags: "G"))
+    func watch(graph: Graph, inserted entity: Entity, source: GraphSource) {
+        XCTAssertEqual("T", entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertEqual(111, entity["P"] as? Int)
+        XCTAssertTrue(entity.has(tags: "G"))
         
         insertExpectation?.fulfill()
     }
     
-    func watch(graph: Graph, deleted action: Action, source: GraphSource) {
-        XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
-        XCTAssertNil(action["P"])
-        XCTAssertFalse(action.has(tags: "G"))
+    func watch(graph: Graph, deleted entity: Entity, source: GraphSource) {
+        XCTAssertEqual("T", entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertNil(entity["P"])
+        XCTAssertFalse(entity.has(tags: "G"))
         
         deleteExpectation?.fulfill()
     }
     
-    func watch(graph: Graph, action: Action, added tag: String, source: GraphSource) {
-        XCTAssertEqual("T", action.type)
+    func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
+        XCTAssertEqual("T", entity.type)
         XCTAssertEqual("G", tag)
-        XCTAssertTrue(action.has(tags: tag))
+        XCTAssertTrue(entity.has(tags: tag))
         
         insertTagExpectation?.fulfill()
     }
     
-    func watch(graph: Graph, action: Action, removed tag: String, source: GraphSource) {
-        XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func watch(graph: Graph, entity: Entity, removed tag: String, source: GraphSource) {
+        XCTAssertEqual("T", entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("G", tag)
-        XCTAssertFalse(action.has(tags: "G"))
+        XCTAssertFalse(entity.has(tags: "G"))
         
         deleteTagExpectation?.fulfill()
     }
     
-    func watch(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource) {
-        XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func watch(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
+        XCTAssertEqual("T", entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)
         XCTAssertEqual(111, value as? Int)
-        XCTAssertEqual(value as? Int, action[property] as? Int)
+        XCTAssertEqual(value as? Int, entity[property] as? Int)
         
         insertPropertyExpectation?.fulfill()
     }
     
-    func watch(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource) {
-        XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func watch(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
+        XCTAssertEqual("T", entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)
         XCTAssertEqual(222, value as? Int)
-        XCTAssertEqual(value as? Int, action[property] as? Int)
+        XCTAssertEqual(value as? Int, entity[property] as? Int)
         
         updatePropertyExpectation?.fulfill()
     }
     
-    func watch(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource) {
-        XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+    func watch(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
+        XCTAssertEqual("T", entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
         XCTAssertEqual("P", property)
         XCTAssertEqual(222, value as? Int)
-        XCTAssertNil(action[property])
+        XCTAssertNil(entity[property])
         
         deletePropertyExpectation?.fulfill()
     }

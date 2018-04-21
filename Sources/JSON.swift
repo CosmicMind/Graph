@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2017, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,147 +31,147 @@
 import Foundation
 
 open class JSON: Equatable, CustomStringConvertible {
-    /// A desiption of the object, used when printing.
-    open var description: String {
-        return JSON.stringify(object: object) ?? "{}"
+  /// A desiption of the object, used when printing.
+  open var description: String {
+    return JSON.stringify(object: object) ?? "{}"
+  }
+  
+  /// A reference to the core object.
+  open private(set) var object: Any
+  
+  /// An Array representation of the object.
+  open var asArray: [Any]? {
+    return object as? [Any]
+  }
+  
+  /// A Dictionary representation of the object.
+  open var asDictionary: [String: Any]? {
+    return object as? [String: Any]
+  }
+  
+  /// A String representation of the object.
+  open var asString: String? {
+    return object as? String
+  }
+  
+  /// An Int representation of the object.
+  open var asInt: Int? {
+    return object as? Int
+  }
+  
+  /// A Double representation of the object.
+  open var asDouble: Double? {
+    return object as? Double
+  }
+  
+  /// A Float representation of the object.
+  open var asFloat: Float? {
+    return object as? Float
+  }
+  
+  /// A Bool representation of the object.
+  open var asBool: Bool? {
+    return object as? Bool
+  }
+  
+  /// A Data representation of the object.
+  open var asNSData: Data? {
+    return JSON.serialize(object: object)
+  }
+  
+  /**
+   Parses a given Data object.
+   - Parameter _ data: A Data object.
+   - Parameter options: JSONSerialization.ReadingOptions.
+   - Returns: A JSON object on success, nil otherwise.
+   */
+  open class func parse(_ data: Data, options: JSONSerialization.ReadingOptions = .allowFragments) -> JSON? {
+    guard let object = try? JSONSerialization.jsonObject(with: data, options: options) else {
+      return nil
     }
-
-    /// A reference to the core object.
-    open private(set) var object: Any
-
-    /// An Array representation of the object.
-    open var asArray: [Any]? {
-        return object as? [Any]
+    
+    return JSON(object)
+  }
+  
+  /**
+   Parses a given String object.
+   - Parameter _ string: A Data object.
+   - Parameter options: JSONSerialization.ReadingOptions.
+   - Returns: A JSON object on success, nil otherwise.
+   */
+  open class func parse(_ string: String, options: JSONSerialization.ReadingOptions = .allowFragments) -> JSON? {
+    guard let data = string.data(using: String.Encoding.utf8) else {
+      return nil
     }
-
-    /// A Dictionary representation of the object.
-    open var asDictionary: [String: Any]? {
-        return object as? [String: Any]
+    
+    return parse(data, options: options)
+  }
+  
+  /**
+   Serializes an Any object into a Data object.
+   - Parameter object: An Any object.
+   - Returns: A Data object if successful, nil otherwise.
+   */
+  open class func serialize(object: Any) -> Data? {
+    return try? JSONSerialization.data(withJSONObject: object, options: [])
+  }
+  
+  /**
+   Stringifies an instance of Any object into a String.
+   - Parameter object: An Any object.
+   - Returns: A String object if successful, nil otherwise.
+   */
+  open class func stringify(object: Any) -> String? {
+    if let o = object as? JSON {
+      return stringify(object: o.object)
+    } else if let data = JSON.serialize(object: object) {
+      if let o = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
+        return o
+      }
     }
-
-    /// A String representation of the object.
-    open var asString: String? {
-        return object as? String
+    return nil
+  }
+  
+  /// An initializer that accepts a given Any object.
+  public required init(_ object: Any) {
+    if let o = object as? JSON {
+      self.object = o.object
+    } else {
+      self.object = object
     }
-
-    /// An Int representation of the object.
-    open var asInt: Int? {
-        return object as? Int
+  }
+  
+  /**
+   A subscript operator for Array style access.
+   - Parameter index: An Int.
+   - Returns: A JSON object if successful, nil otherwise.
+   */
+  open subscript(index: Int) -> JSON? {
+    guard let item = asArray else {
+      return nil
     }
-
-    /// A Double representation of the object.
-    open var asDouble: Double? {
-        return object as? Double
+    
+    return JSON(item[index])
+  }
+  
+  /**
+   A subscript operator for Dictionary style access.
+   - Parameter key: A String.
+   - Returns: A JSON object if successful, nil otherwise.
+   */
+  open subscript(key: String) -> JSON? {
+    guard let item = asDictionary else {
+      return nil
     }
-
-    /// A Float representation of the object.
-    open var asFloat: Float? {
-        return object as? Float
+    
+    guard nil != item[key] else {
+      return nil
     }
-
-    /// A Bool representation of the object.
-    open var asBool: Bool? {
-        return object as? Bool
-    }
-
-    /// A Data representation of the object.
-    open var asNSData: Data? {
-        return JSON.serialize(object: object)
-    }
-
-    /**
-     Parses a given Data object.
-     - Parameter data: A Data object.
-     - Parameter options: JSONSerialization.ReadingOptions.
-     - Returns: A JSON object on success, nil otherwise.
-     */
-    open class func parse(data: Data, options: JSONSerialization.ReadingOptions = .allowFragments) -> JSON? {
-        guard let object = try? JSONSerialization.jsonObject(with: data, options: options) else {
-            return nil
-        }
-
-        return JSON(object)
-    }
-
-    /**
-     Parses a given String object.
-     - Parameter string: A Data object.
-     - Parameter options: JSONSerialization.ReadingOptions.
-     - Returns: A JSON object on success, nil otherwise.
-     */
-    open class func parse(string: String, options: JSONSerialization.ReadingOptions = .allowFragments) -> JSON? {
-        guard let data = string.data(using: String.Encoding.utf8) else {
-            return nil
-        }
-
-        return parse(data: data, options: options)
-    }
-
-    /**
-     Serializes an Any object into a Data object.
-     - Parameter object: An Any object.
-     - Returns: A Data object if successful, nil otherwise.
-     */
-    open class func serialize(object: Any) -> Data? {
-        return try? JSONSerialization.data(withJSONObject: object, options: [])
-    }
-
-    /**
-     Stringifies an instance of Any object into a String.
-     - Parameter object: An Any object.
-     - Returns: A String object if successful, nil otherwise.
-     */
-    open class func stringify(object: Any) -> String? {
-        if let o = object as? JSON {
-            return stringify(object: o.object)
-        } else if let data = JSON.serialize(object: object) {
-            if let o = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
-                return o
-            }
-        }
-        return nil
-    }
-
-    /// An initializer that accepts a given Any object.
-    public required init(_ object: Any) {
-        if let o = object as? JSON {
-            self.object = o.object
-        } else {
-            self.object = object
-        }
-    }
-
-    /**
-     A subscript operator for Array style access.
-     - Parameter index: An Int.
-     - Returns: A JSON object if successful, nil otherwise.
-     */
-    open subscript(index: Int) -> JSON? {
-        guard let item = asArray else {
-            return nil
-        }
-
-        return JSON(item[index])
-    }
-
-    /**
-     A subscript operator for Dictionary style access.
-     - Parameter key: A String.
-     - Returns: A JSON object if successful, nil otherwise.
-     */
-    open subscript(key: String) -> JSON? {
-        guard let item = asDictionary else {
-            return nil
-        }
-
-        guard nil != item[key] else {
-            return nil
-        }
-
-        return JSON(item[key]!)
-    }
+    
+    return JSON(item[key]!)
+  }
 }
 
 public func ==(lhs: JSON, rhs: JSON) -> Bool {
-    return JSON.stringify(object: lhs.object) == JSON.stringify(object: rhs.object)
+  return JSON.stringify(object: lhs.object) == JSON.stringify(object: rhs.object)
 }

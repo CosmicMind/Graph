@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2017, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,12 +31,12 @@
 import XCTest
 @testable import Graph
 
-class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
+class EntityGroupTests: XCTestCase, WatchEntityDelegate {
     var saveExpectation: XCTestExpectation?
     
-    var propertyInsertExpception: XCTestExpectation?
-    var propertyUpdateExpception: XCTestExpectation?
-    var propertyDeleteExpception: XCTestExpectation?
+    var tagAddExpception: XCTestExpectation?
+    var tagUpdateExpception: XCTestExpectation?
+    var tagRemoveExpception: XCTestExpectation?
     
     override func setUp() {
         super.setUp()
@@ -46,18 +46,18 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
         super.tearDown()
     }
     
-    func testPropertyInsert() {
+    func testGroupAdd() {
         saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        propertyInsertExpception = expectation(description: "[EntityTests Error: Property insert test failed.]")
+        tagAddExpception = expectation(description: "[EntityTests Error: Group add test failed.]")
         
         let graph = Graph()
-        let watch = Watch<Entity>(graph: graph).where(properties: "P1")
+        let watch = Watch<Entity>(graph: graph).for(types: "T").member(of: "G1")
         watch.delegate = self
         
         let entity = Entity(type: "T")
-        entity["P1"] = "V1"
+        entity.add(to: "G1")
         
-        XCTAssertEqual("V1", entity["P1"] as? String)
+        XCTAssertTrue(entity.member(of: "G1"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -68,48 +68,13 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testPropertyUpdate() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        
-        let graph = Graph()
-        
-        let entity = Entity(type: "T")
-        entity["P1"] = "V1"
-        
-        graph.async { [weak self] (success, error) in
-            XCTAssertTrue(success)
-            XCTAssertNil(error)
-            self?.saveExpectation?.fulfill()
-        }
-        
-        waitForExpectations(timeout: 5, handler: nil)
-        
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        propertyUpdateExpception = expectation(description: "[EntityTests Error: Property update test failed.]")
-        
-        let watch = Watch<Entity>(graph: graph).where(properties: "P1")
-        watch.delegate = self
-        
-        entity["P1"] = "V2"
-        
-        XCTAssertEqual("V2", entity["P1"] as? String)
-        
-        graph.async { [weak self] (success, error) in
-            XCTAssertTrue(success)
-            XCTAssertNil(error)
-            self?.saveExpectation?.fulfill()
-        }
-        
-        waitForExpectations(timeout: 5, handler: nil)
-    }
-    
-    func testPropertyDelete() {
+    func testGroupUpdate() {
         saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
         let entity = Entity(type: "T")
-        entity["P1"] = "V1"
+        entity.add(to: "G2")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -120,14 +85,16 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
         
         saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        propertyDeleteExpception = expectation(description: "[EntityTests Error: Property delete test failed.]")
+        tagAddExpception = expectation(description: "[EntityTests Error: Group add test failed.]")
+        tagRemoveExpception = expectation(description: "[EntityTests Error: Group remove test failed.]")
         
-        let watch = Watch<Entity>(graph: graph).where(properties: "P1")
+        let watch = Watch<Entity>(graph: graph).member(of: "G1", "G2")
         watch.delegate = self
         
-        entity["P1"] = nil
+        entity.toggle(groups: "G1", "G2")
         
-        XCTAssertNil(entity["P1"])
+        XCTAssertTrue(entity.member(of: "G1"))
+        XCTAssertFalse(entity.member(of: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -138,36 +105,60 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
-        XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+    func testGroupDelete() {
+        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
         
-        XCTAssertEqual("P1", property)
-        XCTAssertEqual("V1", value as? String)
-        XCTAssertEqual(value as? String, entity[property] as? String)
+        let graph = Graph()
         
-        propertyInsertExpception?.fulfill()
+        let entity = Entity(type: "T")
+        entity.add(to: "G2")
+        
+        XCTAssertTrue(entity.member(of: "G2"))
+        
+        graph.async { [weak self] (success, error) in
+            XCTAssertTrue(success)
+            XCTAssertNil(error)
+            self?.saveExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        tagRemoveExpception = expectation(description: "[EntityTests Error: Group remove test failed.]")
+        
+        let watch = Watch<Entity>(graph: graph).member(of: "G2")
+        watch.delegate = self
+        
+        entity.remove(from: "G2")
+        
+        XCTAssertFalse(entity.member(of: "G2"))
+        
+        graph.async { [weak self] (success, error) in
+            XCTAssertTrue(success)
+            XCTAssertNil(error)
+            self?.saveExpectation?.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, entity: Entity, addedTo group: String, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertEqual("G1", group)
+        XCTAssertTrue(entity.member(of: group))
+        XCTAssertEqual(1, entity.groups.count)
+        XCTAssertTrue(entity.groups.contains(group))
         
-        XCTAssertEqual("P1", property)
-        XCTAssertEqual("V2", value as? String)
-        XCTAssertEqual(value as? String, entity[property] as? String)
-        
-        propertyUpdateExpception?.fulfill()
+        tagAddExpception?.fulfill()
     }
     
-    func watch(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
+    func watch(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
         XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertEqual("G2", group)
+        XCTAssertFalse(entity.member(of: group))
         
-        XCTAssertEqual("P1", property)
-        XCTAssertEqual("V1", value as? String)
-        XCTAssertNil(entity[property])
-        
-        propertyDeleteExpception?.fulfill()
+        tagRemoveExpception?.fulfill()
     }
 }

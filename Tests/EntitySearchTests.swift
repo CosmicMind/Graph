@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2017, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class RelationshipSearchTests : XCTestCase {
+class EntitySearchTests : XCTestCase {
     var testExpectation: XCTestExpectation?
     
     override func setUp() {
@@ -42,10 +42,10 @@ class RelationshipSearchTests : XCTestCase {
         super.tearDown()
     }
     
-    func searchTest(search: Search<Relationship>, count: Int) {
+    func searchTest(search: Search<Entity>, count: Int) {
         XCTAssertEqual(count, search.sync().count)
         
-        testExpectation = expectation(description: "[RelationshipSearchTests Error: Test failed.]")
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
         search.sync { [weak self, count = count] in
             XCTAssertEqual(count, $0.count)
@@ -54,7 +54,7 @@ class RelationshipSearchTests : XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        testExpectation = expectation(description: "[RelationshipSearchTests Error: Test failed.]")
+        testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
         
         search.async { [weak self, count = count] in
             XCTAssertEqual(count, $0.count)
@@ -69,21 +69,21 @@ class RelationshipSearchTests : XCTestCase {
         graph.clear()
         
         for _ in 0..<100 {
-            let n = Relationship(type: "T1")
+            let n = Entity(type: "T1")
             n["P1"] = "V2"
             n.add(tags: "Q1")
             n.add(to: "G1")
         }
         
         for _ in 0..<200 {
-            let n = Relationship(type: "T2")
+            let n = Entity(type: "T2")
             n["P2"] = "V2"
             n.add(tags: "Q2")
             n.add(to: "G2")
         }
         
         for _ in 0..<300 {
-            let n = Relationship(type: "T3")
+            let n = Entity(type: "T3")
             n["P3"] = "V3"
             n.add(tags: "Q3")
             n.add(to: "G3")
@@ -93,7 +93,7 @@ class RelationshipSearchTests : XCTestCase {
             XCTAssertTrue(success, "\(String(describing: error))")
         }
         
-        let search = Search<Relationship>(graph: graph)
+        let search = Search<Entity>(graph: graph)
         
         searchTest(search: search.clear().for(types: []), count: 0)
         
@@ -153,7 +153,7 @@ class RelationshipSearchTests : XCTestCase {
         graph.clear()
         
         for _ in 0..<1000 {
-            let n1 = Relationship(type: "T1")
+            let n1 = Entity(type: "T1")
             n1["P1"] = 1
             n1.add(tags: "Q1")
             n1.add(to: "G1")
@@ -163,7 +163,7 @@ class RelationshipSearchTests : XCTestCase {
             XCTAssertTrue(success, "\(String(describing: error))")
         }
         
-        let search = Search<Relationship>(graph: graph)
+        let search = Search<Entity>(graph: graph)
         
         measure { [search = search] in
             XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: ["Q1"], using: .and).member(of: ["G1"], using: .and).where(properties: ["P1"], using: .and).sync().count)

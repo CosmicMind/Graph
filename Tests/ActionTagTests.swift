@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2017, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class EntityGroupTests: XCTestCase, WatchEntityDelegate {
+class ActionTagTests: XCTestCase, WatchActionDelegate {
     var saveExpectation: XCTestExpectation?
     
     var tagAddExpception: XCTestExpectation?
@@ -46,18 +46,18 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         super.tearDown()
     }
     
-    func testGroupAdd() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(description: "[EntityTests Error: Group add test failed.]")
+    func testTagAdd() {
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[ActionTests Error: Tag add test failed.]")
         
         let graph = Graph()
-        let watch = Watch<Entity>(graph: graph).for(types: "T").member(of: "G1")
+        let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: ["G1"])
         watch.delegate = self
         
-        let entity = Entity(type: "T")
-        entity.add(to: "G1")
+        let action = Action(type: "T")
+        action.add(tags: "G1")
         
-        XCTAssertTrue(entity.member(of: "G1"))
+        XCTAssertTrue(action.has(tags: "G1"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -68,13 +68,13 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testGroupUpdate() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+    func testTagUpdate() {
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let entity = Entity(type: "T")
-        entity.add(to: "G2")
+        let action = Action(type: "T")
+        action.add(tags: "G2")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -84,17 +84,17 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(description: "[EntityTests Error: Group add test failed.]")
-        tagRemoveExpception = expectation(description: "[EntityTests Error: Group remove test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[ActionTests Error: Tag add test failed.]")
+        tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Entity>(graph: graph).member(of: "G1", "G2")
+        let watch = Watch<Action>(graph: graph).has(tags: ["G1", "G2"])
         watch.delegate = self
         
-        entity.toggle(groups: "G1", "G2")
+        action.toggle(tags: "G1", "G2")
         
-        XCTAssertTrue(entity.member(of: "G1"))
-        XCTAssertFalse(entity.member(of: "G2"))
+        XCTAssertTrue(action.has(tags: "G1"))
+        XCTAssertFalse(action.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -105,15 +105,15 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testGroupDelete() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+    func testTagDelete() {
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let entity = Entity(type: "T")
-        entity.add(to: "G2")
+        let action = Action(type: "T")
+        action.add(tags: "G2")
         
-        XCTAssertTrue(entity.member(of: "G2"))
+        XCTAssertTrue(action.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -123,15 +123,16 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        tagRemoveExpception = expectation(description: "[EntityTests Error: Group remove test failed.]")
+        saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")
+        tagRemoveExpception = expectation(description: "[ActionTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Entity>(graph: graph).member(of: "G2")
+        let watch = Watch<Action>(graph: graph).has(tags: ["G2"])
         watch.delegate = self
         
-        entity.remove(from: "G2")
         
-        XCTAssertFalse(entity.member(of: "G2"))
+        action.remove(tags: "G2")
+        
+        XCTAssertFalse(action.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -142,22 +143,22 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, entity: Entity, addedTo group: String, source: GraphSource) {
-        XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("G1", group)
-        XCTAssertTrue(entity.member(of: group))
-        XCTAssertEqual(1, entity.groups.count)
-        XCTAssertTrue(entity.groups.contains(group))
+    func watch(graph: Graph, action: Action, added tag: String, source: GraphSource) {
+        XCTAssertTrue("T" == action.type)
+        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertEqual("G1", tag)
+        XCTAssertTrue(action.has(tags: tag))
+        XCTAssertEqual(1, action.tags.count)
+        XCTAssertTrue(action.tags.contains(tag))
         
         tagAddExpception?.fulfill()
     }
     
-    func watch(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource) {
-        XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
-        XCTAssertEqual("G2", group)
-        XCTAssertFalse(entity.member(of: group))
+    func watch(graph: Graph, action: Action, removed tag: String, source: GraphSource) {
+        XCTAssertTrue("T" == action.type)
+        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertEqual("G2", tag)
+        XCTAssertFalse(action.has(tags: tag))
         
         tagRemoveExpception?.fulfill()
     }

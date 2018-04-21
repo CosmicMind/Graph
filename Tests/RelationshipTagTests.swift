@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2017, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class EntityTagTests: XCTestCase, WatchEntityDelegate {
+class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     var saveExpectation: XCTestExpectation?
     
     var tagAddExpception: XCTestExpectation?
@@ -47,17 +47,17 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     }
     
     func testTagAdd() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
         
         let graph = Graph()
-        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G1")
+        let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: ["G1"])
         watch.delegate = self
         
-        let entity = Entity(type: "T")
-        entity.add(tags: "G1")
+        let relationship = Relationship(type: "T")
+        relationship.add(tags: "G1")
         
-        XCTAssertTrue(entity.has(tags: "G1"))
+        XCTAssertTrue(relationship.has(tags: "G1"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -69,12 +69,12 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     }
     
     func testTagUpdate() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let entity = Entity(type: "T")
-        entity.add(tags: "G2")
+        let relationship = Relationship(type: "T")
+        relationship.add(tags: "G2")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -84,17 +84,17 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
-        tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
+        tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Entity>(graph: graph).has(tags: "G1", "G2")
+        let watch = Watch<Relationship>(graph: graph).has(tags: ["G1", "G2"])
         watch.delegate = self
         
-        entity.toggle(tags: "G1", "G2")
+        relationship.toggle(tags: "G1", "G2")
         
-        XCTAssertTrue(entity.has(tags: "G1"))
-        XCTAssertFalse(entity.has(tags: "G2"))
+        XCTAssertTrue(relationship.has(tags: "G1"))
+        XCTAssertFalse(relationship.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -106,14 +106,14 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     }
     
     func testTagDelete() {
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let entity = Entity(type: "T")
-        entity.add(tags: "G2")
+        let relationship = Relationship(type: "T")
+        relationship.add(tags: "G2")
         
-        XCTAssertTrue(entity.has(tags: "G2"))
+        XCTAssertTrue(relationship.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -123,15 +123,15 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
-        tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
+        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+        tagRemoveExpception = expectation(description: "[RelationshipTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Entity>(graph: graph).has(tags: "G2")
+        let watch = Watch<Relationship>(graph: graph).has(tags: ["G2"])
         watch.delegate = self
         
-        entity.remove(tags: "G2")
+        relationship.remove(tags: "G2")
         
-        XCTAssertFalse(entity.has(tags: "G2"))
+        XCTAssertFalse(relationship.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -142,22 +142,22 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
-        XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+    func watch(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource) {
+        XCTAssertTrue("T" == relationship.type)
+        XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G1", tag)
-        XCTAssertTrue(entity.has(tags: tag))
-        XCTAssertEqual(1, entity.tags.count)
-        XCTAssertTrue(entity.tags.contains(tag))
+        XCTAssertTrue(relationship.has(tags: tag))
+        XCTAssertEqual(1, relationship.tags.count)
+        XCTAssertTrue(relationship.tags.contains(tag))
         
         tagAddExpception?.fulfill()
     }
     
-    func watch(graph: Graph, entity: Entity, removed tag: String, source: GraphSource) {
-        XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+    func watch(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource) {
+        XCTAssertTrue("T" == relationship.type)
+        XCTAssertTrue(0 < relationship.id.characters.count)
         XCTAssertEqual("G2", tag)
-        XCTAssertFalse(entity.has(tags: tag))
+        XCTAssertFalse(relationship.has(tags: tag))
         
         tagRemoveExpception?.fulfill()
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2017, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
+class EntityTagTests: XCTestCase, WatchEntityDelegate {
     var saveExpectation: XCTestExpectation?
     
     var tagAddExpception: XCTestExpectation?
@@ -46,18 +46,18 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         super.tearDown()
     }
     
-    func testGroupAdd() {
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(description: "[RelationshipTests Error: Group add test failed.]")
+    func testTagAdd() {
+        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
         
         let graph = Graph()
-        let watch = Watch<Relationship>(graph: graph).for(types: "T").member(of: "G1")
+        let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G1")
         watch.delegate = self
         
-        let relationship = Relationship(type: "T")
-        relationship.add(to: "G1")
+        let entity = Entity(type: "T")
+        entity.add(tags: "G1")
         
-        XCTAssertTrue(relationship.member(of: "G1"))
+        XCTAssertTrue(entity.has(tags: "G1"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -68,13 +68,13 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testGroupUpdate() {
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+    func testTagUpdate() {
+        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let relationship = Relationship(type: "T")
-        relationship.add(to: "G2")
+        let entity = Entity(type: "T")
+        entity.add(tags: "G2")
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -84,17 +84,17 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
-        tagAddExpception = expectation(description: "[RelationshipTests Error: Group add test failed.]")
-        tagRemoveExpception = expectation(description: "[RelationshipTests Error: Group remove test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
+        tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Relationship>(graph: graph).member(of: "G1", "G2")
+        let watch = Watch<Entity>(graph: graph).has(tags: "G1", "G2")
         watch.delegate = self
         
-        relationship.toggle(groups: "G1", "G2")
+        entity.toggle(tags: "G1", "G2")
         
-        XCTAssertTrue(relationship.member(of: "G1"))
-        XCTAssertFalse(relationship.member(of: "G2"))
+        XCTAssertTrue(entity.has(tags: "G1"))
+        XCTAssertFalse(entity.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -105,15 +105,15 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testGroupDelete() {
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
+    func testTagDelete() {
+        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
         
         let graph = Graph()
         
-        let relationship = Relationship(type: "T")
-        relationship.add(to: "G2")
+        let entity = Entity(type: "T")
+        entity.add(tags: "G2")
         
-        XCTAssertTrue(relationship.member(of: "G2"))
+        XCTAssertTrue(entity.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -123,15 +123,15 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         
         waitForExpectations(timeout: 5, handler: nil)
         
-        saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
-        tagRemoveExpception = expectation(description: "[RelationshipTests Error: Group remove test failed.]")
+        saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
+        tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
         
-        let watch = Watch<Relationship>(graph: graph).member(of: "G2")
+        let watch = Watch<Entity>(graph: graph).has(tags: "G2")
         watch.delegate = self
         
-        relationship.remove(from: "G2")
+        entity.remove(tags: "G2")
         
-        XCTAssertFalse(relationship.member(of: "G2"))
+        XCTAssertFalse(entity.has(tags: "G2"))
         
         graph.async { [weak self] (success, error) in
             XCTAssertTrue(success)
@@ -142,22 +142,22 @@ class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func watch(graph: Graph, relationship: Relationship, addedTo group: String, source: GraphSource) {
-        XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
-        XCTAssertEqual("G1", group)
-        XCTAssertTrue(relationship.member(of: group))
-        XCTAssertEqual(1, relationship.groups.count)
-        XCTAssertTrue(relationship.groups.contains(group))
+    func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
+        XCTAssertTrue("T" == entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertEqual("G1", tag)
+        XCTAssertTrue(entity.has(tags: tag))
+        XCTAssertEqual(1, entity.tags.count)
+        XCTAssertTrue(entity.tags.contains(tag))
         
         tagAddExpception?.fulfill()
     }
     
-    func watch(graph: Graph, relationship: Relationship, removedFrom group: String, source: GraphSource) {
-        XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
-        XCTAssertEqual("G2", group)
-        XCTAssertFalse(relationship.member(of: group))
+    func watch(graph: Graph, entity: Entity, removed tag: String, source: GraphSource) {
+        XCTAssertTrue("T" == entity.type)
+        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertEqual("G2", tag)
+        XCTAssertFalse(entity.has(tags: tag))
         
         tagRemoveExpception?.fulfill()
     }
