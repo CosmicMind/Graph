@@ -30,10 +30,10 @@
 
 import Foundation
 
-open class JSON: Equatable, CustomStringConvertible {
+open class GraphJSON: Equatable, CustomStringConvertible {
   /// A desiption of the object, used when printing.
   open var description: String {
-    return JSON.stringify(object: object) ?? "{}"
+    return GraphJSON.stringify(object: object) ?? "{}"
   }
   
   /// A reference to the core object.
@@ -76,30 +76,30 @@ open class JSON: Equatable, CustomStringConvertible {
   
   /// A Data representation of the object.
   open var asNSData: Data? {
-    return JSON.serialize(object: object)
+    return GraphJSON.serialize(object: object)
   }
   
   /**
    Parses a given Data object.
    - Parameter _ data: A Data object.
    - Parameter options: JSONSerialization.ReadingOptions.
-   - Returns: A JSON object on success, nil otherwise.
+   - Returns: A GraphJSON object on success, nil otherwise.
    */
-  open class func parse(_ data: Data, options: JSONSerialization.ReadingOptions = .allowFragments) -> JSON? {
+  open class func parse(_ data: Data, options: JSONSerialization.ReadingOptions = .allowFragments) -> GraphJSON? {
     guard let object = try? JSONSerialization.jsonObject(with: data, options: options) else {
       return nil
     }
     
-    return JSON(object)
+    return GraphJSON(object)
   }
   
   /**
    Parses a given String object.
    - Parameter _ string: A Data object.
    - Parameter options: JSONSerialization.ReadingOptions.
-   - Returns: A JSON object on success, nil otherwise.
+   - Returns: A GraphJSON object on success, nil otherwise.
    */
-  open class func parse(_ string: String, options: JSONSerialization.ReadingOptions = .allowFragments) -> JSON? {
+  open class func parse(_ string: String, options: JSONSerialization.ReadingOptions = .allowFragments) -> GraphJSON? {
     guard let data = string.data(using: String.Encoding.utf8) else {
       return nil
     }
@@ -122,20 +122,23 @@ open class JSON: Equatable, CustomStringConvertible {
    - Returns: A String object if successful, nil otherwise.
    */
   open class func stringify(object: Any) -> String? {
-    if let o = object as? JSON {
+    if let o = object as? GraphJSON {
       return stringify(object: o.object)
-    } else if let data = JSON.serialize(object: object) {
+    
+    } else if let data = GraphJSON.serialize(object: object) {
       if let o = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
         return o
       }
     }
+    
     return nil
   }
   
   /// An initializer that accepts a given Any object.
   public required init(_ object: Any) {
-    if let o = object as? JSON {
+    if let o = object as? GraphJSON {
       self.object = o.object
+    
     } else {
       self.object = object
     }
@@ -144,22 +147,22 @@ open class JSON: Equatable, CustomStringConvertible {
   /**
    A subscript operator for Array style access.
    - Parameter index: An Int.
-   - Returns: A JSON object if successful, nil otherwise.
+   - Returns: A GraphJSON object if successful, nil otherwise.
    */
-  open subscript(index: Int) -> JSON? {
+  open subscript(index: Int) -> GraphJSON? {
     guard let item = asArray else {
       return nil
     }
     
-    return JSON(item[index])
+    return GraphJSON(item[index])
   }
   
   /**
    A subscript operator for Dictionary style access.
    - Parameter key: A String.
-   - Returns: A JSON object if successful, nil otherwise.
+   - Returns: A GraphJSON object if successful, nil otherwise.
    */
-  open subscript(key: String) -> JSON? {
+  open subscript(key: String) -> GraphJSON? {
     guard let item = asDictionary else {
       return nil
     }
@@ -168,10 +171,10 @@ open class JSON: Equatable, CustomStringConvertible {
       return nil
     }
     
-    return JSON(item[key]!)
+    return GraphJSON(item[key]!)
   }
 }
 
-public func ==(lhs: JSON, rhs: JSON) -> Bool {
-  return JSON.stringify(object: lhs.object) == JSON.stringify(object: rhs.object)
+public func ==(lhs: GraphJSON, rhs: GraphJSON) -> Bool {
+  return GraphJSON.stringify(object: lhs.object) == GraphJSON.stringify(object: rhs.object)
 }

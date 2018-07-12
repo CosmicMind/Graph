@@ -140,7 +140,7 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
     
     func watch(graph: Graph, inserted relationship: Relationship, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertTrue(0 < relationship.id.count)
         XCTAssertEqual(0, relationship.properties.count)
         
         relationshipInsertExpectation?.fulfill()
@@ -148,7 +148,7 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
     
     func watch(graph: Graph, deleted relationship: Relationship, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertTrue(0 < relationship.id.count)
         XCTAssertEqual(0, relationship.properties.count)
         
         relationshipDeleteExpectation?.fulfill()
@@ -156,21 +156,21 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
     
     func watch(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertTrue(0 < relationship.id.count)
         
         propertyInsertExpception?.fulfill()
     }
     
     func watch(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertTrue(0 < relationship.id.count)
         
         propertyUpdateExpception?.fulfill()
     }
     
     func watch(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertTrue(0 < relationship.id.count)
         
         propertyDeleteExpception?.fulfill()
     }

@@ -140,7 +140,7 @@ class RelationshipPropertyTests: XCTestCase, WatchRelationshipDelegate {
     
     func watch(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertTrue(0 < relationship.id.count)
         
         XCTAssertEqual("P1", property)
         XCTAssertEqual("V1", value as? String)
@@ -151,7 +151,7 @@ class RelationshipPropertyTests: XCTestCase, WatchRelationshipDelegate {
     
     func watch(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertTrue(0 < relationship.id.count)
         
         XCTAssertEqual("P1", property)
         XCTAssertEqual("V2", value as? String)
@@ -162,7 +162,7 @@ class RelationshipPropertyTests: XCTestCase, WatchRelationshipDelegate {
     
     func watch(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == relationship.type)
-        XCTAssertTrue(0 < relationship.id.characters.count)
+        XCTAssertTrue(0 < relationship.id.count)
         
         XCTAssertEqual("P1", property)
         XCTAssertEqual("V1", value as? String)

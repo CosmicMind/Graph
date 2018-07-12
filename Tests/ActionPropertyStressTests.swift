@@ -140,7 +140,7 @@ class ActionPropertyStressTests: XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, inserted action: Action, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual(0, action.properties.count)
         
         actionInsertExpectation?.fulfill()
@@ -148,7 +148,7 @@ class ActionPropertyStressTests: XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, deleted action: Action, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual(0, action.properties.count)
         
         actionDeleteExpectation?.fulfill()
@@ -156,21 +156,21 @@ class ActionPropertyStressTests: XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         
         propertyInsertExpception?.fulfill()
     }
     
     func watch(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         
         propertyUpdateExpception?.fulfill()
     }
     
     func watch(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         
         propertyDeleteExpception?.fulfill()
     }

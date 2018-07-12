@@ -144,7 +144,7 @@ class ActionGroupTests: XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, action: Action, addedTo group: String, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual("G1", group)
         XCTAssertTrue(action.member(of: group))
         XCTAssertEqual(1, action.groups.count)
@@ -155,7 +155,7 @@ class ActionGroupTests: XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, action: Action, removedFrom group: String, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual("G2", group)
         XCTAssertFalse(action.member(of: group))
         

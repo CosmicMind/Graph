@@ -140,7 +140,7 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
     
     func watch(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertTrue(0 < entity.id.count)
         
         XCTAssertEqual("P1", property)
         XCTAssertEqual("V1", value as? String)
@@ -151,7 +151,7 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
     
     func watch(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertTrue(0 < entity.id.count)
         
         XCTAssertEqual("P1", property)
         XCTAssertEqual("V2", value as? String)
@@ -162,7 +162,7 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
     
     func watch(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertTrue(0 < entity.id.count)
         
         XCTAssertEqual("P1", property)
         XCTAssertEqual("V1", value as? String)

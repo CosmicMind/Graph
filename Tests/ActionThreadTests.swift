@@ -112,7 +112,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, inserted action: Action, source: GraphSource) {
         XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual(111, action["P"] as? Int)
         XCTAssertTrue(action.has(tags: "G"))
         
@@ -121,7 +121,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, deleted action: Action, source: GraphSource) {
         XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertNil(action["P"])
         XCTAssertFalse(action.has(tags: "G"))
         
@@ -138,7 +138,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, action: Action, removed tag: String, source: GraphSource) {
         XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual("G", tag)
         XCTAssertFalse(action.has(tags: "G"))
         
@@ -147,7 +147,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource) {
         XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual("P", property)
         XCTAssertEqual(111, value as? Int)
         XCTAssertEqual(value as? Int, action[property] as? Int)
@@ -157,7 +157,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource) {
         XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual("P", property)
         XCTAssertEqual(222, value as? Int)
         XCTAssertEqual(value as? Int, action[property] as? Int)
@@ -167,7 +167,7 @@ class ActionThreadTests : XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource) {
         XCTAssertEqual("T", action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual("P", property)
         XCTAssertEqual(222, value as? Int)
         XCTAssertNil(action[property])

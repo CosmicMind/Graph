@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		962EB9D01D9E9E6800DFA8C4 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */; };
-		962EB9D11D9E9E6800DFA8C4 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */; };
+		962EB9D01D9E9E6800DFA8C4 /* GraphJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* GraphJSON.swift */; };
+		962EB9D11D9E9E6800DFA8C4 /* GraphJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* GraphJSON.swift */; };
 		965BBDCF208B96CF00AC4ED5 /* ActionPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965BBDC8208B96CF00AC4ED5 /* ActionPropertyTests.swift */; };
 		965BBDD0208B96CF00AC4ED5 /* ActionPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965BBDC8208B96CF00AC4ED5 /* ActionPropertyTests.swift */; };
 		965BBDD1208B96CF00AC4ED5 /* ActionPropertyStressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965BBDC9208B96CF00AC4ED5 /* ActionPropertyStressTests.swift */; };
@@ -61,8 +61,8 @@
 		9686720E1D3BEA50000CD904 /* ManagedRelationshipGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686720C1D3BEA50000CD904 /* ManagedRelationshipGroup.swift */; };
 		968672101D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; };
 		968672111D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; };
-		968B3EA81DA89EC40099F8E5 /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		968B3EA91DA89ED40099F8E5 /* JSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		968B3EA81DA89EC40099F8E5 /* GraphJSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* GraphJSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		968B3EA91DA89ED40099F8E5 /* GraphJSON.swift in Headers */ = {isa = PBXBuildFile; fileRef = 962EB9CF1D9E9E6800DFA8C4 /* GraphJSON.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E3C3B41D3AB41F0086A024 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E3C3A91D3AB41F0086A024 /* Graph.framework */; };
 		96E3C3C81D3AB4860086A024 /* Graph.h in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C3C61D3AB4860086A024 /* Graph.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96E3C3DE1D3AB5280086A024 /* Graph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E3C3D41D3AB5280086A024 /* Graph.framework */; };
@@ -198,7 +198,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		962EB9CF1D9E9E6800DFA8C4 /* GraphJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphJSON.swift; sourceTree = "<group>"; };
 		965BBDC8208B96CF00AC4ED5 /* ActionPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActionPropertyTests.swift; path = Tests/ActionPropertyTests.swift; sourceTree = SOURCE_ROOT; };
 		965BBDC9208B96CF00AC4ED5 /* ActionPropertyStressTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActionPropertyStressTests.swift; path = Tests/ActionPropertyStressTests.swift; sourceTree = SOURCE_ROOT; };
 		965BBDCA208B96CF00AC4ED5 /* ActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActionTests.swift; path = Tests/ActionTests.swift; sourceTree = SOURCE_ROOT; };
@@ -299,7 +299,7 @@
 		962EB9CE1D9E9E5600DFA8C4 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				962EB9CF1D9E9E6800DFA8C4 /* JSON.swift */,
+				962EB9CF1D9E9E6800DFA8C4 /* GraphJSON.swift */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -518,7 +518,7 @@
 				96F1DC5A1D64DDBC0025F925 /* ManagedActionProperty.swift in Headers */,
 				96F1DC5B1D64DDBC0025F925 /* ManagedActionTag.swift in Headers */,
 				96F1DC5C1D64DDBC0025F925 /* ManagedActionGroup.swift in Headers */,
-				968B3EA81DA89EC40099F8E5 /* JSON.swift in Headers */,
+				968B3EA81DA89EC40099F8E5 /* GraphJSON.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,7 +556,7 @@
 				96F1DC781D64DDCF0025F925 /* ManagedActionProperty.swift in Headers */,
 				96F1DC791D64DDCF0025F925 /* ManagedActionTag.swift in Headers */,
 				96F1DC7A1D64DDCF0025F925 /* ManagedActionGroup.swift in Headers */,
-				968B3EA91DA89ED40099F8E5 /* JSON.swift in Headers */,
+				968B3EA91DA89ED40099F8E5 /* GraphJSON.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -736,7 +736,7 @@
 				96E3C42C1D3AC6B60086A024 /* Entity.swift in Sources */,
 				96E3C4361D3AC6F20086A024 /* ManagedObject.swift in Sources */,
 				96E3C4441D3AC7E40086A024 /* ManagedRelationshipTag.swift in Sources */,
-				962EB9D01D9E9E6800DFA8C4 /* JSON.swift in Sources */,
+				962EB9D01D9E9E6800DFA8C4 /* GraphJSON.swift in Sources */,
 				96E3C3F41D3AB8B00086A024 /* Model.swift in Sources */,
 				968672101D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */,
 				96E3C4451D3AC7E40086A024 /* ManagedRelationshipProperty.swift in Sources */,
@@ -803,7 +803,7 @@
 				96E3C42D1D3AC6B70086A024 /* Entity.swift in Sources */,
 				96E3C4391D3AC6F30086A024 /* ManagedObject.swift in Sources */,
 				96E3C44C1D3AC7E50086A024 /* ManagedRelationshipTag.swift in Sources */,
-				962EB9D11D9E9E6800DFA8C4 /* JSON.swift in Sources */,
+				962EB9D11D9E9E6800DFA8C4 /* GraphJSON.swift in Sources */,
 				96E3C3F51D3AB8B00086A024 /* Model.swift in Sources */,
 				968672111D3BEA8F000CD904 /* ManagedActionGroup.swift in Sources */,
 				96E3C44D1D3AC7E50086A024 /* ManagedRelationshipProperty.swift in Sources */,

@@ -145,7 +145,7 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, action: Action, added tag: String, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual("G1", tag)
         XCTAssertTrue(action.has(tags: tag))
         XCTAssertEqual(1, action.tags.count)
@@ -156,7 +156,7 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
     
     func watch(graph: Graph, action: Action, removed tag: String, source: GraphSource) {
         XCTAssertTrue("T" == action.type)
-        XCTAssertTrue(0 < action.id.characters.count)
+        XCTAssertTrue(0 < action.id.count)
         XCTAssertEqual("G2", tag)
         XCTAssertFalse(action.has(tags: tag))
         

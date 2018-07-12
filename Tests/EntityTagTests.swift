@@ -144,7 +144,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     
     func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertTrue(0 < entity.id.count)
         XCTAssertEqual("G1", tag)
         XCTAssertTrue(entity.has(tags: tag))
         XCTAssertEqual(1, entity.tags.count)
@@ -155,7 +155,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     
     func watch(graph: Graph, entity: Entity, removed tag: String, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertTrue(0 < entity.id.count)
         XCTAssertEqual("G2", tag)
         XCTAssertFalse(entity.has(tags: tag))
         

@@ -144,7 +144,7 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
     
     func watch(graph: Graph, entity: Entity, addedTo group: String, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertTrue(0 < entity.id.count)
         XCTAssertEqual("G1", group)
         XCTAssertTrue(entity.member(of: group))
         XCTAssertEqual(1, entity.groups.count)
@@ -155,7 +155,7 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
     
     func watch(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource) {
         XCTAssertTrue("T" == entity.type)
-        XCTAssertTrue(0 < entity.id.characters.count)
+        XCTAssertTrue(0 < entity.id.count)
         XCTAssertEqual("G2", group)
         XCTAssertFalse(entity.member(of: group))
         
