@@ -178,8 +178,14 @@ internal class ManagedEntity: ManagedNode {
         }
 
         moc.performAndWait { [unowned self] in
+            var properties: [ManagedEntityProperty] = []
             self.propertySet.forEach {
-                ($0 as? ManagedEntityProperty)?.delete()
+                if let property = $0 as? ManagedEntityProperty {
+                    properties.append(property)
+                }
+            }
+            properties.forEach {
+                $0.delete()
             }
 
             self.tagSet.forEach {

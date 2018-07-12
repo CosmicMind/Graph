@@ -174,8 +174,14 @@ internal class ManagedRelationship: ManagedNode {
         }
 
         moc.performAndWait { [unowned self] in
+            var properties: [ManagedRelationshipProperty] = []
             self.propertySet.forEach {
-                ($0 as? ManagedRelationshipProperty)?.delete()
+                if let property = $0 as? ManagedRelationshipProperty {
+                    properties.append(property)
+                }
+            }
+            properties.forEach {
+                $0.delete()
             }
 
             self.tagSet.forEach {
