@@ -54,7 +54,7 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).for(types: "T").member(of: "G1")
     watch.delegate = self
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity.add(to: "G1")
     
     XCTAssertTrue(entity.member(of: "G1"))
@@ -73,7 +73,7 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
     
     let graph = Graph()
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity.add(to: "G2")
     
     graph.async { [weak self] (success, error) in
@@ -110,7 +110,7 @@ class EntityGroupTests: XCTestCase, WatchEntityDelegate {
     
     let graph = Graph()
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity.add(to: "G2")
     
     XCTAssertTrue(entity.member(of: "G2"))

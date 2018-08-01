@@ -239,11 +239,11 @@ public class Entity: Node {
   /**
    Initializer that accepts a type and graph. The graph
    indicates which graph to save to.
-   - Parameter type: A reference to a type.
+   - Parameter _ type: A reference to a type.
    - Parameter graph: A reference to a Graph instance by name.
    */
   @nonobjc
-  public convenience init(type: String, graph: String) {
+  public convenience init(_ type: String, graph: String) {
     let context = Graph(name: graph).managedObjectContext
     var managedNode: ManagedEntity?
     context?.performAndWait {
@@ -255,10 +255,10 @@ public class Entity: Node {
   /**
    Initializer that accepts a type and graph. The graph
    indicates which graph to save to.
-   - Parameter type: A reference to a type.
+   - Parameter _ type: A reference to a type.
    - Parameter graph: A reference to a Graph instance.
    */
-  public convenience init(type: String, graph: Graph) {
+  public convenience init(_ type: String, graph: Graph) {
     let context = graph.managedObjectContext
     var managedNode: ManagedEntity?
     context?.performAndWait {
@@ -269,11 +269,19 @@ public class Entity: Node {
   
   /**
    Initializer that accepts a type value.
-   - Parameter type: A reference to a type.
+   - Parameter _ type: A reference to a type.
    */
-  public convenience init(type: String) {
-    self.init(type: type, graph: GraphStoreDescription.name)
+  public convenience init(_ type: String) {
+    self.init(type, graph: GraphStoreDescription.name)
   }
+  
+//  /**
+//   Initializer that accepts a Decoder.
+//   - Parameter from decoder: A Decoder.
+//   */
+//  required init(from decoder: Decoder) throws {
+//    fatalError("init(from:) has not been implemented")
+//  }
   
   /**
    Checks equality between Entities.

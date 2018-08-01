@@ -65,7 +65,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     
     q1.async { [weak self] in
       relationship["P"] = 111

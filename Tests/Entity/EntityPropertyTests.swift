@@ -54,7 +54,7 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).where(properties: "P1")
     watch.delegate = self
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity["P1"] = "V1"
     
     XCTAssertEqual("V1", entity["P1"] as? String)
@@ -73,7 +73,7 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
     
     let graph = Graph()
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity["P1"] = "V1"
     
     graph.async { [weak self] (success, error) in
@@ -108,7 +108,7 @@ class EntityPropertyTests: XCTestCase, WatchEntityDelegate {
     
     let graph = Graph()
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity["P1"] = "V1"
     
     graph.async { [weak self] (success, error) in

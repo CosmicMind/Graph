@@ -57,7 +57,7 @@ class ActionPropertyStressTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T")
     watch.delegate = self
     
-    let action = Action(type: "T")
+    let action = Action("T")
     
     graph.async { [weak self] (success, error) in
       XCTAssertTrue(success)

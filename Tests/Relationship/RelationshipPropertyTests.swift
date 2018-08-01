@@ -54,7 +54,7 @@ class RelationshipPropertyTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).where(properties: "P1")
     watch.delegate = self
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     relationship["P1"] = "V1"
     
     XCTAssertEqual("V1", relationship["P1"] as? String)
@@ -73,7 +73,7 @@ class RelationshipPropertyTests: XCTestCase, WatchRelationshipDelegate {
     
     let graph = Graph()
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     relationship["P1"] = "V1"
     
     graph.async { [weak self] (success, error) in
@@ -108,7 +108,7 @@ class RelationshipPropertyTests: XCTestCase, WatchRelationshipDelegate {
     
     let graph = Graph()
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     relationship["P1"] = "V1"
     
     graph.async { [weak self] (success, error) in

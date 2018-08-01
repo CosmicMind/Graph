@@ -69,21 +69,21 @@ class ActionSearchTests : XCTestCase {
     graph.clear()
     
     for _ in 0..<100 {
-      let n = Action(type: "T1")
+      let n = Action("T1")
       n["P1"] = "V2"
       n.add(tags: "Q1")
       n.add(to: "G1")
     }
     
     for _ in 0..<200 {
-      let n = Action(type: "T2")
+      let n = Action("T2")
       n["P2"] = "V2"
       n.add(tags: "Q2")
       n.add(to: "G2")
     }
     
     for _ in 0..<300 {
-      let n = Action(type: "T3")
+      let n = Action("T3")
       n["P3"] = "V3"
       n.add(tags: "Q3")
       n.add(to: "G3")
@@ -153,7 +153,7 @@ class ActionSearchTests : XCTestCase {
     graph.clear()
     
     for _ in 0..<1000 {
-      let n1 = Action(type: "T1")
+      let n1 = Action("T1")
       n1["P1"] = 1
       n1.add(tags: "Q1")
       n1.add(to: "G1")

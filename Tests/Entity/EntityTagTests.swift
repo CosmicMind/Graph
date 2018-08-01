@@ -54,7 +54,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G1")
     watch.delegate = self
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity.add(tags: "G1")
     
     XCTAssertTrue(entity.has(tags: "G1"))
@@ -73,7 +73,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     
     let graph = Graph()
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity.add(tags: "G2")
     
     graph.async { [weak self] (success, error) in
@@ -110,7 +110,7 @@ class EntityTagTests: XCTestCase, WatchEntityDelegate {
     
     let graph = Graph()
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity.add(tags: "G2")
     
     XCTAssertTrue(entity.has(tags: "G2"))

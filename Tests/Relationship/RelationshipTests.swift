@@ -55,7 +55,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     relationship["P"] = "V"
     relationship.add(tags: "G")
     
@@ -80,7 +80,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let relationship = Relationship(type: "T", graph: "RelationshipTests-testNamedGraphSave")
+    let relationship = Relationship("T", graph: "RelationshipTests-testNamedGraphSave")
     relationship["P"] = "V"
     relationship.add(tags: "G")
     
@@ -105,7 +105,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let relationship = Relationship(type: "T", graph: graph)
+    let relationship = Relationship("T", graph: graph)
     relationship["P"] = "V"
     relationship.add(tags: "G")
     
@@ -132,7 +132,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let relationship = Relationship(type: "T", graph: graph)
+    let relationship = Relationship("T", graph: graph)
     relationship["P"] = "V"
     relationship.add(tags: "G")
     
@@ -159,8 +159,8 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let subject = Entity(type: "S")
-    let object = Entity(type: "O")
+    let subject = Entity("S")
+    let object = Entity("O")
     
     let relationship = subject.is(relationship: "T").of(object)
     relationship["P"] = "V"
@@ -226,7 +226,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     relationship["P"] = "V"
     relationship.add(tags: "G")
     
@@ -243,7 +243,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     saveExpectation = expectation(description: "[RelationshipTests Error: Save test failed.]")
     delegateExpectation = expectation(description: "[RelationshipTests Error: Delegate test failed.]")
     
-    let subject = Entity(type: "T")
+    let subject = Entity("T")
     relationship.subject = subject
     
     XCTAssertEqual(subject, relationship.subject)
@@ -270,7 +270,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     relationship["P"] = "V"
     relationship.add(tags: "G")
     
@@ -287,7 +287,7 @@ class RelationshipTests: XCTestCase, WatchRelationshipDelegate {
     saveExpectation = expectation(description: "[RelationshipTests Error: Save test failed.]")
     delegateExpectation = expectation(description: "[RelationshipTests Error: Delegate test failed.]")
     
-    let object = Entity(type: "T")
+    let object = Entity("T")
     relationship.object = object
     
     XCTAssertEqual(object, relationship.object)

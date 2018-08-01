@@ -55,7 +55,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity["P"] = "V"
     entity.add(tags: "G")
     
@@ -80,7 +80,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let entity = Entity(type: "T", graph: "EntityTests-testNamedGraphSave")
+    let entity = Entity("T", graph: "EntityTests-testNamedGraphSave")
     entity["P"] = "V"
     entity.add(tags: "G")
     
@@ -105,7 +105,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let entity = Entity(type: "T", graph: graph)
+    let entity = Entity("T", graph: graph)
     entity["P"] = "V"
     entity.add(tags: "G")
     
@@ -132,7 +132,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let entity = Entity(type: "T", graph: graph)
+    let entity = Entity("T", graph: graph)
     entity["P"] = "V"
     entity.add(tags: "G")
     
@@ -159,7 +159,7 @@ class EntityTests: XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     entity["P"] = "V"
     entity.add(tags: "G")
     

@@ -57,7 +57,7 @@ class EntityPropertyStressTests: XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).for(types: "T")
     watch.delegate = self
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     
     graph.async { [weak self] (success, error) in
       XCTAssertTrue(success)

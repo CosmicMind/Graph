@@ -54,7 +54,7 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: ["G1"])
     watch.delegate = self
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action.add(tags: "G1")
     
     XCTAssertTrue(action.has(tags: "G1"))
@@ -73,7 +73,7 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
     
     let graph = Graph()
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action.add(tags: "G2")
     
     graph.async { [weak self] (success, error) in
@@ -110,7 +110,7 @@ class ActionTagTests: XCTestCase, WatchActionDelegate {
     
     let graph = Graph()
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action.add(tags: "G2")
     
     XCTAssertTrue(action.has(tags: "G2"))

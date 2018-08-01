@@ -54,7 +54,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).where(properties: "P1")
     watch.delegate = self
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action["P1"] = "V1"
     
     XCTAssertEqual("V1", action["P1"] as? String)
@@ -73,7 +73,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     
     let graph = Graph()
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action["P1"] = "V1"
     
     graph.async { [weak self] (success, error) in
@@ -108,7 +108,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     
     let graph = Graph()
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action["P1"] = "V1"
     
     graph.async { [weak self] (success, error) in

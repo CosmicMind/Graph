@@ -54,7 +54,7 @@ class ActionGroupTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T").member(of: "G1")
     watch.delegate = self
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action.add(to: "G1")
     
     XCTAssertTrue(action.member(of: "G1"))
@@ -73,7 +73,7 @@ class ActionGroupTests: XCTestCase, WatchActionDelegate {
     
     let graph = Graph()
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action.add(to: "G2")
     
     graph.async { [weak self] (success, error) in
@@ -110,7 +110,7 @@ class ActionGroupTests: XCTestCase, WatchActionDelegate {
     
     let graph = Graph()
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action.add(to: "G2")
     
     XCTAssertTrue(action.member(of: "G2"))

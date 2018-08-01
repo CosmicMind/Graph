@@ -65,7 +65,7 @@ class EntityThreadTests : XCTestCase, WatchEntityDelegate {
     let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let entity = Entity(type: "T")
+    let entity = Entity("T")
     
     q1.async { [weak self] in
       entity["P"] = 111

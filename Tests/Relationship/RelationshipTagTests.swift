@@ -54,7 +54,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: ["G1"])
     watch.delegate = self
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     relationship.add(tags: "G1")
     
     XCTAssertTrue(relationship.has(tags: "G1"))
@@ -73,7 +73,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     
     let graph = Graph()
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     relationship.add(tags: "G2")
     
     graph.async { [weak self] (success, error) in
@@ -110,7 +110,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     
     let graph = Graph()
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     relationship.add(tags: "G2")
     
     XCTAssertTrue(relationship.has(tags: "G2"))

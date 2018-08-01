@@ -57,7 +57,7 @@ class RelationshipPropertyStressTests: XCTestCase, WatchRelationshipDelegate {
     let watch = Watch<Relationship>(graph: graph).for(types: "T")
     watch.delegate = self
     
-    let relationship = Relationship(type: "T")
+    let relationship = Relationship("T")
     
     graph.async { [weak self] (success, error) in
       XCTAssertTrue(success)

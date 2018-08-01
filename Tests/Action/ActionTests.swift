@@ -55,7 +55,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action["P"] = "V"
     action.add(tags: "G")
     
@@ -80,7 +80,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let action = Action(type: "T", graph: "ActionTests-testNamedGraphSave")
+    let action = Action("T", graph: "ActionTests-testNamedGraphSave")
     action["P"] = "V"
     action.add(tags: "G")
     
@@ -105,7 +105,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let action = Action(type: "T", graph: graph)
+    let action = Action("T", graph: graph)
     action["P"] = "V"
     action.add(tags: "G")
     
@@ -132,7 +132,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let action = Action(type: "T", graph: graph)
+    let action = Action("T", graph: graph)
     action["P"] = "V"
     action.add(tags: "G")
     
@@ -159,9 +159,9 @@ class ActionTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let action = Action(type: "T")
-    action.add(subjects: Entity(type: "T"), Entity(type: "T"))
-    action.add(objects: Entity(type: "T"), Entity(type: "T"))
+    let action = Action("T")
+    action.add(subjects: Entity("T"), Entity("T"))
+    action.add(objects: Entity("T"), Entity("T"))
     action["P"] = "V"
     action.add(tags: "G")
     
@@ -203,7 +203,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action["P"] = "V"
     action.add(tags: "G")
     
@@ -219,7 +219,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
     
     saveExpectation = expectation(description: "[ActionTests Error: Save test failed.]")
     
-    action.add(subjects: [Entity(type: "T"), Entity(type: "T"), Entity(type: "T"), Entity(type: "T")])
+    action.add(subjects: [Entity("T"), Entity("T"), Entity("T"), Entity("T")])
     
     XCTAssertEqual(4, action.subjects.count)
     
@@ -242,7 +242,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
     let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
     watch.delegate = self
     
-    let action = Action(type: "T")
+    let action = Action("T")
     action["P"] = "V"
     action.add(tags: "G")
     
@@ -258,7 +258,7 @@ class ActionTests: XCTestCase, WatchActionDelegate {
     
     saveExpectation = expectation(description: "[ActionTests Error: Save test failed.]")
     
-    action.add(objects: [Entity(type: "T"), Entity(type: "T"), Entity(type: "T"), Entity(type: "T")])
+    action.add(objects: [Entity("T"), Entity("T"), Entity("T"), Entity("T")])
     
     XCTAssertEqual(4, action.objects.count)
     
