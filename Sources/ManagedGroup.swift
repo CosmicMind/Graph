@@ -32,17 +32,17 @@ import CoreData
 
 @objc(ManagedGroup)
 internal class ManagedGroup: ManagedObject {
-    @NSManaged internal var name: String
-    @NSManaged internal var node: ManagedNode
-    
-    /**
-     Initializer that accepts an identifier, group name and a NSManagedObjectContext.
-     - Parameter identifier: A model identifier.
-     - Parameter name: A group name.
-     - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-     */
-    internal convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
-        self.name = name
-    }
+  @NSManaged internal var name: String
+  @NSManaged internal var node: ManagedNode
+  
+  /**
+   Initializer that accepts an identifier, group name and a NSManagedObjectContext.
+   - Parameter identifier: A model identifier.
+   - Parameter name: A group name.
+   - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
+   */
+  internal convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {
+    self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
+    self.name = name
+  }
 }

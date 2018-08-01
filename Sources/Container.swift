@@ -32,17 +32,17 @@ import CoreData
 
 @available(iOS 10.0, OSX 10.12, *)
 extension NSPersistentContainer {
-    /**
-     Creates a NSPersistentStoreCoordinator.
-     - Parameter name: Storage name.
-     - Parameter storeDescription: An NSPersistentStoreDescription.
-     - Returns: An instance of NSPersistentStoreCoordinator.
-     */
-    convenience init(name: String, storeDescription: NSPersistentStoreDescription, completion: ((NSPersistentStoreDescription, Error?) -> Void)? = nil) {
-        self.init(name: name, managedObjectModel: Model.create())
-        persistentStoreDescriptions.append(storeDescription)
-        completion.map {
-            loadPersistentStores(completionHandler: $0)
-        }
+  /**
+   Creates a NSPersistentStoreCoordinator.
+   - Parameter name: Storage name.
+   - Parameter storeDescription: An NSPersistentStoreDescription.
+   - Returns: An instance of NSPersistentStoreCoordinator.
+   */
+  convenience init(name: String, storeDescription: NSPersistentStoreDescription, completion: ((NSPersistentStoreDescription, Error?) -> Void)? = nil) {
+    self.init(name: name, managedObjectModel: Model.create())
+    persistentStoreDescriptions.append(storeDescription)
+    completion.map {
+      loadPersistentStores(completionHandler: $0)
     }
+  }
 }

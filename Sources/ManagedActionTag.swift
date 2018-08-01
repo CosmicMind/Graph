@@ -32,20 +32,20 @@ import CoreData
 
 @objc(ManagedActionTag)
 internal class ManagedActionTag: ManagedTag {
-    /**
-     Initializer that accepts a tag name and a NSManagedObjectContext.
-     - Parameter name: A tag name.
-     - Parameter node: A ManagedAction.
-     - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-     */
-    internal convenience init(name: String, node: ManagedAction, managedObjectContext: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.actionTagName, name: name, managedObjectContext: managedObjectContext)
-        self.node = node
-    }
-
-    /// Marks node for deletion.
-    internal override func delete() {
-        node.mutableSetValue(forKey: "tagSet").remove(self)
-        super.delete()
-    }
+  /**
+   Initializer that accepts a tag name and a NSManagedObjectContext.
+   - Parameter name: A tag name.
+   - Parameter node: A ManagedAction.
+   - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
+   */
+  internal convenience init(name: String, node: ManagedAction, managedObjectContext: NSManagedObjectContext) {
+    self.init(identifier: ModelIdentifier.actionTagName, name: name, managedObjectContext: managedObjectContext)
+    self.node = node
+  }
+  
+  /// Marks node for deletion.
+  internal override func delete() {
+    node.mutableSetValue(forKey: "tagSet").remove(self)
+    super.delete()
+  }
 }

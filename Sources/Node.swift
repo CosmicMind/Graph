@@ -31,9 +31,9 @@
 import Foundation
 
 public enum NodeClass: NSNumber {
-    case entity = 1
-    case relationship = 2
-    case action = 3
+  case entity = 1
+  case relationship = 2
+  case action = 3
 }
 
 public class Node: NSObject {}

@@ -32,22 +32,22 @@ import CoreData
 
 @objc(ManagedEntityProperty)
 internal class ManagedEntityProperty: ManagedProperty {
-    /**
-     Initializer that accepts a property name, value and
-     a NSManagedObjectContext.
-     - Parameter name: A property name.
-     - Parameter object: A reference to the object value.
-     - Parameter node: A ManagedEntity.
-     - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-     */
-    internal convenience init(name: String, object: Any, node: ManagedEntity, managedObjectContext: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.entityPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
-        self.node = node
-    }
-
-    /// Marks node for deletion.
-    internal override func delete() {
-        node.mutableSetValue(forKey: "propertySet").remove(self)
-        super.delete()
-    }
+  /**
+   Initializer that accepts a property name, value and
+   a NSManagedObjectContext.
+   - Parameter name: A property name.
+   - Parameter object: A reference to the object value.
+   - Parameter node: A ManagedEntity.
+   - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
+   */
+  internal convenience init(name: String, object: Any, node: ManagedEntity, managedObjectContext: NSManagedObjectContext) {
+    self.init(identifier: ModelIdentifier.entityPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
+    self.node = node
+  }
+  
+  /// Marks node for deletion.
+  internal override func delete() {
+    node.mutableSetValue(forKey: "propertySet").remove(self)
+    super.delete()
+  }
 }

@@ -31,121 +31,121 @@
 import CoreData
 
 internal struct GraphContextRegistry {
-    static var dispatchToken: Bool = false
-    static var added: [String: Bool]!
-    static var enableCloud: [String: Bool]!
-    static var managedObjectContexts: [String: NSManagedObjectContext]!
+  static var dispatchToken: Bool = false
+  static var added: [String: Bool]!
+  static var enableCloud: [String: Bool]!
+  static var managedObjectContexts: [String: NSManagedObjectContext]!
 }
 
 internal struct Context {
-    /**
-     Creates a NSManagedContext. The method will ensure that  any workerManagedObjectContexts that have
-     a concurrency type of .MainQueueConcurrencyType are always created on the main
-     thread.
-     - Parameter concurrencyType: A concurrency type to use.
-     - Parameter parentContext: An optional parent context.
-     */
-    static func create(_ concurrencyType: NSManagedObjectContextConcurrencyType, parentContext: NSManagedObjectContext? = nil) -> NSManagedObjectContext {
-        var moc: NSManagedObjectContext!
-        
-        let makeContext = { [weak parentContext] in
-            moc = NSManagedObjectContext(concurrencyType: concurrencyType)
-            moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-            moc.undoManager = nil
-            
-            if let pmoc = parentContext {
-                moc.parent = pmoc
-            }
-        }
-        
-        if concurrencyType == .mainQueueConcurrencyType && !Thread.isMainThread {
-            DispatchQueue.main.sync {
-                makeContext()
-            }
-        } else {
-            makeContext()
-        }
-        
-        return moc
+  /**
+   Creates a NSManagedContext. The method will ensure that  any workerManagedObjectContexts that have
+   a concurrency type of .MainQueueConcurrencyType are always created on the main
+   thread.
+   - Parameter concurrencyType: A concurrency type to use.
+   - Parameter parentContext: An optional parent context.
+   */
+  static func create(_ concurrencyType: NSManagedObjectContextConcurrencyType, parentContext: NSManagedObjectContext? = nil) -> NSManagedObjectContext {
+    var moc: NSManagedObjectContext!
+    
+    let makeContext = { [weak parentContext] in
+      moc = NSManagedObjectContext(concurrencyType: concurrencyType)
+      moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+      moc.undoManager = nil
+      
+      if let pmoc = parentContext {
+        moc.parent = pmoc
+      }
     }
+    
+    if concurrencyType == .mainQueueConcurrencyType && !Thread.isMainThread {
+      DispatchQueue.main.sync {
+        makeContext()
+      }
+    } else {
+      makeContext()
+    }
+    
+    return moc
+  }
 }
 
 /// NSManagedObjectContext extension.
 extension Graph {
-    /// Prepares the registry.
-    internal func prepareGraphContextRegistry() {
-        guard false == GraphContextRegistry.dispatchToken else {
-            return
-        }
-        
-        GraphContextRegistry.dispatchToken = true
-        GraphContextRegistry.added = [:]
-        GraphContextRegistry.enableCloud = [:]
-        GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
+  /// Prepares the registry.
+  internal func prepareGraphContextRegistry() {
+    guard false == GraphContextRegistry.dispatchToken else {
+      return
     }
     
-    /**
-     Prapres the managedObjectContext.
-     - Parameter iCloud: A boolean to enable iCloud.
-     */
-    internal func prepareManagedObjectContext(enableCloud: Bool) {
-        guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
-            GraphContextRegistry.enableCloud[route] = enableCloud
-            location = GraphStoreDescription.location.appendingPathComponent(route)
-            
-            managedObjectContext = Context.create(.mainQueueConcurrencyType)
-            managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
-            GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
-            
-            if enableCloud {
-                preparePersistentStoreCoordinatorNotificationHandlers()
-                
-                managedObjectContext.perform { [weak self] in
-                    self?.addPersistentStore(supported: true)
-                }
-            } else {
-                addPersistentStore(supported: false)
-            }
-            return
-        }
-        
-        managedObjectContext = moc
-        
-        guard let isCloudEnabled = GraphContextRegistry.enableCloud[route] else {
-            return
-        }
-        
+    GraphContextRegistry.dispatchToken = true
+    GraphContextRegistry.added = [:]
+    GraphContextRegistry.enableCloud = [:]
+    GraphContextRegistry.managedObjectContexts = [String: NSManagedObjectContext]()
+  }
+  
+  /**
+   Prapres the managedObjectContext.
+   - Parameter iCloud: A boolean to enable iCloud.
+   */
+  internal func prepareManagedObjectContext(enableCloud: Bool) {
+    guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
+      GraphContextRegistry.enableCloud[route] = enableCloud
+      location = GraphStoreDescription.location.appendingPathComponent(route)
+      
+      managedObjectContext = Context.create(.mainQueueConcurrencyType)
+      managedObjectContext.persistentStoreCoordinator = Coordinator.create(type: type, location: location)
+      GraphContextRegistry.managedObjectContexts[route] = managedObjectContext
+      
+      if enableCloud {
         preparePersistentStoreCoordinatorNotificationHandlers()
         
-        managedObjectContext.perform { [weak self, isCloudEnabled = isCloudEnabled] in
-            guard let s = self else {
-                return
-            }
-            
-            s.completion?(isCloudEnabled, isCloudEnabled ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
-            s.delegate?.graphDidPrepareCloudStorage?(graph: s)
+        managedObjectContext.perform { [weak self] in
+          self?.addPersistentStore(supported: true)
         }
+      } else {
+        addPersistentStore(supported: false)
+      }
+      return
     }
     
-    /// Prepares the SQLight file if needed.
-    internal func prepareSQLite() {
-        if NSSQLiteStoreType == type {
-            location = location.appendingPathComponent("Graph.sqlite")
-        }
+    managedObjectContext = moc
+    
+    guard let isCloudEnabled = GraphContextRegistry.enableCloud[route] else {
+      return
     }
-
-    @available(iOS 10.0, OSX 10.12, *)
-    fileprivate func prepareContextContainer() {
-        self.prepareSQLite()
-        
-        let storeDescription = NSPersistentStoreDescription()
-        storeDescription.shouldAddStoreAsynchronously = false
-        storeDescription.url = location
-        
-        let container = NSPersistentContainer(name: name, storeDescription: storeDescription)
-        container.loadPersistentStores { [unowned self] (storeDescription, error) in
-            self.managedObjectContext = container.viewContext
-            GraphContextRegistry.managedObjectContexts[self.route] = self.managedObjectContext
-        }
+    
+    preparePersistentStoreCoordinatorNotificationHandlers()
+    
+    managedObjectContext.perform { [weak self, isCloudEnabled = isCloudEnabled] in
+      guard let s = self else {
+        return
+      }
+      
+      s.completion?(isCloudEnabled, isCloudEnabled ? nil : GraphError(message: "[Graph Error: iCloud is not supported.]"))
+      s.delegate?.graphDidPrepareCloudStorage?(graph: s)
     }
+  }
+  
+  /// Prepares the SQLight file if needed.
+  internal func prepareSQLite() {
+    if NSSQLiteStoreType == type {
+      location = location.appendingPathComponent("Graph.sqlite")
+    }
+  }
+  
+  @available(iOS 10.0, OSX 10.12, *)
+  fileprivate func prepareContextContainer() {
+    self.prepareSQLite()
+    
+    let storeDescription = NSPersistentStoreDescription()
+    storeDescription.shouldAddStoreAsynchronously = false
+    storeDescription.url = location
+    
+    let container = NSPersistentContainer(name: name, storeDescription: storeDescription)
+    container.loadPersistentStores { [unowned self] (storeDescription, error) in
+      self.managedObjectContext = container.viewContext
+      GraphContextRegistry.managedObjectContexts[self.route] = self.managedObjectContext
+    }
+  }
 }

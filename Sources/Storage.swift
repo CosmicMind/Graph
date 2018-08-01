@@ -39,13 +39,13 @@ import CoreData
  - Parameter completion: An Optional completion block.
  */
 internal func GraphCompletionCallback(success: Bool, error: Error?, completion: ((Bool, Error?) -> Void)? = nil) {
-    if Thread.isMainThread {
-        completion?(success, error)
-    } else {
-        DispatchQueue.main.async {
-            completion?(success, error)
-        }
+  if Thread.isMainThread {
+    completion?(success, error)
+  } else {
+    DispatchQueue.main.async {
+      completion?(success, error)
     }
+  }
 }
 
 /**
@@ -54,92 +54,92 @@ internal func GraphCompletionCallback(success: Bool, error: Error?, completion: 
  - Returns: An Error object.
  */
 internal func GraphError(message: String, domain: String = "com.cosmicmind.graph") -> Error? {
-    var info = [String: Any]()
-    info[NSLocalizedDescriptionKey] = message
-    info[NSLocalizedFailureReasonErrorKey] = message
-    let error = NSError(domain: domain, code: 0001, userInfo: info)
-    info[NSUnderlyingErrorKey] = error
-    return error
+  var info = [String: Any]()
+  info[NSLocalizedDescriptionKey] = message
+  info[NSLocalizedFailureReasonErrorKey] = message
+  let error = NSError(domain: domain, code: 0001, userInfo: info)
+  info[NSUnderlyingErrorKey] = error
+  return error
 }
 
 extension Graph {
-    /**
-     Performs a save.
-     - Parameter completion: An Optional completion block that is
-     executed when the save operation is completed.
-     */
-    public func async(_ completion: ((Bool, Error?) -> Void)? = nil) {
-        guard let moc = managedObjectContext else {
-            GraphCompletionCallback(
-                success: false,
-                error: GraphError(message: "[Graph Error: ManagedObjectContext does not exist."),
-                completion: completion)
-            return
-        }
-
-        moc.perform { [weak moc] in
-            do {
-                try moc?.save()
-                GraphCompletionCallback(success: true, error: nil, completion: completion)
-            } catch let e as NSError {
-                GraphCompletionCallback(success: false, error: e, completion: completion)
-            }
-        }
+  /**
+   Performs a save.
+   - Parameter completion: An Optional completion block that is
+   executed when the save operation is completed.
+   */
+  public func async(_ completion: ((Bool, Error?) -> Void)? = nil) {
+    guard let moc = managedObjectContext else {
+      GraphCompletionCallback(
+        success: false,
+        error: GraphError(message: "[Graph Error: ManagedObjectContext does not exist."),
+        completion: completion)
+      return
     }
-
-    /**
-     Performs a synchronous save.
-     - Parameter completion: An Optional completion block that is
-     executed when the save operation is completed.
-     */
-    public func sync(_ completion: ((Bool, Error?) -> Void)? = nil) {
-        guard let moc = managedObjectContext else {
-            GraphCompletionCallback(
-                success: false,
-                error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not exist."),
-                completion: completion)
-            return
-        }
-
-        moc.performAndWait { [unowned moc] in
-            do {
-                try moc.save()
-                GraphCompletionCallback(success: true, error: nil, completion: completion)
-            } catch let e as NSError {
-                GraphCompletionCallback(success: false, error: e, completion: completion)
-            }
-        }
+    
+    moc.perform { [weak moc] in
+      do {
+        try moc?.save()
+        GraphCompletionCallback(success: true, error: nil, completion: completion)
+      } catch let e as NSError {
+        GraphCompletionCallback(success: false, error: e, completion: completion)
+      }
     }
-
-    /**
-     Clears all persisted data.
-     - Parameter completion: An Optional completion block that is
-     executed when the save operation is completed.
-     */
-    public func clear(_ completion: ((Bool, Error?) -> Void)? = nil) {
-        Search<Entity>(graph: self).for(types: "*").sync().forEach {
-            $0.delete()
-        }
-
-        Search<Relationship>(graph: self).for(types: "*").sync().forEach {
-            $0.delete()
-        }
-
-        Search<Action>(graph: self).for(types: "*").sync().forEach {
-            $0.delete()
-        }
-
-        sync(completion)
+  }
+  
+  /**
+   Performs a synchronous save.
+   - Parameter completion: An Optional completion block that is
+   executed when the save operation is completed.
+   */
+  public func sync(_ completion: ((Bool, Error?) -> Void)? = nil) {
+    guard let moc = managedObjectContext else {
+      GraphCompletionCallback(
+        success: false,
+        error: GraphError(message: "[Graph Error: Worker ManagedObjectContext does not exist."),
+        completion: completion)
+      return
     }
-
-    /// Reset the storage.
-    public func reset() {
-        guard let moc = managedObjectContext else {
-            return
-        }
-
-        moc.performAndWait { [unowned moc] in
-            moc.reset()
-        }
+    
+    moc.performAndWait { [unowned moc] in
+      do {
+        try moc.save()
+        GraphCompletionCallback(success: true, error: nil, completion: completion)
+      } catch let e as NSError {
+        GraphCompletionCallback(success: false, error: e, completion: completion)
+      }
     }
+  }
+  
+  /**
+   Clears all persisted data.
+   - Parameter completion: An Optional completion block that is
+   executed when the save operation is completed.
+   */
+  public func clear(_ completion: ((Bool, Error?) -> Void)? = nil) {
+    Search<Entity>(graph: self).for(types: "*").sync().forEach {
+      $0.delete()
+    }
+    
+    Search<Relationship>(graph: self).for(types: "*").sync().forEach {
+      $0.delete()
+    }
+    
+    Search<Action>(graph: self).for(types: "*").sync().forEach {
+      $0.delete()
+    }
+    
+    sync(completion)
+  }
+  
+  /// Reset the storage.
+  public func reset() {
+    guard let moc = managedObjectContext else {
+      return
+    }
+    
+    moc.performAndWait { [unowned moc] in
+      moc.reset()
+    }
+  }
 }

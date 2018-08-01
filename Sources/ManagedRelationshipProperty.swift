@@ -32,22 +32,22 @@ import CoreData
 
 @objc(ManagedRelationshipProperty)
 internal class ManagedRelationshipProperty: ManagedProperty {
-    /**
-     Initializer that accepts a property name, value and
-     a NSManagedObjectContext.
-     - Parameter name: A property name.
-     - Parameter object: A reference to the object value.
-     - Parameter node: A ManagedRelationship.
-     - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-     */
-    internal convenience init(name: String, object: Any, node: ManagedRelationship, managedObjectContext: NSManagedObjectContext) {
-        self.init(identifier: ModelIdentifier.relationshipPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
-        self.node = node
-    }
-
-    /// Marks node for deletion.
-    internal override func delete() {
-        node.mutableSetValue(forKey: "propertySet").remove(self)
-        super.delete()
-    }
+  /**
+   Initializer that accepts a property name, value and
+   a NSManagedObjectContext.
+   - Parameter name: A property name.
+   - Parameter object: A reference to the object value.
+   - Parameter node: A ManagedRelationship.
+   - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
+   */
+  internal convenience init(name: String, object: Any, node: ManagedRelationship, managedObjectContext: NSManagedObjectContext) {
+    self.init(identifier: ModelIdentifier.relationshipPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
+    self.node = node
+  }
+  
+  /// Marks node for deletion.
+  internal override func delete() {
+    node.mutableSetValue(forKey: "propertySet").remove(self)
+    super.delete()
+  }
 }
