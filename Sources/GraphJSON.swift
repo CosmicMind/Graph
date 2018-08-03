@@ -30,6 +30,7 @@
 
 import Foundation
 
+@dynamicMemberLookup
 open class GraphJSON: Equatable, CustomStringConvertible {
   /// A desiption of the object, used when printing.
   open var description: String {
@@ -155,6 +156,15 @@ open class GraphJSON: Equatable, CustomStringConvertible {
     }
     
     return GraphJSON(item[index])
+  }
+  
+  /**
+   Access properties using the dynamic property subscript operator.
+   - Parameter dynamicMember member: A property name value.
+   - Returns: The optional GraphJSON object.
+   */
+  open subscript(dynamicMember member: String) -> GraphJSON? {
+    return self[member]
   }
   
   /**

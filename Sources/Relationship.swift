@@ -104,7 +104,7 @@ public class Relationship: Node {
   
   /**
    Access properties using the dynamic property subscript operator.
-   - Parameter name: A property name value.
+   - Parameter dynamicMember member: A property name value.
    - Returns: The optional Any value.
    */
   public subscript(dynamicMember member: String) -> Any? {
