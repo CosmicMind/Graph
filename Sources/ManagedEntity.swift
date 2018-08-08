@@ -77,7 +77,7 @@ internal class ManagedEntity: ManagedNode {
           return
         }
         
-        var exists: Bool = false
+        var exists = false
         for property in self.propertySet {
           if let p = property as? ManagedEntityProperty {
             if name == p.name {

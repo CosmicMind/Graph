@@ -73,7 +73,7 @@ internal class ManagedAction: ManagedNode {
           return
         }
         
-        var exists: Bool = false
+        var exists = false
         for property in self.propertySet {
           if let p = property as? ManagedActionProperty {
             if name == p.name {

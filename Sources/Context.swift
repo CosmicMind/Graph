@@ -31,7 +31,7 @@
 import CoreData
 
 internal struct GraphContextRegistry {
-  static var dispatchToken: Bool = false
+  static var dispatchToken = false
   static var added: [String: Bool]!
   static var enableCloud: [String: Bool]!
   static var managedObjectContexts: [String: NSManagedObjectContext]!

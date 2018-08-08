@@ -73,7 +73,7 @@ internal class ManagedRelationship: ManagedNode {
           return
         }
         
-        var exists: Bool = false
+        var exists = false
         for property in self.propertySet {
           if let p = property as? ManagedRelationshipProperty {
             if name == p.name {
