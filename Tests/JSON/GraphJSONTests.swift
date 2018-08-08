@@ -74,11 +74,11 @@ class GraphJSONTests: XCTestCase {
   }
 
   func testStringify() {
-    XCTAssertNil(GraphJSON.stringify(object: "unsupported top level object"))
-    XCTAssertEqual(GraphJSON.stringify(object: []), "[]")
-    XCTAssertEqual(GraphJSON.stringify(object: [:]), "{}")
-    XCTAssertEqual(GraphJSON.stringify(object: [1, 2, "3", nil, true, false]), "[1,2,\"3\",null,true,false]")
-    XCTAssertEqual(GraphJSON.stringify(object: ["user": "orkhan"]), "{\"user\":\"orkhan\"}")
+    XCTAssertNil(GraphJSON.stringify("unsupported top level object"))
+    XCTAssertEqual(GraphJSON.stringify([]), "[]")
+    XCTAssertEqual(GraphJSON.stringify([:]), "{}")
+    XCTAssertEqual(GraphJSON.stringify([1, 2, "3", nil, true, false]), "[1,2,\"3\",null,true,false]")
+    XCTAssertEqual(GraphJSON.stringify(["user": "orkhan"]), "{\"user\":\"orkhan\"}")
   }
   
   func testEquatable() {

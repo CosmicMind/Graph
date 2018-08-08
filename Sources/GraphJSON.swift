@@ -34,7 +34,7 @@ import Foundation
 open class GraphJSON: Equatable, CustomStringConvertible {
   /// A desiption of the object, used when printing.
   open var description: String {
-    return GraphJSON.stringify(object: object, options: .prettyPrinted) ?? "{}"
+    return GraphJSON.stringify(object, options: .prettyPrinted) ?? "{}"
   }
   
   /// A reference to the core object.
@@ -80,7 +80,7 @@ open class GraphJSON: Equatable, CustomStringConvertible {
   
   /// A Data representation of the object.
   open var asNSData: Data? {
-    return GraphJSON.serialize(object: object)
+    return GraphJSON.serialize(object)
   }
   
   /**
@@ -90,11 +90,11 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Returns: A GraphJSON object on success, nil otherwise.
    */
   open class func parse(_ data: Data, options: JSONSerialization.ReadingOptions = .allowFragments) -> GraphJSON? {
-    guard let object = try? JSONSerialization.jsonObject(with: data, options: options) else {
+    guard let v = try? JSONSerialization.jsonObject(with: data, options: options) else {
       return nil
     }
     
-    return GraphJSON(object)
+    return GraphJSON(v)
   }
   
   /**
@@ -104,19 +104,19 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Returns: A GraphJSON object on success, nil otherwise.
    */
   open class func parse(_ string: String, options: JSONSerialization.ReadingOptions = .allowFragments) -> GraphJSON? {
-    guard let data = string.data(using: String.Encoding.utf8) else {
+    guard let v = string.data(using: String.Encoding.utf8) else {
       return nil
     }
     
-    return parse(data, options: options)
+    return parse(v, options: options)
   }
   
   /**
    Serializes an Any object into a Data object.
-   - Parameter object: An Any object.
+   - Parameter _ object: An Any object.
    - Returns: A Data object if successful, nil otherwise.
    */
-  open class func serialize(object: Any, options: JSONSerialization.WritingOptions = []) -> Data? {
+  open class func serialize(_ object: Any, options: JSONSerialization.WritingOptions = []) -> Data? {
     guard JSONSerialization.isValidJSONObject(object) else {
       return nil
     }
@@ -126,16 +126,16 @@ open class GraphJSON: Equatable, CustomStringConvertible {
   
   /**
    Stringifies an instance of Any object into a String.
-   - Parameter object: An Any object.
+   - Parameter _ object: An Any object.
    - Returns: A String object if successful, nil otherwise.
    */
-  open class func stringify(object: Any, options: JSONSerialization.WritingOptions = []) -> String? {
-    if let o = object as? GraphJSON {
-      return stringify(object: o.object, options: options)
+  open class func stringify(_ object: Any, options: JSONSerialization.WritingOptions = []) -> String? {
+    if let v = object as? GraphJSON {
+      return stringify(v.object, options: options)
     
-    } else if let data = GraphJSON.serialize(object: object, options: options) {
-      if let o = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
-        return o
+    } else if let data = GraphJSON.serialize(object, options: options) {
+      if let v = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
+        return v
       }
     }
     
@@ -144,8 +144,8 @@ open class GraphJSON: Equatable, CustomStringConvertible {
   
   /// An initializer that accepts a given Any object.
   public required init(_ object: Any) {
-    if let o = object as? GraphJSON {
-      self.object = o.object
+    if let v = object as? GraphJSON {
+      self.object = v.object
     
     } else {
       self.object = object
@@ -158,15 +158,15 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Returns: A GraphJSON object.
    */
   open subscript(index: Int) -> GraphJSON {
-    guard let item = asArray else {
+    guard let v = asArray else {
       return .isNil
     }
     
-    guard item.indices.contains(index) else {
+    guard v.indices.contains(index) else {
       return .isNil
     }
     
-    return GraphJSON(item[index])
+    return GraphJSON(v[index])
   }
   
   /**
@@ -184,18 +184,18 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Returns: A GraphJSON object.
    */
   open subscript(key: String) -> GraphJSON {
-    guard let item = asDictionary else {
+    guard let v = asDictionary else {
       return .isNil
     }
     
-    guard nil != item[key] else {
+    guard nil != v[key] else {
       return .isNil
     }
     
-    return GraphJSON(item[key]!)
+    return GraphJSON(v[key]!)
   }
 }
 
 public func ==(lhs: GraphJSON, rhs: GraphJSON) -> Bool {
-  return GraphJSON.stringify(object: lhs.object) == GraphJSON.stringify(object: rhs.object)
+  return GraphJSON.stringify(lhs.object) == GraphJSON.stringify(rhs.object)
 }
