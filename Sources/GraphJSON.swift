@@ -162,6 +162,10 @@ open class GraphJSON: Equatable, CustomStringConvertible {
       return .isNil
     }
     
+    guard item.indices.contains(index) else {
+      return .isNil
+    }
+    
     return GraphJSON(item[index])
   }
   
