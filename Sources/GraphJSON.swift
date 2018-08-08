@@ -34,7 +34,7 @@ import Foundation
 open class GraphJSON: Equatable, CustomStringConvertible {
   /// A desiption of the object, used when printing.
   open var description: String {
-    return GraphJSON.stringify(object: object) ?? "{}"
+    return GraphJSON.stringify(object: object, options: .prettyPrinted) ?? "{}"
   }
   
   /// A reference to the core object.
