@@ -34,11 +34,14 @@ import Foundation
 open class GraphJSON: Equatable, CustomStringConvertible {
   /// A desiption of the object, used when printing.
   open var description: String {
-    return GraphJSON.stringify(object: object) ?? "{}"
+    return GraphJSON.stringify(object: object, options: .prettyPrinted) ?? "{}"
   }
   
   /// A reference to the core object.
   open private(set) var object: Any
+  
+  /// A global GraphJSON object representing null.
+  public static let isNil = GraphJSON(NSNull())
   
   /// An Array representation of the object.
   open var asArray: [Any]? {
@@ -113,8 +116,12 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter object: An Any object.
    - Returns: A Data object if successful, nil otherwise.
    */
-  open class func serialize(object: Any) -> Data? {
-    return try? JSONSerialization.data(withJSONObject: object, options: [])
+  open class func serialize(object: Any, options: JSONSerialization.WritingOptions = []) -> Data? {
+    guard JSONSerialization.isValidJSONObject(object) else {
+      return nil
+    }
+    
+    return try? JSONSerialization.data(withJSONObject: object, options: options)
   }
   
   /**
@@ -122,11 +129,11 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter object: An Any object.
    - Returns: A String object if successful, nil otherwise.
    */
-  open class func stringify(object: Any) -> String? {
+  open class func stringify(object: Any, options: JSONSerialization.WritingOptions = []) -> String? {
     if let o = object as? GraphJSON {
-      return stringify(object: o.object)
+      return stringify(object: o.object, options: options)
     
-    } else if let data = GraphJSON.serialize(object: object) {
+    } else if let data = GraphJSON.serialize(object: object, options: options) {
       if let o = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
         return o
       }
@@ -148,11 +155,15 @@ open class GraphJSON: Equatable, CustomStringConvertible {
   /**
    A subscript operator for Array style access.
    - Parameter index: An Int.
-   - Returns: A GraphJSON object if successful, nil otherwise.
+   - Returns: A GraphJSON object.
    */
-  open subscript(index: Int) -> GraphJSON? {
+  open subscript(index: Int) -> GraphJSON {
     guard let item = asArray else {
-      return nil
+      return .isNil
+    }
+    
+    guard item.indices.contains(index) else {
+      return .isNil
     }
     
     return GraphJSON(item[index])
@@ -161,24 +172,24 @@ open class GraphJSON: Equatable, CustomStringConvertible {
   /**
    Access properties using the dynamic property subscript operator.
    - Parameter dynamicMember member: A property name value.
-   - Returns: The optional GraphJSON object.
+   - Returns: A GraphJSON object.
    */
-  open subscript(dynamicMember member: String) -> GraphJSON? {
+  open subscript(dynamicMember member: String) -> GraphJSON {
     return self[member]
   }
   
   /**
    A subscript operator for Dictionary style access.
    - Parameter key: A String.
-   - Returns: A GraphJSON object if successful, nil otherwise.
+   - Returns: A GraphJSON object.
    */
-  open subscript(key: String) -> GraphJSON? {
+  open subscript(key: String) -> GraphJSON {
     guard let item = asDictionary else {
-      return nil
+      return .isNil
     }
     
     guard nil != item[key] else {
-      return nil
+      return .isNil
     }
     
     return GraphJSON(item[key]!)
