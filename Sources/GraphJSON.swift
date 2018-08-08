@@ -40,6 +40,9 @@ open class GraphJSON: Equatable, CustomStringConvertible {
   /// A reference to the core object.
   open private(set) var object: Any
   
+  /// A global GraphJSON object representing null.
+  public static let isNil = GraphJSON(NSNull())
+  
   /// An Array representation of the object.
   open var asArray: [Any]? {
     return object as? [Any]
@@ -152,11 +155,11 @@ open class GraphJSON: Equatable, CustomStringConvertible {
   /**
    A subscript operator for Array style access.
    - Parameter index: An Int.
-   - Returns: A GraphJSON object if successful, nil otherwise.
+   - Returns: A GraphJSON object.
    */
-  open subscript(index: Int) -> GraphJSON? {
+  open subscript(index: Int) -> GraphJSON {
     guard let item = asArray else {
-      return nil
+      return .isNil
     }
     
     return GraphJSON(item[index])
@@ -165,24 +168,24 @@ open class GraphJSON: Equatable, CustomStringConvertible {
   /**
    Access properties using the dynamic property subscript operator.
    - Parameter dynamicMember member: A property name value.
-   - Returns: The optional GraphJSON object.
+   - Returns: A GraphJSON object.
    */
-  open subscript(dynamicMember member: String) -> GraphJSON? {
+  open subscript(dynamicMember member: String) -> GraphJSON {
     return self[member]
   }
   
   /**
    A subscript operator for Dictionary style access.
    - Parameter key: A String.
-   - Returns: A GraphJSON object if successful, nil otherwise.
+   - Returns: A GraphJSON object.
    */
-  open subscript(key: String) -> GraphJSON? {
+  open subscript(key: String) -> GraphJSON {
     guard let item = asDictionary else {
-      return nil
+      return .isNil
     }
     
     guard nil != item[key] else {
-      return nil
+      return .isNil
     }
     
     return GraphJSON(item[key]!)
