@@ -116,12 +116,12 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter object: An Any object.
    - Returns: A Data object if successful, nil otherwise.
    */
-  open class func serialize(object: Any) -> Data? {
+  open class func serialize(object: Any, options: JSONSerialization.WritingOptions = []) -> Data? {
     guard JSONSerialization.isValidJSONObject(object) else {
       return nil
     }
     
-    return try? JSONSerialization.data(withJSONObject: object, options: [])
+    return try? JSONSerialization.data(withJSONObject: object, options: options)
   }
   
   /**
@@ -129,11 +129,11 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter object: An Any object.
    - Returns: A String object if successful, nil otherwise.
    */
-  open class func stringify(object: Any) -> String? {
+  open class func stringify(object: Any, options: JSONSerialization.WritingOptions = []) -> String? {
     if let o = object as? GraphJSON {
-      return stringify(object: o.object)
+      return stringify(object: o.object, options: options)
     
-    } else if let data = GraphJSON.serialize(object: object) {
+    } else if let data = GraphJSON.serialize(object: object, options: options) {
       if let o = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
         return o
       }
