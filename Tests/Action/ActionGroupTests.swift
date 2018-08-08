@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class ActionGroupTests: XCTestCase, WatchActionDelegate {
+class ActionGroupTests: XCTestCase, GraphActionDelegate {
   var saveExpectation: XCTestExpectation?
   
   var tagAddExpception: XCTestExpectation?

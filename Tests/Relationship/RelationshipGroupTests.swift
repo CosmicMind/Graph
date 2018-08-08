@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class RelationshipGroupTests: XCTestCase, WatchRelationshipDelegate {
+class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
   var saveExpectation: XCTestExpectation?
   
   var tagAddExpception: XCTestExpectation?

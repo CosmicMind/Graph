@@ -36,11 +36,11 @@ public enum GraphSource: Int {
   case local
 }
 
-@objc(WatchDelegate)
-public protocol WatchDelegate {}
+@objc(GraphNodeDelegate)
+public protocol GraphNodeDelegate {}
 
-@objc(WatchEntityDelegate)
-public protocol WatchEntityDelegate: WatchDelegate {
+@objc(GraphEntityDelegate)
+public protocol GraphEntityDelegate: GraphNodeDelegate {
   /**
    A delegation method that is executed when an Entity is inserted.
    - Parameter graph: A Graph instance.
@@ -133,8 +133,8 @@ public protocol WatchEntityDelegate: WatchDelegate {
   optional func watch(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource)
 }
 
-@objc(WatchRelationshipDelegate)
-public protocol WatchRelationshipDelegate: WatchDelegate {
+@objc(GraphRelationshipDelegate)
+public protocol GraphRelationshipDelegate: GraphNodeDelegate {
   /**
    A delegation method that is executed when a Relationship is inserted.
    - Parameter graph: A Graph instance.
@@ -236,8 +236,8 @@ public protocol WatchRelationshipDelegate: WatchDelegate {
   optional func watch(graph: Graph, relationship: Relationship, removedFrom group: String, source: GraphSource)
 }
 
-@objc(WatchActionDelegate)
-public protocol WatchActionDelegate: WatchDelegate {
+@objc(GraphActionDelegate)
+public protocol GraphActionDelegate: GraphNodeDelegate {
   /**
    A delegation method that is executed when an Action is inserted.
    - Parameter graph: A Graph instance.
@@ -361,7 +361,7 @@ public class Watch<T: Node>: Watchable {
   public fileprivate(set) var graph: Graph
   
   /// A reference to a delagte object.
-  public weak var delegate: WatchDelegate?
+  public weak var delegate: GraphNodeDelegate?
   
   /// A reference to the type.
   public fileprivate(set) var types: [String]?
@@ -747,7 +747,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, inserted: Entity(managedNode: n), source: source)
+      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, inserted: Entity(managedNode: n), source: source)
     }
     
     set.forEach { [unowned self] in
@@ -759,7 +759,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, source: source)
+      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -771,7 +771,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), addedTo: o.name, source: source)
+      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), addedTo: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -783,7 +783,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, with: o.object, source: source)
+      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, with: o.object, source: source)
     }
   }
   
@@ -798,7 +798,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, inserted: Relationship(managedNode: n), source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, inserted: Relationship(managedNode: n), source: source)
     }
     
     set.forEach { [unowned self] in
@@ -810,7 +810,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -822,7 +822,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), addedTo: o.name, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), addedTo: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -834,7 +834,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, with: o.object, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, with: o.object, source: source)
     }
   }
   
@@ -849,7 +849,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, inserted: Action(managedNode: n), source: source)
+      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, inserted: Action(managedNode: n), source: source)
     }
     
     set.forEach { [unowned self] in
@@ -861,7 +861,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, source: source)
+      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -873,7 +873,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), addedTo: o.name, source: source)
+      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), addedTo: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -885,7 +885,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, with: o.object, source: source)
+      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, with: o.object, source: source)
     }
   }
   
@@ -915,7 +915,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), updated: o.name, with: o.object, source: source)
+      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), updated: o.name, with: o.object, source: source)
     }
   }
   
@@ -930,7 +930,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, updated: Relationship(managedNode: n), source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, updated: Relationship(managedNode: n), source: source)
     }
     
     set.forEach { [unowned self] in
@@ -942,7 +942,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), updated: o.name, with: o.object, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), updated: o.name, with: o.object, source: source)
     }
   }
   
@@ -961,7 +961,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), updated: o.name, with: o.object, source: source)
+      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), updated: o.name, with: o.object, source: source)
     }
   }
   
@@ -991,7 +991,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, source: source)
+      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1003,7 +1003,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removedFrom: o.name, source: source)
+      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removedFrom: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1015,7 +1015,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, with: o.object, source: source)
+      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, with: o.object, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1023,7 +1023,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchEntityDelegate)?.watch?(graph: self.graph, deleted: Entity(managedNode: n), source: source)
+      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, deleted: Entity(managedNode: n), source: source)
     }
   }
   
@@ -1042,7 +1042,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1054,7 +1054,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removedFrom: o.name, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removedFrom: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1066,7 +1066,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, with: o.object, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, with: o.object, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1074,7 +1074,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchRelationshipDelegate)?.watch?(graph: self.graph, deleted: Relationship(managedNode: n), source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, deleted: Relationship(managedNode: n), source: source)
     }
   }
   
@@ -1093,7 +1093,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, source: source)
+      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1105,7 +1105,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removedFrom: o.name, source: source)
+      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removedFrom: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1117,7 +1117,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, with: o.object, source: source)
+      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, with: o.object, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1125,7 +1125,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? WatchActionDelegate)?.watch?(graph: self.graph, deleted: Action(managedNode: n), source: source)
+      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, deleted: Action(managedNode: n), source: source)
     }
   }
   
