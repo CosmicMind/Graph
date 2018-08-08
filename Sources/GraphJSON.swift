@@ -114,6 +114,10 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Returns: A Data object if successful, nil otherwise.
    */
   open class func serialize(object: Any) -> Data? {
+    guard JSONSerialization.isValidJSONObject(object) else {
+      return nil
+    }
+    
     return try? JSONSerialization.data(withJSONObject: object, options: [])
   }
   
