@@ -48,7 +48,7 @@ public protocol GraphEntityDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, inserted entity: Entity, source: GraphSource)
+  optional func graph(_ graph: Graph, inserted entity: Entity, source: GraphSource)
   
   /**
    A delegation method that is executed when an Entity is deleted.
@@ -57,7 +57,7 @@ public protocol GraphEntityDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, deleted entity: Entity, source: GraphSource)
+  optional func graph(_ graph: Graph, deleted entity: Entity, source: GraphSource)
   
   /**
    A delegation method that is executed when an Entity added a property and value.
@@ -68,7 +68,7 @@ public protocol GraphEntityDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource)
+  optional func graph(_ graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource)
   
   /**
    A delegation method that is executed when an Entity updated a property and value.
@@ -79,7 +79,7 @@ public protocol GraphEntityDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource)
+  optional func graph(_ graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource)
   
   /**
    A delegation method that is executed when an Entity removed a property and value.
@@ -90,7 +90,7 @@ public protocol GraphEntityDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource)
+  optional func graph(_ graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource)
   
   /**
    A delegation method that is executed when an Entity added a tag.
@@ -100,7 +100,7 @@ public protocol GraphEntityDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource)
+  optional func graph(_ graph: Graph, entity: Entity, added tag: String, source: GraphSource)
   
   /**
    A delegation method that is executed when an Entity removed a tag.
@@ -110,7 +110,7 @@ public protocol GraphEntityDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, entity: Entity, removed tag: String, source: GraphSource)
+  optional func graph(_ graph: Graph, entity: Entity, removed tag: String, source: GraphSource)
   
   /**
    A delegation method that is executed when an Entity was added to a group.
@@ -120,7 +120,7 @@ public protocol GraphEntityDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, entity: Entity, addedTo group: String, source: GraphSource)
+  optional func graph(_ graph: Graph, entity: Entity, addedTo group: String, source: GraphSource)
   
   /**
    A delegation method that is executed when an Entity was removed from a group.
@@ -130,7 +130,7 @@ public protocol GraphEntityDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource)
+  optional func graph(_ graph: Graph, entity: Entity, removedFrom group: String, source: GraphSource)
 }
 
 @objc(GraphRelationshipDelegate)
@@ -142,7 +142,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, inserted relationship: Relationship, source: GraphSource)
+  optional func graph(_ graph: Graph, inserted relationship: Relationship, source: GraphSource)
   
   /**
    A delegation method that is executed when a Relationship is updated.
@@ -151,7 +151,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, updated relationship: Relationship, source: GraphSource)
+  optional func graph(_ graph: Graph, updated relationship: Relationship, source: GraphSource)
   
   /**
    A delegation method that is executed when a Relationship is deleted.
@@ -160,7 +160,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, deleted relationship: Relationship, source: GraphSource)
+  optional func graph(_ graph: Graph, deleted relationship: Relationship, source: GraphSource)
   
   /**
    A delegation method that is executed when a Relationship added a property and value.
@@ -171,7 +171,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource)
+  optional func graph(_ graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource)
   
   /**
    A delegation method that is executed when a Relationship updated a property and value.
@@ -182,7 +182,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource)
+  optional func graph(_ graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource)
   
   /**
    A delegation method that is executed when a Relationship removed a property and value.
@@ -193,7 +193,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource)
+  optional func graph(_ graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource)
   
   /**
    A delegation method that is executed when a Relationship added a tag.
@@ -203,7 +203,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource)
+  optional func graph(_ graph: Graph, relationship: Relationship, added tag: String, source: GraphSource)
   
   /**
    A delegation method that is executed when a Relationship removed a tag.
@@ -213,7 +213,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource)
+  optional func graph(_ graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource)
   
   /**
    A delegation method that is executed when a Relationship was added to a group.
@@ -223,7 +223,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, relationship: Relationship, addedTo group: String, source: GraphSource)
+  optional func graph(_ graph: Graph, relationship: Relationship, addedTo group: String, source: GraphSource)
   
   /**
    A delegation method that is executed when a Relationship was removed from a group.
@@ -233,7 +233,7 @@ public protocol GraphRelationshipDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, relationship: Relationship, removedFrom group: String, source: GraphSource)
+  optional func graph(_ graph: Graph, relationship: Relationship, removedFrom group: String, source: GraphSource)
 }
 
 @objc(GraphActionDelegate)
@@ -245,7 +245,7 @@ public protocol GraphActionDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, inserted action: Action, source: GraphSource)
+  optional func graph(_ graph: Graph, inserted action: Action, source: GraphSource)
   
   /**
    A delegation method that is executed when an Action is deleted.
@@ -254,7 +254,7 @@ public protocol GraphActionDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, deleted action: Action, source: GraphSource)
+  optional func graph(_ graph: Graph, deleted action: Action, source: GraphSource)
   
   /**
    A delegation method that is executed when an Action added a property and value.
@@ -265,7 +265,7 @@ public protocol GraphActionDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource)
+  optional func graph(_ graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource)
   
   /**
    A delegation method that is executed when an Action updated a property and value.
@@ -276,7 +276,7 @@ public protocol GraphActionDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource)
+  optional func graph(_ graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource)
   
   /**
    A delegation method that is executed when an Action removed a property and value.
@@ -287,7 +287,7 @@ public protocol GraphActionDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource)
+  optional func graph(_ graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource)
   
   /**
    A delegation method that is executed when an Action added a tag.
@@ -297,7 +297,7 @@ public protocol GraphActionDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, action: Action, added tag: String, source: GraphSource)
+  optional func graph(_ graph: Graph, action: Action, added tag: String, source: GraphSource)
   
   /**
    A delegation method that is executed when an Action removed a tag.
@@ -307,7 +307,7 @@ public protocol GraphActionDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, action: Action, removed tag: String, source: GraphSource)
+  optional func graph(_ graph: Graph, action: Action, removed tag: String, source: GraphSource)
   
   /**
    A delegation method that is executed when an Action was added to a group.
@@ -317,7 +317,7 @@ public protocol GraphActionDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, action: Action, addedTo group: String, source: GraphSource)
+  optional func graph(_ graph: Graph, action: Action, addedTo group: String, source: GraphSource)
   
   /**
    A delegation method that is executed when an Action was removed from a group.
@@ -327,7 +327,7 @@ public protocol GraphActionDelegate: GraphNodeDelegate {
    - Parameter source: A GraphSource value.
    */
   @objc
-  optional func watch(graph: Graph, action: Action, removedFrom group: String, source: GraphSource)
+  optional func graph(_ graph: Graph, action: Action, removedFrom group: String, source: GraphSource)
 }
 
 public protocol Watchable {
@@ -425,7 +425,7 @@ public class Watch<T: Node>: Watchable {
    instance.
    - Parameter graph: A Graph instance.
    */
-  public init(graph: Graph) {
+  public init(graph: Graph = Graph()) {
     self.graph = graph
     prepare()
   }
@@ -747,7 +747,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, inserted: Entity(managedNode: n), source: source)
+      (self.delegate as? GraphEntityDelegate)?.graph?(self.graph, inserted: Entity(managedNode: n), source: source)
     }
     
     set.forEach { [unowned self] in
@@ -759,7 +759,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, source: source)
+      (self.delegate as? GraphEntityDelegate)?.graph?(self.graph, entity: Entity(managedNode: n), added: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -771,7 +771,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), addedTo: o.name, source: source)
+      (self.delegate as? GraphEntityDelegate)?.graph?(self.graph, entity: Entity(managedNode: n), addedTo: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -783,7 +783,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), added: o.name, with: o.object, source: source)
+      (self.delegate as? GraphEntityDelegate)?.graph?(self.graph, entity: Entity(managedNode: n), added: o.name, with: o.object, source: source)
     }
   }
   
@@ -798,7 +798,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, inserted: Relationship(managedNode: n), source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, inserted: Relationship(managedNode: n), source: source)
     }
     
     set.forEach { [unowned self] in
@@ -810,7 +810,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, relationship: Relationship(managedNode: n), added: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -822,7 +822,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), addedTo: o.name, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, relationship: Relationship(managedNode: n), addedTo: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -834,7 +834,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), added: o.name, with: o.object, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, relationship: Relationship(managedNode: n), added: o.name, with: o.object, source: source)
     }
   }
   
@@ -849,7 +849,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, inserted: Action(managedNode: n), source: source)
+      (self.delegate as? GraphActionDelegate)?.graph?(self.graph, inserted: Action(managedNode: n), source: source)
     }
     
     set.forEach { [unowned self] in
@@ -861,7 +861,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, source: source)
+      (self.delegate as? GraphActionDelegate)?.graph?(self.graph, action: Action(managedNode: n), added: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -873,7 +873,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), addedTo: o.name, source: source)
+      (self.delegate as? GraphActionDelegate)?.graph?(self.graph, action: Action(managedNode: n), addedTo: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -885,7 +885,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), added: o.name, with: o.object, source: source)
+      (self.delegate as? GraphActionDelegate)?.graph?(self.graph, action: Action(managedNode: n), added: o.name, with: o.object, source: source)
     }
   }
   
@@ -915,7 +915,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), updated: o.name, with: o.object, source: source)
+      (self.delegate as? GraphEntityDelegate)?.graph?(self.graph, entity: Entity(managedNode: n), updated: o.name, with: o.object, source: source)
     }
   }
   
@@ -930,7 +930,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, updated: Relationship(managedNode: n), source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, updated: Relationship(managedNode: n), source: source)
     }
     
     set.forEach { [unowned self] in
@@ -942,7 +942,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), updated: o.name, with: o.object, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, relationship: Relationship(managedNode: n), updated: o.name, with: o.object, source: source)
     }
   }
   
@@ -961,7 +961,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), updated: o.name, with: o.object, source: source)
+      (self.delegate as? GraphActionDelegate)?.graph?(self.graph, action: Action(managedNode: n), updated: o.name, with: o.object, source: source)
     }
   }
   
@@ -991,7 +991,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, source: source)
+      (self.delegate as? GraphEntityDelegate)?.graph?(self.graph, entity: Entity(managedNode: n), removed: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1003,7 +1003,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removedFrom: o.name, source: source)
+      (self.delegate as? GraphEntityDelegate)?.graph?(self.graph, entity: Entity(managedNode: n), removedFrom: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1015,7 +1015,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, entity: Entity(managedNode: n), removed: o.name, with: o.object, source: source)
+      (self.delegate as? GraphEntityDelegate)?.graph?(self.graph, entity: Entity(managedNode: n), removed: o.name, with: o.object, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1023,7 +1023,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphEntityDelegate)?.watch?(graph: self.graph, deleted: Entity(managedNode: n), source: source)
+      (self.delegate as? GraphEntityDelegate)?.graph?(self.graph, deleted: Entity(managedNode: n), source: source)
     }
   }
   
@@ -1042,7 +1042,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, relationship: Relationship(managedNode: n), removed: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1054,7 +1054,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removedFrom: o.name, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, relationship: Relationship(managedNode: n), removedFrom: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1066,7 +1066,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, relationship: Relationship(managedNode: n), removed: o.name, with: o.object, source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, relationship: Relationship(managedNode: n), removed: o.name, with: o.object, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1074,7 +1074,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphRelationshipDelegate)?.watch?(graph: self.graph, deleted: Relationship(managedNode: n), source: source)
+      (self.delegate as? GraphRelationshipDelegate)?.graph?(self.graph, deleted: Relationship(managedNode: n), source: source)
     }
   }
   
@@ -1093,7 +1093,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, source: source)
+      (self.delegate as? GraphActionDelegate)?.graph?(self.graph, action: Action(managedNode: n), removed: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1105,7 +1105,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removedFrom: o.name, source: source)
+      (self.delegate as? GraphActionDelegate)?.graph?(self.graph, action: Action(managedNode: n), removedFrom: o.name, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1117,7 +1117,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, action: Action(managedNode: n), removed: o.name, with: o.object, source: source)
+      (self.delegate as? GraphActionDelegate)?.graph?(self.graph, action: Action(managedNode: n), removed: o.name, with: o.object, source: source)
     }
     
     set.forEach { [unowned self] in
@@ -1125,7 +1125,7 @@ public class Watch<T: Node>: Watchable {
         return
       }
       
-      (self.delegate as? GraphActionDelegate)?.watch?(graph: self.graph, deleted: Action(managedNode: n), source: source)
+      (self.delegate as? GraphActionDelegate)?.graph?(self.graph, deleted: Action(managedNode: n), source: source)
     }
   }
   

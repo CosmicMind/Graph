@@ -138,7 +138,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
     waitForExpectations(timeout: 5, handler: nil)
   }
   
-  func watch(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
     XCTAssertTrue("T" == entity.type)
     XCTAssertTrue(0 < entity.id.count)
     
@@ -149,7 +149,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
     propertyInsertExpception?.fulfill()
   }
   
-  func watch(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
     XCTAssertTrue("T" == entity.type)
     XCTAssertTrue(0 < entity.id.count)
     
@@ -160,7 +160,7 @@ class EntityPropertyTests: XCTestCase, GraphEntityDelegate {
     propertyUpdateExpception?.fulfill()
   }
   
-  func watch(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
     XCTAssertTrue("T" == entity.type)
     XCTAssertTrue(0 < entity.id.count)
     

@@ -105,7 +105,7 @@ public class Search<T: Node>: Searchable {
    instance.
    - Parameter graph: A Graph instance.
    */
-  public init(graph: Graph) {
+  public init(graph: Graph = Graph()) {
     self.graph = graph
   }
   

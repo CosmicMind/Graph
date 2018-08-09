@@ -142,7 +142,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
     waitForExpectations(timeout: 5, handler: nil)
   }
   
-  func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
     XCTAssertTrue("T" == entity.type)
     XCTAssertTrue(0 < entity.id.count)
     XCTAssertEqual("G1", tag)
@@ -153,7 +153,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
     tagAddExpception?.fulfill()
   }
   
-  func watch(graph: Graph, entity: Entity, removed tag: String, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, removed tag: String, source: GraphSource) {
     XCTAssertTrue("T" == entity.type)
     XCTAssertTrue(0 < entity.id.count)
     XCTAssertEqual("G2", tag)

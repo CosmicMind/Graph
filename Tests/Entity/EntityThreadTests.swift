@@ -110,7 +110,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
     waitForExpectations(timeout: 5, handler: nil)
   }
   
-  func watch(graph: Graph, inserted entity: Entity, source: GraphSource) {
+  func graph(_ graph: Graph, inserted entity: Entity, source: GraphSource) {
     XCTAssertEqual("T", entity.type)
     XCTAssertTrue(0 < entity.id.count)
     XCTAssertEqual(111, entity["P"] as? Int)
@@ -119,7 +119,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
     insertExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, deleted entity: Entity, source: GraphSource) {
+  func graph(_ graph: Graph, deleted entity: Entity, source: GraphSource) {
     XCTAssertEqual("T", entity.type)
     XCTAssertTrue(0 < entity.id.count)
     XCTAssertNil(entity["P"])
@@ -128,7 +128,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
     deleteExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, added tag: String, source: GraphSource) {
     XCTAssertEqual("T", entity.type)
     XCTAssertEqual("G", tag)
     XCTAssertTrue(entity.has(tags: tag))
@@ -136,7 +136,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
     insertTagExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, entity: Entity, removed tag: String, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, removed tag: String, source: GraphSource) {
     XCTAssertEqual("T", entity.type)
     XCTAssertTrue(0 < entity.id.count)
     XCTAssertEqual("G", tag)
@@ -145,7 +145,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
     deleteTagExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, added property: String, with value: Any, source: GraphSource) {
     XCTAssertEqual("T", entity.type)
     XCTAssertTrue(0 < entity.id.count)
     XCTAssertEqual("P", property)
@@ -155,7 +155,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
     insertPropertyExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, updated property: String, with value: Any, source: GraphSource) {
     XCTAssertEqual("T", entity.type)
     XCTAssertTrue(0 < entity.id.count)
     XCTAssertEqual("P", property)
@@ -165,7 +165,7 @@ class EntityThreadTests : XCTestCase, GraphEntityDelegate {
     updatePropertyExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, entity: Entity, removed property: String, with value: Any, source: GraphSource) {
     XCTAssertEqual("T", entity.type)
     XCTAssertTrue(0 < entity.id.count)
     XCTAssertEqual("P", property)
