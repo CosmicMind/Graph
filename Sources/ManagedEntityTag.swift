@@ -42,10 +42,4 @@ internal class ManagedEntityTag: ManagedTag {
     self.init(identifier: ModelIdentifier.entityTagName, name: name, managedObjectContext: managedObjectContext)
     self.node = node
   }
-  
-  /// Marks node for deletion.
-  internal override func delete() {
-    node.tagSet.remove(self)
-    super.delete()
-  }
 }

@@ -49,4 +49,10 @@ internal class ManagedProperty: ManagedObject{
     self.name = name
     self.object = object
   }
+  
+  /// Marks node for deletion.
+  internal override func delete() {
+    node.propertySet.remove(self)
+    super.delete()
+  }
 }

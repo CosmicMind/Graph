@@ -45,9 +45,4 @@ internal class ManagedActionProperty: ManagedProperty {
     self.node = node
   }
   
-  /// Marks node for deletion.
-  internal override func delete() {
-    node.propertySet.remove(self)
-    super.delete()
-  }
 }

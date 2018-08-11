@@ -45,4 +45,10 @@ internal class ManagedGroup: ManagedObject {
     self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
     self.name = name
   }
+  
+  /// Marks node for deletion.
+  internal override func delete() {
+    node.groupSet.remove(self)
+    super.delete()
+  }
 }

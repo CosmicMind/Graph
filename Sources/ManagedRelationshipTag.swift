@@ -42,10 +42,4 @@ internal class ManagedRelationshipTag: ManagedTag {
     self.init(identifier: ModelIdentifier.relationshipTagName, name: name, managedObjectContext: managedObjectContext)
     self.node = node
   }
-  
-  /// Marks node for deletion.
-  internal override func delete() {
-    node.tagSet.remove(self)
-    super.delete()
-  }
 }

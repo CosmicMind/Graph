@@ -42,10 +42,4 @@ internal class ManagedRelationshipGroup: ManagedGroup {
     self.init(identifier: ModelIdentifier.relationshipGroupName, name: name, managedObjectContext: managedObjectContext)
     self.node = node
   }
-  
-  /// Marks node for deletion.
-  internal override func delete() {
-    node.groupSet.remove(self)
-    super.delete()
-  }
 }

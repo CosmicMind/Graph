@@ -45,4 +45,10 @@ internal class ManagedTag: ManagedObject {
     self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
     self.name = name
   }
+  
+  /// Marks node for deletion.
+  internal override func delete() {
+    node.tagSet.remove(self)
+    super.delete()
+  }
 }

@@ -44,10 +44,4 @@ internal class ManagedRelationshipProperty: ManagedProperty {
     self.init(identifier: ModelIdentifier.relationshipPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
     self.node = node
   }
-  
-  /// Marks node for deletion.
-  internal override func delete() {
-    node.propertySet.remove(self)
-    super.delete()
-  }
 }
