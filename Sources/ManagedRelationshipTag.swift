@@ -32,14 +32,7 @@ import CoreData
 
 @objc(ManagedRelationshipTag)
 internal class ManagedRelationshipTag: ManagedTag {
-  /**
-   Initializer that accepts a tag name and a NSManagedObjectContext.
-   - Parameter name: A tag name.
-   - Parameter node: A ManagedRelationship.
-   - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-   */
-  internal convenience init(name: String, node: ManagedRelationship, managedObjectContext: NSManagedObjectContext) {
-    self.init(identifier: ModelIdentifier.relationshipTagName, name: name, managedObjectContext: managedObjectContext)
-    self.node = node
+  internal override class var identifier: String {
+    return ModelIdentifier.relationshipTagName
   }
 }

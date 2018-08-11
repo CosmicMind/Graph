@@ -32,6 +32,17 @@ import CoreData
 
 @objc(ManagedObject)
 internal class ManagedObject: NSManagedObject {
+
+  /// A model identifier
+  internal class var identifier: String {
+    return ""
+  }
+  
+  internal convenience init(managedObjectContext: NSManagedObjectContext) {
+    let description = NSEntityDescription.entity(forEntityName: type(of: self).identifier, in: managedObjectContext)!
+    self.init(entity: description, insertInto: managedObjectContext)
+  }
+  
   /// Marks for deletion.
   internal func delete() {
     guard let moc = managedObjectContext else {

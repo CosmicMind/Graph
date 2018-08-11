@@ -36,14 +36,15 @@ internal class ManagedTag: ManagedObject {
   @NSManaged internal var node: ManagedNode
   
   /**
-   Initializer that accepts an identifier, tag name and a NSManagedObjectContext.
-   - Parameter identifier: A model identifier.
+   Initializer that accepts a tag name and a NSManagedObjectContext.
    - Parameter name: A tag name.
+   - Parameter node: A ManagedNode.
    - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
    */
-  internal convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {
-    self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
+  internal convenience init(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    self.init(managedObjectContext: managedObjectContext)
     self.name = name
+    self.node = node
   }
   
   /// Marks node for deletion.

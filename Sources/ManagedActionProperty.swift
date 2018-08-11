@@ -32,17 +32,7 @@ import CoreData
 
 @objc(ManagedActionProperty)
 internal class ManagedActionProperty: ManagedProperty {
-  /**
-   Initializer that accepts a property name, value and
-   a NSManagedObjectContext.
-   - Parameter name: A property name.
-   - Parameter object: A reference to the object value.
-   - Parameter node: A ManagedAction.
-   - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-   */
-  internal convenience init(name: String, object: Any, node: ManagedAction, managedObjectContext: NSManagedObjectContext) {
-    self.init(identifier: ModelIdentifier.actionPropertyName, name: name, object: object, managedObjectContext: managedObjectContext)
-    self.node = node
+  internal override class var identifier: String {
+    return ModelIdentifier.actionPropertyName
   }
-  
 }
