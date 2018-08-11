@@ -129,9 +129,7 @@ public class Action: Node {
     
     var s: [Entity]?
     moc.performAndWait { [unowned managedNode] in
-      s = managedNode.subjectSet.map {
-        return Entity(managedNode: $0 as! ManagedEntity)
-        } as [Entity]
+      s = managedNode.subjectSet.map { Entity(managedNode: $0) }
     }
     return s!
   }
@@ -145,9 +143,7 @@ public class Action: Node {
     
     var o: [Entity]?
     moc.performAndWait { [unowned managedNode] in
-      o = managedNode.objectSet.map {
-        return Entity(managedNode: $0 as! ManagedEntity)
-        } as [Entity]
+      o = managedNode.objectSet.map { Entity(managedNode: $0) }
     }
     return o!
   }

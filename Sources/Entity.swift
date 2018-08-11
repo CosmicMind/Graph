@@ -144,11 +144,9 @@ public class Entity: Node {
   
   /// A reference to all the Actions that the Entity is a part of.
   public var actions: [Action] {
-    var s = managedNode.actionSubjectSet as! Set<ManagedAction>
-    s.formUnion(managedNode.actionObjectSet as! Set<ManagedAction>)
-    return s.map {
-      return Action(managedNode: $0 as ManagedAction)
-      } as [Action]
+    var s = managedNode.actionSubjectSet
+    s.formUnion(managedNode.actionObjectSet)
+    return s.map { Action(managedNode: $0) }
   }
   
   /**
@@ -156,9 +154,7 @@ public class Entity: Node {
    subject set.
    */
   public var actionsWhenSubject: [Action] {
-    return managedNode.actionSubjectSet.map {
-      return Action(managedNode: $0 as! ManagedAction)
-      } as [Action]
+    return managedNode.actionSubjectSet.map { Action(managedNode: $0) }
   }
   
   /**
@@ -166,9 +162,7 @@ public class Entity: Node {
    object set.
    */
   public var actionsWhenObject: [Action] {
-    return managedNode.actionObjectSet.map {
-      return Action(managedNode: $0 as! ManagedAction)
-      } as [Action]
+    return managedNode.actionObjectSet.map { Action(managedNode: $0) }
   }
   
   /**
@@ -193,11 +187,9 @@ public class Entity: Node {
   
   /// A reference to all the Relationships that the Entity is a part of.
   public var relationships: [Relationship] {
-    var s = managedNode.relationshipSubjectSet as! Set<ManagedRelationship>
-    s.formUnion(managedNode.relationshipObjectSet as! Set<ManagedRelationship>)
-    return s.map {
-      return Relationship(managedNode: $0 as ManagedRelationship)
-      } as [Relationship]
+    var s = managedNode.relationshipSubjectSet
+    s.formUnion(managedNode.relationshipObjectSet)
+    return s.map { Relationship(managedNode: $0) }
   }
   
   /**
@@ -207,9 +199,7 @@ public class Entity: Node {
   public var relationshipsWhenSubject: [Relationship] {
     var result: [Relationship]?
     managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.relationshipSubjectSet.map {
-        return Relationship(managedNode: $0 as! ManagedRelationship)
-        } as [Relationship]
+      result = self.managedNode.relationshipSubjectSet.map { Relationship(managedNode: $0) }
     }
     return result!
   }
@@ -221,9 +211,7 @@ public class Entity: Node {
   public var relationshipsWhenObject: [Relationship] {
     var result: [Relationship]?
     managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.relationshipObjectSet.map {
-        return Relationship(managedNode: $0 as! ManagedRelationship)
-        } as [Relationship]
+      result = self.managedNode.relationshipObjectSet.map { Relationship(managedNode: $0) }
     }
     return result!
   }

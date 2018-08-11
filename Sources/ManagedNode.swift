@@ -35,9 +35,9 @@ internal class ManagedNode: ManagedObject {
   @NSManaged internal var nodeClass: NSNumber
   @NSManaged internal var type: String
   @NSManaged internal var createdDate: Date
-  @NSManaged internal var propertySet: NSSet
-  @NSManaged internal var tagSet: NSSet
-  @NSManaged internal var groupSet: NSSet
+  @NSManaged internal var propertySet: Set<ManagedProperty>
+  @NSManaged internal var tagSet: Set<ManagedTag>
+  @NSManaged internal var groupSet: Set<ManagedGroup>
   
   /// A reference to the Nodes unique ID.
   internal var id: String {
@@ -132,10 +132,7 @@ internal class ManagedNode: ManagedObject {
         return value
       }
       moc.performAndWait { [unowned self] in
-        for property in self.propertySet {
-          guard let p = property as? ManagedProperty else {
-            return
-          }
+        for p in self.propertySet {
           if name == p.name {
             value = p.object
             break
@@ -196,7 +193,7 @@ internal class ManagedNode: ManagedObject {
     moc.performAndWait { [unowned self, groups = groups] in
       for name in groups {
         for g in self.groupSet {
-          if name == (g as? ManagedGroup)?.name {
+          if name == g.name {
             result = true
             break
           }

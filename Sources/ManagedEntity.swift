@@ -32,10 +32,10 @@ import CoreData
 
 @objc(ManagedEntity)
 internal class ManagedEntity: ManagedNode {
-  @NSManaged internal var actionSubjectSet: NSSet
-  @NSManaged internal var actionObjectSet: NSSet
-  @NSManaged internal var relationshipSubjectSet: NSSet
-  @NSManaged internal var relationshipObjectSet: NSSet
+  @NSManaged internal var actionSubjectSet: Set<ManagedAction>
+  @NSManaged internal var actionObjectSet:  Set<ManagedAction>
+  @NSManaged internal var relationshipSubjectSet: Set<ManagedRelationship>
+  @NSManaged internal var relationshipObjectSet: Set<ManagedRelationship>
   
   /**
    Initializer that accepts a type and a NSManagedObjectContext.
@@ -179,31 +179,31 @@ internal class ManagedEntity: ManagedNode {
     
     moc.performAndWait { [unowned self] in
       self.propertySet.forEach {
-        ($0 as? ManagedEntityProperty)?.delete()
+        $0.delete()
       }
       
       self.tagSet.forEach {
-        ($0 as? ManagedEntityTag)?.delete()
+        $0.delete()
       }
       
       self.groupSet.forEach {
-        ($0 as? ManagedEntityGroup)?.delete()
+        $0.delete()
       }
       
       self.actionSubjectSet.forEach {
-        ($0 as? ManagedAction)?.delete()
+        $0.delete()
       }
       
       self.actionObjectSet.forEach {
-        ($0 as? ManagedAction)?.delete()
+        $0.delete()
       }
       
       self.relationshipSubjectSet.forEach {
-        ($0 as? ManagedRelationship)?.delete()
+        $0.delete()
       }
       
       self.relationshipObjectSet.forEach {
-        ($0 as? ManagedRelationship)?.delete()
+        $0.delete()
       }
     }
     

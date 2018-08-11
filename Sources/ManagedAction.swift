@@ -32,8 +32,8 @@ import CoreData
 
 @objc(ManagedAction)
 internal class ManagedAction: ManagedNode {
-  @NSManaged internal var subjectSet: NSSet
-  @NSManaged internal var objectSet: NSSet
+  @NSManaged internal var subjectSet: Set<ManagedEntity>
+  @NSManaged internal var objectSet: Set<ManagedEntity>
   
   /**
    Initializer that accepts a type and a NSManagedObjectContext.
