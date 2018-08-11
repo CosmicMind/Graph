@@ -30,7 +30,7 @@
 
 import Foundation
 
-public enum NodeClass: NSNumber {
+public enum NodeClass: Int {
   case entity = 1
   case relationship = 2
   case action = 3

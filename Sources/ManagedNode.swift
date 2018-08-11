@@ -32,7 +32,7 @@ import CoreData
 
 @objc(ManagedNode)
 internal class ManagedNode: ManagedObject {
-  @NSManaged internal var nodeClass: NSNumber
+  @NSManaged internal var nodeClass: Int
   @NSManaged internal var type: String
   @NSManaged internal var createdDate: Date
   @NSManaged internal var propertySet: Set<ManagedProperty>
