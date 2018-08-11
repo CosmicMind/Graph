@@ -44,3 +44,31 @@ internal class ManagedObject: NSManagedObject {
   }
 }
 
+internal protocol PerformAndWaitable: class {
+  var managedObjectContext: NSManagedObjectContext? { get }
+}
+
+extension ManagedObject: PerformAndWaitable { }
+
+internal extension PerformAndWaitable {
+  func performAndWait<T>(_ block: (Self) -> T) -> T {
+    return performAndWait(block)!
+  }
+  
+  func performAndWait<T>(_ block: (Self) -> T?) -> T? {
+    var result: T?
+    
+    managedObjectContext?.performAndWait { [unowned self] in
+      result = block(self)
+    }
+    
+    return result
+  }
+  
+  func performAndWait(_ block: (Self) -> Void) {
+    managedObjectContext?.performAndWait { [unowned self] in
+      block(self)
+    }
+  }
+}
+

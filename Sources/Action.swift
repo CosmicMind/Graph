@@ -47,11 +47,7 @@ public class Action: Node {
   
   /// A reference to the type.
   public var type: String {
-    var result: String?
-    managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.type
-    }
-    return result!
+    return managedNode.performAndWait { $0.type }
   }
   
   /// A reference to the hash.
@@ -71,11 +67,7 @@ public class Action: Node {
   
   /// A reference to the createDate.
   public var createdDate: Date {
-    var result: Date?
-    managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.createdDate as Date
-    }
-    return result!
+    return managedNode.performAndWait { $0.createdDate }
   }
   
   /// A reference to tags.
@@ -123,29 +115,16 @@ public class Action: Node {
   
   /// An Array of Entity subjects.
   public var subjects: [Entity] {
-    guard let moc = managedNode.managedObjectContext else {
-      return []
-    }
-    
-    var s: [Entity]?
-    moc.performAndWait { [unowned managedNode] in
-      s = managedNode.subjectSet.map { Entity(managedNode: $0) }
-    }
-    return s!
+    return managedNode.performAndWait { action in
+      action.subjectSet.map { Entity(managedNode: $0) }
+    } ?? []
   }
   
   /// An Array of Entity objects.
   public var objects: [Entity] {
-    guard let moc = managedNode.managedObjectContext else {
-      return []
-    }
-    
-    
-    var o: [Entity]?
-    moc.performAndWait { [unowned managedNode] in
-      o = managedNode.objectSet.map { Entity(managedNode: $0) }
-    }
-    return o!
+    return managedNode.performAndWait { action in
+      action.objectSet.map { Entity(managedNode: $0) }
+    } ?? []
   }
   
   /**

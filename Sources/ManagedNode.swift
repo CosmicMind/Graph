@@ -45,64 +45,39 @@ internal class ManagedNode: ManagedObject {
       fatalError("[Graph Error: Cannot obtain permanent objectID]")
     }
     
-    var result: String?
-    moc.performAndWait { [unowned self, unowned moc] in
+    return performAndWait { [unowned moc] `self` in
       do {
         try moc.obtainPermanentIDs(for: [self])
       } catch let e as NSError {
         fatalError("[Graph Error: Cannot obtain permanent objectID - \(e.localizedDescription)]")
       }
-      result = String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.uriRepresentation().lastPathComponent
+      return String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.uriRepresentation().lastPathComponent
     }
-    return result!
   }
   
   /// A reference to the tags.
   internal var tags: [String] {
-    var t : [String] = []
-    guard let moc = managedObjectContext else {
-      return t
-    }
-    moc.performAndWait { [unowned self] in
-      self.tagSet.forEach { (object: Any) in
-        if let tag = object as? ManagedTag {
-          t.append(tag.name)
-        }
-      }
-    }
-    return t
+    return performAndWait { node in
+      node.tagSet.map { $0.name }
+    } ?? []
   }
   
   /// A reference to the groups.
   internal var groups: [String] {
-    var g : [String] = []
-    guard let moc = managedObjectContext else {
-      return g
-    }
-    moc.performAndWait { [unowned self] in
-      self.groupSet.forEach { (object: Any) in
-        if let group = object as? ManagedGroup {
-          g.append(group.name)
-        }
-      }
-    }
-    return g
+    return performAndWait { node in
+      node.groupSet.map { $0.name }
+    } ?? []
   }
   
   /// A reference to the properties.
   internal var properties: [String: Any] {
-    var p = [String: Any]()
-    guard let moc = managedObjectContext else {
-      return p
-    }
-    moc.performAndWait { [unowned self] in
-      self.propertySet.forEach { (object: Any) in
-        if let property = object as? ManagedProperty {
-          p[property.name] = property.object
-        }
+    return performAndWait { node in
+      var p = [String: Any]()
+      node.propertySet.forEach {
+        p[$0.name] = $0.object
       }
-    }
-    return p
+      return p
+    } ?? [:]
   }
   
   /**
@@ -127,19 +102,11 @@ internal class ManagedNode: ManagedObject {
    */
   internal subscript(name: String) -> Any? {
     get {
-      var value: Any?
-      guard let moc = managedObjectContext else {
-        return value
+      return performAndWait { node in
+        node.propertySet.first {
+          $0.name == name
+        }?.object
       }
-      moc.performAndWait { [unowned self] in
-        for p in self.propertySet {
-          if name == p.name {
-            value = p.object
-            break
-          }
-        }
-      }
-      return value
     }
   }
   

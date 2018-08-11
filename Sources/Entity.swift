@@ -48,11 +48,7 @@ public class Entity: Node {
   
   /// A reference to the type.
   public var type: String {
-    var result: String?
-    managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.type
-    }
-    return result!
+    return managedNode.performAndWait { $0.type }
   }
   
   /// A reference to the hash.
@@ -72,11 +68,7 @@ public class Entity: Node {
   
   /// A reference to the createDate.
   public var createdDate: Date {
-    var result: Date?
-    managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.createdDate as Date
-    }
-    return result!
+    return managedNode.performAndWait { $0.createdDate }
   }
   
   /// A reference to tags.
@@ -197,11 +189,9 @@ public class Entity: Node {
    subject set.
    */
   public var relationshipsWhenSubject: [Relationship] {
-    var result: [Relationship]?
-    managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.relationshipSubjectSet.map { Relationship(managedNode: $0) }
+    return managedNode.performAndWait {
+      $0.relationshipSubjectSet.map { Relationship(managedNode: $0) }
     }
-    return result!
   }
   
   /**
@@ -209,11 +199,9 @@ public class Entity: Node {
    object set.
    */
   public var relationshipsWhenObject: [Relationship] {
-    var result: [Relationship]?
-    managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.relationshipObjectSet.map { Relationship(managedNode: $0) }
+    return managedNode.performAndWait {
+      $0.relationshipObjectSet.map { Relationship(managedNode: $0) }
     }
-    return result!
   }
   
   /**

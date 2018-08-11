@@ -61,36 +61,24 @@ internal class ManagedEntity: ManagedNode {
       return super[name]
     }
     set(value) {
-      guard let moc = managedObjectContext else {
-        return
-      }
-      moc.performAndWait { [unowned self, unowned moc] in
+      performAndWait { entity in
+        let property = entity.propertySet.first {
+          ($0 as? ManagedEntityProperty)?.name == name
+        }
+        
         guard let object = value else {
-          for property in self.propertySet {
-            if let p = property as? ManagedEntityProperty {
-              if name == p.name {
-                p.delete()
-                break
-              }
-            }
-          }
+          property?.delete()
           return
         }
         
-        var exists = false
-        for property in self.propertySet {
-          if let p = property as? ManagedEntityProperty {
-            if name == p.name {
-              p.object = object
-              exists = true
-              break
-            }
+        guard let p = property else {
+          guard let moc = managedObjectContext else {
+            return
           }
+          _ = ManagedEntityProperty(name: name, object: object, node: entity, managedObjectContext: moc)
+          return
         }
-        
-        if !exists {
-          _ = ManagedEntityProperty(name: name, object: object, node: self, managedObjectContext: moc)
-        }
+        p.object = object
       }
     }
   }
@@ -103,11 +91,14 @@ internal class ManagedEntity: ManagedNode {
     guard let moc = managedObjectContext else {
       return
     }
-    moc.performAndWait { [unowned self, unowned moc, tags = tags] in
+    
+    performAndWait { [unowned moc] entity in
       for name in tags {
-        if !self.has(tags: name) {
-          _ = ManagedEntityTag(name: name, node: self, managedObjectContext: moc)
+        guard !entity.has(tags: name) else {
+          continue
         }
+        
+        _ = ManagedEntityTag(name: name, node: entity, managedObjectContext: moc)
       }
     }
   }
@@ -117,16 +108,11 @@ internal class ManagedEntity: ManagedNode {
    - Parameter tags: An Array of Strings.
    */
   internal func remove(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    moc.performAndWait { [unowned self, tags = tags] in
-      for name in tags {
-        for tag in self.tagSet {
-          if let t = tag as? ManagedEntityTag {
-            if name == t.name {
-              t.delete()
-            }
+    performAndWait { entity in
+      tags.forEach { name in
+        entity.tagSet.forEach {
+          if let t = $0 as? ManagedEntityTag, name == t.name {
+            t.delete()
           }
         }
       }
@@ -141,11 +127,14 @@ internal class ManagedEntity: ManagedNode {
     guard let moc = managedObjectContext else {
       return
     }
-    moc.performAndWait { [unowned self, unowned moc, groups = groups] in
+    
+    performAndWait { [unowned moc] entity in
       for name in groups {
-        if !self.member(of: name) {
-          _ = ManagedEntityGroup(name: name, node: self, managedObjectContext: moc)
+        guard !entity.member(of: name) else {
+          continue
         }
+        
+        _ = ManagedEntityGroup(name: name, node: entity, managedObjectContext: moc)
       }
     }
   }
@@ -155,16 +144,11 @@ internal class ManagedEntity: ManagedNode {
    - Parameter from groups: An Array of Strings.
    */
   internal func remove(from groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    moc.performAndWait { [unowned self, groups = groups] in
-      for name in groups {
-        for group in self.groupSet {
-          if let g = group as? ManagedEntityGroup {
-            if name == g.name {
-              g.delete()
-            }
+    performAndWait { entity in
+      groups.forEach { name in
+        entity.groupSet.forEach {
+          if let g = $0 as? ManagedEntityGroup, name == g.name {
+            g.delete()
           }
         }
       }
@@ -173,36 +157,32 @@ internal class ManagedEntity: ManagedNode {
   
   /// Marks the Entity for deletion and clears all its relationships.
   internal override func delete() {
-    guard let moc = self.managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self] in
-      self.propertySet.forEach {
+    performAndWait { entity in
+      entity.propertySet.forEach {
         $0.delete()
       }
       
-      self.tagSet.forEach {
+      entity.tagSet.forEach {
         $0.delete()
       }
       
-      self.groupSet.forEach {
+      entity.groupSet.forEach {
         $0.delete()
       }
       
-      self.actionSubjectSet.forEach {
+      entity.actionSubjectSet.forEach {
         $0.delete()
       }
       
-      self.actionObjectSet.forEach {
+      entity.actionObjectSet.forEach {
         $0.delete()
       }
       
-      self.relationshipSubjectSet.forEach {
+      entity.relationshipSubjectSet.forEach {
         $0.delete()
       }
       
-      self.relationshipObjectSet.forEach {
+      entity.relationshipObjectSet.forEach {
         $0.delete()
       }
     }

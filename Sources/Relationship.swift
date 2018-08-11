@@ -47,11 +47,7 @@ public class Relationship: Node {
   
   /// A reference to the type.
   public var type: String {
-    var result: String?
-    managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.type
-    }
-    return result!
+    return managedNode.performAndWait { $0.type }
   }
   
   /// A reference to the hash.
@@ -71,11 +67,7 @@ public class Relationship: Node {
   
   /// A reference to the createDate.
   public var createdDate: Date {
-    var result: Date?
-    managedNode.managedObjectContext?.performAndWait { [unowned self] in
-      result = self.managedNode.createdDate as Date
-    }
-    return result!
+    return managedNode.performAndWait { $0.createdDate }
   }
   
   /// A reference to tags.
@@ -124,12 +116,9 @@ public class Relationship: Node {
   /// A reference to the subject Entity.
   public var subject: Entity? {
     get {
-      var n: ManagedEntity?
-      managedNode.managedObjectContext?.performAndWait { [unowned self] in
-        n = self.managedNode.subject
+      return managedNode.performAndWait { relationship in
+        relationship.subject.map { Entity(managedNode: $0) }
       }
-      
-      return n.map { Entity(managedNode: $0) }
     }
     set(entity) {
       managedNode.managedObjectContext?.performAndWait { [unowned self] in
@@ -148,11 +137,9 @@ public class Relationship: Node {
   /// A reference to the object Entity.
   public var object: Entity? {
     get {
-      var n: ManagedEntity?
-      managedNode.managedObjectContext?.performAndWait { [unowned self] in
-        n = self.managedNode.object
+      return managedNode.performAndWait { relationship in
+        relationship.object.map { Entity(managedNode: $0) }
       }
-      return n.map { Entity(managedNode: $0) }
     }
     set(entity) {
       managedNode.managedObjectContext?.performAndWait { [unowned self] in
