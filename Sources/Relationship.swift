@@ -123,11 +123,11 @@ public class Relationship: Node {
     set(entity) {
       managedNode.managedObjectContext?.performAndWait { [unowned self] in
         if let e = entity?.managedNode {
-          self.managedNode.subject?.mutableSetValue(forKey: "relationshipSubjectSet").remove(self.managedNode)
+          self.managedNode.subject?.relationshipSubjectSet.remove(self.managedNode)
           self.managedNode.subject = e
-          e.mutableSetValue(forKey: "relationshipSubjectSet").add(self.managedNode)
+          e.relationshipSubjectSet.insert(self.managedNode)
         } else {
-          self.managedNode.subject?.mutableSetValue(forKey: "relationshipSubjectSet").remove(self.managedNode)
+          self.managedNode.subject?.relationshipSubjectSet.remove(self.managedNode)
           self.managedNode.subject = nil
         }
       }
@@ -144,11 +144,11 @@ public class Relationship: Node {
     set(entity) {
       managedNode.managedObjectContext?.performAndWait { [unowned self] in
         if let e = entity?.managedNode {
-          self.managedNode.object?.mutableSetValue(forKey: "relationshipObjectSet").remove(self.managedNode)
+          self.managedNode.object?.relationshipObjectSet.remove(self.managedNode)
           self.managedNode.object = e
-          e.mutableSetValue(forKey: "relationshipObjectSet").add(self.managedNode)
+          e.relationshipObjectSet.insert(self.managedNode)
         } else {
-          self.managedNode.object?.mutableSetValue(forKey: "relationshipObjectSet").remove(self.managedNode)
+          self.managedNode.object?.relationshipObjectSet.remove(self.managedNode)
           self.managedNode.object = nil
         }
       }

@@ -45,7 +45,7 @@ internal class ManagedActionTag: ManagedTag {
   
   /// Marks node for deletion.
   internal override func delete() {
-    node.mutableSetValue(forKey: "tagSet").remove(self)
+    node.tagSet.remove(self)
     super.delete()
   }
 }

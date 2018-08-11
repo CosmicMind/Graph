@@ -157,7 +157,7 @@ internal class ManagedAction: ManagedNode {
    */
   internal func add(subject managedEntity: ManagedEntity) {
     performAndWait { [unowned managedEntity] in
-      $0.mutableSetValue(forKey: "subjectSet").add(managedEntity)
+      _ = $0.subjectSet.insert(managedEntity)
     }
   }
   
@@ -167,7 +167,7 @@ internal class ManagedAction: ManagedNode {
    */
   internal func remove(subject managedEntity: ManagedEntity) {
     performAndWait { [unowned managedEntity] in
-      $0.mutableSetValue(forKey: "subjectSet").remove(managedEntity)
+      _ = $0.subjectSet.remove(managedEntity)
     }
   }
   
@@ -177,7 +177,7 @@ internal class ManagedAction: ManagedNode {
    */
   internal func add(object managedEntity: ManagedEntity) {
     performAndWait { [unowned managedEntity] in
-      $0.mutableSetValue(forKey: "objectSet").add(managedEntity)
+      _ = $0.objectSet.insert(managedEntity)
     }
   }
   
@@ -187,7 +187,7 @@ internal class ManagedAction: ManagedNode {
    */
   internal func remove(object managedEntity: ManagedEntity) {
     performAndWait { [unowned managedEntity] in
-      $0.mutableSetValue(forKey: "objectSet").remove(managedEntity)
+      _ = $0.objectSet.remove(managedEntity)
     }
   }
   
