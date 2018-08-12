@@ -33,7 +33,7 @@ import CoreData
 @objc(ManagedObject)
 internal class ManagedObject: NSManagedObject {
 
-  /// A model identifier
+  /// A model identifier.
   internal class var identifier: String {
     return ""
   }

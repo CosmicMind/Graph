@@ -32,6 +32,7 @@ import CoreData
 
 @objc(ManagedEntityGroup)
 internal class ManagedEntityGroup: ManagedGroup {
+  /// A model identifier.
   internal override class var identifier: String {
     return ModelIdentifier.entityGroupName
   }

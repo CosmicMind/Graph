@@ -51,26 +51,32 @@ internal class ManagedEntity: ManagedNode {
     relationshipObjectSet = []
   }
   
+  /// Generic creation of the managed tag type.
   internal override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedEntityTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
+  /// Generic creation of the managed group type.
   internal override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedEntityGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
+  /// Generic creation of the managed property type.
   internal override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedEntityProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
+  /// Generic cast to the managed tag type.
   internal override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
     return tag as? ManagedEntityTag
   }
   
+  /// Generic cast to the managed group type.
   internal override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
     return group as? ManagedEntityGroup
   }
   
+  /// Generic cast to the managed property type.
   internal override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
     return property as? ManagedEntityProperty
   }

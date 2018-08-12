@@ -32,6 +32,7 @@ import CoreData
 
 @objc(ManagedRelationshipGroup)
 internal class ManagedRelationshipGroup: ManagedGroup {
+  /// A model identifier.
   internal override class var identifier: String {
     return ModelIdentifier.relationshipGroupName
   }

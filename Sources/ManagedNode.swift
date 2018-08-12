@@ -83,7 +83,7 @@ internal class ManagedNode: ManagedObject {
   /**
    Initializer that accepts an identifier, a type, and a NSManagedObjectContext.
    - Parameter identifier: A model identifier.
-   - Parameter type: A reference to the Entity type.
+   - Parameter type: A reference to the Node type.
    - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
    */
   internal convenience init(identifier: String, type: String, managedObjectContext: NSManagedObjectContext) {
@@ -152,13 +152,13 @@ internal class ManagedNode: ManagedObject {
   }
   
   /**
-   Removes the ManagedEntity from a given group.
+   Removes the ManagedNode from a given group.
    - Parameter from groups: An Array of Strings.
    */
   internal func remove(from groups: [String]) {
-    performAndWait { entity in
+    performAndWait { node in
       groups.forEach { name in
-        entity.groupSet.forEach {
+        node.groupSet.forEach {
           if let g = Swift.type(of: self).asGroup($0), name == g.name {
             g.delete()
           }
@@ -167,27 +167,32 @@ internal class ManagedNode: ManagedObject {
     }
   }
 
-  
+  /// Generic creation of the managed tag type.
   internal class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     fatalError("Must be implemented by subclasses")
   }
   
+  /// Generic cast to the managed tag type.
   internal class func asTag(_ tag: ManagedTag) -> ManagedTag? {
     fatalError("Must be implemented by subclasses")
   }
   
+  /// Generic creation of the managed group type.
   internal class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     fatalError("Must be implemented by subclasses")
   }
   
+  /// Generic cast to the managed group type.
   internal class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
     fatalError("Must be implemented by subclasses")
   }
-  
+
+  /// Generic creation of the managed property type.
   internal class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     fatalError("Must be implemented by subclasses")
   }
   
+  /// Generic cast to the managed property type.
   internal class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
     fatalError("Must be implemented by subclasses")
   }
@@ -291,7 +296,7 @@ internal class ManagedNode: ManagedObject {
   }
 }
 
-extension ManagedNode : Comparable {
+extension ManagedNode: Comparable {
   static public func ==(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
     return lhs.id == rhs.id
   }

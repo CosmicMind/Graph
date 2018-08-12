@@ -32,6 +32,7 @@ import CoreData
 
 @objc(ManagedActionTag)
 internal class ManagedActionTag: ManagedTag {
+  /// A model identifier.
   internal override class var identifier: String {
     return ModelIdentifier.actionTagName
   }

@@ -32,6 +32,7 @@ import CoreData
 
 @objc(ManagedRelationshipTag)
 internal class ManagedRelationshipTag: ManagedTag {
+  /// A model identifier.
   internal override class var identifier: String {
     return ModelIdentifier.relationshipTagName
   }

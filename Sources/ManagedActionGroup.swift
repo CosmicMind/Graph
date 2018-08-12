@@ -32,6 +32,7 @@ import CoreData
 
 @objc(ManagedActionGroup)
 internal class ManagedActionGroup: ManagedGroup {
+  /// A model identifier.
   internal override class var identifier: String {
     return ModelIdentifier.actionGroupName
   }

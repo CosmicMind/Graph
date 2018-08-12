@@ -32,6 +32,7 @@ import CoreData
 
 @objc(ManagedEntityProperty)
 internal class ManagedEntityProperty: ManagedProperty {
+  /// A model identifier.
   internal override class var identifier: String {
     return ModelIdentifier.entityPropertyName
   }

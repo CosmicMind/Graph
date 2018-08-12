@@ -32,6 +32,7 @@ import CoreData
 
 @objc(ManagedEntityTag)
 internal class ManagedEntityTag: ManagedTag {
+  /// A model identifier.
   internal override class var identifier: String {
     return ModelIdentifier.entityTagName
   }

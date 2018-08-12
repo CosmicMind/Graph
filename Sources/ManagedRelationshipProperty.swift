@@ -32,6 +32,7 @@ import CoreData
 
 @objc(ManagedRelationshipProperty)
 internal class ManagedRelationshipProperty: ManagedProperty {
+  /// A model identifier.
   internal override class var identifier: String {
     return ModelIdentifier.relationshipPropertyName
   }

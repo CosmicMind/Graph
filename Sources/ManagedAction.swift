@@ -46,27 +46,33 @@ internal class ManagedAction: ManagedNode {
     subjectSet = []
     objectSet = []
   }
-      
+  
+  /// Generic creation of the managed tag type.
   internal override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
         _ = ManagedActionTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
+  /// Generic creation of the managed group type.
   internal override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedActionGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
+  /// Generic creation of the managed property type.
   internal override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedActionProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
+  /// Generic cast to the managed tag type.
   internal override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
     return tag as? ManagedActionTag
   }
   
+  /// Generic cast to the managed group type.
   internal override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
     return group as? ManagedActionGroup
   }
   
+  /// Generic cast to the managed property type.
   internal override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
     return property as? ManagedActionProperty
   }
