@@ -31,10 +31,8 @@
 import CoreData
 
 @objc(ManagedProperty)
-internal class ManagedProperty: ManagedObject {
-  @NSManaged internal var name: String
+internal class ManagedProperty: NamedManagedObject {
   @NSManaged internal var object: Any
-  @NSManaged internal var node: ManagedNode
     
   /**
    Initializer that accepts a name, value and
@@ -45,10 +43,8 @@ internal class ManagedProperty: ManagedObject {
    - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
    */
   internal convenience init(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {    
-    self.init(managedObjectContext: managedObjectContext)
-    self.name = name
+    self.init(name: name, node: node, managedObjectContext: managedObjectContext)
     self.object = object
-    self.node = node
   }
   
   /// Marks node for deletion.

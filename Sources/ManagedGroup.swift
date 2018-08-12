@@ -31,22 +31,7 @@
 import CoreData
 
 @objc(ManagedGroup)
-internal class ManagedGroup: ManagedObject {
-  @NSManaged internal var name: String
-  @NSManaged internal var node: ManagedNode
-  
-  /**
-   Initializer that accepts a group name and a NSManagedObjectContext.
-   - Parameter name: A group name.
-   - Parameter node: A ManagedNode.
-   - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-   */
-  internal convenience init(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
-    self.init(managedObjectContext: managedObjectContext)
-    self.name = name
-    self.node = node
-  }
-  
+internal class ManagedGroup: NamedManagedObject {  
   /// Marks node for deletion.
   internal override func delete() {
     node.groupSet.remove(self)
