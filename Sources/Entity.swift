@@ -31,10 +31,14 @@
 import Foundation
 
 @objc(Entity)
-@dynamicMemberLookup
 public class Entity: Node {
   /// A reference to the managedNode.
   internal let managedNode: ManagedEntity
+  
+  /// A reference to the managedNode for base class.
+  override var node: ManagedNode {
+    return managedNode
+  }
   
   /// A string representation of the Entity.
   public override var description: String {
@@ -44,74 +48,6 @@ public class Entity: Node {
   /// A reference to the nodeClass.
   public var nodeClass: NodeClass {
     return .entity
-  }
-  
-  /// A reference to the type.
-  public var type: String {
-    return managedNode.performAndWait { $0.type }
-  }
-  
-  /// A reference to the hash.
-  public override var hash: Int {
-    return managedNode.hash
-  }
-  
-  /// A reference to the hashValue.
-  public override var hashValue: Int {
-    return managedNode.hashValue
-  }
-  
-  /// A reference to the ID.
-  public var id: String {
-    return managedNode.id
-  }
-  
-  /// A reference to the createDate.
-  public var createdDate: Date {
-    return managedNode.performAndWait { $0.createdDate }
-  }
-  
-  /// A reference to tags.
-  public var tags: [String] {
-    return managedNode.tags
-  }
-  
-  /// A reference to groups.
-  public var groups: [String] {
-    return managedNode.groups
-  }
-  
-  /**
-   Access properties using the subscript operator.
-   - Parameter name: A property name value.
-   - Returns: The optional Any value.
-   */
-  public subscript(name: String) -> Any? {
-    get {
-      return managedNode[name]
-    }
-    set(value) {
-      managedNode[name] = value
-    }
-  }
-  
-  /**
-   Access properties using the dynamic property subscript operator.
-   - Parameter dynamicMember member: A property name value.
-   - Returns: The optional Any value.
-   */
-  public subscript(dynamicMember member: String) -> Any? {
-    get {
-      return self[member]
-    }
-    set(value) {
-      self[member] = value
-    }
-  }
-  
-  /// A reference to the properties Dictionary.
-  public var properties: [String: Any] {
-    return managedNode.properties
   }
   
   /**
@@ -129,8 +65,8 @@ public class Entity: Node {
    - Returns: An Array of Actions.
    */
   public func action(types: [String]) -> [Action] {
-    return self.actions.filter { [types = types] (action) -> Bool in
-      return types.contains(action.type)
+    return actions.filter {
+      types.contains($0.type)
     }
   }
   
@@ -251,14 +187,6 @@ public class Entity: Node {
     self.init(type, graph: GraphStoreDescription.name)
   }
   
-//  /**
-//   Initializer that accepts a Decoder.
-//   - Parameter from decoder: A Decoder.
-//   */
-//  required init(from decoder: Decoder) throws {
-//    fatalError("init(from:) has not been implemented")
-//  }
-  
   /**
    Checks equality between Entities.
    - Parameter object: A reference to an object to test
@@ -268,196 +196,6 @@ public class Entity: Node {
    */
   public override func isEqual(_ object: Any?) -> Bool {
     return id == (object as? Entity)?.id
-  }
-  
-  /**
-   Adds given tags to an Entity.
-   - Parameter tags: A list of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func add(tags: String...) -> Entity {
-    return add(tags: tags)
-  }
-  
-  /**
-   Adds given tags to an Entity.
-   - Parameter tags: An Array of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func add(tags: [String]) -> Entity {
-    managedNode.add(tags: tags)
-    return self
-  }
-  
-  /**
-   Checks if the Entity has the given tags.
-   - Parameter tags: A list of Strings.
-   - Returns: A boolean of the result, true if has the
-   given tags, false otherwise.
-   */
-  public func has(tags: String...) -> Bool {
-    return has(tags: tags)
-  }
-  
-  /**
-   Checks if the Entity has the given tags.
-   - Parameter tags: An Array of Strings.
-   - Returns: A boolean of the result, true if has the
-   given tags, false otherwise.
-   */
-  public func has(tags: [String]) -> Bool {
-    return managedNode.has(tags: tags)
-  }
-  
-  /**
-   Removes given tags from an Entity.
-   - Parameter tags: A list of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func remove(tags: String...) -> Entity {
-    return remove(tags: tags)
-  }
-  
-  /**
-   Removes given tags from an Entity.
-   - Parameter tags: An Array of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func remove(tags: [String]) -> Entity {
-    managedNode.remove(tags: tags)
-    return self
-  }
-  
-  /**
-   Adds given tags to an Entity or removes them, based on their
-   previous state.
-   - Parameter tags: A list of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func toggle(tags: String...) -> Entity {
-    return toggle(tags: tags)
-  }
-  
-  /**
-   Adds given tags to an Entity or removes them, based on their
-   previous state.
-   - Parameter tags: An Array of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func toggle(tags: [String]) -> Entity {
-    var a : [String] = []
-    var r : [String] = []
-    tags.forEach { [unowned self] in
-      if self.managedNode.has(tags: $0) {
-        r.append($0)
-      } else {
-        a.append($0)
-      }
-    }
-    managedNode.add(tags: a)
-    managedNode.remove(tags: r)
-    return self
-  }
-  
-  /**
-   Adds given groups to an Entity.
-   - Parameter to groups: A list of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func add(to groups: String...) -> Entity {
-    return add(to: groups)
-  }
-  
-  /**
-   Adds given groups to an Entity.
-   - Parameter to groups: An Array of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func add(to groups: [String]) -> Entity {
-    managedNode.add(to: groups)
-    return self
-  }
-  
-  /**
-   Checks if the Entity is a member of the given groups.
-   - Parameter of groups: A list of Strings.
-   - Returns: A boolean of the result, true if has the
-   given groups, false otherwise.
-   */
-  public func member(of groups: String...) -> Bool {
-    return member(of: groups)
-  }
-  
-  /**
-   Checks if the Entity has a the given tags.
-   - Parameter of groups: An Array of Strings.
-   - Returns: A boolean of the result, true if has the
-   given groups, false otherwise.
-   */
-  public func member(of groups: [String]) -> Bool {
-    return managedNode.member(of: groups)
-  }
-  
-  /**
-   Removes given groups from an Entity.
-   - Parameter from groups: A list of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func remove(from groups: String...) -> Entity {
-    return remove(from: groups)
-  }
-  
-  /**
-   Removes given groups from an Entity.
-   - Parameter from groups: An Array of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func remove(from groups: [String]) -> Entity {
-    managedNode.remove(from: groups)
-    return self
-  }
-  
-  /**
-   Adds given groups to an Entity or removes them, based on their
-   previous state.
-   - Parameter groups: A list of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func toggle(groups: String...) -> Entity {
-    return toggle(groups: groups)
-  }
-  
-  /**
-   Adds given groups to an Entity or removes them, based on their
-   previous state.
-   - Parameter groups: An Array of Strings.
-   - Returns: The Entity.
-   */
-  @discardableResult
-  public func toggle(groups: [String]) -> Entity {
-    var a : [String] = []
-    var r : [String] = []
-    groups.forEach { [unowned self] in
-      if self.managedNode.member(of: $0) {
-        r.append($0)
-      } else {
-        a.append($0)
-      }
-    }
-    managedNode.add(to: a)
-    managedNode.remove(from: r)
-    return self
   }
   
   /**
@@ -505,21 +243,4 @@ public class Entity: Node {
   public func did(action type: String) -> Action {
     return will(action: type)
   }
-  
-  /// Marks the Entity for deletion.
-  public func delete() {
-    managedNode.delete()
-  }
 }
-
-extension Entity : Comparable {
-  static public func ==(lhs: Entity, rhs: Entity) -> Bool {
-    return lhs.id == rhs.id
-  }
-  
-  static public func <(lhs: Entity, rhs: Entity) -> Bool {
-    return lhs.id < rhs.id
-  }
-}
-
-

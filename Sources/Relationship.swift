@@ -31,10 +31,14 @@
 import Foundation
 
 @objc(Relationship)
-@dynamicMemberLookup
 public class Relationship: Node {
   /// A reference to the managedNode.
   internal let managedNode: ManagedRelationship
+  
+  /// A reference to the managedNode for base node class.
+  internal override var node: ManagedNode {
+    return managedNode
+  }
   
   public override var description: String {
     return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), groups: \(groups), properties: \(properties), subject: \(String(describing: subject)), object: \(String(describing: object)), createdDate: \(createdDate)]"
@@ -43,74 +47,6 @@ public class Relationship: Node {
   /// A reference to the nodeClass.
   public var nodeClass: NodeClass {
     return .relationship
-  }
-  
-  /// A reference to the type.
-  public var type: String {
-    return managedNode.performAndWait { $0.type }
-  }
-  
-  /// A reference to the hash.
-  public override var hash: Int {
-    return managedNode.hash
-  }
-  
-  /// A reference to the hashValue.
-  public override var hashValue: Int {
-    return managedNode.hashValue
-  }
-  
-  /// A reference to the ID.
-  public var id: String {
-    return managedNode.id
-  }
-  
-  /// A reference to the createDate.
-  public var createdDate: Date {
-    return managedNode.performAndWait { $0.createdDate }
-  }
-  
-  /// A reference to tags.
-  public var tags: [String] {
-    return managedNode.tags
-  }
-  
-  /// A reference to groups.
-  public var groups: [String] {
-    return managedNode.groups
-  }
-  
-  /**
-   Access properties using the subscript operator.
-   - Parameter name: A property name value.
-   - Returns: The optional Any value.
-   */
-  public subscript(name: String) -> Any? {
-    get {
-      return managedNode[name]
-    }
-    set(value) {
-      managedNode[name] = value
-    }
-  }
-  
-  /**
-   Access properties using the dynamic property subscript operator.
-   - Parameter dynamicMember member: A property name value.
-   - Returns: The optional Any value.
-   */
-  public subscript(dynamicMember member: String) -> Any? {
-    get {
-      return self[member]
-    }
-    set(value) {
-      self[member] = value
-    }
-  }
-  
-  /// A reference to the properties Dictionary.
-  public var properties: [String: Any] {
-    return managedNode.properties
   }
   
   /// A reference to the subject Entity.
@@ -222,196 +158,6 @@ public class Relationship: Node {
   }
   
   /**
-   Adds given tags to a Relationship.
-   - Parameter tags: A list of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func add(tags: String...) -> Relationship {
-    return add(tags: tags)
-  }
-  
-  /**
-   Adds given tags to a Relationship.
-   - Parameter tags: An Array of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func add(tags: [String]) -> Relationship {
-    managedNode.add(tags: tags)
-    return self
-  }
-  
-  /**
-   Checks if the Relationship has the given tags.
-   - Parameter tags: A list of Strings.
-   - Returns: A boolean of the result, true if has the
-   given tags, false otherwise.
-   */
-  public func has(tags: String...) -> Bool {
-    return has(tags: tags)
-  }
-  
-  /**
-   Checks if the Relationship has the given tags.
-   - Parameter tags: An Array of Strings.
-   - Returns: A boolean of the result, true if has the
-   given tags, false otherwise.
-   */
-  public func has(tags: [String]) -> Bool {
-    return managedNode.has(tags: tags)
-  }
-  
-  /**
-   Removes given tags from a Relationship.
-   - Parameter tags: A list of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func remove(tags: String...) -> Relationship {
-    return remove(tags: tags)
-  }
-  
-  /**
-   Removes given tags from a Relationship.
-   - Parameter tags: An Array of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func remove(tags: [String]) -> Relationship {
-    managedNode.remove(tags: tags)
-    return self
-  }
-  
-  /**
-   Adds given tags to a Relationship or removes them, based on their
-   previous state.
-   - Parameter tags: A list of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func toggle(tags: String...) -> Relationship {
-    return toggle(tags: tags)
-  }
-  
-  /**
-   Adds given tags to a Relationship or removes them, based on their
-   previous state.
-   - Parameter tags: An Array of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func toggle(tags: [String]) -> Relationship {
-    var a : [String] = []
-    var r : [String] = []
-    tags.forEach { [unowned self] in
-      if self.managedNode.has(tags: $0) {
-        r.append($0)
-      } else {
-        a.append($0)
-      }
-    }
-    managedNode.add(tags: a)
-    managedNode.remove(tags: r)
-    return self
-  }
-  
-  /**
-   Adds given groups to a Relationship.
-   - Parameter to groups: A list of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func add(to groups: String...) -> Relationship {
-    return add(to: groups)
-  }
-  
-  /**
-   Adds given groups to a Relationship.
-   - Parameter to groups: An Array of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func add(to groups: [String]) -> Relationship {
-    managedNode.add(to: groups)
-    return self
-  }
-  
-  /**
-   Checks if the Relationship is a member of the given groups.
-   - Parameter of groups: A list of Strings.
-   - Returns: A boolean of the result, true if has the
-   given groups, false otherwise.
-   */
-  public func member(of groups: String...) -> Bool {
-    return member(of: groups)
-  }
-  
-  /**
-   Checks if the Relationship has a the given tags.
-   - Parameter of groups: An Array of Strings.
-   - Returns: A boolean of the result, true if has the
-   given groups, false otherwise.
-   */
-  public func member(of groups: [String]) -> Bool {
-    return managedNode.member(of: groups)
-  }
-  
-  /**
-   Removes given groups from a Relationship.
-   - Parameter from groups: A list of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func remove(from groups: String...) -> Relationship {
-    return remove(from: groups)
-  }
-  
-  /**
-   Removes given groups from a Relationship.
-   - Parameter from groups: An Array of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func remove(from groups: [String]) -> Relationship {
-    managedNode.remove(from: groups)
-    return self
-  }
-  
-  /**
-   Adds given groups to a Relationship or removes them, based on their
-   previous state.
-   - Parameter groups: A list of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func toggle(groups: String...) -> Relationship {
-    return toggle(groups: groups)
-  }
-  
-  /**
-   Adds given groups to a Relationship or removes them, based on their
-   previous state.
-   - Parameter groups: An Array of Strings.
-   - Returns: The Relationship.
-   */
-  @discardableResult
-  public func toggle(groups: [String]) -> Relationship {
-    var a : [String] = []
-    var r : [String] = []
-    groups.forEach { [unowned self] in
-      if self.managedNode.member(of: $0) {
-        r.append($0)
-      } else {
-        a.append($0)
-      }
-    }
-    managedNode.add(to: a)
-    managedNode.remove(from: r)
-    return self
-  }
-  
-  /**
    Sets the object of the Relationship.
    - Parameter _ entity: An Entity.
    - Returns: The Relationship.
@@ -431,11 +177,6 @@ public class Relationship: Node {
   public func `in`(object: Entity) -> Relationship {
     self.object = object
     return self
-  }
-  
-  /// Marks the Relationship for deletion.
-  public func delete() {
-    managedNode.delete()
   }
 }
 
@@ -502,15 +243,5 @@ extension Array where Element: Relationship {
       s.insert(e)
     }
     return [Entity](s)
-  }
-}
-
-extension Relationship : Comparable {
-  static public func ==(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id == rhs.id
-  }
-  
-  static public func <(lhs: Relationship, rhs: Relationship) -> Bool {
-    return lhs.id < rhs.id
   }
 }
