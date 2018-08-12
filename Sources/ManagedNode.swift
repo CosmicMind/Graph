@@ -96,6 +96,103 @@ internal class ManagedNode: ManagedObject {
   }
   
   /**
+   Adds a tag to the ManagedNode.
+   - Parameter tag: An Array of Strings.
+   */
+  internal func add(tags: [String]) {
+    guard let moc = managedObjectContext else {
+      return
+    }
+    
+    performAndWait { [unowned moc] node in
+      for name in tags {
+        guard !node.has(tags: name) else {
+          continue
+        }
+        
+        Swift.type(of: self).createTag(name: name, node: node, managedObjectContext: moc)
+      }
+    }
+  }
+  
+  /**
+   Removes a tag from the ManagedNode.
+   - Parameter tags: An Array of Strings.
+   */
+  internal func remove(tags: [String]) {
+    performAndWait { node in
+      tags.forEach { name in
+        node.tagSet.forEach {
+          if let t = Swift.type(of: self).asTag($0), name == t.name {
+            t.delete()
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   Adds the ManagedNode to a given group.
+   - Parameter to groups: An Array of Strings.
+   */
+  internal func add(to groups: [String]) {
+    guard let moc = managedObjectContext else {
+      return
+    }
+    
+    performAndWait { [unowned moc] node in
+      for name in groups {
+        guard !node.member(of: name) else {
+          continue
+        }
+        
+        Swift.type(of: self).createGroup(name: name, node: node, managedObjectContext: moc)
+      }
+    }
+  }
+  
+  /**
+   Removes the ManagedEntity from a given group.
+   - Parameter from groups: An Array of Strings.
+   */
+  internal func remove(from groups: [String]) {
+    performAndWait { entity in
+      groups.forEach { name in
+        entity.groupSet.forEach {
+          if let g = Swift.type(of: self).asGroup($0), name == g.name {
+            g.delete()
+          }
+        }
+      }
+    }
+  }
+
+  
+  internal class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    fatalError("Must be implemented by subclasses")
+  }
+  
+  internal class func asTag(_ tag: ManagedTag) -> ManagedTag? {
+    fatalError("Must be implemented by subclasses")
+  }
+  
+  internal class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    fatalError("Must be implemented by subclasses")
+  }
+  
+  internal class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
+    fatalError("Must be implemented by subclasses")
+  }
+  
+  internal class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    fatalError("Must be implemented by subclasses")
+  }
+  
+  internal class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
+    fatalError("Must be implemented by subclasses")
+  }
+  
+  /**
    Access properties using the subscript operator.
    - Parameter name: A property name value.
    - Returns: The optional Any value.
@@ -106,6 +203,29 @@ internal class ManagedNode: ManagedObject {
         node.propertySet.first {
           $0.name == name
         }?.object
+      }
+    }
+    set(value) {
+      performAndWait { action in
+        let property = action.propertySet.first {
+          Swift.type(of: self).asProperty($0)?.name == name
+        }
+        
+        guard let object = value else {
+          property?.delete()
+          return
+        }
+        
+        guard let p = property else {
+          guard let moc = managedObjectContext else {
+            return
+          }
+          
+          Swift.type(of: self).createProperty(name: name, object: object, node: action, managedObjectContext: moc)
+          return
+        }
+        
+        p.object = object
       }
     }
   }

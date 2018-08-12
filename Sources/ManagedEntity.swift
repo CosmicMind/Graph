@@ -51,108 +51,28 @@ internal class ManagedEntity: ManagedNode {
     relationshipObjectSet = []
   }
   
-  /**
-   Access properties using the subscript operator.
-   - Parameter name: A property name value.
-   - Returns: The optional Any value.
-   */
-  internal override subscript(name: String) -> Any? {
-    get {
-      return super[name]
-    }
-    set(value) {
-      performAndWait { entity in
-        let property = entity.propertySet.first {
-          ($0 as? ManagedEntityProperty)?.name == name
-        }
-        
-        guard let object = value else {
-          property?.delete()
-          return
-        }
-        
-        guard let p = property else {
-          guard let moc = managedObjectContext else {
-            return
-          }
-          _ = ManagedEntityProperty(name: name, object: object, node: entity, managedObjectContext: moc)
-          return
-        }
-        p.object = object
-      }
-    }
+  internal override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedEntityTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds a tag to the ManagedEntity.
-   - Parameter tag: An Array of Strings.
-   */
-  internal func add(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    performAndWait { [unowned moc] entity in
-      for name in tags {
-        guard !entity.has(tags: name) else {
-          continue
-        }
-        
-        _ = ManagedEntityTag(name: name, node: entity, managedObjectContext: moc)
-      }
-    }
+  internal override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedEntityGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Removes a tag from a ManagedEntity.
-   - Parameter tags: An Array of Strings.
-   */
-  internal func remove(tags: [String]) {
-    performAndWait { entity in
-      tags.forEach { name in
-        entity.tagSet.forEach {
-          if let t = $0 as? ManagedEntityTag, name == t.name {
-            t.delete()
-          }
-        }
-      }
-    }
+  internal override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedEntityProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds the ManagedEntity to a given group.
-   - Parameter to groups: An Array of Strings.
-   */
-  internal func add(to groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    performAndWait { [unowned moc] entity in
-      for name in groups {
-        guard !entity.member(of: name) else {
-          continue
-        }
-        
-        _ = ManagedEntityGroup(name: name, node: entity, managedObjectContext: moc)
-      }
-    }
+  internal override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
+    return tag as? ManagedEntityTag
   }
   
-  /**
-   Removes the ManagedEntity from a given group.
-   - Parameter from groups: An Array of Strings.
-   */
-  internal func remove(from groups: [String]) {
-    performAndWait { entity in
-      groups.forEach { name in
-        entity.groupSet.forEach {
-          if let g = $0 as? ManagedEntityGroup, name == g.name {
-            g.delete()
-          }
-        }
-      }
-    }
+  internal override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
+    return group as? ManagedEntityGroup
+  }
+  
+  internal override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
+    return property as? ManagedEntityProperty
   }
   
   /// Marks the Entity for deletion and clears all its relationships.

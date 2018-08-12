@@ -47,110 +47,30 @@ internal class ManagedRelationship: ManagedNode {
     object = nil
   }
   
-  /**
-   Access properties using the subscript operator.
-   - Parameter name: A property name value.
-   - Returns: The optional Any value.
-   */
-  internal override subscript(name: String) -> Any? {
-    get {
-      return super[name]
-    }
-    set(value) {
-      performAndWait { relationship in
-        let property = relationship.propertySet.first {
-          ($0 as? ManagedRelationshipProperty)?.name == name
-        }
-        
-        guard let object = value else {
-          property?.delete()
-          return
-        }
-        
-        guard let p = property else {
-          guard let moc = managedObjectContext else {
-            return
-          }
-          _ = ManagedRelationshipProperty(name: name, object: object, node: relationship, managedObjectContext: moc)
-          return
-        }
-        p.object = object
-      }
-    }
+  internal override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedRelationshipTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds a tag to the ManagedRelationship.
-   - Parameter tag: An Array of Strings.
-   */
-  internal func add(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    performAndWait { [unowned moc] relationship in
-      for name in tags {
-        guard !relationship.has(tags: name) else {
-          continue
-        }
-        
-        _ = ManagedRelationshipTag(name: name, node: relationship, managedObjectContext: moc)
-      }
-    }
+  internal override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedRelationshipGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Removes a tag from a ManagedRelationship.
-   - Parameter tags: An Array of Strings.
-   */
-  internal func remove(tags: [String]) {
-    performAndWait { relationship in
-      tags.forEach { name in
-        relationship.tagSet.forEach {
-          if let t = $0 as? ManagedRelationshipTag, name == t.name {
-            t.delete()
-          }
-        }
-      }
-    }
+  internal override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedRelationshipProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds the ManagedRelationship to a given group.
-   - Parameter to groups: An Array of Strings.
-   */
-  internal func add(to groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    performAndWait { [unowned moc] relationship in
-      for name in groups {
-        guard !relationship.member(of: name) else {
-          continue
-        }
-        
-        _ = ManagedRelationshipGroup(name: name, node: relationship, managedObjectContext: moc)
-      }
-    }
+  internal override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
+    return tag as? ManagedRelationshipTag
   }
   
-  /**
-   Removes the ManagedRelationship from a given group.
-   - Parameter from groups: An Array of Strings.
-   */
-  internal func remove(from groups: [String]) {
-    performAndWait { relationship in
-      groups.forEach { name in
-        relationship.groupSet.forEach {
-          if let g = $0 as? ManagedRelationshipGroup, name == g.name {
-            g.delete()
-          }
-        }
-      }
-    }
+  internal override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
+    return group as? ManagedRelationshipGroup
   }
   
+  internal override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
+    return property as? ManagedRelationshipProperty
+  }
+ 
   /// Marks the Relationship for deletion and clears all its relationships.
   internal override func delete() {
     performAndWait { relationship in

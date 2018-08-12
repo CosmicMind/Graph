@@ -46,109 +46,29 @@ internal class ManagedAction: ManagedNode {
     subjectSet = []
     objectSet = []
   }
-  
-  /**
-   Access properties using the subscript operator.
-   - Parameter name: A property name value.
-   - Returns: The optional Any value.
-   */
-  internal override subscript(name: String) -> Any? {
-    get {
-      return super[name]
-    }
-    set(value) {
-      performAndWait { action in
-        let property = action.propertySet.first {
-          ($0 as? ManagedActionProperty)?.name == name
-        }
-        
-        guard let object = value else {
-          property?.delete()
-          return
-        }
-        
-        guard let p = property else {
-          guard let moc = managedObjectContext else {
-            return
-          }
-          _ = ManagedActionProperty(name: name, object: object, node: action, managedObjectContext: moc)
-          return
-        }
-        p.object = object
-      }
-    }
+      
+  internal override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+        _ = ManagedActionTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds a tag to the ManagedAction.
-   - Parameter tag: An Array of Strings.
-   */
-  internal func add(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    performAndWait { [unowned moc] action in
-      for name in tags {
-        guard !action.has(tags: name) else {
-          continue
-        }
-        
-        _ = ManagedActionTag(name: name, node: action, managedObjectContext: moc)
-      }
-    }
+  internal override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedActionGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Removes a tag from a ManagedAction.
-   - Parameter tags: An Array of Strings.
-   */
-  internal func remove(tags: [String]) {
-    performAndWait { action in
-      tags.forEach { name in
-        action.tagSet.forEach {
-          if let t = $0 as? ManagedActionTag, name == t.name {
-            t.delete()
-          }
-        }
-      }
-    }
+  internal override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedActionProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds the ManagedAction to a given group.
-   - Parameter to groups: An Array of Strings.
-   */
-  internal func add(to groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    performAndWait { [unowned moc] relationship in
-      for name in groups {
-        guard !relationship.member(of: name) else {
-          continue
-        }
-        
-        _ = ManagedActionGroup(name: name, node: relationship, managedObjectContext: moc)
-      }
-    }
+  internal override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
+    return tag as? ManagedActionTag
   }
   
-  /**
-   Removes the ManagedAction from a given group.
-   - Parameter from groups: An Array of Strings.
-   */
-  internal func remove(from groups: [String]) {
-    performAndWait { action in
-      groups.forEach { name in
-        action.groupSet.forEach {
-          if let g = $0 as? ManagedActionGroup, name == g.name {
-            g.delete()
-          }
-        }
-      }
-    }
+  internal override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
+    return group as? ManagedActionGroup
+  }
+  
+  internal override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
+    return property as? ManagedActionProperty
   }
   
   /**
