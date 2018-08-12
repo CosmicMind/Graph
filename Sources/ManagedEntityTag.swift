@@ -32,20 +32,8 @@ import CoreData
 
 @objc(ManagedEntityTag)
 internal class ManagedEntityTag: ManagedTag {
-  /**
-   Initializer that accepts a tag name and a NSManagedObjectContext.
-   - Parameter name: A tag name.
-   - Parameter node: A ManagedEntity.
-   - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
-   */
-  internal convenience init(name: String, node: ManagedEntity, managedObjectContext: NSManagedObjectContext) {
-    self.init(identifier: ModelIdentifier.entityTagName, name: name, managedObjectContext: managedObjectContext)
-    self.node = node
-  }
-  
-  /// Marks node for deletion.
-  internal override func delete() {
-    node.mutableSetValue(forKey: "tagSet").remove(self)
-    super.delete()
+  /// A model identifier.
+  internal override class var identifier: String {
+    return ModelIdentifier.entityTagName
   }
 }

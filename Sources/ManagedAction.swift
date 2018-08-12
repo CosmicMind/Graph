@@ -32,8 +32,8 @@ import CoreData
 
 @objc(ManagedAction)
 internal class ManagedAction: ManagedNode {
-  @NSManaged internal var subjectSet: NSSet
-  @NSManaged internal var objectSet: NSSet
+  @NSManaged internal var subjectSet: Set<ManagedEntity>
+  @NSManaged internal var objectSet: Set<ManagedEntity>
   
   /**
    Initializer that accepts a type and a NSManagedObjectContext.
@@ -47,128 +47,34 @@ internal class ManagedAction: ManagedNode {
     objectSet = []
   }
   
-  /**
-   Access properties using the subscript operator.
-   - Parameter name: A property name value.
-   - Returns: The optional Any value.
-   */
-  override subscript(name: String) -> Any? {
-    get {
-      return super[name]
-    }
-    set(value) {
-      guard let moc = managedObjectContext else {
-        return
-      }
-      
-      moc.performAndWait { [unowned self, unowned moc] in
-        guard let object = value else {
-          for property in self.propertySet {
-            if let p = property as? ManagedActionProperty {
-              if name == p.name {
-                p.delete()
-                break
-              }
-            }
-          }
-          return
-        }
-        
-        var exists = false
-        for property in self.propertySet {
-          if let p = property as? ManagedActionProperty {
-            if name == p.name {
-              p.object = object
-              exists = true
-              break
-            }
-          }
-        }
-        
-        if !exists {
-          _ = ManagedActionProperty(name: name, object: object, node: self, managedObjectContext: moc)
-        }
-      }
-    }
+  /// Generic creation of the managed tag type.
+  override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+        _ = ManagedActionTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds a tag to the ManagedAction.
-   - Parameter tag: An Array of Strings.
-   */
-  func add(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    moc.performAndWait { [unowned self, unowned moc, tags = tags] in
-      for name in tags {
-        if !self.has(tags: name) {
-          _ = ManagedActionTag(name: name, node: self, managedObjectContext: moc)
-        }
-      }
-    }
+  /// Generic creation of the managed group type.
+  override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedActionGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Removes a tag from a ManagedAction.
-   - Parameter tags: An Array of Strings.
-   */
-  func remove(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, tags = tags] in
-      for name in tags {
-        for tag in self.tagSet {
-          if let t = tag as? ManagedActionTag {
-            if name == t.name {
-              t.delete()
-            }
-          }
-        }
-      }
-    }
+  /// Generic creation of the managed property type.
+  override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedActionProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds the ManagedAction to a given group.
-   - Parameter to groups: An Array of Strings.
-   */
-  func add(to groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, unowned moc, groups = groups] in
-      for name in groups {
-        if !self.member(of: name) {
-          _ = ManagedActionGroup(name: name, node: self, managedObjectContext: moc)
-        }
-      }
-    }
+  /// Generic cast to the managed tag type.
+  override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
+    return tag as? ManagedActionTag
   }
   
-  /**
-   Removes the ManagedAction from a given group.
-   - Parameter from groups: An Array of Strings.
-   */
-  func remove(from groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, groups = groups] in
-      for name in groups {
-        for group in self.groupSet {
-          if let g = group as? ManagedActionGroup {
-            if name == g.name {
-              g.delete()
-            }
-          }
-        }
-      }
-    }
+  /// Generic cast to the managed group type.
+  override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
+    return group as? ManagedActionGroup
+  }
+  
+  /// Generic cast to the managed property type.
+  override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
+    return property as? ManagedActionProperty
   }
   
   /**
@@ -176,8 +82,8 @@ internal class ManagedAction: ManagedNode {
    - Parameter subject managedEntity: A ManagedEntity to add.
    */
   func add(subject managedEntity: ManagedEntity) {
-    managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
-      self.mutableSetValue(forKey: "subjectSet").add(managedEntity)
+    performAndWait { [unowned managedEntity] in
+      _ = $0.subjectSet.insert(managedEntity)
     }
   }
   
@@ -186,8 +92,8 @@ internal class ManagedAction: ManagedNode {
    - Parameter subject managedEntity: A ManagedEntity to remove.
    */
   func remove(subject managedEntity: ManagedEntity) {
-    managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
-      self.mutableSetValue(forKey: "subjectSet").remove(managedEntity)
+    performAndWait { [unowned managedEntity] in
+      _ = $0.subjectSet.remove(managedEntity)
     }
   }
   
@@ -196,8 +102,8 @@ internal class ManagedAction: ManagedNode {
    - Parameter object managedEntity: A ManagedEntity to add.
    */
   func add(object managedEntity: ManagedEntity) {
-    managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
-      self.mutableSetValue(forKey: "objectSet").add(managedEntity)
+    performAndWait { [unowned managedEntity] in
+      _ = $0.objectSet.insert(managedEntity)
     }
   }
   
@@ -206,27 +112,23 @@ internal class ManagedAction: ManagedNode {
    - Parameter object managedEntity: A ManagedEntity to remove.
    */
   func remove(object managedEntity: ManagedEntity) {
-    managedObjectContext?.performAndWait { [unowned self, unowned managedEntity] in
-      self.mutableSetValue(forKey: "objectSet").remove(managedEntity)
+    performAndWait { [unowned managedEntity] in
+      _ = $0.objectSet.remove(managedEntity)
     }
   }
   
   /// Marks the Action for deletion and clears all its relationships.
   override func delete() {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self] in
-      self.propertySet.forEach {
+    performAndWait { action in
+      action.propertySet.forEach {
         ($0 as? ManagedActionProperty)?.delete()
       }
       
-      self.tagSet.forEach {
+      action.tagSet.forEach {
         ($0 as? ManagedActionTag)?.delete()
       }
       
-      self.groupSet.forEach {
+      action.groupSet.forEach {
         ($0 as? ManagedActionGroup)?.delete()
       }
     }

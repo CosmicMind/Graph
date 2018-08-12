@@ -31,22 +31,25 @@
 import CoreData
 
 @objc(ManagedProperty)
-internal class ManagedProperty: ManagedObject{
-  @NSManaged internal var name: String
+internal class ManagedProperty: NamedManagedObject {
   @NSManaged internal var object: Any
-  @NSManaged internal var node: ManagedNode
-  
+    
   /**
-   Initializer that accepts an identifier, property name, value and
+   Initializer that accepts a name, value and
    a NSManagedObjectContext.
-   - Parameter identifier: A model identifier.
    - Parameter name: A property name.
    - Parameter object: A reference to the object value.
+   - Parameter node: A ManagedNode subclass.
    - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
    */
-  convenience init(identifier: String, name: String, object: Any, managedObjectContext: NSManagedObjectContext) {
-    self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
-    self.name = name
+  convenience init(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {    
+    self.init(name: name, node: node, managedObjectContext: managedObjectContext)
     self.object = object
+  }
+  
+  /// Marks node for deletion.
+  internal override func delete() {
+    node.propertySet.remove(self)
+    super.delete()
   }
 }

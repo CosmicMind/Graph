@@ -47,152 +47,53 @@ internal class ManagedRelationship: ManagedNode {
     object = nil
   }
   
-  /**
-   Access properties using the subscript operator.
-   - Parameter name: A property name value.
-   - Returns: The optional Any value.
-   */
-  override subscript(name: String) -> Any? {
-    get {
-      return super[name]
-    }
-    set(value) {
-      guard let moc = managedObjectContext else {
-        return
-      }
-      
-      moc.performAndWait { [unowned self, unowned moc] in
-        guard let object = value else {
-          for property in self.propertySet {
-            if let p = property as? ManagedRelationshipProperty {
-              if name == p.name {
-                p.delete()
-                break
-              }
-            }
-          }
-          return
-        }
-        
-        var exists = false
-        for property in self.propertySet {
-          if let p = property as? ManagedRelationshipProperty {
-            if name == p.name {
-              p.object = object
-              exists = true
-              break
-            }
-          }
-        }
-        
-        if !exists {
-          _ = ManagedRelationshipProperty(name: name, object: object, node: self, managedObjectContext: moc)
-        }
-      }
-    }
+  /// Generic creation of the managed tag type.
+  override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedRelationshipTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds a tag to the ManagedRelationship.
-   - Parameter tag: An Array of Strings.
-   */
-  func add(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, unowned moc, tags = tags] in
-      for name in tags {
-        if !self.has(tags: name) {
-          _ = ManagedRelationshipTag(name: name, node: self, managedObjectContext: moc)
-        }
-      }
-    }
+  /// Generic creation of the managed group type.
+  override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedRelationshipGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Removes a tag from a ManagedRelationship.
-   - Parameter tags: An Array of Strings.
-   */
-  func remove(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, tags = tags] in
-      for name in tags {
-        for tag in self.tagSet {
-          if let t = tag as? ManagedRelationshipTag {
-            if name == t.name {
-              t.delete()
-            }
-          }
-        }
-      }
-    }
+  /// Generic creation of the managed property type.
+  override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedRelationshipProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds the ManagedRelationship to a given group.
-   - Parameter to groups: An Array of Strings.
-   */
-  func add(to groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, unowned moc, groups = groups] in
-      for name in groups {
-        if !self.member(of: name) {
-          _ = ManagedRelationshipGroup(name: name, node: self, managedObjectContext: moc)
-        }
-      }
-    }
+  /// Generic cast to the managed tag type.
+  override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
+    return tag as? ManagedRelationshipTag
   }
   
-  /**
-   Removes the ManagedRelationship from a given group.
-   - Parameter from groups: An Array of Strings.
-   */
-  func remove(from groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, groups = groups] in
-      for name in groups {
-        for group in self.groupSet {
-          if let g = group as? ManagedRelationshipGroup {
-            if name == g.name {
-              g.delete()
-            }
-          }
-        }
-      }
-    }
+  /// Generic cast to the managed group type.
+  override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
+    return group as? ManagedRelationshipGroup
   }
   
+  /// Generic cast to the managed property type.
+  internal override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
+    return property as? ManagedRelationshipProperty
+  }
+ 
   /// Marks the Relationship for deletion and clears all its relationships.
   override func delete() {
-    guard let moc = self.managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self] in
-      self.propertySet.forEach {
+    performAndWait { relationship in
+      relationship.propertySet.forEach {
         ($0 as? ManagedRelationshipProperty)?.delete()
       }
       
-      self.tagSet.forEach {
+      relationship.tagSet.forEach {
         ($0 as? ManagedRelationshipTag)?.delete()
       }
       
-      self.groupSet.forEach {
+      relationship.groupSet.forEach {
         ($0 as? ManagedRelationshipGroup)?.delete()
       }
       
-      self.subject?.mutableSetValue(forKey: "relationshipSubjectSet").remove(self)
-      self.object?.mutableSetValue(forKey: "relationshipObjectSet").remove(self)
+      relationship.subject?.relationshipSubjectSet.remove(self)
+      relationship.object?.relationshipObjectSet.remove(self)
     }
     
     super.delete()

@@ -30,10 +30,291 @@
 
 import Foundation
 
-public enum NodeClass: NSNumber {
+public enum NodeClass: Int {
   case entity = 1
   case relationship = 2
   case action = 3
 }
 
-public class Node: NSObject {}
+@dynamicMemberLookup
+public class Node: NSObject {
+  /// A reference to the managedNode for base node class.
+  internal var node: ManagedNode {
+    fatalError("Must be implemented by subclasses")
+  }
+  
+  /// A reference to the type.
+  public var type: String {
+    return node.performAndWait { $0.type }
+  }
+  
+  /// A reference to the hash.
+  public override var hash: Int {
+    return node.hash
+  }
+  
+  /// A reference to the hashValue.
+  public override var hashValue: Int {
+    return node.hashValue
+  }
+  
+  /// A reference to the ID.
+  public var id: String {
+    return node.id
+  }
+  
+  /// A reference to the createDate.
+  public var createdDate: Date {
+    return node.performAndWait { $0.createdDate }
+  }
+  
+  /// A reference to tags.
+  public var tags: [String] {
+    return node.tags
+  }
+  
+  /// A reference to groups.
+  public var groups: [String] {
+    return node.groups
+  }
+  
+  /**
+   Access properties using the subscript operator.
+   - Parameter name: A property name value.
+   - Returns: The optional Any value.
+   */
+  public subscript(name: String) -> Any? {
+    get {
+      return node[name]
+    }
+    set(value) {
+      node[name] = value
+    }
+  }
+  
+  /**
+   Access properties using the dynamic property subscript operator.
+   - Parameter dynamicMember member: A property name value.
+   - Returns: The optional Any value.
+   */
+  public subscript(dynamicMember member: String) -> Any? {
+    get {
+      return self[member]
+    }
+    set(value) {
+      self[member] = value
+    }
+  }
+  
+  /// A reference to the properties Dictionary.
+  public var properties: [String: Any] {
+    return node.properties
+  }
+  
+  /**
+   Adds given tags to a Node.
+   - Parameter tags: A list of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func add(tags: String...) -> Self {
+    return add(tags: tags)
+  }
+  
+  /**
+   Adds given tags to a Node.
+   - Parameter tags: An Array of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func add(tags: [String]) -> Self {
+    node.add(tags: tags)
+    return self
+  }
+  
+  /**
+   Checks if the Node has the given tags.
+   - Parameter tags: A list of Strings.
+   - Returns: A boolean of the result, true if has the
+   given tags, false otherwise.
+   */
+  public func has(tags: String...) -> Bool {
+    return has(tags: tags)
+  }
+  
+  /**
+   Checks if the Node has the given tags.
+   - Parameter tags: An Array of Strings.
+   - Returns: A boolean of the result, true if has the
+   given tags, false otherwise.
+   */
+  public func has(tags: [String]) -> Bool {
+    return node.has(tags: tags)
+  }
+  
+  /**
+   Removes given tags from a Node.
+   - Parameter tags: A list of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func remove(tags: String...) -> Self {
+    return remove(tags: tags)
+  }
+  
+  /**
+   Removes given tags from a Node.
+   - Parameter tags: An Array of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func remove(tags: [String]) -> Self {
+    node.remove(tags: tags)
+    return self
+  }
+  
+  /**
+   Adds given tags to a Node or removes them, based on their
+   previous state.
+   - Parameter tags: A list of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func toggle(tags: String...) -> Self {
+    return toggle(tags: tags)
+  }
+  
+  /**
+   Adds given tags to a Node or removes them, based on their
+   previous state.
+   - Parameter tags: An Array of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func toggle(tags: [String]) -> Self {
+    var a : [String] = []
+    var r : [String] = []
+    tags.forEach { [unowned self] in
+      if self.node.has(tags: $0) {
+        r.append($0)
+      } else {
+        a.append($0)
+      }
+    }
+    node.add(tags: a)
+    node.remove(tags: r)
+    return self
+  }
+  
+  /**
+   Adds given groups to a Node.
+   - Parameter to groups: A list of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func add(to groups: String...) -> Self {
+    return add(to: groups)
+  }
+  
+  /**
+   Adds given groups to a Node.
+   - Parameter to groups: An Array of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func add(to groups: [String]) -> Self {
+    node.add(to: groups)
+    return self
+  }
+  
+  /**
+   Checks if the Node is a member of the given groups.
+   - Parameter of groups: A list of Strings.
+   - Returns: A boolean of the result, true if has the
+   given groups, false otherwise.
+   */
+  public func member(of groups: String...) -> Bool {
+    return member(of: groups)
+  }
+  
+  /**
+   Checks if the Node has a the given tags.
+   - Parameter of groups: An Array of Strings.
+   - Returns: A boolean of the result, true if has the
+   given groups, false otherwise.
+   */
+  public func member(of groups: [String]) -> Bool {
+    return node.member(of: groups)
+  }
+  
+  /**
+   Removes given groups from a Node.
+   - Parameter from groups: A list of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func remove(from groups: String...) -> Self {
+    return remove(from: groups)
+  }
+  
+  /**
+   Removes given groups from a Node.
+   - Parameter from groups: An Array of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func remove(from groups: [String]) -> Self {
+    node.remove(from: groups)
+    return self
+  }
+  
+  /**
+   Adds given groups to a Node or removes them, based on their
+   previous state.
+   - Parameter groups: A list of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func toggle(groups: String...) -> Self {
+    return toggle(groups: groups)
+  }
+  
+  /**
+   Adds given groups to a Node or removes them, based on their
+   previous state.
+   - Parameter groups: An Array of Strings.
+   - Returns: The Node.
+   */
+  @discardableResult
+  public func toggle(groups: [String]) -> Self {
+    var a : [String] = []
+    var r : [String] = []
+    groups.forEach { [unowned self] in
+      if self.node.member(of: $0) {
+        r.append($0)
+      } else {
+        a.append($0)
+      }
+    }
+    node.add(to: a)
+    node.remove(from: r)
+    return self
+  }
+  
+  /// Marks the Node for deletion.
+  public func delete() {
+    node.delete()
+  }
+}
+
+
+extension Node : Comparable {
+  static public func ==(lhs: Node, rhs: Node) -> Bool {
+    return lhs.id == rhs.id
+  }
+  
+  static public func <(lhs: Node, rhs: Node) -> Bool {
+    return lhs.id < rhs.id
+  }
+}
+

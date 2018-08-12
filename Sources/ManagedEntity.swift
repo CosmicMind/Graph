@@ -32,10 +32,10 @@ import CoreData
 
 @objc(ManagedEntity)
 internal class ManagedEntity: ManagedNode {
-  @NSManaged internal var actionSubjectSet: NSSet
-  @NSManaged internal var actionObjectSet: NSSet
-  @NSManaged internal var relationshipSubjectSet: NSSet
-  @NSManaged internal var relationshipObjectSet: NSSet
+  @NSManaged internal var actionSubjectSet: Set<ManagedAction>
+  @NSManaged internal var actionObjectSet:  Set<ManagedAction>
+  @NSManaged internal var relationshipSubjectSet: Set<ManagedRelationship>
+  @NSManaged internal var relationshipObjectSet: Set<ManagedRelationship>
   
   /**
    Initializer that accepts a type and a NSManagedObjectContext.
@@ -51,164 +51,65 @@ internal class ManagedEntity: ManagedNode {
     relationshipObjectSet = []
   }
   
-  /**
-   Access properties using the subscript operator.
-   - Parameter name: A property name value.
-   - Returns: The optional Any value.
-   */
-  override subscript(name: String) -> Any? {
-    get {
-      return super[name]
-    }
-    set(value) {
-      guard let moc = managedObjectContext else {
-        return
-      }
-      
-      moc.performAndWait { [unowned self, unowned moc] in
-        guard let object = value else {
-          for property in self.propertySet {
-            if let p = property as? ManagedEntityProperty {
-              if name == p.name {
-                p.delete()
-                break
-              }
-            }
-          }
-          return
-        }
-        
-        var exists = false
-        for property in self.propertySet {
-          if let p = property as? ManagedEntityProperty {
-            if name == p.name {
-              p.object = object
-              exists = true
-              break
-            }
-          }
-        }
-        
-        if !exists {
-          _ = ManagedEntityProperty(name: name, object: object, node: self, managedObjectContext: moc)
-        }
-      }
-    }
+  /// Generic creation of the managed tag type.
+  override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedEntityTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds a tag to the ManagedEntity.
-   - Parameter tag: An Array of Strings.
-   */
-  func add(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, unowned moc, tags = tags] in
-      for name in tags {
-        if !self.has(tags: name) {
-          _ = ManagedEntityTag(name: name, node: self, managedObjectContext: moc)
-        }
-      }
-    }
+  /// Generic creation of the managed group type.
+  override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedEntityGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Removes a tag from a ManagedEntity.
-   - Parameter tags: An Array of Strings.
-   */
-  func remove(tags: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, tags = tags] in
-      for name in tags {
-        for tag in self.tagSet {
-          if let t = tag as? ManagedEntityTag {
-            if name == t.name {
-              t.delete()
-            }
-          }
-        }
-      }
-    }
+  /// Generic creation of the managed property type.
+  override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+    _ = ManagedEntityProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
-  /**
-   Adds the ManagedEntity to a given group.
-   - Parameter to groups: An Array of Strings.
-   */
-  func add(to groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, unowned moc, groups = groups] in
-      for name in groups {
-        if !self.member(of: name) {
-          _ = ManagedEntityGroup(name: name, node: self, managedObjectContext: moc)
-        }
-      }
-    }
+  /// Generic cast to the managed tag type.
+  override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
+    return tag as? ManagedEntityTag
   }
   
-  /**
-   Removes the ManagedEntity from a given group.
-   - Parameter from groups: An Array of Strings.
-   */
-  func remove(from groups: [String]) {
-    guard let moc = managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self, groups = groups] in
-      for name in groups {
-        for group in self.groupSet {
-          if let g = group as? ManagedEntityGroup {
-            if name == g.name {
-              g.delete()
-            }
-          }
-        }
-      }
-    }
+  /// Generic cast to the managed group type.
+  override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
+    return group as? ManagedEntityGroup
+  }
+  
+  /// Generic cast to the managed property type.
+  override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
+    return property as? ManagedEntityProperty
   }
   
   /// Marks the Entity for deletion and clears all its relationships.
-  override func delete() {
-    guard let moc = self.managedObjectContext else {
-      return
-    }
-    
-    moc.performAndWait { [unowned self] in
-      self.propertySet.forEach {
-        ($0 as? ManagedEntityProperty)?.delete()
+  internal override func delete() {
+    performAndWait { entity in
+      entity.propertySet.forEach {
+        $0.delete()
       }
       
-      self.tagSet.forEach {
-        ($0 as? ManagedEntityTag)?.delete()
+      entity.tagSet.forEach {
+        $0.delete()
       }
       
-      self.groupSet.forEach {
-        ($0 as? ManagedEntityGroup)?.delete()
+      entity.groupSet.forEach {
+        $0.delete()
       }
       
-      self.actionSubjectSet.forEach {
-        ($0 as? ManagedAction)?.delete()
+      entity.actionSubjectSet.forEach {
+        $0.delete()
       }
       
-      self.actionObjectSet.forEach {
-        ($0 as? ManagedAction)?.delete()
+      entity.actionObjectSet.forEach {
+        $0.delete()
       }
       
-      self.relationshipSubjectSet.forEach {
-        ($0 as? ManagedRelationship)?.delete()
+      entity.relationshipSubjectSet.forEach {
+        $0.delete()
       }
       
-      self.relationshipObjectSet.forEach {
-        ($0 as? ManagedRelationship)?.delete()
+      entity.relationshipObjectSet.forEach {
+        $0.delete()
       }
     }
     

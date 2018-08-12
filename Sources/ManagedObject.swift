@@ -32,6 +32,17 @@ import CoreData
 
 @objc(ManagedObject)
 internal class ManagedObject: NSManagedObject {
+
+  /// A model identifier.
+  internal class var identifier: String {
+    return ""
+  }
+  
+  internal convenience init(managedObjectContext: NSManagedObjectContext) {
+    let description = NSEntityDescription.entity(forEntityName: type(of: self).identifier, in: managedObjectContext)!
+    self.init(entity: description, insertInto: managedObjectContext)
+  }
+  
   /// Marks for deletion.
   func delete() {
     guard let moc = managedObjectContext else {
@@ -40,6 +51,34 @@ internal class ManagedObject: NSManagedObject {
     
     moc.performAndWait { [unowned self, unowned moc] in
       moc.delete(self)
+    }
+  }
+}
+
+internal protocol PerformAndWaitable: class {
+  var managedObjectContext: NSManagedObjectContext? { get }
+}
+
+extension ManagedObject: PerformAndWaitable { }
+
+internal extension PerformAndWaitable {
+  func performAndWait<T>(_ block: (Self) -> T) -> T {
+    return performAndWait(block)!
+  }
+  
+  func performAndWait<T>(_ block: (Self) -> T?) -> T? {
+    var result: T?
+    
+    managedObjectContext?.performAndWait { [unowned self] in
+      result = block(self)
+    }
+    
+    return result
+  }
+  
+  func performAndWait(_ block: (Self) -> Void) {
+    managedObjectContext?.performAndWait { [unowned self] in
+      block(self)
     }
   }
 }
