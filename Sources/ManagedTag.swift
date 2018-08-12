@@ -31,7 +31,7 @@
 import CoreData
 
 @objc(ManagedTag)
-internal class ManagedTag: NamedManagedObject {  
+class ManagedTag: NamedManagedObject {  
   /// Marks node for deletion.
   internal override func delete() {
     node.tagSet.remove(self)

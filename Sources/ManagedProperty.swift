@@ -42,7 +42,7 @@ internal class ManagedProperty: NamedManagedObject {
    - Parameter node: A ManagedNode subclass.
    - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
    */
-  internal convenience init(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {    
+  convenience init(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {    
     self.init(name: name, node: node, managedObjectContext: managedObjectContext)
     self.object = object
   }

@@ -31,7 +31,7 @@
 import CoreData
 
 @objc(ManagedGroup)
-internal class ManagedGroup: NamedManagedObject {  
+class ManagedGroup: NamedManagedObject {  
   /// Marks node for deletion.
   internal override func delete() {
     node.groupSet.remove(self)

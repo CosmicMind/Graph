@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class ActionPropertyTests: XCTestCase, WatchActionDelegate {
+class ActionPropertyTests: XCTestCase, GraphActionDelegate {
   var saveExpectation: XCTestExpectation?
   
   var propertyInsertExpception: XCTestExpectation?
@@ -138,7 +138,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     waitForExpectations(timeout: 5, handler: nil)
   }
   
-  func watch(graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, action: Action, added property: String, with value: Any, source: GraphSource) {
     XCTAssertTrue("T" == action.type)
     XCTAssertTrue(0 < action.id.count)
     
@@ -149,7 +149,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     propertyInsertExpception?.fulfill()
   }
   
-  func watch(graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, action: Action, updated property: String, with value: Any, source: GraphSource) {
     XCTAssertTrue("T" == action.type)
     XCTAssertTrue(0 < action.id.count)
     
@@ -160,7 +160,7 @@ class ActionPropertyTests: XCTestCase, WatchActionDelegate {
     propertyUpdateExpception?.fulfill()
   }
   
-  func watch(graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, action: Action, removed property: String, with value: Any, source: GraphSource) {
     XCTAssertTrue("T" == action.type)
     XCTAssertTrue(0 < action.id.count)
     

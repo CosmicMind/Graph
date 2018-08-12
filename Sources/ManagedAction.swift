@@ -40,7 +40,7 @@ internal class ManagedAction: ManagedNode {
    - Parameter type: A reference to the Action type.
    - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
    */
-  internal convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
+  convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
     self.init(identifier: ModelIdentifier.actionName, type: type, managedObjectContext: managedObjectContext)
     nodeClass = NodeClass.action.rawValue
     subjectSet = []
@@ -48,32 +48,32 @@ internal class ManagedAction: ManagedNode {
   }
   
   /// Generic creation of the managed tag type.
-  internal override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+  override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
         _ = ManagedActionTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
   /// Generic creation of the managed group type.
-  internal override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+  override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedActionGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
   /// Generic creation of the managed property type.
-  internal override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+  override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedActionProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
   /// Generic cast to the managed tag type.
-  internal override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
+  override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
     return tag as? ManagedActionTag
   }
   
   /// Generic cast to the managed group type.
-  internal override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
+  override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
     return group as? ManagedActionGroup
   }
   
   /// Generic cast to the managed property type.
-  internal override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
+  override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
     return property as? ManagedActionProperty
   }
   
@@ -81,7 +81,7 @@ internal class ManagedAction: ManagedNode {
    Adds a ManagedEntity to the subjectSet.
    - Parameter subject managedEntity: A ManagedEntity to add.
    */
-  internal func add(subject managedEntity: ManagedEntity) {
+  func add(subject managedEntity: ManagedEntity) {
     performAndWait { [unowned managedEntity] in
       _ = $0.subjectSet.insert(managedEntity)
     }
@@ -91,7 +91,7 @@ internal class ManagedAction: ManagedNode {
    Removes a ManagedEntity from the subjectSet.
    - Parameter subject managedEntity: A ManagedEntity to remove.
    */
-  internal func remove(subject managedEntity: ManagedEntity) {
+  func remove(subject managedEntity: ManagedEntity) {
     performAndWait { [unowned managedEntity] in
       _ = $0.subjectSet.remove(managedEntity)
     }
@@ -101,7 +101,7 @@ internal class ManagedAction: ManagedNode {
    Adds a ManagedEntity to the objectSet.
    - Parameter object managedEntity: A ManagedEntity to add.
    */
-  internal func add(object managedEntity: ManagedEntity) {
+  func add(object managedEntity: ManagedEntity) {
     performAndWait { [unowned managedEntity] in
       _ = $0.objectSet.insert(managedEntity)
     }
@@ -111,14 +111,14 @@ internal class ManagedAction: ManagedNode {
    Removes a ManagedEntity from the objectSet.
    - Parameter object managedEntity: A ManagedEntity to remove.
    */
-  internal func remove(object managedEntity: ManagedEntity) {
+  func remove(object managedEntity: ManagedEntity) {
     performAndWait { [unowned managedEntity] in
       _ = $0.objectSet.remove(managedEntity)
     }
   }
   
   /// Marks the Action for deletion and clears all its relationships.
-  internal override func delete() {
+  override func delete() {
     performAndWait { action in
       action.propertySet.forEach {
         ($0 as? ManagedActionProperty)?.delete()

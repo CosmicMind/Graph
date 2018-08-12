@@ -80,13 +80,13 @@ internal struct Coordinator {
 }
 
 /// NSPersistentStoreCoordinator extension.
-extension Graph {
+internal extension Graph {
   /**
    Adds the persistentStore to the persistentStoreCoordinator.
    - Parameter supported: A boolean indicating whether cloud
    storage is supported.
    */
-  internal func addPersistentStore(supported: Bool) {
+  func addPersistentStore(supported: Bool) {
     guard let moc = managedObjectContext else {
       return
     }
@@ -114,7 +114,7 @@ extension Graph {
   }
   
   /// Prepares the persistentStoreCoordinator notification handlers.
-  internal func preparePersistentStoreCoordinatorNotificationHandlers() {
+  func preparePersistentStoreCoordinatorNotificationHandlers() {
     guard let moc = managedObjectContext else {
       return
     }
@@ -126,7 +126,7 @@ extension Graph {
   }
   
   @objc
-  internal func persistentStoreWillChange(_ notification: Notification) {
+  func persistentStoreWillChange(_ notification: Notification) {
     guard let moc = managedObjectContext else {
       return
     }
@@ -149,7 +149,7 @@ extension Graph {
   }
   
   @objc
-  internal func persistentStoreDidChange(_ notification: Notification) {
+  func persistentStoreDidChange(_ notification: Notification) {
     GraphContextRegistry.added[route] = true
     
     completion?(true, nil)
@@ -158,7 +158,7 @@ extension Graph {
   }
   
   @objc
-  internal func persistentStoreDidImportUbiquitousContentChanges(_ notification: Notification) {
+  func persistentStoreDidImportUbiquitousContentChanges(_ notification: Notification) {
     guard let moc = managedObjectContext else {
       return
     }

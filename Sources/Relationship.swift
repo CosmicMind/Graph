@@ -137,15 +137,7 @@ public class Relationship: Node {
   public convenience init(_ type: String) {
     self.init(type, graph: GraphStoreDescription.name)
   }
-  
-//  /**
-//   Initializer that accepts a Decoder.
-//   - Parameter from decoder: A Decoder.
-//   */
-//  required init(from decoder: Decoder) throws {
-//    fatalError("init(from:) has not been implemented")
-//  }
-  
+    
   /**
    Checks equality between Entities.
    - Parameter object: A reference to an object to test

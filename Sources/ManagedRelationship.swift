@@ -40,7 +40,7 @@ internal class ManagedRelationship: ManagedNode {
    - Parameter type: A reference to the Relationship type.
    - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
    */
-  internal convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
+  convenience init(_ type: String, managedObjectContext: NSManagedObjectContext) {
     self.init(identifier: ModelIdentifier.relationshipName, type: type, managedObjectContext: managedObjectContext)
     nodeClass = NodeClass.relationship.rawValue
     subject = nil
@@ -48,27 +48,27 @@ internal class ManagedRelationship: ManagedNode {
   }
   
   /// Generic creation of the managed tag type.
-  internal override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+  override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedRelationshipTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
   /// Generic creation of the managed group type.
-  internal override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+  override class func createGroup(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedRelationshipGroup(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
   /// Generic creation of the managed property type.
-  internal override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
+  override class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     _ = ManagedRelationshipProperty(name: name, object: object, node: node, managedObjectContext: managedObjectContext)
   }
   
   /// Generic cast to the managed tag type.
-  internal override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
+  override class func asTag(_ tag: ManagedTag) -> ManagedTag? {
     return tag as? ManagedRelationshipTag
   }
   
   /// Generic cast to the managed group type.
-  internal override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
+  override class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
     return group as? ManagedRelationshipGroup
   }
   
@@ -78,7 +78,7 @@ internal class ManagedRelationship: ManagedNode {
   }
  
   /// Marks the Relationship for deletion and clears all its relationships.
-  internal override func delete() {
+  override func delete() {
     performAndWait { relationship in
       relationship.propertySet.forEach {
         ($0 as? ManagedRelationshipProperty)?.delete()

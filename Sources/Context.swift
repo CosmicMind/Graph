@@ -71,9 +71,9 @@ internal struct Context {
 }
 
 /// NSManagedObjectContext extension.
-extension Graph {
+internal extension Graph {
   /// Prepares the registry.
-  internal func prepareGraphContextRegistry() {
+  func prepareGraphContextRegistry() {
     guard false == GraphContextRegistry.dispatchToken else {
       return
     }
@@ -88,7 +88,7 @@ extension Graph {
    Prapres the managedObjectContext.
    - Parameter iCloud: A boolean to enable iCloud.
    */
-  internal func prepareManagedObjectContext(enableCloud: Bool) {
+  func prepareManagedObjectContext(enableCloud: Bool) {
     guard let moc = GraphContextRegistry.managedObjectContexts[route] else {
       GraphContextRegistry.enableCloud[route] = enableCloud
       location = GraphStoreDescription.location.appendingPathComponent(route)
@@ -128,14 +128,16 @@ extension Graph {
   }
   
   /// Prepares the SQLight file if needed.
-  internal func prepareSQLite() {
+  func prepareSQLite() {
     if NSSQLiteStoreType == type {
       location = location.appendingPathComponent("Graph.sqlite")
     }
   }
-  
-  @available(iOS 10.0, OSX 10.12, *)
-  fileprivate func prepareContextContainer() {
+}
+
+@available(iOS 10.0, OSX 10.12, *)
+fileprivate extension Graph {
+  func prepareContextContainer() {
     self.prepareSQLite()
     
     let storeDescription = NSPersistentStoreDescription()

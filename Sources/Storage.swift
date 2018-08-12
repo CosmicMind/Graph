@@ -57,8 +57,10 @@ internal func GraphError(message: String, domain: String = "com.cosmicmind.graph
   var info = [String: Any]()
   info[NSLocalizedDescriptionKey] = message
   info[NSLocalizedFailureReasonErrorKey] = message
+  
   let error = NSError(domain: domain, code: 0001, userInfo: info)
   info[NSUnderlyingErrorKey] = error
+  
   return error
 }
 

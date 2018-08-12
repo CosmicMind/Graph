@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
+class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
   var saveExpectation: XCTestExpectation?
   
   var tagAddExpception: XCTestExpectation?
@@ -142,7 +142,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     waitForExpectations(timeout: 5, handler: nil)
   }
   
-  func watch(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource) {
+  func graph(_ graph: Graph, relationship: Relationship, added tag: String, source: GraphSource) {
     XCTAssertTrue("T" == relationship.type)
     XCTAssertTrue(0 < relationship.id.count)
     XCTAssertEqual("G1", tag)
@@ -153,7 +153,7 @@ class RelationshipTagTests: XCTestCase, WatchRelationshipDelegate {
     tagAddExpception?.fulfill()
   }
   
-  func watch(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource) {
+  func graph(_ graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource) {
     XCTAssertTrue("T" == relationship.type)
     XCTAssertTrue(0 < relationship.id.count)
     XCTAssertEqual("G2", tag)

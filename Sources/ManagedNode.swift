@@ -40,7 +40,7 @@ internal class ManagedNode: ManagedObject {
   @NSManaged internal var groupSet: Set<ManagedGroup>
   
   /// A reference to the Nodes unique ID.
-  internal var id: String {
+  var id: String {
     guard let moc = managedObjectContext else {
       fatalError("[Graph Error: Cannot obtain permanent objectID]")
     }
@@ -56,14 +56,14 @@ internal class ManagedNode: ManagedObject {
   }
   
   /// A reference to the tags.
-  internal var tags: [String] {
+  var tags: [String] {
     return performAndWait { node in
       node.tagSet.map { $0.name }
     } ?? []
   }
   
   /// A reference to the groups.
-  internal var groups: [String] {
+  var groups: [String] {
     return performAndWait { node in
       node.groupSet.map { $0.name }
     } ?? []
@@ -86,7 +86,7 @@ internal class ManagedNode: ManagedObject {
    - Parameter type: A reference to the Node type.
    - Parameter managedObjectContext: A reference to the NSManagedObejctContext.
    */
-  internal convenience init(identifier: String, type: String, managedObjectContext: NSManagedObjectContext) {
+  convenience init(identifier: String, type: String, managedObjectContext: NSManagedObjectContext) {
     self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
     self.type = type
     createdDate = Date()
@@ -202,7 +202,7 @@ internal class ManagedNode: ManagedObject {
    - Parameter name: A property name value.
    - Returns: The optional Any value.
    */
-  internal subscript(name: String) -> Any? {
+  subscript(name: String) -> Any? {
     get {
       return performAndWait { node in
         node.propertySet.first {
@@ -241,7 +241,7 @@ internal class ManagedNode: ManagedObject {
    - Returns: A boolean of the result, true if has the given tag,
    false otherwise.
    */
-  internal func has(tags: String...) -> Bool {
+  func has(tags: String...) -> Bool {
     return has(tags: tags)
   }
   
@@ -251,7 +251,7 @@ internal class ManagedNode: ManagedObject {
    - Returns: A boolean of the result, true if has the tags, 
    false otherwise.
    */
-  internal func has(tags: [String]) -> Bool {
+  func has(tags: [String]) -> Bool {
     let t = self.tags
     for tag in tags {
       guard t.contains(tag) else {
@@ -267,7 +267,7 @@ internal class ManagedNode: ManagedObject {
    - Returns: A boolean of the result, true if a member, false
    otherwise.
    */
-  internal func member(of groups: String...) -> Bool {
+  func member(of groups: String...) -> Bool {
     return member(of: groups)
   }
   
@@ -277,7 +277,7 @@ internal class ManagedNode: ManagedObject {
    - Returns: A boolean of the result, true if a member, false
    otherwise.
    */
-  internal func member(of groups: [String]) -> Bool {
+  func member(of groups: [String]) -> Bool {
     guard let moc = managedObjectContext else {
       return false
     }
@@ -301,7 +301,7 @@ extension ManagedNode: Comparable {
     return lhs.id == rhs.id
   }
   
-  static public func <(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
+  public static func <(lhs: ManagedNode, rhs: ManagedNode) -> Bool {
     return lhs.id < rhs.id
   }
 }

@@ -31,7 +31,7 @@
 import XCTest
 @testable import Graph
 
-class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
+class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
   var insertSaveExpectation: XCTestExpectation?
   var insertExpectation: XCTestExpectation?
   var insertPropertyExpectation: XCTestExpectation?
@@ -110,7 +110,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
     waitForExpectations(timeout: 5, handler: nil)
   }
   
-  func watch(graph: Graph, inserted relationship: Relationship, source: GraphSource) {
+  func graph(_ graph: Graph, inserted relationship: Relationship, source: GraphSource) {
     XCTAssertEqual("T", relationship.type)
     XCTAssertTrue(0 < relationship.id.count)
     XCTAssertEqual(111, relationship["P"] as? Int)
@@ -119,7 +119,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
     insertExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, deleted relationship: Relationship, source: GraphSource) {
+  func graph(_ graph: Graph, deleted relationship: Relationship, source: GraphSource) {
     XCTAssertEqual("T", relationship.type)
     XCTAssertTrue(0 < relationship.id.count)
     XCTAssertNil(relationship["P"])
@@ -128,7 +128,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
     deleteExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, relationship: Relationship, added tag: String, source: GraphSource) {
+  func graph(_ graph: Graph, relationship: Relationship, added tag: String, source: GraphSource) {
     XCTAssertEqual("T", relationship.type)
     XCTAssertEqual("G", tag)
     XCTAssertTrue(relationship.has(tags: tag))
@@ -136,7 +136,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
     insertTagExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource) {
+  func graph(_ graph: Graph, relationship: Relationship, removed tag: String, source: GraphSource) {
     XCTAssertEqual("T", relationship.type)
     XCTAssertTrue(0 < relationship.id.count)
     XCTAssertEqual("G", tag)
@@ -145,7 +145,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
     deleteTagExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, relationship: Relationship, added property: String, with value: Any, source: GraphSource) {
     XCTAssertEqual("T", relationship.type)
     XCTAssertTrue(0 < relationship.id.count)
     XCTAssertEqual("P", property)
@@ -155,7 +155,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
     insertPropertyExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, relationship: Relationship, updated property: String, with value: Any, source: GraphSource) {
     XCTAssertEqual("T", relationship.type)
     XCTAssertTrue(0 < relationship.id.count)
     XCTAssertEqual("P", property)
@@ -165,7 +165,7 @@ class RelationshipThreadTests : XCTestCase, WatchRelationshipDelegate {
     updatePropertyExpectation?.fulfill()
   }
   
-  func watch(graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource) {
+  func graph(_ graph: Graph, relationship: Relationship, removed property: String, with value: Any, source: GraphSource) {
     XCTAssertEqual("T", relationship.type)
     XCTAssertTrue(0 < relationship.id.count)
     XCTAssertEqual("P", property)
