@@ -519,11 +519,11 @@ extension Array where Element: Relationship {
 }
 
 extension Relationship : Comparable {
-  static public func ==(lhs: Relationship, rhs: Relationship) -> Bool {
+  public static func ==(lhs: Relationship, rhs: Relationship) -> Bool {
     return lhs.id == rhs.id
   }
   
-  static public func <(lhs: Relationship, rhs: Relationship) -> Bool {
+  public static func <(lhs: Relationship, rhs: Relationship) -> Bool {
     return lhs.id < rhs.id
   }
 }

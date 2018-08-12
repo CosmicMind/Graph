@@ -44,7 +44,7 @@ internal class ManagedProperty: ManagedObject{
    - Parameter object: A reference to the object value.
    - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
    */
-  internal convenience init(identifier: String, name: String, object: Any, managedObjectContext: NSManagedObjectContext) {
+  convenience init(identifier: String, name: String, object: Any, managedObjectContext: NSManagedObjectContext) {
     self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
     self.name = name
     self.object = object

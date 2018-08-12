@@ -41,7 +41,7 @@ internal class ManagedTag: ManagedObject {
    - Parameter name: A tag name.
    - Parameter managedObjectContext: A reference to a NSManagedObjectContext.
    */
-  internal convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {
+  convenience init(identifier: String, name: String, managedObjectContext: NSManagedObjectContext) {
     self.init(entity: NSEntityDescription.entity(forEntityName: identifier, in: managedObjectContext)!, insertInto: managedObjectContext)
     self.name = name
   }

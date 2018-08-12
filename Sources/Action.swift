@@ -639,11 +639,11 @@ extension Array where Element: Action {
 }
 
 extension Action : Comparable {
-  static public func ==(lhs: Action, rhs: Action) -> Bool {
+  public static func ==(lhs: Action, rhs: Action) -> Bool {
     return lhs.id == rhs.id
   }
   
-  static public func <(lhs: Action, rhs: Action) -> Bool {
+  public static func <(lhs: Action, rhs: Action) -> Bool {
     return lhs.id < rhs.id
   }
 }

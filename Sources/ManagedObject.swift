@@ -33,7 +33,7 @@ import CoreData
 @objc(ManagedObject)
 internal class ManagedObject: NSManagedObject {
   /// Marks for deletion.
-  internal func delete() {
+  func delete() {
     guard let moc = managedObjectContext else {
       return
     }
