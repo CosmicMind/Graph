@@ -145,11 +145,12 @@ public class Node: NSObject {
   /**
    Checks if the Node has the given tags.
    - Parameter tags: An Array of Strings.
+   - Parameter using condition: A SearchCondition value.
    - Returns: A boolean of the result, true if has the
    given tags, false otherwise.
    */
-  public func has(tags: [String]) -> Bool {
-    return node.has(tags: tags)
+  public func has(tags: [String], using condition: SearchCondition = .and) -> Bool {
+    return node.has(tags: tags, using: condition)
   }
   
   /**
@@ -240,11 +241,12 @@ public class Node: NSObject {
   /**
    Checks if the Node has a the given tags.
    - Parameter of groups: An Array of Strings.
+   - Parameter using condition: A SearchCondition value.
    - Returns: A boolean of the result, true if has the
    given groups, false otherwise.
    */
-  public func member(of groups: [String]) -> Bool {
-    return node.member(of: groups)
+  public func member(of groups: [String], using condition: SearchCondition = .and) -> Bool {
+    return node.member(of: groups, using: condition)
   }
   
   /**
