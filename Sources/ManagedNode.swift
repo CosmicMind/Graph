@@ -72,11 +72,9 @@ internal class ManagedNode: ManagedObject {
   /// A reference to the properties.
   internal var properties: [String: Any] {
     return performAndWait { node in
-      var p = [String: Any]()
-      node.propertySet.forEach {
-        p[$0.name] = $0.object
+      node.propertySet.reduce(into: [String: Any]()) {
+        $0[$1.name] = $1.object
       }
-      return p
     } ?? [:]
   }
   
@@ -248,17 +246,20 @@ internal class ManagedNode: ManagedObject {
   /**
    Checks if the ManagedNode has a the given tags.
    - Parameter tags: An Array of Strings.
+   - Parameter using condition: A SearchCondition value.
    - Returns: A boolean of the result, true if has the tags, 
    false otherwise.
    */
-  func has(tags: [String]) -> Bool {
-    let t = self.tags
-    for tag in tags {
-      guard t.contains(tag) else {
-        return false
-      }
+  func has(tags: [String], using condition: SearchCondition = .and) -> Bool {
+    let t = Set(self.tags)
+    let tags = Set(tags)
+
+    switch condition {
+    case .and:
+      return tags.isSubset(of: t)
+    case .or:
+      return tags.contains(where: t.contains)
     }
-    return true
   }
   
   /**
@@ -274,25 +275,20 @@ internal class ManagedNode: ManagedObject {
   /**
    Checks if the ManagedNode is a member of a group.
    - Parameter of groups: An Array of Strings.
+   - Parameter using condition: A SearchCondition value.
    - Returns: A boolean of the result, true if a member, false
    otherwise.
    */
-  func member(of groups: [String]) -> Bool {
-    guard let moc = managedObjectContext else {
-      return false
+  func member(of groups: [String], using condition: SearchCondition = .and) -> Bool {
+    let g = Set(self.groups)
+    let groups = Set(groups)
+    
+    switch condition {
+    case .and:
+      return groups.isSubset(of: g)
+    case .or:
+      return groups.contains(where: g.contains)
     }
-    var result: Bool? = false
-    moc.performAndWait { [unowned self, groups = groups] in
-      for name in groups {
-        for g in self.groupSet {
-          if name == g.name {
-            result = true
-            break
-          }
-        }
-      }
-    }
-    return result!
   }
 }
 
