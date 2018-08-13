@@ -31,55 +31,56 @@
 import Foundation
 
 @dynamicMemberLookup
-open class GraphJSON: Equatable, CustomStringConvertible {
+public struct GraphJSON: Equatable, CustomStringConvertible {
+  
   /// A desiption of the object, used when printing.
-  open var description: String {
+  public var description: String {
     return GraphJSON.stringify(object, options: .prettyPrinted) ?? "{}"
   }
   
   /// A reference to the core object.
-  open private(set) var object: Any
+  public private(set) var object: Any
   
   /// A global GraphJSON object representing null.
   public static let isNil = GraphJSON(NSNull())
   
   /// An Array representation of the object.
-  open var asArray: [Any]? {
+  public var asArray: [Any]? {
     return object as? [Any]
   }
   
   /// A Dictionary representation of the object.
-  open var asDictionary: [String: Any]? {
+  public var asDictionary: [String: Any]? {
     return object as? [String: Any]
   }
   
   /// A String representation of the object.
-  open var asString: String? {
+  public var asString: String? {
     return object as? String
   }
   
   /// An Int representation of the object.
-  open var asInt: Int? {
+  public var asInt: Int? {
     return object as? Int
   }
   
   /// A Double representation of the object.
-  open var asDouble: Double? {
+  public var asDouble: Double? {
     return object as? Double
   }
   
   /// A Float representation of the object.
-  open var asFloat: Float? {
+  public var asFloat: Float? {
     return object as? Float
   }
   
   /// A Bool representation of the object.
-  open var asBool: Bool? {
+  public var asBool: Bool? {
     return object as? Bool
   }
   
   /// A Data representation of the object.
-  open var asNSData: Data? {
+  public var asNSData: Data? {
     return GraphJSON.serialize(object)
   }
   
@@ -89,7 +90,7 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter options: JSONSerialization.ReadingOptions.
    - Returns: A GraphJSON object on success, nil otherwise.
    */
-  open class func parse(_ data: Data, options: JSONSerialization.ReadingOptions = .allowFragments) -> GraphJSON? {
+  public static func parse(_ data: Data, options: JSONSerialization.ReadingOptions = .allowFragments) -> GraphJSON? {
     guard let v = try? JSONSerialization.jsonObject(with: data, options: options) else {
       return nil
     }
@@ -103,7 +104,7 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter options: JSONSerialization.ReadingOptions.
    - Returns: A GraphJSON object on success, nil otherwise.
    */
-  open class func parse(_ string: String, options: JSONSerialization.ReadingOptions = .allowFragments) -> GraphJSON? {
+  public static func parse(_ string: String, options: JSONSerialization.ReadingOptions = .allowFragments) -> GraphJSON? {
     guard let v = string.data(using: String.Encoding.utf8) else {
       return nil
     }
@@ -116,7 +117,7 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter _ object: An Any object.
    - Returns: A Data object if successful, nil otherwise.
    */
-  open class func serialize(_ object: Any, options: JSONSerialization.WritingOptions = []) -> Data? {
+  public static func serialize(_ object: Any, options: JSONSerialization.WritingOptions = []) -> Data? {
     guard JSONSerialization.isValidJSONObject(object) else {
       return nil
     }
@@ -129,7 +130,7 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter _ object: An Any object.
    - Returns: A String object if successful, nil otherwise.
    */
-  open class func stringify(_ object: Any, options: JSONSerialization.WritingOptions = []) -> String? {
+  public static func stringify(_ object: Any, options: JSONSerialization.WritingOptions = []) -> String? {
     if let v = object as? GraphJSON {
       return stringify(v.object, options: options)
     
@@ -143,7 +144,7 @@ open class GraphJSON: Equatable, CustomStringConvertible {
   }
   
   /// An initializer that accepts a given Any object.
-  public required init(_ object: Any) {
+  public init(_ object: Any) {
     if let v = object as? GraphJSON {
       self.object = v.object
     
@@ -157,16 +158,32 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter index: An Int.
    - Returns: A GraphJSON object.
    */
-  open subscript(index: Int) -> GraphJSON {
-    guard let v = asArray else {
-      return .isNil
+  public subscript(index: Int) -> GraphJSON {
+    get {
+      guard let v = asArray else {
+        return .isNil
+      }
+      
+      guard v.indices.contains(index) else {
+        return .isNil
+      }
+      
+      return GraphJSON(v[index])
     }
-    
-    guard v.indices.contains(index) else {
-      return .isNil
+    set(value) {
+      guard var v = asArray else {
+        print("[GraphJSON: Can't set value '\(value.object)' for index '\(index)' on non-array type]")
+        return
+      }
+      
+      guard v.indices.contains(index) else {
+        print("[GraphJSON: Can't set value '\(value.object)' for non-existent index '\(index)']")
+        return
+      }
+      
+      v[index] = value.object
+      object = v
     }
-    
-    return GraphJSON(v[index])
   }
   
   /**
@@ -174,8 +191,13 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter dynamicMember member: A property name value.
    - Returns: A GraphJSON object.
    */
-  open subscript(dynamicMember member: String) -> GraphJSON {
-    return self[member]
+  public subscript(dynamicMember member: String) -> GraphJSON {
+    get{
+      return self[member]
+    }
+    set(value) {
+      self[member] = value
+    }
   }
   
   /**
@@ -183,19 +205,80 @@ open class GraphJSON: Equatable, CustomStringConvertible {
    - Parameter key: A String.
    - Returns: A GraphJSON object.
    */
-  open subscript(key: String) -> GraphJSON {
-    guard let v = asDictionary else {
-      return .isNil
+  public subscript(key: String) -> GraphJSON {
+    get {
+      guard let v = asDictionary else {
+        return .isNil
+      }
+      
+      guard nil != v[key] else {
+        return .isNil
+      }
+      
+      return GraphJSON(v[key]!)
     }
-    
-    guard nil != v[key] else {
-      return .isNil
+    set(value) {
+      guard var v = asDictionary else {
+        print("[GraphJSON: Can't set value '\(value.object)' for key '\(key)' on non-dictionary type]")
+        return
+      }
+      v[key] = value.object
+      object = v
     }
-    
-    return GraphJSON(v[key]!)
   }
 }
 
 public func ==(lhs: GraphJSON, rhs: GraphJSON) -> Bool {
   return GraphJSON.stringify(lhs.object) == GraphJSON.stringify(rhs.object)
+}
+
+extension GraphJSON: ExpressibleByNilLiteral {
+  public init(nilLiteral: ()) {
+    self.init(NSNull() as Any)
+  }
+}
+
+extension GraphJSON: ExpressibleByStringLiteral {
+  public init(stringLiteral value: StringLiteralType) {
+    self.init(value)
+  }
+  
+  public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+    self.init(value)
+  }
+  
+  public init(unicodeScalarLiteral value: StringLiteralType) {
+    self.init(value)
+  }
+}
+
+extension GraphJSON: ExpressibleByIntegerLiteral {
+  public init(integerLiteral value: IntegerLiteralType) {
+    self.init(value)
+  }
+}
+
+extension GraphJSON: ExpressibleByBooleanLiteral {
+  public init(booleanLiteral value: BooleanLiteralType) {
+    self.init(value)
+  }
+}
+
+extension GraphJSON: ExpressibleByFloatLiteral {
+  public init(floatLiteral value: FloatLiteralType) {
+    self.init(value)
+  }
+}
+
+extension GraphJSON: ExpressibleByDictionaryLiteral {
+  public init(dictionaryLiteral elements: (String, Any)...) {
+    let dictionary = elements.reduce(into: [String: Any]()) { $0[$1.0] = $1.1 }
+    self.init(dictionary)
+  }
+}
+
+extension GraphJSON: ExpressibleByArrayLiteral {
+  public init(arrayLiteral elements: Any...) {
+    self.init(elements)
+  }
 }

@@ -179,6 +179,7 @@
 		96F1DC791D64DDCF0025F925 /* ManagedActionTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4131D3AC0960086A024 /* ManagedActionTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC7A1D64DDCF0025F925 /* ManagedActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D1BF321211FAB8600939295 /* NamedManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF320211FAB8600939295 /* NamedManagedObject.swift */; };
+		9D1BF3242120654800939295 /* NamedManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF320211FAB8600939295 /* NamedManagedObject.swift */; };
 		9DCA6216211A47DA00E4A4B7 /* GraphJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA6215211A47DA00E4A4B7 /* GraphJSONTests.swift */; };
 		9DCA6217211A47DA00E4A4B7 /* GraphJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCA6215211A47DA00E4A4B7 /* GraphJSONTests.swift */; };
 /* End PBXBuildFile section */
@@ -838,6 +839,7 @@
 				96E3C43B1D3AC6F30086A024 /* ManagedProperty.swift in Sources */,
 				96E3C3F21D3AB79F0086A024 /* Container.swift in Sources */,
 				96E3C45A1D3AD6B00086A024 /* Search.swift in Sources */,
+				9D1BF3242120654800939295 /* NamedManagedObject.swift in Sources */,
 				96E3C45D1D3AE4F00086A024 /* Coordinator.swift in Sources */,
 				96E3C44F1D3AC7E50086A024 /* ManagedAction.swift in Sources */,
 				96E3C4501D3AC7E50086A024 /* ManagedActionTag.swift in Sources */,
