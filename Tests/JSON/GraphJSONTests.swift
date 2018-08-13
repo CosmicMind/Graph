@@ -119,4 +119,58 @@ class GraphJSONTests: XCTestCase {
     XCTAssertEqual(json.skills[2].asString, "programming")
     XCTAssertEqual(json.skills[99], .isNil)
   }
+  
+  func testWrite() {
+    guard var json = GraphJSON.parse(testJSONString) else {
+      XCTFail("testJSONString is not parsed successfully")
+      return
+    }
+    
+    /// String literal
+    json.anything = "String literal"
+    XCTAssertEqual(json.anything.asString, "String literal")
+    
+    /// Integer literal
+    json.anything = 12345
+    XCTAssertEqual(json.anything.asInt, 12345)
+    
+    /// Float literal
+    json.anything = 1.2345
+    XCTAssertEqual(json.anything.asDouble, 1.2345)
+    
+    /// Nil literal
+    json.anything = nil
+    XCTAssertEqual(json.anything, .isNil)
+    
+    /// Boolean literal
+    json.anything = true
+    XCTAssertEqual(json.anything.asBool, true)
+    
+    /// Dictionary literal
+    json.anything = ["key": "value"]
+    XCTAssert((json.anything.object as? NSDictionary)?.isEqual(["key": "value"]) == true)
+    
+    /// Array literal
+    json.anything = [1, 2]
+    XCTAssertEqual(json.anything.object as? [Int], [1, 2])
+    
+    /// Array index
+    json.skills[0] = "javascript"
+    XCTAssertEqual(json.skills[0].asString, "javascript")
+    
+    /// Deeply nested value
+    json.anything = ["go": ["deep": ["and": ["set": "value"]]]]
+    XCTAssertEqual(json.anything.go.deep.and.set.asString, "value")
+    
+    json.anything.go.deep.and.set = "new value"
+    XCTAssertEqual(json.anything.go.deep.and.set.asString, "new value")
+    
+    json.anything.go.deep.newKey = "new value for key"
+    XCTAssertEqual(json.anything.go.deep.newKey, "new value for key")
+    
+    /// GraphJSON
+    json.anything = json.age
+    XCTAssertEqual(json.anything.asInt, 20)
+    XCTAssertEqual(json.anything, json.age)    
+  }
 }
