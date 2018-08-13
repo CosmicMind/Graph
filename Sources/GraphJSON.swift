@@ -159,15 +159,31 @@ public struct GraphJSON: Equatable, CustomStringConvertible {
    - Returns: A GraphJSON object.
    */
   public subscript(index: Int) -> GraphJSON {
-    guard let v = asArray else {
-      return .isNil
+    get {
+      guard let v = asArray else {
+        return .isNil
+      }
+      
+      guard v.indices.contains(index) else {
+        return .isNil
+      }
+      
+      return GraphJSON(v[index])
     }
-    
-    guard v.indices.contains(index) else {
-      return .isNil
+    set(value) {
+      guard var v = asArray else {
+        print("[GraphJSON: Can't set value '\(value.object)' for index '\(index)' on non-array type]")
+        return
+      }
+      
+      guard v.indices.contains(index) else {
+        print("[GraphJSON: Can't set value '\(value.object)' for non-existent index '\(index)']")
+        return
+      }
+      
+      v[index] = value.object
+      object = v
     }
-    
-    return GraphJSON(v[index])
   }
   
   /**
@@ -176,7 +192,12 @@ public struct GraphJSON: Equatable, CustomStringConvertible {
    - Returns: A GraphJSON object.
    */
   public subscript(dynamicMember member: String) -> GraphJSON {
-    return self[member]
+    get{
+      return self[member]
+    }
+    set(value) {
+      self[member] = value
+    }
   }
   
   /**
@@ -185,18 +206,79 @@ public struct GraphJSON: Equatable, CustomStringConvertible {
    - Returns: A GraphJSON object.
    */
   public subscript(key: String) -> GraphJSON {
-    guard let v = asDictionary else {
-      return .isNil
+    get {
+      guard let v = asDictionary else {
+        return .isNil
+      }
+      
+      guard nil != v[key] else {
+        return .isNil
+      }
+      
+      return GraphJSON(v[key]!)
     }
-    
-    guard nil != v[key] else {
-      return .isNil
+    set(value) {
+      guard var v = asDictionary else {
+        print("[GraphJSON: Can't set value '\(value.object)' for key '\(key)' on non-dictionary type]")
+        return
+      }
+      v[key] = value.object
+      object = v
     }
-    
-    return GraphJSON(v[key]!)
   }
 }
 
 public func ==(lhs: GraphJSON, rhs: GraphJSON) -> Bool {
   return GraphJSON.stringify(lhs.object) == GraphJSON.stringify(rhs.object)
+}
+
+extension GraphJSON: ExpressibleByNilLiteral {
+  public init(nilLiteral: ()) {
+    self.init(NSNull() as Any)
+  }
+}
+
+extension GraphJSON: ExpressibleByStringLiteral {
+  public init(stringLiteral value: StringLiteralType) {
+    self.init(value)
+  }
+  
+  public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+    self.init(value)
+  }
+  
+  public init(unicodeScalarLiteral value: StringLiteralType) {
+    self.init(value)
+  }
+}
+
+extension GraphJSON: ExpressibleByIntegerLiteral {
+  public init(integerLiteral value: IntegerLiteralType) {
+    self.init(value)
+  }
+}
+
+extension GraphJSON: ExpressibleByBooleanLiteral {
+  public init(booleanLiteral value: BooleanLiteralType) {
+    self.init(value)
+  }
+}
+
+extension GraphJSON: ExpressibleByFloatLiteral {
+  public init(floatLiteral value: FloatLiteralType) {
+    self.init(value)
+  }
+}
+
+extension GraphJSON: ExpressibleByDictionaryLiteral {
+  public init(dictionaryLiteral elements: (String, Any)...) {
+    let dictionary = elements.reduce(into: [String: Any]()) { $0[$1.0] = $1.1 }
+    self.init(dictionary)
+  }
+}
+
+extension GraphJSON: ExpressibleByArrayLiteral {
+  public init(arrayLiteral elements: Any...) {
+    self.init(elements)
+  }
 }
