@@ -38,12 +38,17 @@ class RelationshipGroupTests: XCTestCase, GraphRelationshipDelegate {
   var tagUpdateExpception: XCTestExpectation?
   var tagRemoveExpception: XCTestExpectation?
   
-  override func setUp() {
-    super.setUp()
-  }
-  
-  override func tearDown() {
-    super.tearDown()
+  func testMemberOfUsingCondition() {
+    let entity = Entity("G")
+    entity.add(to: "G1", "G2", "G3")
+    
+    /// .and condition
+    XCTAssertTrue(entity.member(of: ["G1", "G2", "G3"], using: .and))
+    XCTAssertFalse(entity.member(of: ["G1", "G2", "G3", "G4"], using: .and))
+    
+    /// .or condition
+    XCTAssertTrue(entity.member(of: ["G3", "G4", "G5", "G6"], using: .or))
+    XCTAssertFalse(entity.member(of: ["G4", "G5", "G6", "G7"], using: .or))
   }
   
   func testGroupAdd() {
