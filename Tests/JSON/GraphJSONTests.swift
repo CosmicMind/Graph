@@ -34,20 +34,20 @@ import XCTest
 
 class GraphJSONTests: XCTestCase {
   let testJSONString = """
-{
-  "name": "orkhan",
-  "age": 20,
-  "number": 12.3e-3,
-  "skills": [
-    "swift",
-    "ios",
-    "programming"
-  ],
-  "isMale": true,
-  "children": null,
-  "emoji": "\\u263A"
-}
-"""
+    {
+      "name": "orkhan",
+      "age": 20,
+      "number": 12.3e-3,
+      "skills": [
+        "swift",
+        "ios",
+        "programming"
+      ],
+      "isMale": true,
+      "children": null,
+      "emoji": "\\u263A"
+    }
+  """
   
   let dictionary: [AnyHashable : Any] = [
     "name": "orkhan",
