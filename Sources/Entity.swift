@@ -33,12 +33,10 @@ import Foundation
 @objc(Entity)
 public class Entity: Node {
   /// A reference to the managedNode.
-  internal let managedNode: ManagedEntity
-  
-  /// A reference to the managedNode for base class.
-  override var node: ManagedNode {
-    return managedNode
+  internal var managedNode: ManagedEntity {
+    return node as! ManagedEntity
   }
+
   
   /// A string representation of the Entity.
   public override var description: String {
@@ -139,52 +137,18 @@ public class Entity: Node {
       $0.relationshipObjectSet.map { Relationship(managedNode: $0) }
     }
   }
-  
-  /**
-   Initializer that accepts a ManagedEntity.
-   - Parameter managedNode: A reference to a ManagedEntity.
-   */
-  internal init(managedNode: ManagedEntity) {
-    self.managedNode = managedNode
+
+  /// Generic creation of the managed node type.
+  override class func createNode(_ type: String, in context: NSManagedObjectContext) -> ManagedNode {
+    return ManagedEntity(type, managedObjectContext: context)
   }
   
   /**
-   Initializer that accepts a type and graph. The graph
-   indicates which graph to save to.
-   - Parameter _ type: A reference to a type.
-   - Parameter graph: A reference to a Graph instance by name.
+   Initializer that accepts a ManagedAction.
+   - Parameter managedNode: A reference to a ManagedAction.
    */
-  @nonobjc
-  public convenience init(_ type: String, graph: String) {
-    let context = Graph(name: graph).managedObjectContext
-    var managedNode: ManagedEntity?
-    context?.performAndWait {
-      managedNode = ManagedEntity(type, managedObjectContext: context!)
-    }
-    self.init(managedNode: managedNode!)
-  }
-  
-  /**
-   Initializer that accepts a type and graph. The graph
-   indicates which graph to save to.
-   - Parameter _ type: A reference to a type.
-   - Parameter graph: A reference to a Graph instance.
-   */
-  public convenience init(_ type: String, graph: Graph) {
-    let context = graph.managedObjectContext
-    var managedNode: ManagedEntity?
-    context?.performAndWait {
-      managedNode = ManagedEntity(type, managedObjectContext: context!)
-    }
-    self.init(managedNode: managedNode!)
-  }
-  
-  /**
-   Initializer that accepts a type value.
-   - Parameter _ type: A reference to a type.
-   */
-  public convenience init(_ type: String) {
-    self.init(type, graph: GraphStoreDescription.name)
+  required init(managedNode: ManagedNode) {
+    super.init(managedNode: managedNode)
   }
   
   /**

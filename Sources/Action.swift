@@ -33,11 +33,8 @@ import Foundation
 @objc(Action)
 public class Action: Node {
   /// A reference to the managedNode.
-  internal let managedNode: ManagedAction
-  
-  /// A reference to the managedNode for base node class.
-  internal override var node: ManagedNode {
-    return managedNode
+  internal var managedNode: ManagedAction {
+    return node as! ManagedAction
   }
   
   public override var description: String {
@@ -63,51 +60,17 @@ public class Action: Node {
     } ?? []
   }
   
+  /// Generic creation of the managed node type.
+  override class func createNode(_ type: String, in context: NSManagedObjectContext) -> ManagedNode {
+    return ManagedAction(type, managedObjectContext: context)
+  }
+  
   /**
    Initializer that accepts a ManagedAction.
    - Parameter managedNode: A reference to a ManagedAction.
    */
-  internal init(managedNode: ManagedAction) {
-    self.managedNode = managedNode
-  }
-  
-  /**
-   Initializer that accepts a type and graph. The graph
-   indicates which graph to save to.
-   - Parameter _ type: A reference to a type.
-   - Parameter graph: A reference to a Graph instance by name.
-   */
-  @nonobjc
-  public convenience init(_ type: String, graph: String) {
-    let context = Graph(name: graph).managedObjectContext
-    var managedNode: ManagedAction?
-    context?.performAndWait {
-      managedNode = ManagedAction(type, managedObjectContext: context!)
-    }
-    self.init(managedNode: managedNode!)
-  }
-  
-  /**
-   Initializer that accepts a type and graph. The graph
-   indicates which graph to save to.
-   - Parameter _ type: A reference to a type.
-   - Parameter graph: A reference to a Graph instance.
-   */
-  public convenience init(_ type: String, graph: Graph) {
-    let context = graph.managedObjectContext
-    var managedNode: ManagedAction?
-    context?.performAndWait {
-      managedNode = ManagedAction(type, managedObjectContext: context!)
-    }
-    self.init(managedNode: managedNode!)
-  }
-  
-  /**
-   Initializer that accepts a type value.
-   - Parameter _ type: A reference to a type.
-   */
-  public convenience init(_ type: String) {
-    self.init(type, graph: GraphStoreDescription.name)
+  required init(managedNode: ManagedNode) {
+    super.init(managedNode: managedNode)
   }
   
   /**

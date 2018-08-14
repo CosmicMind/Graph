@@ -38,8 +38,49 @@ public enum NodeClass: Int {
 
 @dynamicMemberLookup
 public class Node: NSObject {
-  /// A reference to the managedNode for base node class.
-  internal var node: ManagedNode {
+  /// A reference to managed node.
+  let node: ManagedNode
+  
+  /**
+   Initializer that accepts a ManagedAction.
+   - Parameter managedNode: A reference to a ManagedAction.
+   */
+  required init(managedNode: ManagedNode) {
+    node = managedNode
+  }
+  
+  /**
+   Initializer that accepts a type and graph. The graph
+   indicates which graph to save to.
+   - Parameter _ type: A reference to a type.
+   - Parameter graph: A reference to a Graph instance by name.
+   */
+  @nonobjc
+  public convenience init(_ type: String, graph: String) {
+    self.init(type, graph: Graph(name: graph))
+  }
+  
+  /**
+   Initializer that accepts a type and graph. The graph
+   indicates which graph to save to.
+   - Parameter _ type: A reference to a type.
+   - Parameter graph: A reference to a Graph instance.
+   */
+  public convenience init(_ type: String, graph: Graph) {
+    let node = Swift.type(of: self).createNode(type, in: graph.managedObjectContext)
+    self.init(managedNode: node)
+  }
+  
+  /**
+   Initializer that accepts a type value.
+   - Parameter _ type: A reference to a type.
+   */
+  public convenience init(_ type: String) {
+    self.init(type, graph: GraphStoreDescription.name)
+  }
+  
+  /// Generic creation of the managed node type.
+  class func createNode(_ type: String, in context: NSManagedObjectContext) -> ManagedNode {
     fatalError("Must be implemented by subclasses")
   }
   
