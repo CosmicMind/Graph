@@ -36,10 +36,72 @@ public enum NodeClass: Int {
   case action = 3
 }
 
+
+extension CodingUserInfoKey {
+  /// CodingUserInfoKey for passing Graph instance or name to decoding context.
+  public static let graph = CodingUserInfoKey(rawValue: "graph")!
+}
+
+
 @dynamicMemberLookup
-public class Node: NSObject {
+public class Node: NSObject, Codable {
   /// A reference to managed node.
   let node: ManagedNode
+  
+  /// CodingKeys for encoding and decoding
+  private enum CodingKeys: String, CodingKey {
+    case type
+    case tags
+    case groups
+    case properties
+    case createdDate
+  }
+  
+  /**
+   Encodes this value into the given encoder.
+   - Parameter encoder: The encoder to write data to.
+   */
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(type, forKey: .type)
+    try container.encode(tags, forKey: .tags)
+    try container.encode(groups, forKey: .groups)
+    try container.encode(AnyCodable(properties), forKey: .properties)
+    try container.encode(createdDate, forKey: .createdDate)
+  }
+  
+  /**
+   Creates a new instance by decoding from the given decoder.
+   - Parameter decoder: The decoder to read data from.
+   */
+  public required convenience init(from decoder: Decoder) throws {
+    let graphInfo = decoder.userInfo[.graph]
+    let graph = graphInfo as? Graph ?? Graph(name: graphInfo as? String ?? GraphStoreDescription.name)
+    
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    let type = try values.decode(String.self, forKey: .type)
+    let tags = try values.decodeIfPresent([String].self, forKey: .tags) ?? []
+    let groups = try values.decodeIfPresent([String].self, forKey: .groups) ?? []
+    let properties = try values.decodeIfPresent(AnyCodable.self, forKey: .properties)?.unwrap()
+    let createdDate = try values.decodeIfPresent(Date.self, forKey: .createdDate) ?? Date()
+    
+    let node = Swift.type(of: self).createNode(type, graph: graph)
+    self.init(managedNode: node)
+    node.add(tags: tags)
+    node.add(to: groups)
+    
+    node.performAndWait { node in
+      node.createdDate = createdDate
+    }
+    
+    guard let p = properties as? [String: Any] else {
+      return
+    }
+    
+    p.forEach {
+      self[$0.key] = $0.value
+    }
+  }
   
   /**
    Initializer that accepts a ManagedAction.
@@ -67,7 +129,7 @@ public class Node: NSObject {
    - Parameter graph: A reference to a Graph instance.
    */
   public convenience init(_ type: String, graph: Graph) {
-    let node = Swift.type(of: self).createNode(type, in: graph.managedObjectContext)
+    let node = Swift.type(of: self).createNode(type, graph: graph)
     self.init(managedNode: node)
   }
   
@@ -82,6 +144,14 @@ public class Node: NSObject {
   /// Generic creation of the managed node type.
   class func createNode(_ type: String, in context: NSManagedObjectContext) -> ManagedNode {
     fatalError("Must be implemented by subclasses")
+  }
+  
+  private class func createNode(_ type: String, graph: Graph) -> ManagedNode {
+    var node: ManagedNode!
+    graph.managedObjectContext.performAndWait {
+      node = createNode(type, in: graph.managedObjectContext)
+    }
+    return node
   }
   
   /// A reference to the type.
