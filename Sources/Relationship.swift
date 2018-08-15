@@ -33,13 +33,10 @@ import Foundation
 @objc(Relationship)
 public class Relationship: Node {
   /// A reference to the managedNode.
-  internal let managedNode: ManagedRelationship
-  
-  /// A reference to the managedNode for base node class.
-  internal override var node: ManagedNode {
-    return managedNode
+  internal var managedNode: ManagedRelationship {
+    return node as! ManagedRelationship
   }
-  
+
   public override var description: String {
     return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), groups: \(groups), properties: \(properties), subject: \(String(describing: subject)), object: \(String(describing: object)), createdDate: \(createdDate)]"
   }
@@ -91,51 +88,17 @@ public class Relationship: Node {
     }
   }
   
-  /**
-   Initializer that accepts a ManagedRelationship.
-   - Parameter managedNode: A reference to a ManagedRelationship.
-   */
-  internal init(managedNode: ManagedRelationship) {
-    self.managedNode = managedNode
+  /// Generic creation of the managed node type.
+  override class func createNode(_ type: String, in context: NSManagedObjectContext) -> ManagedNode {
+    return ManagedRelationship(type, managedObjectContext: context)
   }
   
   /**
-   Initializer that accepts a type and graph. The graph
-   indicates which graph to save to.
-   - Parameter _ type: A reference to a type.
-   - Parameter graph: A reference to a Graph instance by name.
+   Initializer that accepts a ManagedAction.
+   - Parameter managedNode: A reference to a ManagedAction.
    */
-  @nonobjc
-  public convenience init(_ type: String, graph: String) {
-    let context = Graph(name: graph).managedObjectContext
-    var managedNode: ManagedRelationship?
-    context?.performAndWait {
-      managedNode = ManagedRelationship(type, managedObjectContext: context!)
-    }
-    self.init(managedNode: managedNode!)
-  }
-  
-  /**
-   Initializer that accepts a type and graph. The graph
-   indicates which graph to save to.
-   - Parameter _ type: A reference to a type.
-   - Parameter graph: A reference to a Graph instance.
-   */
-  public convenience init(_ type: String, graph: Graph) {
-    let context = graph.managedObjectContext
-    var managedNode: ManagedRelationship?
-    context?.performAndWait {
-      managedNode = ManagedRelationship(type, managedObjectContext: context!)
-    }
-    self.init(managedNode: managedNode!)
-  }
-  
-  /**
-   Initializer that accepts a type value.
-   - Parameter _ type: A reference to a type.
-   */
-  public convenience init(_ type: String) {
-    self.init(type, graph: GraphStoreDescription.name)
+  required init(managedNode: ManagedNode) {
+    super.init(managedNode: managedNode)
   }
     
   /**
