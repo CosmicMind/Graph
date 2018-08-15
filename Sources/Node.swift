@@ -59,7 +59,7 @@ public class Node: NSObject, Codable {
   
   /**
    Encodes this value into the given encoder.
-   - Parameter encoder: The encoder to write data to.
+   - Parameter to encoder: The encoder to write data to.
    */
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)

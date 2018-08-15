@@ -31,7 +31,10 @@
 import Foundation
 
 public struct AnyCodable: Codable {
+  /// Encoded value.
   public let value: Encodable
+  
+  /// Codable types.
   public static var codables: [Codable.Type] = [
     String.self,
     Double.self,
@@ -100,7 +103,7 @@ public struct AnyCodable: Codable {
   
   /**
    Encodes this value into the given encoder.
-   - Parameter encoder: The encoder to write data to.
+   - Parameter to encoder: The encoder to write data to.
    */
   public func encode(to encoder: Encoder) throws {
     /// https://stackoverflow.com/q/48658574/jsonencoders-dateencodingstrategy-not-working
@@ -146,6 +149,10 @@ private extension Encodable {
   }
   
   
+  /**
+   Encodes this value into the given encoder.
+   - Parameter to container: A SingleValueEncodingContainer to encode.
+   */
   func encode(to container: inout SingleValueEncodingContainer) throws {
     try container.encode(self)
   }
