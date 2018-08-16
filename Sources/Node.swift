@@ -422,12 +422,12 @@ public class Node: NSObject, Codable {
 
 
 extension Node : Comparable {
-  static public func ==(lhs: Node, rhs: Node) -> Bool {
-    return lhs.id == rhs.id
+  static public func ==(left: Node, right: Node) -> Bool {
+    return left.id == right.id
   }
   
-  static public func <(lhs: Node, rhs: Node) -> Bool {
-    return lhs.id < rhs.id
+  static public func <(left: Node, right: Node) -> Bool {
+    return left.id < right.id
   }
 }
 
