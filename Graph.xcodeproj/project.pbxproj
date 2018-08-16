@@ -178,6 +178,10 @@
 		96F1DC781D64DDCF0025F925 /* ManagedActionProperty.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4141D3AC0960086A024 /* ManagedActionProperty.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC791D64DDCF0025F925 /* ManagedActionTag.swift in Headers */ = {isa = PBXBuildFile; fileRef = 96E3C4131D3AC0960086A024 /* ManagedActionTag.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		96F1DC7A1D64DDCF0025F925 /* ManagedActionGroup.swift in Headers */ = {isa = PBXBuildFile; fileRef = 9686720F1D3BEA8F000CD904 /* ManagedActionGroup.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D0867712126110C00141EE3 /* CompoundString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D08676D2126110B00141EE3 /* CompoundString.swift */; };
+		9D0867722126110C00141EE3 /* CompoundString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D08676D2126110B00141EE3 /* CompoundString.swift */; };
+		9D0867732126110C00141EE3 /* Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D08676E2126110B00141EE3 /* Predicate.swift */; };
+		9D0867742126110C00141EE3 /* Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D08676E2126110B00141EE3 /* Predicate.swift */; };
 		9D1BF321211FAB8600939295 /* NamedManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF320211FAB8600939295 /* NamedManagedObject.swift */; };
 		9D1BF3242120654800939295 /* NamedManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF320211FAB8600939295 /* NamedManagedObject.swift */; };
 		9D77130021238B3500E8D3AE /* EntityCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7712FF21238B3500E8D3AE /* EntityCodableTests.swift */; };
@@ -272,6 +276,8 @@
 		96E3C4581D3AD6B00086A024 /* Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		96E3C45B1D3AE4F00086A024 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		96E3C45E1D3AE50E0086A024 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
+		9D08676D2126110B00141EE3 /* CompoundString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompoundString.swift; sourceTree = "<group>"; };
+		9D08676E2126110B00141EE3 /* Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Predicate.swift; sourceTree = "<group>"; };
 		9D1BF320211FAB8600939295 /* NamedManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedManagedObject.swift; sourceTree = "<group>"; };
 		9D7712FF21238B3500E8D3AE /* EntityCodableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityCodableTests.swift; sourceTree = "<group>"; };
 		9D77130221238E3600E8D3AE /* RelationshipCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipCodableTests.swift; sourceTree = "<group>"; };
@@ -477,6 +483,8 @@
 				96E3C4581D3AD6B00086A024 /* Search.swift */,
 				96E3C4521D3AD5CA0086A024 /* Watch.swift */,
 				9DD27AB221233E6500452EB4 /* AnyCodeable.swift */,
+				9D08676D2126110B00141EE3 /* CompoundString.swift */,
+				9D08676E2126110B00141EE3 /* Predicate.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
@@ -765,6 +773,7 @@
 				96E3C4431D3AC7E40086A024 /* ManagedRelationship.swift in Sources */,
 				96E3C42C1D3AC6B60086A024 /* Entity.swift in Sources */,
 				96E3C4361D3AC6F20086A024 /* ManagedObject.swift in Sources */,
+				9D0867732126110C00141EE3 /* Predicate.swift in Sources */,
 				96E3C4441D3AC7E40086A024 /* ManagedRelationshipTag.swift in Sources */,
 				962EB9D01D9E9E6800DFA8C4 /* GraphJSON.swift in Sources */,
 				9D1BF321211FAB8600939295 /* NamedManagedObject.swift in Sources */,
@@ -783,6 +792,7 @@
 				968672071D3BE6C2000CD904 /* ManagedGroup.swift in Sources */,
 				9686720A1D3BE9BA000CD904 /* ManagedEntityGroup.swift in Sources */,
 				96E3C4491D3AC7E40086A024 /* ManagedActionProperty.swift in Sources */,
+				9D0867712126110C00141EE3 /* CompoundString.swift in Sources */,
 				96E3C42E1D3AC6BD0086A024 /* ManagedEntity.swift in Sources */,
 				96E3C43E1D3AC7A00086A024 /* File.swift in Sources */,
 				96E3C4381D3AC6F20086A024 /* ManagedProperty.swift in Sources */,
@@ -838,6 +848,7 @@
 				96E3C44B1D3AC7E50086A024 /* ManagedRelationship.swift in Sources */,
 				96E3C42D1D3AC6B70086A024 /* Entity.swift in Sources */,
 				96E3C4391D3AC6F30086A024 /* ManagedObject.swift in Sources */,
+				9D0867742126110C00141EE3 /* Predicate.swift in Sources */,
 				96E3C44C1D3AC7E50086A024 /* ManagedRelationshipTag.swift in Sources */,
 				962EB9D11D9E9E6800DFA8C4 /* GraphJSON.swift in Sources */,
 				96E3C3F51D3AB8B00086A024 /* Model.swift in Sources */,
@@ -856,6 +867,7 @@
 				9686720B1D3BE9BA000CD904 /* ManagedEntityGroup.swift in Sources */,
 				96E3C4511D3AC7E50086A024 /* ManagedActionProperty.swift in Sources */,
 				96E3C4311D3AC6BE0086A024 /* ManagedEntity.swift in Sources */,
+				9D0867722126110C00141EE3 /* CompoundString.swift in Sources */,
 				96E3C43F1D3AC7A00086A024 /* File.swift in Sources */,
 				96E3C43B1D3AC6F30086A024 /* ManagedProperty.swift in Sources */,
 				96E3C3F21D3AB79F0086A024 /* Container.swift in Sources */,

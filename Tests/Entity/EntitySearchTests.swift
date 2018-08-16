@@ -44,12 +44,12 @@ class EntitySearchTests : XCTestCase {
   
   func searchTest(search: Search<Entity>, count: Int) {
     XCTAssertEqual(count, search.sync().count)
-    
+
     testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
     
-    search.sync { [weak self, count = count] in
+    search.sync {
       XCTAssertEqual(count, $0.count)
-      self?.testExpectation?.fulfill()
+      self.testExpectation?.fulfill()
     }
     
     waitForExpectations(timeout: 5, handler: nil)
@@ -95,55 +95,41 @@ class EntitySearchTests : XCTestCase {
     
     let search = Search<Entity>(graph: graph)
     
-    searchTest(search: search.clear().for(types: []), count: 0)
+    searchTest(search: search.clear().where(.types([])), count: 0)
+    searchTest(search: search.clear().where(.has(tags: [])), count: 0)
+    searchTest(search: search.clear().where(.member(of: [])), count: 0)
+    searchTest(search: search.clear().where(.exists("")), count: 0)
     
-    searchTest(search: search.clear().has(tags: [], using: .or), count: 0)
-    searchTest(search: search.clear().has(tags: [], using: .and), count: 0)
+    searchTest(search: search.clear().where(.types("NONE")), count: 0)
+    searchTest(search: search.clear().where(.types("T1")), count: 100)
+    searchTest(search: search.clear().where(.types("T1", "T2")), count: 300)
+    searchTest(search: search.clear().where(.types("T1", "T2", "T3")), count: 600)
+    searchTest(search: search.clear().where(.types("*")), count: 600)
+
+    searchTest(search: search.clear().where(.has(tags: "NONE")), count: 0)
+    searchTest(search: search.clear().where(.has(tags: "Q1")), count: 100)
+    searchTest(search: search.clear().where(.has(tags: "Q1" || "Q2")), count: 300)
+    searchTest(search: search.clear().where(.has(tags: "Q1", "Q2")), count: 0)
+    searchTest(search: search.clear().where(.has(tags: "Q1" || "Q2" || "Q3")), count: 600)
+    searchTest(search: search.clear().where(.has(tags: "Q1" && "Q3" && "Q3")), count: 0)
+    searchTest(search: search.clear().where(.has(tags: "*")), count: 600)
     
-    searchTest(search: search.clear().member(of: [], using: .or), count: 0)
-    searchTest(search: search.clear().member(of: [], using: .and), count: 0)
-    
-    searchTest(search: search.clear().where(properties: [""], using: .or), count: 0)
-    searchTest(search: search.clear().where(properties: [""], using: .and), count: 0)
-    
-    searchTest(search: search.clear().for(types: "NONE"), count: 0)
-    searchTest(search: search.clear().for(types: "T1"), count: 100)
-    searchTest(search: search.clear().for(types: "T1", "T2"), count: 300)
-    searchTest(search: search.clear().for(types: "T1", "T2", "T3"), count: 600)
-    searchTest(search: search.clear().for(types: "*"), count: 600)
-    
-    searchTest(search: search.clear().has(tags: ["NONE"], using: .or), count: 0)
-    searchTest(search: search.clear().has(tags: ["NONE"], using: .and), count: 0)
-    searchTest(search: search.clear().has(tags: ["Q1"], using: .or), count: 100)
-    searchTest(search: search.clear().has(tags: ["Q1"], using: .and), count: 100)
-    searchTest(search: search.clear().has(tags: ["Q1", "Q2"], using: .or), count: 300)
-    searchTest(search: search.clear().has(tags: ["Q1", "Q2"], using: .and), count: 0)
-    searchTest(search: search.clear().has(tags: ["Q1", "Q2", "Q3"], using: .or), count: 600)
-    searchTest(search: search.clear().has(tags: ["Q1", "Q3", "Q3"], using: .and), count: 0)
-    searchTest(search: search.clear().has(tags: ["*"], using: .or), count: 600)
-    searchTest(search: search.clear().has(tags: ["*"], using: .and), count: 0)
-    
-    searchTest(search: search.clear().member(of: ["NONE"], using: .or), count: 0)
-    searchTest(search: search.clear().member(of: ["NONE"], using: .and), count: 0)
-    searchTest(search: search.clear().member(of: ["G1"], using: .or), count: 100)
-    searchTest(search: search.clear().member(of: ["G1"], using: .and), count: 100)
-    searchTest(search: search.clear().member(of: ["G1", "G2"], using: .or), count: 300)
-    searchTest(search: search.clear().member(of: ["G1", "G2"], using: .and), count: 0)
-    searchTest(search: search.clear().member(of: ["G1", "G2", "G3"], using: .or), count: 600)
-    searchTest(search: search.clear().member(of: ["G1", "G3", "G3"], using: .and), count: 0)
-    searchTest(search: search.clear().member(of: ["*"], using: .or), count: 600)
-    searchTest(search: search.clear().member(of: ["*"], using: .and), count: 0)
-    
-    searchTest(search: search.clear().where(properties: ["NONE"], using: .or), count: 0)
-    searchTest(search: search.clear().where(properties: ["NONE"], using: .and), count: 0)
-    searchTest(search: search.clear().where(properties: ["P1"], using: .or), count: 100)
-    searchTest(search: search.clear().where(properties: ["P1"], using: .and), count: 100)
-    searchTest(search: search.clear().where(properties: ["P1", "P2"], using: .or), count: 300)
-    searchTest(search: search.clear().where(properties: ["P1", "P2"], using: .and), count: 0)
-    searchTest(search: search.clear().where(properties: ["P1", "P2", "P3"], using: .or), count: 600)
-    searchTest(search: search.clear().where(properties: ["P1", "P3", "P3"], using: .and), count: 0)
-    searchTest(search: search.clear().where(properties: ["*"], using: .or), count: 600)
-    searchTest(search: search.clear().where(properties: ["*"], using: .and), count: 0)
+    searchTest(search: search.clear().where(.member(of: "NONE")), count: 0)
+    searchTest(search: search.clear().where(.member(of: "G1")), count: 100)
+    searchTest(search: search.clear().where(.member(of: "G1" || "G2")), count: 300)
+    searchTest(search: search.clear().where(.member(of: "G1", "G2")), count: 0)
+    searchTest(search: search.clear().where(.member(of: "G1" || "G2" || "G3")), count: 600)
+    searchTest(search: search.clear().where(.member(of: "G1" && "G3" && "G3")), count: 0)
+    searchTest(search: search.clear().where(.member(of: "*")), count: 600)
+
+    searchTest(search: search.clear().where(.exists("NONE")), count: 0)
+    searchTest(search: search.clear().where(.exists("NONE")), count: 0)
+    searchTest(search: search.clear().where(.exists("P1")), count: 100)
+    searchTest(search: search.clear().where(.exists("P1" || "P2")), count: 300)
+    searchTest(search: search.clear().where(.exists("P1", "P2")), count: 0)
+    searchTest(search: search.clear().where(.exists("P1" || "P2" || "P3")), count: 600)
+    searchTest(search: search.clear().where(.exists("P1" && "P3" && "P3")), count: 0)
+    searchTest(search: search.clear().where(.exists("*")), count: 600)
     
     graph.clear()
   }
@@ -164,9 +150,8 @@ class EntitySearchTests : XCTestCase {
     }
     
     let search = Search<Entity>(graph: graph)
-    
     measure { [search = search] in
-      XCTAssertEqual(1000, search.clear().for(types: "T1").has(tags: ["Q1"], using: .and).member(of: ["G1"], using: .and).where(properties: ["P1"], using: .and).sync().count)
+      XCTAssertEqual(1000, search.clear().where(.types("T1") && .has(tags: "Q1") && .member(of: "G1") && .exists("P1")).sync().count)
     }
     
     graph.clear()
