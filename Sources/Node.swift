@@ -34,6 +34,35 @@ public enum NodeClass: Int {
   case entity = 1
   case relationship = 2
   case action = 3
+  
+  /**
+   An initializer that accepts a node type.
+   - Parameter _ nodeType: A reference to a node type.
+   */
+  init?(nodeType: Node.Type){
+    switch nodeType {
+    case is Entity.Type:
+      self = .entity
+    case is Relationship.Type:
+      self = .relationship
+    case is Action.Type:
+      self = .action
+    default:
+      return nil
+    }
+  }
+  
+  /// Model identifier for node class.
+  var identifier: String {
+    switch self {
+    case .entity:
+      return ModelIdentifier.entityName
+    case .relationship:
+      return ModelIdentifier.relationshipName
+    case .action:
+      return ModelIdentifier.actionName
+    }
+  }
 }
 
 

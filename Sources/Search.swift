@@ -42,9 +42,7 @@ public class Search<T: Node> {
   
   /// A reference to search predicate.
   internal private(set) var predicate: Predicate!
-  
-  private var identifier: String
-  
+    
   /**
    An initializer that accepts a NodeClass and Graph
    instance.
@@ -52,16 +50,6 @@ public class Search<T: Node> {
    */
   public init(graph: Graph = Graph()) {
     self.graph = graph
-    switch T.self {
-    case is Entity.Type:
-      identifier = ModelIdentifier.entityName
-    case is Relationship.Type:
-      identifier = ModelIdentifier.relationshipName
-    case is Action.Type:
-      identifier = ModelIdentifier.actionName
-    default:
-      fatalError()
-    }
   }
   
   /**
@@ -144,7 +132,11 @@ private extension Search {
     guard let predicate = predicate?.predicate else {
       return []
     }
-    
+
+    guard let identifier = NodeClass(nodeType: T.self)?.identifier else {
+      fatalError("[Graph Error: Unsupported type for Search]")
+    }
+
     let request = NSFetchRequest<ManagedNode>()
     request.entity = NSEntityDescription.entity(forEntityName: identifier, in: moc)!
     request.fetchBatchSize = graph.batchSize
