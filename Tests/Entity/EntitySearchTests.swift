@@ -95,9 +95,9 @@ class EntitySearchTests : XCTestCase {
     
     let search = Search<Entity>(graph: graph)
     
-    searchTest(search: search.clear().where(.types([])), count: 0)
-    searchTest(search: search.clear().where(.types([], using: ||)), count: 0)
-    searchTest(search: search.clear().where(.types([], using: &&)), count: 0)
+    searchTest(search: search.clear().where(.type([])), count: 0)
+    searchTest(search: search.clear().where(.type([], using: ||)), count: 0)
+    searchTest(search: search.clear().where(.type([], using: &&)), count: 0)
     searchTest(search: search.clear().where(.has(tags: [])), count: 0)
     searchTest(search: search.clear().where(.has(tags: [], using: ||)), count: 0)
     searchTest(search: search.clear().where(.has(tags: [], using: &&)), count: 0)
@@ -108,14 +108,14 @@ class EntitySearchTests : XCTestCase {
     searchTest(search: search.clear().where(.exists("", using: ||)), count: 0)
     searchTest(search: search.clear().where(.exists("", using: &&)), count: 0)
     
-    searchTest(search: search.clear().where(.types(["NONE"])), count: 0)
-    searchTest(search: search.clear().where(.types("T1")), count: 100)
-    searchTest(search: search.clear().where(.types("T1", "T2")), count: 300)
-    searchTest(search: search.clear().where(.types("T1", "T2", using: ||)), count: 300)
-    searchTest(search: search.clear().where(.types("T1", "T2", using: &&)), count: 0)
-    searchTest(search: search.clear().where(.types("T1" || "T2" || "T3")), count: 600)
-    searchTest(search: search.clear().where(.types("T1" && "T2" && "T3")), count: 0)
-    searchTest(search: search.clear().where(.types("*")), count: 600)
+    searchTest(search: search.clear().where(.type(["NONE"])), count: 0)
+    searchTest(search: search.clear().where(.type("T1")), count: 100)
+    searchTest(search: search.clear().where(.type("T1", "T2")), count: 300)
+    searchTest(search: search.clear().where(.type("T1", "T2", using: ||)), count: 300)
+    searchTest(search: search.clear().where(.type("T1", "T2", using: &&)), count: 0)
+    searchTest(search: search.clear().where(.type("T1" || "T2" || "T3")), count: 600)
+    searchTest(search: search.clear().where(.type("T1" && "T2" && "T3")), count: 0)
+    searchTest(search: search.clear().where(.type("*")), count: 600)
     
     searchTest(search: search.clear().where(.has(tags: "NONE")), count: 0)
     searchTest(search: search.clear().where(.has(tags: "Q1")), count: 100)
@@ -164,7 +164,7 @@ class EntitySearchTests : XCTestCase {
     
     let search = Search<Entity>(graph: graph)
     measure { [search = search] in
-      XCTAssertEqual(1000, search.clear().where(.types("T1") && .has(tags: "Q1") && .member(of: "G1") && .exists("P1")).sync().count)
+      XCTAssertEqual(1000, search.clear().where(.type("T1") && .has(tags: "Q1") && .member(of: "G1") && .exists("P1")).sync().count)
     }
     
     graph.clear()

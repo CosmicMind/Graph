@@ -59,7 +59,7 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
     tagAddExpception = expectation(description: "[ActionTests Error: Tag add test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Action>(graph: graph).where(.types("T") || .has(tags: ["G1"]))
+    let watch = Watch<Action>(graph: graph).where(.type("T") || .has(tags: ["G1"]))
     watch.delegate = self
     
     let action = Action("T")

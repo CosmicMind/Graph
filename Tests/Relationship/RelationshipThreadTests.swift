@@ -62,7 +62,7 @@ class RelationshipThreadTests : XCTestCase, GraphRelationshipDelegate {
     let q3 = DispatchQueue(label: "com.cosmicmind.graph.thread.3", attributes: .concurrent)
     
     let graph = Graph()
-    let watch = Watch<Relationship>(graph: graph).where(.types("T") || .has(tags: "G") || .exists("P"))
+    let watch = Watch<Relationship>(graph: graph).where(.type("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let relationship = Relationship("T")

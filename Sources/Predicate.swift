@@ -67,23 +67,23 @@ extension Predicate {
     return properties.predicate(with: "ANY propertySet.name LIKE[cd]")
   }
   
-  static func types(_ types: String...) -> Predicate {
-    return self.types(types)
+  static func type(_ types: String...) -> Predicate {
+    return self.type(types)
   }
   
-  static func types(_ types: [String]) -> Predicate {
-    return self.types(types, using: ||)
+  static func type(_ types: [String]) -> Predicate {
+    return self.type(types, using: ||)
   }
   
-  static func types(_ types: String..., using compounder: Compounder) -> Predicate {
-    return self.types(types, using: compounder)
+  static func type(_ types: String..., using compounder: Compounder) -> Predicate {
+    return self.type(types, using: compounder)
   }
   
-  static func types(_ types: [String], using compounder: Compounder) -> Predicate {
-    return self.types(types.compound(with: compounder))
+  static func type(_ types: [String], using compounder: Compounder) -> Predicate {
+    return self.type(types.compound(with: compounder))
   }
   
-  static func types(_ types: CompoundString) -> Predicate {
+  static func type(_ types: CompoundString) -> Predicate {
     return types.predicate(with: "type LIKE[cd]")
   }
   

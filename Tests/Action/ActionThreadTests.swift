@@ -62,7 +62,7 @@ class ActionThreadTests : XCTestCase, GraphActionDelegate {
     let q3 = DispatchQueue(label: "com.cosmicmind.graph.thread.3", attributes: .concurrent)
     
     let graph = Graph()
-    let watch = Watch<Action>(graph: graph).where(.types("T") || .has(tags: "G") || .exists("P"))
+    let watch = Watch<Action>(graph: graph).where(.type("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let action = Action("T")

@@ -58,7 +58,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
     tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Entity>(graph: graph).where(.types("T") || .has(tags: "G1"))
+    let watch = Watch<Entity>(graph: graph).where(.type("T") || .has(tags: "G1"))
     watch.delegate = self
     
     let entity = Entity("T")

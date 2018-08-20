@@ -58,7 +58,7 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
     tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Relationship>(graph: graph).where(.types("T") || .has(tags: "G1"))
+    let watch = Watch<Relationship>(graph: graph).where(.type("T") || .has(tags: "G1"))
     watch.delegate = self
     
     let relationship = Relationship("T")
