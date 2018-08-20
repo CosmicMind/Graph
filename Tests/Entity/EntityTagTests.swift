@@ -39,7 +39,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
   var tagRemoveExpception: XCTestExpectation?
   
   func testHasTagsUsingCondition() {
-    let entity = Entity("T")
+    let entity = Entity("TaggedType")
     entity.add(tags: "T1", "T2", "T3")
     
     /// .and condition
@@ -56,7 +56,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
     tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Entity>(graph: graph).for(types: "T").has(tags: "G1")
+    let watch = Watch<Entity>(graph: graph).where(.types("T") || .has(tags: "G1"))
     watch.delegate = self
     
     let entity = Entity("T")
@@ -93,7 +93,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
     tagAddExpception = expectation(description: "[EntityTests Error: Tag add test failed.]")
     tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
     
-    let watch = Watch<Entity>(graph: graph).has(tags: "G1", "G2")
+    let watch = Watch<Entity>(graph: graph).where(.has(tags: "G1", "G2"))
     watch.delegate = self
     
     entity.toggle(tags: "G1", "G2")
@@ -131,7 +131,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
     saveExpectation = expectation(description: "[EntityTests Error: Graph save test failed.]")
     tagRemoveExpception = expectation(description: "[EntityTests Error: Tag remove test failed.]")
     
-    let watch = Watch<Entity>(graph: graph).has(tags: "G2")
+    let watch = Watch<Entity>(graph: graph).where(.has(tags: "G2"))
     watch.delegate = self
     
     entity.remove(tags: "G2")

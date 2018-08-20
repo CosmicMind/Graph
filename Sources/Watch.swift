@@ -363,51 +363,8 @@ public class Watch<T: Node>: Watchable {
   /// A reference to a delagte object.
   public weak var delegate: GraphNodeDelegate?
   
-  /// A reference to the type.
-  public fileprivate(set) var types: [String]?
-  
-  /// A reference to the typesPredicate.
-  public fileprivate(set) var typesPredicate: NSPredicate?
-  
-  /// A reference to the tags.
-  public fileprivate(set) var tags: [String]?
-  
-  /// A reference to the tagsPredicate.
-  public fileprivate(set) var tagsPredicate: NSPredicate?
-  
-  /// A reference to the groups.
-  public fileprivate(set) var groups: [String]?
-  
-  /// A reference to the groupsPredicate.
-  public fileprivate(set) var groupsPredicate: NSPredicate?
-  
-  /// A reference to the properties.
-  public fileprivate(set) var properties: [String]?
-  
-  /// A reference to the propertiesPredicate.
-  public fileprivate(set) var propertiesPredicate: NSPredicate?
-  
-  /// A reference to the predicate.
-  public var predicate: NSPredicate? {
-    var p = [NSPredicate]()
-    if let v = typesPredicate {
-      p.append(v)
-    }
-    
-    if let v = tagsPredicate {
-      p.append(v)
-    }
-    
-    if let v = groupsPredicate {
-      p.append(v)
-    }
-    
-    if let v = propertiesPredicate {
-      p.append(v)
-    }
-    
-    return NSCompoundPredicate(orPredicateWithSubpredicates: p)
-  }
+  /// A reference to watch predicate.
+  internal private(set) var predicate: Predicate!
   
   /**
    A boolean indicating if the Watch instance is
@@ -436,15 +393,15 @@ public class Watch<T: Node>: Watchable {
    */
   @discardableResult
   public func clear() -> Watch {
-    types = nil
-    typesPredicate = nil
-    tags = nil
-    tagsPredicate = nil
-    groups = nil
-    groupsPredicate = nil
-    properties = nil
-    propertiesPredicate = nil
-    
+    predicate = nil
+    return self
+  }
+  
+  @discardableResult
+  public func `where`(_ predicate: Predicate) -> Watch {
+    self.predicate = self.predicate.map {
+      $0 || predicate
+    } ?? predicate
     return self
   }
   
@@ -477,126 +434,6 @@ public class Watch<T: Node>: Watchable {
   }
   
   /**
-   Watches nodes with given types.
-   - Parameter types: A parameter list of Strings.
-   - Returns: A Watch instance.
-   */
-  @discardableResult
-  public func `for`(types: String...) -> Watch {
-    return self.for(types: types)
-  }
-  
-  /**
-   Watches nodes with given types.
-   - Parameter types: An Array of Strings.
-   - Returns: A Watch instance.
-   */
-  @discardableResult
-  public func `for`(types: [String]) -> Watch {
-    self.types = types
-    switch T.self {
-    case is Entity.Type:
-      watchForEntity(types: types)
-    case is Relationship.Type:
-      watchForRelationship(types: types)
-    case is Action.Type:
-      watchForAction(types: types)
-    default: break
-    }
-    return self
-  }
-  
-  /**
-   Watches nodes with given tags.
-   - Parameter tags: A parameter list of Strings.
-   - Returns: A Watch instance.
-   */
-  @discardableResult
-  public func has(tags: String...) -> Watch {
-    return has(tags: tags)
-  }
-  
-  /**
-   Watches nodes with given tags.
-   - Parameter tags: An Array of Strings.
-   - Returns: A Watch instance.
-   */
-  @discardableResult
-  public func has(tags: [String]) -> Watch {
-    self.tags = tags
-    switch T.self {
-    case is Entity.Type:
-      watchForEntity(tags: tags)
-    case is Relationship.Type:
-      watchForRelationship(tags: tags)
-    case is Action.Type:
-      watchForAction(tags: tags)
-    default:break
-    }
-    return self
-  }
-  
-  /**
-   Watches nodes with given groups.
-   - Parameter groups: A parameter list of Strings.
-   - Returns: A Watch instance.
-   */
-  @discardableResult
-  public func member(of groups: String...) -> Watch {
-    return member(of: groups)
-  }
-  
-  /**
-   Watches nodes with given groups.
-   - Parameter groups: An Array of Strings.
-   - Returns: A Watch instance.
-   */
-  @discardableResult
-  public func member(of groups: [String]) -> Watch {
-    self.groups = groups
-    switch T.self {
-    case is Entity.Type:
-      watchForEntity(groups: groups)
-    case is Relationship.Type:
-      watchForRelationship(groups: groups)
-    case is Action.Type:
-      watchForAction(groups: groups)
-    default:break
-    }
-    return self
-  }
-  
-  /**
-   Watches nodes with given properties.
-   - Parameter properties: A parameter list of Strings.
-   - Returns: A Watch instance.
-   */
-  @discardableResult
-  public func `where`(properties: String...) -> Watch {
-    return self.where(properties: properties)
-  }
-  
-  /**
-   Watches nodes with given properties.
-   - Parameter groups: An Array of Strings.
-   - Returns: A Watch instance.
-   */
-  @discardableResult
-  public func `where`(properties: [String]) -> Watch {
-    self.properties = properties
-    switch T.self {
-    case is Entity.Type:
-      watchForEntity(properties: properties)
-    case is Relationship.Type:
-      watchForRelationship(properties: properties)
-    case is Action.Type:
-      watchForAction(properties: properties)
-    default:break
-    }
-    return self
-  }
-  
-  /**
    Notifies inserted watchers from local changes.
    - Parameter notification: NSNotification reference.
    */
@@ -606,11 +443,7 @@ public class Watch<T: Node>: Watchable {
       return
     }
     
-    guard let p = predicate else {
-      return
-    }
-    
-    delegateToInsertedWatchers(objects.filtered(using: p), source: .local)
+    delegateToInsertedWatchers(filtered(objects), source: .local)
   }
   
   /**
@@ -623,11 +456,7 @@ public class Watch<T: Node>: Watchable {
       return
     }
     
-    guard let p = predicate else {
-      return
-    }
-    
-    delegateToUpdatedWatchers(objects.filtered(using: p), source: .local)
+    delegateToUpdatedWatchers(filtered(objects), source: .local)
   }
   
   /**
@@ -640,11 +469,7 @@ public class Watch<T: Node>: Watchable {
       return
     }
     
-    guard let p = predicate else {
-      return
-    }
-    
-    delegateToDeletedWatchers(objects.filtered(using: p), source: .local)
+    delegateToDeletedWatchers(filtered(objects), source: .local)
   }
   
   /**
@@ -656,11 +481,7 @@ public class Watch<T: Node>: Watchable {
     guard let objectIDs = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
       return
     }
-    
-    guard let p = predicate else {
-      return
-    }
-    
+
     guard let moc = graph.managedObjectContext else {
       return
     }
@@ -670,7 +491,7 @@ public class Watch<T: Node>: Watchable {
       objects.add(moc.object(with: objectID))
     }
     
-    delegateToInsertedWatchers(objects.filtered(using: p), source: .cloud)
+    delegateToInsertedWatchers(filtered(objects), source: .cloud)
   }
   
   /**
@@ -683,10 +504,6 @@ public class Watch<T: Node>: Watchable {
       return
     }
     
-    guard let p = predicate else {
-      return
-    }
-    
     guard let moc = graph.managedObjectContext else {
       return
     }
@@ -696,7 +513,7 @@ public class Watch<T: Node>: Watchable {
       objects.add(moc.object(with: objectID))
     }
     
-    delegateToUpdatedWatchers(objects.filtered(using: p), source: .cloud)
+    delegateToUpdatedWatchers(filtered(objects), source: .cloud)
   }
   
   /**
@@ -709,10 +526,6 @@ public class Watch<T: Node>: Watchable {
       return
     }
     
-    guard let p = predicate else {
-      return
-    }
-    
     guard let moc = graph.managedObjectContext else {
       return
     }
@@ -722,7 +535,7 @@ public class Watch<T: Node>: Watchable {
       objects.add(moc.object(with: objectID))
     }
     
-    delegateToDeletedWatchers(objects.filtered(using: p), source: .cloud)
+    delegateToDeletedWatchers(filtered(objects), source: .cloud)
   }
 }
 
@@ -1158,141 +971,67 @@ fileprivate extension Watch {
   fileprivate func prepareGraph() {
     graph.watchers.append(Watcher(object: self))
   }
-}
-
-/// Watch mechanics.
-fileprivate extension Watch {
-  /**
-   Watches for Entities that fall into any of the specified facets.
-   - Parameter types: An Array of Entity types.
-   - Parameter tags: An Array of tags.
-   - Parameter groups: An Array of groups.
-   - Parameter properties: An Array of property typles.
-   - Returns: An Array of Entities.
-   */
-  func watchForEntity(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-    if let v = types {
-      watch(types: v, index: ModelIdentifier.entityName)
-    }
-    
-    if let v = tags {
-      watch(tags: v, index: ModelIdentifier.entityTagName)
-    }
-    
-    if let v = groups {
-      watch(groups: v, index: ModelIdentifier.entityGroupName)
-    }
-    
-    if let v = properties {
-      watch(properties: v, index: ModelIdentifier.entityPropertyName)
-    }
-  }
   
-  /**
-   Watches for Relationships that fall into any of the specified facets.
-   - Parameter types: An Array of Relationship types.
-   - Parameter tags: An Array of tags.
-   - Parameter groups: An Array of groups.
-   - Parameter properties: An Array of property typles.
-   - Returns: An Array of Relationships.
-   */
-  func watchForRelationship(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-    if let v = types {
-      watch(types: v, index: ModelIdentifier.relationshipName)
+  private func filtered(_ objects: NSSet) -> Set<AnyHashable> {
+    guard let objects = objects as? Set<ManagedObject> else {
+      return []
     }
     
-    if let v = tags {
-      watch(tags: v, index: ModelIdentifier.relationshipTagName)
+    func passesPredicate(_ node: ManagedNode) -> Bool {
+      guard node.nodeClass == NodeClass(nodeType: T.self)?.rawValue else {
+        return false
+      }
+      
+      var tagSet = node.tagSet
+      var groupSet = node.groupSet
+      var propertySet = node.propertySet
+      
+      let oldNodeValues = node.changedValuesForCurrentEvent()
+      
+      
+      if let oldTagSet = oldNodeValues["tagSet"] as? Set<ManagedTag> {
+        tagSet.formUnion(oldTagSet)
+      }
+      
+      if let oldGroupSet = oldNodeValues["groupSet"] as? Set<ManagedGroup> {
+        groupSet.formUnion(oldGroupSet)
+      }
+      
+      if let oldPropertySet = oldNodeValues["propertySet"] as? Set<ManagedProperty> {
+        propertySet.formUnion(oldPropertySet)
+      }
+      
+      let dictionary: [String: Any] = [
+          "type": node.type,
+          "tagSet": tagSet,
+          "groupSet": groupSet,
+          "propertySet": propertySet,
+        ]
+      
+      return ([dictionary] as NSArray).filtered(using: predicate.predicate).isEmpty == false
     }
     
-    if let v = groups {
-      watch(groups: v, index: ModelIdentifier.relationshipGroupName)
+    let namedOnesThatPass = objects.filter {
+      guard let n = $0 as? NamedManagedObject else {
+        return false
+      }
+      
+      guard let v = n.node == nil ? (n.changedValuesForCurrentEvent()["node"] as? ManagedNode): n.node else {
+        return false
+      }
+      
+      return passesPredicate(v)
     }
     
-    if let v = properties {
-      watch(properties: v, index: ModelIdentifier.relationshipPropertyName)
-    }
-  }
-  
-  /**
-   Watches for Actions that fall into any of the specified facets.
-   - Parameter types: An Array of Action types.
-   - Parameter tags: An Array of tags.
-   - Parameter groups: An Array of groups.
-   - Parameter properties: An Array of property typles.
-   - Returns: An Array of Actions.
-   */
-  func watchForAction(types: [String]? = nil, tags: [String]? = nil, groups: [String]? = nil, properties: [String]? = nil) {
-    if let v = types {
-      watch(types: v, index: ModelIdentifier.actionName)
+    let nodesThatPass = objects.filter {
+      guard let n = $0 as? ManagedNode else {
+        return false
+      }
+      
+      return passesPredicate(n)
     }
     
-    if let v = tags {
-      watch(tags: v, index: ModelIdentifier.actionTagName)
-    }
     
-    if let v = groups {
-      watch(groups: v, index: ModelIdentifier.actionGroupName)
-    }
-    
-    if let v = properties {
-      watch(properties: v, index: ModelIdentifier.actionPropertyName)
-    }
-  }
-  
-  /**
-   Watch for a Node.
-   - Parameter types: An Array of Strings.
-   - Parameter index: A String.
-   */
-  func watch(types: [String], index: String) {
-    let p = addWatcher(key: "type", index: index, values: types)
-    typesPredicate = nil == typesPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, typesPredicate!])
-  }
-  
-  /**
-   Watch for a Tag.
-   - Parameter tags: An Array of Strings.
-   - Parameter index: A String.
-   */
-  func watch(tags: [String], index: String) {
-    let p = addWatcher(key: "name", index: index, values: tags)
-    tagsPredicate = nil == tagsPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, tagsPredicate!])
-  }
-  
-  /**
-   Watch for a Group.
-   - Parameter groups: An Array of Strings.
-   - Parameter index: A String.
-   */
-  func watch(groups: [String], index: String) {
-    let p = addWatcher(key: "name", index: index, values: groups)
-    groupsPredicate = nil == groupsPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, groupsPredicate!])
-  }
-  
-  /**
-   Watch for a Property.
-   - Parameter properties: An Array of Strings.
-   - Parameter index: A String.
-   */
-  func watch(properties: [String], index: String) {
-    let p = addWatcher(key: "name", index: index, values: properties)
-    propertiesPredicate = nil == propertiesPredicate ? p : NSCompoundPredicate(andPredicateWithSubpredicates: [p, propertiesPredicate!])
-  }
-  
-  /**
-   Adds a watcher.
-   - Parameter key: A parent level key to watch for.
-   - Parameter index: A Model index.
-   - Parameter values: An Array of Strings.
-   */
-  func addWatcher(key: String, index: String, values: [String]) -> NSCompoundPredicate {
-    var p = [NSPredicate]()
-    
-    values.forEach { [key = key] in
-      p.append(NSPredicate(format: "%K LIKE %@", key, $0))
-    }
-    
-    return NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "entity.name == %@", index), NSCompoundPredicate(orPredicateWithSubpredicates: p)])
+    return nodesThatPass.union(namedOnesThatPass)
   }
 }

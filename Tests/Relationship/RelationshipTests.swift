@@ -52,7 +52,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Relationship>(graph: graph).where(.types("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let relationship = Relationship("T")
@@ -77,7 +77,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
     
     let graph = Graph(name: "RelationshipTests-testNamedGraphSave")
-    let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Relationship>(graph: graph).where(.types("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let relationship = Relationship("T", graph: "RelationshipTests-testNamedGraphSave")
@@ -102,7 +102,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
     
     let graph = Graph(name: "RelationshipTests-testReferenceGraphSave")
-    let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Relationship>(graph: graph).where(.types("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let relationship = Relationship("T", graph: graph)
@@ -129,7 +129,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
     
     let graph = Graph(name: "RelationshipTests-testAsyncGraphSave")
-    let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Relationship>(graph: graph).where(.types("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let relationship = Relationship("T", graph: graph)
@@ -156,7 +156,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Relationship>(graph: graph).where(.types("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let subject = Entity("S")
@@ -223,7 +223,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Relationship>(graph: graph).where(.types("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let relationship = Relationship("T")
@@ -267,7 +267,7 @@ class RelationshipTests: XCTestCase, GraphRelationshipDelegate {
     propertyExpception = expectation(description: "[RelationshipTests Error: Property test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Relationship>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Relationship>(graph: graph).where(.types("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let relationship = Relationship("T")

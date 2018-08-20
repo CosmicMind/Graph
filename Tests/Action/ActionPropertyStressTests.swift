@@ -54,7 +54,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
     actionInsertExpectation = expectation(description: "[ActionPropertyStressTests Error: Action insert test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Action>(graph: graph).for(types: "T")
+    let watch = Watch<Action>(graph: graph).where(.types("T"))
     watch.delegate = self
     
     let action = Action("T")
@@ -71,7 +71,7 @@ class ActionPropertyStressTests: XCTestCase, GraphActionDelegate {
     for i in 0..<100 {
       properties.append("P\(i)")
     }
-    watch.where(properties: properties)
+    watch.where(.exists(properties))
     
     for i in 0..<100 {
       let property = "P\(i)"
