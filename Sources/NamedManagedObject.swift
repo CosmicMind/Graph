@@ -33,7 +33,7 @@ import Foundation
 
 class NamedManagedObject: ManagedObject {
   @NSManaged internal var name: String
-  @NSManaged internal var node: ManagedNode
+  @NSManaged internal var node: ManagedNode!
   
   /**
    Initializer that accepts a name and a NSManagedObjectContext.
