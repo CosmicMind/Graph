@@ -65,7 +65,7 @@ public class Search<T: Node> {
   @discardableResult
   public func `where`(_ predicate: Predicate) -> Search {
     self.predicate = self.predicate.map {
-      $0 && predicate
+      $0 || predicate
     } ?? predicate
     
     return self

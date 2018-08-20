@@ -52,7 +52,15 @@ extension Predicate {
   }
   
   static func exists(_ properties: [String]) -> Predicate {
-    return exists(properties.compound(with: &&))
+    return exists(properties, using: ||)
+  }
+  
+  static func exists(_ properties: String..., using compounder: Compounder) -> Predicate {
+    return exists(properties, using: compounder)
+  }
+  
+  static func exists(_ properties: [String], using compounder: Compounder) -> Predicate {
+    return exists(properties.compound(with: compounder))
   }
   
   static func exists(_ properties: CompoundString) -> Predicate {
@@ -64,15 +72,35 @@ extension Predicate {
   }
   
   static func types(_ types: [String]) -> Predicate {
-    return types.compound(with: ||).predicate(with: "type LIKE[cd]")
+    return self.types(types, using: ||)
   }
-
+  
+  static func types(_ types: String..., using compounder: Compounder) -> Predicate {
+    return self.types(types, using: compounder)
+  }
+  
+  static func types(_ types: [String], using compounder: Compounder) -> Predicate {
+    return self.types(types.compound(with: compounder))
+  }
+  
+  static func types(_ types: CompoundString) -> Predicate {
+    return types.predicate(with: "type LIKE[cd]")
+  }
+  
   static func has(tags: String...) -> Predicate {
     return has(tags: tags)
   }
   
   static func has(tags: [String]) -> Predicate {
-    return has(tags: tags.compound(with: &&))
+    return has(tags: tags, using: ||)
+  }
+
+  static func has(tags: String..., using compounder: Compounder) -> Predicate {
+    return has(tags: tags, using: compounder)
+  }
+  
+  static func has(tags: [String], using compounder: Compounder) -> Predicate {
+    return has(tags: tags.compound(with: compounder))
   }
   
   static func has(tags: CompoundString) -> Predicate {
@@ -84,7 +112,15 @@ extension Predicate {
   }
   
   static func member(of groups: [String]) -> Predicate {
-    return member(of: groups.compound(with: &&))
+    return member(of: groups, using: ||)
+  }
+  
+  static func member(of groups: String..., using compounder: Compounder) -> Predicate {
+    return member(of: groups, using: compounder)
+  }
+  
+  static func member(of groups: [String], using compounder: Compounder) -> Predicate {
+    return member(of: groups.compound(with: compounder))
   }
   
   static func member(of groups: CompoundString) -> Predicate {
@@ -92,8 +128,10 @@ extension Predicate {
   }
 }
 
+public typealias Compounder = (CompoundString, CompoundString) -> CompoundString
+
 private extension Array where Element == String {
-  func compound(with block: (CompoundString, CompoundString) -> CompoundString) -> CompoundString {
+  func compound(with block: Compounder) -> CompoundString {
     guard !isEmpty else {
       return CompoundString()
     }
