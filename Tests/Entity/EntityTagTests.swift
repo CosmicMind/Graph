@@ -39,7 +39,7 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
   var tagRemoveExpception: XCTestExpectation?
   
   func testHasTagsUsingCondition() {
-    let entity = Entity("TaggedType")
+    let entity = Entity("T")
     entity.add(tags: "T1", "T2", "T3")
     
     /// .and condition
@@ -49,6 +49,8 @@ class EntityTagTests: XCTestCase, GraphEntityDelegate {
     /// .or condition
     XCTAssertTrue(entity.has(tags: ["T3", "T4", "T5", "T6"], using: .or))
     XCTAssertFalse(entity.has(tags: ["T4", "T5", "T6", "T7"], using: .or))
+    
+    entity.delete()
   }
   
   func testTagAdd() {

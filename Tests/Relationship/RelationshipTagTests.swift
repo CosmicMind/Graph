@@ -39,16 +39,18 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
   var tagRemoveExpception: XCTestExpectation?
   
   func testHasTagsUsingCondition() {
-    let entity = Entity("T")
-    entity.add(tags: "T1", "T2", "T3")
+    let relationship = Relationship("T")
+    relationship.add(tags: "T1", "T2", "T3")
     
     /// .and condition
-    XCTAssertTrue(entity.has(tags: ["T1", "T2", "T3"], using: .and))
-    XCTAssertFalse(entity.has(tags: ["T1", "T2", "T3", "T4"], using: .and))
+    XCTAssertTrue(relationship.has(tags: ["T1", "T2", "T3"], using: .and))
+    XCTAssertFalse(relationship.has(tags: ["T1", "T2", "T3", "T4"], using: .and))
     
     /// .or condition
-    XCTAssertTrue(entity.has(tags: ["T3", "T4", "T5", "T6"], using: .or))
-    XCTAssertFalse(entity.has(tags: ["T4", "T5", "T6", "T7"], using: .or))
+    XCTAssertTrue(relationship.has(tags: ["T3", "T4", "T5", "T6"], using: .or))
+    XCTAssertFalse(relationship.has(tags: ["T4", "T5", "T6", "T7"], using: .or))
+
+    relationship.delete()
   }
 
   func testTagAdd() {
