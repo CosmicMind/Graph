@@ -32,18 +32,43 @@ public prefix func !(predicate: Predicate) -> Predicate {
   return Predicate([predicate], type: .not)
 }
 
-private func build(_ key: String, _ value: CVarArg) -> Predicate {
-  let v = value as? NSNumber
-  let predicates = [
-    NSPredicate(format: "ANY propertySet.name LIKE[cd] %@", key),
-    NSPredicate(format: "ANY propertySet.object = %@", v ?? value)
-  ]
+private func build(_ key: String, _ value: CVarArg, type: NSComparisonPredicate.Operator) -> Predicate {
+
+  let isString = value is String
+  let requiresNot = isString && type == .notEqualTo
   
-  return Predicate(predicates)
+  let o = NSComparisonPredicate(leftExpression: NSExpression(forKeyPath: "$property.object"),
+                                rightExpression: NSExpression(forConstantValue: value),
+                                modifier: .direct,
+                                type: isString ? .like : type,
+                                options: isString ? [.caseInsensitive, .diacriticInsensitive] : []).predicateFormat
+
+  let p = NSPredicate(format: "\(requiresNot ? "NOT" : "")(SUBQUERY(propertySet, $property, $property.name LIKE[cd] %@ AND \(o)).@count > 0)", key)
+  return Predicate([p])
 }
 
 public func ==(left: String, right: CVarArg) -> Predicate {
-  return build(left, right)
+  return build(left, right, type: .equalTo)
+}
+
+public func !=(left: String, right: CVarArg) -> Predicate {
+  return build(left, right, type: .notEqualTo)
+}
+
+public func >(left: String, right: NSNumber) -> Predicate {
+  return build(left, right, type: .greaterThan)
+}
+
+public func >=(left: String, right: NSNumber) -> Predicate {
+  return build(left, right, type: .greaterThanOrEqualTo)
+}
+
+public func <(left: String, right: NSNumber) -> Predicate {
+  return build(left, right, type: .lessThan)
+}
+
+public func <=(left: String, right: NSNumber) -> Predicate {
+  return build(left, right, type: .lessThanOrEqualTo)
 }
 
 extension Predicate {

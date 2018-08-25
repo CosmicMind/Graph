@@ -141,8 +141,7 @@ private extension Search {
     request.entity = NSEntityDescription.entity(forEntityName: identifier, in: moc)!
     request.fetchBatchSize = graph.batchSize
     request.fetchOffset = graph.batchOffset
-    request.predicate = predicate
-    
+    request.predicate = predicate.removingPropertyCases()
     var result: [AnyObject]?
     
     moc.performAndWait { [unowned request] in
@@ -155,9 +154,18 @@ private extension Search {
       } catch {}
     }
     
-    return (result as? [ManagedNode] ?? []).map {
-      T(managedNode: $0)
+    var array: [T] = []
+    moc.performAndWait {
+      array = (result as? [ManagedNode] ?? []).compactMap {
+        guard predicate.evaluate(with: $0) else {
+          return nil
+        }
+        
+        return T(managedNode: $0)
+      }
     }
+    
+    return array
   }
 }
 
@@ -173,4 +181,31 @@ public func +<T>(left: Search<T>, right: Search<T>) -> Search<T> {
 
 public func +=<T>(left: inout Search<T>, right: Search<T>) {
   left = left + right
+}
+
+private extension NSPredicate {
+  func removingPropertyCases() -> NSPredicate {
+    let reducedFormat = predicateFormat
+      .replacing("(N[NOT ]+T )?SUBQUERY\\(propertySet.+?\\)\\.@count > 0")
+      .replacing("TRUEPREDICATE AND TRUEPREDICATE")
+      .replacing("TRUEPREDICATE OR TRUEPREDICATE")
+      .replacing("NOT TRUEPREDICATE")
+    
+    let reducedPredicate = NSPredicate(format: reducedFormat)
+    
+    guard reducedPredicate == self else {
+      return reducedPredicate.removingPropertyCases()
+    }
+    
+    return reducedPredicate
+  }
+}
+
+private extension String {
+  func replacing(_ pattern: String) -> String {
+    let regex = try! NSRegularExpression(pattern: pattern)
+    return regex.stringByReplacingMatches(in: self, options: [],
+                                          range: NSRange(location: 0, length: count),
+                                          withTemplate: "TRUEPREDICATE")
+  }
 }

@@ -37,3 +37,8 @@ public func &&(left: CompoundString, right: CompoundString) -> CompoundString {
 public func ||(left: CompoundString, right: CompoundString) -> CompoundString {
   return CompoundString([left, right], type: .or)
 }
+
+public prefix func !(compound: CompoundString) -> CompoundString {
+  return CompoundString([compound], type: .not)
+}
+
