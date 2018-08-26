@@ -972,11 +972,21 @@ fileprivate extension Watch {
     graph.watchers.append(Watcher(object: self))
   }
   
+  /**
+   Filter node objects in the given NSSet based on the Predicate.
+   - Parameter _ objects: An NSSet containing subclasses of ManagedObject.
+   - Returns: A Set<AnyHashable>.
+   */
   private func filtered(_ objects: NSSet) -> Set<AnyHashable> {
     guard let objects = objects as? Set<ManagedObject> else {
       return []
     }
     
+    /**
+     Apply provided predicate to Search.
+     - Parameter _ predicate: A Predicate.
+     - Returns: A Search instance.
+     */
     func passesPredicate(_ node: ManagedNode) -> Bool {
       guard node.nodeClass == NodeClass(nodeType: T.self)?.rawValue else {
         return false
@@ -1008,7 +1018,7 @@ fileprivate extension Watch {
           "propertySet": propertySet,
         ]
       
-      return ([dictionary] as NSArray).filtered(using: predicate.predicate).isEmpty == false
+      return predicate.predicate.evaluate(with: dictionary)
     }
     
     let namedOnesThatPass = objects.filter {
@@ -1030,7 +1040,6 @@ fileprivate extension Watch {
       
       return passesPredicate(n)
     }
-    
     
     return nodesThatPass.union(namedOnesThatPass)
   }

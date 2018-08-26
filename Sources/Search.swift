@@ -62,6 +62,11 @@ public class Search<T: Node> {
     return self
   }
   
+  /**
+   Apply provided predicate to Search.
+   - Parameter _ predicate: A Predicate.
+   - Returns: A Search instance.
+   */
   @discardableResult
   public func `where`(_ predicate: Predicate) -> Search {
     self.predicate = self.predicate.map {
@@ -169,6 +174,13 @@ private extension Search {
   }
 }
 
+/**
+ An operator to compound given two Search<T> instances
+ into a single Search<T>.
+ - Parameter left: A Search<T>.
+ - Parameter right: A Search<T>.
+ - Returns: A new Search<T>.
+ */
 public func +<T>(left: Search<T>, right: Search<T>) -> Search<T> {
   guard left.graph == right.graph else {
     fatalError("[Graph Error: `Search`s for different Graph instances should not be combined.]")
@@ -179,11 +191,21 @@ public func +<T>(left: Search<T>, right: Search<T>) -> Search<T> {
     .where(right.predicate)
 }
 
+/**
+ An operator to merge right Search<T> into left Search<T>.
+ - Parameter left: An inout Search<T>.
+ - Parameter right: A Search<T>.
+ */
 public func +=<T>(left: inout Search<T>, right: Search<T>) {
   left = left + right
 }
 
 private extension NSPredicate {
+  /**
+   Create a new NSPredicate by recursively replacing property predicates
+   with TRUEPREDICATE to allow matching all possible nodes.
+   - Returns: An NSPredicate.
+   */
   func removingPropertyCases() -> NSPredicate {
     let reducedFormat = predicateFormat
       .replacing("(N[NOT ]+T )?SUBQUERY\\(propertySet.+?\\)\\.@count > 0")
@@ -202,6 +224,11 @@ private extension NSPredicate {
 }
 
 private extension String {
+  /**
+   Create a new string replacing the matched pattern with TRUEPREDICATE.
+   - Parameter _ pattern: A String.
+   - Returns: A new string replaced the matched pattern with TRUEPREDICATE.
+   */
   func replacing(_ pattern: String) -> String {
     let regex = try! NSRegularExpression(pattern: pattern)
     return regex.stringByReplacingMatches(in: self, options: [],
