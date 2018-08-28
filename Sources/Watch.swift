@@ -983,9 +983,10 @@ fileprivate extension Watch {
     }
     
     /**
-     Apply provided predicate to Search.
-     - Parameter _ predicate: A Predicate.
-     - Returns: A Search instance.
+     Check if both old and new states of the provided node
+     passes the predicate.
+     - Parameter _ node: A ManagedNode.
+     - Returns: A Boolean.
      */
     func passesPredicate(_ node: ManagedNode) -> Bool {
       guard node.nodeClass == NodeClass(nodeType: T.self)?.rawValue else {
@@ -1021,7 +1022,15 @@ fileprivate extension Watch {
       return predicate.predicate.evaluate(with: dictionary)
     }
     
-    let namedOnesThatPass = objects.filter {
+    let nodesThatPass = objects.filter {
+      guard let n = $0 as? ManagedNode else {
+        return false
+      }
+      
+      return passesPredicate(n)
+    }
+    
+    return nodesThatPass.union(objects.filter {
       guard let n = $0 as? NamedManagedObject else {
         return false
       }
@@ -1031,16 +1040,6 @@ fileprivate extension Watch {
       }
       
       return passesPredicate(v)
-    }
-    
-    let nodesThatPass = objects.filter {
-      guard let n = $0 as? ManagedNode else {
-        return false
-      }
-      
-      return passesPredicate(n)
-    }
-    
-    return nodesThatPass.union(namedOnesThatPass)
+    })
   }
 }

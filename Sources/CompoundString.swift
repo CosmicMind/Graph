@@ -44,6 +44,16 @@ public struct CompoundString: ExpressibleByStringLiteral {
   /// A reference to NSPredicate.
   private let predicate: NSPredicate
 
+  /**
+   Initialize a CompoundString with given array of CompoundString by compounding
+   them into a single predicate using provided logical type.
+   - Parameter _ compounds: An array of CompoundString.
+   - Parameter type: An NSCompoundPredicate.LogicalType.
+   */
+  fileprivate init(_ compounds: [CompoundString], type: NSCompoundPredicate.LogicalType) {
+    self.predicate = NSCompoundPredicate(type: type, subpredicates: compounds.map { $0.predicate })
+  }
+  
   /// Initialze CompoundString with FALSEPREDICATE.
   init() {
     self.predicate = NSPredicate(value: false)
@@ -66,16 +76,6 @@ public struct CompoundString: ExpressibleByStringLiteral {
     let format = predicate.predicateFormat.replacingOccurrences(of: "__REPLACE__ ==", with: format)
     let predicates = [NSPredicate(format: format)]
     return Predicate(predicates)
-  }
-  
-  /**
-   Initialize a CompoundString with given array of CompoundString by compounding
-   them into a single predicate using provided logical type.
-   - Parameter _ compounds: An array of CompoundString.
-   - Parameter type: An NSCompoundPredicate.LogicalType.
-   */
-  fileprivate init(_ compounds: [CompoundString], type: NSCompoundPredicate.LogicalType) {
-    self.predicate = NSCompoundPredicate(type: type, subpredicates: compounds.map { $0.predicate })
   }
 }
 
