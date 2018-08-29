@@ -54,7 +54,7 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
     entityInsertExpectation = expectation(description: "[EntityPropertyStressTests Error: Entity insert test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Entity>(graph: graph).for(types: "T")
+    let watch = Watch<Entity>(graph: graph).where(.type("T"))
     watch.delegate = self
     
     let entity = Entity("T")
@@ -71,7 +71,7 @@ class EntityPropertyStressTests: XCTestCase, GraphEntityDelegate {
     for i in 0..<100 {
       properties.append("P\(i)")
     }
-    watch.where(properties: properties)
+    watch.where(.exists(properties))
     
     for i in 0..<100 {
       let property = "P\(i)"

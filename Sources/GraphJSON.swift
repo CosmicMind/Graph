@@ -228,8 +228,8 @@ public struct GraphJSON: Equatable, CustomStringConvertible {
   }
 }
 
-public func ==(lhs: GraphJSON, rhs: GraphJSON) -> Bool {
-  return GraphJSON.stringify(lhs.object) == GraphJSON.stringify(rhs.object)
+public func ==(left: GraphJSON, right: GraphJSON) -> Bool {
+  return GraphJSON.stringify(left.object) == GraphJSON.stringify(right.object)
 }
 
 extension GraphJSON: ExpressibleByNilLiteral {

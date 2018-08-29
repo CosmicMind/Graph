@@ -52,7 +52,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Action>(graph: graph).where(.type("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let action = Action("T")
@@ -77,7 +77,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
     
     let graph = Graph(name: "ActionTests-testNamedGraphSave")
-    let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Action>(graph: graph).where(.type("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let action = Action("T", graph: "ActionTests-testNamedGraphSave")
@@ -102,7 +102,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
     
     let graph = Graph(name: "ActionTests-testReferenceGraphSave")
-    let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Action>(graph: graph).where(.type("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let action = Action("T", graph: graph)
@@ -129,7 +129,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
     
     let graph = Graph(name: "ActionTests-testAsyncGraphSave")
-    let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Action>(graph: graph).where(.type("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let action = Action("T", graph: graph)
@@ -156,7 +156,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Action>(graph: graph).where(.type("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let action = Action("T")
@@ -200,7 +200,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Action>(graph: graph).where(.type("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let action = Action("T")
@@ -239,7 +239,7 @@ class ActionTests: XCTestCase, GraphActionDelegate {
     propertyExpception = expectation(description: "[ActionTests Error: Property test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Action>(graph: graph).for(types: "T").has(tags: "G").where(properties: "P")
+    let watch = Watch<Action>(graph: graph).where(.type("T") || .has(tags: "G") || .exists("P"))
     watch.delegate = self
     
     let action = Action("T")

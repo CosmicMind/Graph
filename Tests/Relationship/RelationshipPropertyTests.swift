@@ -51,7 +51,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
     propertyInsertExpception = expectation(description: "[RelationshipTests Error: Property insert test failed.]")
     
     let graph = Graph()
-    let watch = Watch<Relationship>(graph: graph).where(properties: "P1")
+    let watch = Watch<Relationship>(graph: graph).where(.exists("P1"))
     watch.delegate = self
     
     let relationship = Relationship("T")
@@ -87,7 +87,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
     saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
     propertyUpdateExpception = expectation(description: "[RelationshipTests Error: Property update test failed.]")
     
-    let watch = Watch<Relationship>(graph: graph).where(properties: "P1")
+    let watch = Watch<Relationship>(graph: graph).where(.exists("P1"))
     watch.delegate = self
     
     relationship["P1"] = "V2"
@@ -122,7 +122,7 @@ class RelationshipPropertyTests: XCTestCase, GraphRelationshipDelegate {
     saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
     propertyDeleteExpception = expectation(description: "[RelationshipTests Error: Property delete test failed.]")
     
-    let watch = Watch<Relationship>(graph: graph).where(properties: "P1")
+    let watch = Watch<Relationship>(graph: graph).where(.exists("P1"))
     watch.delegate = self
     
     relationship["P1"] = nil
