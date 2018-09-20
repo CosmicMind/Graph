@@ -29,7 +29,7 @@
  */
 
 
-import Foundation
+import CoreData
 
 class NamedManagedObject: ManagedObject {
   @NSManaged internal var name: String
