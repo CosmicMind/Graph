@@ -193,11 +193,6 @@ public class Node: NSObject, Codable {
     return node.hash
   }
   
-  /// A reference to the hashValue.
-  public override var hashValue: Int {
-    return node.hashValue
-  }
-  
   /// A reference to the ID.
   public var id: String {
     return node.id
