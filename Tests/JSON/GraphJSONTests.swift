@@ -87,9 +87,16 @@ class GraphJSONTests: XCTestCase {
     XCTAssertEqual(GraphJSON.stringify(true), "true")
   }
   
-  func testEquatable() {
+  func testEquatableAndSequence() {
+    let a = GraphJSON([1, true, "Graph", [:]])
+    let b = GraphJSON([1, true, "Graph", [:]])
+    XCTAssertEqual(a, b)
+    
+    for (left, right) in zip(a, b) {
+      XCTAssertEqual(left, right)
+    }
+    
     XCTAssertEqual(GraphJSON.isNil, .isNil)
-    XCTAssertEqual(GraphJSON([1, true, "Graph", [:]]), GraphJSON([1, true, "Graph", [:]]))
     XCTAssertEqual(GraphJSON(dictionary), GraphJSON(dictionary))
   }
   

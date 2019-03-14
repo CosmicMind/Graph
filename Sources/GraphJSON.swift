@@ -299,3 +299,39 @@ extension GraphJSON: ExpressibleByArrayLiteral {
     self.init(elements)
   }
 }
+
+/**
+ An array iterator for GraphJSON.
+ */
+public struct GraphJSONIterator: IteratorProtocol {
+  /// A reference to the GraphJSON that's being iterated over.
+  let graphJSON: GraphJSON
+  
+  /// Current iteration step.
+  var i = 0
+  
+  /**
+   An initializer accepting GraphJSON object to be iterated over.
+   - Parameter _ graphJSON: A GraphJSON.
+   */
+  init(_ graphJSON: GraphJSON) {
+    self.graphJSON = graphJSON
+  }
+  
+  mutating public func next() -> GraphJSON? {
+    let v = graphJSON[i]
+    
+    guard .isNil != v else {
+      return nil
+    }
+    
+    i += 1
+    return v
+  }
+}
+
+extension GraphJSON: Sequence {
+  public func makeIterator() -> GraphJSONIterator {
+    return GraphJSONIterator(self)
+  }
+}
