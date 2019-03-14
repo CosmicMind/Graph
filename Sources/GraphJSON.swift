@@ -133,8 +133,25 @@ public struct GraphJSON: Equatable, CustomStringConvertible {
   public static func stringify(_ object: Any, options: JSONSerialization.WritingOptions = []) -> String? {
     if let v = object as? GraphJSON {
       return stringify(v.object, options: options)
+    }
     
-    } else if let data = GraphJSON.serialize(object, options: options) {
+    if object is NSNull {
+      return "null"
+    }
+    
+    if let v = object as? String {
+      return v
+    }
+    
+    if let v = object as? Bool {
+      return String(v)
+    }
+    
+    if let v = object as? NSNumber {
+      return v.stringValue
+    }
+    
+    if let data = GraphJSON.serialize(object, options: options) {
       if let v = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String? {
         return v
       }
