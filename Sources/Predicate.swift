@@ -189,7 +189,7 @@ public func <=(left: String, right: NSNumber) -> Predicate {
   return build(left, right, type: .lessThanOrEqualTo)
 }
 
-extension Predicate {
+public extension Predicate {
   /**
    Create a Predicate to filter nodes that have any of
    the properties in the given list.
