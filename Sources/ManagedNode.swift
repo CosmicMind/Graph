@@ -51,7 +51,7 @@ internal class ManagedNode: ManagedObject {
       } catch let e as NSError {
         fatalError("[Graph Error: Cannot obtain permanent objectID - \(e.localizedDescription)]")
       }
-      return String(stringInterpolationSegment: self.nodeClass) + self.type + self.objectID.uriRepresentation().lastPathComponent
+      return "\(self.nodeClass)" + self.type + self.objectID.uriRepresentation().lastPathComponent
     }
   }
   
