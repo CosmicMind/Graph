@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ public class Entity: Node {
   internal var managedNode: ManagedEntity {
     return node as! ManagedEntity
   }
-
+  
   
   /// A string representation of the Entity.
   public override var description: String {
@@ -137,7 +137,7 @@ public class Entity: Node {
       $0.relationshipObjectSet.map { Relationship(managedNode: $0) }
     }
   }
-
+  
   /// Generic creation of the managed node type.
   override class func createNode(_ type: String, in context: NSManagedObjectContext) -> ManagedNode {
     return ManagedEntity(type, managedObjectContext: context)

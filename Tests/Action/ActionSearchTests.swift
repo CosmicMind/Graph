@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -94,7 +94,7 @@ class ActionSearchTests : XCTestCase {
     }
     
     let search = Search<Action>(graph: graph)
-
+    
     searchTest(search: search.clear().where(.type([])), count: 0)
     searchTest(search: search.clear().where(.type([], using: ||)), count: 0)
     searchTest(search: search.clear().where(.type([], using: &&)), count: 0)

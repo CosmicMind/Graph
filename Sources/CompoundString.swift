@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ import Foundation
 public struct CompoundString: ExpressibleByStringLiteral {
   /// A reference to NSPredicate.
   private let predicate: NSPredicate
-
+  
   /**
    Initialize a CompoundString with given array of CompoundString by compounding
    them into a single predicate using provided logical type.
@@ -66,7 +66,7 @@ public struct CompoundString: ExpressibleByStringLiteral {
   public init(stringLiteral value: StringLiteralType) {
     self.predicate = NSPredicate(format: "__REPLACE__ == %@", value)
   }
-
+  
   /**
    Create a Predicate by replacing placeholder with the given format.
    - Parameter with format: A String.

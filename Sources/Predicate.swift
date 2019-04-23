@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,11 +38,11 @@ import Foundation
  ### Example
  ```swift
  let predicate: Predicate = .has(tags: "T1", "T2", using: ||)
-   && .member(of: "T1", "T2", using: &&)
-   && .exists(("T1" && "T2") || !"T3")
-   && !.type("User")
-   || "key" != "value"
-   || "number" >= 20 && "bool" == true
+ && .member(of: "T1", "T2", using: &&)
+ && .exists(("T1" && "T2") || !"T3")
+ && !.type("User")
+ || "key" != "value"
+ || "number" >= 20 && "bool" == true
  ```
  */
 public struct Predicate {
@@ -58,7 +58,7 @@ public struct Predicate {
   init(_ predicates: [Predicate], type: NSCompoundPredicate.LogicalType = .and) {
     self.init(predicates.map { $0.predicate }, type: type)
   }
-
+  
   /**
    Initialize a Predicate with given array of NSPredicate by compounding
    them into a single predicate using provided logical type.
@@ -110,7 +110,7 @@ public prefix func !(predicate: Predicate) -> Predicate {
  - Returns: A property Predicate.
  */
 private func build(_ key: String, _ value: CVarArg, type: NSComparisonPredicate.Operator) -> Predicate {
-
+  
   let isString = value is String
   let requiresNot = isString && type == .notEqualTo
   
@@ -119,7 +119,7 @@ private func build(_ key: String, _ value: CVarArg, type: NSComparisonPredicate.
                                 modifier: .direct,
                                 type: isString ? .like : type,
                                 options: isString ? [.caseInsensitive, .diacriticInsensitive] : []).predicateFormat
-
+  
   let p = NSPredicate(format: "\(requiresNot ? "NOT" : "")(SUBQUERY(propertySet, $property, $property.name LIKE[cd] %@ AND \(o)).@count > 0)", key)
   return Predicate([p])
 }
@@ -199,7 +199,7 @@ public extension Predicate {
   static func exists(_ properties: String...) -> Predicate {
     return exists(properties)
   }
-
+  
   /**
    Create a Predicate to filter nodes that have any of
    the properties in the given array.
@@ -209,7 +209,7 @@ public extension Predicate {
   static func exists(_ properties: [String]) -> Predicate {
     return exists(properties, using: ||)
   }
-
+  
   /**
    Create a Predicate to filter nodes that have the properties
    in the given list compounding using provided compounder.
@@ -220,7 +220,7 @@ public extension Predicate {
   static func exists(_ properties: String..., using compounder: Compounder) -> Predicate {
     return exists(properties, using: compounder)
   }
-
+  
   /**
    Create a Predicate to filter nodes that have the properties
    in the given array compounding using provided compounder.
@@ -251,7 +251,7 @@ public extension Predicate {
   static func type(_ types: String...) -> Predicate {
     return self.type(types)
   }
-
+  
   /**
    Create a Predicate to filter nodes that have any of
    the types in the given array.
@@ -303,7 +303,7 @@ public extension Predicate {
   static func has(tags: String...) -> Predicate {
     return has(tags: tags)
   }
-
+  
   /**
    Create a Predicate to filter nodes that have any of
    the tags in the given array.
@@ -313,7 +313,7 @@ public extension Predicate {
   static func has(tags: [String]) -> Predicate {
     return has(tags: tags, using: ||)
   }
-
+  
   /**
    Create a Predicate to filter nodes that have the tags
    in the given list compounding using provided compounder.
@@ -376,7 +376,7 @@ public extension Predicate {
   static func member(of groups: String..., using compounder: Compounder) -> Predicate {
     return member(of: groups, using: compounder)
   }
-
+  
   /**
    Create a Predicate to filter nodes that have the groups
    in the given array compounding using provided compounder.

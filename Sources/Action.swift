@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,14 +50,14 @@ public class Action: Node {
   public var subjects: [Entity] {
     return managedNode.performAndWait { action in
       action.subjectSet.map { Entity(managedNode: $0) }
-    } ?? []
+      } ?? []
   }
   
   /// An Array of Entity objects.
   public var objects: [Entity] {
     return managedNode.performAndWait { action in
       action.objectSet.map { Entity(managedNode: $0) }
-    } ?? []
+      } ?? []
   }
   
   /// Generic creation of the managed node type.

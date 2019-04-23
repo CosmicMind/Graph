@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,10 +49,10 @@ class RelationshipTagTests: XCTestCase, GraphRelationshipDelegate {
     /// .or condition
     XCTAssertTrue(relationship.has(tags: ["T3", "T4", "T5", "T6"], using: .or))
     XCTAssertFalse(relationship.has(tags: ["T4", "T5", "T6", "T7"], using: .or))
-
+    
     relationship.delete()
   }
-
+  
   func testTagAdd() {
     saveExpectation = expectation(description: "[RelationshipTests Error: Graph save test failed.]")
     tagAddExpception = expectation(description: "[RelationshipTests Error: Tag add test failed.]")

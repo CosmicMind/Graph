@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ public class Search<T: Node> {
   
   /// A reference to search predicate.
   internal private(set) var predicate: Predicate!
-    
+  
   /**
    An initializer that accepts a NodeClass and Graph
    instance.
@@ -71,7 +71,7 @@ public class Search<T: Node> {
   public func `where`(_ predicate: Predicate) -> Search {
     self.predicate = self.predicate.map {
       $0 || predicate
-    } ?? predicate
+      } ?? predicate
     
     return self
   }
@@ -124,7 +124,7 @@ private extension Search {
     
     return nodes
   }
-
+  
   /**
    Searches based on property value.
    - Returns: An Array of ManagedNode objects.
@@ -137,11 +137,11 @@ private extension Search {
     guard let predicate = predicate?.predicate else {
       return []
     }
-
+    
     guard let identifier = NodeClass(nodeType: T.self)?.identifier else {
       fatalError("[Graph Error: Unsupported type for Search]")
     }
-
+    
     let request = NSFetchRequest<ManagedNode>()
     request.entity = NSEntityDescription.entity(forEntityName: identifier, in: moc)!
     request.fetchBatchSize = graph.batchSize

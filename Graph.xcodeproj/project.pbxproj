@@ -395,6 +395,7 @@
 			indentWidth = 2;
 			sourceTree = "<group>";
 			tabWidth = 2;
+			usesTabs = 0;
 		};
 		96E3C3AA1D3AB41F0086A024 /* Products */ = {
 			isa = PBXGroup;
@@ -719,6 +720,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 96E3C39F1D3AB41F0086A024;

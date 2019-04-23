@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -76,7 +76,7 @@ internal class ManagedRelationship: ManagedNode {
   internal override class func asProperty(_ property: ManagedProperty) -> ManagedProperty? {
     return property as? ManagedRelationshipProperty
   }
- 
+  
   /// Marks the Relationship for deletion and clears all its relationships.
   override func delete() {
     performAndWait { relationship in

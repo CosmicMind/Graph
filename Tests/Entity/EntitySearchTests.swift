@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ class EntitySearchTests : XCTestCase {
   
   func searchTest(search: Search<Entity>, count: Int) {
     XCTAssertEqual(count, search.sync().count)
-
+    
     testExpectation = expectation(description: "[EntitySearchTests Error: Test failed.]")
     
     search.sync {

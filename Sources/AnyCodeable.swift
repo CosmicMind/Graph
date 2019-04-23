@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,7 +77,7 @@ public struct AnyCodable: Codable {
   /**
    Creates a new instance by decoding from the given decoder.
    - Parameter decoder: The decoder to read data from.
-  */
+   */
   public init(from decoder: Decoder) throws {
     /// Trying to decode from supporting types.
     for c in AnyCodable.codables {
@@ -110,7 +110,7 @@ public struct AnyCodable: Codable {
     var container = encoder.singleValueContainer()
     try value.encode(to: &container)
   }
-
+  
   /// Recursively unwraps any nested AnyCodable in the value.
   public func unwrap() -> Any {
     return AnyCodable.unwrap(self)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ class ActionTagTests: XCTestCase, GraphActionDelegate {
     
     action.delete()
   }
-
+  
   
   func testTagAdd() {
     saveExpectation = expectation(description: "[ActionTests Error: Graph save test failed.]")

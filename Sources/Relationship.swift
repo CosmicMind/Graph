@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ public class Relationship: Node {
   internal var managedNode: ManagedRelationship {
     return node as! ManagedRelationship
   }
-
+  
   public override var description: String {
     return "[nodeClass: \(nodeClass), id: \(id), type: \(type), tags: \(tags), groups: \(groups), properties: \(properties), subject: \(String(describing: subject)), object: \(String(describing: object)), createdDate: \(createdDate)]"
   }
@@ -100,7 +100,7 @@ public class Relationship: Node {
   required init(managedNode: ManagedNode) {
     super.init(managedNode: managedNode)
   }
-    
+  
   /**
    Checks equality between Entities.
    - Parameter object: A reference to an object to test

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,7 +72,7 @@ class GraphJSONTests: XCTestCase {
     let parsed = GraphJSON.parse(testJSONString)?.object as? NSDictionary
     XCTAssert(parsed?.isEqual(to: dictionary) == true)
   }
-
+  
   func testStringify() {
     XCTAssertNil(GraphJSON.stringify(("unsupported top level object", "e.g tuple")))
     XCTAssertNil(GraphJSON.stringify([("unsupported top level object", "e.g tuple")]))
@@ -116,7 +116,7 @@ class GraphJSONTests: XCTestCase {
     XCTAssertEqual(json["children"], .isNil)
     XCTAssertEqual(json["isMale"].asBool, true)
     XCTAssertEqual(json["skills"].asArray as? [String], ["swift", "ios", "programming"])
-
+    
     /// Dynamic member access
     XCTAssertEqual(json.nonExistentObject, .isNil)
     XCTAssertEqual(json.name.asString, "orkhan")

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ class RelationshipCodableTests: XCTestCase {
     
     relationship.add(tags: ["Swift", "iOS"])
     relationship.add(to: ["Programming", "Religion"])
-      
+    
     guard let data = try? JSONEncoder().encode(relationship) else {
       XCTFail("[EntityCodableTests Error: Encoder failed to encode.]")
       return

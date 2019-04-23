@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ internal class ManagedAction: ManagedNode {
   
   /// Generic creation of the managed tag type.
   override class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
-        _ = ManagedActionTag(name: name, node: node, managedObjectContext: managedObjectContext)
+    _ = ManagedActionTag(name: name, node: node, managedObjectContext: managedObjectContext)
   }
   
   /// Generic creation of the managed group type.

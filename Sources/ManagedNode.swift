@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,14 +59,14 @@ internal class ManagedNode: ManagedObject {
   var tags: [String] {
     return performAndWait { node in
       node.tagSet.map { $0.name }
-    } ?? []
+      } ?? []
   }
   
   /// A reference to the groups.
   var groups: [String] {
     return performAndWait { node in
       node.groupSet.map { $0.name }
-    } ?? []
+      } ?? []
   }
   
   /// A reference to the properties.
@@ -75,7 +75,7 @@ internal class ManagedNode: ManagedObject {
       node.propertySet.reduce(into: [String: Any]()) {
         $0[$1.name] = $1.object
       }
-    } ?? [:]
+      } ?? [:]
   }
   
   /**
@@ -164,7 +164,7 @@ internal class ManagedNode: ManagedObject {
       }
     }
   }
-
+  
   /// Generic creation of the managed tag type.
   internal class func createTag(name: String, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     fatalError("Must be implemented by subclasses")
@@ -184,7 +184,7 @@ internal class ManagedNode: ManagedObject {
   internal class func asGroup(_ group: ManagedGroup) -> ManagedGroup? {
     fatalError("Must be implemented by subclasses")
   }
-
+  
   /// Generic creation of the managed property type.
   internal class func createProperty(name: String, object: Any, node: ManagedNode, managedObjectContext: NSManagedObjectContext) {
     fatalError("Must be implemented by subclasses")
@@ -205,7 +205,7 @@ internal class ManagedNode: ManagedObject {
       return performAndWait { node in
         node.propertySet.first {
           $0.name == name
-        }?.object
+          }?.object
       }
     }
     set(value) {
@@ -253,7 +253,7 @@ internal class ManagedNode: ManagedObject {
   func has(tags: [String], using condition: SearchCondition = .and) -> Bool {
     let t = Set(self.tags)
     let tags = Set(tags)
-
+    
     switch condition {
     case .and:
       return tags.isSubset(of: t)

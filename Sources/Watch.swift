@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 - 2018, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
+ * Copyright (C) 2015 - 2019, Daniel Dahan and CosmicMind, Inc. <http://cosmicmind.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -401,7 +401,7 @@ public class Watch<T: Node>: Watchable {
   public func `where`(_ predicate: Predicate) -> Watch {
     self.predicate = self.predicate.map {
       $0 || predicate
-    } ?? predicate
+      } ?? predicate
     return self
   }
   
@@ -481,7 +481,7 @@ public class Watch<T: Node>: Watchable {
     guard let objectIDs = notification.userInfo?[NSInsertedObjectsKey] as? NSSet else {
       return
     }
-
+    
     guard let moc = graph.managedObjectContext else {
       return
     }
@@ -1013,11 +1013,11 @@ fileprivate extension Watch {
       }
       
       let dictionary: [String: Any] = [
-          "type": node.type,
-          "tagSet": tagSet,
-          "groupSet": groupSet,
-          "propertySet": propertySet,
-        ]
+        "type": node.type,
+        "tagSet": tagSet,
+        "groupSet": groupSet,
+        "propertySet": propertySet,
+      ]
       
       return predicate.predicate.evaluate(with: dictionary)
     }
