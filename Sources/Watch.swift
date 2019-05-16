@@ -963,7 +963,7 @@ fileprivate extension Watch {
   }
   
   /// Prepares graph for watching.
-  fileprivate func prepareGraph() {
+  func prepareGraph() {
     graph.watchers.append(Watcher(object: self))
   }
   
