@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name = 'Graph'
-    s.version = '3.1'
+    s.version = '3.1.1'
     s.swift_version = '5.0'
     s.license = 'BSD-3-Clause'
     s.summary = 'Graph is a semantic database that is used to create data-driven applications.'

@@ -39,10 +39,50 @@ Graph is a semantic database that is used to create data-driven applications.
 
 ## Installation
 
-> **Embedded frameworks require a minimum deployment target of iOS 8 or OS X Yosemite (10.10).**
+> **Embedded frameworks require a minimum deployment target of iOS 8.**
 > - [Download Graph](https://github.com/CosmicMind/Graph/archive/master.zip)
 
-Visit the [Installation](https://github.com/CosmicMind/Graph/wiki/Installation) page to learn how to install Graph using [CocoaPods](http://cocoapods.org) and [Carthage](https://github.com/Carthage/Carthage).
+## CocoaPods
+
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+
+To integrate Graph's core features into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'Graph', '~> 3.1.0'
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
+## Carthage
+
+Carthage is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
+
+You can install Carthage with Homebrew using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+To integrate Graph into your Xcode project using Carthage, specify it in your Cartfile:
+
+```bash
+github "CosmicMind/Graph"
+```
+
+Run `carthage update` to build the framework and drag the built `Graph.framework` into your Xcode project.
 
 ## Changelog
 

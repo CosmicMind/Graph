@@ -1,3 +1,7 @@
+## 3.1.1
+
+* Added installation instructions to README.
+  
 ## 2.2.2
 
 * [issue-143](https://github.com/CosmicMind/Graph/issues/143): Renamed JSON class to GraphJSON to avoid framework collisions. 
