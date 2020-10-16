@@ -164,6 +164,9 @@ internal struct Model {
     propertyValue.name = "object"
     propertyValue.attributeType = .transformableAttributeType
     propertyValue.attributeValueClassName = "Any"
+    if #available(iOS 12, *) {
+      propertyValue.valueTransformerName = "DefaultTransformer"
+    }
     propertyValue.isOptional = false
     propertyValue.allowsExternalBinaryDataStorage = true
     entityPropertyProperties.append(propertyValue.copy() as! NSAttributeDescription)

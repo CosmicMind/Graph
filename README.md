@@ -26,8 +26,8 @@ Graph is a semantic database that is used to create data-driven applications.
 
 ## Requirements
 
-* iOS 8.0+ / Mac OS X 10.10+
-* Xcode 8.0+
+* iOS 12.0+ / Mac OS X 10.14+
+* Xcode 10.0+
 
 ## Communication
 
@@ -39,8 +39,16 @@ Graph is a semantic database that is used to create data-driven applications.
 
 ## Installation
 
-> **Embedded frameworks require a minimum deployment target of iOS 8.**
+> **Embedded frameworks require a minimum deployment target of iOS 12.**
 > - [Download Graph](https://github.com/CosmicMind/Graph/archive/master.zip)
+
+## Swift Package Manager
+To add Graph to a [Swift Package Manager](https://swift.org/package-manager/) based project, add:
+
+```swift
+.package(url: "https://github.com/CosmicMind/Graph", .branch("development")),
+```
+to your `Package.swift` files `dependencies` array.
 
 ## CocoaPods
 
