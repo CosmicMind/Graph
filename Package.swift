@@ -23,8 +23,23 @@
  * THE SOFTWARE.
  */
 
-// swift-tools-version:3.1
+// swift-tools-version:5.5
 
 import PackageDescription
 
-let package = Package(name: "Graph")
+let package = Package(
+    name: "Graph",
+    platforms: [
+         .iOS("8.0"),
+       .macOS("10.10")
+     ],
+     products: [
+         .library(
+             name: "Graph",
+             targets: ["Graph"]),
+     ],
+    targets: [
+        .executableTarget(
+            name: "Graph")
+    ]
+)
