@@ -65,7 +65,14 @@ Then, run the following command:
 ```bash
 $ pod install
 ```
+## Swift Package Manager
+ To add Graph to a [Swift Package Manager](https://swift.org/package-manager/) based project, add:
 
+ ```swift
+ .package(url: "https://github.com/CosmicMind/Graph", .branch("development")),
+ ```
+ to your `Package.swift` files `dependencies` array.
+ 
 ## Carthage
 
 Carthage is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
